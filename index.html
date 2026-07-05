@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aventura de Palabras - GA Games</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <main class="app">
+
+        <section id="pantallaMenu" class="pantalla activa">
+            <h2 class="studio">GA Games</h2>
+            <h1 class="titulo">Aventura de Palabras</h1>
+            <p class="subtitulo">Explorá mundos resolviendo palabras</p>
+
+            <button id="btnJugar">🆕 Nueva aventura</button>
+            <button id="btnNuevaAventura" class="secundario oculto">
+                🆕 Nueva aventura
+            </button>
+            <button disabled>Multijugador</button>
+            <button disabled>Estadísticas</button>
+            <button disabled>Configuración</button>
+        </section>
+
+        <section id="pantallaJuego" class="pantalla">
+            <div class="barraJugador">
+
+                <span id="textoMonedas">
+                    🪙 0
+                </span>
+
+                <span id="textoXP">
+                    ⭐ 0 XP
+                </span>
+
+            </div>
+
+            <div class="top-juego">
+                <span>Categoría: <strong id="categoriaActual">Animales</strong></span>
+                <span id="vidas" class="vidas">❤️❤️❤️❤️❤️❤️</span>
+            </div>
+
+            <div class="personaje" id="personaje">
+                😄
+            </div>
+
+            <p class="mensaje-personaje" id="mensajePersonaje">
+                ¡Comienza la expedición!
+            </p>
+
+            <div class="palabra" id="palabraOculta">
+                _ _ _ _ _
+            </div>
+
+            <button id="btnPista" class="btn-pista">
+                💡 Pista
+            </button>
+
+            <p id="textoPista" class="texto-pista oculto"></p>
+
+            <div class="teclado" id="teclado"></div>
+
+            <button id="btnSiguiente" class="oculto">
+                ▶️ Siguiente misión
+            </button>
+
+            <button id="btnReintentar" class="oculto">
+                🔄 Reintentar misión
+            </button>
+
+            <button id="btnSalirJuego" class="secundario">Menú</button>
+        </section>
+
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>
