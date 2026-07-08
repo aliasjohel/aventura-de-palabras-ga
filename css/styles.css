@@ -343,7 +343,7 @@ button:disabled {
         max-width: none;
         padding: 8px;
         border-radius: 0;
-        gap: 8px;
+        gap: 6px;
     }
 
     .barraJugador {
@@ -388,23 +388,23 @@ button:disabled {
     }
 
     .palabra {
-        margin: 4px 0;
+        margin: 3px 0;
         gap: 5px;
     }
 
     .casilla {
-        width: 26px;
-        height: 32px;
+        width: 24px;
+        height: 30px;
         border-radius: 8px;
-        font-size: .95rem;
+        font-size: .9rem;
     }
 
     .btn-pista,
     #btnSalirJuego,
     #btnSiguiente,
     #btnReintentar {
-        padding: 5px 9px;
-        font-size: .78rem;
+        padding: 4px 8px;
+        font-size: .75rem;
     }
 
     .texto-pista {
@@ -413,20 +413,20 @@ button:disabled {
     }
 
     .teclado {
-        margin-top: 2px;
-        gap: 4px;
+        margin-top: 0;
+        gap: 3px;
     }
 
     .fila-teclado {
-        gap: 4px;
+        gap: 3px;
     }
 
     .letra {
-        width: clamp(28px, 8vw, 42px);
-        height: clamp(34px, 9vw, 46px);
+        width: clamp(24px, 7vw, 38px);
+        height: clamp(30px, 8vw, 42px);
         padding: 0;
         border-radius: 8px;
-        font-size: .78rem;
+        font-size: .75rem;
     }
 }
 
