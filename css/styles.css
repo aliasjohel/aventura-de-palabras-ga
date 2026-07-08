@@ -450,6 +450,6 @@ button:disabled{
     .personaje-imagen {
         width: 130px;
         left: 20%;
-        bottom: 18%;
+        bottom: 10%;
     }
 }
