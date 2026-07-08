@@ -407,6 +407,10 @@ button:disabled {
         font-size: .75rem;
     }
 
+    .btn-pista {
+        margin-bottom: -8px;
+    }
+
     .texto-pista {
         padding: 6px 10px;
         font-size: 0.85rem;
