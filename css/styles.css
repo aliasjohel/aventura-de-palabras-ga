@@ -457,3 +457,11 @@ button:disabled{
         transform: translateY(-12px) scale(1.04);
     }
 }
+
+@media (max-width: 600px) {
+    .personaje-imagen {
+        width: 135px;
+        left: 4%;
+        bottom: -4px;
+    }
+}

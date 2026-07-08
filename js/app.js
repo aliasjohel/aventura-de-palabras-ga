@@ -424,6 +424,7 @@ function obtenerPalabraAleatoria() {
 }
 
 cargarProgreso();
+precargarImagenesBosque();
 
 function actualizarEscenaAventura() {
   const errores = 6 - intentos;
@@ -465,4 +466,11 @@ function actualizarFondoBosque() {
   ];
 
   fondoEscenario.src = `assets/images/fondos/${fondosBosque[errores]}`;
+}
+
+function precargarImagenesBosque() {
+  for (let i = 0; i <= 6; i++) {
+    const img = new Image();
+    img.src = `assets/images/fondos/bosque-${i}.png`;
+  }
 }
