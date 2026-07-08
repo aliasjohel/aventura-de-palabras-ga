@@ -453,3 +453,63 @@ button:disabled{
         bottom: 10%;
     }
 }
+
+@media (orientation: landscape) and (max-height: 600px) {
+
+    .pantalla {
+        padding: 14px;
+        gap: 10px;
+    }
+
+    .barraJugador {
+        margin-bottom: 5px;
+        padding: 8px 14px;
+        font-size: 1rem;
+    }
+
+    .top-juego {
+        font-size: .95rem;
+        align-items: center;
+    }
+
+    .escenario {
+        max-width: 620px;
+    }
+
+    .escena-aventura {
+        padding: 8px 12px;
+        font-size: .95rem;
+    }
+
+    .mensaje-personaje {
+        margin-top: 4px;
+        font-size: .95rem;
+    }
+
+    .palabra {
+        margin: 8px 0;
+        gap: 6px;
+    }
+
+    .casilla {
+        width: 34px;
+        height: 40px;
+        font-size: 1.2rem;
+        border-radius: 10px;
+    }
+
+    .teclado {
+        margin-top: 6px;
+        gap: 6px;
+    }
+
+    .letra {
+        padding: 8px 0;
+        font-size: .95rem;
+    }
+
+    button {
+        padding: 9px;
+        font-size: .9rem;
+    }
+}
