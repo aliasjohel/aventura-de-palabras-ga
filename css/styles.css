@@ -513,3 +513,101 @@ button:disabled{
         font-size: .9rem;
     }
 }
+
+@media (max-width: 700px) {
+
+    .app {
+        align-items: flex-start;
+    }
+
+    .pantalla {
+        width: 100%;
+        min-height: 100vh;
+        max-width: none;
+        border-radius: 0;
+        padding: 8px;
+        gap: 8px;
+    }
+
+    .barraJugador {
+        width: 100%;
+        margin-bottom: 0;
+        padding: 6px 10px;
+        font-size: .95rem;
+    }
+
+    .top-juego {
+        font-size: .85rem;
+        gap: 8px;
+    }
+
+    .vidas {
+        font-size: 1rem;
+        padding: 6px 8px;
+    }
+
+    .escenario {
+        width: 100%;
+        max-width: none;
+        aspect-ratio: 16 / 9;
+        border-radius: 14px;
+        border-width: 2px;
+    }
+
+    .personaje-imagen {
+        width: 130px;
+        left: 20%;
+        bottom: 8%;
+    }
+
+    .escena-aventura {
+        padding: 6px 10px;
+        font-size: .85rem;
+    }
+
+    .mensaje-personaje {
+        margin-top: 0;
+        font-size: .85rem;
+    }
+
+    .palabra {
+        margin: 4px 0;
+        gap: 5px;
+    }
+
+    .casilla {
+        width: 30px;
+        height: 36px;
+        font-size: 1.05rem;
+        border-radius: 8px;
+    }
+
+    .btn-pista {
+        padding: 7px 10px;
+        font-size: .85rem;
+    }
+
+    .texto-pista {
+        padding: 6px 10px;
+        font-size: .85rem;
+    }
+
+    .teclado {
+        margin-top: 4px;
+        gap: 5px;
+        grid-template-columns: repeat(9, 1fr);
+    }
+
+    .letra {
+        padding: 7px 0;
+        font-size: .85rem;
+        border-radius: 8px;
+    }
+
+    #btnSalirJuego,
+    #btnSiguiente,
+    #btnReintentar {
+        padding: 7px 10px;
+        font-size: .85rem;
+    }
+}
