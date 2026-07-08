@@ -21,6 +21,9 @@ const teclado = document.getElementById("teclado");
 const mensajePersonaje = document.getElementById("mensajePersonaje");
 const palabraOculta = document.getElementById("palabraOculta");
 const btnNuevaAventura = document.getElementById("btnNuevaAventura");
+const escenaAventura = document.getElementById("escenaAventura");
+const personajeImagen = document.getElementById("personajeImagen");
+const fondoEscenario = document.getElementById("fondoEscenario");
 
 // ====================
 // Variables del juego
@@ -88,6 +91,8 @@ const desafiosPorMision = 3;
 // Eventos
 // ====================
 btnPista.addEventListener("click", () => {
+  cambiarPersonaje("pensando");
+
   textoPista.textContent = `💡 ${pistaActual}`;
 
   textoPista.classList.remove("oculto");
@@ -190,12 +195,18 @@ function elegirLetra(letra, boton) {
   if (palabraSecreta.includes(letra)) {
     boton.classList.add("correcta");
     personaje.textContent = "😁";
+    cambiarPersonaje("feliz");
     mensajePersonaje.textContent = "¡Bien! Esa letra está.";
   } else {
     boton.classList.add("incorrecta");
     intentos--;
     actualizarVidas();
+    actualizarFondoBosque();
+    actualizarEscenaAventura();
     personaje.textContent = intentos <= 2 ? "😨" : "😕";
+    if (intentos <= 2) {
+      cambiarPersonaje("preocupado");
+    }
     mensajePersonaje.textContent = "Uy... esa letra no está.";
   }
 
@@ -210,6 +221,7 @@ function verificarEstado() {
 
   if (gano) {
     personaje.textContent = "🥳";
+    cambiarPersonaje("celebrando");
     mensajePersonaje.textContent = "🌟 ¡Desafío superado!";
     monedas += 10;
     experiencia += 20;
@@ -223,6 +235,7 @@ function verificarEstado() {
 
   if (intentos === 0) {
     personaje.textContent = "😵";
+    cambiarPersonaje("triste");
     mensajePersonaje.textContent = "No lo lograste. ¡Intentá otra vez!";
     bloquearTeclado();
     btnReintentar.classList.remove("oculto");
@@ -270,7 +283,10 @@ function iniciarMisionAventura() {
   intentos = 6;
 
   actualizarVidas();
+  actualizarFondoBosque();
+  actualizarEscenaAventura();
   personaje.textContent = "😄";
+  cambiarPersonaje("feliz");
   mensajePersonaje.textContent = "¡Comienza la expedición!";
   teclado.innerHTML = "";
   textoPista.classList.add("oculto");
@@ -408,3 +424,45 @@ function obtenerPalabraAleatoria() {
 }
 
 cargarProgreso();
+
+function actualizarEscenaAventura() {
+  const errores = 6 - intentos;
+
+  const escenas = [
+    "🌲 El camino del bosque está tranquilo...",
+    "🪨 Una piedra cayó en el sendero.",
+    "🌿 Unas ramas bloquean el camino.",
+    "🌧️ Comienza a llover en el bosque.",
+    "🌫️ La niebla cubre el sendero.",
+    "🐺 Se escuchan lobos a lo lejos...",
+    "🏕️ La expedición falló. Volvés al campamento.",
+  ];
+
+  escenaAventura.textContent = escenas[errores];
+}
+
+function cambiarPersonaje(estado) {
+  personajeImagen.src = `assets/images/personajes/explorador-${estado}.png`;
+
+  personajeImagen.classList.remove("celebrando");
+
+  if (estado === "celebrando") {
+    personajeImagen.classList.add("celebrando");
+  }
+}
+
+function actualizarFondoBosque() {
+  const errores = 6 - intentos;
+
+  const fondosBosque = [
+    "bosque-0.png", // 0 errores - camino tranquilo
+    "bosque-2.png", // 1 error - piedra
+    "bosque-3.png", // 2 errores - ramas
+    "bosque-4.png", // 3 errores - lluvia
+    "bosque-5.png", // 4 errores - niebla
+    "bosque-6.png", // 5 errores - lobos
+    "bosque-6.png", // 6 errores - por ahora usamos lobos hasta crear campamento
+  ];
+
+  fondoEscenario.src = `assets/images/fondos/${fondosBosque[errores]}`;
+}
