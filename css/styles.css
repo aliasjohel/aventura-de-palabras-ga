@@ -393,18 +393,18 @@ button:disabled {
     }
 
     .casilla {
-        width: 30px;
-        height: 36px;
+        width: 26px;
+        height: 32px;
         border-radius: 8px;
-        font-size: 1.05rem;
+        font-size: .95rem;
     }
 
     .btn-pista,
     #btnSalirJuego,
     #btnSiguiente,
     #btnReintentar {
-        padding: 7px 10px;
-        font-size: 0.85rem;
+        padding: 5px 9px;
+        font-size: .78rem;
     }
 
     .texto-pista {
@@ -413,14 +413,20 @@ button:disabled {
     }
 
     .teclado {
-        margin-top: 4px;
-        gap: 5px;
+        margin-top: 2px;
+        gap: 4px;
+    }
+
+    .fila-teclado {
+        gap: 4px;
     }
 
     .letra {
-        padding: 7px 0;
+        width: clamp(28px, 8vw, 42px);
+        height: clamp(34px, 9vw, 46px);
+        padding: 0;
         border-radius: 8px;
-        font-size: 0.85rem;
+        font-size: .78rem;
     }
 }
 
