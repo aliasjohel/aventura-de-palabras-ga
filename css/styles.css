@@ -420,9 +420,9 @@ button:disabled{
 
     bottom: -5px;
 
-    left: 130px;
+    left: 8%;
 
-    width: 260px;
+    width: clamp(170px, 22vw, 260px);
 
     transition: .35s;
 
