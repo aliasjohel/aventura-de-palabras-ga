@@ -403,15 +403,11 @@ button:disabled{
 }
 
 .fondo-escenario {
-
     width: 100%;
-
     height: 100%;
-
-    object-fit: cover;
-
+    object-fit: contain;
     display: block;
-
+    background: #10251c;
 }
 
 .personaje-imagen {
