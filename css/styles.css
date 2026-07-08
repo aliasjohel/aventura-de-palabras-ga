@@ -457,7 +457,7 @@ button:disabled{
 @media (max-width: 600px) {
     .personaje-imagen {
         width: 130px;
-        left: 5%;
-        bottom: 12%;
+        left: 20%;
+        bottom: 18%;
     }
 }
