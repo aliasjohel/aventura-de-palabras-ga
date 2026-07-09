@@ -34,11 +34,26 @@ const sonidos = {
   moneda: new Audio("assets/sounds/moneda.mp3"),
   victoria: new Audio("assets/sounds/victoria.mp3"),
   derrota: new Audio("assets/sounds/derrota.mp3"),
+  piedra: new Audio("assets/sounds/piedra.mp3"),
+  ramas: new Audio("assets/sounds/ramas.mp3"),
+  lluvia: new Audio("assets/sounds/lluvia.mp3"),
+  niebla: new Audio("assets/sounds/niebla.mp3"),
+  lobos: new Audio("assets/sounds/lobos.mp3"),
 };
 
 let colaSonidos = [];
 let audioDesbloqueado = false;
 const debugAudio = true;
+
+const sonidosEventosPorError = {
+  1: "piedra",
+  2: "ramas",
+  3: "lluvia",
+  4: "niebla",
+  5: "lobos",
+};
+
+let ultimoEventoSonoroActivo = "";
 
 document.addEventListener("touchstart", desbloquearAudio, { once: true });
 document.addEventListener("click", desbloquearAudio, { once: true });
@@ -223,13 +238,14 @@ function elegirLetra(letra, boton) {
     boton.classList.add("incorrecta");
     intentos--;
 
-    if (intentos > 0) {
-      reproducirSonido("error");
-    }
-
     actualizarVidas();
     actualizarFondoBosque();
     actualizarEscenaAventura();
+
+    if (intentos > 0) {
+      reproducirFeedbackErrorAventura();
+    }
+
     personaje.textContent = intentos <= 2 ? "😨" : "😕";
     if (intentos <= 2) {
       cambiarPersonaje("preocupado");
@@ -433,6 +449,19 @@ function reproducirSiguienteSonido() {
     });
 }
 
+function reproducirFeedbackErrorAventura() {
+  const errores = 6 - intentos;
+  const nombreSonido = sonidosEventosPorError[errores];
+
+  if (!nombreSonido || ultimoEventoSonoroActivo === nombreSonido) {
+    reproducirSonido("error");
+    return;
+  }
+
+  ultimoEventoSonoroActivo = nombreSonido;
+  reproducirSecuenciaSonidos(["error", nombreSonido]);
+}
+
 function logAudio(mensaje, detalle = "") {
   if (!debugAudio) return;
 
@@ -458,6 +487,7 @@ function iniciarMisionAventura() {
 
   letrasElegidas = [];
   intentos = 6;
+  ultimoEventoSonoroActivo = "";
 
   actualizarVidas();
   actualizarFondoBosque();
