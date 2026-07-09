@@ -235,6 +235,7 @@ function elegirLetra(letra, boton) {
     mensajePersonaje.textContent = "¡Bien! Esa letra está.";
 
     if (!palabraCompleta()) {
+      animarPersonajeTemporal("reaccion-acierto");
       reproducirSonido("acertar");
     }
   } else {
@@ -253,6 +254,7 @@ function elegirLetra(letra, boton) {
     if (intentos <= 2) {
       cambiarPersonaje("preocupado");
     }
+    animarPersonajeTemporal("reaccion-error");
     mensajePersonaje.textContent = "Uy... esa letra no está.";
   }
 
@@ -281,6 +283,7 @@ function verificarEstado() {
   if (intentos === 0) {
     personaje.textContent = "😵";
     cambiarPersonaje("triste");
+    animarPersonajeTemporal("reaccion-derrota");
     mensajePersonaje.textContent = "No lo lograste. ¡Intentá otra vez!";
     reproducirSecuenciaSonidos(["error", "derrota"]);
     bloquearTeclado();
@@ -520,6 +523,26 @@ function reproducirSonidoEventoBosque(errores) {
 
   ultimoEventoSonoroActivo = nombreSonido;
   reproducirSonido(nombreSonido);
+}
+
+function animarPersonajeTemporal(claseAnimacion) {
+  const clasesAnimacion = [
+    "reaccion-acierto",
+    "reaccion-error",
+    "reaccion-derrota",
+  ];
+
+  personajeImagen.classList.remove(...clasesAnimacion);
+  void personajeImagen.offsetWidth;
+  personajeImagen.classList.add(claseAnimacion);
+
+  personajeImagen.addEventListener(
+    "animationend",
+    () => {
+      personajeImagen.classList.remove(claseAnimacion);
+    },
+    { once: true },
+  );
 }
 
 function esSonidoEventoBosque(nombre) {
