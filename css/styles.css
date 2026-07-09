@@ -177,6 +177,8 @@ button:disabled {
     bottom: -5px;
     left: 8%;
     width: clamp(170px, 22vw, 260px);
+    height: auto;
+    object-fit: contain;
     transition: 0.35s;
     animation: respirar 2.4s ease-in-out infinite;
 }

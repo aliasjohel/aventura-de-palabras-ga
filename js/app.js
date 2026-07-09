@@ -251,9 +251,6 @@ function elegirLetra(letra, boton) {
     actualizarEscenaAventura();
 
     personaje.textContent = intentos <= 2 ? "😨" : "😕";
-    if (intentos <= 2) {
-      cambiarPersonaje("preocupado");
-    }
     animarPersonajeTemporal("reaccion-error");
     mensajePersonaje.textContent = "Uy... esa letra no está.";
   }
@@ -767,7 +764,19 @@ function actualizarFondoBosque() {
   ];
 
   fondoEscenario.src = `assets/images/fondos/${fondosBosque[errores]}`;
+  actualizarExpresionBosque(errores);
   reproducirSonidoEventoBosque(errores);
+}
+
+function actualizarExpresionBosque(errores) {
+  if (errores === 2 || errores === 3) {
+    cambiarPersonaje("nervioso");
+    return;
+  }
+
+  if (errores >= 4) {
+    cambiarPersonaje("preocupado");
+  }
 }
 
 function precargarImagenesBosque() {
