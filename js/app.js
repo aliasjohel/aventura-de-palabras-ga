@@ -54,6 +54,8 @@ const sonidosEventosPorError = {
   6: "lobos",
 };
 
+const sonidosEventoBosque = new Set(["piedra", "ramas", "lluvia", "niebla", "lobos"]);
+
 let ultimoEventoSonoroActivo = "";
 
 document.addEventListener("touchstart", desbloquearAudio, { once: true });
@@ -360,6 +362,13 @@ function desbloquearAudio() {
   logAudio("desbloqueando audio por primer toque");
 
   Object.entries(sonidos).forEach(([nombre, audio]) => {
+    if (esSonidoEventoBosque(nombre)) {
+      logAudioEvento(`${nombre} incluido en desbloquearAudio`, {
+        existeEnSonidos: Boolean(sonidos[nombre]),
+        src: audio.src,
+      });
+    }
+
     audio.volume = 0;
     audio
       .play()
@@ -369,10 +378,18 @@ function desbloquearAudio() {
         audio.volume = 1;
         audioDesbloqueado = true;
         logAudio(`${nombre} desbloqueado`);
+
+        if (esSonidoEventoBosque(nombre)) {
+          logAudioEvento(`${nombre} desbloqueado`);
+        }
       })
       .catch((error) => {
         audio.volume = 1;
         logAudio(`${nombre} no se pudo desbloquear`, error);
+
+        if (esSonidoEventoBosque(nombre)) {
+          logAudioEvento(`${nombre} fallo al desbloquear`, error);
+        }
       });
   });
 }
@@ -389,11 +406,33 @@ function detenerSonidos() {
 
 function reproducirSonido(nombre) {
   const sonido = sonidos[nombre];
+  const esEvento = esSonidoEventoBosque(nombre);
 
-  if (!sonido) return;
+  if (esEvento) {
+    logAudioEvento(`intento reproducir ${nombre}`, {
+      existeEnSonidos: Boolean(sonido),
+      audioDesbloqueado,
+    });
+  }
+
+  if (!sonido) {
+    if (esEvento) {
+      logAudioEvento(`${nombre} no existe en sonidos`);
+    }
+
+    return;
+  }
 
   detenerSonidos();
   sonido.currentTime = 0;
+
+  if (esEvento) {
+    logAudioEvento(`${nombre} ejecutando play()`, {
+      readyState: sonido.readyState,
+      networkState: sonido.networkState,
+      src: sonido.currentSrc || sonido.src,
+    });
+  }
 
   sonido
     .play()
@@ -403,8 +442,15 @@ function reproducirSonido(nombre) {
         readyState: sonido.readyState,
         networkState: sonido.networkState,
       });
+
+      if (esEvento) {
+        logAudioEvento(`${nombre} play() ejecutado correctamente`, {
+          readyState: sonido.readyState,
+          networkState: sonido.networkState,
+        });
+      }
     })
-    .catch(() => {
+    .catch((error) => {
       // Algunos navegadores bloquean audio hasta la primera interaccion.
       logAudio(`${nombre} play bloqueado`, {
         audioDesbloqueado,
@@ -412,6 +458,16 @@ function reproducirSonido(nombre) {
         networkState: sonido.networkState,
         error: sonido.error,
       });
+
+      if (esEvento) {
+        logAudioEvento(`${nombre} play() fallo`, {
+          audioDesbloqueado,
+          readyState: sonido.readyState,
+          networkState: sonido.networkState,
+          mediaError: sonido.error,
+          playError: error,
+        });
+      }
     });
 }
 
@@ -453,16 +509,33 @@ function reproducirSiguienteSonido() {
 function reproducirSonidoEventoBosque(errores) {
   const nombreSonido = sonidosEventosPorError[errores];
 
+  logAudioEvento("evento bosque evaluado", {
+    errores,
+    sonido: nombreSonido,
+    existeEnSonidos: Boolean(nombreSonido && sonidos[nombreSonido]),
+    ultimoEventoSonoroActivo,
+  });
+
   if (!nombreSonido || ultimoEventoSonoroActivo === nombreSonido) return;
 
   ultimoEventoSonoroActivo = nombreSonido;
   reproducirSonido(nombreSonido);
 }
 
+function esSonidoEventoBosque(nombre) {
+  return sonidosEventoBosque.has(nombre);
+}
+
 function logAudio(mensaje, detalle = "") {
   if (!debugAudio) return;
 
   console.log(`[audio] ${mensaje}`, detalle);
+}
+
+function logAudioEvento(mensaje, detalle = "") {
+  if (!debugAudio) return;
+
+  console.log(`[audio-evento] ${mensaje}`, detalle);
 }
 
 function iniciarMisionAventura() {
