@@ -26,6 +26,19 @@ const personajeImagen = document.getElementById("personajeImagen");
 const fondoEscenario = document.getElementById("fondoEscenario");
 
 // ====================
+// Sonidos
+// ====================
+const sonidos = {
+  acertar: new Audio("assets/sounds/acertar.mp3"),
+  error: new Audio("assets/sounds/error.mp3"),
+  moneda: new Audio("assets/sounds/moneda.mp3"),
+  victoria: new Audio("assets/sounds/victoria.mp3"),
+  derrota: new Audio("assets/sounds/derrota.mp3"),
+};
+
+let colaSonidos = [];
+
+// ====================
 // Variables del juego
 // ====================
 
@@ -197,9 +210,18 @@ function elegirLetra(letra, boton) {
     personaje.textContent = "😁";
     cambiarPersonaje("feliz");
     mensajePersonaje.textContent = "¡Bien! Esa letra está.";
+
+    if (!palabraCompleta()) {
+      reproducirSonido("acertar");
+    }
   } else {
     boton.classList.add("incorrecta");
     intentos--;
+
+    if (intentos > 0) {
+      reproducirSonido("error");
+    }
+
     actualizarVidas();
     actualizarFondoBosque();
     actualizarEscenaAventura();
@@ -215,9 +237,7 @@ function elegirLetra(letra, boton) {
 }
 
 function verificarEstado() {
-  const gano = palabraSecreta
-    .split("")
-    .every((letra) => letrasElegidas.includes(letra));
+  const gano = palabraCompleta();
 
   if (gano) {
     personaje.textContent = "🥳";
@@ -225,6 +245,7 @@ function verificarEstado() {
     mensajePersonaje.textContent = "🌟 ¡Desafío superado!";
     monedas += 10;
     experiencia += 20;
+    reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
 
     actualizarJugador();
     avanzarMision();
@@ -237,6 +258,7 @@ function verificarEstado() {
     personaje.textContent = "😵";
     cambiarPersonaje("triste");
     mensajePersonaje.textContent = "No lo lograste. ¡Intentá otra vez!";
+    reproducirSecuenciaSonidos(["error", "derrota"]);
     bloquearTeclado();
     btnReintentar.classList.remove("oculto");
   }
@@ -264,7 +286,65 @@ function actualizarVidas() {
   vidas.textContent = "❤️".repeat(intentos) + "🤍".repeat(6 - intentos);
 }
 
+function palabraCompleta() {
+  return palabraSecreta
+    .split("")
+    .every((letra) => letrasElegidas.includes(letra));
+}
+
+function precargarSonidos() {
+  Object.values(sonidos).forEach((sonido) => {
+    sonido.preload = "auto";
+    sonido.load();
+  });
+}
+
+function detenerSonidos() {
+  colaSonidos = [];
+
+  Object.values(sonidos).forEach((sonido) => {
+    sonido.onended = null;
+    sonido.pause();
+    sonido.currentTime = 0;
+  });
+}
+
+function reproducirSonido(nombre) {
+  const sonido = sonidos[nombre];
+
+  if (!sonido) return;
+
+  detenerSonidos();
+  sonido.currentTime = 0;
+
+  sonido.play().catch(() => {
+    // Algunos navegadores bloquean audio hasta la primera interaccion.
+  });
+}
+
+function reproducirSecuenciaSonidos(nombres) {
+  colaSonidos = [...nombres];
+  detenerSonidos();
+  colaSonidos = [...nombres];
+  reproducirSiguienteSonido();
+}
+
+function reproducirSiguienteSonido() {
+  const nombre = colaSonidos.shift();
+  const sonido = sonidos[nombre];
+
+  if (!sonido) return;
+
+  sonido.currentTime = 0;
+  sonido.onended = reproducirSiguienteSonido;
+  sonido.play().catch(() => {
+    reproducirSiguienteSonido();
+  });
+}
+
 function iniciarMisionAventura() {
+  detenerSonidos();
+
   desafioActual = desafiosCompletados + 1;
 
   const escenario = aventura[escenarioActual];
@@ -425,6 +505,7 @@ function obtenerPalabraAleatoria() {
 
 cargarProgreso();
 precargarImagenesBosque();
+precargarSonidos();
 
 function actualizarEscenaAventura() {
   const errores = 6 - intentos;
