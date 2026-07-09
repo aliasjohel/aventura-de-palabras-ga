@@ -51,6 +51,7 @@ const sonidosEventosPorError = {
   3: "lluvia",
   4: "niebla",
   5: "lobos",
+  6: "lobos",
 };
 
 let ultimoEventoSonoroActivo = "";
@@ -238,13 +239,13 @@ function elegirLetra(letra, boton) {
     boton.classList.add("incorrecta");
     intentos--;
 
+    if (intentos > 0) {
+      reproducirSonido("error");
+    }
+
     actualizarVidas();
     actualizarFondoBosque();
     actualizarEscenaAventura();
-
-    if (intentos > 0) {
-      reproducirFeedbackErrorAventura();
-    }
 
     personaje.textContent = intentos <= 2 ? "😨" : "😕";
     if (intentos <= 2) {
@@ -449,17 +450,13 @@ function reproducirSiguienteSonido() {
     });
 }
 
-function reproducirFeedbackErrorAventura() {
-  const errores = 6 - intentos;
+function reproducirSonidoEventoBosque(errores) {
   const nombreSonido = sonidosEventosPorError[errores];
 
-  if (!nombreSonido || ultimoEventoSonoroActivo === nombreSonido) {
-    reproducirSonido("error");
-    return;
-  }
+  if (!nombreSonido || ultimoEventoSonoroActivo === nombreSonido) return;
 
   ultimoEventoSonoroActivo = nombreSonido;
-  reproducirSecuenciaSonidos(["error", nombreSonido]);
+  reproducirSonido(nombreSonido);
 }
 
 function logAudio(mensaje, detalle = "") {
@@ -674,6 +671,7 @@ function actualizarFondoBosque() {
   ];
 
   fondoEscenario.src = `assets/images/fondos/${fondosBosque[errores]}`;
+  reproducirSonidoEventoBosque(errores);
 }
 
 function precargarImagenesBosque() {
