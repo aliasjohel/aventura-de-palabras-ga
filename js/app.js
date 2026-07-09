@@ -38,6 +38,9 @@ const sonidos = {
 
 let colaSonidos = [];
 
+document.addEventListener("touchstart", desbloquearAudio, { once: true });
+document.addEventListener("click", desbloquearAudio, { once: true });
+
 // ====================
 // Variables del juego
 // ====================
@@ -296,6 +299,22 @@ function precargarSonidos() {
   Object.values(sonidos).forEach((sonido) => {
     sonido.preload = "auto";
     sonido.load();
+  });
+}
+
+function desbloquearAudio() {
+  Object.values(sonidos).forEach((audio) => {
+    audio.volume = 0;
+    audio
+      .play()
+      .then(() => {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.volume = 1;
+      })
+      .catch(() => {
+        audio.volume = 1;
+      });
   });
 }
 
