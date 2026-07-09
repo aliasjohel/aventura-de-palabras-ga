@@ -37,6 +37,8 @@ const sonidos = {
 };
 
 let colaSonidos = [];
+let audioDesbloqueado = false;
+const debugAudio = true;
 
 document.addEventListener("touchstart", desbloquearAudio, { once: true });
 document.addEventListener("click", desbloquearAudio, { once: true });
@@ -296,14 +298,51 @@ function palabraCompleta() {
 }
 
 function precargarSonidos() {
-  Object.values(sonidos).forEach((sonido) => {
+  Object.entries(sonidos).forEach(([nombre, sonido]) => {
     sonido.preload = "auto";
+    sonido.addEventListener("loadedmetadata", () => {
+      logAudio(`${nombre} metadata cargada`, {
+        src: sonido.currentSrc || sonido.src,
+        duration: sonido.duration,
+        readyState: sonido.readyState,
+        networkState: sonido.networkState,
+      });
+    });
+    sonido.addEventListener("loadeddata", () => {
+      logAudio(`${nombre} data cargada`, {
+        readyState: sonido.readyState,
+        networkState: sonido.networkState,
+      });
+    });
+    sonido.addEventListener("canplay", () => {
+      logAudio(`${nombre} puede reproducirse`, {
+        readyState: sonido.readyState,
+        networkState: sonido.networkState,
+      });
+    });
+    sonido.addEventListener("canplaythrough", () => {
+      logAudio(`${nombre} cargado completo`, {
+        readyState: sonido.readyState,
+        networkState: sonido.networkState,
+      });
+    });
+    sonido.addEventListener("error", () => {
+      logAudio(`${nombre} error de carga`, {
+        src: sonido.currentSrc || sonido.src,
+        readyState: sonido.readyState,
+        networkState: sonido.networkState,
+        error: sonido.error,
+      });
+    });
     sonido.load();
+    logAudio(`${nombre} precargando`, sonido.src);
   });
 }
 
 function desbloquearAudio() {
-  Object.values(sonidos).forEach((audio) => {
+  logAudio("desbloqueando audio por primer toque");
+
+  Object.entries(sonidos).forEach(([nombre, audio]) => {
     audio.volume = 0;
     audio
       .play()
@@ -311,9 +350,12 @@ function desbloquearAudio() {
         audio.pause();
         audio.currentTime = 0;
         audio.volume = 1;
+        audioDesbloqueado = true;
+        logAudio(`${nombre} desbloqueado`);
       })
-      .catch(() => {
+      .catch((error) => {
         audio.volume = 1;
+        logAudio(`${nombre} no se pudo desbloquear`, error);
       });
   });
 }
@@ -336,9 +378,24 @@ function reproducirSonido(nombre) {
   detenerSonidos();
   sonido.currentTime = 0;
 
-  sonido.play().catch(() => {
-    // Algunos navegadores bloquean audio hasta la primera interaccion.
-  });
+  sonido
+    .play()
+    .then(() => {
+      logAudio(`${nombre} reproduciendo`, {
+        audioDesbloqueado,
+        readyState: sonido.readyState,
+        networkState: sonido.networkState,
+      });
+    })
+    .catch(() => {
+      // Algunos navegadores bloquean audio hasta la primera interaccion.
+      logAudio(`${nombre} play bloqueado`, {
+        audioDesbloqueado,
+        readyState: sonido.readyState,
+        networkState: sonido.networkState,
+        error: sonido.error,
+      });
+    });
 }
 
 function reproducirSecuenciaSonidos(nombres) {
@@ -356,9 +413,30 @@ function reproducirSiguienteSonido() {
 
   sonido.currentTime = 0;
   sonido.onended = reproducirSiguienteSonido;
-  sonido.play().catch(() => {
-    reproducirSiguienteSonido();
-  });
+  sonido
+    .play()
+    .then(() => {
+      logAudio(`${nombre} reproduciendo en secuencia`, {
+        audioDesbloqueado,
+        readyState: sonido.readyState,
+        networkState: sonido.networkState,
+      });
+    })
+    .catch((error) => {
+      logAudio(`${nombre} play de secuencia bloqueado`, {
+        audioDesbloqueado,
+        readyState: sonido.readyState,
+        networkState: sonido.networkState,
+        error,
+      });
+      reproducirSiguienteSonido();
+    });
+}
+
+function logAudio(mensaje, detalle = "") {
+  if (!debugAudio) return;
+
+  console.log(`[audio] ${mensaje}`, detalle);
 }
 
 function iniciarMisionAventura() {
