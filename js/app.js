@@ -45,18 +45,21 @@ let colaSonidos = [];
 let audioDesbloqueado = false;
 const debugAudio = true;
 
-const sonidosEventosPorError = {
+const sonidosEventoBosque = new Set([
+  "piedra",
+  "ramas",
+  "lluvia",
+  "niebla",
+  "lobos",
+]);
+
+const sonidosNarrativosPorMision = {
   1: "piedra",
   2: "ramas",
   3: "lluvia",
   4: "niebla",
   5: "lobos",
-  6: "lobos",
 };
-
-const sonidosEventoBosque = new Set(["piedra", "ramas", "lluvia", "niebla", "lobos"]);
-
-let ultimoEventoSonoroActivo = "";
 
 document.addEventListener("touchstart", desbloquearAudio, { once: true });
 document.addEventListener("click", desbloquearAudio, { once: true });
@@ -121,6 +124,7 @@ let monedas = 0;
 let experiencia = 0;
 let desafioActual = 1;
 let desafiosCompletados = 0;
+let sonidoNarrativoPendiente = "";
 const desafiosPorMision = 3;
 
 // ====================
@@ -140,6 +144,11 @@ btnSiguiente.addEventListener("click", () => {
   btnSiguiente.classList.add("oculto");
 
   iniciarMisionAventura();
+
+  if (sonidoNarrativoPendiente) {
+    reproducirSonido(sonidoNarrativoPendiente);
+    sonidoNarrativoPendiente = "";
+  }
 });
 
 btnJugar.addEventListener("click", () => {
@@ -247,8 +256,6 @@ function elegirLetra(letra, boton) {
     }
 
     actualizarVidas();
-    actualizarFondoBosque();
-    actualizarEscenaAventura();
 
     personaje.textContent = intentos <= 2 ? "😨" : "😕";
     animarPersonajeTemporal("reaccion-error");
@@ -268,10 +275,10 @@ function verificarEstado() {
     mensajePersonaje.textContent = "🌟 ¡Desafío superado!";
     monedas += 10;
     experiencia += 20;
-    reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
 
     actualizarJugador();
-    avanzarMision();
+    sonidoNarrativoPendiente = avanzarMision();
+    reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
     guardarProgreso();
     bloquearTeclado();
     btnSiguiente.classList.remove("oculto");
@@ -506,22 +513,6 @@ function reproducirSiguienteSonido() {
     });
 }
 
-function reproducirSonidoEventoBosque(errores) {
-  const nombreSonido = sonidosEventosPorError[errores];
-
-  logAudioEvento("evento bosque evaluado", {
-    errores,
-    sonido: nombreSonido,
-    existeEnSonidos: Boolean(nombreSonido && sonidos[nombreSonido]),
-    ultimoEventoSonoroActivo,
-  });
-
-  if (!nombreSonido || ultimoEventoSonoroActivo === nombreSonido) return;
-
-  ultimoEventoSonoroActivo = nombreSonido;
-  reproducirSonido(nombreSonido);
-}
-
 function animarPersonajeTemporal(claseAnimacion) {
   const clasesAnimacion = [
     "reaccion-acierto",
@@ -577,13 +568,11 @@ function iniciarMisionAventura() {
 
   letrasElegidas = [];
   intentos = 6;
-  ultimoEventoSonoroActivo = "";
 
   actualizarVidas();
-  actualizarFondoBosque();
-  actualizarEscenaAventura();
   personaje.textContent = "😄";
   cambiarPersonaje("feliz");
+  actualizarEscenaPorMision();
   mensajePersonaje.textContent = "¡Comienza la expedición!";
   teclado.innerHTML = "";
   textoPista.classList.add("oculto");
@@ -600,7 +589,7 @@ function avanzarMision() {
   desafiosCompletados++;
 
   if (desafiosCompletados < desafiosPorMision) {
-    return;
+    return "";
   }
 
   desafiosCompletados = 0;
@@ -608,9 +597,11 @@ function avanzarMision() {
 
   misionActual++;
   mensajePersonaje.textContent = "🏆 ¡Misión completada!";
+  let sonidoNarrativo = sonidosNarrativosPorMision[misionActual] || "";
 
   if (misionActual >= 10) {
     misionActual = 0;
+    sonidoNarrativo = "";
 
     escenarioActual++;
 
@@ -619,11 +610,13 @@ function avanzarMision() {
 
       mensajePersonaje.textContent = "🏆 ¡Completaste toda la aventura!";
 
-      return;
+      return "";
     }
 
     mensajePersonaje.textContent = `🔓 Nuevo escenario desbloqueado: ${aventura[escenarioActual].nombre}`;
   }
+
+  return sonidoNarrativo;
 }
 
 function actualizarJugador() {
@@ -724,22 +717,6 @@ cargarProgreso();
 precargarImagenesBosque();
 precargarSonidos();
 
-function actualizarEscenaAventura() {
-  const errores = 6 - intentos;
-
-  const escenas = [
-    "🌲 El camino del bosque está tranquilo...",
-    "🪨 Una piedra cayó en el sendero.",
-    "🌿 Unas ramas bloquean el camino.",
-    "🌧️ Comienza a llover en el bosque.",
-    "🌫️ La niebla cubre el sendero.",
-    "🐺 Se escuchan lobos a lo lejos...",
-    "🏕️ La expedición falló. Volvés al campamento.",
-  ];
-
-  escenaAventura.textContent = escenas[errores];
-}
-
 function cambiarPersonaje(estado) {
   personajeImagen.src = `assets/images/personajes/explorador-${estado}.png`;
 
@@ -750,32 +727,52 @@ function cambiarPersonaje(estado) {
   }
 }
 
-function actualizarFondoBosque() {
-  const errores = 6 - intentos;
-
-  const fondosBosque = [
-    "bosque-0.png", // 0 errores - camino tranquilo
-    "bosque-2.png", // 1 error - piedra
-    "bosque-3.png", // 2 errores - ramas
-    "bosque-4.png", // 3 errores - lluvia
-    "bosque-5.png", // 4 errores - niebla
-    "bosque-6.png", // 5 errores - lobos
-    "bosque-6.png", // 6 errores - por ahora usamos lobos hasta crear campamento
+function actualizarEscenaPorMision() {
+  const escenasPorEscenario = [
+    [
+      {
+        fondo: "bosque-0.png",
+        texto: "🌲 El camino del bosque está tranquilo...",
+        expresion: "feliz",
+      },
+      {
+        fondo: "bosque-2.png",
+        texto: "🪨 Una piedra cayó en el sendero.",
+        expresion: "feliz",
+      },
+      {
+        fondo: "bosque-3.png",
+        texto: "🌿 Unas ramas bloquean el camino.",
+        expresion: "nervioso",
+      },
+      {
+        fondo: "bosque-4.png",
+        texto: "🌧️ Comienza a llover en el bosque.",
+        expresion: "nervioso",
+      },
+      {
+        fondo: "bosque-5.png",
+        texto: "🌫️ La niebla cubre el sendero.",
+        expresion: "preocupado",
+      },
+      {
+        fondo: "bosque-6.png",
+        texto: "🐺 Se escuchan lobos a lo lejos...",
+        expresion: "preocupado",
+      },
+    ],
   ];
 
-  fondoEscenario.src = `assets/images/fondos/${fondosBosque[errores]}`;
-  actualizarExpresionBosque(errores);
-  reproducirSonidoEventoBosque(errores);
-}
+  const escenasPorMision =
+    escenasPorEscenario[escenarioActual] || escenasPorEscenario[0];
+  const escena =
+    escenasPorMision[Math.min(misionActual, escenasPorMision.length - 1)];
 
-function actualizarExpresionBosque(errores) {
-  if (errores === 2 || errores === 3) {
-    cambiarPersonaje("nervioso");
-    return;
-  }
+  fondoEscenario.src = `assets/images/fondos/${escena.fondo}`;
+  escenaAventura.textContent = escena.texto;
 
-  if (errores >= 4) {
-    cambiarPersonaje("preocupado");
+  if (escena.expresion) {
+    cambiarPersonaje(escena.expresion);
   }
 }
 
