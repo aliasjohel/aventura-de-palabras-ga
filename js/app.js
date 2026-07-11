@@ -935,6 +935,7 @@ function obtenerPalabraAleatoria() {
 
 cargarProgreso();
 precargarImagenesBosque();
+precargarImagenesExplorador();
 precargarSonidos();
 
 function cambiarPersonaje(estado) {
@@ -994,4 +995,20 @@ function precargarImagenesBosque() {
     const img = new Image();
     img.src = `assets/images/fondos/bosque-${i}.png`;
   }
+}
+
+function precargarImagenesExplorador() {
+  [
+    "acierto",
+    "celebrando",
+    "desanimado",
+    "feliz",
+    "nervioso",
+    "pensando",
+    "preocupado",
+    "triste",
+  ].forEach((estado) => {
+    const img = new Image();
+    img.src = `assets/images/personajes/explorador-${estado}.png`;
+  });
 }
