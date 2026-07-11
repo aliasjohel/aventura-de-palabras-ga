@@ -73,6 +73,17 @@ const duracionFadeEscenarioEntrada = 350;
 const prefiereReducirMovimiento = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 );
+const clasesAnimacionExplorador = [
+  "celebrando",
+  "reaccion-acierto",
+  "reaccion-error",
+  "reaccion-derrota",
+];
+const clasesEstadoExplorador = [
+  "expresion-acierto",
+  "expresion-desanimado",
+];
+const duracionReaccionExplorador = 900;
 
 document.addEventListener("touchstart", desbloquearAudio, { once: true });
 document.addEventListener("click", desbloquearAudio, { once: true });
@@ -177,13 +188,14 @@ let desafiosCompletados = 0;
 let sonidoNarrativoPendiente = "";
 let historiaMisionPendiente = false;
 let transicionEscenaActiva = false;
+let temporizadorReaccionExplorador = null;
 const desafiosPorMision = 3;
 
 // ====================
 // Eventos
 // ====================
 btnPista.addEventListener("click", () => {
-  cambiarPersonaje("pensando");
+  mostrarReaccionExplorador("pensando");
 
   textoPista.textContent = `💡 ${pistaActual}`;
 
@@ -331,11 +343,10 @@ function elegirLetra(letra, boton) {
   if (palabraSecreta.includes(letra)) {
     boton.classList.add("correcta");
     personaje.textContent = "😁";
-    cambiarPersonaje("feliz");
+    mostrarReaccionExplorador("acierto", "reaccion-acierto");
     mensajePersonaje.textContent = "¡Bien! Esa letra está.";
 
     if (!palabraCompleta()) {
-      animarPersonajeTemporal("reaccion-acierto");
       reproducirSonido("acertar");
     }
   } else {
@@ -349,7 +360,7 @@ function elegirLetra(letra, boton) {
     actualizarVidas();
 
     personaje.textContent = intentos <= 2 ? "😨" : "😕";
-    animarPersonajeTemporal("reaccion-error");
+    mostrarReaccionExplorador("desanimado", "reaccion-error");
     mensajePersonaje.textContent = "Uy... esa letra no está.";
   }
 
@@ -362,6 +373,7 @@ function verificarEstado() {
 
   if (gano) {
     personaje.textContent = "🥳";
+    cancelarRetornoEstadoBaseExplorador();
     cambiarPersonaje("celebrando");
     mensajePersonaje.textContent = "🌟 ¡Desafío superado!";
     monedas += 10;
@@ -377,6 +389,7 @@ function verificarEstado() {
 
   if (intentos === 0) {
     personaje.textContent = "😵";
+    cancelarRetornoEstadoBaseExplorador();
     cambiarPersonaje("triste");
     animarPersonajeTemporal("reaccion-derrota");
     mensajePersonaje.textContent = "No lo lograste. ¡Intentá otra vez!";
@@ -690,13 +703,7 @@ function reproducirSiguienteSonido() {
 }
 
 function animarPersonajeTemporal(claseAnimacion) {
-  const clasesAnimacion = [
-    "reaccion-acierto",
-    "reaccion-error",
-    "reaccion-derrota",
-  ];
-
-  personajeImagen.classList.remove(...clasesAnimacion);
+  personajeImagen.classList.remove(...clasesAnimacionExplorador);
   void personajeImagen.offsetWidth;
   personajeImagen.classList.add(claseAnimacion);
 
@@ -707,6 +714,41 @@ function animarPersonajeTemporal(claseAnimacion) {
     },
     { once: true },
   );
+}
+
+function obtenerEstadoBaseExplorador() {
+  if (misionActual <= 1) return "feliz";
+
+  if (misionActual <= 3) return "nervioso";
+
+  if (misionActual <= 5) return "preocupado";
+
+  return "triste";
+}
+
+function volverEstadoBaseExplorador() {
+  cambiarPersonaje(obtenerEstadoBaseExplorador());
+}
+
+function cancelarRetornoEstadoBaseExplorador() {
+  if (!temporizadorReaccionExplorador) return;
+
+  clearTimeout(temporizadorReaccionExplorador);
+  temporizadorReaccionExplorador = null;
+}
+
+function mostrarReaccionExplorador(estado, claseAnimacion = "") {
+  cancelarRetornoEstadoBaseExplorador();
+  cambiarPersonaje(estado);
+
+  if (claseAnimacion) {
+    animarPersonajeTemporal(claseAnimacion);
+  }
+
+  temporizadorReaccionExplorador = setTimeout(() => {
+    volverEstadoBaseExplorador();
+    temporizadorReaccionExplorador = null;
+  }, duracionReaccionExplorador);
 }
 
 function esSonidoEventoBosque(nombre) {
@@ -744,10 +786,10 @@ function iniciarMisionAventura() {
 
   letrasElegidas = [];
   intentos = 6;
+  cancelarRetornoEstadoBaseExplorador();
 
   actualizarVidas();
   personaje.textContent = "😄";
-  cambiarPersonaje("feliz");
   actualizarEscenaPorMision();
   mensajePersonaje.textContent = "¡Comienza la expedición!";
   teclado.innerHTML = "";
@@ -898,7 +940,9 @@ precargarSonidos();
 function cambiarPersonaje(estado) {
   personajeImagen.src = `assets/images/personajes/explorador-${estado}.png`;
 
-  personajeImagen.classList.remove("celebrando");
+  personajeImagen.classList.remove(...clasesAnimacionExplorador);
+  personajeImagen.classList.remove(...clasesEstadoExplorador);
+  personajeImagen.classList.add(`expresion-${estado}`);
 
   if (estado === "celebrando") {
     personajeImagen.classList.add("celebrando");
@@ -911,32 +955,26 @@ function actualizarEscenaPorMision() {
       {
         fondo: "bosque-0.png",
         texto: "🌲 El camino del bosque está tranquilo...",
-        expresion: "feliz",
       },
       {
         fondo: "bosque-2.png",
         texto: "🪨 Una piedra cayó en el sendero.",
-        expresion: "feliz",
       },
       {
         fondo: "bosque-3.png",
         texto: "🌿 Unas ramas bloquean el camino.",
-        expresion: "nervioso",
       },
       {
         fondo: "bosque-4.png",
         texto: "🌧️ Comienza a llover en el bosque.",
-        expresion: "nervioso",
       },
       {
         fondo: "bosque-5.png",
         texto: "🌫️ La niebla cubre el sendero.",
-        expresion: "preocupado",
       },
       {
         fondo: "bosque-6.png",
         texto: "🐺 Se escuchan lobos a lo lejos...",
-        expresion: "preocupado",
       },
     ],
   ];
@@ -948,10 +986,7 @@ function actualizarEscenaPorMision() {
 
   fondoEscenario.src = `assets/images/fondos/${escena.fondo}`;
   escenaAventura.textContent = escena.texto;
-
-  if (escena.expresion) {
-    cambiarPersonaje(escena.expresion);
-  }
+  volverEstadoBaseExplorador();
 }
 
 function precargarImagenesBosque() {
