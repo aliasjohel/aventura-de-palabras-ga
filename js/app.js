@@ -24,6 +24,12 @@ const btnNuevaAventura = document.getElementById("btnNuevaAventura");
 const escenaAventura = document.getElementById("escenaAventura");
 const personajeImagen = document.getElementById("personajeImagen");
 const fondoEscenario = document.getElementById("fondoEscenario");
+const contenedorEscenario = document.querySelector(".escenario");
+const modalHistoria = document.getElementById("modalHistoria");
+const numeroCapitulo = document.getElementById("numeroCapitulo");
+const tituloCapitulo = document.getElementById("tituloCapitulo");
+const textoCapitulo = document.getElementById("textoCapitulo");
+const btnContinuarHistoria = document.getElementById("btnContinuarHistoria");
 
 // ====================
 // Sonidos
@@ -60,6 +66,13 @@ const sonidosNarrativosPorMision = {
   4: "niebla",
   5: "lobos",
 };
+
+const duracionTransicionHistoria = 300;
+const duracionFadeEscenarioSalida = 250;
+const duracionFadeEscenarioEntrada = 350;
+const prefiereReducirMovimiento = window.matchMedia(
+  "(prefers-reduced-motion: reduce)",
+);
 
 document.addEventListener("touchstart", desbloquearAudio, { once: true });
 document.addEventListener("click", desbloquearAudio, { once: true });
@@ -113,6 +126,43 @@ const aventura = [
   },
 ];
 
+const historiaBosque = [
+  {
+    capitulo: "Misión 1",
+    titulo: "El Bosque Encantado",
+    texto: "El explorador entra al bosque dispuesto a comenzar su aventura.",
+  },
+  {
+    capitulo: "Misión 2",
+    titulo: "El Sendero Bloqueado",
+    texto:
+      "Un enorme estruendo rompe el silencio. Una gran piedra cae y bloquea el sendero.",
+  },
+  {
+    capitulo: "Misión 3",
+    titulo: "Entre las Ramas",
+    texto:
+      "Grandes ramas caídas dificultan el paso y obligan al explorador a avanzar con cuidado.",
+  },
+  {
+    capitulo: "Misión 4",
+    titulo: "La Tormenta",
+    texto:
+      "La lluvia comienza a caer y el camino se vuelve cada vez más resbaladizo.",
+  },
+  {
+    capitulo: "Misión 5",
+    titulo: "La Niebla",
+    texto: "Una niebla espesa cubre el bosque y apenas permite ver el sendero.",
+  },
+  {
+    capitulo: "Misión 6",
+    titulo: "El Aullido",
+    texto:
+      "A lo lejos se escuchan lobos. El explorador deberá seguir adelante con valentía.",
+  },
+];
+
 let palabraSecreta = "";
 let pistaActual = "";
 let letrasElegidas = [];
@@ -125,6 +175,8 @@ let experiencia = 0;
 let desafioActual = 1;
 let desafiosCompletados = 0;
 let sonidoNarrativoPendiente = "";
+let historiaMisionPendiente = false;
+let transicionEscenaActiva = false;
 const desafiosPorMision = 3;
 
 // ====================
@@ -143,11 +195,45 @@ btnPista.addEventListener("click", () => {
 btnSiguiente.addEventListener("click", () => {
   btnSiguiente.classList.add("oculto");
 
-  iniciarMisionAventura();
+  if (historiaMisionPendiente) {
+    mostrarHistoriaMision();
+    return;
+  }
 
-  if (sonidoNarrativoPendiente) {
-    reproducirSonido(sonidoNarrativoPendiente);
-    sonidoNarrativoPendiente = "";
+  iniciarMisionAventura();
+});
+
+btnContinuarHistoria.addEventListener("click", async () => {
+  if (btnContinuarHistoria.disabled || transicionEscenaActiva) return;
+
+  btnContinuarHistoria.disabled = true;
+  transicionEscenaActiva = true;
+  modalHistoria.classList.remove("abriendo");
+  modalHistoria.classList.add("cerrando");
+
+  try {
+    await esperarTransicionHistoria();
+
+    modalHistoria.classList.add("oculto");
+    modalHistoria.classList.remove("cerrando");
+
+    await cambiarEscenarioConTransicion();
+
+    historiaMisionPendiente = false;
+
+    if (sonidoNarrativoPendiente) {
+      reproducirSonido(sonidoNarrativoPendiente);
+      sonidoNarrativoPendiente = "";
+    }
+
+    await esperarFadeEscenarioEntrada();
+  } finally {
+    contenedorEscenario.classList.remove(
+      "cambiando-escena",
+      "apareciendo-escena",
+    );
+    btnContinuarHistoria.disabled = false;
+    transicionEscenaActiva = false;
   }
 });
 
@@ -161,6 +247,8 @@ btnSalirJuego.addEventListener("click", () => {
 
 btnReintentar.addEventListener("click", () => {
   btnReintentar.classList.add("oculto");
+  sonidoNarrativoPendiente = "";
+  historiaMisionPendiente = false;
 
   iniciarMisionAventura();
 });
@@ -178,11 +266,14 @@ btnNuevaAventura.addEventListener("click", () => {
   misionActual = 0;
   desafioActual = 1;
   desafiosCompletados = 0;
+  historiaMisionPendiente = false;
 
   monedas = 0;
   experiencia = 0;
 
   palabrasUsadasEnMision = [];
+  sonidoNarrativoPendiente = "";
+  historiaMisionPendiente = false;
 
   actualizarJugador();
   actualizarMenuPrincipal();
@@ -305,6 +396,91 @@ function mostrarPantalla(pantallaSeleccionada) {
   });
 
   pantallaSeleccionada.classList.add("activa");
+}
+
+function mostrarHistoriaMision() {
+  const historia = obtenerHistoriaMision();
+
+  numeroCapitulo.textContent = historia.capitulo;
+  tituloCapitulo.textContent = historia.titulo;
+  textoCapitulo.textContent = historia.texto;
+  btnContinuarHistoria.disabled = false;
+  modalHistoria.classList.remove("cerrando");
+  modalHistoria.classList.remove("oculto");
+  modalHistoria.classList.add("abriendo");
+}
+
+function obtenerHistoriaMision() {
+  if (escenarioActual === 0) {
+    return (
+      historiaBosque[misionActual] || {
+        capitulo: `Misión ${misionActual + 1}`,
+        titulo: "Más Profundo en el Bosque",
+        texto:
+          "El explorador continúa su camino mientras el bosque guarda nuevos secretos.",
+      }
+    );
+  }
+
+  return {
+    capitulo: `Misión ${misionActual + 1}`,
+    titulo: aventura[escenarioActual].nombre,
+    texto: "Una nueva región se abre ante el explorador.",
+  };
+}
+
+function esperarTransicionHistoria() {
+  const duracion = prefiereReducirMovimiento.matches
+    ? 0
+    : duracionTransicionHistoria;
+
+  return new Promise((resolve) => {
+    setTimeout(resolve, duracion);
+  });
+}
+
+async function cambiarEscenarioConTransicion() {
+  contenedorEscenario.classList.add("cambiando-escena");
+  await esperarFadeEscenarioSalida();
+
+  iniciarMisionAventura();
+  await esperarCargaFondoEscenario();
+
+  contenedorEscenario.classList.add("apareciendo-escena");
+  contenedorEscenario.classList.remove("cambiando-escena");
+}
+
+function esperarFadeEscenarioSalida() {
+  return esperarMovimiento(duracionFadeEscenarioSalida);
+}
+
+function esperarFadeEscenarioEntrada() {
+  return esperarMovimiento(duracionFadeEscenarioEntrada);
+}
+
+function esperarMovimiento(duracion) {
+  const duracionFinal = prefiereReducirMovimiento.matches ? 0 : duracion;
+
+  return new Promise((resolve) => {
+    setTimeout(resolve, duracionFinal);
+  });
+}
+
+function esperarCargaFondoEscenario() {
+  if (fondoEscenario.complete && fondoEscenario.naturalWidth > 0) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => {
+    const finalizar = () => {
+      fondoEscenario.removeEventListener("load", finalizar);
+      fondoEscenario.removeEventListener("error", finalizar);
+      resolve();
+    };
+
+    fondoEscenario.addEventListener("load", finalizar, { once: true });
+    fondoEscenario.addEventListener("error", finalizar, { once: true });
+  });
 }
 
 function bloquearTeclado() {
@@ -589,11 +765,13 @@ function avanzarMision() {
   desafiosCompletados++;
 
   if (desafiosCompletados < desafiosPorMision) {
+    historiaMisionPendiente = false;
     return "";
   }
 
   desafiosCompletados = 0;
   palabrasUsadasEnMision = [];
+  historiaMisionPendiente = true;
 
   misionActual++;
   mensajePersonaje.textContent = "🏆 ¡Misión completada!";
