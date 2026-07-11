@@ -84,6 +84,7 @@ const clasesEstadoExplorador = [
   "expresion-desanimado",
 ];
 const duracionReaccionExplorador = 900;
+const imagenesExploradorPrecargadas = new Map();
 
 document.addEventListener("touchstart", desbloquearAudio, { once: true });
 document.addEventListener("click", desbloquearAudio, { once: true });
@@ -189,6 +190,7 @@ let sonidoNarrativoPendiente = "";
 let historiaMisionPendiente = false;
 let transicionEscenaActiva = false;
 let temporizadorReaccionExplorador = null;
+let secuenciaReaccionExplorador = 0;
 const desafiosPorMision = 3;
 
 // ====================
@@ -731,14 +733,22 @@ function volverEstadoBaseExplorador() {
 }
 
 function cancelarRetornoEstadoBaseExplorador() {
+  secuenciaReaccionExplorador++;
+
   if (!temporizadorReaccionExplorador) return;
 
   clearTimeout(temporizadorReaccionExplorador);
   temporizadorReaccionExplorador = null;
 }
 
-function mostrarReaccionExplorador(estado, claseAnimacion = "") {
+async function mostrarReaccionExplorador(estado, claseAnimacion = "") {
   cancelarRetornoEstadoBaseExplorador();
+  const secuenciaActual = secuenciaReaccionExplorador;
+
+  await cargarImagenExplorador(estado);
+
+  if (secuenciaActual !== secuenciaReaccionExplorador) return;
+
   cambiarPersonaje(estado);
 
   if (claseAnimacion) {
@@ -939,7 +949,7 @@ precargarImagenesExplorador();
 precargarSonidos();
 
 function cambiarPersonaje(estado) {
-  personajeImagen.src = `assets/images/personajes/explorador-${estado}.png`;
+  personajeImagen.src = obtenerSrcExplorador(estado);
 
   personajeImagen.classList.remove(...clasesAnimacionExplorador);
   personajeImagen.classList.remove(...clasesEstadoExplorador);
@@ -990,6 +1000,34 @@ function actualizarEscenaPorMision() {
   volverEstadoBaseExplorador();
 }
 
+function obtenerSrcExplorador(estado) {
+  return `assets/images/personajes/explorador-${estado}.png`;
+}
+
+function cargarImagenExplorador(estado) {
+  if (imagenesExploradorPrecargadas.has(estado)) {
+    return imagenesExploradorPrecargadas.get(estado);
+  }
+
+  const img = new Image();
+  const promesaCarga = new Promise((resolve) => {
+    img.onload = () => {
+      if (!img.decode) {
+        resolve();
+        return;
+      }
+
+      img.decode().then(resolve).catch(resolve);
+    };
+    img.onerror = resolve;
+  });
+
+  img.src = obtenerSrcExplorador(estado);
+  imagenesExploradorPrecargadas.set(estado, promesaCarga);
+
+  return promesaCarga;
+}
+
 function precargarImagenesBosque() {
   for (let i = 0; i <= 6; i++) {
     const img = new Image();
@@ -1008,7 +1046,6 @@ function precargarImagenesExplorador() {
     "preocupado",
     "triste",
   ].forEach((estado) => {
-    const img = new Image();
-    img.src = `assets/images/personajes/explorador-${estado}.png`;
+    cargarImagenExplorador(estado);
   });
 }
