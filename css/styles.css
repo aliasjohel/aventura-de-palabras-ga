@@ -626,7 +626,8 @@ button:disabled {
     }
 
     .btn-pista {
-        margin-bottom: -14px;
+        margin-top: 6px;
+        margin-bottom: 16px;
     }
 
     .texto-pista {
