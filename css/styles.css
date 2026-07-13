@@ -160,6 +160,11 @@ button:disabled {
     transition-duration: 350ms;
 }
 
+.escenario.temblor {
+    animation: temblorEscenario 450ms ease-out;
+    will-change: transform;
+}
+
 .fondo-escenario {
     /* Imagen del mundo actual */
     width: 100%;
@@ -638,6 +643,37 @@ button:disabled {
     }
 }
 
+@keyframes temblorEscenario {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    15% {
+        transform: translate3d(-3px, 1px, 0);
+    }
+
+    30% {
+        transform: translate3d(4px, -2px, 0);
+    }
+
+    45% {
+        transform: translate3d(-4px, 1px, 0);
+    }
+
+    60% {
+        transform: translate3d(3px, 0, 0);
+    }
+
+    75% {
+        transform: translate3d(-2px, -1px, 0);
+    }
+
+    90% {
+        transform: translate3d(1px, 0, 0);
+    }
+}
+
 @keyframes respirar {
     0%,
     100% {
@@ -878,6 +914,10 @@ button:disabled {
     }
 
     .personaje-imagen.caminando {
+        animation: none;
+    }
+
+    .escenario.temblor {
         animation: none;
     }
 }

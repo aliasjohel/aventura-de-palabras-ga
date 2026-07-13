@@ -145,36 +145,62 @@ const historiaBosque = [
   {
     capitulo: "Misión 1",
     titulo: "El Bosque Encantado",
-    texto: "El explorador entra al bosque dispuesto a comenzar su aventura.",
+    texto:
+      "El joven explorador entra al Bosque Encantado siguiendo un antiguo mapa. La leyenda dice que en lo más profundo del bosque se encuentra el Primer Cristal de la Sabiduría. El sendero parece tranquilo, pero la aventura recién comienza.",
   },
   {
     capitulo: "Misión 2",
-    titulo: "El Sendero Bloqueado",
+    titulo: "La Piedra del Sendero",
     texto:
-      "Un enorme estruendo rompe el silencio. Una gran piedra cae y bloquea el sendero.",
+      "Un fuerte estruendo rompe el silencio. Una enorme roca cae delante del explorador y bloquea el camino. Tendrá que encontrar una nueva forma de continuar su viaje.",
   },
   {
     capitulo: "Misión 3",
     titulo: "Entre las Ramas",
     texto:
-      "Grandes ramas caídas dificultan el paso y obligan al explorador a avanzar con cuidado.",
+      "Mientras rodea la roca, descubre que el sendero está cubierto por grandes ramas caídas. Avanza lentamente, apartando cada obstáculo para seguir adelante.",
   },
   {
     capitulo: "Misión 4",
     titulo: "La Tormenta",
     texto:
-      "La lluvia comienza a caer y el camino se vuelve cada vez más resbaladizo.",
+      "El cielo se oscurece y una intensa lluvia comienza a caer. El bosque cambia por completo y cada paso se vuelve más difícil.",
   },
   {
     capitulo: "Misión 5",
-    titulo: "La Niebla",
-    texto: "Una niebla espesa cubre el bosque y apenas permite ver el sendero.",
+    titulo: "La Niebla Misteriosa",
+    texto:
+      "Una espesa niebla cubre el bosque. Apenas puede distinguir el camino y cualquier sombra parece esconder un peligro.",
   },
   {
     capitulo: "Misión 6",
-    titulo: "El Aullido",
+    titulo: "Los Aullidos",
     texto:
-      "A lo lejos se escuchan lobos. El explorador deberá seguir adelante con valentía.",
+      "Desde la oscuridad se escuchan los aullidos de varios lobos. Aunque el miedo comienza a aparecer, el explorador decide continuar.",
+  },
+  {
+    capitulo: "Misión 7",
+    titulo: "El Bosque Prohibido",
+    texto:
+      "Los árboles son gigantes y el bosque permanece en un silencio absoluto. El explorador siente que está muy cerca de descubrir un antiguo secreto.",
+  },
+  {
+    capitulo: "Misión 8",
+    titulo: "El Puente Olvidado",
+    texto:
+      "Después de mucho caminar encuentra un viejo puente de madera que cruje con cada paso. Del otro lado parece haber una extraña luz azul.",
+  },
+  {
+    capitulo: "Misión 9",
+    titulo: "El Santuario del Cristal",
+    texto:
+      "Al cruzar el puente descubre un antiguo santuario cubierto por raíces. En su centro brilla el Primer Cristal de la Sabiduría protegido por una misteriosa energía.",
+  },
+  {
+    capitulo: "Misión 10",
+    titulo: "El Portal de los Mundos",
+    texto:
+      "El explorador toma el Primer Cristal. El bosque recupera su luz y un antiguo portal vuelve a abrirse. El siguiente destino será el Desierto Perdido, donde lo espera un nuevo desafío.",
   },
 ];
 
@@ -257,6 +283,10 @@ btnContinuarHistoria.addEventListener("click", async () => {
     historiaMisionPendiente = false;
 
     if (sonidoNarrativoPendiente) {
+      if (sonidoNarrativoPendiente === "piedra") {
+        animarImpactoPiedra();
+      }
+
       reproducirSonido(sonidoNarrativoPendiente);
       sonidoNarrativoPendiente = "";
     }
@@ -788,6 +818,29 @@ function animarPersonajeTemporal(claseAnimacion) {
     },
     { once: true },
   );
+}
+
+function animarImpactoPiedra() {
+  contenedorEscenario.classList.remove("temblor");
+
+  if (prefiereReducirMovimiento.matches) return;
+
+  void contenedorEscenario.offsetWidth;
+  contenedorEscenario.classList.add("temblor");
+
+  const finalizarTemblor = (evento) => {
+    if (
+      evento.target !== contenedorEscenario ||
+      evento.animationName !== "temblorEscenario"
+    ) {
+      return;
+    }
+
+    contenedorEscenario.classList.remove("temblor");
+    contenedorEscenario.removeEventListener("animationend", finalizarTemblor);
+  };
+
+  contenedorEscenario.addEventListener("animationend", finalizarTemblor);
 }
 
 function obtenerEstadoBaseExplorador() {
