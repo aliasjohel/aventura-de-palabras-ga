@@ -30,6 +30,8 @@ const numeroCapitulo = document.getElementById("numeroCapitulo");
 const tituloCapitulo = document.getElementById("tituloCapitulo");
 const textoCapitulo = document.getElementById("textoCapitulo");
 const btnContinuarHistoria = document.getElementById("btnContinuarHistoria");
+const modalPrologo = document.getElementById("modalPrologo");
+const btnComenzarPrologo = document.getElementById("btnComenzarPrologo");
 
 // ====================
 // Sonidos
@@ -185,6 +187,7 @@ let escenarioActual = 0;
 let misionActual = 0;
 let monedas = 0;
 let experiencia = 0;
+let cristalesObtenidos = 0;
 let desafioActual = 1;
 let desafiosCompletados = 0;
 let sonidoNarrativoPendiente = "";
@@ -192,6 +195,7 @@ let historiaMisionPendiente = false;
 let transicionEscenaActiva = false;
 let temporizadorReaccionExplorador = null;
 let secuenciaReaccionExplorador = 0;
+let transicionPrologoActiva = false;
 const desafiosPorMision = 3;
 
 // ====================
@@ -270,7 +274,36 @@ btnContinuarHistoria.addEventListener("click", async () => {
 });
 
 btnJugar.addEventListener("click", () => {
+  if (!localStorage.getItem("progresoAventuraGA")) {
+    reiniciarEstadoAventura();
+    mostrarPrologo();
+    return;
+  }
+
   iniciarMisionAventura();
+});
+
+btnComenzarPrologo.addEventListener("click", async () => {
+  if (btnComenzarPrologo.disabled || transicionPrologoActiva) return;
+
+  btnComenzarPrologo.disabled = true;
+  transicionPrologoActiva = true;
+  modalPrologo.classList.remove("abriendo");
+  modalPrologo.classList.add("cerrando");
+
+  try {
+    await esperarTransicionHistoria();
+
+    modalPrologo.classList.add("oculto");
+    modalPrologo.classList.remove("cerrando");
+
+    iniciarMisionAventura();
+    guardarProgreso();
+  } finally {
+    modalPrologo.classList.remove("abriendo", "cerrando");
+    btnComenzarPrologo.disabled = false;
+    transicionPrologoActiva = false;
+  }
 });
 
 btnSalirJuego.addEventListener("click", () => {
@@ -293,24 +326,8 @@ btnNuevaAventura.addEventListener("click", () => {
   if (!confirmar) return;
 
   localStorage.removeItem("progresoAventuraGA");
-
-  escenarioActual = 0;
-  misionActual = 0;
-  desafioActual = 1;
-  desafiosCompletados = 0;
-  historiaMisionPendiente = false;
-
-  monedas = 0;
-  experiencia = 0;
-
-  palabrasUsadasEnMision = [];
-  sonidoNarrativoPendiente = "";
-  historiaMisionPendiente = false;
-
-  actualizarJugador();
-  actualizarMenuPrincipal();
-
-  iniciarMisionAventura();
+  reiniciarEstadoAventura();
+  mostrarPrologo();
 });
 
 // ====================
@@ -441,6 +458,42 @@ function mostrarHistoriaMision() {
   modalHistoria.classList.remove("cerrando");
   modalHistoria.classList.remove("oculto");
   modalHistoria.classList.add("abriendo");
+}
+
+function mostrarPrologo() {
+  btnComenzarPrologo.disabled = false;
+  modalPrologo.classList.remove("cerrando", "oculto");
+  modalPrologo.classList.add("abriendo");
+}
+
+function reiniciarEstadoAventura() {
+  detenerSonidos();
+  cancelarRetornoEstadoBaseExplorador();
+
+  palabraSecreta = "";
+  pistaActual = "";
+  letrasElegidas = [];
+  palabrasUsadasEnMision = [];
+  intentos = 6;
+  escenarioActual = 0;
+  misionActual = 0;
+  monedas = 0;
+  experiencia = 0;
+  cristalesObtenidos = 0;
+  desafioActual = 1;
+  desafiosCompletados = 0;
+  sonidoNarrativoPendiente = "";
+  historiaMisionPendiente = false;
+  transicionEscenaActiva = false;
+
+  contenedorEscenario.classList.remove(
+    "cambiando-escena",
+    "apareciendo-escena",
+  );
+  personajeImagen.classList.remove("caminando", "oculto-transicion");
+
+  actualizarJugador();
+  actualizarMenuPrincipal();
 }
 
 function obtenerHistoriaMision() {
@@ -882,6 +935,7 @@ function guardarProgreso() {
     desafiosCompletados,
     monedas,
     experiencia,
+    cristalesObtenidos,
   };
 
   localStorage.setItem("progresoAventuraGA", JSON.stringify(progreso));
@@ -921,6 +975,10 @@ function cargarProgreso() {
   desafioActual = desafiosCompletados + 1;
   monedas = progreso.monedas ?? 0;
   experiencia = progreso.experiencia ?? 0;
+  cristalesObtenidos = Math.min(
+    Math.max(progreso.cristalesObtenidos ?? 0, 0),
+    5,
+  );
 
   actualizarJugador();
   actualizarMenuPrincipal();

@@ -427,6 +427,104 @@ button:disabled {
     transform: none;
 }
 
+/* Prologo principal: independiente de la historia entre misiones */
+.modal-prologo {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(12px, 4vw, 28px);
+    background: rgba(3, 7, 12, 0.86);
+    backdrop-filter: blur(8px);
+    overscroll-behavior: contain;
+}
+
+.modal-prologo.abriendo {
+    animation: aparecerFondoPrologo 420ms ease forwards;
+}
+
+.modal-prologo.cerrando {
+    animation: cerrarFondoPrologo 300ms ease forwards;
+}
+
+.tarjeta-prologo {
+    width: min(94vw, 680px);
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+    padding: clamp(22px, 5vw, 44px);
+    border: 2px solid rgba(247, 201, 72, 0.8);
+    border-radius: 20px;
+    background:
+        radial-gradient(circle at top, rgba(39, 174, 96, 0.22), transparent 42%),
+        linear-gradient(180deg, rgba(24, 42, 36, 0.98), rgba(10, 20, 18, 0.99));
+    color: #f4f7ef;
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.72);
+    scrollbar-width: thin;
+}
+
+.modal-prologo.abriendo .tarjeta-prologo {
+    animation: aparecerTarjetaPrologo 420ms ease forwards;
+}
+
+.modal-prologo.cerrando .tarjeta-prologo {
+    animation: cerrarTarjetaPrologo 300ms ease forwards;
+}
+
+.leyenda-prologo {
+    margin-bottom: 8px;
+    color: #f7c948;
+    text-align: center;
+    font-size: clamp(0.8rem, 3vw, 0.95rem);
+    font-weight: bold;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.tarjeta-prologo h2 {
+    margin-bottom: clamp(18px, 4vw, 28px);
+    color: #f7c948;
+    text-align: center;
+    font-size: clamp(1.45rem, 5.5vw, 2.35rem);
+    line-height: 1.15;
+}
+
+.texto-prologo {
+    display: grid;
+    gap: clamp(12px, 3vw, 18px);
+}
+
+.texto-prologo p {
+    font-size: clamp(0.98rem, 3.5vw, 1.12rem);
+    line-height: 1.55;
+}
+
+.texto-prologo .mision-prologo {
+    color: #bdf5cd;
+    text-align: center;
+    font-weight: bold;
+}
+
+#btnComenzarPrologo {
+    width: 100%;
+    margin-top: clamp(20px, 5vw, 30px);
+    background: linear-gradient(180deg, #2ecc71, #1f8f4f);
+    color: white;
+    box-shadow: 0 6px 0 #145c32;
+}
+
+#btnComenzarPrologo:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #145c32;
+}
+
+#btnComenzarPrologo:disabled {
+    opacity: 0.72;
+    cursor: wait;
+    transform: none;
+}
+
 /* Animaciones: aparicion de letras y estados del personaje */
 @keyframes aparecerFondoHistoria {
     0% {
@@ -471,6 +569,54 @@ button:disabled {
     }
 
     100% {
+        opacity: 0;
+        transform: scale(0.97);
+    }
+}
+
+@keyframes aparecerFondoPrologo {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0);
+    }
+
+    to {
+        opacity: 1;
+        backdrop-filter: blur(8px);
+    }
+}
+
+@keyframes cerrarFondoPrologo {
+    from {
+        opacity: 1;
+        backdrop-filter: blur(8px);
+    }
+
+    to {
+        opacity: 0;
+        backdrop-filter: blur(0);
+    }
+}
+
+@keyframes aparecerTarjetaPrologo {
+    from {
+        opacity: 0;
+        transform: scale(0.94);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes cerrarTarjetaPrologo {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
         opacity: 0;
         transform: scale(0.97);
     }
@@ -698,6 +844,18 @@ button:disabled {
         border-radius: 8px;
         font-size: .75rem;
     }
+
+    .modal-prologo {
+        align-items: flex-start;
+        padding: 8px;
+    }
+
+    .tarjeta-prologo {
+        width: 100%;
+        max-height: calc(100dvh - 16px);
+        padding: 20px 18px;
+        border-radius: 16px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -709,6 +867,13 @@ button:disabled {
     .modal-historia.cerrando,
     .modal-historia.abriendo .tarjeta-historia,
     .modal-historia.cerrando .tarjeta-historia {
+        animation-duration: 1ms;
+    }
+
+    .modal-prologo.abriendo,
+    .modal-prologo.cerrando,
+    .modal-prologo.abriendo .tarjeta-prologo,
+    .modal-prologo.cerrando .tarjeta-prologo {
         animation-duration: 1ms;
     }
 
