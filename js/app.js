@@ -68,6 +68,7 @@ const sonidosNarrativosPorMision = {
 };
 
 const duracionTransicionHistoria = 300;
+const duracionCaminataExplorador = 1200;
 const duracionFadeEscenarioSalida = 250;
 const duracionFadeEscenarioEntrada = 350;
 const prefiereReducirMovimiento = window.matchMedia(
@@ -231,7 +232,23 @@ btnContinuarHistoria.addEventListener("click", async () => {
     modalHistoria.classList.add("oculto");
     modalHistoria.classList.remove("cerrando");
 
+    console.log("[transicion] Empieza la caminata");
+    personajeImagen.classList.remove("caminando");
+    void personajeImagen.offsetWidth;
+    personajeImagen.classList.add("caminando");
+    console.log("[transicion] Clase caminando agregada", {
+      aplicada: personajeImagen.classList.contains("caminando"),
+      clases: personajeImagen.className,
+    });
+    await esperarMovimiento(duracionCaminataExplorador);
+
+    personajeImagen.classList.remove("caminando");
+    console.log("[transicion] Termina la caminata");
+    personajeImagen.classList.add("oculto-transicion");
+
     await cambiarEscenarioConTransicion();
+
+    personajeImagen.classList.remove("oculto-transicion");
 
     historiaMisionPendiente = false;
 
@@ -246,6 +263,7 @@ btnContinuarHistoria.addEventListener("click", async () => {
       "cambiando-escena",
       "apareciendo-escena",
     );
+    personajeImagen.classList.remove("caminando", "oculto-transicion");
     btnContinuarHistoria.disabled = false;
     transicionEscenaActiva = false;
   }
@@ -458,6 +476,7 @@ async function cambiarEscenarioConTransicion() {
   contenedorEscenario.classList.add("cambiando-escena");
   await esperarFadeEscenarioSalida();
 
+  console.log("[transicion] Se cambia el fondo");
   iniciarMisionAventura();
   await esperarCargaFondoEscenario();
 

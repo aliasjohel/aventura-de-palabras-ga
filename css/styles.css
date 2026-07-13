@@ -186,9 +186,11 @@ button:disabled {
 /* Personaje: sprite y dialogo */
 .personaje-imagen {
     /* Explorador superpuesto sobre el fondo */
+    --posicion-inicial-explorador: 8%;
+    --posicion-final-explorador: calc(100% - clamp(170px, 22vw, 260px) - 4%);
     position: absolute;
     bottom: -5px;
-    left: 8%;
+    left: var(--posicion-inicial-explorador);
     width: clamp(170px, 22vw, 260px);
     height: clamp(113px, 14.67vw, 173px);
     max-width: none;
@@ -197,6 +199,10 @@ button:disabled {
     transform-origin: center bottom;
     transition: filter 0.35s ease;
     animation: respirar 2.4s ease-in-out infinite;
+}
+
+.personaje-imagen.oculto-transicion {
+    opacity: 0;
 }
 
 .personaje-imagen.expresion-acierto,
@@ -220,6 +226,12 @@ button:disabled {
 
 .personaje-imagen.reaccion-derrota {
     animation: bajonSuave 0.65s ease-in-out;
+}
+
+/* Debe ir después de los estados para reemplazar respirar o celebrar. */
+.personaje-imagen.caminando {
+    animation: caminarExplorador 1.2s linear forwards;
+    will-change: left, transform;
 }
 
 .mensaje-personaje {
@@ -491,6 +503,25 @@ button:disabled {
     }
 }
 
+@keyframes caminarExplorador {
+    0% {
+        left: var(--posicion-inicial-explorador);
+        transform: translateY(0);
+    }
+
+    12.5%, 37.5%, 62.5%, 87.5% {
+        transform: translateY(-7px);
+    }
+
+    25%, 50%, 75%, 100% {
+        transform: translateY(0);
+    }
+
+    100% {
+        left: var(--posicion-final-explorador);
+    }
+}
+
 @keyframes celebrar {
     0%,
     100% {
@@ -597,9 +628,11 @@ button:disabled {
     }
 
     .personaje-imagen {
+        --posicion-inicial-explorador: 20%;
+        --posicion-final-explorador: calc(100% - 130px - 5%);
         width: 130px;
         height: 87px;
-        left: 20%;
+        left: var(--posicion-inicial-explorador);
         bottom: 8%;
     }
 
@@ -677,5 +710,9 @@ button:disabled {
     .modal-historia.abriendo .tarjeta-historia,
     .modal-historia.cerrando .tarjeta-historia {
         animation-duration: 1ms;
+    }
+
+    .personaje-imagen.caminando {
+        animation: none;
     }
 }
