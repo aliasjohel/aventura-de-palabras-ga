@@ -850,6 +850,8 @@ function obtenerEstadoBaseExplorador() {
 
   if (misionActual <= 5) return "preocupado";
 
+  if (escenarioActual === 0 && misionActual <= 9) return "feliz";
+
   return "triste";
 }
 
@@ -1099,11 +1101,11 @@ function actualizarEscenaPorMision() {
       },
       {
         fondo: "bosque-2.png",
-        texto: "🪨 Una piedra cayó en el sendero.",
+        texto: "🪨 Una enorme roca bloquea el sendero.",
       },
       {
         fondo: "bosque-3.png",
-        texto: "🌿 Unas ramas bloquean el camino.",
+        texto: "🌿 El camino alternativo está cubierto de ramas.",
       },
       {
         fondo: "bosque-4.png",
@@ -1116,6 +1118,22 @@ function actualizarEscenaPorMision() {
       {
         fondo: "bosque-6.png",
         texto: "🐺 Se escuchan lobos a lo lejos...",
+      },
+      {
+        fondo: "bosque-7.png",
+        texto: "🌲 El explorador entra al Bosque Prohibido.",
+      },
+      {
+        fondo: "bosque-8.png",
+        texto: "🌉 Un antiguo puente cruza el río.",
+      },
+      {
+        fondo: "bosque-9.png",
+        texto: "💎 El Santuario del Cristal aparece ante él.",
+      },
+      {
+        fondo: "bosque-10.png",
+        texto: "✨ El portal hacia el siguiente mundo se abre.",
       },
     ],
   ];
@@ -1159,7 +1177,7 @@ function cargarImagenExplorador(estado) {
 }
 
 function precargarImagenesBosque() {
-  for (let i = 0; i <= 6; i++) {
+  for (let i = 0; i <= 10; i++) {
     const img = new Image();
     img.src = `assets/images/fondos/bosque-${i}.png`;
   }
