@@ -13,6 +13,8 @@ const pantallaJuego = document.getElementById("pantallaJuego");
 
 const btnJugar = document.getElementById("btnJugar");
 const btnSalirJuego = document.getElementById("btnSalirJuego");
+const btnMisionAnterior = document.getElementById("btnMisionAnterior");
+const btnMisionSiguiente = document.getElementById("btnMisionSiguiente");
 
 const categoriaActual = document.getElementById("categoriaActual");
 const vidas = document.getElementById("vidas");
@@ -219,6 +221,7 @@ let desafiosCompletados = 0;
 let sonidoNarrativoPendiente = "";
 let historiaMisionPendiente = false;
 let transicionEscenaActiva = false;
+let navegacionDevPendiente = false;
 let temporizadorReaccionExplorador = null;
 let secuenciaReaccionExplorador = 0;
 let transicionPrologoActiva = false;
@@ -300,6 +303,7 @@ btnContinuarHistoria.addEventListener("click", async () => {
     personajeImagen.classList.remove("caminando", "oculto-transicion");
     btnContinuarHistoria.disabled = false;
     transicionEscenaActiva = false;
+    navegacionDevPendiente = false;
   }
 });
 
@@ -338,6 +342,14 @@ btnComenzarPrologo.addEventListener("click", async () => {
 
 btnSalirJuego.addEventListener("click", () => {
   mostrarPantalla(pantallaMenu);
+});
+
+btnMisionAnterior.addEventListener("click", () => {
+  navegarMisionDev(-1);
+});
+
+btnMisionSiguiente.addEventListener("click", () => {
+  navegarMisionDev(1);
 });
 
 btnReintentar.addEventListener("click", () => {
@@ -490,6 +502,40 @@ function mostrarHistoriaMision() {
   modalHistoria.classList.add("abriendo");
 }
 
+function navegarMisionDev(direccion) {
+  if (transicionEscenaActiva || navegacionDevPendiente) return;
+
+  const nuevaMision = Math.min(Math.max(misionActual + direccion, 0), 9);
+
+  if (nuevaMision === misionActual) return;
+
+  detenerSonidos();
+  misionActual = nuevaMision;
+  sonidoNarrativoPendiente = sonidosNarrativosPorMision[misionActual] || "";
+  historiaMisionPendiente = true;
+  navegacionDevPendiente = true;
+  actualizarControlesDev();
+  mostrarHistoriaMision();
+}
+
+function actualizarControlesDev() {
+  btnMisionAnterior.disabled = misionActual === 0;
+  btnMisionSiguiente.disabled = misionActual === 9;
+}
+
+function actualizarVistaMisionDev() {
+  const escenario = aventura[escenarioActual];
+
+  categoriaActual.textContent = `${escenario.nombre}
+ | Misión ${misionActual + 1}
+ | Desafío ${desafioActual} de ${desafiosPorMision}`;
+
+  cancelarRetornoEstadoBaseExplorador();
+  actualizarEscenaPorMision();
+  mensajePersonaje.textContent = "¡Comienza la expedición!";
+  actualizarControlesDev();
+}
+
 function mostrarPrologo() {
   btnComenzarPrologo.disabled = false;
   modalPrologo.classList.remove("cerrando", "oculto");
@@ -515,6 +561,7 @@ function reiniciarEstadoAventura() {
   sonidoNarrativoPendiente = "";
   historiaMisionPendiente = false;
   transicionEscenaActiva = false;
+  navegacionDevPendiente = false;
 
   contenedorEscenario.classList.remove(
     "cambiando-escena",
@@ -560,7 +607,11 @@ async function cambiarEscenarioConTransicion() {
   await esperarFadeEscenarioSalida();
 
   console.log("[transicion] Se cambia el fondo");
-  iniciarMisionAventura();
+  if (navegacionDevPendiente) {
+    actualizarVistaMisionDev();
+  } else {
+    iniciarMisionAventura();
+  }
   await esperarCargaFondoEscenario();
 
   contenedorEscenario.classList.add("apareciendo-escena");
@@ -908,6 +959,7 @@ function iniciarMisionAventura() {
   detenerSonidos();
 
   desafioActual = desafiosCompletados + 1;
+  actualizarControlesDev();
 
   const escenario = aventura[escenarioActual];
 
@@ -1076,6 +1128,7 @@ function obtenerPalabraAleatoria() {
 }
 
 cargarProgreso();
+actualizarControlesDev();
 precargarImagenesBosque();
 precargarImagenesExplorador();
 precargarSonidos();

@@ -126,6 +126,26 @@ button:disabled {
     color: #333;
 }
 
+/* Panel temporal para navegar entre misiones durante el desarrollo */
+.dev-tools {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.dev-tools button {
+    padding: 10px 14px;
+    background: #34495e;
+    color: white;
+    touch-action: manipulation;
+}
+
+.dev-tools button:disabled {
+    opacity: 0.55;
+}
+
 .btn-pista {
     /* Boton destacado para pedir ayuda */
     background: linear-gradient(180deg, #f7c948, #d69e2e);
@@ -849,9 +869,20 @@ button:disabled {
     .btn-pista,
     #btnSalirJuego,
     #btnSiguiente,
-    #btnReintentar {
+    #btnReintentar,
+    .dev-tools button {
         padding: 4px 8px;
         font-size: .75rem;
+    }
+
+    .dev-tools {
+        gap: 6px;
+    }
+
+    .dev-tools button {
+        flex: 1 1 140px;
+        max-width: 190px;
+        min-height: 36px;
     }
 
     .btn-pista {
