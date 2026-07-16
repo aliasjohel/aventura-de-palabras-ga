@@ -49,11 +49,26 @@ const sonidos = {
   lluvia: new Audio("assets/sounds/lluvia.mp3"),
   niebla: new Audio("assets/sounds/niebla.mp3"),
   lobos: new Audio("assets/sounds/lobos.mp3"),
+  bosqueProhibido: new Audio("assets/sounds/bosque-prohibido.mp3"),
+  ambientePuente: new Audio("assets/sounds/ambiente-puente.mp3"),
+  crujidoPuente: new Audio("assets/sounds/crujido-puente.mp3"),
+  ambienteSantuario: new Audio("assets/sounds/ambiente-santuario.mp3"),
+  ambientePortal: new Audio("assets/sounds/ambiente-portal.mp3"),
 };
 
 let colaSonidos = [];
 let audioDesbloqueado = false;
+let ambienteActual = "";
+let temporizadorCrujidoPuente = null;
 const debugAudio = true;
+
+const ambientesPorMision = {
+  6: "bosqueProhibido",
+  7: "ambientePuente",
+  8: "ambienteSantuario",
+  9: "ambientePortal",
+};
+const nombresAmbiente = new Set(Object.values(ambientesPorMision));
 
 const sonidosEventoBosque = new Set([
   "piedra",
@@ -341,6 +356,7 @@ btnComenzarPrologo.addEventListener("click", async () => {
 });
 
 btnSalirJuego.addEventListener("click", () => {
+  detenerSonidos();
   mostrarPantalla(pantallaMenu);
 });
 
@@ -524,6 +540,9 @@ function actualizarControlesDev() {
 }
 
 function actualizarVistaMisionDev() {
+  detenerEfectos();
+  actualizarAmbienteMision();
+
   const escenario = aventura[escenarioActual];
 
   categoriaActual.textContent = `${escenario.nombre}
@@ -712,7 +731,7 @@ function precargarSonidos() {
 function desbloquearAudio() {
   logAudio("desbloqueando audio por primer toque");
 
-  Object.entries(sonidos).forEach(([nombre, audio]) => {
+  const desbloqueos = Object.entries(sonidos).map(([nombre, audio]) => {
     if (esSonidoEventoBosque(nombre)) {
       logAudioEvento(`${nombre} incluido en desbloquearAudio`, {
         existeEnSonidos: Boolean(sonidos[nombre]),
@@ -721,7 +740,7 @@ function desbloquearAudio() {
     }
 
     audio.volume = 0;
-    audio
+    return audio
       .play()
       .then(() => {
         audio.pause();
@@ -743,15 +762,107 @@ function desbloquearAudio() {
         }
       });
   });
+
+  Promise.allSettled(desbloqueos).then(() => {
+    audioDesbloqueado = true;
+
+    if (ambienteActual) {
+      ambienteActual = "";
+      actualizarAmbienteMision();
+    }
+  });
 }
 
 function detenerSonidos() {
+  detenerEfectos();
+  detenerAmbiente();
+}
+
+function detenerEfectos() {
   colaSonidos = [];
 
-  Object.values(sonidos).forEach((sonido) => {
+  Object.entries(sonidos).forEach(([nombre, sonido]) => {
+    if (nombresAmbiente.has(nombre)) return;
+
     sonido.onended = null;
     sonido.pause();
     sonido.currentTime = 0;
+  });
+}
+
+function detenerAmbiente() {
+  cancelarCrujidoPuente();
+
+  nombresAmbiente.forEach((nombre) => {
+    const ambiente = sonidos[nombre];
+    ambiente.pause();
+    ambiente.currentTime = 0;
+  });
+
+  ambienteActual = "";
+}
+
+function actualizarAmbienteMision() {
+  const nuevoAmbiente =
+    escenarioActual === 0 ? ambientesPorMision[misionActual] || "" : "";
+
+  if (nuevoAmbiente === ambienteActual) {
+    if (nuevoAmbiente === "ambientePuente") programarCrujidoPuente();
+    return;
+  }
+
+  detenerAmbiente();
+
+  if (!nuevoAmbiente) return;
+
+  const ambiente = sonidos[nuevoAmbiente];
+  ambienteActual = nuevoAmbiente;
+  ambiente.loop =
+    nuevoAmbiente === "bosqueProhibido" || nuevoAmbiente === "ambientePuente";
+  ambiente.currentTime = 0;
+
+  ambiente
+    .play()
+    .then(() => {
+      logAudio(
+        `${nuevoAmbiente} reproduciendo${ambiente.loop ? " en loop" : " una vez"}`,
+      );
+
+      if (nuevoAmbiente === "ambientePuente") programarCrujidoPuente();
+    })
+    .catch((error) => {
+      logAudio(`${nuevoAmbiente} play bloqueado`, error);
+    });
+}
+
+function programarCrujidoPuente() {
+  if (temporizadorCrujidoPuente || ambienteActual !== "ambientePuente") return;
+
+  const demora = 12000 + Math.random() * 18000;
+  temporizadorCrujidoPuente = setTimeout(() => {
+    temporizadorCrujidoPuente = null;
+
+    if (ambienteActual !== "ambientePuente") return;
+
+    reproducirEfectoAmbiental("crujidoPuente");
+    programarCrujidoPuente();
+  }, demora);
+}
+
+function cancelarCrujidoPuente() {
+  if (!temporizadorCrujidoPuente) return;
+
+  clearTimeout(temporizadorCrujidoPuente);
+  temporizadorCrujidoPuente = null;
+}
+
+function reproducirEfectoAmbiental(nombre) {
+  const sonido = sonidos[nombre];
+  if (!sonido) return;
+
+  sonido.currentTime = 0;
+  sonido.play().catch((error) => {
+    logAudio(`${nombre} play bloqueado`, error);
   });
 }
 
@@ -774,7 +885,7 @@ function reproducirSonido(nombre) {
     return;
   }
 
-  detenerSonidos();
+  detenerEfectos();
   sonido.currentTime = 0;
 
   if (esEvento) {
@@ -824,7 +935,7 @@ function reproducirSonido(nombre) {
 
 function reproducirSecuenciaSonidos(nombres) {
   colaSonidos = [...nombres];
-  detenerSonidos();
+  detenerEfectos();
   colaSonidos = [...nombres];
   reproducirSiguienteSonido();
 }
@@ -956,7 +1067,8 @@ function logAudioEvento(mensaje, detalle = "") {
 }
 
 function iniciarMisionAventura() {
-  detenerSonidos();
+  detenerEfectos();
+  actualizarAmbienteMision();
 
   desafioActual = desafiosCompletados + 1;
   actualizarControlesDev();
@@ -1003,6 +1115,7 @@ function avanzarMision() {
   desafiosCompletados = 0;
   palabrasUsadasEnMision = [];
   historiaMisionPendiente = true;
+  detenerAmbiente();
 
   misionActual++;
   mensajePersonaje.textContent = "🏆 ¡Misión completada!";
