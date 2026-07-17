@@ -8,6 +8,7 @@ const textoPista = document.getElementById("textoPista");
 const textoMonedas = document.getElementById("textoMonedas");
 
 const textoXP = document.getElementById("textoXP");
+const textoCristales = document.getElementById("textoCristales");
 const pantallaMenu = document.getElementById("pantallaMenu");
 const pantallaJuego = document.getElementById("pantallaJuego");
 
@@ -97,6 +98,10 @@ const duracionTransicionHistoria = 300;
 const duracionCaminataExplorador = 1200;
 const duracionFadeEscenarioSalida = 250;
 const duracionFadeEscenarioEntrada = 350;
+const duracionNegroPresentacion = 320;
+const duracionVistaPresentacion = 720;
+const duracionZoomPresentacion = 1350;
+const duracionFundidoFondo = 700;
 const prefiereReducirMovimiento = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 );
@@ -247,6 +252,8 @@ let navegacionDevPendiente = false;
 let temporizadorReaccionExplorador = null;
 let secuenciaReaccionExplorador = 0;
 let transicionPrologoActiva = false;
+let transicionCinematicaActiva = false;
+let secuenciaFundidoFondo = 0;
 const desafiosPorMision = 3;
 
 // ====================
@@ -329,14 +336,16 @@ btnContinuarHistoria.addEventListener("click", async () => {
   }
 });
 
-btnJugar.addEventListener("click", () => {
+btnJugar.addEventListener("click", async () => {
   if (!localStorage.getItem("progresoAventuraGA")) {
     reiniciarEstadoAventura();
     mostrarPrologo();
     return;
   }
 
-  iniciarMisionAventura();
+  await iniciarMisionAventura({
+    presentarMision: desafiosCompletados === 0,
+  });
 });
 
 btnComenzarPrologo.addEventListener("click", async () => {
@@ -357,7 +366,7 @@ btnComenzarPrologo.addEventListener("click", async () => {
     modalPrologo.classList.add("oculto");
     modalPrologo.classList.remove("cerrando");
 
-    iniciarMisionAventura();
+    await iniciarMisionAventura({ presentarMision: true });
     guardarProgreso();
   } finally {
     modalPrologo.classList.remove("abriendo", "cerrando");
@@ -487,6 +496,15 @@ function verificarEstado() {
 
     actualizarJugador();
     sonidoNarrativoPendiente = avanzarMision();
+
+    if (
+      escenarioActual === 0 &&
+      misionActual === 0 &&
+      desafiosCompletados === 1
+    ) {
+      cambiarFondoMisionConFundido("bosque-1.png");
+    }
+
     reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
     guardarProgreso();
     bloquearTeclado();
@@ -576,6 +594,10 @@ function mostrarPrologo() {
 function reiniciarEstadoAventura() {
   detenerSonidos();
   cancelarRetornoEstadoBaseExplorador();
+  secuenciaFundidoFondo++;
+  contenedorEscenario
+    .querySelectorAll(".fondo-escenario-fundido")
+    .forEach((fondo) => fondo.remove());
 
   palabraSecreta = "";
   pistaActual = "";
@@ -638,15 +660,16 @@ async function cambiarEscenarioConTransicion() {
   await esperarFadeEscenarioSalida();
 
   console.log("[transicion] Se cambia el fondo");
+  pantallaJuego.classList.add("presentacion-mision-preparada");
   if (navegacionDevPendiente) {
     actualizarVistaMisionDev();
   } else {
-    iniciarMisionAventura();
+    await iniciarMisionAventura();
   }
   await esperarCargaFondoEscenario();
 
-  contenedorEscenario.classList.add("apareciendo-escena");
   contenedorEscenario.classList.remove("cambiando-escena");
+  await presentarInicioMision();
 }
 
 function esperarFadeEscenarioSalida() {
@@ -1124,7 +1147,7 @@ function logAudioEvento(mensaje, detalle = "") {
   console.log(`[audio-evento] ${mensaje}`, detalle);
 }
 
-function iniciarMisionAventura() {
+function iniciarMisionAventura({ presentarMision = false } = {}) {
   detenerEfectos();
   actualizarAmbienteMision();
 
@@ -1160,6 +1183,12 @@ function iniciarMisionAventura() {
   mostrarPalabra();
   crearTeclado();
   mostrarPantalla(pantallaJuego);
+
+  if (presentarMision) {
+    return presentarInicioMision();
+  }
+
+  return Promise.resolve();
 }
 
 function avanzarMision() {
@@ -1203,6 +1232,8 @@ function actualizarJugador() {
   textoMonedas.textContent = `🪙 ${monedas}`;
 
   textoXP.textContent = `⭐ ${experiencia} XP`;
+
+  textoCristales.textContent = `💎 ${cristalesObtenidos}`;
 }
 
 function guardarProgreso() {
@@ -1320,7 +1351,7 @@ function actualizarEscenaPorMision() {
   const escenasPorEscenario = [
     [
       {
-        fondo: "bosque-0.png",
+        fondo: desafiosCompletados > 0 ? "bosque-1.png" : "bosque-0.png",
         texto:
           "🌲 Encuentra la palabra secreta para comenzar tu viaje por el Bosque Encantado.",
       },
@@ -1378,6 +1409,109 @@ function actualizarEscenaPorMision() {
   fondoEscenario.src = `assets/images/fondos/${escena.fondo}`;
   escenaAventura.textContent = escena.texto;
   volverEstadoBaseExplorador();
+}
+
+async function presentarInicioMision() {
+  if (transicionCinematicaActiva) return;
+
+  transicionCinematicaActiva = true;
+  pantallaJuego.classList.remove("presentacion-mision-preparada");
+  pantallaJuego.classList.add("presentacion-mision-activa");
+
+  const presentacion = document.createElement("div");
+  const imagen = document.createElement("img");
+  presentacion.className = "presentacion-mision";
+  presentacion.setAttribute("aria-hidden", "true");
+  imagen.className = "presentacion-mision-imagen";
+  imagen.alt = "";
+  imagen.src = fondoEscenario.currentSrc || fondoEscenario.src;
+  presentacion.appendChild(imagen);
+  document.body.appendChild(presentacion);
+
+  try {
+    await esperarCargaImagen(imagen);
+    await esperarMovimiento(duracionNegroPresentacion);
+
+    presentacion.classList.add("mostrando-fondo");
+    await esperarMovimiento(duracionVistaPresentacion);
+
+    const destino = contenedorEscenario.getBoundingClientRect();
+    pantallaJuego.classList.add("interfaz-revelandose");
+    presentacion.classList.add("haciendo-zoom");
+
+    if (prefiereReducirMovimiento.matches || !imagen.animate) {
+      await esperarMovimiento(180);
+    } else {
+      const zoom = imagen.animate(
+        [
+          {
+            top: "0px",
+            left: "0px",
+            width: `${window.innerWidth}px`,
+            height: `${window.innerHeight}px`,
+            borderRadius: "0px",
+          },
+          {
+            top: `${destino.top}px`,
+            left: `${destino.left}px`,
+            width: `${destino.width}px`,
+            height: `${destino.height}px`,
+            borderRadius: getComputedStyle(contenedorEscenario).borderRadius,
+          },
+        ],
+        {
+          duration: duracionZoomPresentacion,
+          easing: "cubic-bezier(0.22, 0.75, 0.2, 1)",
+          fill: "forwards",
+        },
+      );
+
+      await zoom.finished.catch(() => {});
+    }
+  } finally {
+    presentacion.remove();
+    pantallaJuego.classList.remove(
+      "presentacion-mision-activa",
+      "presentacion-mision-preparada",
+      "interfaz-revelandose",
+    );
+    transicionCinematicaActiva = false;
+  }
+}
+
+async function cambiarFondoMisionConFundido(nombreFondo) {
+  const secuenciaActual = ++secuenciaFundidoFondo;
+  const siguienteFondo = document.createElement("img");
+  siguienteFondo.className = "fondo-escenario fondo-escenario-fundido";
+  siguienteFondo.alt = "";
+  siguienteFondo.src = `assets/images/fondos/${nombreFondo}`;
+
+  await esperarCargaImagen(siguienteFondo);
+  if (secuenciaActual !== secuenciaFundidoFondo) return;
+
+  contenedorEscenario.insertBefore(siguienteFondo, personajeImagen);
+  void siguienteFondo.offsetWidth;
+  siguienteFondo.classList.add("visible");
+  await esperarMovimiento(duracionFundidoFondo);
+
+  if (secuenciaActual !== secuenciaFundidoFondo) {
+    siguienteFondo.remove();
+    return;
+  }
+
+  fondoEscenario.src = siguienteFondo.src;
+  siguienteFondo.remove();
+}
+
+function esperarCargaImagen(imagen) {
+  if (imagen.complete && imagen.naturalWidth > 0) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => {
+    imagen.addEventListener("load", resolve, { once: true });
+    imagen.addEventListener("error", resolve, { once: true });
+  });
 }
 
 function obtenerSrcExplorador(estado) {

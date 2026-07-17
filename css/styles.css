@@ -83,6 +83,11 @@ body {
     font-weight: bold;
 }
 
+.barraJugador > span {
+    flex: 1;
+    text-align: center;
+}
+
 .vidas {
     /* Contenedor visual de corazones */
     padding: 10px 16px;
@@ -191,6 +196,104 @@ button:disabled {
     height: 100%;
     object-fit: contain;
     display: block;
+}
+
+.fondo-escenario-fundido {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 700ms ease-in-out;
+}
+
+.fondo-escenario-fundido.visible {
+    opacity: 1;
+}
+
+.personaje-imagen {
+    z-index: 1;
+}
+
+/* Presentación reutilizable para el comienzo de cualquier misión o mundo. */
+.presentacion-mision {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    overflow: hidden;
+    background: #000;
+    pointer-events: all;
+    transition: background-color 700ms ease;
+}
+
+.presentacion-mision.haciendo-zoom {
+    background-color: transparent;
+}
+
+.presentacion-mision-imagen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    object-fit: cover;
+    opacity: 0;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    transition: opacity 300ms ease;
+    will-change: top, left, width, height, border-radius;
+}
+
+.presentacion-mision.mostrando-fondo .presentacion-mision-imagen {
+    opacity: 1;
+}
+
+#pantallaJuego.presentacion-mision-preparada,
+#pantallaJuego.presentacion-mision-activa {
+    pointer-events: none;
+}
+
+#pantallaJuego.presentacion-mision-activa > :not(.escenario):not(.modal-historia),
+#pantallaJuego.presentacion-mision-preparada > :not(.escenario):not(.modal-historia) {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+#pantallaJuego.presentacion-mision-activa .personaje-imagen,
+#pantallaJuego.presentacion-mision-preparada .personaje-imagen {
+    opacity: 0;
+}
+
+#pantallaJuego.interfaz-revelandose > :not(.escenario):not(.modal-historia) {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 560ms ease, transform 560ms ease;
+}
+
+#pantallaJuego.interfaz-revelandose .barraJugador,
+#pantallaJuego.interfaz-revelandose .top-juego {
+    transition-delay: 420ms;
+}
+
+#pantallaJuego.interfaz-revelandose .escena-aventura,
+#pantallaJuego.interfaz-revelandose .mensaje-personaje {
+    transition-delay: 560ms;
+}
+
+#pantallaJuego.interfaz-revelandose .palabra,
+#pantallaJuego.interfaz-revelandose .btn-pista,
+#pantallaJuego.interfaz-revelandose .texto-pista {
+    transition-delay: 700ms;
+}
+
+#pantallaJuego.interfaz-revelandose .teclado,
+#pantallaJuego.interfaz-revelandose #btnSalirJuego,
+#pantallaJuego.interfaz-revelandose .dev-tools {
+    transition-delay: 740ms;
+}
+
+#pantallaJuego.interfaz-revelandose .personaje-imagen {
+    opacity: 1;
+    transition: opacity 520ms ease 640ms, filter 0.35s ease;
 }
 
 .escena-aventura {
@@ -1015,5 +1118,13 @@ button:disabled {
 
     .escenario.temblor {
         animation: none;
+    }
+
+    .presentacion-mision-imagen,
+    .fondo-escenario-fundido,
+    #pantallaJuego.interfaz-revelandose > :not(.escenario):not(.modal-historia),
+    #pantallaJuego.interfaz-revelandose .personaje-imagen {
+        transition-duration: 1ms;
+        transition-delay: 0ms;
     }
 }
