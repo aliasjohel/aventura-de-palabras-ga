@@ -56,6 +56,13 @@ const sonidos = {
   ambientePortal: new Audio("assets/sounds/ambiente-portal.mp3"),
 };
 
+const musicaPrologo = new Audio("assets/sounds/prologo.mp3");
+musicaPrologo.loop = false;
+musicaPrologo.volume = 0.25;
+const sonidoComenzarAventura = new Audio(
+  "assets/sounds/comenzar-aventura.wav",
+);
+
 let colaSonidos = [];
 let audioDesbloqueado = false;
 let ambienteActual = "";
@@ -335,13 +342,17 @@ btnJugar.addEventListener("click", () => {
 btnComenzarPrologo.addEventListener("click", async () => {
   if (btnComenzarPrologo.disabled || transicionPrologoActiva) return;
 
+  reproducirSonidoComenzarAventura();
   btnComenzarPrologo.disabled = true;
   transicionPrologoActiva = true;
   modalPrologo.classList.remove("abriendo");
   modalPrologo.classList.add("cerrando");
 
   try {
-    await esperarTransicionHistoria();
+    await Promise.all([
+      esperarTransicionHistoria(),
+      desvanecerMusicaPrologo(1000),
+    ]);
 
     modalPrologo.classList.add("oculto");
     modalPrologo.classList.remove("cerrando");
@@ -559,6 +570,7 @@ function mostrarPrologo() {
   btnComenzarPrologo.disabled = false;
   modalPrologo.classList.remove("cerrando", "oculto");
   modalPrologo.classList.add("abriendo");
+  reproducirMusicaPrologo();
 }
 
 function reiniciarEstadoAventura() {
@@ -770,6 +782,52 @@ function desbloquearAudio() {
       ambienteActual = "";
       actualizarAmbienteMision();
     }
+  });
+}
+
+function reproducirMusicaPrologo() {
+  musicaPrologo.pause();
+  musicaPrologo.currentTime = 0;
+  musicaPrologo.volume = 0.25;
+  musicaPrologo.play().catch((error) => {
+    logAudio("musica del prologo bloqueada", error);
+  });
+}
+
+function reproducirSonidoComenzarAventura() {
+  sonidoComenzarAventura.currentTime = 0;
+  sonidoComenzarAventura.play().catch((error) => {
+    logAudio("sonido de comenzar aventura bloqueado", error);
+  });
+}
+
+function desvanecerMusicaPrologo(duracion) {
+  if (musicaPrologo.paused || musicaPrologo.ended) {
+    musicaPrologo.currentTime = 0;
+    musicaPrologo.volume = 0.25;
+    return Promise.resolve();
+  }
+
+  const volumenInicial = musicaPrologo.volume;
+  const inicio = performance.now();
+
+  return new Promise((resolve) => {
+    const reducirVolumen = (ahora) => {
+      const progreso = Math.min((ahora - inicio) / duracion, 1);
+      musicaPrologo.volume = volumenInicial * (1 - progreso);
+
+      if (progreso < 1) {
+        requestAnimationFrame(reducirVolumen);
+        return;
+      }
+
+      musicaPrologo.pause();
+      musicaPrologo.currentTime = 0;
+      musicaPrologo.volume = 0.25;
+      resolve();
+    };
+
+    requestAnimationFrame(reducirVolumen);
   });
 }
 
