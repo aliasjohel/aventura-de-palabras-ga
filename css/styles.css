@@ -467,7 +467,7 @@ button:disabled {
 }
 
 .modal-prologo.abriendo {
-    animation: aparecerFondoPrologo 420ms ease forwards;
+    animation: aparecerFondoPrologo 1s ease forwards;
 }
 
 .modal-prologo.cerrando {
@@ -490,7 +490,7 @@ button:disabled {
 }
 
 .modal-prologo.abriendo .tarjeta-prologo {
-    animation: aparecerTarjetaPrologo 420ms ease forwards;
+    animation: aparecerTarjetaPrologo 1s ease-out forwards;
 }
 
 .modal-prologo.cerrando .tarjeta-prologo {
@@ -525,6 +525,30 @@ button:disabled {
     line-height: 1.55;
 }
 
+.modal-prologo.abriendo .texto-prologo p {
+    animation: revelarTextoPrologo 380ms ease both;
+}
+
+.modal-prologo.abriendo .texto-prologo p:nth-child(1) {
+    animation-delay: 1s;
+}
+
+.modal-prologo.abriendo .texto-prologo p:nth-child(2) {
+    animation-delay: 1.42s;
+}
+
+.modal-prologo.abriendo .texto-prologo p:nth-child(3) {
+    animation-delay: 1.84s;
+}
+
+.modal-prologo.abriendo .texto-prologo p:nth-child(4) {
+    animation-delay: 2.26s;
+}
+
+.modal-prologo.abriendo .texto-prologo p:nth-child(5) {
+    animation-delay: 2.68s;
+}
+
 .texto-prologo .mision-prologo {
     color: #bdf5cd;
     text-align: center;
@@ -537,6 +561,10 @@ button:disabled {
     background: linear-gradient(180deg, #2ecc71, #1f8f4f);
     color: white;
     box-shadow: 0 6px 0 #145c32;
+}
+
+.modal-prologo.abriendo #btnComenzarPrologo {
+    animation: revelarBotonPrologo 400ms ease 3.1s both;
 }
 
 #btnComenzarPrologo:active {
@@ -632,6 +660,40 @@ button:disabled {
     to {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+@keyframes revelarTextoPrologo {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes revelarBotonPrologo {
+    0% {
+        visibility: hidden;
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    1%,
+    99% {
+        visibility: visible;
+        pointer-events: none;
+    }
+
+    100% {
+        visibility: visible;
+        pointer-events: auto;
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -940,8 +1002,11 @@ button:disabled {
     .modal-prologo.abriendo,
     .modal-prologo.cerrando,
     .modal-prologo.abriendo .tarjeta-prologo,
-    .modal-prologo.cerrando .tarjeta-prologo {
+    .modal-prologo.cerrando .tarjeta-prologo,
+    .modal-prologo.abriendo .texto-prologo p,
+    .modal-prologo.abriendo #btnComenzarPrologo {
         animation-duration: 1ms;
+        animation-delay: 0ms;
     }
 
     .personaje-imagen.caminando {
