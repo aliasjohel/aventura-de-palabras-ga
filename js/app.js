@@ -496,6 +496,9 @@ function verificarEstado() {
 
     actualizarJugador();
     sonidoNarrativoPendiente = avanzarMision();
+    btnSiguiente.textContent = historiaMisionPendiente
+      ? "➡️ Siguiente misión"
+      : "➡️ Siguiente desafío";
 
     if (
       escenarioActual === 0 &&
@@ -569,6 +572,7 @@ function actualizarControlesDev() {
 }
 
 function actualizarVistaMisionDev() {
+  detenerPolvoImpacto();
   detenerEfectos();
   actualizarAmbienteMision();
 
@@ -855,6 +859,7 @@ function desvanecerMusicaPrologo(duracion) {
 }
 
 function detenerSonidos() {
+  detenerPolvoImpacto();
   detenerEfectos();
   detenerAmbiente();
 }
@@ -869,6 +874,12 @@ function detenerEfectos() {
     sonido.pause();
     sonido.currentTime = 0;
   });
+}
+
+function detenerPolvoImpacto() {
+  contenedorEscenario
+    .querySelectorAll(".capa-polvo-impacto")
+    .forEach((capa) => capa.remove());
 }
 
 function detenerAmbiente() {
@@ -1070,6 +1081,7 @@ function animarImpactoPiedra() {
 
   void contenedorEscenario.offsetWidth;
   contenedorEscenario.classList.add("temblor");
+  animarPolvoImpacto();
 
   const finalizarTemblor = (evento) => {
     if (
@@ -1084,6 +1096,54 @@ function animarImpactoPiedra() {
   };
 
   contenedorEscenario.addEventListener("animationend", finalizarTemblor);
+}
+
+function animarPolvoImpacto() {
+  detenerPolvoImpacto();
+
+  const capaPolvo = document.createElement("div");
+  capaPolvo.className = "capa-polvo-impacto";
+  capaPolvo.setAttribute("aria-hidden", "true");
+
+  const nubes = [
+    { x: "-155px", y: "-24px", escala: 1.25, retraso: "40ms" },
+    { x: "-105px", y: "-48px", escala: 0.95, retraso: "90ms" },
+    { x: "-52px", y: "-38px", escala: 1.15, retraso: "20ms" },
+    { x: "18px", y: "-54px", escala: 1.05, retraso: "75ms" },
+    { x: "78px", y: "-35px", escala: 1.2, retraso: "35ms" },
+    { x: "132px", y: "-46px", escala: 0.9, retraso: "105ms" },
+    { x: "175px", y: "-20px", escala: 1.15, retraso: "55ms" },
+  ];
+
+  nubes.forEach(({ x, y, escala, retraso }) => {
+    const nube = document.createElement("span");
+    nube.className = "nube-polvo";
+    nube.style.setProperty("--desplazamiento-x", x);
+    nube.style.setProperty("--desplazamiento-y", y);
+    nube.style.setProperty("--escala-polvo", escala);
+    nube.style.setProperty("--retraso-polvo", retraso);
+    capaPolvo.appendChild(nube);
+  });
+
+  contenedorEscenario.appendChild(capaPolvo);
+
+  let temporizadorLimpieza;
+  const eliminarPolvo = (evento) => {
+    if (
+      evento &&
+      (evento.target !== capaPolvo ||
+        evento.animationName !== "completarPolvoImpacto")
+    ) {
+      return;
+    }
+
+    clearTimeout(temporizadorLimpieza);
+    capaPolvo.removeEventListener("animationend", eliminarPolvo);
+    capaPolvo.remove();
+  };
+
+  capaPolvo.addEventListener("animationend", eliminarPolvo);
+  temporizadorLimpieza = setTimeout(eliminarPolvo, 1500);
 }
 
 function obtenerEstadoBaseExplorador() {
@@ -1148,6 +1208,7 @@ function logAudioEvento(mensaje, detalle = "") {
 }
 
 function iniciarMisionAventura({ presentarMision = false } = {}) {
+  detenerPolvoImpacto();
   detenerEfectos();
   actualizarAmbienteMision();
 
