@@ -102,6 +102,8 @@ const duracionNegroPresentacion = 320;
 const duracionVistaPresentacion = 720;
 const duracionZoomPresentacion = 1350;
 const duracionFundidoFondo = 700;
+const intervaloMinimoRafagaHojas = 8000;
+const intervaloMaximoRafagaHojas = 15000;
 const prefiereReducirMovimiento = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 );
@@ -254,6 +256,8 @@ let secuenciaReaccionExplorador = 0;
 let transicionPrologoActiva = false;
 let transicionCinematicaActiva = false;
 let secuenciaFundidoFondo = 0;
+let temporizadorRafagaHojas = null;
+let secuenciaAmbienteHojas = 0;
 const desafiosPorMision = 3;
 
 // ====================
@@ -584,6 +588,7 @@ function actualizarVistaMisionDev() {
 
   cancelarRetornoEstadoBaseExplorador();
   actualizarEscenaPorMision();
+  actualizarAmbienteHojasMision();
   mensajePersonaje.textContent = "¡Comienza la expedición!";
   actualizarControlesDev();
 }
@@ -860,6 +865,7 @@ function desvanecerMusicaPrologo(duracion) {
 
 function detenerSonidos() {
   detenerPolvoImpacto();
+  detenerAmbienteHojas();
   detenerEfectos();
   detenerAmbiente();
 }
@@ -879,6 +885,19 @@ function detenerEfectos() {
 function detenerPolvoImpacto() {
   contenedorEscenario
     .querySelectorAll(".capa-polvo-impacto")
+    .forEach((capa) => capa.remove());
+}
+
+function detenerAmbienteHojas() {
+  secuenciaAmbienteHojas++;
+
+  if (temporizadorRafagaHojas) {
+    clearTimeout(temporizadorRafagaHojas);
+    temporizadorRafagaHojas = null;
+  }
+
+  contenedorEscenario
+    .querySelectorAll(".capa-hojas-viento")
     .forEach((capa) => capa.remove());
 }
 
@@ -1209,6 +1228,7 @@ function logAudioEvento(mensaje, detalle = "") {
 
 function iniciarMisionAventura({ presentarMision = false } = {}) {
   detenerPolvoImpacto();
+  detenerAmbienteHojas();
   detenerEfectos();
   actualizarAmbienteMision();
 
@@ -1234,6 +1254,7 @@ function iniciarMisionAventura({ presentarMision = false } = {}) {
   actualizarVidas();
   personaje.textContent = "😄";
   actualizarEscenaPorMision();
+  actualizarAmbienteHojasMision();
   mensajePersonaje.textContent = "¡Comienza la expedición!";
   teclado.innerHTML = "";
   textoPista.classList.add("oculto");
@@ -1264,6 +1285,7 @@ function avanzarMision() {
   palabrasUsadasEnMision = [];
   historiaMisionPendiente = true;
   detenerAmbiente();
+  detenerAmbienteHojas();
 
   misionActual++;
   mensajePersonaje.textContent = "🏆 ¡Misión completada!";
@@ -1394,6 +1416,7 @@ cargarProgreso();
 actualizarControlesDev();
 precargarImagenesBosque();
 precargarImagenesExplorador();
+precargarImagenesHojas();
 precargarSonidos();
 
 function cambiarPersonaje(estado) {
@@ -1575,6 +1598,135 @@ function esperarCargaImagen(imagen) {
   });
 }
 
+function actualizarAmbienteHojasMision() {
+  detenerAmbienteHojas();
+
+  if (
+    escenarioActual !== 0 ||
+    misionActual !== 2 ||
+    prefiereReducirMovimiento.matches
+  ) {
+    return;
+  }
+
+  const capaHojas = document.createElement("div");
+  capaHojas.className = "capa-hojas-viento";
+  capaHojas.setAttribute("aria-hidden", "true");
+  contenedorEscenario.insertBefore(capaHojas, personajeImagen);
+
+  programarRafagaHojas(secuenciaAmbienteHojas, capaHojas);
+}
+
+function programarRafagaHojas(secuencia, capaHojas) {
+  const demora = aleatorioEntre(
+    intervaloMinimoRafagaHojas,
+    intervaloMaximoRafagaHojas,
+  );
+
+  temporizadorRafagaHojas = setTimeout(() => {
+    if (
+      secuencia !== secuenciaAmbienteHojas ||
+      escenarioActual !== 0 ||
+      misionActual !== 2 ||
+      !pantallaJuego.classList.contains("activa") ||
+      !capaHojas.isConnected
+    ) {
+      detenerAmbienteHojas();
+      return;
+    }
+
+    crearRafagaHojas(capaHojas);
+    programarRafagaHojas(secuencia, capaHojas);
+  }, demora);
+}
+
+function crearRafagaHojas(capaHojas) {
+  const ancho = capaHojas.clientWidth;
+  const alto = capaHojas.clientHeight;
+  const cantidadHojas = Math.floor(aleatorioEntre(4, 9));
+
+  for (let indice = 0; indice < cantidadHojas; indice++) {
+    crearHojaViento(capaHojas, ancho, alto);
+  }
+}
+
+function crearHojaViento(capaHojas, ancho, alto) {
+  const hoja = document.createElement("img");
+  const entrada = ["arriba", "izquierda", "derecha"][
+    Math.floor(Math.random() * 3)
+  ];
+  const duracion = aleatorioEntre(4800, 7200);
+  const retraso = aleatorioEntre(0, 700);
+  const tamano = aleatorioEntre(28, 54);
+  let inicioX;
+  let inicioY;
+  let finX;
+  let finY;
+
+  if (entrada === "arriba") {
+    inicioX = aleatorioEntre(0, ancho);
+    inicioY = -tamano - 10;
+    finX = inicioX + aleatorioEntre(-ancho * 0.3, ancho * 0.3);
+    finY = alto + tamano + 20;
+  } else if (entrada === "izquierda") {
+    inicioX = -tamano - 10;
+    inicioY = aleatorioEntre(0, alto * 0.7);
+    finX = ancho + tamano + 20;
+    finY = inicioY + aleatorioEntre(alto * 0.12, alto * 0.42);
+  } else {
+    inicioX = ancho + tamano + 10;
+    inicioY = aleatorioEntre(0, alto * 0.7);
+    finX = -tamano - 20;
+    finY = inicioY + aleatorioEntre(alto * 0.12, alto * 0.42);
+  }
+
+  const recorridoX = finX - inicioX;
+  const recorridoY = finY - inicioY;
+  const onda = aleatorioEntre(18, 48) * (Math.random() < 0.5 ? -1 : 1);
+  const rotacionInicial = aleatorioEntre(-180, 180);
+  const giroTotal =
+    aleatorioEntre(420, 900) * (Math.random() < 0.5 ? -1 : 1);
+
+  const numeroHoja = Math.random() < 0.5 ? 1 : 2;
+  hoja.className = `hoja-viento hoja-viento-${numeroHoja}`;
+  hoja.alt = "";
+  hoja.draggable = false;
+  hoja.src = `assets/images/elementos/hoja-${numeroHoja}.png?v=20260717-hojas-transparentes-1`;
+  hoja.style.left = `${inicioX}px`;
+  hoja.style.top = `${inicioY}px`;
+  hoja.style.width = `${tamano}px`;
+  hoja.style.setProperty("--duracion-hoja", `${duracion}ms`);
+  hoja.style.setProperty("--retraso-hoja", `${retraso}ms`);
+
+  [0.25, 0.5, 0.75, 1].forEach((progreso, indice) => {
+    const sufijo = ["25", "50", "75", "100"][indice];
+    const desviacion = progreso === 1 ? 0 : onda * (indice % 2 === 0 ? 1 : -1);
+    hoja.style.setProperty(
+      `--hoja-x-${sufijo}`,
+      `${recorridoX * progreso}px`,
+    );
+    hoja.style.setProperty(
+      `--hoja-y-${sufijo}`,
+      `${recorridoY * progreso + desviacion}px`,
+    );
+    hoja.style.setProperty(
+      `--hoja-rotacion-${sufijo}`,
+      `${rotacionInicial + giroTotal * progreso}deg`,
+    );
+  });
+
+  hoja.style.setProperty("--hoja-rotacion-inicial", `${rotacionInicial}deg`);
+  capaHojas.appendChild(hoja);
+
+  const eliminarHoja = () => hoja.remove();
+  hoja.addEventListener("animationend", eliminarHoja, { once: true });
+  setTimeout(eliminarHoja, duracion + retraso + 500);
+}
+
+function aleatorioEntre(minimo, maximo) {
+  return minimo + Math.random() * (maximo - minimo);
+}
+
 function obtenerSrcExplorador(estado) {
   return `assets/images/personajes/explorador-${estado}.png`;
 }
@@ -1622,5 +1774,12 @@ function precargarImagenesExplorador() {
     "triste",
   ].forEach((estado) => {
     cargarImagenExplorador(estado);
+  });
+}
+
+function precargarImagenesHojas() {
+  [1, 2].forEach((numero) => {
+    const img = new Image();
+    img.src = `assets/images/elementos/hoja-${numero}.png?v=20260717-hojas-transparentes-1`;
   });
 }

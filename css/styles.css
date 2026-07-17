@@ -194,11 +194,52 @@ button:disabled {
     position: absolute;
     left: 50%;
     bottom: 27%;
-    z-index: 2;
+    z-index: 3;
     width: 1px;
     height: 1px;
     pointer-events: none;
     animation: completarPolvoImpacto 1350ms linear forwards;
+}
+
+.capa-hojas-viento {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.hoja-viento {
+    position: absolute;
+    display: block;
+    height: auto;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    mix-blend-mode: multiply;
+    filter: saturate(1.1) drop-shadow(0 2px 2px rgba(26, 48, 18, 0.28));
+    transform: translate3d(0, 0, 0) rotate(var(--hoja-rotacion-inicial));
+    animation: hojaEmpujadaPorViento var(--duracion-hoja) ease-in-out var(--retraso-hoja) forwards;
+    will-change: transform, opacity;
+}
+
+.hoja-viento-1 {
+    clip-path: polygon(
+        30% 81%,
+        34% 61%,
+        42% 45%,
+        54% 32%,
+        75% 19%,
+        67% 37%,
+        59% 53%,
+        48% 68%,
+        35% 79%
+    );
+}
+
+.hoja-viento-2 {
+    clip-path: none;
+    mix-blend-mode: normal;
 }
 
 .nube-polvo {
@@ -258,7 +299,7 @@ button:disabled {
 }
 
 .personaje-imagen {
-    z-index: 1;
+    z-index: 2;
 }
 
 /* Presentación reutilizable para el comienzo de cualquier misión o mundo. */
@@ -939,6 +980,35 @@ button:disabled {
     }
 }
 
+@keyframes hojaEmpujadaPorViento {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) rotate(var(--hoja-rotacion-inicial));
+    }
+
+    8% {
+        opacity: 0.9;
+    }
+
+    25% {
+        transform: translate3d(var(--hoja-x-25), var(--hoja-y-25), 0) rotate(var(--hoja-rotacion-25));
+    }
+
+    50% {
+        transform: translate3d(var(--hoja-x-50), var(--hoja-y-50), 0) rotate(var(--hoja-rotacion-50));
+    }
+
+    75% {
+        opacity: 0.85;
+        transform: translate3d(var(--hoja-x-75), var(--hoja-y-75), 0) rotate(var(--hoja-rotacion-75));
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate3d(var(--hoja-x-100), var(--hoja-y-100), 0) rotate(var(--hoja-rotacion-100));
+    }
+}
+
 @keyframes respirar {
     0%,
     100% {
@@ -1201,7 +1271,8 @@ button:disabled {
     }
 
     .capa-polvo-impacto,
-    .nube-polvo {
+    .nube-polvo,
+    .hoja-viento {
         animation: none;
     }
 
