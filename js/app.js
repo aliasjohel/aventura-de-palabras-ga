@@ -1263,43 +1263,51 @@ function actualizarEscenaPorMision() {
     [
       {
         fondo: "bosque-0.png",
-        texto: "🌲 El camino del bosque está tranquilo...",
+        texto:
+          "🌲 Encuentra la palabra secreta para comenzar tu viaje por el Bosque Encantado.",
       },
       {
         fondo: "bosque-2.png",
-        texto: "🪨 Una enorme roca bloquea el sendero.",
+        texto:
+          "🪨 Resuelve la palabra secreta para encontrar un camino alrededor de la roca.",
       },
       {
         fondo: "bosque-3.png",
-        texto: "🌿 El camino alternativo está cubierto de ramas.",
+        texto: "🌿 Resuelve la palabra para encontrar un paso entre las ramas.",
       },
       {
         fondo: "bosque-4.png",
-        texto: "🌧️ Comienza a llover en el bosque.",
+        texto:
+          "⛈️ Encuentra la palabra secreta para atravesar la tormenta y continuar el viaje.",
       },
       {
         fondo: "bosque-5.png",
-        texto: "🌫️ La niebla cubre el sendero.",
+        texto:
+          "🌫️ Solo la palabra correcta te ayudará a encontrar el camino entre la niebla.",
       },
       {
         fondo: "bosque-6.png",
-        texto: "🐺 Se escuchan lobos a lo lejos...",
+        texto:
+          "🐺 Resuelve la palabra para escabullirte de los lobos y continuar el viaje.",
       },
       {
         fondo: "bosque-7.png",
-        texto: "🌲 El explorador entra al Bosque Prohibido.",
+        texto:
+          "🌲 La palabra secreta revelará el sendero oculto del Bosque Prohibido.",
       },
       {
         fondo: "bosque-8.png",
-        texto: "🌉 Un antiguo puente cruza el río.",
+        texto:
+          "🌉 Descubre la palabra para cruzar el viejo puente con seguridad.",
       },
       {
         fondo: "bosque-9.png",
-        texto: "💎 El Santuario del Cristal aparece ante él.",
+        texto:
+          "💎 Solo quien resuelva la palabra podrá acercarse al Cristal de la Sabiduría.",
       },
       {
         fondo: "bosque-10.png",
-        texto: "✨ El portal hacia el siguiente mundo se abre.",
+        texto: "🌌 La última palabra abrirá el Portal de los Mundos.",
       },
     ],
   ];
