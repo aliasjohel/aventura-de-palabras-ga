@@ -114,6 +114,14 @@ const intervaloMinimoMiradaLobos = 3800;
 const intervaloMaximoMiradaLobos = 8500;
 const duracionMinimaMiradaLobos = 1000;
 const duracionMaximaMiradaLobos = 2000;
+const intervaloMinimoPresenciaBosque = 18000;
+const intervaloMaximoPresenciaBosque = 38000;
+const duracionMinimaPresenciaBosque = 900;
+const duracionMaximaPresenciaBosque = 1450;
+const intervaloMinimoAranaBosque = 30000;
+const intervaloMaximoAranaBosque = 56000;
+const duracionMinimaAranaBosque = 6200;
+const duracionMaximaAranaBosque = 7400;
 const prefiereReducirMovimiento = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 );
@@ -275,6 +283,14 @@ let temporizadorNiebla = null;
 let secuenciaMiradasLobos = 0;
 let temporizadorMiradasLobos = null;
 let ultimoLoboIluminado = -1;
+let secuenciaPresenciaBosque = 0;
+let temporizadorPresenciaBosque = null;
+let ultimaRutaPresenciaBosque = -1;
+let imagenSiluetaBosque = null;
+let secuenciaAranaBosque = 0;
+let temporizadorAranaBosque = null;
+let ultimaZonaAranaBosque = -1;
+let imagenAranaBosque = null;
 const desafiosPorMision = 3;
 
 // ====================
@@ -609,6 +625,8 @@ function actualizarVistaMisionDev() {
   actualizarTormentaMision();
   actualizarNieblaMision();
   actualizarMiradasLobosMision();
+  actualizarPresenciaBosqueMision();
+  actualizarAranaBosqueMision();
   mensajePersonaje.textContent = "¡Comienza la expedición!";
   actualizarControlesDev();
 }
@@ -889,6 +907,8 @@ function detenerSonidos() {
   detenerTormenta();
   detenerNiebla();
   detenerMiradasLobos();
+  detenerPresenciaBosque();
+  detenerAranaBosque();
   detenerEfectos();
   detenerAmbiente();
 }
@@ -1282,6 +1302,8 @@ function iniciarMisionAventura({ presentarMision = false } = {}) {
   actualizarTormentaMision();
   actualizarNieblaMision();
   actualizarMiradasLobosMision();
+  actualizarPresenciaBosqueMision();
+  actualizarAranaBosqueMision();
   mensajePersonaje.textContent = "¡Comienza la expedición!";
   teclado.innerHTML = "";
   textoPista.classList.add("oculto");
@@ -1316,6 +1338,8 @@ function avanzarMision() {
   detenerTormenta();
   detenerNiebla();
   detenerMiradasLobos();
+  detenerPresenciaBosque();
+  detenerAranaBosque();
 
   misionActual++;
   mensajePersonaje.textContent = "🏆 ¡Misión completada!";
@@ -1983,6 +2007,253 @@ function detenerMiradasLobos() {
 
   contenedorEscenario
     .querySelectorAll(".capa-miradas-lobos")
+    .forEach((capa) => capa.remove());
+}
+
+function actualizarPresenciaBosqueMision() {
+  detenerPresenciaBosque();
+
+  if (escenarioActual !== 0 || misionActual !== 6) return;
+
+  const capaPresencia = document.createElement("div");
+  const secuencia = secuenciaPresenciaBosque;
+
+  capaPresencia.className = "capa-presencia-bosque";
+  capaPresencia.setAttribute("aria-hidden", "true");
+  contenedorEscenario.insertBefore(capaPresencia, personajeImagen);
+
+  if (!imagenSiluetaBosque) {
+    imagenSiluetaBosque = new Image();
+    imagenSiluetaBosque.src =
+      "assets/images/elementos/silueta-bosque-prohibido.png";
+  }
+
+  programarPresenciaFugazBosque(secuencia, capaPresencia);
+}
+
+function programarPresenciaFugazBosque(
+  secuencia,
+  capaPresencia,
+  demoraForzada = null,
+) {
+  const demora =
+    demoraForzada ??
+    aleatorioEntre(
+      intervaloMinimoPresenciaBosque,
+      intervaloMaximoPresenciaBosque,
+    );
+
+  temporizadorPresenciaBosque = setTimeout(() => {
+    if (
+      secuencia !== secuenciaPresenciaBosque ||
+      escenarioActual !== 0 ||
+      misionActual !== 6 ||
+      !pantallaJuego.classList.contains("activa") ||
+      !capaPresencia.isConnected
+    ) {
+      detenerPresenciaBosque();
+      return;
+    }
+
+    if (contenedorEscenario.querySelector(".descenso-arana")) {
+      programarPresenciaFugazBosque(
+        secuencia,
+        capaPresencia,
+        aleatorioEntre(4000, 8000),
+      );
+      return;
+    }
+
+    const duracion = crearPresenciaFugazBosque(capaPresencia);
+
+    temporizadorPresenciaBosque = setTimeout(() => {
+      if (
+        secuencia !== secuenciaPresenciaBosque ||
+        !capaPresencia.isConnected
+      ) {
+        return;
+      }
+
+      capaPresencia.querySelector(".presencia-fugaz")?.remove();
+      programarPresenciaFugazBosque(secuencia, capaPresencia);
+    }, duracion + 100);
+  }, demora);
+}
+
+function crearPresenciaFugazBosque(capaPresencia) {
+  const rutas = [
+    { x: 30, y: 35, dx: 8, dy: 2, altura: 27, opacidad: 0.22 },
+    { x: 69, y: 37, dx: -9, dy: 1, altura: 25, opacidad: 0.19 },
+    { x: 41, y: 48, dx: 11, dy: -1, altura: 31, opacidad: 0.16 },
+    { x: 60, y: 45, dx: -10, dy: 2, altura: 28, opacidad: 0.18 },
+  ];
+  let indiceRuta = Math.floor(Math.random() * rutas.length);
+
+  if (indiceRuta === ultimaRutaPresenciaBosque) {
+    indiceRuta = (indiceRuta + 1 + Math.floor(Math.random() * 3)) % rutas.length;
+  }
+
+  ultimaRutaPresenciaBosque = indiceRuta;
+  const ruta = rutas[indiceRuta];
+  const duracion = aleatorioEntre(
+    duracionMinimaPresenciaBosque,
+    duracionMaximaPresenciaBosque,
+  );
+  const silueta = imagenSiluetaBosque.cloneNode();
+
+  silueta.className = "presencia-fugaz";
+  silueta.alt = "";
+  silueta.draggable = false;
+  silueta.style.left = `${ruta.x}%`;
+  silueta.style.top = `${ruta.y}%`;
+  silueta.style.height = `${ruta.altura}%`;
+  silueta.style.setProperty(
+    "--recorrido-x-presencia",
+    `${(capaPresencia.clientWidth * ruta.dx) / 100}px`,
+  );
+  silueta.style.setProperty("--recorrido-y-presencia", `${ruta.dy}px`);
+  silueta.style.setProperty("--opacidad-presencia", ruta.opacidad);
+  silueta.style.setProperty("--duracion-presencia", `${duracion.toFixed(0)}ms`);
+  capaPresencia.appendChild(silueta);
+
+  return duracion;
+}
+
+function detenerPresenciaBosque() {
+  secuenciaPresenciaBosque++;
+  ultimaRutaPresenciaBosque = -1;
+
+  if (temporizadorPresenciaBosque) {
+    clearTimeout(temporizadorPresenciaBosque);
+    temporizadorPresenciaBosque = null;
+  }
+
+  contenedorEscenario
+    .querySelectorAll(".capa-presencia-bosque")
+    .forEach((capa) => capa.remove());
+}
+
+function actualizarAranaBosqueMision() {
+  detenerAranaBosque();
+
+  if (escenarioActual !== 0 || misionActual !== 6) return;
+
+  const capaAranas = document.createElement("div");
+  const secuencia = secuenciaAranaBosque;
+
+  capaAranas.className = "capa-aranas-bosque";
+  capaAranas.setAttribute("aria-hidden", "true");
+  contenedorEscenario.insertBefore(capaAranas, personajeImagen);
+
+  if (!imagenAranaBosque) {
+    imagenAranaBosque = new Image();
+    imagenAranaBosque.src =
+      "assets/images/elementos/arana-bosque-prohibido.png";
+  }
+
+  programarDescensoAranaBosque(secuencia, capaAranas);
+}
+
+function programarDescensoAranaBosque(
+  secuencia,
+  capaAranas,
+  demoraForzada = null,
+) {
+  const demora =
+    demoraForzada ??
+    aleatorioEntre(intervaloMinimoAranaBosque, intervaloMaximoAranaBosque);
+
+  temporizadorAranaBosque = setTimeout(() => {
+    if (
+      secuencia !== secuenciaAranaBosque ||
+      escenarioActual !== 0 ||
+      misionActual !== 6 ||
+      !pantallaJuego.classList.contains("activa") ||
+      !capaAranas.isConnected
+    ) {
+      detenerAranaBosque();
+      return;
+    }
+
+    if (contenedorEscenario.querySelector(".presencia-fugaz")) {
+      programarDescensoAranaBosque(
+        secuencia,
+        capaAranas,
+        aleatorioEntre(4000, 8000),
+      );
+      return;
+    }
+
+    const duracion = crearDescensoAranaBosque(capaAranas);
+
+    temporizadorAranaBosque = setTimeout(() => {
+      if (secuencia !== secuenciaAranaBosque || !capaAranas.isConnected) {
+        return;
+      }
+
+      capaAranas.querySelector(".descenso-arana")?.remove();
+      programarDescensoAranaBosque(secuencia, capaAranas);
+    }, duracion + 100);
+  }, demora);
+}
+
+function crearDescensoAranaBosque(capaAranas) {
+  const zonas = [
+    { x: 23, descenso: 37 },
+    { x: 39, descenso: 44 },
+    { x: 59, descenso: 34 },
+    { x: 76, descenso: 42 },
+  ];
+  let indiceZona = Math.floor(Math.random() * zonas.length);
+
+  if (indiceZona === ultimaZonaAranaBosque) {
+    indiceZona = (indiceZona + 1 + Math.floor(Math.random() * 3)) % zonas.length;
+  }
+
+  ultimaZonaAranaBosque = indiceZona;
+  const zona = zonas[indiceZona];
+  const duracion = aleatorioEntre(
+    duracionMinimaAranaBosque,
+    duracionMaximaAranaBosque,
+  );
+  const descenso = document.createElement("div");
+  const arana = imagenAranaBosque.cloneNode();
+
+  descenso.className = "descenso-arana";
+  descenso.style.left = `${zona.x}%`;
+  descenso.style.setProperty(
+    "--longitud-hilo-arana",
+    `${(capaAranas.clientHeight * zona.descenso) / 100}px`,
+  );
+  descenso.style.setProperty(
+    "--duracion-descenso-arana",
+    `${duracion.toFixed(0)}ms`,
+  );
+  descenso.style.setProperty(
+    "--retraso-balanceo-arana",
+    `${-aleatorioEntre(0, 2.8).toFixed(2)}s`,
+  );
+
+  arana.className = "arana-bosque";
+  arana.alt = "";
+  arana.draggable = false;
+  descenso.appendChild(arana);
+  capaAranas.appendChild(descenso);
+
+  return duracion;
+}
+
+function detenerAranaBosque() {
+  secuenciaAranaBosque++;
+  ultimaZonaAranaBosque = -1;
+
+  if (temporizadorAranaBosque) {
+    clearTimeout(temporizadorAranaBosque);
+    temporizadorAranaBosque = null;
+  }
+
+  contenedorEscenario
+    .querySelectorAll(".capa-aranas-bosque")
     .forEach((capa) => capa.remove());
 }
 

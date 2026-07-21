@@ -454,6 +454,90 @@ button:disabled {
     animation: iluminarOjosLobo var(--duracion-brillo-lobo) ease-in-out both;
 }
 
+/* Aparicion muy ocasional entre los arboles de la mision 7. */
+.capa-presencia-bosque {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 1;
+    height: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    pointer-events: none;
+    transform: translateX(-50%);
+    contain: layout style paint;
+}
+
+.presencia-fugaz {
+    position: absolute;
+    display: block;
+    width: auto;
+    max-width: none;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    filter: blur(0.65px);
+    transform: translate3d(-50%, -50%, 0) scale(0.92);
+    animation: cruzarPresenciaBosque var(--duracion-presencia) cubic-bezier(0.35, 0.08, 0.58, 0.95) forwards;
+    will-change: transform, opacity;
+}
+
+/* Descenso ocasional de una arana en el plano profundo de la mision 7. */
+.capa-aranas-bosque {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 1;
+    height: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    pointer-events: none;
+    transform: translateX(-50%);
+    contain: layout style paint;
+}
+
+.descenso-arana {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    pointer-events: none;
+}
+
+.descenso-arana::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 1px;
+    height: var(--longitud-hilo-arana);
+    background: linear-gradient(to bottom, rgba(211, 219, 205, 0.08), rgba(220, 226, 214, 0.3));
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    animation: extenderHiloArana var(--duracion-descenso-arana) ease-in-out forwards;
+    will-change: transform, opacity;
+}
+
+.arana-bosque {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    display: block;
+    width: clamp(30px, 5vw, 42px);
+    height: auto;
+    max-width: none;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    translate: -50% -27%;
+    transform: rotate(-0.7deg);
+    animation:
+        moverAranaBosque var(--duracion-descenso-arana) ease-in-out forwards,
+        balancearAranaBosque 2.8s ease-in-out var(--retraso-balanceo-arana) infinite alternate;
+    will-change: translate, transform, opacity;
+}
+
 /* Lluvia y relampagos exclusivos de la mision de la tormenta. */
 .capa-tormenta {
     position: absolute;
@@ -1387,6 +1471,84 @@ button:disabled {
     }
 }
 
+@keyframes cruzarPresenciaBosque {
+    0% {
+        opacity: 0;
+        transform: translate3d(-50%, -50%, 0) scale(0.92);
+    }
+
+    18% {
+        opacity: calc(var(--opacidad-presencia) * 0.62);
+    }
+
+    39% {
+        opacity: var(--opacidad-presencia);
+    }
+
+    66% {
+        opacity: calc(var(--opacidad-presencia) * 0.74);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate3d(
+            calc(-50% + var(--recorrido-x-presencia)),
+            calc(-50% + var(--recorrido-y-presencia)),
+            0
+        ) scale(1.015);
+    }
+}
+
+@keyframes extenderHiloArana {
+    0%,
+    100% {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+
+    30%,
+    70% {
+        opacity: 0.26;
+        transform: scaleY(1);
+    }
+}
+
+@keyframes moverAranaBosque {
+    0% {
+        opacity: 0;
+        translate: -50% -27%;
+    }
+
+    12% {
+        opacity: 0.42;
+    }
+
+    30%,
+    70% {
+        opacity: 0.62;
+        translate: -50% calc(-27% + var(--longitud-hilo-arana));
+    }
+
+    88% {
+        opacity: 0.38;
+    }
+
+    100% {
+        opacity: 0;
+        translate: -50% -27%;
+    }
+}
+
+@keyframes balancearAranaBosque {
+    0% {
+        transform: rotate(-0.8deg) scale(0.99);
+    }
+
+    100% {
+        transform: rotate(0.9deg) scale(1.01);
+    }
+}
+
 @keyframes respirar {
     0%,
     100% {
@@ -1691,11 +1853,104 @@ button:disabled {
         opacity: 0.55;
     }
 
+    .presencia-fugaz {
+        animation-name: aparecerPresenciaBosqueReducida;
+        will-change: auto;
+    }
+
+    .descenso-arana::before {
+        animation-name: mostrarHiloAranaReducido;
+        will-change: auto;
+    }
+
+    .arana-bosque {
+        translate: -50% calc(-27% + var(--longitud-hilo-arana));
+        transform: none;
+        animation: aparecerAranaBosqueReducida var(--duracion-descenso-arana) ease-in-out forwards;
+        will-change: auto;
+    }
+
+    .descenso-arana::before {
+        animation-name: mostrarHiloAranaReducido;
+        will-change: auto;
+    }
+
+    .arana-bosque {
+        translate: -50% calc(-27% + var(--longitud-hilo-arana));
+        transform: none;
+        animation: aparecerAranaBosqueReducida var(--duracion-descenso-arana) ease-in-out forwards;
+        will-change: auto;
+    }
+
     .presentacion-mision-imagen,
     .fondo-escenario-fundido,
     #pantallaJuego.interfaz-revelandose > :not(.escenario):not(.modal-historia),
     #pantallaJuego.interfaz-revelandose .personaje-imagen {
         transition-duration: 1ms;
         transition-delay: 0ms;
+    }
+}
+
+@keyframes aparecerPresenciaBosqueReducida {
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    40%,
+    65% {
+        opacity: calc(var(--opacidad-presencia) * 0.72);
+    }
+}
+
+@keyframes mostrarHiloAranaReducido {
+    0%,
+    100% {
+        opacity: 0;
+        transform: scaleY(1);
+    }
+
+    35%,
+    65% {
+        opacity: 0.18;
+        transform: scaleY(1);
+    }
+}
+
+@keyframes aparecerAranaBosqueReducida {
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    35%,
+    65% {
+        opacity: 0.52;
+    }
+}
+
+@keyframes mostrarHiloAranaReducido {
+    0%,
+    100% {
+        opacity: 0;
+        transform: scaleY(1);
+    }
+
+    35%,
+    65% {
+        opacity: 0.18;
+        transform: scaleY(1);
+    }
+}
+
+@keyframes aparecerAranaBosqueReducida {
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    35%,
+    65% {
+        opacity: 0.52;
     }
 }
