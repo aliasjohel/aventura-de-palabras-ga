@@ -302,6 +302,158 @@ button:disabled {
     z-index: 2;
 }
 
+/* Niebla procedural exclusiva de la mision 5: tres planos suaves y livianos. */
+.capa-niebla {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+}
+
+.niebla {
+    --variacion-opacidad-niebla: 0;
+    position: absolute;
+    left: -42%;
+    width: 184%;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate3d(0, var(--desfase-vertical-niebla), 0);
+    will-change: transform, opacity;
+    animation-duration: var(--duracion-niebla);
+    animation-delay: var(--retraso-niebla);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+.niebla::before,
+.niebla::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    transition: opacity 2800ms ease-in-out;
+    will-change: transform, opacity;
+}
+
+.niebla-lejana {
+    --duracion-densidad-a: 29s;
+    --duracion-densidad-b: 37s;
+    top: 4%;
+    height: 58%;
+    opacity: calc(0.15 + var(--variacion-opacidad-niebla));
+    background:
+        radial-gradient(ellipse at 13% 45%, rgba(224, 233, 226, 0.54) 0 12%, transparent 38%),
+        radial-gradient(ellipse at 43% 54%, rgba(208, 221, 215, 0.46) 0 16%, transparent 43%),
+        radial-gradient(ellipse at 76% 38%, rgba(230, 237, 232, 0.5) 0 13%, transparent 39%),
+        radial-gradient(ellipse at 94% 62%, rgba(199, 215, 208, 0.42) 0 11%, transparent 36%);
+    animation-name: flotarNieblaDerecha;
+}
+
+.niebla-media {
+    --duracion-densidad-a: 35s;
+    --duracion-densidad-b: 43s;
+    top: 30%;
+    height: 55%;
+    opacity: calc(0.18 + var(--variacion-opacidad-niebla));
+    background:
+        radial-gradient(ellipse at 8% 60%, rgba(233, 239, 235, 0.58) 0 11%, transparent 36%),
+        radial-gradient(ellipse at 34% 46%, rgba(214, 226, 220, 0.52) 0 15%, transparent 42%),
+        radial-gradient(ellipse at 63% 65%, rgba(229, 236, 231, 0.56) 0 14%, transparent 41%),
+        radial-gradient(ellipse at 90% 42%, rgba(205, 219, 212, 0.48) 0 13%, transparent 38%);
+    animation-name: flotarNieblaIzquierda;
+}
+
+.niebla-cercana {
+    --duracion-densidad-a: 47s;
+    --duracion-densidad-b: 59s;
+    top: 51%;
+    height: 53%;
+    opacity: calc(0.16 + var(--variacion-opacidad-niebla));
+    background:
+        radial-gradient(ellipse at 16% 58%, rgba(238, 242, 239, 0.62) 0 12%, transparent 39%),
+        radial-gradient(ellipse at 47% 68%, rgba(220, 230, 225, 0.58) 0 17%, transparent 45%),
+        radial-gradient(ellipse at 79% 50%, rgba(235, 240, 237, 0.6) 0 15%, transparent 42%);
+    animation-name: flotarNieblaCercana;
+}
+
+.niebla-lejana::before,
+.niebla-media::before,
+.niebla-cercana::before {
+    background: radial-gradient(ellipse at 50% 50%, rgba(226, 234, 229, 0.38) 0 22%, transparent 69%);
+    transform: translate3d(11%, 9%, 0) scale(0.82);
+    animation: variarDensidadNieblaA var(--duracion-densidad-a) ease-in-out infinite alternate;
+}
+
+.niebla-lejana::after,
+.niebla-media::after,
+.niebla-cercana::after {
+    background: radial-gradient(ellipse at 50% 50%, rgba(195, 211, 203, 0.3) 0 18%, transparent 66%);
+    transform: translate3d(-14%, -7%, 0) scale(0.7);
+    animation: variarDensidadNieblaB var(--duracion-densidad-b) ease-in-out -19s infinite alternate;
+}
+
+/* El centro respira ocasionalmente sin hacer desaparecer la niebla lateral. */
+.capa-niebla.sendero-despejado .niebla::before {
+    opacity: 0.08 !important;
+}
+
+.capa-niebla.sendero-despejado .niebla::after {
+    opacity: 0.04 !important;
+}
+
+/* Ojos superpuestos sobre los lobos del fondo, exclusivos de la mision 6. */
+.capa-miradas-lobos {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 1;
+    height: 100%;
+    aspect-ratio: 3 / 2;
+    pointer-events: none;
+    transform: translateX(-50%);
+    contain: layout style paint;
+}
+
+.mirada-lobo {
+    position: absolute;
+    width: 2.05%;
+    height: 1.35%;
+    opacity: 1;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    animation: respirarMiradaLobo var(--duracion-respiracion-lobo) ease-in-out var(--retraso-respiracion-lobo) infinite alternate;
+    will-change: transform;
+}
+
+.mirada-lobo::before,
+.mirada-lobo::after {
+    content: "";
+    position: absolute;
+    top: 24%;
+    width: 29%;
+    height: 52%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff6bb 0 14%, #efbc5a 35%, rgba(207, 113, 24, 0.3) 62%, transparent 74%);
+    box-shadow: 0 0 3px rgba(244, 184, 72, 0.72), 0 0 7px rgba(214, 109, 23, 0.38);
+    opacity: 0;
+}
+
+.mirada-lobo::before {
+    left: 3%;
+}
+
+.mirada-lobo::after {
+    right: 3%;
+}
+
+.mirada-lobo.brillando::before,
+.mirada-lobo.brillando::after {
+    animation: iluminarOjosLobo var(--duracion-brillo-lobo) ease-in-out both;
+}
+
 /* Lluvia y relampagos exclusivos de la mision de la tormenta. */
 .capa-tormenta {
     position: absolute;
@@ -1137,6 +1289,104 @@ button:disabled {
     }
 }
 
+@keyframes flotarNieblaDerecha {
+    0% { transform: translate3d(-9%, var(--desfase-vertical-niebla), 0) scale(1.01); opacity: calc(0.12 + var(--variacion-opacidad-niebla)); }
+    38% { opacity: calc(0.18 + var(--variacion-opacidad-niebla)); }
+    67% { transform: translate3d(3%, calc(var(--desfase-vertical-niebla) + 1.5%), 0) scale(1.035); opacity: calc(0.14 + var(--variacion-opacidad-niebla)); }
+    100% { transform: translate3d(10%, var(--desfase-vertical-niebla), 0) scale(1); opacity: calc(0.17 + var(--variacion-opacidad-niebla)); }
+}
+
+@keyframes flotarNieblaIzquierda {
+    0% { transform: translate3d(11%, var(--desfase-vertical-niebla), 0) scale(1.02); opacity: calc(0.16 + var(--variacion-opacidad-niebla)); }
+    31% { opacity: calc(0.21 + var(--variacion-opacidad-niebla)); }
+    72% { transform: translate3d(-3%, calc(var(--desfase-vertical-niebla) - 1%), 0) scale(1); opacity: calc(0.15 + var(--variacion-opacidad-niebla)); }
+    100% { transform: translate3d(-10%, var(--desfase-vertical-niebla), 0) scale(1.035); opacity: calc(0.19 + var(--variacion-opacidad-niebla)); }
+}
+
+@keyframes flotarNieblaCercana {
+    0% { transform: translate3d(-6%, calc(var(--desfase-vertical-niebla) + 1%), 0) scale(1.04); opacity: calc(0.13 + var(--variacion-opacidad-niebla)); }
+    42% { opacity: calc(0.19 + var(--variacion-opacidad-niebla)); }
+    69% { transform: translate3d(1%, calc(var(--desfase-vertical-niebla) - 1.5%), 0) scale(1); opacity: calc(0.15 + var(--variacion-opacidad-niebla)); }
+    100% { transform: translate3d(7%, var(--desfase-vertical-niebla), 0) scale(1.055); opacity: calc(0.18 + var(--variacion-opacidad-niebla)); }
+}
+
+@keyframes variarDensidadNieblaA {
+    0% {
+        opacity: 0.38;
+        transform: translate3d(4%, 5%, 0) scale(0.76);
+    }
+
+    36% {
+        opacity: 0.82;
+        transform: translate3d(13%, 10%, 0) scale(0.91);
+    }
+
+    71% {
+        opacity: 0.52;
+        transform: translate3d(-2%, 7%, 0) scale(0.83);
+    }
+
+    100% {
+        opacity: 0.94;
+        transform: translate3d(8%, 2%, 0) scale(0.98);
+    }
+}
+
+@keyframes variarDensidadNieblaB {
+    0% {
+        opacity: 0.74;
+        transform: translate3d(-15%, -8%, 0) scale(0.72);
+    }
+
+    43% {
+        opacity: 0.34;
+        transform: translate3d(-4%, -3%, 0) scale(0.9);
+    }
+
+    76% {
+        opacity: 0.86;
+        transform: translate3d(-11%, 4%, 0) scale(0.79);
+    }
+
+    100% {
+        opacity: 0.46;
+        transform: translate3d(3%, -6%, 0) scale(0.96);
+    }
+}
+
+@keyframes respirarMiradaLobo {
+    0% {
+        transform: translate(-50%, -50%) rotate(-0.18deg) scale(0.99);
+    }
+
+    55% {
+        transform: translate(-50%, calc(-50% - 0.35px)) rotate(0.14deg) scale(1.018);
+    }
+
+    100% {
+        transform: translate(-50%, calc(-50% + 0.28px)) rotate(-0.08deg) scale(1.005);
+    }
+}
+
+@keyframes iluminarOjosLobo {
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    24% {
+        opacity: 0.72;
+    }
+
+    58% {
+        opacity: 0.9;
+    }
+
+    78% {
+        opacity: 0.64;
+    }
+}
+
 @keyframes respirar {
     0%,
     100% {
@@ -1412,6 +1662,33 @@ button:disabled {
 
     .destello-rayo.activo {
         animation-duration: 240ms;
+    }
+
+    .niebla {
+        animation: none;
+        will-change: auto;
+    }
+
+    .niebla::before,
+    .niebla::after {
+        animation: none;
+        transition-duration: 1ms;
+        will-change: auto;
+    }
+
+    .niebla-lejana { transform: translate3d(-3%, 0, 0); opacity: 0.13; }
+    .niebla-media { transform: translate3d(2%, 0, 0); opacity: 0.16; }
+    .niebla-cercana { transform: translate3d(-1%, 0, 0); opacity: 0.14; }
+
+    .mirada-lobo {
+        animation: none;
+        will-change: auto;
+    }
+
+    .mirada-lobo.brillando::before,
+    .mirada-lobo.brillando::after {
+        animation: none;
+        opacity: 0.55;
     }
 
     .presentacion-mision-imagen,

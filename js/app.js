@@ -106,6 +106,14 @@ const intervaloMinimoRafagaHojas = 8000;
 const intervaloMaximoRafagaHojas = 15000;
 const intervaloMinimoRayo = 10000;
 const intervaloMaximoRayo = 25000;
+const intervaloMinimoClaroNiebla = 16000;
+const intervaloMaximoClaroNiebla = 29000;
+const duracionMinimaClaroNiebla = 6500;
+const duracionMaximaClaroNiebla = 9500;
+const intervaloMinimoMiradaLobos = 3800;
+const intervaloMaximoMiradaLobos = 8500;
+const duracionMinimaMiradaLobos = 1000;
+const duracionMaximaMiradaLobos = 2000;
 const prefiereReducirMovimiento = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 );
@@ -262,6 +270,11 @@ let temporizadorRafagaHojas = null;
 let secuenciaAmbienteHojas = 0;
 let temporizadorRayo = null;
 let secuenciaTormenta = 0;
+let secuenciaNiebla = 0;
+let temporizadorNiebla = null;
+let secuenciaMiradasLobos = 0;
+let temporizadorMiradasLobos = null;
+let ultimoLoboIluminado = -1;
 const desafiosPorMision = 3;
 
 // ====================
@@ -594,6 +607,8 @@ function actualizarVistaMisionDev() {
   actualizarEscenaPorMision();
   actualizarAmbienteHojasMision();
   actualizarTormentaMision();
+  actualizarNieblaMision();
+  actualizarMiradasLobosMision();
   mensajePersonaje.textContent = "¡Comienza la expedición!";
   actualizarControlesDev();
 }
@@ -872,6 +887,8 @@ function detenerSonidos() {
   detenerPolvoImpacto();
   detenerAmbienteHojas();
   detenerTormenta();
+  detenerNiebla();
+  detenerMiradasLobos();
   detenerEfectos();
   detenerAmbiente();
 }
@@ -1263,6 +1280,8 @@ function iniciarMisionAventura({ presentarMision = false } = {}) {
   actualizarEscenaPorMision();
   actualizarAmbienteHojasMision();
   actualizarTormentaMision();
+  actualizarNieblaMision();
+  actualizarMiradasLobosMision();
   mensajePersonaje.textContent = "¡Comienza la expedición!";
   teclado.innerHTML = "";
   textoPista.classList.add("oculto");
@@ -1295,6 +1314,8 @@ function avanzarMision() {
   detenerAmbiente();
   detenerAmbienteHojas();
   detenerTormenta();
+  detenerNiebla();
+  detenerMiradasLobos();
 
   misionActual++;
   mensajePersonaje.textContent = "🏆 ¡Misión completada!";
@@ -1751,6 +1772,218 @@ function actualizarTormentaMision() {
   contenedorEscenario.appendChild(capaTormenta);
 
   programarRayo(secuencia, capaTormenta, destello);
+}
+
+function actualizarNieblaMision() {
+  detenerNiebla();
+
+  if (escenarioActual !== 0 || misionActual !== 4) return;
+
+  const capaNiebla = document.createElement("div");
+  const configuraciones = [
+    { nombre: "lejana", duracion: [31, 38], retraso: -17 },
+    { nombre: "media", duracion: [37, 46], retraso: -29 },
+    { nombre: "cercana", duracion: [52, 65], retraso: -41 },
+  ];
+  const secuencia = secuenciaNiebla;
+
+  capaNiebla.className = "capa-niebla";
+  capaNiebla.setAttribute("aria-hidden", "true");
+
+  configuraciones.forEach(({ nombre, duracion, retraso }) => {
+    const franja = document.createElement("div");
+    franja.className = `niebla niebla-${nombre}`;
+    franja.style.setProperty(
+      "--duracion-niebla",
+      `${aleatorioEntre(duracion[0], duracion[1]).toFixed(2)}s`,
+    );
+    franja.style.setProperty(
+      "--retraso-niebla",
+      `${retraso - aleatorioEntre(0, 11).toFixed(2)}s`,
+    );
+    franja.style.setProperty(
+      "--desfase-vertical-niebla",
+      `${aleatorioEntre(-2.5, 2.5).toFixed(2)}%`,
+    );
+
+    if (!prefiereReducirMovimiento.matches) {
+      franja.addEventListener("animationiteration", () => {
+        if (secuencia !== secuenciaNiebla || !franja.isConnected) return;
+
+        const variacion = aleatorioEntre(0.94, 1.07);
+        const nuevaDuracion =
+          aleatorioEntre(duracion[0], duracion[1]) * variacion;
+        franja.style.setProperty(
+          "--duracion-niebla",
+          `${nuevaDuracion.toFixed(2)}s`,
+        );
+        franja.style.setProperty(
+          "--variacion-opacidad-niebla",
+          aleatorioEntre(-0.025, 0.025).toFixed(3),
+        );
+      });
+    }
+
+    capaNiebla.appendChild(franja);
+  });
+
+  contenedorEscenario.insertBefore(capaNiebla, personajeImagen);
+  programarClaroSenderoNiebla(secuencia, capaNiebla);
+}
+
+function programarClaroSenderoNiebla(secuencia, capaNiebla) {
+  const demora = aleatorioEntre(
+    intervaloMinimoClaroNiebla,
+    intervaloMaximoClaroNiebla,
+  );
+
+  temporizadorNiebla = setTimeout(() => {
+    if (
+      secuencia !== secuenciaNiebla ||
+      escenarioActual !== 0 ||
+      misionActual !== 4 ||
+      !pantallaJuego.classList.contains("activa") ||
+      !capaNiebla.isConnected
+    ) {
+      detenerNiebla();
+      return;
+    }
+
+    capaNiebla.classList.add("sendero-despejado");
+
+    temporizadorNiebla = setTimeout(() => {
+      if (secuencia !== secuenciaNiebla || !capaNiebla.isConnected) return;
+
+      capaNiebla.classList.remove("sendero-despejado");
+      programarClaroSenderoNiebla(secuencia, capaNiebla);
+    }, aleatorioEntre(duracionMinimaClaroNiebla, duracionMaximaClaroNiebla));
+  }, demora);
+}
+
+function detenerNiebla() {
+  secuenciaNiebla++;
+
+  if (temporizadorNiebla) {
+    clearTimeout(temporizadorNiebla);
+    temporizadorNiebla = null;
+  }
+
+  contenedorEscenario
+    .querySelectorAll(".capa-niebla")
+    .forEach((capa) => capa.remove());
+}
+
+function actualizarMiradasLobosMision() {
+  detenerMiradasLobos();
+
+  if (escenarioActual !== 0 || misionActual !== 5) return;
+
+  const capaMiradas = document.createElement("div");
+  const posicionesMiradas = [
+    { x: 23.9, y: 33.4 },
+    { x: 81.65, y: 38.55 },
+    { x: 45.3, y: 45.6 },
+    { x: 53.2, y: 47.25 },
+  ];
+  const secuencia = secuenciaMiradasLobos;
+
+  capaMiradas.className = "capa-miradas-lobos";
+  capaMiradas.setAttribute("aria-hidden", "true");
+
+  posicionesMiradas.forEach(({ x, y }, indice) => {
+    const mirada = document.createElement("div");
+    mirada.className = "mirada-lobo";
+    mirada.style.left = `${x}%`;
+    mirada.style.top = `${y}%`;
+    mirada.style.setProperty(
+      "--duracion-respiracion-lobo",
+      `${aleatorioEntre(6.2, 9.4).toFixed(2)}s`,
+    );
+    mirada.style.setProperty(
+      "--retraso-respiracion-lobo",
+      `${-aleatorioEntre(0, 8).toFixed(2)}s`,
+    );
+    mirada.dataset.indiceLobo = indice;
+    capaMiradas.appendChild(mirada);
+  });
+
+  contenedorEscenario.insertBefore(capaMiradas, personajeImagen);
+  programarBrilloOjosLobos(secuencia, capaMiradas);
+}
+
+function programarBrilloOjosLobos(secuencia, capaMiradas) {
+  const demora = aleatorioEntre(
+    intervaloMinimoMiradaLobos,
+    intervaloMaximoMiradaLobos,
+  );
+
+  temporizadorMiradasLobos = setTimeout(() => {
+    if (
+      secuencia !== secuenciaMiradasLobos ||
+      escenarioActual !== 0 ||
+      misionActual !== 5 ||
+      !pantallaJuego.classList.contains("activa") ||
+      !capaMiradas.isConnected
+    ) {
+      detenerMiradasLobos();
+      return;
+    }
+
+    const miradas = [...capaMiradas.querySelectorAll(".mirada-lobo")];
+    const cantidad = Math.random() < 0.38 ? 2 : 1;
+    let indiceInicial = Math.floor(Math.random() * miradas.length);
+
+    if (indiceInicial === ultimoLoboIluminado) {
+      indiceInicial = (indiceInicial + 1 + Math.floor(Math.random() * 3)) % 4;
+    }
+
+    const indices = [indiceInicial];
+
+    if (cantidad === 2) {
+      let segundoIndice;
+      do {
+        segundoIndice = Math.floor(Math.random() * miradas.length);
+      } while (segundoIndice === indiceInicial);
+      indices.push(segundoIndice);
+    }
+
+    ultimoLoboIluminado = indiceInicial;
+    const duracion = aleatorioEntre(
+      duracionMinimaMiradaLobos,
+      duracionMaximaMiradaLobos,
+    );
+
+    indices.forEach((indice) => {
+      miradas[indice].style.setProperty(
+        "--duracion-brillo-lobo",
+        `${duracion.toFixed(0)}ms`,
+      );
+      miradas[indice].classList.add("brillando");
+    });
+
+    temporizadorMiradasLobos = setTimeout(() => {
+      if (secuencia !== secuenciaMiradasLobos || !capaMiradas.isConnected) {
+        return;
+      }
+
+      indices.forEach((indice) => miradas[indice].classList.remove("brillando"));
+      programarBrilloOjosLobos(secuencia, capaMiradas);
+    }, duracion);
+  }, demora);
+}
+
+function detenerMiradasLobos() {
+  secuenciaMiradasLobos++;
+  ultimoLoboIluminado = -1;
+
+  if (temporizadorMiradasLobos) {
+    clearTimeout(temporizadorMiradasLobos);
+    temporizadorMiradasLobos = null;
+  }
+
+  contenedorEscenario
+    .querySelectorAll(".capa-miradas-lobos")
+    .forEach((capa) => capa.remove());
 }
 
 function programarRayo(secuencia, capaTormenta, destello) {
