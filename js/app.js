@@ -104,6 +104,8 @@ const duracionZoomPresentacion = 1350;
 const duracionFundidoFondo = 700;
 const intervaloMinimoRafagaHojas = 8000;
 const intervaloMaximoRafagaHojas = 15000;
+const intervaloMinimoRayo = 10000;
+const intervaloMaximoRayo = 25000;
 const prefiereReducirMovimiento = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 );
@@ -258,6 +260,8 @@ let transicionCinematicaActiva = false;
 let secuenciaFundidoFondo = 0;
 let temporizadorRafagaHojas = null;
 let secuenciaAmbienteHojas = 0;
+let temporizadorRayo = null;
+let secuenciaTormenta = 0;
 const desafiosPorMision = 3;
 
 // ====================
@@ -589,6 +593,7 @@ function actualizarVistaMisionDev() {
   cancelarRetornoEstadoBaseExplorador();
   actualizarEscenaPorMision();
   actualizarAmbienteHojasMision();
+  actualizarTormentaMision();
   mensajePersonaje.textContent = "¡Comienza la expedición!";
   actualizarControlesDev();
 }
@@ -866,6 +871,7 @@ function desvanecerMusicaPrologo(duracion) {
 function detenerSonidos() {
   detenerPolvoImpacto();
   detenerAmbienteHojas();
+  detenerTormenta();
   detenerEfectos();
   detenerAmbiente();
 }
@@ -1229,6 +1235,7 @@ function logAudioEvento(mensaje, detalle = "") {
 function iniciarMisionAventura({ presentarMision = false } = {}) {
   detenerPolvoImpacto();
   detenerAmbienteHojas();
+  detenerTormenta();
   detenerEfectos();
   actualizarAmbienteMision();
 
@@ -1255,6 +1262,7 @@ function iniciarMisionAventura({ presentarMision = false } = {}) {
   personaje.textContent = "😄";
   actualizarEscenaPorMision();
   actualizarAmbienteHojasMision();
+  actualizarTormentaMision();
   mensajePersonaje.textContent = "¡Comienza la expedición!";
   teclado.innerHTML = "";
   textoPista.classList.add("oculto");
@@ -1286,6 +1294,7 @@ function avanzarMision() {
   historiaMisionPendiente = true;
   detenerAmbiente();
   detenerAmbienteHojas();
+  detenerTormenta();
 
   misionActual++;
   mensajePersonaje.textContent = "🏆 ¡Misión completada!";
@@ -1721,6 +1730,74 @@ function crearHojaViento(capaHojas, ancho, alto) {
   const eliminarHoja = () => hoja.remove();
   hoja.addEventListener("animationend", eliminarHoja, { once: true });
   setTimeout(eliminarHoja, duracion + retraso + 500);
+}
+
+function actualizarTormentaMision() {
+  detenerTormenta();
+
+  if (escenarioActual !== 0 || misionActual !== 3) return;
+
+  const capaTormenta = document.createElement("div");
+  const lluviaCercana = document.createElement("div");
+  const destello = document.createElement("div");
+  const secuencia = secuenciaTormenta;
+
+  capaTormenta.className = "capa-tormenta";
+  capaTormenta.setAttribute("aria-hidden", "true");
+  lluviaCercana.className = "lluvia-cercana";
+  destello.className = "destello-rayo";
+  capaTormenta.appendChild(lluviaCercana);
+  capaTormenta.appendChild(destello);
+  contenedorEscenario.appendChild(capaTormenta);
+
+  programarRayo(secuencia, capaTormenta, destello);
+}
+
+function programarRayo(secuencia, capaTormenta, destello) {
+  const demora = aleatorioEntre(intervaloMinimoRayo, intervaloMaximoRayo);
+
+  temporizadorRayo = setTimeout(() => {
+    temporizadorRayo = null;
+
+    if (
+      secuencia !== secuenciaTormenta ||
+      escenarioActual !== 0 ||
+      misionActual !== 3 ||
+      !pantallaJuego.classList.contains("activa") ||
+      !capaTormenta.isConnected
+    ) {
+      detenerTormenta();
+      return;
+    }
+
+    activarDestelloRayo(destello);
+    programarRayo(secuencia, capaTormenta, destello);
+  }, demora);
+}
+
+function activarDestelloRayo(destello) {
+  destello.classList.remove("activo");
+  void destello.offsetWidth;
+  destello.classList.add("activo");
+  reproducirTruenoRayo();
+}
+
+function reproducirTruenoRayo() {
+  // Punto de sincronizacion futuro: reproducir aqui el archivo independiente
+  // assets/sounds/trueno.mp3 cuando ese recurso sea incorporado al proyecto.
+}
+
+function detenerTormenta() {
+  secuenciaTormenta++;
+
+  if (temporizadorRayo) {
+    clearTimeout(temporizadorRayo);
+    temporizadorRayo = null;
+  }
+
+  contenedorEscenario
+    .querySelectorAll(".capa-tormenta")
+    .forEach((capa) => capa.remove());
 }
 
 function aleatorioEntre(minimo, maximo) {

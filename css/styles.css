@@ -302,6 +302,81 @@ button:disabled {
     z-index: 2;
 }
 
+/* Lluvia y relampagos exclusivos de la mision de la tormenta. */
+.capa-tormenta {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    overflow: hidden;
+    pointer-events: none;
+    background: rgba(7, 18, 29, 0.045);
+}
+
+.capa-tormenta::before,
+.capa-tormenta::after {
+    content: "";
+    position: absolute;
+    inset: -50% -25%;
+    will-change: transform;
+}
+
+/* Muchas gotas finas y veloces, combinadas en patrones desfasados. */
+.capa-tormenta::before {
+    background-image:
+        radial-gradient(ellipse 0.7px 6px at center, rgba(220, 239, 255, 0.72) 0 38%, transparent 78%),
+        radial-gradient(ellipse 0.55px 4px at center, rgba(198, 226, 249, 0.56) 0 36%, transparent 76%),
+        radial-gradient(ellipse 0.8px 8px at center, rgba(231, 244, 255, 0.46) 0 34%, transparent 74%);
+    background-position: 3px 7px, 17px 31px, 29px 13px;
+    background-size: 23px 43px, 37px 59px, 53px 71px;
+    opacity: 0.42;
+    transform: translate3d(0, -24%, 0) rotate(-7deg);
+    animation: caerLluviaFina 390ms linear infinite;
+}
+
+/* Menos gotas, algo mas anchas y con una caida intermedia. */
+.capa-tormenta::after {
+    background-image:
+        radial-gradient(ellipse 1px 10px at center, rgba(211, 234, 253, 0.64) 0 40%, transparent 78%),
+        radial-gradient(ellipse 1.2px 13px at center, rgba(187, 219, 246, 0.48) 0 36%, transparent 76%);
+    background-position: 11px 19px, 46px 67px;
+    background-size: 67px 97px, 103px 139px;
+    opacity: 0.34;
+    filter: blur(0.2px);
+    transform: translate3d(0, -20%, 0) rotate(-10deg);
+    animation: caerLluviaMedia 640ms linear -230ms infinite;
+}
+
+/* Gotas escasas, grandes y desenfocadas que pasan cerca de la camara. */
+.lluvia-cercana {
+    position: absolute;
+    inset: -60% -30%;
+    z-index: 1;
+    background-image:
+        radial-gradient(ellipse 1.6px 16px at center, rgba(225, 241, 255, 0.58) 0 38%, transparent 80%),
+        radial-gradient(ellipse 1.3px 12px at center, rgba(199, 226, 249, 0.42) 0 35%, transparent 76%);
+    background-position: 24px 37px, 118px 173px;
+    background-size: 181px 237px, 263px 331px;
+    opacity: 0.22;
+    filter: blur(0.55px);
+    transform: translate3d(0, -18%, 0) rotate(-13deg);
+    animation: caerLluviaCercana 840ms linear -410ms infinite;
+    will-change: transform;
+}
+
+.destello-rayo {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: rgba(224, 241, 255, 0.94);
+    opacity: 0;
+    mix-blend-mode: screen;
+    pointer-events: none;
+}
+
+.destello-rayo.activo {
+    animation: destellarRayo 480ms ease-out;
+}
+
 /* Presentación reutilizable para el comienzo de cualquier misión o mundo. */
 .presentacion-mision {
     position: fixed;
@@ -1009,6 +1084,59 @@ button:disabled {
     }
 }
 
+@keyframes caerLluviaFina {
+    from {
+        transform: translate3d(1%, -24%, 0) rotate(-7deg);
+    }
+
+    to {
+        transform: translate3d(-5%, 24%, 0) rotate(-7deg);
+    }
+}
+
+@keyframes caerLluviaMedia {
+    from {
+        transform: translate3d(0, -20%, 0) rotate(-10deg);
+    }
+
+    to {
+        transform: translate3d(-7%, 21%, 0) rotate(-10deg);
+    }
+}
+
+@keyframes caerLluviaCercana {
+    from {
+        transform: translate3d(2%, -18%, 0) rotate(-13deg);
+    }
+
+    to {
+        transform: translate3d(-9%, 19%, 0) rotate(-13deg);
+    }
+}
+
+@keyframes destellarRayo {
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 0.9;
+    }
+
+    18% {
+        opacity: 0.18;
+    }
+
+    30% {
+        opacity: 0.72;
+    }
+
+    52% {
+        opacity: 0;
+    }
+}
+
 @keyframes respirar {
     0%,
     100% {
@@ -1274,6 +1402,16 @@ button:disabled {
     .nube-polvo,
     .hoja-viento {
         animation: none;
+    }
+
+    .capa-tormenta::before,
+    .capa-tormenta::after,
+    .lluvia-cercana {
+        animation-duration: 900ms;
+    }
+
+    .destello-rayo.activo {
+        animation-duration: 240ms;
     }
 
     .presentacion-mision-imagen,
