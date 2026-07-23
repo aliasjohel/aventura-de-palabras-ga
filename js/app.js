@@ -285,6 +285,9 @@ let secuenciaAmbienteHojas = 0;
 let temporizadorPulsoCristal = null;
 let secuenciaAmbienteCristal = 0;
 let cinematicaSantuarioActiva = false;
+let secuenciaAperturaPortal = 0;
+let cinematicaPortalActiva = false;
+let portalAbierto = false;
 let temporizadorRayo = null;
 let secuenciaTormenta = 0;
 let secuenciaNiebla = 0;
@@ -557,6 +560,22 @@ function verificarEstado() {
       return;
     }
 
+    const completaPortalDeLosMundos =
+      escenarioActual === 0 &&
+      misionActual === 9 &&
+      desafiosCompletados === desafiosPorMision - 1;
+
+    if (completaPortalDeLosMundos) {
+      portalAbierto = true;
+      reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
+      bloquearTeclado();
+      btnPista.disabled = true;
+      btnSiguiente.classList.add("oculto");
+      guardarProgreso();
+      void completarAperturaPortal();
+      return;
+    }
+
     sonidoNarrativoPendiente = avanzarMision();
     btnSiguiente.textContent = historiaMisionPendiente
       ? "➡️ Siguiente misión"
@@ -654,6 +673,7 @@ function actualizarVistaMisionDev() {
   actualizarEscenaPorMision();
   actualizarAmbientePuenteMision();
   actualizarAmbienteCristalMision();
+  actualizarPortalMision();
   actualizarAmbienteHojasMision();
   actualizarTormentaMision();
   actualizarNieblaMision();
@@ -661,6 +681,17 @@ function actualizarVistaMisionDev() {
   actualizarPresenciaBosqueMision();
   actualizarAranaBosqueMision();
   mensajePersonaje.textContent = "¡Comienza la expedición!";
+  const portalFinalizado =
+    escenarioActual === 0 && misionActual === 9 && portalAbierto;
+  pantallaJuego.classList.toggle("portal-finalizado", portalFinalizado);
+
+  if (portalFinalizado) {
+    bloquearTeclado();
+    btnPista.disabled = true;
+    btnSiguiente.classList.add("oculto");
+    mensajePersonaje.textContent = "El Portal de los Mundos está abierto.";
+  }
+
   actualizarControlesDev();
 }
 
@@ -689,6 +720,7 @@ function reiniciarEstadoAventura() {
   monedas = 0;
   experiencia = 0;
   cristalesObtenidos = 0;
+  portalAbierto = false;
   desafioActual = 1;
   desafiosCompletados = 0;
   sonidoNarrativoPendiente = "";
@@ -939,6 +971,7 @@ function detenerSonidos() {
   detenerPolvoImpacto();
   detenerAmbientePuente();
   detenerAmbienteCristal();
+  detenerPortalMision();
   detenerAmbienteHojas();
   detenerTormenta();
   detenerNiebla();
@@ -1375,6 +1408,7 @@ function iniciarMisionAventura({ presentarMision = false } = {}) {
   actualizarEscenaPorMision();
   actualizarAmbientePuenteMision();
   actualizarAmbienteCristalMision();
+  actualizarPortalMision();
   actualizarAmbienteHojasMision();
   actualizarTormentaMision();
   actualizarNieblaMision();
@@ -1390,7 +1424,23 @@ function iniciarMisionAventura({ presentarMision = false } = {}) {
 
   mostrarPalabra();
   crearTeclado();
+  const portalFinalizado =
+    escenarioActual === 0 && misionActual === 9 && portalAbierto;
+  pantallaJuego.classList.toggle("portal-finalizado", portalFinalizado);
+
+  if (portalFinalizado) {
+    bloquearTeclado();
+    btnPista.disabled = true;
+    mensajePersonaje.textContent = "El Portal de los Mundos está abierto.";
+  }
+
   mostrarPantalla(pantallaJuego);
+
+  if (portalFinalizado) {
+    requestAnimationFrame(() => {
+      void reanudarCinematicaFinalPortal();
+    });
+  }
 
   if (presentarMision) {
     return presentarInicioMision();
@@ -1413,6 +1463,7 @@ function avanzarMision() {
   detenerAmbiente();
   detenerAmbientePuente();
   detenerAmbienteCristal();
+  detenerPortalMision();
   detenerAmbienteHojas();
   detenerTormenta();
   detenerNiebla();
@@ -1475,6 +1526,7 @@ function guardarProgreso() {
     monedas,
     experiencia,
     cristalesObtenidos,
+    portalAbierto,
   };
 
   localStorage.setItem("progresoAventuraGA", JSON.stringify(progreso));
@@ -1518,6 +1570,7 @@ function cargarProgreso() {
     Math.max(progreso.cristalesObtenidos ?? 0, 0),
     5,
   );
+  portalAbierto = progreso.portalAbierto === true;
 
   actualizarJugador();
   actualizarMenuPrincipal();
@@ -1865,6 +1918,522 @@ function programarPulsoCristal(secuencia, capaCristal) {
 
     programarPulsoCristal(secuencia, capaCristal);
   }, demora);
+}
+
+function actualizarPortalMision() {
+  detenerPortalMision();
+
+  if (escenarioActual !== 0 || misionActual !== 9) return;
+
+  const capaPortal = document.createElement("div");
+  const remolino = document.createElement("div");
+  const resplandor = document.createElement("div");
+  const neblina = document.createElement("div");
+
+  capaPortal.className = "capa-portal-magico";
+  capaPortal.setAttribute("aria-hidden", "true");
+  remolino.className = "remolino-portal";
+  resplandor.className = "resplandor-portal";
+  neblina.className = "neblina-portal";
+  capaPortal.append(remolino, resplandor);
+
+  const particulas = [
+    [35, 38, 2, 10.8, -2.4, -8, -13, "verde"],
+    [38, 29, 3, 12.6, -7.1, 7, -16, "celeste"],
+    [43, 22, 2, 9.8, -5.6, -5, -12, "verde"],
+    [50, 18, 3, 13.4, -9.3, 6, -15, "celeste"],
+    [57, 22, 2, 11.7, -4.2, 8, -11, "verde"],
+    [63, 30, 3, 12.9, -8.4, -6, -15, "celeste"],
+    [66, 40, 2, 10.3, -1.8, -8, -12, "verde"],
+    [63, 51, 3, 14.1, -10.5, 6, -14, "celeste"],
+    [57, 58, 2, 11.2, -6.7, -7, -10, "verde"],
+    [43, 58, 3, 13.7, -11.2, 8, -14, "celeste"],
+    [37, 51, 2, 10.6, -3.5, 6, -12, "verde"],
+    [69, 47, 2, 12.1, -8.9, -5, -10, "celeste"],
+  ];
+
+  particulas.forEach(
+    ([x, y, tamano, duracion, retraso, derivaX, derivaY, color]) => {
+      const particula = document.createElement("span");
+      particula.className = `particula-portal particula-portal-${color}`;
+      particula.style.setProperty("--portal-x", `${x}%`);
+      particula.style.setProperty("--portal-y", `${y}%`);
+      particula.style.setProperty("--portal-tamano", `${tamano}px`);
+      particula.style.setProperty("--portal-duracion", `${duracion}s`);
+      particula.style.setProperty("--portal-retraso", `${retraso}s`);
+      particula.style.setProperty("--portal-deriva-x", `${derivaX}px`);
+      particula.style.setProperty("--portal-deriva-y", `${derivaY}px`);
+      capaPortal.appendChild(particula);
+    },
+  );
+
+  [
+    [50, 20, 8.8, -3.1],
+    [62, 28, 11.6, -8.4],
+    [66, 43, 10.2, -5.7],
+    [57, 58, 12.8, -10.3],
+    [39, 54, 9.7, -6.5],
+    [34, 38, 13.1, -11.8],
+  ].forEach(([x, y, duracion, retraso]) => {
+    const destello = document.createElement("span");
+    destello.className = "destello-aro-portal";
+    destello.style.left = `${x}%`;
+    destello.style.top = `${y}%`;
+    destello.style.setProperty("--destello-portal-duracion", `${duracion}s`);
+    destello.style.setProperty("--destello-portal-retraso", `${retraso}s`);
+    capaPortal.appendChild(destello);
+  });
+
+  capaPortal.appendChild(neblina);
+  contenedorEscenario.insertBefore(capaPortal, personajeImagen);
+
+  if (portalAbierto) {
+    capaPortal.classList.add("portal-abierto");
+    agregarRefuerzoPortal(capaPortal);
+    mostrarMensajePortal(
+      capaPortal,
+      "El Portal de los Mundos está abierto.",
+      true,
+    );
+    ranuraCristalBosque.classList.add("portal-conectado");
+  }
+}
+
+function detenerPortalMision() {
+  secuenciaAperturaPortal++;
+  cinematicaPortalActiva = false;
+  pantallaJuego.classList.remove("secuencia-apertura-portal-activa");
+  ranuraCristalBosque.classList.remove(
+    "energizando-portal",
+    "portal-conectado",
+  );
+  document
+    .querySelectorAll(".corriente-energia-portal")
+    .forEach((corriente) => corriente.remove());
+  contenedorEscenario
+    .querySelectorAll(".capa-portal-magico")
+    .forEach((capa) => capa.remove());
+}
+
+function agregarRefuerzoPortal(capaPortal) {
+  if (capaPortal.querySelector(".refuerzo-portal")) return;
+
+  const refuerzo = document.createElement("div");
+  refuerzo.className = "refuerzo-portal";
+
+  [
+    [40, 31, 2, 7.8, -1.2, 8, -16, "verde"],
+    [46, 24, 3, 8.6, -5.3, -6, -18, "celeste"],
+    [55, 25, 2, 7.4, -3.7, 7, -15, "verde"],
+    [61, 34, 3, 9.1, -6.4, -8, -17, "celeste"],
+    [60, 49, 2, 8.2, -2.8, 7, -14, "verde"],
+    [53, 55, 3, 9.5, -7.2, -6, -17, "celeste"],
+    [45, 54, 2, 7.7, -4.6, 8, -14, "verde"],
+    [38, 44, 3, 8.9, -6.9, -7, -16, "celeste"],
+  ].forEach(([x, y, tamano, duracion, retraso, derivaX, derivaY, color]) => {
+    const particula = document.createElement("span");
+    particula.className =
+      `particula-portal particula-portal-${color} particula-portal-refuerzo`;
+    particula.style.setProperty("--portal-x", `${x}%`);
+    particula.style.setProperty("--portal-y", `${y}%`);
+    particula.style.setProperty("--portal-tamano", `${tamano}px`);
+    particula.style.setProperty("--portal-duracion", `${duracion}s`);
+    particula.style.setProperty("--portal-retraso", `${retraso}s`);
+    particula.style.setProperty("--portal-deriva-x", `${derivaX}px`);
+    particula.style.setProperty("--portal-deriva-y", `${derivaY}px`);
+    refuerzo.appendChild(particula);
+  });
+
+  [
+    [45, 21, 6.8, -2.1],
+    [57, 24, 8.1, -5.6],
+    [65, 36, 7.4, -3.8],
+    [63, 50, 8.8, -6.9],
+    [53, 59, 7.1, -4.4],
+    [41, 56, 8.5, -7.3],
+  ].forEach(([x, y, duracion, retraso]) => {
+    const destello = document.createElement("span");
+    destello.className = "destello-aro-portal destello-portal-refuerzo";
+    destello.style.left = `${x}%`;
+    destello.style.top = `${y}%`;
+    destello.style.setProperty("--destello-portal-duracion", `${duracion}s`);
+    destello.style.setProperty("--destello-portal-retraso", `${retraso}s`);
+    refuerzo.appendChild(destello);
+  });
+
+  capaPortal.appendChild(refuerzo);
+}
+
+function mostrarMensajePortal(capaPortal, texto, final = false) {
+  let mensaje = capaPortal.querySelector(".mensaje-apertura-portal");
+
+  if (!mensaje) {
+    mensaje = document.createElement("p");
+    mensaje.className = "mensaje-apertura-portal";
+    capaPortal.appendChild(mensaje);
+  }
+
+  mensaje.textContent = texto;
+  mensaje.classList.toggle("mensaje-final", final);
+  mensaje.classList.add("visible");
+  return mensaje;
+}
+
+function crearCorrienteEnergiaPortal() {
+  const origen = cristalPanelBosque.getBoundingClientRect();
+  const escena = contenedorEscenario.getBoundingClientRect();
+  const inicioX = origen.left + origen.width / 2;
+  const inicioY = origen.top + origen.height / 2;
+  const destinoX = escena.left + escena.width * 0.5;
+  const destinoY = escena.top + escena.height * 0.4;
+  const distancia = Math.hypot(destinoX - inicioX, destinoY - inicioY);
+  const angulo =
+    (Math.atan2(destinoY - inicioY, destinoX - inicioX) * 180) / Math.PI;
+  const corriente = document.createElement("span");
+
+  corriente.className = "corriente-energia-portal";
+  corriente.setAttribute("aria-hidden", "true");
+  corriente.style.left = `${inicioX}px`;
+  corriente.style.top = `${inicioY}px`;
+  corriente.style.setProperty("--corriente-longitud", `${distancia}px`);
+  corriente.style.setProperty("--corriente-angulo", `${angulo}deg`);
+  document.body.appendChild(corriente);
+  return corriente;
+}
+
+function bloquearControlesAperturaPortal() {
+  const estados = Array.from(pantallaJuego.querySelectorAll("button")).map(
+    (boton) => [boton, boton.disabled],
+  );
+
+  estados.forEach(([boton]) => {
+    boton.disabled = true;
+  });
+  pantallaJuego.classList.add("secuencia-apertura-portal-activa");
+
+  return () => {
+    if (escenarioActual === 0 && misionActual === 9) {
+      estados.forEach(([boton, estabaDeshabilitado]) => {
+        if (boton.isConnected) boton.disabled = estabaDeshabilitado;
+      });
+    }
+
+    pantallaJuego.classList.remove("secuencia-apertura-portal-activa");
+  };
+}
+
+async function completarAperturaPortal() {
+  if (cinematicaPortalActiva) return;
+
+  let capaPortal = contenedorEscenario.querySelector(".capa-portal-magico");
+
+  if (!capaPortal) {
+    actualizarPortalMision();
+    capaPortal = contenedorEscenario.querySelector(".capa-portal-magico");
+  }
+
+  if (!capaPortal) return;
+
+  cinematicaPortalActiva = true;
+  const secuencia = ++secuenciaAperturaPortal;
+  const restaurarControles = bloquearControlesAperturaPortal();
+  let corriente = null;
+
+  ranuraCristalBosque.classList.add("energizando-portal");
+  capaPortal.classList.remove("portal-abierto");
+  capaPortal.classList.add("portal-despertando");
+
+  try {
+    await esperarMovimiento(650);
+    if (secuencia !== secuenciaAperturaPortal || !capaPortal.isConnected) return;
+
+    corriente = crearCorrienteEnergiaPortal();
+    requestAnimationFrame(() => corriente?.classList.add("activa"));
+    await esperarMovimiento(1250);
+    if (secuencia !== secuenciaAperturaPortal || !capaPortal.isConnected) return;
+
+    capaPortal.classList.add("recibiendo-energia");
+    agregarRefuerzoPortal(capaPortal);
+
+    const onda = document.createElement("span");
+    onda.className = "onda-apertura-portal";
+    capaPortal.appendChild(onda);
+    requestAnimationFrame(() => onda.classList.add("activa"));
+
+    mostrarMensajePortal(
+      capaPortal,
+      "El Cristal de la Sabiduría ha despertado el portal.",
+    );
+    await esperarMovimiento(1900);
+    onda.remove();
+    if (secuencia !== secuenciaAperturaPortal || !capaPortal.isConnected) return;
+
+    const mensaje = capaPortal.querySelector(".mensaje-apertura-portal");
+    mensaje?.classList.add("cambiando");
+    await esperarMovimiento(280);
+
+    capaPortal.classList.remove("portal-despertando", "recibiendo-energia");
+    capaPortal.classList.add("portal-abierto");
+    ranuraCristalBosque.classList.remove("energizando-portal");
+    ranuraCristalBosque.classList.add("portal-conectado");
+    mostrarMensajePortal(
+      capaPortal,
+      "El Portal de los Mundos está abierto.",
+      true,
+    ).classList.remove("cambiando");
+    mensajePersonaje.textContent = "El Portal de los Mundos está abierto.";
+    corriente?.classList.add("desvaneciendo");
+    await esperarMovimiento(1000);
+    if (secuencia !== secuenciaAperturaPortal || !capaPortal.isConnected) return;
+
+    await ejecutarCinematicaFinalPortal(capaPortal, secuencia);
+  } catch (error) {
+    console.error("[portal] No se pudo completar la apertura", error);
+    capaPortal.classList.remove("portal-despertando", "recibiendo-energia");
+    capaPortal.classList.add("portal-abierto");
+    agregarRefuerzoPortal(capaPortal);
+    mostrarMensajePortal(
+      capaPortal,
+      "El Portal de los Mundos está abierto.",
+      true,
+    );
+  } finally {
+    corriente?.remove();
+    restaurarControles();
+
+    if (secuencia === secuenciaAperturaPortal) {
+      cinematicaPortalActiva = false;
+      pantallaJuego.classList.add("portal-finalizado");
+      ranuraCristalBosque.classList.remove("energizando-portal");
+      ranuraCristalBosque.classList.add("portal-conectado");
+    }
+  }
+}
+
+async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
+  if (
+    secuencia !== secuenciaAperturaPortal ||
+    !capaPortal?.isConnected ||
+    escenarioActual !== 0 ||
+    misionActual !== 9
+  ) {
+    return;
+  }
+
+  const escena = contenedorEscenario.getBoundingClientRect();
+  const explorador = personajeImagen.getBoundingClientRect();
+  const destinoX =
+    escena.left + escena.width * 0.5 - (explorador.left + explorador.width / 2);
+  const destinoY =
+    escena.top + escena.height * 0.43 - (explorador.top + explorador.height);
+  const duracionCaminata = prefiereReducirMovimiento.matches ? 0 : 4800;
+  const duracionAbsorcion = prefiereReducirMovimiento.matches ? 0 : 900;
+  const luz = document.createElement("span");
+  const destello = document.createElement("span");
+  const cierre = document.createElement("div");
+  const titulo = document.createElement("h2");
+  const subtitulo = document.createElement("p");
+
+  luz.className = "luz-absorcion-portal";
+  destello.className = "destello-final-portal";
+  cierre.className = "cierre-cinematica-mundo";
+  cierre.setAttribute("aria-hidden", "true");
+  titulo.className = "titulo-mundo-siguiente";
+  titulo.textContent = "Mundo 2";
+  subtitulo.className = "nombre-mundo-siguiente";
+  subtitulo.textContent = "Desierto Perdido";
+  cierre.append(titulo, subtitulo);
+  contenedorEscenario.append(luz, destello, cierre);
+
+  const mensajePortal = capaPortal.querySelector(".mensaje-apertura-portal");
+  mensajePortal?.classList.add("saliendo-cinematica");
+  pantallaJuego.classList.add("cinematica-final-portal-activa");
+  personajeImagen.classList.remove(
+    "celebrando",
+    "reaccion-acierto",
+    "reaccion-error",
+    "reaccion-derrota",
+    "caminando",
+  );
+  personajeImagen.classList.add("explorador-viajando-portal");
+
+  let caminata = null;
+  let absorcion = null;
+
+  try {
+    if (duracionCaminata > 0 && personajeImagen.animate) {
+      const pasos = Array.from({ length: 11 }, (_, indice) => {
+        const progreso = indice / 10;
+        const oscilacion =
+          indice === 0 || indice === 10 ? 0 : indice % 2 === 0 ? 2 : -2;
+        const escala = 1 - progreso * 0.72;
+
+        return {
+          offset: progreso,
+          transform:
+            `translate3d(${destinoX * progreso}px, ` +
+            `${destinoY * progreso + oscilacion}px, 0) scale(${escala})`,
+        };
+      });
+
+      caminata = personajeImagen.animate(pasos, {
+        duration: duracionCaminata,
+        easing: "linear",
+        fill: "forwards",
+      });
+      await caminata.finished.catch(() => {});
+    } else {
+      personajeImagen.style.transform =
+        `translate3d(${destinoX}px, ${destinoY}px, 0) scale(0.28)`;
+    }
+
+    if (
+      secuencia !== secuenciaAperturaPortal ||
+      !capaPortal.isConnected ||
+      escenarioActual !== 0 ||
+      misionActual !== 9
+    ) {
+      return;
+    }
+
+    capaPortal.classList.add("absorbiendo-explorador");
+    luz.classList.add("activa");
+
+    const transformacionFinal =
+      `translate3d(${destinoX}px, ${destinoY}px, 0) scale(0.28)`;
+    const transformacionAbsorbida =
+      `translate3d(${destinoX}px, ${destinoY - 2}px, 0) scale(0.12)`;
+
+    if (duracionAbsorcion > 0 && personajeImagen.animate) {
+      absorcion = personajeImagen.animate(
+        [
+          {
+            opacity: 1,
+            filter: "brightness(1) blur(0)",
+            transform: transformacionFinal,
+          },
+          {
+            opacity: 0,
+            filter: "brightness(2.2) blur(2px)",
+            transform: transformacionAbsorbida,
+          },
+        ],
+        {
+          duration: duracionAbsorcion,
+          easing: "cubic-bezier(0.4, 0, 0.3, 1)",
+          fill: "forwards",
+        },
+      );
+      await absorcion.finished.catch(() => {});
+    } else {
+      personajeImagen.style.opacity = "0";
+      personajeImagen.style.filter = "brightness(2.2) blur(2px)";
+      personajeImagen.style.transform = transformacionAbsorbida;
+    }
+
+    capaPortal.classList.remove("absorbiendo-explorador");
+    destello.classList.add("activo");
+    await esperarMovimiento(850);
+
+    cierre.classList.add("visible");
+    await esperarMovimiento(1200);
+    cierre.classList.add("mostrando-titulo");
+    await esperarMovimiento(3200);
+
+    if (
+      secuencia !== secuenciaAperturaPortal ||
+      escenarioActual !== 0 ||
+      misionActual !== 9
+    ) {
+      return;
+    }
+
+    portalAbierto = false;
+    sonidoNarrativoPendiente = avanzarMision();
+    historiaMisionPendiente = false;
+    guardarProgreso();
+
+    caminata?.cancel();
+    absorcion?.cancel();
+    limpiarEstadoExploradorPortal();
+
+    const inicioMundoDos = iniciarMisionAventura({ presentarMision: true });
+    cierre.remove();
+    luz.remove();
+    destello.remove();
+    await inicioMundoDos;
+    restablecerControlesTrasPortal();
+  } finally {
+    caminata?.cancel();
+    absorcion?.cancel();
+    limpiarEstadoExploradorPortal();
+    capaPortal?.classList.remove("absorbiendo-explorador");
+    luz.remove();
+    destello.remove();
+    cierre.remove();
+    pantallaJuego.classList.remove("cinematica-final-portal-activa");
+
+    if (escenarioActual !== 0) {
+      restablecerControlesTrasPortal();
+    }
+  }
+}
+
+function limpiarEstadoExploradorPortal() {
+  personajeImagen.classList.remove("explorador-viajando-portal");
+  personajeImagen.style.removeProperty("filter");
+  personajeImagen.style.removeProperty("opacity");
+  personajeImagen.style.removeProperty("transform");
+}
+
+function restablecerControlesTrasPortal() {
+  cinematicaPortalActiva = false;
+  transicionCinematicaActiva = false;
+  pantallaJuego.classList.remove(
+    "portal-finalizado",
+    "secuencia-apertura-portal-activa",
+    "cinematica-final-portal-activa",
+  );
+
+  btnPista.disabled = false;
+  btnSalirJuego.disabled = false;
+  btnSiguiente.disabled = false;
+  btnReintentar.disabled = false;
+  teclado.querySelectorAll(".letra").forEach((boton) => {
+    boton.disabled = false;
+  });
+  actualizarControlesDev();
+}
+
+async function reanudarCinematicaFinalPortal() {
+  if (
+    cinematicaPortalActiva ||
+    !portalAbierto ||
+    escenarioActual !== 0 ||
+    misionActual !== 9
+  ) {
+    return;
+  }
+
+  const capaPortal = contenedorEscenario.querySelector(".capa-portal-magico");
+  if (!capaPortal) return;
+
+  cinematicaPortalActiva = true;
+  const secuencia = ++secuenciaAperturaPortal;
+  const restaurarControles = bloquearControlesAperturaPortal();
+
+  try {
+    await esperarMovimiento(1000);
+    await ejecutarCinematicaFinalPortal(capaPortal, secuencia);
+  } catch (error) {
+    console.error("[portal] No se pudo completar el viaje al Mundo 2", error);
+  } finally {
+    restaurarControles();
+
+    if (secuencia === secuenciaAperturaPortal) {
+      cinematicaPortalActiva = false;
+    }
+  }
 }
 
 async function completarSantuarioConCinematica() {
