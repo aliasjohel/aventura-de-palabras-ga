@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aventura de Palabras - GA Games</title>
-    <link rel="stylesheet" href="css/styles.css?v=20260721-arana-bosque-1">
+    <link rel="stylesheet" href="css/styles.css?v=20260723-mensajes-bosque-1">
 </head>
 
 <body>
@@ -43,8 +43,24 @@
 
             </div>
 
+            <div id="panelCristales" class="panel-cristales" aria-label="Cristales de la Sabiduría">
+                <span id="ranuraCristalBosque" class="ranura-cristal ranura-bosque" title="Bosque Encantado">
+                    <img id="cristalPanelBosque" class="cristal-panel oculto"
+                        src="assets/images/elements/cristal-sabiduria-esmeralda.png" alt="Cristal del Bosque Encantado">
+                    <span class="marca-ranura" aria-hidden="true">1</span>
+                </span>
+                <span class="ranura-cristal bloqueada" title="Próximo mundo" aria-label="Cristal bloqueado">◆</span>
+                <span class="ranura-cristal bloqueada" title="Próximo mundo" aria-label="Cristal bloqueado">◆</span>
+                <span class="ranura-cristal bloqueada" title="Próximo mundo" aria-label="Cristal bloqueado">◆</span>
+                <span class="ranura-cristal bloqueada" title="Próximo mundo" aria-label="Cristal bloqueado">◆</span>
+            </div>
+
             <div class="top-juego">
-                <span>Categoría: <strong id="categoriaActual">Animales</strong></span>
+                <div class="resumen-mision">
+                    <strong id="categoriaActual">🌲 Tema: palabras del Bosque Encantado</strong>
+                    <span id="detalleMision">Misión 1 · Desafío 1 de 3</span>
+                    <small>Todas las palabras pertenecen a este escenario.</small>
+                </div>
                 <span id="vidas" class="vidas">❤️❤️❤️❤️❤️❤️</span>
             </div>
 
@@ -122,6 +138,9 @@
                     <p>Para recuperarlo deberá avanzar resolviendo palabras, superar los peligros del camino y descubrir
                         quién robó los cristales.</p>
 
+                    <p>Para avanzar por este mundo, deberás descubrir palabras relacionadas con el bosque y todo lo que
+                        habita en él.</p>
+
                     <p class="mision-prologo">Tu primera misión comienza en el Bosque Encantado.</p>
                 </div>
 
@@ -131,7 +150,7 @@
 
     </main>
 
-    <script src="js/app.js?v=20260721-arana-bosque-1"></script>
+    <script src="js/app.js?v=20260723-mensajes-bosque-1"></script>
 </body>
 
 </html>

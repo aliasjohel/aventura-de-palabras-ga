@@ -9,6 +9,9 @@ const textoMonedas = document.getElementById("textoMonedas");
 
 const textoXP = document.getElementById("textoXP");
 const textoCristales = document.getElementById("textoCristales");
+const panelCristales = document.getElementById("panelCristales");
+const ranuraCristalBosque = document.getElementById("ranuraCristalBosque");
+const cristalPanelBosque = document.getElementById("cristalPanelBosque");
 const pantallaMenu = document.getElementById("pantallaMenu");
 const pantallaJuego = document.getElementById("pantallaJuego");
 
@@ -18,6 +21,7 @@ const btnMisionAnterior = document.getElementById("btnMisionAnterior");
 const btnMisionSiguiente = document.getElementById("btnMisionSiguiente");
 
 const categoriaActual = document.getElementById("categoriaActual");
+const detalleMision = document.getElementById("detalleMision");
 const vidas = document.getElementById("vidas");
 const personaje = document.getElementById("personaje");
 const teclado = document.getElementById("teclado");
@@ -104,6 +108,8 @@ const duracionZoomPresentacion = 1350;
 const duracionFundidoFondo = 700;
 const intervaloMinimoRafagaHojas = 8000;
 const intervaloMaximoRafagaHojas = 15000;
+const intervaloMinimoHojaPuente = 12000;
+const intervaloMaximoHojaPuente = 22000;
 const intervaloMinimoRayo = 10000;
 const intervaloMaximoRayo = 25000;
 const intervaloMinimoClaroNiebla = 16000;
@@ -276,6 +282,9 @@ let transicionCinematicaActiva = false;
 let secuenciaFundidoFondo = 0;
 let temporizadorRafagaHojas = null;
 let secuenciaAmbienteHojas = 0;
+let temporizadorPulsoCristal = null;
+let secuenciaAmbienteCristal = 0;
+let cinematicaSantuarioActiva = false;
 let temporizadorRayo = null;
 let secuenciaTormenta = 0;
 let secuenciaNiebla = 0;
@@ -308,6 +317,7 @@ btnPista.addEventListener("click", () => {
 
 btnSiguiente.addEventListener("click", () => {
   btnSiguiente.classList.add("oculto");
+  limpiarCinematicaSantuario();
 
   if (historiaMisionPendiente) {
     mostrarHistoriaMision();
@@ -532,6 +542,21 @@ function verificarEstado() {
     experiencia += 20;
 
     actualizarJugador();
+
+    const completaSantuarioPorPrimeraVez =
+      escenarioActual === 0 &&
+      misionActual === 8 &&
+      desafiosCompletados === desafiosPorMision - 1 &&
+      cristalesObtenidos === 0;
+
+    if (completaSantuarioPorPrimeraVez) {
+      reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
+      guardarProgreso();
+      bloquearTeclado();
+      void completarSantuarioConCinematica();
+      return;
+    }
+
     sonidoNarrativoPendiente = avanzarMision();
     btnSiguiente.textContent = historiaMisionPendiente
       ? "➡️ Siguiente misión"
@@ -608,19 +633,27 @@ function actualizarControlesDev() {
   btnMisionSiguiente.disabled = misionActual === 9;
 }
 
+function actualizarCabeceraMision() {
+  const escenario = aventura[escenarioActual];
+  categoriaActual.textContent =
+    escenarioActual === 0
+      ? "🌲 Tema: palabras del Bosque Encantado"
+      : `Tema: palabras de ${escenario.nombre}`;
+  detalleMision.textContent =
+    `Misión ${misionActual + 1} · Desafío ${desafioActual} de ${desafiosPorMision}`;
+}
+
 function actualizarVistaMisionDev() {
   detenerPolvoImpacto();
   detenerEfectos();
   actualizarAmbienteMision();
 
-  const escenario = aventura[escenarioActual];
-
-  categoriaActual.textContent = `${escenario.nombre}
- | Misión ${misionActual + 1}
- | Desafío ${desafioActual} de ${desafiosPorMision}`;
+  actualizarCabeceraMision();
 
   cancelarRetornoEstadoBaseExplorador();
   actualizarEscenaPorMision();
+  actualizarAmbientePuenteMision();
+  actualizarAmbienteCristalMision();
   actualizarAmbienteHojasMision();
   actualizarTormentaMision();
   actualizarNieblaMision();
@@ -902,7 +935,10 @@ function desvanecerMusicaPrologo(duracion) {
 }
 
 function detenerSonidos() {
+  limpiarCinematicaSantuario();
   detenerPolvoImpacto();
+  detenerAmbientePuente();
+  detenerAmbienteCristal();
   detenerAmbienteHojas();
   detenerTormenta();
   detenerNiebla();
@@ -941,6 +977,25 @@ function detenerAmbienteHojas() {
 
   contenedorEscenario
     .querySelectorAll(".capa-hojas-viento")
+    .forEach((capa) => capa.remove());
+}
+
+function detenerAmbientePuente() {
+  contenedorEscenario
+    .querySelectorAll(".capa-puente-antiguo")
+    .forEach((capa) => capa.remove());
+}
+
+function detenerAmbienteCristal() {
+  secuenciaAmbienteCristal++;
+
+  if (temporizadorPulsoCristal) {
+    clearTimeout(temporizadorPulsoCristal);
+    temporizadorPulsoCristal = null;
+  }
+
+  contenedorEscenario
+    .querySelectorAll(".capa-energia-cristal")
     .forEach((capa) => capa.remove());
 }
 
@@ -998,7 +1053,7 @@ function programarCrujidoPuente() {
 
     if (ambienteActual !== "ambientePuente") return;
 
-    reproducirEfectoAmbiental("crujidoPuente");
+    reproducirEfectoAmbiental("crujidoPuente", animarCrujidoPuente);
     programarCrujidoPuente();
   }, demora);
 }
@@ -1010,14 +1065,36 @@ function cancelarCrujidoPuente() {
   temporizadorCrujidoPuente = null;
 }
 
-function reproducirEfectoAmbiental(nombre) {
+function reproducirEfectoAmbiental(nombre, alReproducir = null) {
   const sonido = sonidos[nombre];
   if (!sonido) return;
 
   sonido.currentTime = 0;
-  sonido.play().catch((error) => {
-    logAudio(`${nombre} play bloqueado`, error);
-  });
+  sonido
+    .play()
+    .then(() => alReproducir?.())
+    .catch((error) => {
+      logAudio(`${nombre} play bloqueado`, error);
+    });
+}
+
+function animarCrujidoPuente() {
+  if (escenarioActual !== 0 || misionActual !== 7) return;
+
+  const capaPuente = contenedorEscenario.querySelector(".capa-puente-antiguo");
+  if (!capaPuente || prefiereReducirMovimiento.matches) return;
+
+  capaPuente.classList.remove("crujiendo");
+  void capaPuente.offsetWidth;
+  capaPuente.classList.add("crujiendo");
+
+  capaPuente.addEventListener(
+    "animationend",
+    (evento) => {
+      if (evento.target === capaPuente) capaPuente.classList.remove("crujiendo");
+    },
+    { once: true },
+  );
 }
 
 function reproducirSonido(nombre) {
@@ -1271,6 +1348,8 @@ function logAudioEvento(mensaje, detalle = "") {
 
 function iniciarMisionAventura({ presentarMision = false } = {}) {
   detenerPolvoImpacto();
+  detenerAmbientePuente();
+  detenerAmbienteCristal();
   detenerAmbienteHojas();
   detenerTormenta();
   detenerEfectos();
@@ -1279,11 +1358,7 @@ function iniciarMisionAventura({ presentarMision = false } = {}) {
   desafioActual = desafiosCompletados + 1;
   actualizarControlesDev();
 
-  const escenario = aventura[escenarioActual];
-
-  categoriaActual.textContent = `${escenario.nombre}
- | Misión ${misionActual + 1}
- | Desafío ${desafioActual} de ${desafiosPorMision}`;
+  actualizarCabeceraMision();
 
   const palabraSeleccionada = obtenerPalabraAleatoria();
 
@@ -1298,6 +1373,8 @@ function iniciarMisionAventura({ presentarMision = false } = {}) {
   actualizarVidas();
   personaje.textContent = "😄";
   actualizarEscenaPorMision();
+  actualizarAmbientePuenteMision();
+  actualizarAmbienteCristalMision();
   actualizarAmbienteHojasMision();
   actualizarTormentaMision();
   actualizarNieblaMision();
@@ -1334,6 +1411,8 @@ function avanzarMision() {
   palabrasUsadasEnMision = [];
   historiaMisionPendiente = true;
   detenerAmbiente();
+  detenerAmbientePuente();
+  detenerAmbienteCristal();
   detenerAmbienteHojas();
   detenerTormenta();
   detenerNiebla();
@@ -1371,6 +1450,20 @@ function actualizarJugador() {
   textoXP.textContent = `⭐ ${experiencia} XP`;
 
   textoCristales.textContent = `💎 ${cristalesObtenidos}`;
+  actualizarPanelCristales();
+}
+
+function actualizarPanelCristales() {
+  const cristalBosqueObtenido = cristalesObtenidos > 0;
+
+  cristalPanelBosque.classList.toggle("oculto", !cristalBosqueObtenido);
+  ranuraCristalBosque.classList.toggle("obtenida", cristalBosqueObtenido);
+  ranuraCristalBosque.setAttribute(
+    "aria-label",
+    cristalBosqueObtenido
+      ? "Cristal del Bosque Encantado obtenido"
+      : "Espacio del Cristal del Bosque Encantado vacío",
+  );
 }
 
 function guardarProgreso() {
@@ -1471,6 +1564,7 @@ actualizarControlesDev();
 precargarImagenesBosque();
 precargarImagenesExplorador();
 precargarImagenesHojas();
+precargarRecursosCinematicaSantuario();
 precargarSonidos();
 
 function cambiarPersonaje(estado) {
@@ -1652,19 +1746,320 @@ function esperarCargaImagen(imagen) {
   });
 }
 
+function actualizarAmbientePuenteMision() {
+  detenerAmbientePuente();
+
+  if (
+    escenarioActual !== 0 ||
+    misionActual !== 7 ||
+    prefiereReducirMovimiento.matches
+  ) {
+    return;
+  }
+
+  const capaPuente = document.createElement("div");
+  capaPuente.className = "capa-puente-antiguo";
+  capaPuente.setAttribute("aria-hidden", "true");
+
+  ["tablas", "soga-izquierda", "soga-derecha"].forEach((parte) => {
+    const recorte = document.createElement("img");
+    recorte.className = `recorte-puente recorte-puente-${parte}`;
+    recorte.alt = "";
+    recorte.draggable = false;
+    recorte.src = "assets/images/fondos/bosque-8.png";
+    capaPuente.appendChild(recorte);
+  });
+
+  contenedorEscenario.insertBefore(capaPuente, personajeImagen);
+}
+
+function actualizarAmbienteCristalMision() {
+  detenerAmbienteCristal();
+
+  if (
+    escenarioActual !== 0 ||
+    misionActual !== 8 ||
+    prefiereReducirMovimiento.matches
+  ) {
+    return;
+  }
+
+  const capaCristal = document.createElement("div");
+  const halo = document.createElement("div");
+  const brillo = document.createElement("img");
+  capaCristal.className = "capa-energia-cristal";
+  capaCristal.setAttribute("aria-hidden", "true");
+  halo.className = "halo-base-cristal";
+  brillo.className = "brillo-cristal";
+  brillo.alt = "";
+  brillo.draggable = false;
+  brillo.src = "assets/images/fondos/bosque-9.png";
+  capaCristal.append(halo, brillo);
+
+  const particulas = [
+    [50.2, 2.5, 7.8, -1.4, -5],
+    [51.5, 3, 9.2, -4.8, 5],
+    [52.8, 2, 8.5, -6.2, -3],
+    [54.1, 3.5, 10.4, -2.1, 4],
+    [55.2, 2.5, 9.7, -7.6, -4],
+    [56.3, 2, 8.9, -3.5, 3],
+    [57.1, 3, 10.8, -9.1, -5],
+  ];
+
+  particulas.forEach(([x, tamano, duracion, retraso, deriva]) => {
+    const particula = document.createElement("span");
+    particula.className = "particula-cristal";
+    particula.style.setProperty("--particula-x", `${x}%`);
+    particula.style.setProperty("--tamano-particula", `${tamano}px`);
+    particula.style.setProperty("--duracion-particula", `${duracion}s`);
+    particula.style.setProperty("--retraso-particula", `${retraso}s`);
+    particula.style.setProperty("--deriva-particula", `${deriva}px`);
+    capaCristal.appendChild(particula);
+  });
+
+  [
+    [50.8, 34, 9.5, -2.8],
+    [56.5, 38, 12, -7.2],
+    [53.8, 27, 14, -10.5],
+  ].forEach(([x, y, duracion, retraso]) => {
+    const destello = document.createElement("span");
+    destello.className = "destello-cristal";
+    destello.style.left = `${x}%`;
+    destello.style.top = `${y}%`;
+    destello.style.setProperty("--duracion-destello", `${duracion}s`);
+    destello.style.setProperty("--retraso-destello", `${retraso}s`);
+    capaCristal.appendChild(destello);
+  });
+
+  contenedorEscenario.insertBefore(capaCristal, personajeImagen);
+  programarPulsoCristal(secuenciaAmbienteCristal, capaCristal);
+}
+
+function programarPulsoCristal(secuencia, capaCristal) {
+  const demora = aleatorioEntre(8000, 12000);
+
+  temporizadorPulsoCristal = setTimeout(() => {
+    temporizadorPulsoCristal = null;
+
+    if (
+      secuencia !== secuenciaAmbienteCristal ||
+      escenarioActual !== 0 ||
+      misionActual !== 8 ||
+      !pantallaJuego.classList.contains("activa") ||
+      !capaCristal.isConnected
+    ) {
+      detenerAmbienteCristal();
+      return;
+    }
+
+    capaCristal.classList.add("pulsando");
+    capaCristal.addEventListener(
+      "animationend",
+      (evento) => {
+        if (evento.target === capaCristal) {
+          capaCristal.classList.remove("pulsando");
+        }
+      },
+      { once: true },
+    );
+
+    programarPulsoCristal(secuencia, capaCristal);
+  }, demora);
+}
+
+async function completarSantuarioConCinematica() {
+  if (cinematicaSantuarioActiva) return;
+
+  cinematicaSantuarioActiva = true;
+  pantallaJuego.classList.add("cinematica-santuario-activa");
+  btnSiguiente.classList.add("oculto");
+
+  try {
+    await esperarMovimiento(850);
+    await ejecutarCinematicaSantuario();
+  } catch (error) {
+    console.error("[cinematica-santuario] No se pudo completar la animación", error);
+    limpiarCinematicaSantuario();
+  }
+
+  cristalesObtenidos = Math.max(cristalesObtenidos, 1);
+  actualizarJugador();
+  sonidoNarrativoPendiente = avanzarMision();
+  guardarProgreso();
+  mensajePersonaje.textContent = "💎 ¡Cristal de la Sabiduría obtenido!";
+  btnSiguiente.textContent = "➡️ Ir al Portal";
+  btnSiguiente.classList.remove("oculto");
+  pantallaJuego.classList.remove("cinematica-santuario-activa");
+  cinematicaSantuarioActiva = false;
+}
+
+async function ejecutarCinematicaSantuario() {
+  detenerAmbienteCristal();
+
+  const capa = document.createElement("div");
+  const pulso = document.createElement("div");
+  const destello = document.createElement("div");
+  const velo = document.createElement("div");
+  const mensaje = document.createElement("p");
+  const mensajePrincipal = document.createElement("span");
+  const mensajeProgreso = document.createElement("span");
+  const poses = [
+    ["acercandose", "assets/images/elements/explorador-acercandose-cristal.png"],
+    ["extendiendo", "assets/images/elements/explorador-brazo-extendido.png"],
+    ["sosteniendo", "assets/images/elements/explorador-sosteniendo-cristal.png"],
+  ].map(([nombre, src]) => {
+    const pose = document.createElement("img");
+    pose.className = `pose-cinematica pose-${nombre}`;
+    pose.alt = "";
+    pose.draggable = false;
+    pose.src = src;
+    capa.appendChild(pose);
+    return pose;
+  });
+
+  capa.className = "cinematica-santuario";
+  capa.setAttribute("aria-hidden", "true");
+  pulso.className = "pulso-final-cristal";
+  destello.className = "destello-santuario-final";
+  velo.className = "velo-final-santuario";
+  mensaje.className = "mensaje-cristal-obtenido";
+  mensajePrincipal.className = "mensaje-cristal-principal";
+  mensajePrincipal.textContent = "¡Cristal de la Sabiduría obtenido!";
+  mensajeProgreso.className = "mensaje-cristal-progreso";
+  mensajeProgreso.textContent = "1 de 5 cristales encontrados";
+  mensaje.append(mensajePrincipal, mensajeProgreso);
+  capa.prepend(pulso);
+  capa.append(destello, mensaje, velo);
+  contenedorEscenario.appendChild(capa);
+  personajeImagen.classList.add("oculto-cinematica");
+
+  await Promise.all(poses.map(esperarCargaImagen));
+  pulso.classList.add("activo");
+  await esperarMovimiento(1150);
+
+  activarPoseCinematica(poses, "pose-acercandose");
+  capa.classList.add("explorador-acercandose");
+  await esperarMovimiento(1650);
+
+  activarPoseCinematica(poses, "pose-extendiendo");
+  await esperarMovimiento(950);
+
+  destello.classList.add("activo");
+  activarPoseCinematica(poses, "pose-sosteniendo");
+  mensaje.classList.add("visible");
+  await esperarMovimiento(1150);
+
+  activarPoseCinematica(poses, "pose-extendiendo");
+  await volarCristalHaciaPanel();
+  cristalesObtenidos = Math.max(cristalesObtenidos, 1);
+  actualizarJugador();
+  ranuraCristalBosque.classList.add("recibiendo");
+  setTimeout(() => ranuraCristalBosque.classList.remove("recibiendo"), 900);
+
+  mensaje.classList.add("progreso-visible");
+  await esperarMovimiento(1650);
+  mensaje.classList.add("saliendo");
+  await esperarMovimiento(500);
+  velo.classList.add("visible");
+  await esperarMovimiento(850);
+}
+
+function activarPoseCinematica(poses, claseActiva) {
+  poses.forEach((pose) => {
+    pose.classList.toggle("visible", pose.classList.contains(claseActiva));
+  });
+}
+
+async function volarCristalHaciaPanel() {
+  const escena = contenedorEscenario.getBoundingClientRect();
+  const destino = ranuraCristalBosque.getBoundingClientRect();
+  const cristal = document.createElement("img");
+  const inicioX = escena.left + escena.width * 0.61;
+  const inicioY = escena.top + escena.height * 0.35;
+  const destinoX = destino.left + destino.width / 2;
+  const destinoY = destino.top + destino.height / 2;
+  cristal.className = "cristal-volador-santuario";
+  cristal.alt = "";
+  cristal.src = "assets/images/elements/cristal-sabiduria-esmeralda.png";
+  cristal.style.left = `${inicioX}px`;
+  cristal.style.top = `${inicioY}px`;
+  document.body.appendChild(cristal);
+  await esperarCargaImagen(cristal);
+
+  if (prefiereReducirMovimiento.matches || !cristal.animate) {
+    cristal.remove();
+    return;
+  }
+
+  const puntoMedioX = inicioX + (destinoX - inicioX) * 0.52;
+  const puntoMedioY = Math.min(inicioY, destinoY) - 55;
+  const vuelo = cristal.animate(
+    [
+      {
+        left: `${inicioX}px`,
+        top: `${inicioY}px`,
+        opacity: 0,
+        transform: "translate(-50%, -50%) scale(0.65) rotate(0deg)",
+      },
+      {
+        left: `${inicioX}px`,
+        top: `${inicioY - 8}px`,
+        opacity: 1,
+        transform: "translate(-50%, -50%) scale(0.82) rotate(4deg)",
+        offset: 0.12,
+      },
+      {
+        left: `${puntoMedioX}px`,
+        top: `${puntoMedioY}px`,
+        opacity: 1,
+        transform: "translate(-50%, -50%) scale(0.68) rotate(-5deg)",
+        offset: 0.58,
+      },
+      {
+        left: `${destinoX}px`,
+        top: `${destinoY}px`,
+        opacity: 0.9,
+        transform: "translate(-50%, -50%) scale(0.34) rotate(0deg)",
+      },
+    ],
+    {
+      duration: 1450,
+      easing: "cubic-bezier(0.42, 0, 0.2, 1)",
+      fill: "forwards",
+    },
+  );
+
+  await vuelo.finished.catch(() => {});
+  cristal.remove();
+}
+
+function limpiarCinematicaSantuario() {
+  contenedorEscenario
+    .querySelectorAll(".cinematica-santuario")
+    .forEach((capa) => capa.remove());
+  document
+    .querySelectorAll(".cristal-volador-santuario")
+    .forEach((cristal) => cristal.remove());
+  personajeImagen.classList.remove("oculto-cinematica");
+  pantallaJuego.classList.remove("cinematica-santuario-activa");
+  cinematicaSantuarioActiva = false;
+}
+
 function actualizarAmbienteHojasMision() {
   detenerAmbienteHojas();
 
   if (
     escenarioActual !== 0 ||
-    misionActual !== 2 ||
+    ![2, 7].includes(misionActual) ||
     prefiereReducirMovimiento.matches
   ) {
     return;
   }
 
   const capaHojas = document.createElement("div");
-  capaHojas.className = "capa-hojas-viento";
+  capaHojas.className = `capa-hojas-viento${
+    misionActual === 7 ? " capa-hojas-puente" : ""
+  }`;
   capaHojas.setAttribute("aria-hidden", "true");
   contenedorEscenario.insertBefore(capaHojas, personajeImagen);
 
@@ -1672,16 +2067,17 @@ function actualizarAmbienteHojasMision() {
 }
 
 function programarRafagaHojas(secuencia, capaHojas) {
+  const hojasPuente = misionActual === 7;
   const demora = aleatorioEntre(
-    intervaloMinimoRafagaHojas,
-    intervaloMaximoRafagaHojas,
+    hojasPuente ? intervaloMinimoHojaPuente : intervaloMinimoRafagaHojas,
+    hojasPuente ? intervaloMaximoHojaPuente : intervaloMaximoRafagaHojas,
   );
 
   temporizadorRafagaHojas = setTimeout(() => {
     if (
       secuencia !== secuenciaAmbienteHojas ||
       escenarioActual !== 0 ||
-      misionActual !== 2 ||
+      ![2, 7].includes(misionActual) ||
       !pantallaJuego.classList.contains("activa") ||
       !capaHojas.isConnected
     ) {
@@ -1697,7 +2093,10 @@ function programarRafagaHojas(secuencia, capaHojas) {
 function crearRafagaHojas(capaHojas) {
   const ancho = capaHojas.clientWidth;
   const alto = capaHojas.clientHeight;
-  const cantidadHojas = Math.floor(aleatorioEntre(4, 9));
+  const cantidadHojas =
+    misionActual === 7
+      ? Math.floor(aleatorioEntre(1, 3))
+      : Math.floor(aleatorioEntre(4, 9));
 
   for (let indice = 0; indice < cantidadHojas; indice++) {
     crearHojaViento(capaHojas, ancho, alto);
@@ -1706,12 +2105,16 @@ function crearRafagaHojas(capaHojas) {
 
 function crearHojaViento(capaHojas, ancho, alto) {
   const hoja = document.createElement("img");
-  const entrada = ["arriba", "izquierda", "derecha"][
-    Math.floor(Math.random() * 3)
-  ];
-  const duracion = aleatorioEntre(4800, 7200);
-  const retraso = aleatorioEntre(0, 700);
-  const tamano = aleatorioEntre(28, 54);
+  const hojasPuente = misionActual === 7;
+  const entradas = hojasPuente
+    ? ["izquierda", "derecha"]
+    : ["arriba", "izquierda", "derecha"];
+  const entrada = entradas[Math.floor(Math.random() * entradas.length)];
+  const duracion = hojasPuente
+    ? aleatorioEntre(6500, 9000)
+    : aleatorioEntre(4800, 7200);
+  const retraso = hojasPuente ? aleatorioEntre(0, 350) : aleatorioEntre(0, 700);
+  const tamano = hojasPuente ? aleatorioEntre(18, 30) : aleatorioEntre(28, 54);
   let inicioX;
   let inicioY;
   let finX;
@@ -1724,25 +2127,38 @@ function crearHojaViento(capaHojas, ancho, alto) {
     finY = alto + tamano + 20;
   } else if (entrada === "izquierda") {
     inicioX = -tamano - 10;
-    inicioY = aleatorioEntre(0, alto * 0.7);
+    inicioY = hojasPuente
+      ? aleatorioEntre(alto * 0.34, alto * 0.52)
+      : aleatorioEntre(0, alto * 0.7);
     finX = ancho + tamano + 20;
-    finY = inicioY + aleatorioEntre(alto * 0.12, alto * 0.42);
+    finY = inicioY +
+      (hojasPuente
+        ? aleatorioEntre(-alto * 0.04, alto * 0.12)
+        : aleatorioEntre(alto * 0.12, alto * 0.42));
   } else {
     inicioX = ancho + tamano + 10;
-    inicioY = aleatorioEntre(0, alto * 0.7);
+    inicioY = hojasPuente
+      ? aleatorioEntre(alto * 0.34, alto * 0.52)
+      : aleatorioEntre(0, alto * 0.7);
     finX = -tamano - 20;
-    finY = inicioY + aleatorioEntre(alto * 0.12, alto * 0.42);
+    finY = inicioY +
+      (hojasPuente
+        ? aleatorioEntre(-alto * 0.04, alto * 0.12)
+        : aleatorioEntre(alto * 0.12, alto * 0.42));
   }
 
   const recorridoX = finX - inicioX;
   const recorridoY = finY - inicioY;
-  const onda = aleatorioEntre(18, 48) * (Math.random() < 0.5 ? -1 : 1);
+  const onda = aleatorioEntre(hojasPuente ? 8 : 18, hojasPuente ? 20 : 48) *
+    (Math.random() < 0.5 ? -1 : 1);
   const rotacionInicial = aleatorioEntre(-180, 180);
   const giroTotal =
     aleatorioEntre(420, 900) * (Math.random() < 0.5 ? -1 : 1);
 
   const numeroHoja = Math.random() < 0.5 ? 1 : 2;
-  hoja.className = `hoja-viento hoja-viento-${numeroHoja}`;
+  hoja.className = `hoja-viento hoja-viento-${numeroHoja}${
+    hojasPuente ? " hoja-viento-puente" : ""
+  }`;
   hoja.alt = "";
   hoja.draggable = false;
   hoja.src = `assets/images/elementos/hoja-${numeroHoja}.png?v=20260717-hojas-transparentes-1`;
@@ -2362,5 +2778,17 @@ function precargarImagenesHojas() {
   [1, 2].forEach((numero) => {
     const img = new Image();
     img.src = `assets/images/elementos/hoja-${numero}.png?v=20260717-hojas-transparentes-1`;
+  });
+}
+
+function precargarRecursosCinematicaSantuario() {
+  [
+    "explorador-acercandose-cristal.png",
+    "explorador-brazo-extendido.png",
+    "explorador-sosteniendo-cristal.png",
+    "cristal-sabiduria-esmeralda.png",
+  ].forEach((nombre) => {
+    const img = new Image();
+    img.src = `assets/images/elements/${nombre}`;
   });
 }
