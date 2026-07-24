@@ -2101,6 +2101,37 @@ function crearCorrienteEnergiaPortal() {
   return corriente;
 }
 
+async function encuadrarCorrientePortalEnMovil() {
+  if (!window.matchMedia("(max-width: 700px)").matches) return;
+
+  const cristal = cristalPanelBosque.getBoundingClientRect();
+  const escena = contenedorEscenario.getBoundingClientRect();
+  const viewport = window.visualViewport;
+  const limiteSuperior = viewport?.offsetTop ?? 0;
+  const limiteInferior =
+    limiteSuperior + (viewport?.height ?? window.innerHeight);
+  const centroPortal = escena.top + escena.height * 0.4;
+  const cristalVisible =
+    cristal.top >= limiteSuperior + 6 &&
+    cristal.bottom <= limiteInferior - 6;
+  const portalVisible =
+    centroPortal >= limiteSuperior + 6 &&
+    centroPortal <= limiteInferior - 6;
+
+  if (cristalVisible && portalVisible) return;
+
+  const destinoScroll = Math.max(
+    0,
+    window.scrollY + panelCristales.getBoundingClientRect().top - 8,
+  );
+
+  window.scrollTo({
+    top: destinoScroll,
+    behavior: prefiereReducirMovimiento.matches ? "auto" : "smooth",
+  });
+  await esperarMovimiento(600);
+}
+
 function bloquearControlesAperturaPortal() {
   const estados = Array.from(pantallaJuego.querySelectorAll("button")).map(
     (boton) => [boton, boton.disabled],
@@ -2145,6 +2176,9 @@ async function completarAperturaPortal() {
 
   try {
     await esperarMovimiento(650);
+    if (secuencia !== secuenciaAperturaPortal || !capaPortal.isConnected) return;
+
+    await encuadrarCorrientePortalEnMovil();
     if (secuencia !== secuenciaAperturaPortal || !capaPortal.isConnected) return;
 
     corriente = crearCorrienteEnergiaPortal();
