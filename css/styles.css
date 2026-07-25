@@ -3094,6 +3094,18 @@ button:disabled {
     }
 }
 
+@media (max-width: 480px) {
+    .escenario {
+        aspect-ratio: auto;
+        height: min(calc((100vw - 16px) / 1.6), 32dvh);
+    }
+
+    .fondo-escenario,
+    .recorte-puente {
+        object-fit: cover;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .escenario {
         transition: none;
