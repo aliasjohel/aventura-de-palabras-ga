@@ -28,10 +28,12 @@ const teclado = document.getElementById("teclado");
 const mensajePersonaje = document.getElementById("mensajePersonaje");
 const palabraOculta = document.getElementById("palabraOculta");
 const btnNuevaAventura = document.getElementById("btnNuevaAventura");
-const escenaAventura = document.getElementById("escenaAventura");
 const personajeImagen = document.getElementById("personajeImagen");
 const fondoEscenario = document.getElementById("fondoEscenario");
 const contenedorEscenario = document.querySelector(".escenario");
+const mensajeDesafioSuperado = document.getElementById(
+  "mensajeDesafioSuperado",
+);
 const modalHistoria = document.getElementById("modalHistoria");
 const numeroCapitulo = document.getElementById("numeroCapitulo");
 const tituloCapitulo = document.getElementById("tituloCapitulo");
@@ -303,6 +305,7 @@ let secuenciaAranaBosque = 0;
 let temporizadorAranaBosque = null;
 let ultimaZonaAranaBosque = -1;
 let imagenAranaBosque = null;
+let secuenciaMensajeDesafioSuperado = 0;
 const desafiosPorMision = 3;
 
 // ====================
@@ -318,7 +321,7 @@ btnPista.addEventListener("click", () => {
   btnPista.disabled = true;
 });
 
-btnSiguiente.addEventListener("click", () => {
+function continuarAventura() {
   btnSiguiente.classList.add("oculto");
   limpiarCinematicaSantuario();
 
@@ -328,7 +331,9 @@ btnSiguiente.addEventListener("click", () => {
   }
 
   iniciarMisionAventura();
-});
+}
+
+btnSiguiente.addEventListener("click", continuarAventura);
 
 btnContinuarHistoria.addEventListener("click", async () => {
   if (btnContinuarHistoria.disabled || transicionEscenaActiva) return;
@@ -426,6 +431,7 @@ btnComenzarPrologo.addEventListener("click", async () => {
 });
 
 btnSalirJuego.addEventListener("click", () => {
+  ocultarMensajeDesafioSuperado();
   detenerSonidos();
   mostrarPantalla(pantallaMenu);
 });
@@ -540,7 +546,9 @@ function verificarEstado() {
     personaje.textContent = "🥳";
     cancelarRetornoEstadoBaseExplorador();
     cambiarPersonaje("celebrando");
-    mensajePersonaje.textContent = "🌟 ¡Desafío superado!";
+    mensajePersonaje.textContent = "";
+    mensajePersonaje.classList.add("oculto");
+    const mensajeSuperadoTerminado = mostrarMensajeDesafioSuperado();
     monedas += 10;
     experiencia += 20;
 
@@ -556,7 +564,12 @@ function verificarEstado() {
       reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
       guardarProgreso();
       bloquearTeclado();
-      void completarSantuarioConCinematica();
+      void mensajeSuperadoTerminado.then((mensajeCompleto) => {
+        if (mensajeCompleto) {
+          mensajePersonaje.classList.remove("oculto");
+          void completarSantuarioConCinematica();
+        }
+      });
       return;
     }
 
@@ -572,7 +585,12 @@ function verificarEstado() {
       btnPista.disabled = true;
       btnSiguiente.classList.add("oculto");
       guardarProgreso();
-      void completarAperturaPortal();
+      void mensajeSuperadoTerminado.then((mensajeCompleto) => {
+        if (mensajeCompleto) {
+          mensajePersonaje.classList.remove("oculto");
+          void completarAperturaPortal();
+        }
+      });
       return;
     }
 
@@ -592,7 +610,10 @@ function verificarEstado() {
     reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
     guardarProgreso();
     bloquearTeclado();
-    btnSiguiente.classList.remove("oculto");
+    btnSiguiente.classList.add("oculto");
+    void mensajeSuperadoTerminado.then((mensajeCompleto) => {
+      if (mensajeCompleto) continuarAventura();
+    });
   }
 
   if (intentos === 0) {
@@ -680,7 +701,7 @@ function actualizarVistaMisionDev() {
   actualizarMiradasLobosMision();
   actualizarPresenciaBosqueMision();
   actualizarAranaBosqueMision();
-  mensajePersonaje.textContent = "¡Comienza la expedición!";
+  mensajePersonaje.textContent = "";
   const portalFinalizado =
     escenarioActual === 0 && misionActual === 9 && portalAbierto;
   pantallaJuego.classList.toggle("portal-finalizado", portalFinalizado);
@@ -798,6 +819,35 @@ function esperarMovimiento(duracion) {
   return new Promise((resolve) => {
     setTimeout(resolve, duracionFinal);
   });
+}
+
+function mostrarMensajeDesafioSuperado() {
+  const secuencia = ++secuenciaMensajeDesafioSuperado;
+  const duracion = prefiereReducirMovimiento.matches ? 1500 : 2200;
+
+  mensajeDesafioSuperado.classList.remove("visible");
+  void mensajeDesafioSuperado.offsetWidth;
+  mensajeDesafioSuperado.textContent = "✨ ¡Desafío superado! ✨";
+  mensajeDesafioSuperado.classList.add("visible");
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      if (secuencia !== secuenciaMensajeDesafioSuperado) {
+        resolve(false);
+        return;
+      }
+
+      mensajeDesafioSuperado.classList.remove("visible");
+      mensajeDesafioSuperado.textContent = "";
+      resolve(true);
+    }, duracion);
+  });
+}
+
+function ocultarMensajeDesafioSuperado() {
+  secuenciaMensajeDesafioSuperado++;
+  mensajeDesafioSuperado.classList.remove("visible");
+  mensajeDesafioSuperado.textContent = "";
 }
 
 function esperarCargaFondoEscenario() {
@@ -1380,6 +1430,7 @@ function logAudioEvento(mensaje, detalle = "") {
 }
 
 function iniciarMisionAventura({ presentarMision = false } = {}) {
+  ocultarMensajeDesafioSuperado();
   detenerPolvoImpacto();
   detenerAmbientePuente();
   detenerAmbienteCristal();
@@ -1415,7 +1466,8 @@ function iniciarMisionAventura({ presentarMision = false } = {}) {
   actualizarMiradasLobosMision();
   actualizarPresenciaBosqueMision();
   actualizarAranaBosqueMision();
-  mensajePersonaje.textContent = "¡Comienza la expedición!";
+  mensajePersonaje.textContent = "";
+  mensajePersonaje.classList.remove("oculto");
   teclado.innerHTML = "";
   textoPista.classList.add("oculto");
   textoPista.textContent = "";
@@ -1692,7 +1744,6 @@ function actualizarEscenaPorMision() {
     escenasPorMision[Math.min(misionActual, escenasPorMision.length - 1)];
 
   fondoEscenario.src = `assets/images/fondos/${escena.fondo}`;
-  escenaAventura.textContent = escena.texto;
   volverEstadoBaseExplorador();
 }
 

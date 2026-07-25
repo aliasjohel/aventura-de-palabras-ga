@@ -1533,7 +1533,6 @@ button:disabled {
     transition-delay: 420ms;
 }
 
-#pantallaJuego.interfaz-revelandose .escena-aventura,
 #pantallaJuego.interfaz-revelandose .mensaje-personaje {
     transition-delay: 560ms;
 }
@@ -1553,21 +1552,6 @@ button:disabled {
 #pantallaJuego.interfaz-revelandose .personaje-imagen {
     opacity: 1;
     transition: opacity 520ms ease 640ms, filter 0.35s ease;
-}
-
-.escena-aventura {
-    /* Narracion breve de lo que ocurre en la mision */
-    width: 100%;
-    max-width: 560px;
-    padding: 16px;
-    border-radius: 18px;
-    border: 1px solid rgba(46, 204, 113, 0.45);
-    background: rgba(39, 174, 96, 0.18);
-    color: #d8ffe6;
-    text-align: center;
-    font-size: 1.15rem;
-    font-weight: bold;
-    box-shadow: 0 0 18px rgba(39, 174, 96, 0.18);
 }
 
 /* Personaje: sprite y dialogo */
@@ -1621,11 +1605,47 @@ button:disabled {
     will-change: left, transform;
 }
 
+.mensaje-desafio-superado {
+    position: absolute;
+    top: 18%;
+    left: 27%;
+    z-index: 20;
+    width: max-content;
+    max-width: 82%;
+    padding: 10px 18px;
+    border: 1px solid rgba(255, 236, 140, 0.72);
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(30, 73, 48, 0.94), rgba(12, 42, 31, 0.9));
+    color: #fff5b8;
+    box-shadow:
+        0 0 14px rgba(255, 221, 87, 0.3),
+        0 7px 18px rgba(0, 0, 0, 0.3);
+    font-size: clamp(1rem, 2.4vw, 1.45rem);
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: center;
+    text-shadow: 0 0 9px rgba(255, 239, 149, 0.72);
+    opacity: 0;
+    transform: translate(-50%, 8px) scale(0.9);
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.mensaje-desafio-superado.visible {
+    visibility: visible;
+    animation: mostrarDesafioSuperado 2.2s ease-out both;
+    will-change: opacity, transform;
+}
+
 .mensaje-personaje {
     /* Frase de feedback para aciertos, errores y logros */
     margin-top: 20px;
     font-size: 1.2rem;
     text-align: center;
+}
+
+.mensaje-personaje:empty {
+    display: none;
 }
 
 /* Palabra: casillas de letras */
@@ -2808,6 +2828,29 @@ button:disabled {
     }
 }
 
+@keyframes mostrarDesafioSuperado {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 8px) scale(0.9);
+    }
+
+    14% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1.03);
+    }
+
+    22%,
+    68% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -5px) scale(1);
+    }
+}
+
 @keyframes reboteAlegre {
     0% {
         transform: translateY(0);
@@ -2874,6 +2917,10 @@ button:disabled {
         max-width: none;
         padding: 8px;
         border-radius: 0;
+        gap: 6px;
+    }
+
+    #pantallaJuego.activa {
         gap: 6px;
     }
 
@@ -2963,9 +3010,12 @@ button:disabled {
         height: 124px;
     }
 
-    .escena-aventura {
-        padding: 6px 10px;
-        font-size: 0.85rem;
+    .mensaje-desafio-superado {
+        top: 16%;
+        left: 35%;
+        max-width: 92%;
+        padding: 7px 12px;
+        font-size: clamp(0.82rem, 4vw, 1.05rem);
     }
 
     .mensaje-personaje {
@@ -2974,7 +3024,7 @@ button:disabled {
     }
 
     .palabra {
-        margin: 3px 0;
+        margin: 0;
         gap: 5px;
     }
 
@@ -3005,8 +3055,8 @@ button:disabled {
     }
 
     .btn-pista {
-        margin-top: 6px;
-        margin-bottom: 16px;
+        margin-top: 2px;
+        margin-bottom: 4px;
     }
 
     .texto-pista {
@@ -3015,7 +3065,7 @@ button:disabled {
     }
 
     .teclado {
-        margin-top: 0;
+        margin-top: 2px;
         gap: 3px;
     }
 
@@ -3068,6 +3118,12 @@ button:disabled {
 
     .personaje-imagen.caminando {
         animation: none;
+    }
+
+    .mensaje-desafio-superado.visible {
+        animation: none;
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
     }
 
     .escenario.temblor {
