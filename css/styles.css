@@ -370,7 +370,6 @@ button:disabled {
         56.3% 29%, 56.2% 39%, 57.5% 35%, 58.5% 47%, 55.8% 50%, 51.2% 50%
     );
     filter:
-        hue-rotate(-66deg)
         saturate(1.48)
         brightness(1.08)
         drop-shadow(0 0 3px rgba(66, 224, 132, 0.38));
@@ -2247,7 +2246,6 @@ button:disabled {
     from {
         opacity: 0.5;
         filter:
-            hue-rotate(-66deg)
             saturate(1.42)
             brightness(1.04)
             drop-shadow(0 0 3px rgba(66, 224, 132, 0.32));
@@ -2256,7 +2254,6 @@ button:disabled {
     to {
         opacity: 0.68;
         filter:
-            hue-rotate(-66deg)
             saturate(1.58)
             brightness(1.18)
             drop-shadow(0 0 6px rgba(66, 224, 132, 0.54));
