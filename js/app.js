@@ -80,7 +80,6 @@ const ambientesPorMision = {
   6: "bosqueProhibido",
   7: "ambientePuente",
   8: "ambienteSantuario",
-  9: "ambientePortal",
 };
 const nombresAmbiente = new Set(Object.values(ambientesPorMision));
 
@@ -1732,7 +1731,7 @@ function actualizarEscenaPorMision() {
           "💎 Solo quien resuelva la palabra podrá acercarse al Cristal de la Sabiduría.",
       },
       {
-        fondo: "bosque-10.png",
+        fondo: "bosque-10-apagado.png",
         texto: "🌌 La última palabra abrirá el Portal de los Mundos.",
       },
     ],
@@ -1742,8 +1741,11 @@ function actualizarEscenaPorMision() {
     escenasPorEscenario[escenarioActual] || escenasPorEscenario[0];
   const escena =
     escenasPorMision[Math.min(misionActual, escenasPorMision.length - 1)];
+  const fondoPortalActivo =
+    escenarioActual === 0 && misionActual === 9 && portalAbierto;
+  const nombreFondo = fondoPortalActivo ? "bosque-10.png" : escena.fondo;
 
-  fondoEscenario.src = `assets/images/fondos/${escena.fondo}`;
+  fondoEscenario.src = `assets/images/fondos/${nombreFondo}`;
   volverEstadoBaseExplorador();
 }
 
@@ -2239,6 +2241,8 @@ async function completarAperturaPortal() {
 
     capaPortal.classList.add("recibiendo-energia");
     agregarRefuerzoPortal(capaPortal);
+    reproducirEfectoAmbiental("ambientePortal");
+    void cambiarFondoMisionConFundido("bosque-10.png");
 
     const onda = document.createElement("span");
     onda.className = "onda-apertura-portal";
@@ -2276,6 +2280,7 @@ async function completarAperturaPortal() {
     console.error("[portal] No se pudo completar la apertura", error);
     capaPortal.classList.remove("portal-despertando", "recibiendo-energia");
     capaPortal.classList.add("portal-abierto");
+    fondoEscenario.src = "assets/images/fondos/bosque-10.png";
     agregarRefuerzoPortal(capaPortal);
     mostrarMensajePortal(
       capaPortal,
@@ -3411,6 +3416,9 @@ function precargarImagenesBosque() {
     const img = new Image();
     img.src = `assets/images/fondos/bosque-${i}.png`;
   }
+
+  const fondoPortalApagado = new Image();
+  fondoPortalApagado.src = "assets/images/fondos/bosque-10-apagado.png";
 }
 
 function precargarImagenesExplorador() {

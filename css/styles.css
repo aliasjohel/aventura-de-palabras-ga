@@ -545,6 +545,36 @@ button:disabled {
         var(--destello-portal-retraso) infinite;
 }
 
+.capa-portal-magico:not(.recibiendo-energia):not(.portal-abierto) .remolino-portal,
+.capa-portal-magico:not(.recibiendo-energia):not(.portal-abierto) .resplandor-portal,
+.capa-portal-magico:not(.recibiendo-energia):not(.portal-abierto) .particula-portal,
+.capa-portal-magico:not(.recibiendo-energia):not(.portal-abierto) .destello-aro-portal {
+    visibility: hidden;
+    opacity: 0;
+    animation-play-state: paused;
+}
+
+.capa-portal-magico:not(.recibiendo-energia):not(.portal-abierto) .remolino-portal::before {
+    animation-play-state: paused;
+}
+
+.capa-portal-magico.recibiendo-energia .remolino-portal,
+.capa-portal-magico.recibiendo-energia .resplandor-portal,
+.capa-portal-magico.recibiendo-energia .particula-portal,
+.capa-portal-magico.recibiendo-energia .destello-aro-portal,
+.capa-portal-magico.portal-abierto .remolino-portal,
+.capa-portal-magico.portal-abierto .resplandor-portal,
+.capa-portal-magico.portal-abierto .particula-portal,
+.capa-portal-magico.portal-abierto .destello-aro-portal {
+    visibility: visible;
+    animation-play-state: running;
+}
+
+.capa-portal-magico.recibiendo-energia .remolino-portal::before,
+.capa-portal-magico.portal-abierto .remolino-portal::before {
+    animation-play-state: running;
+}
+
 .neblina-portal {
     position: absolute;
     left: -8%;
