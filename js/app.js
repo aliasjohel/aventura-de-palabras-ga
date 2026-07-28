@@ -61,6 +61,11 @@ const sonidos = {
   crujidoPuente: new Audio("assets/sounds/crujido-puente.mp3"),
   ambienteSantuario: new Audio("assets/sounds/ambiente-santuario.mp3"),
   ambientePortal: new Audio("assets/sounds/ambiente-portal.mp3"),
+  diamanteRecolectado: new Audio(
+    "assets/sounds/diamante-recolectado.mp3",
+  ),
+  cristalCasilla: new Audio("assets/sounds/cristal-casilla.mp3"),
+  comienzaMundo2: new Audio("assets/sounds/comienza-mundo-2.mp3"),
 };
 
 const musicaPrologo = new Audio("assets/sounds/prologo.mp3");
@@ -1244,6 +1249,45 @@ function reproducirSonido(nombre) {
         });
       }
     });
+}
+
+function detenerSonido(nombre) {
+  const sonido = sonidos[nombre];
+  if (!sonido) return;
+
+  sonido.onended = null;
+  sonido.pause();
+  sonido.currentTime = 0;
+}
+
+function desvanecerSonido(nombre, duracion) {
+  const sonido = sonidos[nombre];
+
+  if (!sonido || sonido.paused || sonido.ended) {
+    if (sonido) sonido.volume = 1;
+    return Promise.resolve();
+  }
+
+  const volumenInicial = sonido.volume;
+  const inicio = performance.now();
+
+  return new Promise((resolve) => {
+    const reducirVolumen = (ahora) => {
+      const progreso = Math.min((ahora - inicio) / duracion, 1);
+      sonido.volume = volumenInicial * (1 - progreso);
+
+      if (progreso < 1 && !sonido.paused && !sonido.ended) {
+        requestAnimationFrame(reducirVolumen);
+        return;
+      }
+
+      detenerSonido(nombre);
+      sonido.volume = 1;
+      resolve();
+    };
+
+    requestAnimationFrame(reducirVolumen);
+  });
 }
 
 function reproducirSecuenciaSonidos(nombres) {
@@ -2448,10 +2492,12 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
     limpiarEstadoExploradorPortal();
 
     const inicioMundoDos = iniciarMisionAventura({ presentarMision: true });
+    reproducirSonido("comienzaMundo2");
     cierre.remove();
     luz.remove();
     destello.remove();
     await inicioMundoDos;
+    void desvanecerSonido("comienzaMundo2", 1500);
     restablecerControlesTrasPortal();
   } finally {
     caminata?.cancel();
@@ -2606,6 +2652,7 @@ async function ejecutarCinematicaSantuario() {
   destello.classList.add("activo");
   activarPoseCinematica(poses, "pose-sosteniendo");
   mensaje.classList.add("visible");
+  reproducirSonido("diamanteRecolectado");
   await esperarMovimiento(1150);
 
   activarPoseCinematica(poses, "pose-extendiendo");
@@ -2646,12 +2693,15 @@ async function volarCristalHaciaPanel() {
   await esperarCargaImagen(cristal);
 
   if (prefiereReducirMovimiento.matches || !cristal.animate) {
+    detenerSonido("diamanteRecolectado");
     cristal.remove();
     return;
   }
 
   const puntoMedioX = inicioX + (destinoX - inicioX) * 0.52;
   const puntoMedioY = Math.min(inicioY, destinoY) - 55;
+  detenerSonido("diamanteRecolectado");
+  reproducirSonido("cristalCasilla");
   const vuelo = cristal.animate(
     [
       {
@@ -2689,6 +2739,7 @@ async function volarCristalHaciaPanel() {
   );
 
   await vuelo.finished.catch(() => {});
+  detenerSonido("cristalCasilla");
   cristal.remove();
 }
 
