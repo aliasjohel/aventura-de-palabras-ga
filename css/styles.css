@@ -2831,16 +2831,9 @@ button:disabled {
         transform: translateY(0);
     }
 
-    12.5%, 37.5%, 62.5%, 87.5% {
-        transform: translateY(-7px);
-    }
-
-    25%, 50%, 75%, 100% {
-        transform: translateY(0);
-    }
-
     100% {
         left: var(--posicion-final-explorador);
+        transform: translateY(0);
     }
 }
 

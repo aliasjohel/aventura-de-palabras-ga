@@ -149,6 +149,10 @@ const clasesEstadoExplorador = [
 ];
 const duracionReaccionExplorador = 900;
 const imagenesExploradorPrecargadas = new Map();
+const intervaloSpriteCaminata = 150;
+const spritesCaminataPorEscenario = {
+  0: crearRutasSpritesCaminata("bosque"),
+};
 
 document.addEventListener("touchstart", desbloquearAudio, { once: true });
 document.addEventListener("click", desbloquearAudio, { once: true });
@@ -310,6 +314,8 @@ let temporizadorAranaBosque = null;
 let ultimaZonaAranaBosque = -1;
 let imagenAranaBosque = null;
 let secuenciaMensajeDesafioSuperado = 0;
+let temporizadorSpriteCaminata = null;
+let srcReposoCaminata = "";
 const desafiosPorMision = 3;
 
 // ====================
@@ -357,12 +363,14 @@ btnContinuarHistoria.addEventListener("click", async () => {
     personajeImagen.classList.remove("caminando");
     void personajeImagen.offsetWidth;
     personajeImagen.classList.add("caminando");
+    iniciarCicloCaminata();
     console.log("[transicion] Clase caminando agregada", {
       aplicada: personajeImagen.classList.contains("caminando"),
       clases: personajeImagen.className,
     });
     await esperarMovimiento(duracionCaminataExplorador);
 
+    detenerCicloCaminata();
     personajeImagen.classList.remove("caminando");
     console.log("[transicion] Termina la caminata");
     personajeImagen.classList.add("oculto-transicion");
@@ -388,6 +396,7 @@ btnContinuarHistoria.addEventListener("click", async () => {
       "cambiando-escena",
       "apareciendo-escena",
     );
+    detenerCicloCaminata();
     personajeImagen.classList.remove("caminando", "oculto-transicion");
     btnContinuarHistoria.disabled = false;
     transicionEscenaActiva = false;
@@ -1021,6 +1030,7 @@ function desvanecerMusicaPrologo(duracion) {
 }
 
 function detenerSonidos() {
+  detenerCicloCaminata();
   limpiarCinematicaSantuario();
   detenerPolvoImpacto();
   detenerAmbientePuente();
@@ -1711,6 +1721,7 @@ cargarProgreso();
 actualizarControlesDev();
 precargarImagenesBosque();
 precargarImagenesExplorador();
+precargarSpritesCaminata();
 precargarImagenesHojas();
 precargarRecursosCinematicaSantuario();
 precargarSonidos();
@@ -2396,6 +2407,7 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
 
   try {
     if (duracionCaminata > 0 && personajeImagen.animate) {
+      iniciarCicloCaminata();
       const pasos = Array.from({ length: 11 }, (_, indice) => {
         const progreso = indice / 10;
         const oscilacion =
@@ -2416,6 +2428,7 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
         fill: "forwards",
       });
       await caminata.finished.catch(() => {});
+      detenerCicloCaminata();
     } else {
       personajeImagen.style.transform =
         `translate3d(${destinoX}px, ${destinoY}px, 0) scale(0.28)`;
@@ -2500,6 +2513,7 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
     void desvanecerSonido("comienzaMundo2", 1500);
     restablecerControlesTrasPortal();
   } finally {
+    detenerCicloCaminata();
     caminata?.cancel();
     absorcion?.cancel();
     limpiarEstadoExploradorPortal();
@@ -3438,6 +3452,53 @@ function obtenerSrcExplorador(estado) {
   return `assets/images/personajes/explorador-${estado}.png`;
 }
 
+function crearRutasSpritesCaminata(vestuario) {
+  return Array.from(
+    { length: 4 },
+    (_, indice) =>
+      `assets/images/personajes/caminata/${vestuario}/` +
+      `explorador-caminata-${indice + 1}.png`,
+  );
+}
+
+function obtenerSpritesCaminata(escenario = escenarioActual) {
+  return spritesCaminataPorEscenario[escenario] || [];
+}
+
+function iniciarCicloCaminata(escenario = escenarioActual) {
+  detenerCicloCaminata();
+
+  const sprites = obtenerSpritesCaminata(escenario);
+  if (sprites.length === 0) return;
+
+  srcReposoCaminata =
+    personajeImagen.getAttribute("src") || obtenerSrcExplorador("feliz");
+  let indice = 0;
+
+  const mostrarSiguienteSprite = () => {
+    personajeImagen.src = sprites[indice];
+    indice = (indice + 1) % sprites.length;
+  };
+
+  mostrarSiguienteSprite();
+  temporizadorSpriteCaminata = setInterval(
+    mostrarSiguienteSprite,
+    intervaloSpriteCaminata,
+  );
+}
+
+function detenerCicloCaminata() {
+  if (temporizadorSpriteCaminata) {
+    clearInterval(temporizadorSpriteCaminata);
+    temporizadorSpriteCaminata = null;
+  }
+
+  if (!srcReposoCaminata) return;
+
+  personajeImagen.src = srcReposoCaminata;
+  srcReposoCaminata = "";
+}
+
 function cargarImagenExplorador(estado) {
   if (imagenesExploradorPrecargadas.has(estado)) {
     return imagenesExploradorPrecargadas.get(estado);
@@ -3485,6 +3546,15 @@ function precargarImagenesExplorador() {
   ].forEach((estado) => {
     cargarImagenExplorador(estado);
   });
+}
+
+function precargarSpritesCaminata() {
+  Object.values(spritesCaminataPorEscenario)
+    .flat()
+    .forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
 }
 
 function precargarImagenesHojas() {
