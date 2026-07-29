@@ -1809,7 +1809,7 @@ function actualizarEscenaPorMision() {
           "🌲 La palabra secreta revelará el sendero oculto del Bosque Prohibido.",
       },
       {
-        fondo: "bosque-8.png",
+        fondo: "bosque-8-peligroso.png",
         texto:
           "🌉 Descubre la palabra para cruzar el viejo puente con seguridad.",
       },
@@ -1960,7 +1960,7 @@ function actualizarAmbientePuenteMision() {
     recorte.className = `recorte-puente recorte-puente-${parte}`;
     recorte.alt = "";
     recorte.draggable = false;
-    recorte.src = "assets/images/fondos/bosque-8.png";
+    recorte.src = "assets/images/fondos/bosque-8-peligroso.png";
     capaPuente.appendChild(recorte);
   });
 
@@ -3592,6 +3592,10 @@ function precargarImagenesBosque() {
 
   const fondoPortalApagado = new Image();
   fondoPortalApagado.src = "assets/images/fondos/bosque-10-apagado.png";
+
+  const fondoPuentePeligroso = new Image();
+  fondoPuentePeligroso.src =
+    "assets/images/fondos/bosque-8-peligroso.png";
 }
 
 function precargarImagenesExplorador() {
