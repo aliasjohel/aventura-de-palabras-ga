@@ -41,6 +41,10 @@ const textoCapitulo = document.getElementById("textoCapitulo");
 const btnContinuarHistoria = document.getElementById("btnContinuarHistoria");
 const modalPrologo = document.getElementById("modalPrologo");
 const btnComenzarPrologo = document.getElementById("btnComenzarPrologo");
+const modalIntroduccionMundo2 = document.getElementById(
+  "modalIntroduccionMundo2",
+);
+const btnComenzarMundo2 = document.getElementById("btnComenzarMundo2");
 
 // ====================
 // Sonidos
@@ -344,6 +348,8 @@ let temporizadorSpriteCaminata = null;
 let srcReposoCaminata = "";
 let secuenciaPresentacionMision = 0;
 let presentacionMisionYaCargada = false;
+let transicionIntroduccionMundo2Activa = false;
+let resolverIntroduccionMundo2 = null;
 const desafiosPorMision = 3;
 
 // ====================
@@ -491,6 +497,35 @@ btnComenzarPrologo.addEventListener("click", async () => {
     modalPrologo.classList.remove("abriendo", "cerrando");
     btnComenzarPrologo.disabled = false;
     transicionPrologoActiva = false;
+  }
+});
+
+btnComenzarMundo2.addEventListener("click", async () => {
+  if (
+    btnComenzarMundo2.disabled ||
+    transicionIntroduccionMundo2Activa
+  ) {
+    return;
+  }
+
+  btnComenzarMundo2.disabled = true;
+  transicionIntroduccionMundo2Activa = true;
+  modalIntroduccionMundo2.classList.remove("abriendo");
+  modalIntroduccionMundo2.classList.add("cerrando");
+
+  try {
+    await desvanecerSonido("comienzaMundo2", 2000);
+    modalIntroduccionMundo2.classList.add("oculto");
+    modalIntroduccionMundo2.classList.remove("cerrando");
+  } finally {
+    sonidos.comienzaMundo2.loop = false;
+    sonidos.comienzaMundo2.volume = 1;
+    btnComenzarMundo2.disabled = false;
+    transicionIntroduccionMundo2Activa = false;
+
+    const resolver = resolverIntroduccionMundo2;
+    resolverIntroduccionMundo2 = null;
+    resolver?.();
   }
 });
 
@@ -802,6 +837,19 @@ function mostrarPrologo() {
   reproducirMusicaPrologo();
 }
 
+function mostrarIntroduccionMundoDos() {
+  btnComenzarMundo2.disabled = false;
+  modalIntroduccionMundo2.classList.remove("cerrando", "oculto");
+  modalIntroduccionMundo2.classList.add("abriendo");
+  sonidos.comienzaMundo2.loop = true;
+  sonidos.comienzaMundo2.volume = 1;
+  reproducirSonido("comienzaMundo2");
+
+  return new Promise((resolve) => {
+    resolverIntroduccionMundo2 = resolve;
+  });
+}
+
 function reiniciarEstadoAventura() {
   detenerSonidos();
   cancelarRetornoEstadoBaseExplorador();
@@ -829,6 +877,11 @@ function reiniciarEstadoAventura() {
   navegacionDevPendiente = false;
   secuenciaPresentacionMision += 1;
   presentacionMisionYaCargada = false;
+  transicionIntroduccionMundo2Activa = false;
+  sonidos.comienzaMundo2.loop = false;
+  sonidos.comienzaMundo2.volume = 1;
+  modalIntroduccionMundo2.classList.add("oculto");
+  modalIntroduccionMundo2.classList.remove("abriendo", "cerrando");
 
   contenedorEscenario.classList.remove(
     "cambiando-escena",
@@ -1934,6 +1987,13 @@ function actualizarEscenaPorMision() {
         texto: "🌌 La última palabra abrirá el Portal de los Mundos.",
       },
     ],
+    [
+      {
+        fondo: "desierto-1.png",
+        texto:
+          "🌵 Descubre la palabra secreta para comenzar tu expedición por el Desierto Perdido.",
+      },
+    ],
   ];
 
   const escenasPorMision =
@@ -1944,6 +2004,10 @@ function actualizarEscenaPorMision() {
     escenarioActual === 0 && misionActual === 9 && portalAbierto;
   const nombreFondo = fondoPortalActivo ? "bosque-10.png" : escena.fondo;
 
+  contenedorEscenario.classList.toggle(
+    "escenario-desierto",
+    escenarioActual === 1,
+  );
   fondoEscenario.src = `assets/images/fondos/${nombreFondo}`;
   volverEstadoBaseExplorador();
 }
@@ -2648,13 +2712,14 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
     absorcion?.cancel();
     limpiarEstadoExploradorPortal();
 
-    const inicioMundoDos = iniciarMisionAventura({ presentarMision: true });
-    reproducirSonido("comienzaMundo2");
     cierre.remove();
     luz.remove();
     destello.remove();
-    await inicioMundoDos;
-    void desvanecerSonido("comienzaMundo2", 1500);
+
+    await mostrarIntroduccionMundoDos();
+    await iniciarMisionAventura({ presentarMision: true });
+    mostrarHistoriaMision({ misionYaCargada: true });
+    guardarProgreso();
     restablecerControlesTrasPortal();
   } finally {
     detenerCicloCaminata();

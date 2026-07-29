@@ -1175,6 +1175,47 @@ button:disabled {
     display: block;
 }
 
+.escenario.escenario-desierto {
+    border-color: rgba(244, 194, 109, 0.26);
+    background: #8b532d;
+}
+
+.escenario.escenario-desierto::before,
+.escenario.escenario-desierto::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+.escenario.escenario-desierto::before {
+    inset: 24% -32% -18%;
+    background:
+        repeating-linear-gradient(
+            174deg,
+            transparent 0 11%,
+            rgba(255, 226, 164, 0.14) 12%,
+            rgba(213, 148, 70, 0.08) 13%,
+            transparent 15% 24%
+        );
+    opacity: 0.7;
+    filter: blur(3px);
+    mix-blend-mode: screen;
+    animation: moverArenaDesierto 8.5s ease-in-out infinite alternate;
+}
+
+.escenario.escenario-desierto::after {
+    inset: 50% -38% -22%;
+    background:
+        radial-gradient(ellipse at 18% 66%, rgba(255, 221, 153, 0.24), transparent 20%),
+        radial-gradient(ellipse at 54% 38%, rgba(244, 189, 106, 0.18), transparent 18%),
+        radial-gradient(ellipse at 82% 72%, rgba(255, 226, 168, 0.2), transparent 19%);
+    opacity: 0.62;
+    filter: blur(7px);
+    animation: moverRafagasDesierto 12s ease-in-out -4s infinite alternate;
+}
+
 .fondo-escenario-fundido {
     position: absolute;
     inset: 0;
@@ -2126,6 +2167,21 @@ button:disabled {
     animation: cerrarTarjetaPrologo 300ms ease forwards;
 }
 
+.modal-prologo.introduccion-mundo-2.cerrando,
+.modal-prologo.introduccion-mundo-2.cerrando .tarjeta-prologo {
+    animation-duration: 2s;
+}
+
+.introduccion-mundo-2 .tarjeta-prologo {
+    border-color: rgba(238, 185, 76, 0.86);
+    background:
+        radial-gradient(circle at top, rgba(205, 137, 43, 0.24), transparent 44%),
+        linear-gradient(180deg, rgba(49, 34, 24, 0.98), rgba(22, 17, 15, 0.99));
+    box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.74),
+        inset 0 0 42px rgba(164, 104, 31, 0.08);
+}
+
 .leyenda-prologo {
     margin-bottom: 8px;
     color: #f7c948;
@@ -2178,13 +2234,18 @@ button:disabled {
     animation-delay: 9s;
 }
 
+.modal-prologo.introduccion-mundo-2.abriendo .texto-prologo p:nth-child(6) {
+    animation-delay: 11s;
+}
+
 .texto-prologo .mision-prologo {
     color: #bdf5cd;
     text-align: center;
     font-weight: bold;
 }
 
-#btnComenzarPrologo {
+#btnComenzarPrologo,
+#btnComenzarMundo2 {
     width: 100%;
     margin-top: clamp(20px, 5vw, 30px);
     background: linear-gradient(180deg, #2ecc71, #1f8f4f);
@@ -2196,12 +2257,31 @@ button:disabled {
     animation: revelarBotonPrologo 400ms ease 10s both;
 }
 
-#btnComenzarPrologo:active {
+.introduccion-mundo-2 .mision-prologo {
+    color: #f6d58c;
+}
+
+#btnComenzarMundo2 {
+    background: linear-gradient(180deg, #d99b35, #a66520);
+    box-shadow: 0 6px 0 #684015;
+}
+
+.modal-prologo.abriendo #btnComenzarMundo2 {
+    animation: revelarBotonPrologo 400ms ease 13s both;
+}
+
+#btnComenzarPrologo:active,
+#btnComenzarMundo2:active {
     transform: translateY(4px);
     box-shadow: 0 2px 0 #145c32;
 }
 
-#btnComenzarPrologo:disabled {
+#btnComenzarMundo2:active {
+    box-shadow: 0 2px 0 #684015;
+}
+
+#btnComenzarPrologo:disabled,
+#btnComenzarMundo2:disabled {
     opacity: 0.72;
     cursor: wait;
     transform: none;
@@ -2397,6 +2477,34 @@ button:disabled {
     to {
         opacity: 0;
         transform: scale(0.97);
+    }
+}
+
+@keyframes moverArenaDesierto {
+    0% {
+        opacity: 0.46;
+        transform: translate3d(-7%, 2%, 0) skewX(-4deg);
+    }
+
+    55% {
+        opacity: 0.72;
+    }
+
+    100% {
+        opacity: 0.52;
+        transform: translate3d(7%, -2%, 0) skewX(-4deg);
+    }
+}
+
+@keyframes moverRafagasDesierto {
+    0% {
+        opacity: 0.38;
+        transform: translate3d(-9%, 3%, 0) scaleX(0.96);
+    }
+
+    100% {
+        opacity: 0.66;
+        transform: translate3d(9%, -3%, 0) scaleX(1.04);
     }
 }
 
@@ -3428,13 +3536,21 @@ button:disabled {
     .modal-prologo.abriendo .tarjeta-prologo,
     .modal-prologo.cerrando .tarjeta-prologo,
     .modal-prologo.abriendo .texto-prologo p,
-    .modal-prologo.abriendo #btnComenzarPrologo {
+    .modal-prologo.abriendo #btnComenzarPrologo,
+    .modal-prologo.abriendo #btnComenzarMundo2 {
         animation-duration: 1ms;
         animation-delay: 0ms;
     }
 
     .personaje-imagen.caminando {
         animation: none;
+    }
+
+    .escenario.escenario-desierto::before,
+    .escenario.escenario-desierto::after {
+        animation: none;
+        opacity: 0.32;
+        will-change: auto;
     }
 
     .mensaje-desafio-superado.visible {
