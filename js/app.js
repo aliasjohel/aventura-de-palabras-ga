@@ -126,12 +126,16 @@ const intervaloMinimoMiradaLobos = 3800;
 const intervaloMaximoMiradaLobos = 8500;
 const duracionMinimaMiradaLobos = 1000;
 const duracionMaximaMiradaLobos = 2000;
-const intervaloMinimoPresenciaBosque = 18000;
-const intervaloMaximoPresenciaBosque = 38000;
+const demoraInicialMinimaPresenciaBosque = 2000;
+const demoraInicialMaximaPresenciaBosque = 4000;
+const intervaloMinimoPresenciaBosque = 9000;
+const intervaloMaximoPresenciaBosque = 16000;
 const duracionMinimaPresenciaBosque = 900;
 const duracionMaximaPresenciaBosque = 1450;
-const intervaloMinimoAranaBosque = 30000;
-const intervaloMaximoAranaBosque = 56000;
+const demoraInicialMinimaAranaBosque = 6000;
+const demoraInicialMaximaAranaBosque = 9000;
+const intervaloMinimoAranaBosque = 15000;
+const intervaloMaximoAranaBosque = 24000;
 const duracionMinimaAranaBosque = 6200;
 const duracionMaximaAranaBosque = 7400;
 const prefiereReducirMovimiento = window.matchMedia(
@@ -271,6 +275,21 @@ const historiaBosque = [
       "El explorador toma el Primer Cristal. El bosque recupera su luz y un antiguo portal vuelve a abrirse. El siguiente destino será el Desierto Perdido, donde lo espera un nuevo desafío.",
   },
 ];
+
+const estadosExploradorPorEscenario = {
+  0: [
+    "feliz", // El Bosque Encantado
+    "nervioso", // La Piedra del Sendero
+    "feliz", // Entre las Ramas
+    "preocupado", // La Tormenta
+    "nervioso", // La Niebla Misteriosa
+    "preocupado", // Los Aullidos
+    "preocupado", // El Bosque Prohibido
+    "nervioso", // El Puente Olvidado
+    "feliz", // El Santuario del Cristal
+    "feliz", // El Portal de los Mundos
+  ],
+};
 
 let palabraSecreta = "";
 let pistaActual = "";
@@ -1431,6 +1450,11 @@ function animarPolvoImpacto() {
 }
 
 function obtenerEstadoBaseExplorador() {
+  const estadoConfigurado =
+    estadosExploradorPorEscenario[escenarioActual]?.[misionActual];
+
+  if (estadoConfigurado) return estadoConfigurado;
+
   if (misionActual <= 1) return "feliz";
 
   if (misionActual <= 3) return "nervioso";
@@ -3177,7 +3201,14 @@ function actualizarPresenciaBosqueMision() {
       "assets/images/elementos/silueta-bosque-prohibido.png";
   }
 
-  programarPresenciaFugazBosque(secuencia, capaPresencia);
+  programarPresenciaFugazBosque(
+    secuencia,
+    capaPresencia,
+    aleatorioEntre(
+      demoraInicialMinimaPresenciaBosque,
+      demoraInicialMaximaPresenciaBosque,
+    ),
+  );
 }
 
 function programarPresenciaFugazBosque(
@@ -3300,7 +3331,14 @@ function actualizarAranaBosqueMision() {
       "assets/images/elementos/arana-bosque-prohibido.png";
   }
 
-  programarDescensoAranaBosque(secuencia, capaAranas);
+  programarDescensoAranaBosque(
+    secuencia,
+    capaAranas,
+    aleatorioEntre(
+      demoraInicialMinimaAranaBosque,
+      demoraInicialMaximaAranaBosque,
+    ),
+  );
 }
 
 function programarDescensoAranaBosque(
