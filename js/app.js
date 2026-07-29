@@ -153,6 +153,9 @@ const intervaloSpriteCaminata = 150;
 const spritesCaminataPorEscenario = {
   0: crearRutasSpritesCaminata("bosque"),
 };
+const spritesPortalPorEscenario = {
+  0: crearRutasSpritesCaminata("portal-bosque", "explorador-portal"),
+};
 
 document.addEventListener("touchstart", desbloquearAudio, { once: true });
 document.addEventListener("click", desbloquearAudio, { once: true });
@@ -1011,7 +1014,10 @@ function desvanecerMusicaPrologo(duracion) {
 
   return new Promise((resolve) => {
     const reducirVolumen = (ahora) => {
-      const progreso = Math.min((ahora - inicio) / duracion, 1);
+      const progreso = Math.min(
+        Math.max((ahora - inicio) / duracion, 0),
+        1,
+      );
       musicaPrologo.volume = volumenInicial * (1 - progreso);
 
       if (progreso < 1) {
@@ -1283,7 +1289,10 @@ function desvanecerSonido(nombre, duracion) {
 
   return new Promise((resolve) => {
     const reducirVolumen = (ahora) => {
-      const progreso = Math.min((ahora - inicio) / duracion, 1);
+      const progreso = Math.min(
+        Math.max((ahora - inicio) / duracion, 0),
+        1,
+      );
       sonido.volume = volumenInicial * (1 - progreso);
 
       if (progreso < 1 && !sonido.paused && !sonido.ended) {
@@ -2407,7 +2416,7 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
 
   try {
     if (duracionCaminata > 0 && personajeImagen.animate) {
-      iniciarCicloCaminata();
+      iniciarCicloCaminata(escenarioActual, "portal");
       const pasos = Array.from({ length: 11 }, (_, indice) => {
         const progreso = indice / 10;
         const oscilacion =
@@ -3452,23 +3461,37 @@ function obtenerSrcExplorador(estado) {
   return `assets/images/personajes/explorador-${estado}.png`;
 }
 
-function crearRutasSpritesCaminata(vestuario) {
+function crearRutasSpritesCaminata(
+  vestuario,
+  nombreBase = "explorador-caminata",
+) {
   return Array.from(
     { length: 4 },
     (_, indice) =>
       `assets/images/personajes/caminata/${vestuario}/` +
-      `explorador-caminata-${indice + 1}.png`,
+      `${nombreBase}-${indice + 1}.png`,
   );
 }
 
-function obtenerSpritesCaminata(escenario = escenarioActual) {
-  return spritesCaminataPorEscenario[escenario] || [];
+function obtenerSpritesCaminata(
+  escenario = escenarioActual,
+  variante = "misiones",
+) {
+  const spritesPorEscenario =
+    variante === "portal"
+      ? spritesPortalPorEscenario
+      : spritesCaminataPorEscenario;
+
+  return spritesPorEscenario[escenario] || [];
 }
 
-function iniciarCicloCaminata(escenario = escenarioActual) {
+function iniciarCicloCaminata(
+  escenario = escenarioActual,
+  variante = "misiones",
+) {
   detenerCicloCaminata();
 
-  const sprites = obtenerSpritesCaminata(escenario);
+  const sprites = obtenerSpritesCaminata(escenario, variante);
   if (sprites.length === 0) return;
 
   srcReposoCaminata =
@@ -3549,7 +3572,10 @@ function precargarImagenesExplorador() {
 }
 
 function precargarSpritesCaminata() {
-  Object.values(spritesCaminataPorEscenario)
+  [
+    ...Object.values(spritesCaminataPorEscenario),
+    ...Object.values(spritesPortalPorEscenario),
+  ]
     .flat()
     .forEach((src) => {
       const img = new Image();
