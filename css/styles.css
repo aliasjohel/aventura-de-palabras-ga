@@ -1634,6 +1634,14 @@ button:disabled {
     will-change: left, transform;
 }
 
+.personaje-imagen.explorador-cruzando-puente {
+    z-index: 2;
+    animation: none !important;
+    transition: none;
+    transform-origin: center bottom;
+    will-change: transform;
+}
+
 .mensaje-desafio-superado {
     position: absolute;
     top: 18%;

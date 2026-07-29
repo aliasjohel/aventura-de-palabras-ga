@@ -106,6 +106,7 @@ const sonidosNarrativosPorMision = {
 
 const duracionTransicionHistoria = 300;
 const duracionCaminataExplorador = 1200;
+const duracionCrucePuente = 3600;
 const duracionFadeEscenarioSalida = 250;
 const duracionFadeEscenarioEntrada = 350;
 const duracionNegroPresentacion = 320;
@@ -381,19 +382,27 @@ btnContinuarHistoria.addEventListener("click", async () => {
     modalHistoria.classList.add("oculto");
     modalHistoria.classList.remove("cerrando");
 
-    console.log("[transicion] Empieza la caminata");
-    personajeImagen.classList.remove("caminando");
-    void personajeImagen.offsetWidth;
-    personajeImagen.classList.add("caminando");
-    iniciarCicloCaminata();
-    console.log("[transicion] Clase caminando agregada", {
-      aplicada: personajeImagen.classList.contains("caminando"),
-      clases: personajeImagen.className,
-    });
-    await esperarMovimiento(duracionCaminataExplorador);
+    if (debeCruzarPuenteEnTransicion()) {
+      console.log("[transicion] Empieza el cruce del puente");
+      await ejecutarCrucePuente();
+    } else {
+      console.log("[transicion] Empieza la caminata");
+      personajeImagen.classList.remove("caminando");
+      void personajeImagen.offsetWidth;
+      personajeImagen.classList.add("caminando");
+      iniciarCicloCaminata();
+      console.log("[transicion] Clase caminando agregada", {
+        aplicada: personajeImagen.classList.contains("caminando"),
+        clases: personajeImagen.className,
+      });
+      await esperarMovimiento(duracionCaminataExplorador);
+    }
 
     detenerCicloCaminata();
-    personajeImagen.classList.remove("caminando");
+    personajeImagen.classList.remove(
+      "caminando",
+      "explorador-cruzando-puente",
+    );
     console.log("[transicion] Termina la caminata");
     personajeImagen.classList.add("oculto-transicion");
 
@@ -419,7 +428,11 @@ btnContinuarHistoria.addEventListener("click", async () => {
       "apareciendo-escena",
     );
     detenerCicloCaminata();
-    personajeImagen.classList.remove("caminando", "oculto-transicion");
+    personajeImagen.classList.remove(
+      "caminando",
+      "explorador-cruzando-puente",
+      "oculto-transicion",
+    );
     btnContinuarHistoria.disabled = false;
     transicionEscenaActiva = false;
     navegacionDevPendiente = false;
@@ -821,6 +834,71 @@ function esperarTransicionHistoria() {
   return new Promise((resolve) => {
     setTimeout(resolve, duracion);
   });
+}
+
+function debeCruzarPuenteEnTransicion() {
+  const fondoActual = fondoEscenario.currentSrc || fondoEscenario.src;
+
+  return (
+    escenarioActual === 0 &&
+    misionActual === 8 &&
+    fondoActual.includes("bosque-8-peligroso.png")
+  );
+}
+
+async function ejecutarCrucePuente() {
+  if (prefiereReducirMovimiento.matches || !personajeImagen.animate) return;
+
+  const escena = contenedorEscenario.getBoundingClientRect();
+  const explorador = personajeImagen.getBoundingClientRect();
+  const origenX = explorador.left + explorador.width / 2;
+  const origenY = explorador.bottom;
+  const crearTransformacion = (x, y, escala) =>
+    `translate3d(${escena.left + escena.width * x - origenX}px, ` +
+    `${escena.top + escena.height * y - origenY}px, 0) scale(${escala})`;
+
+  personajeImagen.classList.remove("caminando");
+  personajeImagen.classList.add("explorador-cruzando-puente");
+  iniciarCicloCaminata(escenarioActual, "portal");
+
+  const cruce = personajeImagen.animate(
+    [
+      {
+        offset: 0,
+        transform: "translate3d(0, 0, 0) scale(1)",
+      },
+      {
+        offset: 0.28,
+        transform: crearTransformacion(0.49, 0.72, 0.9),
+      },
+      {
+        offset: 0.55,
+        transform: crearTransformacion(0.53, 0.58, 0.68),
+      },
+      {
+        offset: 0.78,
+        transform: crearTransformacion(0.57, 0.46, 0.46),
+      },
+      {
+        offset: 1,
+        transform: crearTransformacion(0.6, 0.33, 0.27),
+      },
+    ],
+    {
+      duration: duracionCrucePuente,
+      easing: "linear",
+      fill: "forwards",
+    },
+  );
+
+  try {
+    await cruce.finished.catch(() => {});
+  } finally {
+    personajeImagen.classList.add("oculto-transicion");
+    detenerCicloCaminata();
+    cruce.cancel();
+    personajeImagen.classList.remove("explorador-cruzando-puente");
+  }
 }
 
 async function cambiarEscenarioConTransicion() {
