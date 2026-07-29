@@ -105,6 +105,9 @@ const sonidosNarrativosPorMision = {
 };
 
 const duracionTransicionHistoria = 300;
+const duracionCierrePresentacionMision = 1350;
+const duracionPresentacionMision = 8200;
+const duracionPresentacionMisionReducida = 5000;
 const duracionCaminataExplorador = 1200;
 const duracionCrucePuente = 3600;
 const duracionFadeEscenarioSalida = 250;
@@ -339,6 +342,8 @@ let imagenAranaBosque = null;
 let secuenciaMensajeDesafioSuperado = 0;
 let temporizadorSpriteCaminata = null;
 let srcReposoCaminata = "";
+let secuenciaPresentacionMision = 0;
+let presentacionMisionYaCargada = false;
 const desafiosPorMision = 3;
 
 // ====================
@@ -371,16 +376,23 @@ btnSiguiente.addEventListener("click", continuarAventura);
 btnContinuarHistoria.addEventListener("click", async () => {
   if (btnContinuarHistoria.disabled || transicionEscenaActiva) return;
 
+  secuenciaPresentacionMision += 1;
   btnContinuarHistoria.disabled = true;
   transicionEscenaActiva = true;
   modalHistoria.classList.remove("abriendo");
   modalHistoria.classList.add("cerrando");
 
   try {
-    await esperarTransicionHistoria();
+    await esperarMovimiento(duracionCierrePresentacionMision);
 
     modalHistoria.classList.add("oculto");
     modalHistoria.classList.remove("cerrando");
+
+    if (presentacionMisionYaCargada) {
+      presentacionMisionYaCargada = false;
+      historiaMisionPendiente = false;
+      return;
+    }
 
     if (debeCruzarPuenteEnTransicion()) {
       console.log("[transicion] Empieza el cruce del puente");
@@ -446,9 +458,12 @@ btnJugar.addEventListener("click", async () => {
     return;
   }
 
-  await iniciarMisionAventura({
-    presentarMision: desafiosCompletados === 0,
-  });
+  const debePresentarMision = desafiosCompletados === 0;
+  await iniciarMisionAventura({ presentarMision: debePresentarMision });
+
+  if (debePresentarMision) {
+    mostrarHistoriaMision({ misionYaCargada: true });
+  }
 });
 
 btnComenzarPrologo.addEventListener("click", async () => {
@@ -470,6 +485,7 @@ btnComenzarPrologo.addEventListener("click", async () => {
     modalPrologo.classList.remove("cerrando");
 
     await iniciarMisionAventura({ presentarMision: true });
+    mostrarHistoriaMision({ misionYaCargada: true });
     guardarProgreso();
   } finally {
     modalPrologo.classList.remove("abriendo", "cerrando");
@@ -688,9 +704,11 @@ function mostrarPantalla(pantallaSeleccionada) {
   pantallaSeleccionada.classList.add("activa");
 }
 
-function mostrarHistoriaMision() {
+function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
   const historia = obtenerHistoriaMision();
+  const secuenciaActual = ++secuenciaPresentacionMision;
 
+  presentacionMisionYaCargada = misionYaCargada;
   numeroCapitulo.textContent = historia.capitulo;
   tituloCapitulo.textContent = historia.titulo;
   textoCapitulo.textContent = historia.texto;
@@ -698,6 +716,19 @@ function mostrarHistoriaMision() {
   modalHistoria.classList.remove("cerrando");
   modalHistoria.classList.remove("oculto");
   modalHistoria.classList.add("abriendo");
+
+  const duracion = prefiereReducirMovimiento.matches
+    ? duracionPresentacionMisionReducida
+    : duracionPresentacionMision;
+
+  window.setTimeout(() => {
+    const presentacionSigueActiva =
+      secuenciaActual === secuenciaPresentacionMision &&
+      !modalHistoria.classList.contains("oculto") &&
+      !transicionEscenaActiva;
+
+    if (presentacionSigueActiva) btnContinuarHistoria.click();
+  }, duracion);
 }
 
 function navegarMisionDev(direccion) {
@@ -796,6 +827,8 @@ function reiniciarEstadoAventura() {
   historiaMisionPendiente = false;
   transicionEscenaActiva = false;
   navegacionDevPendiente = false;
+  secuenciaPresentacionMision += 1;
+  presentacionMisionYaCargada = false;
 
   contenedorEscenario.classList.remove(
     "cambiando-escena",
