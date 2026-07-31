@@ -204,6 +204,41 @@ button:disabled {
     cursor: not-allowed;
 }
 
+.btn-saltar-narrativa {
+    position: fixed;
+    top: max(12px, env(safe-area-inset-top));
+    right: max(12px, env(safe-area-inset-right));
+    z-index: 5000;
+    min-width: 72px;
+    padding: 8px 13px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    background: rgba(8, 13, 18, 0.58);
+    color: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.24);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    backdrop-filter: blur(5px);
+    touch-action: manipulation;
+}
+
+.btn-saltar-narrativa:hover {
+    background: rgba(8, 13, 18, 0.76);
+    color: #fff;
+    transform: none;
+}
+
+.btn-saltar-narrativa:focus-visible {
+    outline: 2px solid rgba(247, 201, 72, 0.9);
+    outline-offset: 3px;
+}
+
+.btn-saltar-narrativa:disabled {
+    background: rgba(8, 13, 18, 0.44);
+    color: rgba(255, 255, 255, 0.52);
+}
+
 #btnJugar {
     /* Llamado principal del menu */
     background: #27ae60;
@@ -234,6 +269,77 @@ button:disabled {
 
 .dev-tools button:disabled {
     opacity: 0.55;
+}
+
+.control-modo-pruebas {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.18);
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.86rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.control-modo-pruebas input {
+    width: 17px;
+    height: 17px;
+    accent-color: #f7c948;
+}
+
+.panel-modo-pruebas {
+    display: grid;
+    grid-template-columns: auto minmax(170px, 1fr);
+    align-items: center;
+    gap: 10px 12px;
+    width: min(100%, 520px);
+    margin-top: 4px;
+    padding: 15px;
+    border: 1px solid rgba(247, 201, 72, 0.3);
+    border-radius: 14px;
+    background: rgba(9, 16, 22, 0.72);
+}
+
+.panel-modo-pruebas label {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.82rem;
+    font-weight: bold;
+}
+
+.panel-modo-pruebas select {
+    min-width: 0;
+    padding: 9px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 9px;
+    background: #172633;
+    color: #fff;
+    font: inherit;
+}
+
+.panel-modo-pruebas button {
+    grid-column: 1 / -1;
+    padding: 10px 14px;
+    background: #b78322;
+    color: #fff;
+}
+
+@media (max-width: 480px) {
+    .panel-modo-pruebas {
+        grid-template-columns: 1fr;
+    }
+
+    .panel-modo-pruebas label {
+        margin-bottom: -5px;
+    }
+
+    .panel-modo-pruebas button {
+        grid-column: 1;
+    }
 }
 
 .btn-pista {

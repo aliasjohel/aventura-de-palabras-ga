@@ -19,6 +19,18 @@ const btnJugar = document.getElementById("btnJugar");
 const btnSalirJuego = document.getElementById("btnSalirJuego");
 const btnMisionAnterior = document.getElementById("btnMisionAnterior");
 const btnMisionSiguiente = document.getElementById("btnMisionSiguiente");
+const modoPruebas = document.getElementById("modoPruebas");
+const panelModoPruebas = document.getElementById("panelModoPruebas");
+const herramientasPruebasJuego = document.getElementById(
+  "herramientasPruebasJuego",
+);
+const selectorMundoPruebas = document.getElementById("selectorMundoPruebas");
+const selectorMisionPruebas = document.getElementById(
+  "selectorMisionPruebas",
+);
+const btnIniciarMisionPruebas = document.getElementById(
+  "btnIniciarMisionPruebas",
+);
 
 const categoriaActual = document.getElementById("categoriaActual");
 const detalleMision = document.getElementById("detalleMision");
@@ -45,6 +57,7 @@ const modalIntroduccionMundo2 = document.getElementById(
   "modalIntroduccionMundo2",
 );
 const btnComenzarMundo2 = document.getElementById("btnComenzarMundo2");
+const btnSaltarNarrativa = document.getElementById("btnSaltarNarrativa");
 
 // ====================
 // Sonidos
@@ -350,6 +363,12 @@ let secuenciaPresentacionMision = 0;
 let presentacionMisionYaCargada = false;
 let transicionIntroduccionMundo2Activa = false;
 let resolverIntroduccionMundo2 = null;
+let secuenciaNarrativaActual = null;
+let secuenciaHistoriaActiva = null;
+let secuenciaPrologoActiva = null;
+let secuenciaIntroduccionMundoActiva = null;
+let modoPruebasActivo = false;
+let maximoEscenarioDesbloqueado = 0;
 const desafiosPorMision = 3;
 
 // ====================
@@ -379,8 +398,12 @@ function continuarAventura() {
 
 btnSiguiente.addEventListener("click", continuarAventura);
 
+btnSaltarNarrativa.addEventListener("click", solicitarSaltoNarrativo);
+
 btnContinuarHistoria.addEventListener("click", async () => {
   if (btnContinuarHistoria.disabled || transicionEscenaActiva) return;
+
+  const secuenciaNarrativa = secuenciaHistoriaActiva;
 
   secuenciaPresentacionMision += 1;
   btnContinuarHistoria.disabled = true;
@@ -454,6 +477,11 @@ btnContinuarHistoria.addEventListener("click", async () => {
     btnContinuarHistoria.disabled = false;
     transicionEscenaActiva = false;
     navegacionDevPendiente = false;
+    finalizarSecuenciaNarrativa(secuenciaNarrativa);
+
+    if (secuenciaHistoriaActiva === secuenciaNarrativa) {
+      secuenciaHistoriaActiva = null;
+    }
   }
 });
 
@@ -474,6 +502,8 @@ btnJugar.addEventListener("click", async () => {
 
 btnComenzarPrologo.addEventListener("click", async () => {
   if (btnComenzarPrologo.disabled || transicionPrologoActiva) return;
+
+  const secuenciaNarrativa = secuenciaPrologoActiva;
 
   reproducirSonidoComenzarAventura();
   btnComenzarPrologo.disabled = true;
@@ -497,6 +527,11 @@ btnComenzarPrologo.addEventListener("click", async () => {
     modalPrologo.classList.remove("abriendo", "cerrando");
     btnComenzarPrologo.disabled = false;
     transicionPrologoActiva = false;
+    finalizarSecuenciaNarrativa(secuenciaNarrativa);
+
+    if (secuenciaPrologoActiva === secuenciaNarrativa) {
+      secuenciaPrologoActiva = null;
+    }
   }
 });
 
@@ -507,6 +542,8 @@ btnComenzarMundo2.addEventListener("click", async () => {
   ) {
     return;
   }
+
+  const secuenciaNarrativa = secuenciaIntroduccionMundoActiva;
 
   btnComenzarMundo2.disabled = true;
   transicionIntroduccionMundo2Activa = true;
@@ -526,21 +563,41 @@ btnComenzarMundo2.addEventListener("click", async () => {
     const resolver = resolverIntroduccionMundo2;
     resolverIntroduccionMundo2 = null;
     resolver?.();
+    finalizarSecuenciaNarrativa(secuenciaNarrativa);
+
+    if (secuenciaIntroduccionMundoActiva === secuenciaNarrativa) {
+      secuenciaIntroduccionMundoActiva = null;
+    }
   }
 });
 
 btnSalirJuego.addEventListener("click", () => {
+  cancelarSecuenciaNarrativaActual();
   ocultarMensajeDesafioSuperado();
   detenerSonidos();
   mostrarPantalla(pantallaMenu);
 });
 
 btnMisionAnterior.addEventListener("click", () => {
+  if (!modoPruebasActivo) return;
   navegarMisionDev(-1);
 });
 
 btnMisionSiguiente.addEventListener("click", () => {
+  if (!modoPruebasActivo) return;
   navegarMisionDev(1);
+});
+
+modoPruebas.addEventListener("change", () => {
+  actualizarModoPruebas(modoPruebas.checked);
+});
+
+selectorMundoPruebas.addEventListener("change", () => {
+  actualizarSelectorMisionesPruebas();
+});
+
+btnIniciarMisionPruebas.addEventListener("click", () => {
+  iniciarMisionSeleccionadaPruebas();
 });
 
 btnReintentar.addEventListener("click", () => {
@@ -739,6 +796,106 @@ function mostrarPantalla(pantallaSeleccionada) {
   pantallaSeleccionada.classList.add("activa");
 }
 
+// Control reutilizable para cualquier secuencia narrativa presente o futura.
+// Las esperas y animaciones siguen su ruta normal, pero se completan al instante.
+function iniciarSecuenciaNarrativa(alSaltar = null) {
+  const secuencia = {
+    alSaltar,
+    esperas: new Set(),
+    saltada: false,
+  };
+
+  secuenciaNarrativaActual = secuencia;
+  btnSaltarNarrativa.disabled = false;
+  btnSaltarNarrativa.classList.remove("oculto");
+  return secuencia;
+}
+
+function solicitarSaltoNarrativo() {
+  const secuencia = secuenciaNarrativaActual;
+  if (!secuencia || secuencia.saltada) return;
+
+  secuencia.saltada = true;
+  btnSaltarNarrativa.disabled = true;
+  secuencia.esperas.forEach((resolver) => resolver());
+
+  const selectoresNarrativos = [
+    "#modalHistoria",
+    "#modalPrologo",
+    "#modalIntroduccionMundo2",
+    ".presentacion-mision",
+    ".cinematica-santuario",
+    ".capa-portal-magico",
+    ".cierre-cinematica-mundo",
+    ".corriente-energia-portal",
+    ".cristal-volador-santuario",
+  ].join(",");
+
+  document.getAnimations().forEach((animacion) => {
+    try {
+      const objetivo = animacion.effect?.target;
+      const perteneceALaSecuencia =
+        objetivo instanceof Element &&
+        (objetivo.matches(selectoresNarrativos) ||
+          objetivo.closest(selectoresNarrativos) ||
+          (objetivo === personajeImagen &&
+            (transicionEscenaActiva ||
+              cinematicaSantuarioActiva ||
+              cinematicaPortalActiva)));
+      const duracion = animacion.effect?.getComputedTiming().endTime;
+      if (perteneceALaSecuencia && Number.isFinite(duracion)) {
+        animacion.finish();
+      }
+    } catch (_error) {
+      // Una animacion ya cancelada no impide completar la secuencia.
+    }
+  });
+
+  secuencia.alSaltar?.();
+}
+
+function finalizarSecuenciaNarrativa(secuencia) {
+  if (!secuencia || secuenciaNarrativaActual !== secuencia) return;
+
+  secuencia.esperas.forEach((resolver) => resolver());
+  secuenciaNarrativaActual = null;
+  btnSaltarNarrativa.disabled = false;
+  btnSaltarNarrativa.classList.add("oculto");
+}
+
+function cancelarSecuenciaNarrativaActual() {
+  const secuencia = secuenciaNarrativaActual;
+  if (secuencia) finalizarSecuenciaNarrativa(secuencia);
+
+  secuenciaHistoriaActiva = null;
+  secuenciaPrologoActiva = null;
+  secuenciaIntroduccionMundoActiva = null;
+}
+
+function saltoNarrativoSolicitado() {
+  return Boolean(secuenciaNarrativaActual?.saltada);
+}
+
+function esperarAnimacionNarrativa(animacion) {
+  const secuencia = secuenciaNarrativaActual;
+
+  if (!secuencia) return animacion.finished.catch(() => {});
+  if (secuencia.saltada) return Promise.resolve();
+
+  return new Promise((resolve) => {
+    let terminada = false;
+    const completar = () => {
+      if (terminada) return;
+      terminada = true;
+      secuencia.esperas.delete(completar);
+      resolve();
+    };
+
+    secuencia.esperas.add(completar);
+    animacion.finished.then(completar).catch(completar);
+  });
+}
+
 function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
   const historia = obtenerHistoriaMision();
   const secuenciaActual = ++secuenciaPresentacionMision;
@@ -751,6 +908,10 @@ function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
   modalHistoria.classList.remove("cerrando");
   modalHistoria.classList.remove("oculto");
   modalHistoria.classList.add("abriendo");
+  finalizarSecuenciaNarrativa(secuenciaHistoriaActiva);
+  secuenciaHistoriaActiva = iniciarSecuenciaNarrativa(() => {
+    btnContinuarHistoria.click();
+  });
 
   const duracion = prefiereReducirMovimiento.matches
     ? duracionPresentacionMisionReducida
@@ -767,9 +928,19 @@ function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
 }
 
 function navegarMisionDev(direccion) {
-  if (transicionEscenaActiva || navegacionDevPendiente) return;
+  if (
+    !modoPruebasActivo ||
+    transicionEscenaActiva ||
+    navegacionDevPendiente
+  ) {
+    return;
+  }
 
-  const nuevaMision = Math.min(Math.max(misionActual + direccion, 0), 9);
+  const ultimaMision = obtenerCantidadMisiones(escenarioActual) - 1;
+  const nuevaMision = Math.min(
+    Math.max(misionActual + direccion, 0),
+    ultimaMision,
+  );
 
   if (nuevaMision === misionActual) return;
 
@@ -783,8 +954,135 @@ function navegarMisionDev(direccion) {
 }
 
 function actualizarControlesDev() {
+  herramientasPruebasJuego.classList.toggle("oculto", !modoPruebasActivo);
   btnMisionAnterior.disabled = misionActual === 0;
-  btnMisionSiguiente.disabled = misionActual === 9;
+  btnMisionSiguiente.disabled =
+    misionActual >= obtenerCantidadMisiones(escenarioActual) - 1;
+}
+
+function actualizarModoPruebas(activar, { restaurarProgreso = true } = {}) {
+  modoPruebasActivo = Boolean(activar);
+  modoPruebas.checked = modoPruebasActivo;
+  panelModoPruebas.classList.toggle("oculto", !modoPruebasActivo);
+  localStorage.setItem(
+    "modoPruebasAventuraGA",
+    modoPruebasActivo ? "activo" : "inactivo",
+  );
+
+  if (modoPruebasActivo) {
+    actualizarSelectoresPruebas();
+  } else if (restaurarProgreso) {
+    restaurarPartidaTrasPruebas();
+  }
+
+  actualizarControlesDev();
+}
+
+function actualizarSelectoresPruebas() {
+  const mundoSeleccionado =
+    selectorMundoPruebas.value === ""
+      ? Number.NaN
+      : Number(selectorMundoPruebas.value);
+  const limiteDisponible = aventura.length - 1;
+
+  selectorMundoPruebas.innerHTML = "";
+
+  for (let indice = 0; indice <= limiteDisponible; indice++) {
+    const opcion = document.createElement("option");
+    opcion.value = `${indice}`;
+    opcion.textContent = `Mundo ${indice + 1} · ${aventura[indice].nombre}`;
+    selectorMundoPruebas.appendChild(opcion);
+  }
+
+  const mundoPreferido = Number.isInteger(mundoSeleccionado)
+    ? mundoSeleccionado
+    : escenarioActual;
+  selectorMundoPruebas.value = `${Math.min(mundoPreferido, limiteDisponible)}`;
+  actualizarSelectorMisionesPruebas();
+}
+
+function actualizarSelectorMisionesPruebas() {
+  const mundo = Number(selectorMundoPruebas.value) || 0;
+  const misionSeleccionada =
+    selectorMisionPruebas.value === ""
+      ? Number.NaN
+      : Number(selectorMisionPruebas.value);
+  const cantidadMisiones = obtenerCantidadMisiones(mundo);
+
+  selectorMisionPruebas.innerHTML = "";
+
+  for (let indice = 0; indice < cantidadMisiones; indice++) {
+    const opcion = document.createElement("option");
+    const historia = mundo === 0 ? historiaBosque[indice] : null;
+    opcion.value = `${indice}`;
+    opcion.textContent = historia
+      ? `Misión ${indice + 1} · ${historia.titulo}`
+      : `Misión ${indice + 1}`;
+    selectorMisionPruebas.appendChild(opcion);
+  }
+
+  const misionPreferida = Number.isInteger(misionSeleccionada)
+    ? misionSeleccionada
+    : mundo === escenarioActual
+      ? misionActual
+      : 0;
+  selectorMisionPruebas.value = `${Math.min(
+    Math.max(misionPreferida, 0),
+    cantidadMisiones - 1,
+  )}`;
+}
+
+function obtenerCantidadMisiones(escenario) {
+  if (escenario === 0) return historiaBosque.length;
+  if (escenario === 1) return 1;
+  return aventura[escenario]?.palabras.length || 1;
+}
+
+function iniciarMisionSeleccionadaPruebas() {
+  if (!modoPruebasActivo) return;
+
+  const mundoSeleccionado = Number(selectorMundoPruebas.value);
+  const misionSeleccionada = Number(selectorMisionPruebas.value);
+
+  if (
+    !Number.isInteger(mundoSeleccionado) ||
+    !Number.isInteger(misionSeleccionada) ||
+    mundoSeleccionado < 0 ||
+    mundoSeleccionado >= aventura.length ||
+    misionSeleccionada < 0 ||
+    misionSeleccionada >= obtenerCantidadMisiones(mundoSeleccionado)
+  ) {
+    return;
+  }
+
+  cancelarSecuenciaNarrativaActual();
+  detenerSonidos();
+  escenarioActual = mundoSeleccionado;
+  misionActual = misionSeleccionada;
+  desafioActual = 1;
+  desafiosCompletados = 0;
+  palabrasUsadasEnMision = [];
+  sonidoNarrativoPendiente = "";
+  historiaMisionPendiente = false;
+  portalAbierto = false;
+
+  if (escenarioActual === 0 && misionActual >= 9) {
+    cristalesObtenidos = Math.max(cristalesObtenidos, 1);
+  }
+
+  actualizarJugador();
+  void iniciarMisionAventura();
+}
+
+function restaurarPartidaTrasPruebas() {
+  const progresoGuardado = localStorage.getItem("progresoAventuraGA");
+
+  if (progresoGuardado) {
+    cargarProgreso();
+    return;
+  }
+
+  reiniciarEstadoAventura();
 }
 
 function actualizarCabeceraMision() {
@@ -835,6 +1133,10 @@ function mostrarPrologo() {
   modalPrologo.classList.remove("cerrando", "oculto");
   modalPrologo.classList.add("abriendo");
   reproducirMusicaPrologo();
+  finalizarSecuenciaNarrativa(secuenciaPrologoActiva);
+  secuenciaPrologoActiva = iniciarSecuenciaNarrativa(() => {
+    btnComenzarPrologo.click();
+  });
 }
 
 function mostrarIntroduccionMundoDos() {
@@ -844,6 +1146,10 @@ function mostrarIntroduccionMundoDos() {
   sonidos.comienzaMundo2.loop = true;
   sonidos.comienzaMundo2.volume = 1;
   reproducirSonido("comienzaMundo2");
+  finalizarSecuenciaNarrativa(secuenciaIntroduccionMundoActiva);
+  secuenciaIntroduccionMundoActiva = iniciarSecuenciaNarrativa(() => {
+    btnComenzarMundo2.click();
+  });
 
   return new Promise((resolve) => {
     resolverIntroduccionMundo2 = resolve;
@@ -851,6 +1157,7 @@ function mostrarIntroduccionMundoDos() {
 }
 
 function reiniciarEstadoAventura() {
+  cancelarSecuenciaNarrativaActual();
   detenerSonidos();
   cancelarRetornoEstadoBaseExplorador();
   secuenciaFundidoFondo++;
@@ -868,6 +1175,7 @@ function reiniciarEstadoAventura() {
   monedas = 0;
   experiencia = 0;
   cristalesObtenidos = 0;
+  maximoEscenarioDesbloqueado = 0;
   portalAbierto = false;
   desafioActual = 1;
   desafiosCompletados = 0;
@@ -913,13 +1221,7 @@ function obtenerHistoriaMision() {
 }
 
 function esperarTransicionHistoria() {
-  const duracion = prefiereReducirMovimiento.matches
-    ? 0
-    : duracionTransicionHistoria;
-
-  return new Promise((resolve) => {
-    setTimeout(resolve, duracion);
-  });
+  return esperarMovimiento(duracionTransicionHistoria);
 }
 
 function debeCruzarPuenteEnTransicion() {
@@ -978,7 +1280,7 @@ async function ejecutarCrucePuente() {
   );
 
   try {
-    await cruce.finished.catch(() => {});
+    await esperarAnimacionNarrativa(cruce);
   } finally {
     personajeImagen.classList.add("oculto-transicion");
     detenerCicloCaminata();
@@ -1013,10 +1315,24 @@ function esperarFadeEscenarioEntrada() {
 }
 
 function esperarMovimiento(duracion) {
-  const duracionFinal = prefiereReducirMovimiento.matches ? 0 : duracion;
+  const secuencia = secuenciaNarrativaActual;
+  const duracionFinal =
+    prefiereReducirMovimiento.matches || secuencia?.saltada ? 0 : duracion;
+
+  if (duracionFinal === 0) return Promise.resolve();
 
   return new Promise((resolve) => {
-    setTimeout(resolve, duracionFinal);
+    let terminada = false;
+    const completar = () => {
+      if (terminada) return;
+      terminada = true;
+      clearTimeout(temporizador);
+      secuencia?.esperas.delete(completar);
+      resolve();
+    };
+    const temporizador = setTimeout(completar, duracionFinal);
+
+    secuencia?.esperas.add(completar);
   });
 }
 
@@ -1197,6 +1513,14 @@ function desvanecerMusicaPrologo(duracion) {
 
   return new Promise((resolve) => {
     const reducirVolumen = (ahora) => {
+      if (saltoNarrativoSolicitado()) {
+        musicaPrologo.pause();
+        musicaPrologo.currentTime = 0;
+        musicaPrologo.volume = 0.25;
+        resolve();
+        return;
+      }
+
       const progreso = Math.min(
         Math.max((ahora - inicio) / duracion, 0),
         1,
@@ -1530,6 +1854,13 @@ function desvanecerSonido(nombre, duracion) {
 
   return new Promise((resolve) => {
     const reducirVolumen = (ahora) => {
+      if (saltoNarrativoSolicitado()) {
+        detenerSonido(nombre);
+        sonido.volume = 1;
+        resolve();
+        return;
+      }
+
       const progreso = Math.min(
         Math.max((ahora - inicio) / duracion, 0),
         1,
@@ -1835,11 +2166,18 @@ function avanzarMision() {
   mensajePersonaje.textContent = "🏆 ¡Misión completada!";
   let sonidoNarrativo = sonidosNarrativosPorMision[misionActual] || "";
 
-  if (misionActual >= 10) {
+  if (misionActual >= obtenerCantidadMisiones(escenarioActual)) {
     misionActual = 0;
     sonidoNarrativo = "";
 
     escenarioActual++;
+
+    if (!modoPruebasActivo) {
+      maximoEscenarioDesbloqueado = Math.max(
+        maximoEscenarioDesbloqueado,
+        Math.min(escenarioActual, aventura.length - 1),
+      );
+    }
 
     if (escenarioActual >= aventura.length) {
       escenarioActual = 0;
@@ -1878,6 +2216,8 @@ function actualizarPanelCristales() {
 }
 
 function guardarProgreso() {
+  if (modoPruebasActivo) return;
+
   const progreso = {
     escenarioActual,
     misionActual,
@@ -1887,6 +2227,7 @@ function guardarProgreso() {
     experiencia,
     cristalesObtenidos,
     portalAbierto,
+    maximoEscenarioDesbloqueado,
   };
 
   localStorage.setItem("progresoAventuraGA", JSON.stringify(progreso));
@@ -1898,6 +2239,7 @@ function cargarProgreso() {
   const progresoGuardado = localStorage.getItem("progresoAventuraGA");
 
   if (!progresoGuardado) {
+    maximoEscenarioDesbloqueado = 0;
     actualizarMenuPrincipal();
     return;
   }
@@ -1908,6 +2250,7 @@ function cargarProgreso() {
     progreso = JSON.parse(progresoGuardado);
   } catch {
     localStorage.removeItem("progresoAventuraGA");
+    maximoEscenarioDesbloqueado = 0;
     actualizarMenuPrincipal();
     return;
   }
@@ -1931,6 +2274,14 @@ function cargarProgreso() {
     5,
   );
   portalAbierto = progreso.portalAbierto === true;
+  maximoEscenarioDesbloqueado = Math.min(
+    Math.max(
+      progreso.maximoEscenarioDesbloqueado ?? escenarioActual,
+      escenarioActual,
+      0,
+    ),
+    aventura.length - 1,
+  );
 
   actualizarJugador();
   actualizarMenuPrincipal();
@@ -1973,6 +2324,10 @@ function obtenerPalabraAleatoria() {
 }
 
 cargarProgreso();
+actualizarModoPruebas(
+  localStorage.getItem("modoPruebasAventuraGA") === "activo",
+  { restaurarProgreso: false },
+);
 actualizarControlesDev();
 precargarImagenesBosque();
 precargarImagenesExplorador();
@@ -2099,7 +2454,11 @@ async function presentarInicioMision() {
     pantallaJuego.classList.add("interfaz-revelandose");
     presentacion.classList.add("haciendo-zoom");
 
-    if (prefiereReducirMovimiento.matches || !imagen.animate) {
+    if (
+      prefiereReducirMovimiento.matches ||
+      saltoNarrativoSolicitado() ||
+      !imagen.animate
+    ) {
       await esperarMovimiento(180);
     } else {
       const zoom = imagen.animate(
@@ -2126,7 +2485,7 @@ async function presentarInicioMision() {
         },
       );
 
-      await zoom.finished.catch(() => {});
+      await esperarAnimacionNarrativa(zoom);
     }
   } finally {
     presentacion.remove();
@@ -2541,6 +2900,7 @@ async function completarAperturaPortal() {
   if (!capaPortal) return;
 
   cinematicaPortalActiva = true;
+  const secuenciaNarrativa = iniciarSecuenciaNarrativa();
   const secuencia = ++secuenciaAperturaPortal;
   const restaurarControles = bloquearControlesAperturaPortal();
   let corriente = null;
@@ -2619,6 +2979,8 @@ async function completarAperturaPortal() {
       ranuraCristalBosque.classList.remove("energizando-portal");
       ranuraCristalBosque.classList.add("portal-conectado");
     }
+
+    finalizarSecuenciaNarrativa(secuenciaNarrativa);
   }
 }
 
@@ -2673,7 +3035,11 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
   let absorcion = null;
 
   try {
-    if (duracionCaminata > 0 && personajeImagen.animate) {
+    if (
+      duracionCaminata > 0 &&
+      !saltoNarrativoSolicitado() &&
+      personajeImagen.animate
+    ) {
       iniciarCicloCaminata(escenarioActual, "portal");
       const pasos = Array.from({ length: 11 }, (_, indice) => {
         const progreso = indice / 10;
@@ -2694,7 +3060,7 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
         easing: "linear",
         fill: "forwards",
       });
-      await caminata.finished.catch(() => {});
+      await esperarAnimacionNarrativa(caminata);
       detenerCicloCaminata();
     } else {
       personajeImagen.style.transform =
@@ -2718,7 +3084,11 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
     const transformacionAbsorbida =
       `translate3d(${destinoX}px, ${destinoY - 2}px, 0) scale(0.12)`;
 
-    if (duracionAbsorcion > 0 && personajeImagen.animate) {
+    if (
+      duracionAbsorcion > 0 &&
+      !saltoNarrativoSolicitado() &&
+      personajeImagen.animate
+    ) {
       absorcion = personajeImagen.animate(
         [
           {
@@ -2738,7 +3108,7 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
           fill: "forwards",
         },
       );
-      await absorcion.finished.catch(() => {});
+      await esperarAnimacionNarrativa(absorcion);
     } else {
       personajeImagen.style.opacity = "0";
       personajeImagen.style.filter = "brightness(2.2) blur(2px)";
@@ -2837,6 +3207,7 @@ async function reanudarCinematicaFinalPortal() {
   if (!capaPortal) return;
 
   cinematicaPortalActiva = true;
+  const secuenciaNarrativa = iniciarSecuenciaNarrativa();
   const secuencia = ++secuenciaAperturaPortal;
   const restaurarControles = bloquearControlesAperturaPortal();
 
@@ -2851,6 +3222,8 @@ async function reanudarCinematicaFinalPortal() {
     if (secuencia === secuenciaAperturaPortal) {
       cinematicaPortalActiva = false;
     }
+
+    finalizarSecuenciaNarrativa(secuenciaNarrativa);
   }
 }
 
@@ -2858,26 +3231,34 @@ async function completarSantuarioConCinematica() {
   if (cinematicaSantuarioActiva) return;
 
   cinematicaSantuarioActiva = true;
+  const secuenciaNarrativa = iniciarSecuenciaNarrativa();
   pantallaJuego.classList.add("cinematica-santuario-activa");
   btnSiguiente.classList.add("oculto");
 
   try {
-    await esperarMovimiento(850);
-    await ejecutarCinematicaSantuario();
-  } catch (error) {
-    console.error("[cinematica-santuario] No se pudo completar la animación", error);
-    limpiarCinematicaSantuario();
-  }
+    try {
+      await esperarMovimiento(850);
+      await ejecutarCinematicaSantuario();
+    } catch (error) {
+      console.error(
+        "[cinematica-santuario] No se pudo completar la animación",
+        error,
+      );
+      limpiarCinematicaSantuario();
+    }
 
-  cristalesObtenidos = Math.max(cristalesObtenidos, 1);
-  actualizarJugador();
-  sonidoNarrativoPendiente = avanzarMision();
-  guardarProgreso();
-  mensajePersonaje.textContent = "💎 ¡Cristal de la Sabiduría obtenido!";
-  btnSiguiente.textContent = "➡️ Ir al Portal";
-  btnSiguiente.classList.remove("oculto");
-  pantallaJuego.classList.remove("cinematica-santuario-activa");
-  cinematicaSantuarioActiva = false;
+    cristalesObtenidos = Math.max(cristalesObtenidos, 1);
+    actualizarJugador();
+    sonidoNarrativoPendiente = avanzarMision();
+    guardarProgreso();
+    mensajePersonaje.textContent = "💎 ¡Cristal de la Sabiduría obtenido!";
+    btnSiguiente.textContent = "➡️ Ir al Portal";
+    btnSiguiente.classList.remove("oculto");
+  } finally {
+    pantallaJuego.classList.remove("cinematica-santuario-activa");
+    cinematicaSantuarioActiva = false;
+    finalizarSecuenciaNarrativa(secuenciaNarrativa);
+  }
 }
 
 async function ejecutarCinematicaSantuario() {
@@ -2974,7 +3355,11 @@ async function volarCristalHaciaPanel() {
   document.body.appendChild(cristal);
   await esperarCargaImagen(cristal);
 
-  if (prefiereReducirMovimiento.matches || !cristal.animate) {
+  if (
+    prefiereReducirMovimiento.matches ||
+    saltoNarrativoSolicitado() ||
+    !cristal.animate
+  ) {
     detenerSonido("diamanteRecolectado");
     cristal.remove();
     return;
@@ -3020,7 +3405,7 @@ async function volarCristalHaciaPanel() {
     },
   );
 
-  await vuelo.finished.catch(() => {});
+  await esperarAnimacionNarrativa(vuelo);
   detenerSonido("cristalCasilla");
   cristal.remove();
 }

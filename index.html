@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aventura de Palabras - GA Games</title>
-    <link rel="stylesheet" href="css/styles.css?v=20260724-escenario-movil-ampliado-1">
+    <link rel="stylesheet" href="css/styles.css?v=20260731-modo-pruebas-1">
 </head>
 
 <body>
@@ -24,6 +24,21 @@
             <button disabled>Multijugador</button>
             <button disabled>Estadísticas</button>
             <button disabled>Configuración</button>
+
+            <label class="control-modo-pruebas" for="modoPruebas">
+                <input id="modoPruebas" type="checkbox">
+                <span>Modo Pruebas</span>
+            </label>
+
+            <div id="panelModoPruebas" class="panel-modo-pruebas oculto" aria-label="Herramientas de prueba">
+                <label for="selectorMundoPruebas">Mundo</label>
+                <select id="selectorMundoPruebas"></select>
+
+                <label for="selectorMisionPruebas">Misión</label>
+                <select id="selectorMisionPruebas"></select>
+
+                <button id="btnIniciarMisionPruebas" type="button">Iniciar misión</button>
+            </div>
         </section>
 
         <section id="pantallaJuego" class="pantalla">
@@ -102,7 +117,8 @@
 
             <button id="btnSalirJuego" class="secundario">Menú</button>
 
-            <div class="dev-tools" aria-label="Navegación temporal de misiones">
+            <div id="herramientasPruebasJuego" class="dev-tools oculto"
+                aria-label="Navegación temporal de misiones">
                 <button id="btnMisionAnterior" type="button">◀ Misión anterior</button>
                 <button id="btnMisionSiguiente" type="button">▶ Misión siguiente</button>
             </div>
@@ -194,7 +210,10 @@
 
     </main>
 
-    <script src="js/app.js?v=20260723-corriente-portal-movil-1"></script>
+    <button id="btnSaltarNarrativa" class="btn-saltar-narrativa oculto" type="button"
+        aria-label="Saltar secuencia narrativa">Saltar</button>
+
+    <script src="js/app.js?v=20260731-modo-pruebas-1"></script>
 </body>
 
 </html>
