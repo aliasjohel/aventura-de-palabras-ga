@@ -1180,40 +1180,37 @@ button:disabled {
     background: #8b532d;
 }
 
-.escenario.escenario-desierto::before,
-.escenario.escenario-desierto::after {
-    content: "";
+.capa-viento-arena {
     position: absolute;
+    inset: 0;
     z-index: 1;
+    overflow: hidden;
     pointer-events: none;
+    contain: strict;
+}
+
+.particula-arena {
+    position: absolute;
+    top: var(--y-arena);
+    left: -100%;
+    width: 100%;
+    height: 3px;
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+    animation: transportarArena var(--duracion-arena) linear var(--retraso-arena) infinite;
     will-change: transform, opacity;
 }
 
-.escenario.escenario-desierto::before {
-    inset: 24% -32% -18%;
-    background:
-        repeating-linear-gradient(
-            174deg,
-            transparent 0 11%,
-            rgba(255, 226, 164, 0.14) 12%,
-            rgba(213, 148, 70, 0.08) 13%,
-            transparent 15% 24%
-        );
-    opacity: 0.7;
-    filter: blur(3px);
-    mix-blend-mode: screen;
-    animation: moverArenaDesierto 8.5s ease-in-out infinite alternate;
-}
-
-.escenario.escenario-desierto::after {
-    inset: 50% -38% -22%;
-    background:
-        radial-gradient(ellipse at 18% 66%, rgba(255, 221, 153, 0.24), transparent 20%),
-        radial-gradient(ellipse at 54% 38%, rgba(244, 189, 106, 0.18), transparent 18%),
-        radial-gradient(ellipse at 82% 72%, rgba(255, 226, 168, 0.2), transparent 19%);
-    opacity: 0.62;
-    filter: blur(7px);
-    animation: moverRafagasDesierto 12s ease-in-out -4s infinite alternate;
+.particula-arena::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: var(--tamano-arena);
+    height: var(--tamano-arena);
+    border-radius: 50%;
+    background: #e3bd78;
+    box-shadow: 3px 1px 0 rgba(202, 154, 83, 0.32);
 }
 
 .fondo-escenario-fundido {
@@ -2480,31 +2477,23 @@ button:disabled {
     }
 }
 
-@keyframes moverArenaDesierto {
+@keyframes transportarArena {
     0% {
-        opacity: 0.46;
-        transform: translate3d(-7%, 2%, 0) skewX(-4deg);
+        opacity: 0;
+        transform: translate3d(0, 0, 0);
     }
 
-    55% {
-        opacity: 0.72;
+    14% {
+        opacity: var(--opacidad-arena);
+    }
+
+    72% {
+        opacity: calc(var(--opacidad-arena) * 0.82);
     }
 
     100% {
-        opacity: 0.52;
-        transform: translate3d(7%, -2%, 0) skewX(-4deg);
-    }
-}
-
-@keyframes moverRafagasDesierto {
-    0% {
-        opacity: 0.38;
-        transform: translate3d(-9%, 3%, 0) scaleX(0.96);
-    }
-
-    100% {
-        opacity: 0.66;
-        transform: translate3d(9%, -3%, 0) scaleX(1.04);
+        opacity: 0;
+        transform: translate3d(202%, var(--deriva-arena), 0);
     }
 }
 
@@ -3546,11 +3535,8 @@ button:disabled {
         animation: none;
     }
 
-    .escenario.escenario-desierto::before,
-    .escenario.escenario-desierto::after {
-        animation: none;
-        opacity: 0.32;
-        will-change: auto;
+    .capa-viento-arena {
+        display: none;
     }
 
     .mensaje-desafio-superado.visible {

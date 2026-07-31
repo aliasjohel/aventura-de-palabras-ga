@@ -1231,6 +1231,7 @@ function detenerSonidos() {
   detenerMiradasLobos();
   detenerPresenciaBosque();
   detenerAranaBosque();
+  detenerVientoArena();
   detenerEfectos();
   detenerAmbiente();
 }
@@ -1264,6 +1265,63 @@ function detenerAmbienteHojas() {
   contenedorEscenario
     .querySelectorAll(".capa-hojas-viento")
     .forEach((capa) => capa.remove());
+}
+
+function detenerVientoArena() {
+  contenedorEscenario
+    .querySelectorAll(".capa-viento-arena")
+    .forEach((capa) => capa.remove());
+}
+
+function actualizarVientoArenaMision() {
+  const esPrimeraMisionDesierto =
+    escenarioActual === 1 && misionActual === 0;
+  const capaExistente = contenedorEscenario.querySelector(
+    ".capa-viento-arena",
+  );
+
+  if (!esPrimeraMisionDesierto || prefiereReducirMovimiento.matches) {
+    capaExistente?.remove();
+    return;
+  }
+
+  if (capaExistente) return;
+
+  const capa = document.createElement("div");
+  const cantidadParticulas = window.matchMedia("(max-width: 600px)").matches
+    ? 10
+    : 16;
+
+  capa.className = "capa-viento-arena";
+  capa.setAttribute("aria-hidden", "true");
+
+  for (let indice = 0; indice < cantidadParticulas; indice++) {
+    const particula = document.createElement("span");
+    const tamano = 1 + Math.random() * 1.6;
+
+    particula.className = "particula-arena";
+    particula.style.setProperty("--y-arena", `${12 + Math.random() * 76}%`);
+    particula.style.setProperty(
+      "--duracion-arena",
+      `${10 + Math.random() * 9}s`,
+    );
+    particula.style.setProperty(
+      "--retraso-arena",
+      `${-Math.random() * 18}s`,
+    );
+    particula.style.setProperty(
+      "--deriva-arena",
+      `${-8 + Math.random() * 16}px`,
+    );
+    particula.style.setProperty("--tamano-arena", `${tamano}px`);
+    particula.style.setProperty(
+      "--opacidad-arena",
+      `${0.28 + Math.random() * 0.3}`,
+    );
+    capa.appendChild(particula);
+  }
+
+  contenedorEscenario.appendChild(capa);
 }
 
 function detenerAmbientePuente() {
@@ -2009,6 +2067,7 @@ function actualizarEscenaPorMision() {
     escenarioActual === 1,
   );
   fondoEscenario.src = `assets/images/fondos/${nombreFondo}`;
+  actualizarVientoArenaMision();
   volverEstadoBaseExplorador();
 }
 
