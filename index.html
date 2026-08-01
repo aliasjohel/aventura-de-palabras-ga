@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aventura de Palabras - GA Games</title>
-    <link rel="stylesheet" href="css/styles.css?v=20260731-modo-pruebas-1">
+    <link rel="stylesheet" href="css/styles.css?v=20260731-preparacion-versus-2">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
             <button id="btnNuevaAventura" class="secundario oculto">
                 🆕 Nueva aventura
             </button>
-            <button disabled>Multijugador</button>
+            <button id="btnVersus" class="btn-versus-menu">⚔️ Multijugador</button>
             <button disabled>Estadísticas</button>
             <button disabled>Configuración</button>
 
@@ -151,6 +151,172 @@
             </div>
         </section>
 
+        <section id="pantallaPreparacionVersus" class="pantalla pantalla-preparacion-versus"
+            aria-labelledby="tituloPreparacionVersus">
+            <div class="preparacion-versus-marco">
+                <button id="btnSalirPreparacionVersus" class="versus-volver" type="button">← Volver</button>
+
+                <header class="preparacion-versus-cabecera">
+                    <p>DUELO DE PALABRAS</p>
+                    <h2 id="tituloPreparacionVersus">Prepar&aacute; tus palabras secretas</h2>
+                    <span>El rival deber&aacute; adivinarlas durante el combate.</span>
+                </header>
+
+                <div class="preparacion-versus-cuerpo">
+                    <form id="formPreparacionVersus" class="form-preparacion-versus" novalidate>
+                        <label class="campo-tematica-versus" for="tematicaVersus">
+                            <span>Tem&aacute;tica del duelo</span>
+                            <select id="tematicaVersus">
+                                <option value="desierto">🏜️ Desierto</option>
+                                <option value="bosque">🌲 Bosque</option>
+                                <option value="animales">🐾 Animales</option>
+                            </select>
+                        </label>
+
+                        <fieldset class="palabras-secretas-versus">
+                            <legend>Tus tres palabras</legend>
+
+                            <label class="campo-palabra-secreta" for="palabraSecretaVersus1">
+                                <b>1</b>
+                                <input id="palabraSecretaVersus1" class="input-palabra-versus" type="text"
+                                    minlength="3" maxlength="9" autocomplete="off" spellcheck="false"
+                                    placeholder="Primera palabra">
+                                <small class="contador-palabra-versus">0/9</small>
+                                <em class="error-palabra-versus" aria-live="polite"></em>
+                            </label>
+
+                            <label class="campo-palabra-secreta" for="palabraSecretaVersus2">
+                                <b>2</b>
+                                <input id="palabraSecretaVersus2" class="input-palabra-versus" type="text"
+                                    minlength="3" maxlength="9" autocomplete="off" spellcheck="false"
+                                    placeholder="Segunda palabra">
+                                <small class="contador-palabra-versus">0/9</small>
+                                <em class="error-palabra-versus" aria-live="polite"></em>
+                            </label>
+
+                            <label class="campo-palabra-secreta" for="palabraSecretaVersus3">
+                                <b>3</b>
+                                <input id="palabraSecretaVersus3" class="input-palabra-versus" type="text"
+                                    minlength="3" maxlength="9" autocomplete="off" spellcheck="false"
+                                    placeholder="Tercera palabra">
+                                <small class="contador-palabra-versus">0/9</small>
+                                <em class="error-palabra-versus" aria-live="polite"></em>
+                            </label>
+                        </fieldset>
+
+                        <button id="btnConfirmarPalabrasVersus" class="btn-confirmar-palabras-versus" type="submit"
+                            disabled>Confirmar palabras</button>
+                    </form>
+
+                    <aside class="reglas-preparacion-versus" aria-label="Reglas para elegir palabras">
+                        <div class="tiempo-preparacion-versus">
+                            <span>TIEMPO PARA ELEGIR</span>
+                            <strong>01:30</strong>
+                        </div>
+                        <h3>Reglas</h3>
+                        <ul>
+                            <li>Entre 3 y 9 letras.</li>
+                            <li>Sin espacios ni n&uacute;meros.</li>
+                            <li>No se pueden repetir.</li>
+                            <li>Tu rival no podr&aacute; verlas.</li>
+                        </ul>
+
+                        <div id="esperaRivalVersus" class="espera-rival-versus oculto" role="status"
+                            aria-live="polite">
+                            <span aria-hidden="true">⌛</span>
+                            <strong>Palabras listas</strong>
+                            <p>Esperando al rival...</p>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+
+            <div class="versus-aviso-orientacion" role="status">
+                <span>↻</span>
+                <strong>Gir&aacute; el celular</strong>
+                <p>El modo versus se juega en horizontal.</p>
+                <button id="btnSalirPreparacionVersusVertical" type="button">Volver al men&uacute;</button>
+            </div>
+        </section>
+
+        <section id="pantallaVersus" class="pantalla pantalla-versus" aria-labelledby="tituloVersus">
+            <div class="versus-marco">
+                <header class="versus-cabecera">
+                    <div class="versus-jugador versus-jugador-uno">
+                        <span class="versus-etiqueta">JUGADOR 1</span>
+                        <div class="versus-corazones" aria-label="Jugador 1: tres vidas">♥ ♥ ♥</div>
+                    </div>
+
+                    <div class="versus-tiempo" aria-label="Tiempo restante: 45 segundos">
+                        <span>TIEMPO</span>
+                        <strong>00:45</strong>
+                    </div>
+
+                    <div class="versus-jugador versus-jugador-dos">
+                        <span class="versus-etiqueta">JUGADOR 2</span>
+                        <div class="versus-corazones" aria-label="Jugador 2: tres vidas">♥ ♥ ♥</div>
+                    </div>
+                </header>
+
+                <div class="versus-arena">
+                    <img class="versus-fondo" src="assets/images/fondos/desierto-1.png" alt="Ruinas del desierto">
+                    <div class="versus-sombra versus-sombra-uno" aria-hidden="true"></div>
+                    <div class="versus-sombra versus-sombra-dos" aria-hidden="true"></div>
+
+                    <img class="versus-personaje versus-personaje-uno"
+                        src="assets/images/personajes/explorador-feliz.png" alt="Personaje del jugador 1">
+                    <img class="versus-personaje versus-personaje-dos"
+                        src="assets/images/personajes/explorador-preocupado.png" alt="Personaje provisional del jugador 2">
+
+                    <div class="versus-insignia" aria-hidden="true">VS</div>
+
+                    <div class="versus-progresos" aria-label="Progreso de ambos jugadores">
+                        <section class="versus-palabra versus-palabra-uno" aria-labelledby="tituloProgresoUno">
+                            <div class="versus-palabra-cabecera">
+                                <span id="tituloProgresoUno">TU PROGRESO</span>
+                                <small id="estadoProgresoUno" aria-live="polite">Eleg&iacute; una letra</small>
+                            </div>
+                            <strong id="palabraVersusUno" aria-label="Palabra sin descubrir">_ _ _ _ _ _ _ _</strong>
+                            <div id="intentosVersusUno" class="versus-intentos" aria-label="Ten&eacute;s seis intentos">
+                                <i aria-hidden="true">◆</i><i aria-hidden="true">◆</i><i aria-hidden="true">◆</i>
+                                <i aria-hidden="true">◆</i><i aria-hidden="true">◆</i><i aria-hidden="true">◆</i>
+                            </div>
+                        </section>
+
+                        <section class="versus-palabra versus-palabra-dos" aria-labelledby="tituloProgresoDos">
+                            <div class="versus-palabra-cabecera">
+                                <span id="tituloProgresoDos">PROGRESO RIVAL</span>
+                                <small id="estadoProgresoDos" aria-live="polite">Esperando jugada...</small>
+                            </div>
+                            <strong id="palabraVersusDos" aria-label="El rival no descubri&oacute; ninguna letra">_ _ _ _ _ _ _ _</strong>
+                            <div id="intentosVersusDos" class="versus-intentos" aria-label="El rival tiene seis intentos">
+                                <i aria-hidden="true">◆</i><i aria-hidden="true">◆</i><i aria-hidden="true">◆</i>
+                                <i aria-hidden="true">◆</i><i aria-hidden="true">◆</i><i aria-hidden="true">◆</i>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="versus-controles">
+                    <div class="versus-turno">
+                        <span>⚔️</span>
+                        <p>Cada error gasta un intento</p>
+                    </div>
+                    <div id="tecladoVersus" class="teclado-versus" aria-label="Teclado de combate"></div>
+                </div>
+
+                <button id="btnSalirVersus" class="versus-volver" type="button">← Volver</button>
+                <p id="tituloVersus" class="versus-prototipo">PROTOTIPO DE COMBATE</p>
+            </div>
+
+            <div class="versus-aviso-orientacion" role="status">
+                <span>↻</span>
+                <strong>Gir&aacute; el celular</strong>
+                <p>El modo versus se juega en horizontal.</p>
+                <button id="btnSalirVersusVertical" type="button">Volver al men&uacute;</button>
+            </div>
+        </section>
+
         <div id="modalPrologo" class="modal-prologo oculto" role="dialog" aria-modal="true"
             aria-labelledby="tituloPrologo">
             <div class="tarjeta-prologo">
@@ -213,7 +379,7 @@
     <button id="btnSaltarNarrativa" class="btn-saltar-narrativa oculto" type="button"
         aria-label="Saltar secuencia narrativa">Saltar</button>
 
-    <script src="js/app.js?v=20260731-modo-pruebas-1"></script>
+    <script src="js/app.js?v=20260731-preparacion-versus-2"></script>
 </body>
 
 </html>

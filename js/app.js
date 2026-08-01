@@ -14,8 +14,29 @@ const ranuraCristalBosque = document.getElementById("ranuraCristalBosque");
 const cristalPanelBosque = document.getElementById("cristalPanelBosque");
 const pantallaMenu = document.getElementById("pantallaMenu");
 const pantallaJuego = document.getElementById("pantallaJuego");
+const pantallaPreparacionVersus = document.getElementById(
+  "pantallaPreparacionVersus",
+);
+const pantallaVersus = document.getElementById("pantallaVersus");
 
 const btnJugar = document.getElementById("btnJugar");
+const btnVersus = document.getElementById("btnVersus");
+const btnSalirPreparacionVersus = document.getElementById(
+  "btnSalirPreparacionVersus",
+);
+const btnSalirPreparacionVersusVertical = document.getElementById(
+  "btnSalirPreparacionVersusVertical",
+);
+const formPreparacionVersus = document.getElementById("formPreparacionVersus");
+const tematicaVersus = document.getElementById("tematicaVersus");
+const inputsPalabrasVersus = [...document.querySelectorAll(".input-palabra-versus")];
+const btnConfirmarPalabrasVersus = document.getElementById("btnConfirmarPalabrasVersus");
+const esperaRivalVersus = document.getElementById("esperaRivalVersus");
+const btnSalirVersus = document.getElementById("btnSalirVersus");
+const btnSalirVersusVertical = document.getElementById(
+  "btnSalirVersusVertical",
+);
+const tecladoVersus = document.getElementById("tecladoVersus");
 const btnSalirJuego = document.getElementById("btnSalirJuego");
 const btnMisionAnterior = document.getElementById("btnMisionAnterior");
 const btnMisionSiguiente = document.getElementById("btnMisionSiguiente");
@@ -397,6 +418,108 @@ function continuarAventura() {
 }
 
 btnSiguiente.addEventListener("click", continuarAventura);
+
+btnVersus.addEventListener("click", () => {
+  cancelarSecuenciaNarrativaActual();
+  detenerSonidos();
+  abrirPreparacionVersus();
+});
+
+function volverAlMenuDesdePreparacionVersus() {
+  if (transicionCombateVersus) clearTimeout(transicionCombateVersus);
+  transicionCombateVersus = null;
+  esperaRivalVersus.classList.add("oculto");
+  mostrarPantalla(pantallaMenu);
+}
+
+btnSalirPreparacionVersus.addEventListener("click", volverAlMenuDesdePreparacionVersus);
+btnSalirPreparacionVersusVertical.addEventListener("click", volverAlMenuDesdePreparacionVersus);
+
+let palabrasSecretasVersus = [];
+let transicionCombateVersus = null;
+
+function limpiarPalabraParaVersus(valor) {
+  return valor.toLocaleUpperCase("es-AR").replace(/[^A-ZÁÉÍÓÚÜÑ]/g, "").slice(0, 9);
+}
+
+function obtenerClavePalabraVersus(valor) {
+  return valor.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function validarPreparacionVersus(mostrarErrores = false) {
+  const valores = inputsPalabrasVersus.map((input) => input.value);
+  const claves = valores.map(obtenerClavePalabraVersus);
+  let formularioValido = true;
+
+  inputsPalabrasVersus.forEach((input, indice) => {
+    const campo = input.closest(".campo-palabra-secreta");
+    const contador = campo.querySelector(".contador-palabra-versus");
+    const error = campo.querySelector(".error-palabra-versus");
+    const valor = valores[indice];
+    const repetida = valor.length >= 3 && claves.some(
+      (otra, otroIndice) => otroIndice !== indice && otra === claves[indice],
+    );
+    let mensaje = "";
+
+    contador.textContent = `${valor.length}/9`;
+    if (valor.length > 0 && valor.length < 3) mensaje = "Debe tener al menos 3 letras.";
+    if (repetida) mensaje = "Esta palabra está repetida.";
+
+    const valida = valor.length >= 3 && valor.length <= 9 && !repetida;
+    formularioValido = formularioValido && valida;
+    input.classList.toggle("invalida", mostrarErrores && !valida);
+    error.textContent = mostrarErrores ? mensaje : "";
+  });
+
+  btnConfirmarPalabrasVersus.disabled = !formularioValido;
+  return formularioValido;
+}
+
+function abrirPreparacionVersus() {
+  if (transicionCombateVersus) clearTimeout(transicionCombateVersus);
+  transicionCombateVersus = null;
+  palabrasSecretasVersus = [];
+  formPreparacionVersus.reset();
+  esperaRivalVersus.classList.add("oculto");
+  inputsPalabrasVersus.forEach((input) => {
+    input.disabled = false;
+    input.classList.remove("invalida");
+  });
+  tematicaVersus.disabled = false;
+  validarPreparacionVersus();
+  mostrarPantalla(pantallaPreparacionVersus);
+}
+
+inputsPalabrasVersus.forEach((input) => {
+  input.addEventListener("input", () => {
+    input.value = limpiarPalabraParaVersus(input.value);
+    validarPreparacionVersus(true);
+  });
+});
+
+formPreparacionVersus.addEventListener("submit", (evento) => {
+  evento.preventDefault();
+  if (!validarPreparacionVersus(true)) return;
+
+  palabrasSecretasVersus = inputsPalabrasVersus.map((input) => input.value);
+  inputsPalabrasVersus.forEach((input) => { input.disabled = true; });
+  tematicaVersus.disabled = true;
+  btnConfirmarPalabrasVersus.disabled = true;
+  esperaRivalVersus.classList.remove("oculto");
+
+  transicionCombateVersus = setTimeout(() => {
+    transicionCombateVersus = null;
+    reiniciarDemoVersus();
+    mostrarPantalla(pantallaVersus);
+  }, 1100);
+});
+
+function volverAlMenuDesdeVersus() {
+  mostrarPantalla(pantallaMenu);
+}
+
+btnSalirVersus.addEventListener("click", volverAlMenuDesdeVersus);
+btnSalirVersusVertical.addEventListener("click", volverAlMenuDesdeVersus);
 
 btnSaltarNarrativa.addEventListener("click", solicitarSaltoNarrativo);
 
@@ -794,6 +917,150 @@ function mostrarPantalla(pantallaSeleccionada) {
   });
 
   pantallaSeleccionada.classList.add("activa");
+}
+
+function crearTecladoVersus() {
+  if (tecladoVersus.children.length > 0) return;
+
+  filasTeclado.forEach((fila) => {
+    const filaTeclado = document.createElement("div");
+    filaTeclado.className = "fila-teclado-versus";
+
+    fila.forEach((letra) => {
+      const botonLetra = document.createElement("button");
+      botonLetra.type = "button";
+      botonLetra.textContent = letra;
+      botonLetra.className = "letra-versus";
+      botonLetra.setAttribute("aria-label", `Letra ${letra}`);
+      botonLetra.addEventListener("click", () => jugarLetraDemoVersus(letra, botonLetra));
+      filaTeclado.appendChild(botonLetra);
+    });
+
+    tecladoVersus.appendChild(filaTeclado);
+  });
+}
+
+// Demostración local del progreso simultáneo. Cuando exista el servidor,
+// estas mismas actualizaciones vendrán de las jugadas reales de cada celular.
+const demoVersus = {
+  palabra: "DESIERTO",
+  letrasJugador: new Set(),
+  avanceRival: 0,
+  intentos: 0,
+  erroresJugador: 0,
+  erroresRival: 0,
+  finalizada: false,
+};
+
+function mostrarEstadoProgresoVersus(elemento, mensaje, tipo = "") {
+  elemento.textContent = mensaje;
+  elemento.className = tipo;
+}
+
+function actualizarIntentosVersus(contenedor, errores, nombreJugador) {
+  const restantes = Math.max(0, 6 - errores);
+  [...contenedor.children].forEach((intento, indice) => {
+    intento.classList.toggle("agotado", indice >= restantes);
+  });
+  contenedor.setAttribute(
+    "aria-label",
+    `${nombreJugador} ${restantes === 1 ? "tiene un intento" : `tiene ${restantes} intentos`}`
+  );
+}
+
+function bloquearTecladoDemoVersus() {
+  tecladoVersus.querySelectorAll("button").forEach((boton) => {
+    boton.disabled = true;
+  });
+}
+
+function reiniciarDemoVersus() {
+  demoVersus.letrasJugador.clear();
+  demoVersus.avanceRival = 0;
+  demoVersus.intentos = 0;
+  demoVersus.erroresJugador = 0;
+  demoVersus.erroresRival = 0;
+  demoVersus.finalizada = false;
+
+  const palabraJugador = document.getElementById("palabraVersusUno");
+  const palabraRival = document.getElementById("palabraVersusDos");
+  palabraJugador.textContent = "_ _ _ _ _ _ _ _";
+  palabraJugador.setAttribute("aria-label", "Palabra sin descubrir");
+  palabraRival.textContent = "_ _ _ _ _ _ _ _";
+  palabraRival.setAttribute("aria-label", "El rival no descubrió ninguna letra");
+  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoUno"), "Elegí una letra");
+  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), "Esperando jugada...");
+  actualizarIntentosVersus(document.getElementById("intentosVersusUno"), 0, "Jugador 1");
+  actualizarIntentosVersus(document.getElementById("intentosVersusDos"), 0, "El rival");
+  tecladoVersus.querySelectorAll("button").forEach((boton) => {
+    boton.disabled = false;
+  });
+}
+
+function jugarLetraDemoVersus(letra, boton) {
+  if (boton.disabled || demoVersus.finalizada) return;
+
+  const palabraJugador = document.getElementById("palabraVersusUno");
+  const palabraRival = document.getElementById("palabraVersusDos");
+  const estadoJugador = document.getElementById("estadoProgresoUno");
+  const estadoRival = document.getElementById("estadoProgresoDos");
+  const intentosJugador = document.getElementById("intentosVersusUno");
+  const intentosRival = document.getElementById("intentosVersusDos");
+
+  boton.disabled = true;
+  demoVersus.intentos += 1;
+
+  if (demoVersus.palabra.includes(letra)) {
+    demoVersus.letrasJugador.add(letra);
+    mostrarEstadoProgresoVersus(estadoJugador, "¡Acierto!", "acierto");
+  } else {
+    demoVersus.erroresJugador += 1;
+    actualizarIntentosVersus(intentosJugador, demoVersus.erroresJugador, "Jugador 1");
+    mostrarEstadoProgresoVersus(estadoJugador, "Fallaste", "error");
+  }
+
+  const progresoJugador = [...demoVersus.palabra]
+    .map((caracter) => demoVersus.letrasJugador.has(caracter) ? caracter : "_");
+  palabraJugador.textContent = progresoJugador.join(" ");
+  palabraJugador.setAttribute("aria-label", `Tu progreso: ${progresoJugador.join(" ")}`);
+
+  if (!progresoJugador.includes("_")) {
+    demoVersus.finalizada = true;
+    mostrarEstadoProgresoVersus(estadoJugador, "¡Palabra completa!", "acierto");
+    bloquearTecladoDemoVersus();
+    return;
+  }
+
+  if (demoVersus.erroresJugador >= 6) {
+    demoVersus.finalizada = true;
+    mostrarEstadoProgresoVersus(estadoJugador, "Palabra perdida", "agotado");
+    bloquearTecladoDemoVersus();
+    return;
+  }
+
+  // Alterna aciertos y errores para representar cómo se verá la actividad remota.
+  if (demoVersus.intentos % 3 === 0) {
+    demoVersus.erroresRival += 1;
+    actualizarIntentosVersus(intentosRival, demoVersus.erroresRival, "El rival");
+    mostrarEstadoProgresoVersus(estadoRival, "El rival falló", "error");
+  } else if (demoVersus.avanceRival < demoVersus.palabra.length) {
+    demoVersus.avanceRival += 1;
+    mostrarEstadoProgresoVersus(estadoRival, "El rival acertó", "acierto");
+  }
+
+  const progresoRival = [...demoVersus.palabra]
+    .map((_, indice) => indice < demoVersus.avanceRival ? "?" : "_");
+  palabraRival.textContent = progresoRival.join(" ");
+  palabraRival.setAttribute(
+    "aria-label",
+    `El rival descubrió ${demoVersus.avanceRival} de ${demoVersus.palabra.length} letras`
+  );
+
+  if (demoVersus.erroresRival >= 6) {
+    mostrarEstadoProgresoVersus(estadoRival, "Rival sin intentos", "agotado");
+  } else if (demoVersus.avanceRival >= demoVersus.palabra.length) {
+    mostrarEstadoProgresoVersus(estadoRival, "Rival completó", "acierto");
+  }
 }
 
 // Control reutilizable para cualquier secuencia narrativa presente o futura.
@@ -2329,6 +2596,7 @@ actualizarModoPruebas(
   { restaurarProgreso: false },
 );
 actualizarControlesDev();
+crearTecladoVersus();
 precargarImagenesBosque();
 precargarImagenesExplorador();
 precargarSpritesCaminata();
