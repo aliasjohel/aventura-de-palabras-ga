@@ -439,7 +439,7 @@ button:disabled {
 
 .campo-palabra-secreta {
     display: grid;
-    grid-template-columns: 28px minmax(0, 1fr) 36px;
+    grid-template-columns: 28px minmax(0, 1fr) minmax(48px, auto);
     align-items: center;
     gap: 8px;
 }
@@ -499,6 +499,14 @@ button:disabled {
     background: linear-gradient(180deg, #bd8129, #754516);
     color: #fff2ce;
     box-shadow: 0 3px 0 #3d230b;
+}
+
+.btn-prueba-preparacion-versus {
+    padding: 9px 13px;
+    border: 1px dashed rgba(247, 201, 72, 0.72);
+    background: rgba(75, 53, 18, 0.72);
+    color: #ffe79a;
+    font-size: 0.76rem;
 }
 
 .reglas-preparacion-versus {
@@ -648,6 +656,52 @@ button:disabled {
     filter: drop-shadow(0 2px 1px #000);
 }
 
+.versus-corazones span {
+    display: inline-block;
+    transition: opacity 220ms ease, filter 220ms ease, transform 220ms ease;
+}
+
+.versus-corazones span.perdido {
+    opacity: 0.2;
+    filter: grayscale(1);
+    transform: scale(0.78);
+}
+
+.versus-tiempo-personal {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    width: max-content;
+    margin-top: 3px;
+    padding: 3px 8px;
+    border: 1px solid rgba(64, 191, 245, 0.62);
+    border-radius: 4px;
+    background: rgba(6, 15, 23, 0.78);
+    color: #b9e9ff;
+    font-family: Arial, sans-serif;
+    text-shadow: none;
+}
+
+.versus-jugador-dos .versus-tiempo-personal {
+    border-color: rgba(255, 85, 75, 0.62);
+    color: #ffc1bd;
+}
+
+.versus-tiempo-personal span {
+    font-size: clamp(0.42rem, 0.75vw, 0.58rem);
+    letter-spacing: 0.1em;
+}
+
+.versus-tiempo-personal strong {
+    font-size: clamp(0.68rem, 1.35vw, 0.95rem);
+}
+
+.versus-tiempo-personal.urgente {
+    border-color: #e84b41;
+    color: #ff8177;
+    animation: pulsoTiempoVersus 800ms ease-in-out infinite alternate;
+}
+
 .versus-tiempo {
     min-width: clamp(118px, 17vw, 190px);
     padding: 7px 22px 9px;
@@ -673,6 +727,20 @@ button:disabled {
     display: block;
     font-size: clamp(1.35rem, 4vw, 2.7rem);
     line-height: 1;
+}
+
+.versus-estado-combate strong {
+    font-size: clamp(1.1rem, 2.7vw, 1.85rem);
+}
+
+.versus-tiempo.urgente {
+    color: #ff8177;
+    border-color: #a93b32;
+    animation: pulsoTiempoVersus 800ms ease-in-out infinite alternate;
+}
+
+@keyframes pulsoTiempoVersus {
+    to { filter: drop-shadow(0 0 8px rgba(232, 62, 50, 0.7)); }
 }
 
 .versus-arena {
@@ -733,13 +801,170 @@ button:disabled {
 }
 
 .versus-personaje-dos {
-    right: 1%;
-    transform: scaleX(-1);
+    right: -5%;
+    width: clamp(300px, 65vw, 760px);
+    filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.65));
+}
+
+.bumeran-versus {
+    position: absolute;
+    z-index: 4;
+    top: 42%;
+    left: 24%;
+    width: clamp(54px, 8vw, 104px);
+    opacity: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.58));
+}
+
+.versus-personaje-uno.preparando-bumeran {
+    animation: prepararBumeranVersus 260ms ease-out both;
+}
+
+.versus-personaje-uno.lanzando-bumeran {
+    animation: lanzarBumeranVersus 1.25s ease-out both;
+}
+
+.bumeran-versus.volando {
+    animation: vueloBumeranVersus 1.22s linear both;
+}
+
+.proyectil-mago-versus {
+    position: absolute;
+    z-index: 4;
+    top: 43%;
+    right: 22%;
+    width: clamp(62px, 9vw, 118px);
+    opacity: 0;
+    pointer-events: none;
     filter:
-        hue-rotate(185deg)
-        saturate(1.45)
-        brightness(0.78)
-        drop-shadow(0 12px 9px rgba(0, 0, 0, 0.65));
+        drop-shadow(0 0 7px #bc55ff)
+        drop-shadow(0 0 13px rgba(129, 34, 222, 0.78));
+}
+
+.versus-personaje-dos.concentrando-hechizo {
+    animation: concentrarHechizoVersus 220ms ease-in both;
+}
+
+.versus-personaje-dos.lanzando-hechizo {
+    animation: lanzarHechizoVersus 1.04s ease-out both;
+}
+
+.proyectil-mago-versus.volando {
+    animation: vueloProyectilMagoVersus 850ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.versus-personaje-dos.recibiendo-dano {
+    animation: danoMagoVersus 350ms ease-out both;
+}
+
+.versus-personaje-uno.recibiendo-dano-magico {
+    animation: danoExploradorMagicoVersus 330ms ease-out both;
+}
+
+.versus-corazones.recibiendo-dano {
+    animation: danoCorazonesVersus 350ms ease-out both;
+}
+
+@keyframes prepararBumeranVersus {
+    from { transform: translateX(-10px) scale(0.98); }
+    to { transform: translateX(0) scale(1); }
+}
+
+@keyframes lanzarBumeranVersus {
+    0%, 78% { transform: translateX(8px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes concentrarHechizoVersus {
+    0% { filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.65)); }
+    100% { filter: brightness(1.15) drop-shadow(0 0 16px rgba(178, 69, 255, 0.9)); }
+}
+
+@keyframes lanzarHechizoVersus {
+    0%, 72% { transform: translateX(-8px) scale(1.015); }
+    100% { transform: translateX(0) scale(1); }
+}
+
+@keyframes vueloProyectilMagoVersus {
+    0% {
+        right: 22%;
+        opacity: 0;
+        transform: translate(50%, -50%) scale(0.55) rotate(3deg);
+    }
+    10% { opacity: 1; }
+    68% {
+        right: 74%;
+        opacity: 1;
+        transform: translate(50%, -50%) scale(1.05) rotate(-4deg);
+    }
+    82% {
+        right: 78%;
+        opacity: 1;
+        transform: translate(50%, -50%) scale(1.3) rotate(-7deg);
+    }
+    100% {
+        right: 80%;
+        opacity: 0;
+        transform: translate(50%, -50%) scale(0.35) rotate(-9deg);
+    }
+}
+
+@keyframes vueloBumeranVersus {
+    0% {
+        left: 24%;
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(0deg) scale(0.72);
+    }
+    8% { opacity: 1; }
+    46% {
+        left: 76%;
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(720deg) scale(1);
+    }
+    54% {
+        left: 76%;
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(900deg) scale(1);
+    }
+    94% { opacity: 1; }
+    100% {
+        left: 24%;
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(1620deg) scale(0.72);
+    }
+}
+
+@keyframes danoMagoVersus {
+    0%, 100% { transform: translateX(0); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.65)); }
+    22% { transform: translateX(16px) rotate(2deg); filter: brightness(1.8) sepia(0.5) drop-shadow(0 0 16px #ffba58); }
+    48% { transform: translateX(-9px) rotate(-1deg); }
+    72% { transform: translateX(6px); }
+}
+
+@keyframes danoExploradorMagicoVersus {
+    0%, 100% { transform: translateX(0); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.62)); }
+    24% { transform: translateX(-14px) rotate(-2deg); filter: brightness(1.7) saturate(1.5) drop-shadow(0 0 17px #a637ff); }
+    52% { transform: translateX(8px) rotate(1deg); }
+    76% { transform: translateX(-4px); }
+}
+
+@keyframes danoCorazonesVersus {
+    45% { transform: scale(1.18); filter: drop-shadow(0 0 9px #ff5a4f); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .versus-personaje-uno.preparando-bumeran,
+    .versus-personaje-uno.lanzando-bumeran,
+    .bumeran-versus.volando,
+    .versus-personaje-dos.concentrando-hechizo,
+    .versus-personaje-dos.lanzando-hechizo,
+    .proyectil-mago-versus.volando,
+    .versus-personaje-dos.recibiendo-dano,
+    .versus-personaje-uno.recibiendo-dano-magico,
+    .versus-corazones.recibiendo-dano {
+        animation: none;
+    }
 }
 
 .versus-insignia {
@@ -849,10 +1074,21 @@ button:disabled {
     display: block;
     overflow: hidden;
     font-size: clamp(0.86rem, 2.2vw, 1.55rem);
+    line-height: 1.15;
     letter-spacing: clamp(0.02em, 0.45vw, 0.1em);
     text-align: center;
     text-overflow: clip;
-    white-space: nowrap;
+    white-space: normal;
+}
+
+.versus-palabra.palabra-larga strong {
+    font-size: clamp(0.72rem, 1.65vw, 1.15rem);
+    letter-spacing: clamp(0, 0.25vw, 0.06em);
+}
+
+.versus-palabra.palabra-muy-larga strong {
+    font-size: clamp(0.62rem, 1.3vw, 0.9rem);
+    letter-spacing: 0;
 }
 
 .versus-intentos {
@@ -960,6 +1196,665 @@ button:disabled {
     font-size: 0.52rem;
     letter-spacing: 0.18em;
     transform: translateX(-50%);
+}
+
+.herramientas-pruebas-versus {
+    position: absolute;
+    z-index: 18;
+    top: 72px;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 7px;
+    border: 1px solid rgba(247, 201, 72, 0.48);
+    border-radius: 8px;
+    background: rgba(8, 14, 18, 0.88);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.52);
+    transform: translateX(-50%);
+    backdrop-filter: blur(5px);
+}
+
+.herramientas-pruebas-versus span {
+    color: #f7c948;
+    font-size: 0.55rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+}
+
+.herramientas-pruebas-versus button {
+    padding: 5px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 6px;
+    background: #243746;
+    color: #fff;
+    font-size: clamp(0.56rem, 1.05vw, 0.7rem);
+    white-space: nowrap;
+}
+
+.herramientas-pruebas-versus button:first-of-type {
+    border-color: rgba(105, 190, 91, 0.62);
+    background: #244b2e;
+}
+
+.herramientas-pruebas-versus button:last-of-type {
+    border-color: rgba(180, 103, 226, 0.68);
+    background: #42265a;
+}
+
+.resultado-ronda-versus {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    padding: 18px;
+    background: rgba(5, 9, 14, 0.82);
+    backdrop-filter: blur(5px);
+}
+
+.cinematica-final-versus {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    overflow: hidden;
+    background: #05020a;
+    isolation: isolate;
+}
+
+.cinematica-final-versus::after {
+    content: "";
+    position: absolute;
+    z-index: 8;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 35% 50%, transparent 0 16%, rgba(18, 2, 31, 0.2) 42%, rgba(2, 0, 8, 0.88) 100%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.15), transparent 45%, rgba(0, 0, 0, 0.72));
+    box-shadow: inset 0 0 95px 24px #020005;
+}
+
+.cinematica-final-versus.trampa-selvatica::after {
+    background:
+        radial-gradient(circle at 70% 60%, transparent 0 16%, rgba(4, 46, 49, 0.22) 43%, rgba(5, 2, 0, 0.9) 100%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 45%, rgba(0, 0, 0, 0.72));
+    box-shadow: inset 0 0 95px 24px #080400;
+}
+
+.cinematica-final-fondo {
+    position: absolute;
+    z-index: 0;
+    inset: -4%;
+    width: 108%;
+    height: 108%;
+    object-fit: cover;
+    filter: brightness(0.28) saturate(0.55) contrast(1.25) blur(2px);
+    transform: scale(1.04);
+}
+
+.cinematica-final-versus.eclipse-violeta .cinematica-final-fondo {
+    filter: brightness(0.28) saturate(0.55) hue-rotate(235deg) contrast(1.25) blur(2px);
+}
+
+.cinematica-final-versus.trampa-selvatica .cinematica-final-fondo {
+    filter: brightness(0.3) saturate(0.72) sepia(0.32) contrast(1.2) blur(2px);
+}
+
+.eclipse-resplandor {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 34%;
+    width: min(62vw, 700px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    opacity: 0;
+    background: radial-gradient(circle, rgba(224, 122, 255, 0.78), rgba(104, 17, 178, 0.42) 34%, transparent 70%);
+    filter: blur(11px);
+    transform: translate(-50%, -50%) scale(0.2);
+    pointer-events: none;
+}
+
+.eclipse-runa {
+    position: absolute;
+    z-index: 2;
+    top: 52%;
+    left: 34%;
+    width: min(34vw, 390px);
+    aspect-ratio: 1;
+    border: 5px double rgba(226, 139, 255, 0.92);
+    border-radius: 50%;
+    opacity: 0;
+    background:
+        repeating-conic-gradient(from 10deg, rgba(190, 82, 255, 0.9) 0 3deg, transparent 3deg 18deg),
+        radial-gradient(circle, transparent 0 46%, rgba(132, 30, 203, 0.3) 47% 53%, transparent 54%);
+    box-shadow:
+        0 0 18px #bd54ff,
+        inset 0 0 24px rgba(186, 70, 255, 0.72);
+    transform: translate(-50%, -50%) scale(0.25) rotate(0deg);
+}
+
+.trampa-polvo {
+    position: absolute;
+    z-index: 4;
+    top: 61%;
+    right: 8%;
+    width: min(34vw, 420px);
+    height: min(18vw, 210px);
+    border-radius: 50%;
+    opacity: 0;
+    background:
+        radial-gradient(ellipse at 22% 60%, rgba(205, 166, 91, 0.8), transparent 34%),
+        radial-gradient(ellipse at 52% 44%, rgba(153, 119, 60, 0.72), transparent 38%),
+        radial-gradient(ellipse at 78% 66%, rgba(221, 188, 111, 0.66), transparent 32%);
+    filter: blur(7px);
+    transform: scale(0.2);
+    pointer-events: none;
+}
+
+.trampa-impacto {
+    position: absolute;
+    z-index: 8;
+    top: 48%;
+    right: 22%;
+    width: min(15vw, 180px);
+    aspect-ratio: 1;
+    opacity: 0;
+    background: repeating-conic-gradient(from 4deg, #ffe88a 0 5deg, transparent 5deg 24deg);
+    clip-path: polygon(50% 0, 58% 34%, 78% 8%, 70% 40%, 100% 31%, 74% 51%, 97% 70%, 65% 63%, 68% 100%, 51% 69%, 33% 96%, 36% 62%, 4% 73%, 29% 51%, 0 35%, 35% 40%);
+    filter: drop-shadow(0 0 8px #ffd75d);
+    transform: scale(0.15) rotate(-18deg);
+    pointer-events: none;
+}
+
+.trampa-hojas {
+    position: absolute;
+    z-index: 8;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.trampa-hojas i {
+    position: absolute;
+    top: 52%;
+    right: 28%;
+    width: clamp(12px, 2vw, 25px);
+    height: clamp(7px, 1.1vw, 14px);
+    border-radius: 100% 0 100% 0;
+    background: linear-gradient(135deg, #a9c858, #416f2f);
+    transform: rotate(var(--giro-hoja)) translate(0, 0);
+}
+
+.trampa-hojas i:nth-child(1) { --giro-hoja: 12deg; --x-hoja: 12vw; --y-hoja: -18vh; }
+.trampa-hojas i:nth-child(2) { --giro-hoja: 74deg; --x-hoja: 17vw; --y-hoja: -7vh; }
+.trampa-hojas i:nth-child(3) { --giro-hoja: 138deg; --x-hoja: 13vw; --y-hoja: 12vh; }
+.trampa-hojas i:nth-child(4) { --giro-hoja: 202deg; --x-hoja: -9vw; --y-hoja: 17vh; }
+.trampa-hojas i:nth-child(5) { --giro-hoja: 266deg; --x-hoja: -15vw; --y-hoja: 3vh; }
+.trampa-hojas i:nth-child(6) { --giro-hoja: 326deg; --x-hoja: -10vw; --y-hoja: -13vh; }
+
+.cinematica-mago-eclipse,
+.cinematica-explorador-atrapado,
+.cinematica-explorador-trampa,
+.cinematica-mago-atrapado,
+.cinematica-tronco-trampa {
+    position: absolute;
+    z-index: 5;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.cinematica-explorador-trampa {
+    left: -1%;
+    bottom: -9%;
+    width: min(54vw, 650px);
+    height: 97%;
+    object-position: left bottom;
+    opacity: 0;
+    filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.82)) drop-shadow(0 0 15px rgba(64, 205, 221, 0.35));
+}
+
+.cinematica-mago-atrapado {
+    right: 7%;
+    bottom: 4%;
+    width: min(40vw, 470px);
+    height: 78%;
+    object-position: center;
+    opacity: 0;
+    filter: drop-shadow(0 16px 14px rgba(0, 0, 0, 0.78));
+}
+
+.cinematica-tronco-trampa {
+    z-index: 7;
+    top: -6%;
+    left: 48%;
+    width: min(48vw, 580px);
+    height: 88%;
+    object-position: center top;
+    opacity: 0;
+    filter: drop-shadow(0 15px 11px rgba(0, 0, 0, 0.72));
+    transform-origin: 50% 0;
+}
+
+.cinematica-mago-eclipse {
+    right: -3%;
+    bottom: -8%;
+    width: min(60vw, 720px);
+    height: 96%;
+    object-position: right bottom;
+    opacity: 0;
+    filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 18px rgba(169, 55, 255, 0.65));
+}
+
+.cinematica-explorador-atrapado {
+    left: 11%;
+    bottom: 3%;
+    width: min(38vw, 440px);
+    height: 78%;
+    object-position: center;
+    opacity: 0;
+    filter: drop-shadow(0 16px 13px rgba(0, 0, 0, 0.75));
+}
+
+.eclipse-particulas {
+    position: absolute;
+    z-index: 6;
+    top: 51%;
+    left: 34%;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+}
+
+.eclipse-particulas i {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    opacity: 0;
+    background: #f2adff;
+    box-shadow: 0 0 8px #cf5cff, 0 0 15px #7c1fce;
+    transform: rotate(var(--angulo)) translateX(0) scale(0.2);
+}
+
+.cinematica-final-versus.trampa-selvatica .eclipse-particulas {
+    top: 52%;
+    left: 72%;
+}
+
+.cinematica-final-versus.trampa-selvatica .eclipse-particulas i {
+    background: #d9ad68;
+    box-shadow: 0 0 8px #f1d59a, 0 0 14px #735021;
+}
+
+.eclipse-destello {
+    position: absolute;
+    z-index: 7;
+    inset: 0;
+    opacity: 0;
+    background: #e5b5ff;
+    pointer-events: none;
+}
+
+.cinematica-final-titulos {
+    position: absolute;
+    z-index: 10;
+    top: 5%;
+    left: 50%;
+    width: min(90%, 720px);
+    color: #f3d6ff;
+    text-align: center;
+    text-shadow: 0 0 11px #9f2de5, 2px 3px #250035;
+    transform: translateX(-50%);
+}
+
+.cinematica-final-titulos span {
+    display: block;
+    opacity: 0;
+    color: #d99aef;
+    font-size: clamp(0.72rem, 1.5vw, 1.05rem);
+    font-weight: 900;
+    letter-spacing: 0.34em;
+}
+
+.cinematica-final-titulos h2 {
+    margin: 3px 0 0;
+    opacity: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2rem, 6vw, 5.4rem);
+    line-height: 0.92;
+    letter-spacing: 0.07em;
+}
+
+.cinematica-final-versus.trampa-selvatica .cinematica-final-titulos {
+    color: #fff0aa;
+    text-shadow: 0 0 11px #d28b18, 2px 3px #172f35;
+}
+
+.cinematica-final-versus.trampa-selvatica .cinematica-final-titulos span {
+    color: #67dce1;
+}
+
+.saltar-cinematica-versus {
+    position: absolute;
+    z-index: 11;
+    right: 18px;
+    bottom: 16px;
+    padding: 7px 15px;
+    border: 1px solid rgba(224, 173, 244, 0.65);
+    border-radius: 999px;
+    background: rgba(11, 3, 17, 0.72);
+    color: #ead0f4;
+    font: inherit;
+    font-size: 0.72rem;
+    cursor: pointer;
+}
+
+.cinematica-final-versus.activa {
+    animation: entradaCinematicaVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.activa .cinematica-final-fondo {
+    animation: acercamientoEclipseVersus 5.2s ease-out both;
+}
+
+.cinematica-final-versus.eclipse-violeta.activa .cinematica-mago-eclipse {
+    animation: entradaMagoEclipseVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.eclipse-violeta.activa .cinematica-explorador-atrapado {
+    animation: capturaExploradorEclipseVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.eclipse-violeta.activa .eclipse-resplandor {
+    animation: resplandorEclipseVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.eclipse-violeta.activa .eclipse-runa {
+    animation: runaEclipseVersus 5.2s linear both;
+}
+
+.cinematica-final-versus.activa .eclipse-particulas i {
+    animation: particulaEclipseVersus 1.15s ease-out calc(3.08s + var(--demora)) both;
+}
+
+.cinematica-final-versus.trampa-selvatica.activa .eclipse-particulas i {
+    animation: particulaEclipseVersus 1.15s ease-out calc(2.52s + var(--demora)) both;
+}
+
+.cinematica-final-versus.eclipse-violeta.activa .eclipse-destello {
+    animation: destelloEclipseVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.trampa-selvatica.activa .cinematica-explorador-trampa {
+    animation: entradaExploradorTrampaVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.trampa-selvatica.activa .cinematica-mago-atrapado {
+    animation: capturaMagoTrampaVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.trampa-selvatica.activa .cinematica-tronco-trampa {
+    animation: balanceoTroncoTrampaVersus 5.2s linear both;
+}
+
+.cinematica-final-versus.trampa-selvatica.activa .trampa-impacto {
+    animation: impactoTroncoTrampaVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.trampa-selvatica.activa .trampa-polvo {
+    animation: polvoTroncoTrampaVersus 5.2s ease-out both;
+}
+
+.cinematica-final-versus.trampa-selvatica.activa .trampa-hojas {
+    animation: hojasTroncoTrampaVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.trampa-selvatica.activa .trampa-hojas i {
+    animation: hojaTroncoTrampaVersus 1.25s ease-out 2.55s both;
+}
+
+.cinematica-final-versus.trampa-selvatica.activa .eclipse-destello {
+    background: #ffe4a0;
+    animation: destelloTroncoTrampaVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.activa .cinematica-final-titulos span {
+    animation: tituloGolpeVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.activa .cinematica-final-titulos h2 {
+    animation: nombreGolpeVersus 5.2s ease both;
+}
+
+@keyframes entradaCinematicaVersus {
+    0% { opacity: 0; }
+    6%, 94% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes acercamientoEclipseVersus {
+    from { transform: scale(1.04); }
+    to { transform: scale(1.16); }
+}
+
+@keyframes entradaMagoEclipseVersus {
+    0%, 10% { opacity: 0; transform: translateX(24%) scale(0.88); }
+    23%, 88% { opacity: 1; transform: translateX(0) scale(1); }
+    96%, 100% { opacity: 0; transform: translateX(0) scale(1.03); }
+}
+
+@keyframes entradaExploradorTrampaVersus {
+    0%, 8% { opacity: 0; transform: translateX(-18%) scale(0.9); }
+    20%, 90% { opacity: 1; transform: translateX(0) scale(1); }
+    97%, 100% { opacity: 0; transform: translateX(0) scale(1.02); }
+}
+
+@keyframes capturaMagoTrampaVersus {
+    0%, 13% { opacity: 0; transform: translateY(8%) scale(0.86) rotate(0deg); }
+    23%, 49% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+    52% { opacity: 1; transform: translate(3vw, -1vh) scale(1.02) rotate(6deg); filter: brightness(1.4) drop-shadow(0 0 13px #ffd67a); }
+    59% { opacity: 1; transform: translate(24vw, -9vh) scale(0.88) rotate(18deg); filter: brightness(1.18) blur(0.3px); }
+    69% { opacity: 0.65; transform: translate(49vw, -20vh) scale(0.62) rotate(36deg); filter: blur(1.2px); }
+    76%, 100% { opacity: 0; transform: translate(70vw, -30vh) scale(0.42) rotate(52deg); filter: blur(2px); }
+}
+
+@keyframes balanceoTroncoTrampaVersus {
+    0%, 25% { opacity: 0; transform: translate(-165%, -10%) rotate(-10deg); }
+    27% { opacity: 1; transform: translate(-150%, -9%) rotate(-9deg); }
+    52% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+    77% { opacity: 1; transform: translate(150%, 9%) rotate(9deg); }
+    80%, 100% { opacity: 0; transform: translate(168%, 10%) rotate(10deg); }
+}
+
+@keyframes impactoTroncoTrampaVersus {
+    0%, 48%, 55%, 100% { opacity: 0; transform: scale(0.15) rotate(-18deg); }
+    51% { opacity: 1; transform: scale(1.2) rotate(7deg); }
+}
+
+@keyframes polvoTroncoTrampaVersus {
+    0%, 49% { opacity: 0; transform: scale(0.2) translateY(0); }
+    54% { opacity: 0.9; transform: scale(0.75) translateY(-4%); }
+    68% { opacity: 0.35; transform: scale(1.35) translateY(-20%); }
+    76%, 100% { opacity: 0; transform: scale(1.65) translateY(-32%); }
+}
+
+@keyframes hojasTroncoTrampaVersus {
+    0%, 49% { opacity: 0; }
+    52%, 68% { opacity: 1; }
+    78%, 100% { opacity: 0; }
+}
+
+@keyframes hojaTroncoTrampaVersus {
+    from { transform: rotate(var(--giro-hoja)) translate(0, 0) scale(0.5); }
+    35% { opacity: 1; }
+    to { opacity: 0; transform: rotate(calc(var(--giro-hoja) + 240deg)) translate(var(--x-hoja), var(--y-hoja)) scale(1.1); }
+}
+
+@keyframes destelloTroncoTrampaVersus {
+    0%, 48%, 54%, 100% { opacity: 0; }
+    51% { opacity: 0.42; }
+}
+
+@keyframes capturaExploradorEclipseVersus {
+    0%, 17% { opacity: 0; transform: translateY(20%) scale(0.82) rotate(0deg); }
+    30% { opacity: 1; transform: translateY(2%) scale(1) rotate(-2deg); }
+    48% { opacity: 1; transform: translateY(-7%) scale(1.04) rotate(2deg); filter: brightness(1.2) saturate(1.2) drop-shadow(0 0 18px #b13eff); }
+    59% { opacity: 1; transform: translateY(-10%) scale(1.02) rotate(-2deg); filter: brightness(1.75) saturate(0.55) drop-shadow(0 0 27px #e4a6ff); }
+    69%, 100% { opacity: 0; transform: translateY(-15%) scale(0.18) rotate(10deg); filter: brightness(2.5) blur(3px); }
+}
+
+@keyframes resplandorEclipseVersus {
+    0%, 24% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
+    45% { opacity: 0.58; transform: translate(-50%, -50%) scale(0.72); }
+    62% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    78%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.25); }
+}
+
+@keyframes runaEclipseVersus {
+    0%, 25% { opacity: 0; transform: translate(-50%, -50%) scale(0.25) rotate(0deg); }
+    42% { opacity: 0.95; transform: translate(-50%, -50%) scale(1) rotate(130deg); }
+    64% { opacity: 1; transform: translate(-50%, -50%) scale(1.1) rotate(360deg); }
+    76%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.35) rotate(560deg); }
+}
+
+@keyframes particulaEclipseVersus {
+    0% { opacity: 0; transform: rotate(var(--angulo)) translateX(0) scale(0.2); }
+    18% { opacity: 1; }
+    100% { opacity: 0; transform: rotate(var(--angulo)) translateX(var(--distancia)) scale(1); }
+}
+
+@keyframes destelloEclipseVersus {
+    0%, 58%, 65%, 100% { opacity: 0; }
+    61% { opacity: 0.92; }
+}
+
+@keyframes tituloGolpeVersus {
+    0%, 7% { opacity: 0; transform: translateY(-12px); }
+    15%, 82% { opacity: 1; transform: translateY(0); }
+    92%, 100% { opacity: 0; }
+}
+
+@keyframes nombreGolpeVersus {
+    0%, 12% { opacity: 0; transform: scale(1.35); letter-spacing: 0.2em; }
+    22%, 82% { opacity: 1; transform: scale(1); letter-spacing: 0.07em; }
+    92%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cinematica-final-versus.activa,
+    .cinematica-final-versus.activa * {
+        animation: none !important;
+    }
+
+    .cinematica-final-versus.eclipse-violeta .cinematica-mago-eclipse,
+    .cinematica-final-versus.eclipse-violeta .cinematica-explorador-atrapado,
+    .cinematica-final-versus.trampa-selvatica .cinematica-explorador-trampa,
+    .cinematica-final-versus.trampa-selvatica .cinematica-mago-atrapado,
+    .cinematica-final-versus.trampa-selvatica .cinematica-tronco-trampa,
+    .cinematica-final-versus .cinematica-final-titulos span,
+    .cinematica-final-versus .cinematica-final-titulos h2 {
+        opacity: 1;
+    }
+
+    .cinematica-final-versus.trampa-selvatica .cinematica-tronco-trampa {
+        transform: rotate(8deg);
+    }
+}
+
+.aviso-avance-versus {
+    position: absolute;
+    z-index: 15;
+    top: 22%;
+    left: 50%;
+    width: min(86%, 390px);
+    padding: 9px 16px;
+    border: 1px solid #9b672c;
+    border-radius: 7px;
+    background: rgba(10, 15, 20, 0.92);
+    color: #f1d09a;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(0.72rem, 1.6vw, 1rem);
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+    transform: translateX(-50%);
+    animation: aparecerAvisoVersus 220ms ease-out both;
+}
+
+.aviso-avance-versus.acierto {
+    border-color: #4b9c43;
+    color: #bce8a9;
+}
+
+.aviso-avance-versus.error {
+    border-color: #a9473f;
+    color: #ffb0aa;
+}
+
+@keyframes aparecerAvisoVersus {
+    from { opacity: 0; transform: translate(-50%, -7px); }
+}
+
+.tarjeta-resultado-versus {
+    width: min(92%, 520px);
+    padding: clamp(20px, 4vw, 34px);
+    border: 2px solid #9b672c;
+    border-radius: 10px;
+    background:
+        linear-gradient(145deg, rgba(30, 24, 17, 0.98), rgba(8, 16, 25, 0.98));
+    color: #e9cf9e;
+    text-align: center;
+    box-shadow:
+        inset 0 0 0 2px #21170d,
+        0 18px 55px rgba(0, 0, 0, 0.75);
+    animation: aparecerResultadoVersus 260ms ease-out both;
+}
+
+.icono-resultado-versus {
+    display: block;
+    margin-bottom: 5px;
+    font-size: clamp(2rem, 7vw, 3.6rem);
+    filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.6));
+}
+
+.tarjeta-resultado-versus > p:first-of-type {
+    color: #d19b49;
+    font-size: 0.66rem;
+    font-weight: bold;
+    letter-spacing: 0.18em;
+}
+
+.tarjeta-resultado-versus h2 {
+    margin: 6px 0 8px;
+    color: #f2d59f;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.35rem, 3.2vw, 2rem);
+}
+
+.tarjeta-resultado-versus > p:last-of-type {
+    margin-bottom: 18px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: clamp(0.72rem, 1.5vw, 0.9rem);
+}
+
+.tarjeta-resultado-versus button {
+    margin: 4px;
+    padding: 9px 14px;
+    background: linear-gradient(180deg, #b67b28, #704315);
+    color: #fff2ce;
+    box-shadow: 0 3px 0 #3d230b;
+}
+
+.tarjeta-resultado-versus button.secundario {
+    border: 1px solid rgba(230, 199, 143, 0.25);
+    background: #18222d;
+    box-shadow: 0 3px 0 #080d12;
+}
+
+@keyframes aparecerResultadoVersus {
+    from { opacity: 0; transform: translateY(12px) scale(0.96); }
 }
 
 .versus-aviso-orientacion {

@@ -31,12 +31,49 @@ const formPreparacionVersus = document.getElementById("formPreparacionVersus");
 const tematicaVersus = document.getElementById("tematicaVersus");
 const inputsPalabrasVersus = [...document.querySelectorAll(".input-palabra-versus")];
 const btnConfirmarPalabrasVersus = document.getElementById("btnConfirmarPalabrasVersus");
+const btnCompletarPalabrasPruebasVersus = document.getElementById(
+  "btnCompletarPalabrasPruebasVersus",
+);
 const esperaRivalVersus = document.getElementById("esperaRivalVersus");
 const btnSalirVersus = document.getElementById("btnSalirVersus");
 const btnSalirVersusVertical = document.getElementById(
   "btnSalirVersusVertical",
 );
 const tecladoVersus = document.getElementById("tecladoVersus");
+const vidasVersusUno = document.getElementById("vidasVersusUno");
+const vidasVersusDos = document.getElementById("vidasVersusDos");
+const tiempoVersusUno = document.getElementById("tiempoVersusUno");
+const tiempoVersusDos = document.getElementById("tiempoVersusDos");
+const textoTiempoVersusUno = document.getElementById("textoTiempoVersusUno");
+const textoTiempoVersusDos = document.getElementById("textoTiempoVersusDos");
+const mensajeRondaVersus = document.getElementById("mensajeRondaVersus");
+const tituloVersus = document.getElementById("tituloVersus");
+const tituloProgresoUno = document.getElementById("tituloProgresoUno");
+const tituloProgresoDos = document.getElementById("tituloProgresoDos");
+const fondoVersus = document.querySelector(".versus-fondo");
+const personajeVersusUno = document.getElementById("personajeVersusUno");
+const personajeVersusDos = document.getElementById("personajeVersusDos");
+const bumeranVersus = document.getElementById("bumeranVersus");
+const proyectilMagoVersus = document.getElementById("proyectilMagoVersus");
+const cinematicaFinalVersus = document.getElementById("cinematicaFinalVersus");
+const fondoCinematicaVersus = document.getElementById("fondoCinematicaVersus");
+const particulasEclipseVersus = document.getElementById("particulasEclipseVersus");
+const etiquetaCinematicaVersus = document.getElementById("etiquetaCinematicaVersus");
+const tituloCinematicaVersus = document.getElementById("tituloCinematicaVersus");
+const btnSaltarCinematicaVersus = document.getElementById("btnSaltarCinematicaVersus");
+const avisoAvanceVersus = document.getElementById("avisoAvanceVersus");
+const resultadoRondaVersus = document.getElementById("resultadoRondaVersus");
+const iconoResultadoVersus = document.getElementById("iconoResultadoVersus");
+const etiquetaResultadoVersus = document.getElementById("etiquetaResultadoVersus");
+const tituloResultadoVersus = document.getElementById("tituloResultadoVersus");
+const detalleResultadoVersus = document.getElementById("detalleResultadoVersus");
+const btnRevanchaVersus = document.getElementById("btnRevanchaVersus");
+const btnMenuResultadoVersus = document.getElementById("btnMenuResultadoVersus");
+const herramientasPruebasVersus = document.getElementById("herramientasPruebasVersus");
+const btnProbarCinematicaExplorador = document.getElementById(
+  "btnProbarCinematicaExplorador",
+);
+const btnProbarCinematicaMago = document.getElementById("btnProbarCinematicaMago");
 const btnSalirJuego = document.getElementById("btnSalirJuego");
 const btnMisionAnterior = document.getElementById("btnMisionAnterior");
 const btnMisionSiguiente = document.getElementById("btnMisionSiguiente");
@@ -439,7 +476,7 @@ let palabrasSecretasVersus = [];
 let transicionCombateVersus = null;
 
 function limpiarPalabraParaVersus(valor) {
-  return valor.toLocaleUpperCase("es-AR").replace(/[^A-ZÁÉÍÓÚÜÑ]/g, "").slice(0, 9);
+  return valor.toLocaleUpperCase("es-AR").replace(/[^A-ZÁÉÍÓÚÜÑ]/g, "");
 }
 
 function obtenerClavePalabraVersus(valor) {
@@ -461,11 +498,11 @@ function validarPreparacionVersus(mostrarErrores = false) {
     );
     let mensaje = "";
 
-    contador.textContent = `${valor.length}/9`;
-    if (valor.length > 0 && valor.length < 3) mensaje = "Debe tener al menos 3 letras.";
+    contador.textContent = `${valor.length} ${valor.length === 1 ? "letra" : "letras"}`;
+    if (valor.length > 0 && valor.length < 2) mensaje = "Debe tener al menos 2 letras.";
     if (repetida) mensaje = "Esta palabra está repetida.";
 
-    const valida = valor.length >= 3 && valor.length <= 9 && !repetida;
+    const valida = valor.length >= 2 && !repetida;
     formularioValido = formularioValido && valida;
     input.classList.toggle("invalida", mostrarErrores && !valida);
     error.textContent = mostrarErrores ? mensaje : "";
@@ -509,17 +546,33 @@ formPreparacionVersus.addEventListener("submit", (evento) => {
 
   transicionCombateVersus = setTimeout(() => {
     transicionCombateVersus = null;
-    reiniciarDemoVersus();
+    prepararDueloVersus();
     mostrarPantalla(pantallaVersus);
-  }, 1100);
+  }, modoPruebasActivo ? 150 : 1100);
+});
+
+btnCompletarPalabrasPruebasVersus.addEventListener("click", () => {
+  if (!modoPruebasActivo) return;
+  const palabrasDePrueba = bancosPalabrasVersus[tematicaVersus.value].slice(
+    0,
+    maximoPalabrasVersus,
+  );
+  inputsPalabrasVersus.forEach((input, indice) => {
+    input.value = palabrasDePrueba[indice];
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  btnConfirmarPalabrasVersus.focus();
 });
 
 function volverAlMenuDesdeVersus() {
+  cancelarCinematicaFinalVersus();
+  detenerRondaVersus();
   mostrarPantalla(pantallaMenu);
 }
 
 btnSalirVersus.addEventListener("click", volverAlMenuDesdeVersus);
 btnSalirVersusVertical.addEventListener("click", volverAlMenuDesdeVersus);
+btnMenuResultadoVersus.addEventListener("click", volverAlMenuDesdeVersus);
 
 btnSaltarNarrativa.addEventListener("click", solicitarSaltoNarrativo);
 
@@ -940,17 +993,166 @@ function crearTecladoVersus() {
   });
 }
 
-// Demostración local del progreso simultáneo. Cuando exista el servidor,
-// estas mismas actualizaciones vendrán de las jugadas reales de cada celular.
+// Duelo local de tres rondas. Cuando exista el servidor, las palabras y jugadas
+// del rival llegarán desde el otro dispositivo en lugar de esta simulación.
+const bancosPalabrasVersus = {
+  desierto: aventura[1].palabras.map((item) => item.palabra),
+  bosque: aventura[0].palabras.map((item) => item.palabra),
+  animales: [
+    "AGUILA", "BALLENA", "CABALLO", "CONEJO", "DELFIN",
+    "GATO", "JIRAFA", "LEON", "PANDA", "TIGRE",
+  ],
+};
+const fondosTematicaVersus = {
+  desierto: "assets/images/fondos/desierto-1.png",
+  bosque: "assets/images/fondos/bosque-1.png",
+  animales: "assets/images/fondos/bosque-6.png",
+};
+const descripcionFondosVersus = {
+  desierto: "Ruinas del desierto",
+  bosque: "Sendero del bosque encantado",
+  animales: "Bosque de los animales",
+};
+const duracionPartidaVersus = 150;
+const maximoPalabrasVersus = 3;
+const maximoErroresVersus = 6;
+const intervaloJugadaRivalVersus = 3000;
+const probabilidadAciertoRivalVersus = 0.56;
+const srcExploradorBaseVersus = "assets/images/personajes/versus/explorador-base.png";
+const srcExploradorPreparaBumeran = "assets/images/personajes/versus/explorador-bumeran-preparacion.png";
+const srcExploradorLanzaBumeran = "assets/images/personajes/versus/explorador-bumeran-lanzamiento.png";
+const srcMagoBaseVersus = "assets/images/personajes/versus/mago-base.png";
+const srcMagoAtaqueVersus = "assets/images/personajes/versus/mago-ataque.png";
+
 const demoVersus = {
-  palabra: "DESIERTO",
+  tematica: "desierto",
+  palabrasJugador: [],
+  palabrasRival: [],
+  indiceJugador: 0,
+  indiceRival: 0,
   letrasJugador: new Set(),
-  avanceRival: 0,
-  intentos: 0,
+  letrasRival: new Set(),
   erroresJugador: 0,
   erroresRival: 0,
-  finalizada: false,
+  vidasJugador: 3,
+  vidasRival: 3,
+  tiempoJugador: duracionPartidaVersus,
+  tiempoRival: duracionPartidaVersus,
+  finalizadoJugador: false,
+  finalizadoRival: false,
+  motivoFinalJugador: "",
+  motivoFinalRival: "",
+  intervaloTiempo: null,
+  intervaloRival: null,
+  temporizadorAviso: null,
+  temporizadoresAtaqueJugador: [],
+  temporizadoresAtaqueRival: [],
+  temporizadorCinematica: null,
+  resolverCinematica: null,
+  partidaFinalizada: false,
 };
+
+function programarPasoAtaqueVersus(accion, demora, atacante) {
+  const temporizador = setTimeout(accion, demora);
+  const grupo = atacante === "rival"
+    ? demoVersus.temporizadoresAtaqueRival
+    : demoVersus.temporizadoresAtaqueJugador;
+  grupo.push(temporizador);
+}
+
+function limpiarAnimacionAtaqueJugadorVersus() {
+  demoVersus.temporizadoresAtaqueJugador.forEach(clearTimeout);
+  demoVersus.temporizadoresAtaqueJugador = [];
+  personajeVersusUno.src = srcExploradorBaseVersus;
+  personajeVersusUno.classList.remove("preparando-bumeran", "lanzando-bumeran");
+  personajeVersusDos.classList.remove("recibiendo-dano");
+  vidasVersusDos.classList.remove("recibiendo-dano");
+  bumeranVersus.classList.remove("volando");
+}
+
+function limpiarAnimacionAtaqueRivalVersus() {
+  demoVersus.temporizadoresAtaqueRival.forEach(clearTimeout);
+  demoVersus.temporizadoresAtaqueRival = [];
+  personajeVersusDos.src = srcMagoBaseVersus;
+  personajeVersusDos.classList.remove("concentrando-hechizo", "lanzando-hechizo");
+  personajeVersusUno.classList.remove("recibiendo-dano-magico");
+  vidasVersusUno.classList.remove("recibiendo-dano");
+  proyectilMagoVersus.classList.remove("volando");
+}
+
+function limpiarAnimacionAtaqueVersus() {
+  limpiarAnimacionAtaqueJugadorVersus();
+  limpiarAnimacionAtaqueRivalVersus();
+}
+
+function reproducirAtaqueBumeranVersus() {
+  limpiarAnimacionAtaqueJugadorVersus();
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    personajeVersusDos.classList.add("recibiendo-dano");
+    programarPasoAtaqueVersus(() => {
+      personajeVersusDos.classList.remove("recibiendo-dano");
+    }, 220, "jugador");
+    return;
+  }
+
+  personajeVersusUno.src = srcExploradorPreparaBumeran;
+  personajeVersusUno.classList.add("preparando-bumeran");
+
+  programarPasoAtaqueVersus(() => {
+    personajeVersusUno.src = srcExploradorLanzaBumeran;
+    personajeVersusUno.classList.remove("preparando-bumeran");
+    personajeVersusUno.classList.add("lanzando-bumeran");
+    void bumeranVersus.offsetWidth;
+    bumeranVersus.classList.add("volando");
+  }, 260, "jugador");
+
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.add("recibiendo-dano");
+    vidasVersusDos.classList.add("recibiendo-dano");
+  }, 760, "jugador");
+
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.remove("recibiendo-dano");
+    vidasVersusDos.classList.remove("recibiendo-dano");
+  }, 1110, "jugador");
+
+  programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1510, "jugador");
+}
+
+function reproducirAtaqueMagoVersus() {
+  limpiarAnimacionAtaqueRivalVersus();
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    personajeVersusUno.classList.add("recibiendo-dano-magico");
+    programarPasoAtaqueVersus(() => {
+      personajeVersusUno.classList.remove("recibiendo-dano-magico");
+    }, 220, "rival");
+    return;
+  }
+
+  personajeVersusDos.classList.add("concentrando-hechizo");
+
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.src = srcMagoAtaqueVersus;
+    personajeVersusDos.classList.remove("concentrando-hechizo");
+    personajeVersusDos.classList.add("lanzando-hechizo");
+    void proyectilMagoVersus.offsetWidth;
+    proyectilMagoVersus.classList.add("volando");
+  }, 220, "rival");
+
+  programarPasoAtaqueVersus(() => {
+    personajeVersusUno.classList.add("recibiendo-dano-magico");
+    vidasVersusUno.classList.add("recibiendo-dano");
+  }, 760, "rival");
+
+  programarPasoAtaqueVersus(() => {
+    personajeVersusUno.classList.remove("recibiendo-dano-magico");
+    vidasVersusUno.classList.remove("recibiendo-dano");
+  }, 1080, "rival");
+
+  programarPasoAtaqueVersus(limpiarAnimacionAtaqueRivalVersus, 1260, "rival");
+}
 
 function mostrarEstadoProgresoVersus(elemento, mensaje, tipo = "") {
   elemento.textContent = mensaje;
@@ -958,7 +1160,7 @@ function mostrarEstadoProgresoVersus(elemento, mensaje, tipo = "") {
 }
 
 function actualizarIntentosVersus(contenedor, errores, nombreJugador) {
-  const restantes = Math.max(0, 6 - errores);
+  const restantes = Math.max(0, maximoErroresVersus - errores);
   [...contenedor.children].forEach((intento, indice) => {
     intento.classList.toggle("agotado", indice >= restantes);
   });
@@ -974,44 +1176,86 @@ function bloquearTecladoDemoVersus() {
   });
 }
 
-function reiniciarDemoVersus() {
-  demoVersus.letrasJugador.clear();
-  demoVersus.avanceRival = 0;
-  demoVersus.intentos = 0;
-  demoVersus.erroresJugador = 0;
-  demoVersus.erroresRival = 0;
-  demoVersus.finalizada = false;
-
-  const palabraJugador = document.getElementById("palabraVersusUno");
-  const palabraRival = document.getElementById("palabraVersusDos");
-  palabraJugador.textContent = "_ _ _ _ _ _ _ _";
-  palabraJugador.setAttribute("aria-label", "Palabra sin descubrir");
-  palabraRival.textContent = "_ _ _ _ _ _ _ _";
-  palabraRival.setAttribute("aria-label", "El rival no descubrió ninguna letra");
-  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoUno"), "Elegí una letra");
-  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), "Esperando jugada...");
-  actualizarIntentosVersus(document.getElementById("intentosVersusUno"), 0, "Jugador 1");
-  actualizarIntentosVersus(document.getElementById("intentosVersusDos"), 0, "El rival");
+function habilitarTecladoVersus() {
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = false;
   });
 }
 
-function jugarLetraDemoVersus(letra, boton) {
-  if (boton.disabled || demoVersus.finalizada) return;
+function mezclarPalabrasVersus(palabras) {
+  const copia = [...palabras];
+  for (let indice = copia.length - 1; indice > 0; indice -= 1) {
+    const destino = Math.floor(Math.random() * (indice + 1));
+    [copia[indice], copia[destino]] = [copia[destino], copia[indice]];
+  }
+  return copia;
+}
 
-  const palabraJugador = document.getElementById("palabraVersusUno");
-  const palabraRival = document.getElementById("palabraVersusDos");
+function prepararDueloVersus() {
+  cancelarCinematicaFinalVersus();
+  detenerRondaVersus();
+  limpiarAnimacionAtaqueVersus();
+  demoVersus.tematica = tematicaVersus.value;
+  demoVersus.palabrasJugador = mezclarPalabrasVersus(
+    bancosPalabrasVersus[demoVersus.tematica],
+  ).slice(0, maximoPalabrasVersus);
+  demoVersus.palabrasRival = palabrasSecretasVersus.map(obtenerClavePalabraVersus);
+  demoVersus.indiceJugador = 0;
+  demoVersus.indiceRival = 0;
+  demoVersus.letrasJugador.clear();
+  demoVersus.letrasRival.clear();
+  demoVersus.erroresJugador = 0;
+  demoVersus.erroresRival = 0;
+  demoVersus.vidasJugador = 3;
+  demoVersus.vidasRival = 3;
+  demoVersus.tiempoJugador = duracionPartidaVersus;
+  demoVersus.tiempoRival = duracionPartidaVersus;
+  demoVersus.finalizadoJugador = false;
+  demoVersus.finalizadoRival = false;
+  demoVersus.motivoFinalJugador = "";
+  demoVersus.motivoFinalRival = "";
+  demoVersus.partidaFinalizada = false;
+  fondoVersus.src = fondosTematicaVersus[demoVersus.tematica];
+  fondoVersus.alt = descripcionFondosVersus[demoVersus.tematica];
+  resultadoRondaVersus.classList.add("oculto");
+  avisoAvanceVersus.classList.add("oculto");
+  actualizarVidasVersus();
+  actualizarIntentosVersus(document.getElementById("intentosVersusUno"), 0, "Jugador 1");
+  actualizarIntentosVersus(document.getElementById("intentosVersusDos"), 0, "El rival");
+  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoUno"), "Elegí una letra");
+  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), "Pensando...");
+  habilitarTecladoVersus();
+  actualizarProgresosVersus();
+  actualizarTiemposVersus();
+
+  demoVersus.intervaloTiempo = setInterval(actualizarRelojesVersus, 1000);
+  demoVersus.intervaloRival = setInterval(
+    jugarTurnoRivalVersus,
+    modoPruebasActivo ? intervaloJugadaRivalVersus * 4 : intervaloJugadaRivalVersus,
+  );
+}
+
+function detenerRondaVersus() {
+  if (demoVersus.intervaloTiempo) clearInterval(demoVersus.intervaloTiempo);
+  if (demoVersus.intervaloRival) clearInterval(demoVersus.intervaloRival);
+  demoVersus.intervaloTiempo = null;
+  demoVersus.intervaloRival = null;
+  if (demoVersus.temporizadorAviso) clearTimeout(demoVersus.temporizadorAviso);
+  demoVersus.temporizadorAviso = null;
+  limpiarAnimacionAtaqueVersus();
+}
+
+function jugarLetraDemoVersus(letra, boton) {
+  if (boton.disabled || demoVersus.finalizadoJugador || demoVersus.partidaFinalizada) return;
+
   const estadoJugador = document.getElementById("estadoProgresoUno");
-  const estadoRival = document.getElementById("estadoProgresoDos");
   const intentosJugador = document.getElementById("intentosVersusUno");
-  const intentosRival = document.getElementById("intentosVersusDos");
+  const palabraJugador = obtenerPalabraActualJugadorVersus();
 
   boton.disabled = true;
-  demoVersus.intentos += 1;
+  demoVersus.letrasJugador.add(letra);
 
-  if (demoVersus.palabra.includes(letra)) {
-    demoVersus.letrasJugador.add(letra);
+  if (palabraJugador.includes(letra)) {
     mostrarEstadoProgresoVersus(estadoJugador, "¡Acierto!", "acierto");
   } else {
     demoVersus.erroresJugador += 1;
@@ -1019,49 +1263,451 @@ function jugarLetraDemoVersus(letra, boton) {
     mostrarEstadoProgresoVersus(estadoJugador, "Fallaste", "error");
   }
 
-  const progresoJugador = [...demoVersus.palabra]
-    .map((caracter) => demoVersus.letrasJugador.has(caracter) ? caracter : "_");
-  palabraJugador.textContent = progresoJugador.join(" ");
-  palabraJugador.setAttribute("aria-label", `Tu progreso: ${progresoJugador.join(" ")}`);
+  actualizarProgresosVersus();
 
-  if (!progresoJugador.includes("_")) {
-    demoVersus.finalizada = true;
-    mostrarEstadoProgresoVersus(estadoJugador, "¡Palabra completa!", "acierto");
-    bloquearTecladoDemoVersus();
+  if (palabraCompletadaVersus(palabraJugador, demoVersus.letrasJugador)) {
+    avanzarPalabraJugadorVersus(true);
     return;
   }
 
-  if (demoVersus.erroresJugador >= 6) {
-    demoVersus.finalizada = true;
-    mostrarEstadoProgresoVersus(estadoJugador, "Palabra perdida", "agotado");
-    bloquearTecladoDemoVersus();
-    return;
-  }
-
-  // Alterna aciertos y errores para representar cómo se verá la actividad remota.
-  if (demoVersus.intentos % 3 === 0) {
-    demoVersus.erroresRival += 1;
-    actualizarIntentosVersus(intentosRival, demoVersus.erroresRival, "El rival");
-    mostrarEstadoProgresoVersus(estadoRival, "El rival falló", "error");
-  } else if (demoVersus.avanceRival < demoVersus.palabra.length) {
-    demoVersus.avanceRival += 1;
-    mostrarEstadoProgresoVersus(estadoRival, "El rival acertó", "acierto");
-  }
-
-  const progresoRival = [...demoVersus.palabra]
-    .map((_, indice) => indice < demoVersus.avanceRival ? "?" : "_");
-  palabraRival.textContent = progresoRival.join(" ");
-  palabraRival.setAttribute(
-    "aria-label",
-    `El rival descubrió ${demoVersus.avanceRival} de ${demoVersus.palabra.length} letras`
-  );
-
-  if (demoVersus.erroresRival >= 6) {
-    mostrarEstadoProgresoVersus(estadoRival, "Rival sin intentos", "agotado");
-  } else if (demoVersus.avanceRival >= demoVersus.palabra.length) {
-    mostrarEstadoProgresoVersus(estadoRival, "Rival completó", "acierto");
+  if (demoVersus.erroresJugador >= maximoErroresVersus) {
+    avanzarPalabraJugadorVersus(false);
   }
 }
+
+function jugarTurnoRivalVersus() {
+  if (demoVersus.finalizadoRival || demoVersus.partidaFinalizada) return;
+
+  const alfabeto = filasTeclado.flat();
+  const palabraRival = obtenerPalabraActualRivalVersus();
+  const letrasPendientes = [...new Set(palabraRival)]
+    .filter((letra) => !demoVersus.letrasRival.has(letra));
+  const letrasIncorrectas = alfabeto.filter(
+    (letra) => !palabraRival.includes(letra) && !demoVersus.letrasRival.has(letra),
+  );
+  const acierta = Math.random() < probabilidadAciertoRivalVersus
+    || letrasIncorrectas.length === 0;
+  const opciones = acierta ? letrasPendientes : letrasIncorrectas;
+  const letra = opciones[Math.floor(Math.random() * opciones.length)];
+  if (!letra) return;
+
+  demoVersus.letrasRival.add(letra);
+  const estadoRival = document.getElementById("estadoProgresoDos");
+  if (palabraRival.includes(letra)) {
+    mostrarEstadoProgresoVersus(estadoRival, "El rival acertó", "acierto");
+  } else {
+    demoVersus.erroresRival += 1;
+    actualizarIntentosVersus(
+      document.getElementById("intentosVersusDos"),
+      demoVersus.erroresRival,
+      "El rival",
+    );
+    mostrarEstadoProgresoVersus(estadoRival, "El rival falló", "error");
+  }
+
+  actualizarProgresosVersus();
+
+  if (palabraCompletadaVersus(palabraRival, demoVersus.letrasRival)) {
+    avanzarPalabraRivalVersus(true);
+  } else if (demoVersus.erroresRival >= maximoErroresVersus) {
+    avanzarPalabraRivalVersus(false);
+  }
+}
+
+function obtenerPalabraActualJugadorVersus() {
+  return obtenerClavePalabraVersus(
+    demoVersus.palabrasJugador[demoVersus.indiceJugador] || "",
+  );
+}
+
+function obtenerPalabraActualRivalVersus() {
+  return demoVersus.palabrasRival[demoVersus.indiceRival] || "";
+}
+
+function palabraCompletadaVersus(palabra, letras) {
+  return [...palabra].every((letra) => letras.has(letra));
+}
+
+function contarLetrasDescubiertasVersus(palabra, letras) {
+  return [...palabra].filter((letra) => letras.has(letra)).length;
+}
+
+function actualizarProgresosVersus() {
+  const palabraJugador = document.getElementById("palabraVersusUno");
+  const palabraRival = document.getElementById("palabraVersusDos");
+  const objetivoJugador = obtenerPalabraActualJugadorVersus();
+  const objetivoRival = obtenerPalabraActualRivalVersus();
+  const progresoJugador = [...objetivoJugador]
+    .map((letra) => demoVersus.letrasJugador.has(letra) ? letra : "_");
+  const progresoRival = [...objetivoRival]
+    .map((letra) => demoVersus.letrasRival.has(letra) ? "?" : "_");
+
+  tituloProgresoUno.textContent = demoVersus.finalizadoJugador
+    ? "TU RECORRIDO TERMINÓ"
+    : `TU PALABRA ${demoVersus.indiceJugador + 1}/${maximoPalabrasVersus}`;
+  tituloProgresoDos.textContent = demoVersus.finalizadoRival
+    ? "EL RIVAL TERMINÓ"
+    : `RIVAL: PALABRA ${demoVersus.indiceRival + 1}/${maximoPalabrasVersus}`;
+  tituloVersus.textContent = `J1 ${Math.min(demoVersus.indiceJugador, maximoPalabrasVersus)}/3 · J2 ${Math.min(demoVersus.indiceRival, maximoPalabrasVersus)}/3`;
+
+  if (demoVersus.finalizadoJugador) {
+    palabraJugador.textContent = demoVersus.motivoFinalJugador === "tiempo"
+      ? "TIEMPO AGOTADO"
+      : "✓ 3 PALABRAS";
+  } else {
+    palabraJugador.textContent = progresoJugador.join(" ");
+  }
+  palabraJugador.setAttribute("aria-label", `Tu progreso: ${palabraJugador.textContent}`);
+
+  if (demoVersus.finalizadoRival) {
+    palabraRival.textContent = demoVersus.motivoFinalRival === "tiempo"
+      ? "TIEMPO AGOTADO"
+      : "✓ 3 PALABRAS";
+  } else {
+    palabraRival.textContent = progresoRival.join(" ");
+  }
+  palabraRival.setAttribute(
+    "aria-label",
+    demoVersus.finalizadoRival
+      ? palabraRival.textContent
+      : `El rival descubrió ${contarLetrasDescubiertasVersus(objetivoRival, demoVersus.letrasRival)} de ${objetivoRival.length} letras`,
+  );
+  ajustarPalabraLargaVersus(palabraJugador, objetivoJugador.length);
+  ajustarPalabraLargaVersus(palabraRival, objetivoRival.length);
+}
+
+function ajustarPalabraLargaVersus(elemento, cantidadLetras) {
+  const panel = elemento.closest(".versus-palabra");
+  panel.classList.toggle("palabra-larga", cantidadLetras > 10);
+  panel.classList.toggle("palabra-muy-larga", cantidadLetras > 16);
+}
+
+function actualizarRelojesVersus() {
+  if (!demoVersus.finalizadoJugador) {
+    demoVersus.tiempoJugador = Math.max(0, demoVersus.tiempoJugador - 1);
+    if (demoVersus.tiempoJugador === 0) agotarTiempoJugadorVersus();
+  }
+  if (!demoVersus.finalizadoRival) {
+    demoVersus.tiempoRival = Math.max(0, demoVersus.tiempoRival - 1);
+    if (demoVersus.tiempoRival === 0) agotarTiempoRivalVersus();
+  }
+  actualizarTiemposVersus();
+}
+
+function actualizarTiemposVersus() {
+  actualizarTiempoPersonalVersus(
+    tiempoVersusUno,
+    textoTiempoVersusUno,
+    demoVersus.tiempoJugador,
+    "Jugador 1",
+    demoVersus.finalizadoJugador,
+  );
+  actualizarTiempoPersonalVersus(
+    tiempoVersusDos,
+    textoTiempoVersusDos,
+    demoVersus.tiempoRival,
+    "Jugador 2",
+    demoVersus.finalizadoRival,
+  );
+}
+
+function actualizarTiempoPersonalVersus(panel, texto, segundos, nombre, finalizado) {
+  const minutos = Math.floor(segundos / 60);
+  const resto = segundos % 60;
+  texto.textContent = `${String(minutos).padStart(2, "0")}:${String(resto).padStart(2, "0")}`;
+  panel.setAttribute("aria-label", `Tiempo de ${nombre}: ${minutos} minutos y ${resto} segundos`);
+  panel.classList.toggle("urgente", !finalizado && segundos <= 15);
+}
+
+function actualizarVidasVersus() {
+  actualizarCorazonesVersus(vidasVersusUno, demoVersus.vidasJugador, "Jugador 1");
+  actualizarCorazonesVersus(vidasVersusDos, demoVersus.vidasRival, "Jugador 2");
+}
+
+function actualizarCorazonesVersus(elemento, vidasActuales, nombre) {
+  elemento.innerHTML = Array.from({ length: 3 }, (_, indice) => (
+    `<span class="${indice < vidasActuales ? "" : "perdido"}">♥</span>`
+  )).join(" ");
+  elemento.setAttribute("aria-label", `${nombre}: ${vidasActuales} vidas`);
+}
+
+function mostrarAvisoAvanceVersus(mensaje, tipo = "") {
+  if (demoVersus.temporizadorAviso) clearTimeout(demoVersus.temporizadorAviso);
+  avisoAvanceVersus.textContent = mensaje;
+  avisoAvanceVersus.className = `aviso-avance-versus${tipo ? ` ${tipo}` : ""}`;
+  demoVersus.temporizadorAviso = setTimeout(() => {
+    avisoAvanceVersus.classList.add("oculto");
+    demoVersus.temporizadorAviso = null;
+  }, 1800);
+}
+
+function avanzarPalabraJugadorVersus(acertada) {
+  const numeroPalabra = demoVersus.indiceJugador + 1;
+  demoVersus.indiceJugador += 1;
+  demoVersus.letrasJugador.clear();
+  demoVersus.erroresJugador = 0;
+
+  if (acertada) {
+    demoVersus.vidasRival -= 1;
+    reproducirAtaqueBumeranVersus();
+    mostrarAvisoAvanceVersus(`¡Palabra ${numeroPalabra} superada! Atacaste al rival.`, "acierto");
+  } else {
+    demoVersus.vidasJugador -= 1;
+    reproducirAtaqueMagoVersus();
+    mostrarAvisoAvanceVersus(`Sin energía en la palabra ${numeroPalabra}. Perdés un corazón.`, "error");
+  }
+  actualizarVidasVersus();
+
+  if (demoVersus.vidasRival <= 0) {
+    finalizarPartidaVersus("jugador", "¡Ataque final! El rival se quedó sin corazones.");
+    return;
+  }
+
+  if (demoVersus.vidasJugador <= 0) {
+    finalizarPartidaVersus("rival", "Agotaste tu energía y te quedaste sin corazones.");
+    return;
+  }
+
+  if (demoVersus.indiceJugador >= maximoPalabrasVersus) {
+    demoVersus.finalizadoJugador = true;
+    demoVersus.motivoFinalJugador = "completo";
+    bloquearTecladoDemoVersus();
+    mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoUno"), "Esperando al rival");
+  } else {
+    habilitarTecladoVersus();
+    actualizarIntentosVersus(document.getElementById("intentosVersusUno"), 0, "Jugador 1");
+    mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoUno"), "Nueva palabra");
+  }
+  actualizarProgresosVersus();
+  verificarFinNaturalVersus();
+}
+
+function avanzarPalabraRivalVersus(acertada) {
+  const numeroPalabra = demoVersus.indiceRival + 1;
+  demoVersus.indiceRival += 1;
+  demoVersus.letrasRival.clear();
+  demoVersus.erroresRival = 0;
+
+  if (acertada) {
+    demoVersus.vidasJugador -= 1;
+    reproducirAtaqueMagoVersus();
+    mostrarAvisoAvanceVersus(`El rival superó su palabra ${numeroPalabra} y te atacó.`, "error");
+  } else {
+    demoVersus.vidasRival -= 1;
+    reproducirAtaqueBumeranVersus();
+    mostrarAvisoAvanceVersus(`El rival agotó la energía de su palabra ${numeroPalabra} y perdió un corazón.`, "acierto");
+  }
+  actualizarVidasVersus();
+
+  if (demoVersus.vidasJugador <= 0) {
+    finalizarPartidaVersus("rival", "El rival completó su ataque y te dejó sin corazones.");
+    return;
+  }
+
+  if (demoVersus.vidasRival <= 0) {
+    finalizarPartidaVersus("jugador", "El rival agotó su energía y se quedó sin corazones.");
+    return;
+  }
+
+  if (demoVersus.indiceRival >= maximoPalabrasVersus) {
+    demoVersus.finalizadoRival = true;
+    demoVersus.motivoFinalRival = "completo";
+    mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), "Esperando resultado");
+  } else {
+    actualizarIntentosVersus(document.getElementById("intentosVersusDos"), 0, "El rival");
+    mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), "Nueva palabra");
+  }
+  actualizarProgresosVersus();
+  verificarFinNaturalVersus();
+}
+
+function agotarTiempoJugadorVersus() {
+  if (demoVersus.finalizadoJugador) return;
+  demoVersus.finalizadoJugador = true;
+  demoVersus.motivoFinalJugador = "tiempo";
+  bloquearTecladoDemoVersus();
+  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoUno"), "Tiempo agotado", "agotado");
+  mostrarAvisoAvanceVersus("Se agotó tu tiempo. El rival todavía puede continuar.", "error");
+  actualizarProgresosVersus();
+  verificarFinNaturalVersus();
+}
+
+function agotarTiempoRivalVersus() {
+  if (demoVersus.finalizadoRival) return;
+  demoVersus.finalizadoRival = true;
+  demoVersus.motivoFinalRival = "tiempo";
+  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), "Tiempo agotado", "agotado");
+  mostrarAvisoAvanceVersus("El rival agotó su tiempo.", "acierto");
+  actualizarProgresosVersus();
+  verificarFinNaturalVersus();
+}
+
+function verificarFinNaturalVersus() {
+  if (!demoVersus.finalizadoJugador || !demoVersus.finalizadoRival) return;
+  const diferencia = demoVersus.vidasJugador - demoVersus.vidasRival;
+  finalizarPartidaVersus(
+    diferencia > 0 ? "jugador" : diferencia < 0 ? "rival" : "empate",
+    `Resultado final: ${demoVersus.vidasJugador} a ${demoVersus.vidasRival} corazones.`,
+  );
+}
+
+function finalizarPartidaVersus(ganador, detalle) {
+  if (demoVersus.partidaFinalizada) return;
+  actualizarProgresosVersus();
+  demoVersus.partidaFinalizada = true;
+  detenerRondaVersus();
+  bloquearTecladoDemoVersus();
+
+  if (ganador === "rival") {
+    reproducirEclipseVioletaVersus().then(() => {
+      mostrarResultadoPartidaVersus(ganador, detalle);
+    });
+    return;
+  }
+
+  if (ganador === "jugador") {
+    reproducirTrampaSelvaticaVersus().then(() => {
+      mostrarResultadoPartidaVersus(ganador, detalle);
+    });
+    return;
+  }
+
+  mostrarResultadoPartidaVersus(ganador, detalle);
+}
+
+function mostrarResultadoPartidaVersus(ganador, detalle) {
+
+  iconoResultadoVersus.textContent = ganador === "jugador" ? "🏆" : ganador === "rival" ? "🛡️" : "⚔️";
+  etiquetaResultadoVersus.textContent = ganador === "empate" ? "DUELO EMPATADO" : "DUELO FINALIZADO";
+  tituloResultadoVersus.textContent = ganador === "jugador"
+    ? "¡Victoria del Jugador 1!"
+    : ganador === "rival"
+      ? "Victoria del Jugador 2"
+      : "¡Duelo empatado!";
+  detalleResultadoVersus.textContent = detalle;
+  btnRevanchaVersus.classList.remove("oculto");
+  resultadoRondaVersus.classList.remove("oculto");
+}
+
+function crearParticulasEclipseVersus() {
+  particulasEclipseVersus.replaceChildren();
+  for (let indice = 0; indice < 28; indice += 1) {
+    const particula = document.createElement("i");
+    particula.style.setProperty("--angulo", `${(360 / 28) * indice}deg`);
+    particula.style.setProperty("--distancia", `${70 + (indice % 7) * 14}px`);
+    particula.style.setProperty("--demora", `${(indice % 5) * 35}ms`);
+    particulasEclipseVersus.appendChild(particula);
+  }
+}
+
+function reproducirEclipseVioletaVersus() {
+  cancelarCinematicaFinalVersus();
+  crearParticulasEclipseVersus();
+  fondoCinematicaVersus.src = fondoVersus.src;
+  etiquetaCinematicaVersus.textContent = "GOLPE LEGENDARIO";
+  tituloCinematicaVersus.textContent = "ECLIPSE VIOLETA";
+  cinematicaFinalVersus.classList.remove("trampa-selvatica");
+  cinematicaFinalVersus.classList.add("eclipse-violeta");
+  cinematicaFinalVersus.classList.remove("oculto");
+  void cinematicaFinalVersus.offsetWidth;
+  cinematicaFinalVersus.classList.add("activa");
+  btnSaltarCinematicaVersus.focus();
+
+  return new Promise((resolve) => {
+    demoVersus.resolverCinematica = resolve;
+    demoVersus.temporizadorCinematica = setTimeout(
+      completarCinematicaFinalVersus,
+      5200,
+    );
+  });
+}
+
+function reproducirTrampaSelvaticaVersus() {
+  cancelarCinematicaFinalVersus();
+  crearParticulasEclipseVersus();
+  fondoCinematicaVersus.src = fondoVersus.src;
+  etiquetaCinematicaVersus.textContent = "TÉCNICA SECRETA";
+  tituloCinematicaVersus.textContent = "TRAMPA SELVÁTICA";
+  cinematicaFinalVersus.classList.remove("eclipse-violeta");
+  cinematicaFinalVersus.classList.add("trampa-selvatica");
+  cinematicaFinalVersus.classList.remove("oculto");
+  void cinematicaFinalVersus.offsetWidth;
+  cinematicaFinalVersus.classList.add("activa");
+  btnSaltarCinematicaVersus.focus();
+
+  return new Promise((resolve) => {
+    demoVersus.resolverCinematica = resolve;
+    demoVersus.temporizadorCinematica = setTimeout(
+      completarCinematicaFinalVersus,
+      5200,
+    );
+  });
+}
+
+function completarCinematicaFinalVersus() {
+  if (demoVersus.temporizadorCinematica) {
+    clearTimeout(demoVersus.temporizadorCinematica);
+    demoVersus.temporizadorCinematica = null;
+  }
+  cinematicaFinalVersus.classList.remove("activa");
+  cinematicaFinalVersus.classList.add("oculto");
+  cinematicaFinalVersus.classList.remove("eclipse-violeta", "trampa-selvatica");
+  particulasEclipseVersus.replaceChildren();
+  const resolver = demoVersus.resolverCinematica;
+  demoVersus.resolverCinematica = null;
+  resolver?.();
+}
+
+function cancelarCinematicaFinalVersus() {
+  if (demoVersus.temporizadorCinematica) {
+    clearTimeout(demoVersus.temporizadorCinematica);
+    demoVersus.temporizadorCinematica = null;
+  }
+  cinematicaFinalVersus.classList.remove("activa");
+  cinematicaFinalVersus.classList.add("oculto");
+  cinematicaFinalVersus.classList.remove("eclipse-violeta", "trampa-selvatica");
+  particulasEclipseVersus.replaceChildren();
+  demoVersus.resolverCinematica = null;
+}
+
+btnSaltarCinematicaVersus.addEventListener("click", completarCinematicaFinalVersus);
+
+function probarCinematicaVersus(ganador) {
+  if (!modoPruebasActivo || demoVersus.partidaFinalizada) return;
+
+  if (ganador === "jugador") {
+    demoVersus.indiceJugador = maximoPalabrasVersus;
+    demoVersus.finalizadoJugador = true;
+    demoVersus.motivoFinalJugador = "completo";
+    demoVersus.vidasRival = 0;
+    actualizarVidasVersus();
+    finalizarPartidaVersus(
+      "jugador",
+      "Cinemática del explorador iniciada desde el Modo Pruebas.",
+    );
+    return;
+  }
+
+  demoVersus.indiceRival = maximoPalabrasVersus;
+  demoVersus.finalizadoRival = true;
+  demoVersus.motivoFinalRival = "completo";
+  demoVersus.vidasJugador = 0;
+  actualizarVidasVersus();
+  finalizarPartidaVersus(
+    "rival",
+    "Cinemática del mago iniciada desde el Modo Pruebas.",
+  );
+}
+
+btnProbarCinematicaExplorador.addEventListener("click", () => {
+  probarCinematicaVersus("jugador");
+});
+
+btnProbarCinematicaMago.addEventListener("click", () => {
+  probarCinematicaVersus("rival");
+});
+
+btnRevanchaVersus.addEventListener("click", prepararDueloVersus);
 
 // Control reutilizable para cualquier secuencia narrativa presente o futura.
 // Las esperas y animaciones siguen su ruta normal, pero se completan al instante.
@@ -1231,6 +1877,8 @@ function actualizarModoPruebas(activar, { restaurarProgreso = true } = {}) {
   modoPruebasActivo = Boolean(activar);
   modoPruebas.checked = modoPruebasActivo;
   panelModoPruebas.classList.toggle("oculto", !modoPruebasActivo);
+  btnCompletarPalabrasPruebasVersus.classList.toggle("oculto", !modoPruebasActivo);
+  herramientasPruebasVersus.classList.toggle("oculto", !modoPruebasActivo);
   localStorage.setItem(
     "modoPruebasAventuraGA",
     modoPruebasActivo ? "activo" : "inactivo",
