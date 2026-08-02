@@ -1431,14 +1431,25 @@ function actualizarCorazonesVersus(elemento, vidasActuales, nombre) {
   elemento.setAttribute("aria-label", `${nombre}: ${vidasActuales} vidas`);
 }
 
-function mostrarAvisoAvanceVersus(mensaje, tipo = "") {
+function mostrarAvisoAvanceVersus(mensaje, tipo = "", demora = 0) {
   if (demoVersus.temporizadorAviso) clearTimeout(demoVersus.temporizadorAviso);
-  avisoAvanceVersus.textContent = mensaje;
-  avisoAvanceVersus.className = `aviso-avance-versus${tipo ? ` ${tipo}` : ""}`;
-  demoVersus.temporizadorAviso = setTimeout(() => {
-    avisoAvanceVersus.classList.add("oculto");
-    demoVersus.temporizadorAviso = null;
-  }, 1800);
+  avisoAvanceVersus.classList.add("oculto");
+
+  const mostrarAviso = () => {
+    avisoAvanceVersus.textContent = mensaje;
+    avisoAvanceVersus.className = `aviso-avance-versus${tipo ? ` ${tipo}` : ""}`;
+    demoVersus.temporizadorAviso = setTimeout(() => {
+      avisoAvanceVersus.classList.add("oculto");
+      demoVersus.temporizadorAviso = null;
+    }, 1800);
+  };
+
+  if (demora > 0) {
+    demoVersus.temporizadorAviso = setTimeout(mostrarAviso, demora);
+    return;
+  }
+
+  mostrarAviso();
 }
 
 function avanzarPalabraJugadorVersus(acertada) {
@@ -1450,11 +1461,19 @@ function avanzarPalabraJugadorVersus(acertada) {
   if (acertada) {
     demoVersus.vidasRival -= 1;
     reproducirAtaqueBumeranVersus();
-    mostrarAvisoAvanceVersus(`¡Palabra ${numeroPalabra} superada! Atacaste al rival.`, "acierto");
+    mostrarAvisoAvanceVersus(
+      `¡Palabra ${numeroPalabra} superada! Atacaste al rival.`,
+      "acierto",
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 260 : 1550,
+    );
   } else {
     demoVersus.vidasJugador -= 1;
     reproducirAtaqueMagoVersus();
-    mostrarAvisoAvanceVersus(`Sin energía en la palabra ${numeroPalabra}. Perdés un corazón.`, "error");
+    mostrarAvisoAvanceVersus(
+      `Sin energía en la palabra ${numeroPalabra}. Perdés un corazón.`,
+      "error",
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 260 : 1300,
+    );
   }
   actualizarVidasVersus();
 
@@ -1491,11 +1510,19 @@ function avanzarPalabraRivalVersus(acertada) {
   if (acertada) {
     demoVersus.vidasJugador -= 1;
     reproducirAtaqueMagoVersus();
-    mostrarAvisoAvanceVersus(`El rival superó su palabra ${numeroPalabra} y te atacó.`, "error");
+    mostrarAvisoAvanceVersus(
+      `El rival superó su palabra ${numeroPalabra} y te atacó.`,
+      "error",
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 260 : 1300,
+    );
   } else {
     demoVersus.vidasRival -= 1;
     reproducirAtaqueBumeranVersus();
-    mostrarAvisoAvanceVersus(`El rival agotó la energía de su palabra ${numeroPalabra} y perdió un corazón.`, "acierto");
+    mostrarAvisoAvanceVersus(
+      `El rival agotó la energía de su palabra ${numeroPalabra} y perdió un corazón.`,
+      "acierto",
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 260 : 1550,
+    );
   }
   actualizarVidasVersus();
 
