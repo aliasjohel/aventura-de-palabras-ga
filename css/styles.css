@@ -1289,6 +1289,13 @@ button:disabled {
     box-shadow: inset 0 0 95px 24px #080400;
 }
 
+.cinematica-final-versus.prision-esmeralda::after {
+    background:
+        radial-gradient(circle at 72% 57%, transparent 0 17%, rgba(17, 76, 33, 0.22) 44%, rgba(1, 17, 8, 0.92) 100%),
+        linear-gradient(180deg, rgba(0, 15, 6, 0.12), transparent 42%, rgba(0, 10, 4, 0.76));
+    box-shadow: inset 0 0 105px 28px #00150a;
+}
+
 .cinematica-final-fondo {
     position: absolute;
     z-index: 0;
@@ -1306,6 +1313,10 @@ button:disabled {
 
 .cinematica-final-versus.trampa-selvatica .cinematica-final-fondo {
     filter: brightness(0.3) saturate(0.72) sepia(0.32) contrast(1.2) blur(2px);
+}
+
+.cinematica-final-versus.prision-esmeralda .cinematica-final-fondo {
+    filter: brightness(0.27) saturate(0.82) sepia(0.12) hue-rotate(24deg) contrast(1.24) blur(2px);
 }
 
 .eclipse-resplandor {
@@ -1341,6 +1352,78 @@ button:disabled {
         inset 0 0 24px rgba(186, 70, 255, 0.72);
     transform: translate(-50%, -50%) scale(0.25) rotate(0deg);
 }
+
+.prision-resplandor {
+    position: absolute;
+    z-index: 1;
+    top: 55%;
+    left: 72%;
+    width: min(56vw, 640px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    opacity: 0;
+    background: radial-gradient(circle, rgba(147, 255, 80, 0.82), rgba(33, 151, 72, 0.44) 34%, transparent 69%);
+    filter: blur(13px);
+    transform: translate(-50%, -50%) scale(0.2);
+    pointer-events: none;
+}
+
+.fauces-aspiracion {
+    position: absolute;
+    z-index: 8;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.fauces-aspiracion i {
+    position: absolute;
+    left: 63%;
+    top: var(--corriente-y);
+    width: var(--corriente-ancho);
+    height: clamp(9px, 1.8vw, 22px);
+    border-top: clamp(1px, 0.22vw, 3px) solid rgba(207, 255, 169, 0.88);
+    border-radius: 50%;
+    opacity: 0;
+    filter: drop-shadow(0 0 4px rgba(119, 255, 128, 0.9));
+    transform-origin: left center;
+}
+
+.fauces-aspiracion i:nth-child(1) { --corriente-y: 38%; --corriente-ancho: 12vw; --demora-aire: 0ms; }
+.fauces-aspiracion i:nth-child(2) { --corriente-y: 44%; --corriente-ancho: 9vw; --demora-aire: 90ms; }
+.fauces-aspiracion i:nth-child(3) { --corriente-y: 50%; --corriente-ancho: 14vw; --demora-aire: 25ms; }
+.fauces-aspiracion i:nth-child(4) { --corriente-y: 56%; --corriente-ancho: 10vw; --demora-aire: 130ms; }
+.fauces-aspiracion i:nth-child(5) { --corriente-y: 62%; --corriente-ancho: 13vw; --demora-aire: 55ms; }
+.fauces-aspiracion i:nth-child(6) { --corriente-y: 68%; --corriente-ancho: 8vw; --demora-aire: 165ms; }
+
+.prision-hojas {
+    position: absolute;
+    z-index: 8;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.prision-hojas i {
+    position: absolute;
+    top: 49%;
+    left: 72%;
+    width: clamp(11px, 1.8vw, 24px);
+    height: clamp(6px, 1vw, 13px);
+    border-radius: 100% 0 100% 0;
+    background: linear-gradient(135deg, #d3f76f, #3d9b3f);
+    box-shadow: 0 0 7px rgba(130, 255, 91, 0.7);
+    transform: rotate(var(--giro-hoja)) translate(0, 0);
+}
+
+.prision-hojas i:nth-child(1) { --giro-hoja: 8deg; --x-hoja: 16vw; --y-hoja: -20vh; --demora-hoja: 0ms; }
+.prision-hojas i:nth-child(2) { --giro-hoja: 58deg; --x-hoja: 20vw; --y-hoja: -6vh; --demora-hoja: 70ms; }
+.prision-hojas i:nth-child(3) { --giro-hoja: 111deg; --x-hoja: 17vw; --y-hoja: 14vh; --demora-hoja: 130ms; }
+.prision-hojas i:nth-child(4) { --giro-hoja: 164deg; --x-hoja: 4vw; --y-hoja: 22vh; --demora-hoja: 35ms; }
+.prision-hojas i:nth-child(5) { --giro-hoja: 213deg; --x-hoja: -14vw; --y-hoja: 18vh; --demora-hoja: 105ms; }
+.prision-hojas i:nth-child(6) { --giro-hoja: 262deg; --x-hoja: -20vw; --y-hoja: 1vh; --demora-hoja: 175ms; }
+.prision-hojas i:nth-child(7) { --giro-hoja: 309deg; --x-hoja: -16vw; --y-hoja: -16vh; --demora-hoja: 55ms; }
+.prision-hojas i:nth-child(8) { --giro-hoja: 347deg; --x-hoja: 2vw; --y-hoja: -24vh; --demora-hoja: 145ms; }
 
 .trampa-polvo {
     position: absolute;
@@ -1405,11 +1488,61 @@ button:disabled {
 .cinematica-explorador-atrapado,
 .cinematica-explorador-trampa,
 .cinematica-mago-atrapado,
-.cinematica-tronco-trampa {
+.cinematica-tronco-trampa,
+.cinematica-guardiana-prision,
+.cinematica-mago-presa-carnivora,
+.cinematica-carnivora {
     position: absolute;
     z-index: 5;
     object-fit: contain;
     pointer-events: none;
+}
+
+.cinematica-guardiana-prision {
+    left: -2%;
+    bottom: -12%;
+    width: min(56vw, 670px);
+    height: 106%;
+    object-position: left bottom;
+    opacity: 0;
+    filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.82)) drop-shadow(0 0 15px rgba(86, 224, 102, 0.36));
+}
+
+.cinematica-guardiana-victoria {
+    left: 0;
+    bottom: -10%;
+}
+
+.cinematica-mago-presa-carnivora {
+    right: 8%;
+    bottom: 2%;
+    width: min(38vw, 450px);
+    height: 82%;
+    object-position: center bottom;
+    opacity: 0;
+    transform-origin: 50% 80%;
+    filter: drop-shadow(0 17px 15px rgba(0, 0, 0, 0.82));
+}
+
+.cinematica-carnivora {
+    left: 22%;
+    bottom: -7%;
+    width: min(72vw, 860px);
+    height: 94%;
+    object-position: center bottom;
+    opacity: 0;
+    transform-origin: 20% 92%;
+    filter: drop-shadow(0 19px 17px rgba(0, 0, 0, 0.82)) drop-shadow(0 0 19px rgba(91, 237, 91, 0.58));
+}
+
+.cinematica-carnivora-abierta {
+    z-index: 4;
+}
+
+.cinematica-carnivora-brote,
+.cinematica-carnivora-devorando,
+.cinematica-carnivora-cerrada {
+    z-index: 6;
 }
 
 .cinematica-explorador-trampa {
@@ -1495,6 +1628,16 @@ button:disabled {
     box-shadow: 0 0 8px #f1d59a, 0 0 14px #735021;
 }
 
+.cinematica-final-versus.prision-esmeralda .eclipse-particulas {
+    top: 46%;
+    left: 72%;
+}
+
+.cinematica-final-versus.prision-esmeralda .eclipse-particulas i {
+    background: #c8ff83;
+    box-shadow: 0 0 8px #76f06f, 0 0 16px #1f9a50;
+}
+
 .eclipse-destello {
     position: absolute;
     z-index: 7;
@@ -1541,6 +1684,15 @@ button:disabled {
 
 .cinematica-final-versus.trampa-selvatica .cinematica-final-titulos span {
     color: #67dce1;
+}
+
+.cinematica-final-versus.prision-esmeralda .cinematica-final-titulos {
+    color: #f1ffd0;
+    text-shadow: 0 0 12px #48ca61, 2px 3px #08230f;
+}
+
+.cinematica-final-versus.prision-esmeralda .cinematica-final-titulos span {
+    color: #a9f37a;
 }
 
 .saltar-cinematica-versus {
@@ -1627,6 +1779,63 @@ button:disabled {
     animation: destelloTroncoTrampaVersus 5.2s ease both;
 }
 
+.cinematica-final-versus.prision-esmeralda.activa .cinematica-guardiana-ataque {
+    animation: ataqueGuardianaPrisionVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.prision-esmeralda.activa .cinematica-guardiana-victoria {
+    animation: victoriaGuardianaPrisionVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.prision-esmeralda.activa .cinematica-mago-presa-carnivora {
+    animation: presaFaucesEsmeraldaVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.prision-esmeralda.activa .cinematica-carnivora-brote {
+    animation: broteFaucesEsmeraldaVersus 5.2s cubic-bezier(0.22, 0.8, 0.27, 1) both;
+}
+
+.cinematica-final-versus.prision-esmeralda.activa .cinematica-carnivora-abierta {
+    animation: aperturaFaucesEsmeraldaVersus 5.2s cubic-bezier(0.22, 0.8, 0.27, 1) both;
+}
+
+.cinematica-final-versus.prision-esmeralda.activa .cinematica-carnivora-devorando {
+    animation: mordidaFaucesEsmeraldaVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.prision-esmeralda.activa .cinematica-carnivora-cerrada {
+    animation: digestionFaucesEsmeraldaVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.prision-esmeralda.activa .prision-resplandor {
+    animation: resplandorPrisionEsmeraldaVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.prision-esmeralda.activa .fauces-aspiracion {
+    animation: mostrarAspiracionFaucesVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.prision-esmeralda.activa .fauces-aspiracion i {
+    animation: corrienteAspiracionFaucesVersus 0.62s ease-in calc(2.05s + var(--demora-aire)) 2 both;
+}
+
+.cinematica-final-versus.prision-esmeralda.activa .prision-hojas {
+    animation: hojasPrisionEsmeraldaVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.prision-esmeralda.activa .prision-hojas i {
+    animation: hojaPrisionEsmeraldaVersus 1.35s ease-out calc(3.05s + var(--demora-hoja)) both;
+}
+
+.cinematica-final-versus.prision-esmeralda.activa .eclipse-particulas i {
+    animation-delay: calc(3.02s + var(--demora));
+}
+
+.cinematica-final-versus.prision-esmeralda.activa .eclipse-destello {
+    background: #d7ffaf;
+    animation: destelloPrisionEsmeraldaVersus 5.2s ease both;
+}
+
 .cinematica-final-versus.activa .cinematica-final-titulos span {
     animation: tituloGolpeVersus 5.2s ease both;
 }
@@ -1704,6 +1913,95 @@ button:disabled {
     51% { opacity: 0.42; }
 }
 
+@keyframes ataqueGuardianaPrisionVersus {
+    0%, 6% { opacity: 0; transform: translateX(-18%) scale(0.9); }
+    17%, 54% { opacity: 1; transform: translateX(0) scale(1); }
+    30% { transform: translateX(2.5%) scale(1.025) rotate(0.8deg); filter: brightness(1.16) drop-shadow(0 0 20px rgba(111, 255, 109, 0.68)); }
+    61%, 100% { opacity: 0; transform: translateX(-3%) scale(0.98); }
+}
+
+@keyframes victoriaGuardianaPrisionVersus {
+    0%, 56% { opacity: 0; transform: translateX(-4%) scale(0.95); }
+    66%, 90% { opacity: 1; transform: translateX(0) scale(1); }
+    97%, 100% { opacity: 0; transform: translateX(0) scale(1.02); }
+}
+
+@keyframes presaFaucesEsmeraldaVersus {
+    0%, 10% { opacity: 0; transform: translateX(18%) scale(0.88); }
+    18%, 49% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+    53% { opacity: 1; transform: translate(-1.5vw, -2vh) scale(0.98) rotate(-3deg); }
+    58%, 100% { opacity: 0; transform: translate(-3vw, -6vh) scale(0.9) rotate(-7deg); filter: brightness(1.45) blur(0.4px); }
+}
+
+@keyframes broteFaucesEsmeraldaVersus {
+    0%, 12% { opacity: 0; transform: translateY(40%) scale(0.48, 0.08); }
+    20% { opacity: 0.9; transform: translateY(20%) scale(0.67, 0.45); }
+    28% { opacity: 1; transform: translateY(4%) scale(0.9); filter: brightness(1.25) drop-shadow(0 0 17px rgba(104, 255, 105, 0.72)); }
+    34%, 38% { opacity: 1; transform: translateY(0) scale(1); }
+    42%, 100% { opacity: 0; transform: translateY(0) scale(1); }
+}
+
+@keyframes aperturaFaucesEsmeraldaVersus {
+    0%, 35% { opacity: 0; transform: translateY(2%) scale(0.96); }
+    40% { opacity: 1; transform: translateY(0) scale(1); }
+    48%, 54% { opacity: 1; transform: translateY(-1%) scale(1.015); filter: brightness(1.25) drop-shadow(0 0 22px rgba(128, 255, 101, 0.82)); }
+    59%, 100% { opacity: 0; transform: translateY(-1%) scale(1.015); }
+}
+
+@keyframes mordidaFaucesEsmeraldaVersus {
+    0%, 54% { opacity: 0; transform: translateY(-1%) scale(1.015); }
+    58% { opacity: 1; transform: translateY(-2%) scale(1.025); filter: brightness(1.6) drop-shadow(0 0 27px rgba(144, 255, 108, 0.92)); }
+    62% { opacity: 1; transform: translateY(0) scale(0.99) rotate(-0.6deg); }
+    66%, 72% { opacity: 1; transform: translateY(-1%) scale(1); }
+    76%, 100% { opacity: 0; transform: translateY(-1%) scale(1); }
+}
+
+@keyframes digestionFaucesEsmeraldaVersus {
+    0%, 72% { opacity: 0; transform: translateY(-1%) scale(1); }
+    77% { opacity: 1; transform: translateY(0) scale(1.025, 0.96); filter: brightness(1.42) drop-shadow(0 0 28px rgba(135, 255, 104, 0.88)); }
+    82% { opacity: 1; transform: translateY(-1%) scale(0.985, 1.025); }
+    87%, 92% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1.05) drop-shadow(0 0 18px rgba(89, 225, 94, 0.58)); }
+    98%, 100% { opacity: 0; transform: translateY(-1%) scale(1.01); }
+}
+
+@keyframes resplandorPrisionEsmeraldaVersus {
+    0%, 20% { opacity: 0; transform: translate(-50%, -50%) scale(0.18); }
+    39% { opacity: 0.52; transform: translate(-50%, -50%) scale(0.72); }
+    53% { opacity: 0.96; transform: translate(-50%, -50%) scale(1); }
+    72% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.16); }
+    91%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.24); }
+}
+
+@keyframes mostrarAspiracionFaucesVersus {
+    0%, 38% { opacity: 0; }
+    42%, 57% { opacity: 1; }
+    63%, 100% { opacity: 0; }
+}
+
+@keyframes corrienteAspiracionFaucesVersus {
+    0% { opacity: 0; transform: translateX(8vw) scaleX(1.2); }
+    22% { opacity: 0.92; }
+    72% { opacity: 0.78; }
+    100% { opacity: 0; transform: translateX(-5vw) scaleX(0.2); }
+}
+
+@keyframes hojasPrisionEsmeraldaVersus {
+    0%, 56% { opacity: 0; }
+    62%, 78% { opacity: 1; }
+    88%, 100% { opacity: 0; }
+}
+
+@keyframes hojaPrisionEsmeraldaVersus {
+    from { opacity: 0; transform: rotate(var(--giro-hoja)) translate(0, 0) scale(0.45); }
+    18% { opacity: 1; }
+    to { opacity: 0; transform: rotate(calc(var(--giro-hoja) + 300deg)) translate(var(--x-hoja), var(--y-hoja)) scale(1.08); }
+}
+
+@keyframes destelloPrisionEsmeraldaVersus {
+    0%, 57%, 66%, 100% { opacity: 0; }
+    62% { opacity: 0.88; }
+}
+
 @keyframes capturaExploradorEclipseVersus {
     0%, 17% { opacity: 0; transform: translateY(20%) scale(0.82) rotate(0deg); }
     30% { opacity: 1; transform: translateY(2%) scale(1) rotate(-2deg); }
@@ -1760,6 +2058,8 @@ button:disabled {
     .cinematica-final-versus.trampa-selvatica .cinematica-explorador-trampa,
     .cinematica-final-versus.trampa-selvatica .cinematica-mago-atrapado,
     .cinematica-final-versus.trampa-selvatica .cinematica-tronco-trampa,
+    .cinematica-final-versus.prision-esmeralda .cinematica-guardiana-victoria,
+    .cinematica-final-versus.prision-esmeralda .cinematica-carnivora-cerrada,
     .cinematica-final-versus .cinematica-final-titulos span,
     .cinematica-final-versus .cinematica-final-titulos h2 {
         opacity: 1;
@@ -1768,6 +2068,7 @@ button:disabled {
     .cinematica-final-versus.trampa-selvatica .cinematica-tronco-trampa {
         transform: rotate(8deg);
     }
+
 }
 
 .aviso-avance-versus {

@@ -74,6 +74,9 @@ const btnProbarCinematicaExplorador = document.getElementById(
   "btnProbarCinematicaExplorador",
 );
 const btnProbarCinematicaMago = document.getElementById("btnProbarCinematicaMago");
+const btnProbarCinematicaGuardiana = document.getElementById(
+  "btnProbarCinematicaGuardiana",
+);
 const btnSalirJuego = document.getElementById("btnSalirJuego");
 const btnMisionAnterior = document.getElementById("btnMisionAnterior");
 const btnMisionSiguiente = document.getElementById("btnMisionSiguiente");
@@ -1671,6 +1674,28 @@ function reproducirTrampaSelvaticaVersus() {
   });
 }
 
+function reproducirPrisionEsmeraldaVersus() {
+  cancelarCinematicaFinalVersus();
+  crearParticulasEclipseVersus();
+  fondoCinematicaVersus.src = fondoVersus.src;
+  etiquetaCinematicaVersus.textContent = "TÉCNICA ANCESTRAL";
+  tituloCinematicaVersus.textContent = "FAUCES ESMERALDA";
+  cinematicaFinalVersus.classList.remove("eclipse-violeta", "trampa-selvatica");
+  cinematicaFinalVersus.classList.add("prision-esmeralda");
+  cinematicaFinalVersus.classList.remove("oculto");
+  void cinematicaFinalVersus.offsetWidth;
+  cinematicaFinalVersus.classList.add("activa");
+  btnSaltarCinematicaVersus.focus();
+
+  return new Promise((resolve) => {
+    demoVersus.resolverCinematica = resolve;
+    demoVersus.temporizadorCinematica = setTimeout(
+      completarCinematicaFinalVersus,
+      5200,
+    );
+  });
+}
+
 function completarCinematicaFinalVersus() {
   if (demoVersus.temporizadorCinematica) {
     clearTimeout(demoVersus.temporizadorCinematica);
@@ -1678,7 +1703,11 @@ function completarCinematicaFinalVersus() {
   }
   cinematicaFinalVersus.classList.remove("activa");
   cinematicaFinalVersus.classList.add("oculto");
-  cinematicaFinalVersus.classList.remove("eclipse-violeta", "trampa-selvatica");
+  cinematicaFinalVersus.classList.remove(
+    "eclipse-violeta",
+    "trampa-selvatica",
+    "prision-esmeralda",
+  );
   particulasEclipseVersus.replaceChildren();
   const resolver = demoVersus.resolverCinematica;
   demoVersus.resolverCinematica = null;
@@ -1692,7 +1721,11 @@ function cancelarCinematicaFinalVersus() {
   }
   cinematicaFinalVersus.classList.remove("activa");
   cinematicaFinalVersus.classList.add("oculto");
-  cinematicaFinalVersus.classList.remove("eclipse-violeta", "trampa-selvatica");
+  cinematicaFinalVersus.classList.remove(
+    "eclipse-violeta",
+    "trampa-selvatica",
+    "prision-esmeralda",
+  );
   particulasEclipseVersus.replaceChildren();
   demoVersus.resolverCinematica = null;
 }
@@ -1732,6 +1765,11 @@ btnProbarCinematicaExplorador.addEventListener("click", () => {
 
 btnProbarCinematicaMago.addEventListener("click", () => {
   probarCinematicaVersus("rival");
+});
+
+btnProbarCinematicaGuardiana.addEventListener("click", () => {
+  if (!modoPruebasActivo || demoVersus.partidaFinalizada) return;
+  void reproducirPrisionEsmeraldaVersus();
 });
 
 btnRevanchaVersus.addEventListener("click", prepararDueloVersus);
