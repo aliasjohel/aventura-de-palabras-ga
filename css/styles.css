@@ -1963,17 +1963,26 @@ button:disabled {
     }
 
     .versus-personaje {
-        bottom: 11%;
+        bottom: clamp(48px, 14dvh, 64px);
         height: 66%;
     }
 
     .versus-progresos {
-        bottom: 2%;
+        bottom: 1%;
         gap: clamp(32px, 9vw, 76px);
     }
 
     .versus-palabra {
-        padding-block: 5px;
+        padding: 3px 7px;
+        border-width: 2px;
+    }
+
+    .versus-palabra-cabecera {
+        margin-bottom: 1px;
+    }
+
+    .versus-intentos {
+        margin-top: 1px;
     }
 
     .versus-controles {
