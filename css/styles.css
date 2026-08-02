@@ -337,6 +337,145 @@ button:disabled {
 }
 
 /* Preparación local del primer modo versus. */
+.pantalla-seleccion-personaje-versus {
+    position: relative;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    padding: 0;
+    border-radius: 0;
+    background:
+        linear-gradient(90deg, rgba(7, 20, 24, 0.92), rgba(34, 22, 12, 0.65), rgba(24, 7, 23, 0.9)),
+        url("../assets/images/fondos/desierto-1.png") center / cover;
+    box-shadow: none;
+}
+
+.pantalla-seleccion-personaje-versus.activa {
+    display: grid;
+    place-items: center;
+}
+
+.seleccion-personaje-marco {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: clamp(10px, 2vh, 18px);
+    width: min(94%, 1050px);
+    max-height: 96dvh;
+    padding: clamp(16px, 3vw, 32px);
+    border: 2px solid #805424;
+    border-radius: 12px;
+    background: linear-gradient(145deg, rgba(9, 20, 27, 0.97), rgba(21, 13, 11, 0.97));
+    box-shadow: inset 0 0 0 2px #21170d, 0 18px 55px rgba(0, 0, 0, 0.72);
+}
+
+.seleccion-personaje-cabecera {
+    text-align: center;
+}
+
+.seleccion-personaje-cabecera p {
+    color: #e1a83d;
+    font-size: clamp(0.58rem, 1vw, 0.76rem);
+    font-weight: bold;
+    letter-spacing: 0.22em;
+}
+
+.seleccion-personaje-cabecera h2 {
+    margin: 3px 0;
+    color: #f1d09a;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.3rem, 3vw, 2.2rem);
+}
+
+.seleccion-personaje-cabecera span {
+    color: rgba(255, 255, 255, 0.68);
+    font-size: clamp(0.68rem, 1.1vw, 0.86rem);
+}
+
+.lista-personajes-versus {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(10px, 2vw, 22px);
+    width: 100%;
+}
+
+.tarjeta-personaje-versus {
+    position: relative;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto auto;
+    justify-items: center;
+    min-width: 0;
+    height: clamp(170px, 42vh, 300px);
+    padding: 24px 10px 10px;
+    overflow: hidden;
+    border: 2px solid rgba(142, 105, 57, 0.68);
+    border-radius: 11px;
+    background:
+        radial-gradient(circle at 50% 38%, rgba(100, 151, 112, 0.22), transparent 48%),
+        linear-gradient(180deg, rgba(18, 35, 39, 0.96), rgba(12, 15, 18, 0.98));
+    color: #ead4a8;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.48);
+    transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.tarjeta-personaje-versus:hover,
+.tarjeta-personaje-versus:focus-visible {
+    transform: translateY(-3px);
+    border-color: #d5a954;
+}
+
+.tarjeta-personaje-versus.seleccionada {
+    border-color: #75dc79;
+    background:
+        radial-gradient(circle at 50% 38%, rgba(94, 230, 108, 0.3), transparent 50%),
+        linear-gradient(180deg, rgba(20, 49, 40, 0.98), rgba(12, 22, 18, 0.98));
+    box-shadow: inset 0 0 25px rgba(76, 208, 94, 0.18), 0 0 18px rgba(72, 202, 97, 0.34);
+}
+
+.tarjeta-personaje-versus img {
+    width: 100%;
+    min-height: 0;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+    filter: drop-shadow(0 8px 7px rgba(0, 0, 0, 0.66));
+}
+
+.tarjeta-personaje-versus strong {
+    color: #f3d69b;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(0.9rem, 1.8vw, 1.25rem);
+}
+
+.tarjeta-personaje-versus small {
+    margin-top: 2px;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: clamp(0.55rem, 0.9vw, 0.7rem);
+    text-align: center;
+}
+
+.estado-personaje-versus {
+    position: absolute;
+    z-index: 2;
+    top: 7px;
+    right: 7px;
+    padding: 3px 6px;
+    border: 1px solid rgba(100, 229, 112, 0.55);
+    border-radius: 999px;
+    background: rgba(12, 48, 25, 0.82);
+    color: #aaf2a3;
+    font: bold clamp(0.45rem, 0.72vw, 0.58rem) Arial, sans-serif;
+    letter-spacing: 0.08em;
+}
+
+.btn-confirmar-personaje-versus {
+    min-width: min(80%, 310px);
+    padding: 10px 18px;
+    background: linear-gradient(180deg, #4f9f51, #27602e);
+    color: #efffd9;
+    box-shadow: 0 3px 0 #15391c;
+}
+
 .pantalla-preparacion-versus {
     position: relative;
     width: 100%;
@@ -813,6 +952,17 @@ button:disabled {
     filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.65));
 }
 
+.versus-personaje-uno.personaje-guardiana {
+    left: 10%;
+    width: clamp(180px, 34vw, 400px);
+}
+
+.versus-personaje-uno.personaje-mago {
+    left: -5%;
+    width: clamp(300px, 65vw, 760px);
+    transform: scaleX(-1);
+}
+
 .bumeran-versus {
     position: absolute;
     z-index: 4;
@@ -841,12 +991,12 @@ button:disabled {
     z-index: 4;
     top: 43%;
     right: 22%;
-    width: clamp(62px, 9vw, 118px);
+    width: clamp(92px, 13vw, 156px);
     opacity: 0;
     pointer-events: none;
     filter:
-        drop-shadow(0 0 7px #bc55ff)
-        drop-shadow(0 0 13px rgba(129, 34, 222, 0.78));
+        drop-shadow(0 0 8px #69cfff)
+        drop-shadow(0 0 16px rgba(169, 44, 255, 0.88));
 }
 
 .versus-personaje-dos.concentrando-hechizo {
@@ -859,6 +1009,44 @@ button:disabled {
 
 .proyectil-mago-versus.volando {
     animation: vueloProyectilMagoVersus 850ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.versus-personaje-uno.concentrando-hechizo {
+    animation: concentrarHechizoJugadorVersus 220ms ease-in both;
+}
+
+.versus-personaje-uno.lanzando-hechizo {
+    animation: lanzarHechizoJugadorVersus 1.04s ease-out both;
+}
+
+.proyectil-mago-versus.desde-jugador {
+    right: auto;
+    left: 22%;
+}
+
+.proyectil-mago-versus.desde-jugador.volando {
+    animation: vueloProyectilMagoJugadorVersus 850ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.versus-personaje-uno.lanzando-viento {
+    animation: lanzarVientoGuardianaVersus 1.3s ease-out both;
+}
+
+.proyectil-guardiana-versus {
+    position: absolute;
+    z-index: 4;
+    top: 43%;
+    left: 24%;
+    width: clamp(94px, 14vw, 168px);
+    opacity: 0;
+    pointer-events: none;
+    filter:
+        drop-shadow(0 0 8px rgba(218, 255, 139, 0.92))
+        drop-shadow(0 0 17px rgba(55, 200, 84, 0.78));
+}
+
+.proyectil-guardiana-versus.volando {
+    animation: vueloEsferaVientoGuardianaVersus 980ms cubic-bezier(0.16, 0.78, 0.2, 1) both;
 }
 
 .versus-personaje-dos.recibiendo-dano {
@@ -888,6 +1076,16 @@ button:disabled {
     100% { filter: brightness(1.15) drop-shadow(0 0 16px rgba(178, 69, 255, 0.9)); }
 }
 
+@keyframes concentrarHechizoJugadorVersus {
+    0% { transform: scaleX(-1); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.65)); }
+    100% { transform: scaleX(-1); filter: brightness(1.15) drop-shadow(0 0 16px rgba(178, 69, 255, 0.9)); }
+}
+
+@keyframes lanzarHechizoJugadorVersus {
+    0%, 72% { transform: translateX(8px) scaleX(-1) scale(1.015); }
+    100% { transform: translateX(0) scaleX(-1) scale(1); }
+}
+
 @keyframes lanzarHechizoVersus {
     0%, 72% { transform: translateX(-8px) scale(1.015); }
     100% { transform: translateX(0) scale(1); }
@@ -914,6 +1112,60 @@ button:disabled {
         right: 80%;
         opacity: 0;
         transform: translate(50%, -50%) scale(0.35) rotate(-9deg);
+    }
+}
+
+@keyframes vueloProyectilMagoJugadorVersus {
+    0% {
+        left: 22%;
+        opacity: 0;
+        transform: translate(-50%, -50%) scaleX(-1) scale(0.55) rotate(-3deg);
+    }
+    10% { opacity: 1; }
+    68% {
+        left: 74%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scaleX(-1) scale(1.05) rotate(4deg);
+    }
+    82% {
+        left: 78%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scaleX(-1) scale(1.3) rotate(7deg);
+    }
+    100% {
+        left: 80%;
+        opacity: 0;
+        transform: translate(-50%, -50%) scaleX(-1) scale(0.35) rotate(9deg);
+    }
+}
+
+@keyframes lanzarVientoGuardianaVersus {
+    0% { transform: translateX(-8px); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.62)); }
+    28%, 72% { transform: translateX(7px); filter: brightness(1.15) drop-shadow(0 0 16px rgba(90, 224, 93, 0.78)); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes vueloEsferaVientoGuardianaVersus {
+    0% {
+        left: 24%;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.45) rotate(0deg);
+    }
+    10% { opacity: 1; }
+    68% {
+        left: 74%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.02) rotate(430deg);
+    }
+    84% {
+        left: 78%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.26) rotate(560deg);
+    }
+    100% {
+        left: 80%;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.4) rotate(690deg);
     }
 }
 
@@ -966,7 +1218,10 @@ button:disabled {
     .bumeran-versus.volando,
     .versus-personaje-dos.concentrando-hechizo,
     .versus-personaje-dos.lanzando-hechizo,
+    .versus-personaje-uno.concentrando-hechizo,
+    .versus-personaje-uno.lanzando-hechizo,
     .proyectil-mago-versus.volando,
+    .proyectil-guardiana-versus.volando,
     .versus-personaje-dos.recibiendo-dano,
     .versus-personaje-uno.recibiendo-dano-magico,
     .versus-corazones.recibiendo-dano {
@@ -1220,6 +1475,13 @@ button:disabled {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.52);
     transform: translateX(-50%);
     backdrop-filter: blur(5px);
+    transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.herramientas-pruebas-versus.ataque-en-curso {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+    pointer-events: none;
 }
 
 .herramientas-pruebas-versus span {
@@ -2170,16 +2432,19 @@ button:disabled {
 }
 
 @media (orientation: portrait) and (max-width: 700px) {
+    .pantalla-seleccion-personaje-versus.activa,
     .pantalla-versus.activa,
     .pantalla-preparacion-versus.activa {
         padding: 18px;
     }
 
+    .pantalla-seleccion-personaje-versus.activa .seleccion-personaje-marco,
     .pantalla-versus.activa .versus-marco,
     .pantalla-preparacion-versus.activa .preparacion-versus-marco {
         display: none;
     }
 
+    .pantalla-seleccion-personaje-versus.activa .versus-aviso-orientacion,
     .pantalla-versus.activa .versus-aviso-orientacion,
     .pantalla-preparacion-versus.activa .versus-aviso-orientacion {
         display: grid;
@@ -2204,6 +2469,31 @@ button:disabled {
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
+    .seleccion-personaje-marco {
+        width: 96%;
+        max-height: 98dvh;
+        gap: 6px;
+        padding: 8px 16px;
+    }
+
+    .seleccion-personaje-cabecera h2 {
+        margin: 0;
+        font-size: 1.25rem;
+    }
+
+    .lista-personajes-versus {
+        gap: 10px;
+    }
+
+    .tarjeta-personaje-versus {
+        height: min(52dvh, 170px);
+        padding-top: 19px;
+    }
+
+    .btn-confirmar-personaje-versus {
+        padding-block: 7px;
+    }
+
     .preparacion-versus-marco {
         width: 96%;
         max-height: 98dvh;

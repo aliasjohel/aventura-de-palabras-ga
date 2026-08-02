@@ -14,6 +14,9 @@ const ranuraCristalBosque = document.getElementById("ranuraCristalBosque");
 const cristalPanelBosque = document.getElementById("cristalPanelBosque");
 const pantallaMenu = document.getElementById("pantallaMenu");
 const pantallaJuego = document.getElementById("pantallaJuego");
+const pantallaSeleccionPersonajeVersus = document.getElementById(
+  "pantallaSeleccionPersonajeVersus",
+);
 const pantallaPreparacionVersus = document.getElementById(
   "pantallaPreparacionVersus",
 );
@@ -21,6 +24,18 @@ const pantallaVersus = document.getElementById("pantallaVersus");
 
 const btnJugar = document.getElementById("btnJugar");
 const btnVersus = document.getElementById("btnVersus");
+const btnSalirSeleccionPersonajeVersus = document.getElementById(
+  "btnSalirSeleccionPersonajeVersus",
+);
+const btnSalirSeleccionPersonajeVersusVertical = document.getElementById(
+  "btnSalirSeleccionPersonajeVersusVertical",
+);
+const btnConfirmarPersonajeVersus = document.getElementById(
+  "btnConfirmarPersonajeVersus",
+);
+const tarjetasPersonajesVersus = [
+  ...document.querySelectorAll(".tarjeta-personaje-versus"),
+];
 const btnSalirPreparacionVersus = document.getElementById(
   "btnSalirPreparacionVersus",
 );
@@ -55,6 +70,12 @@ const personajeVersusUno = document.getElementById("personajeVersusUno");
 const personajeVersusDos = document.getElementById("personajeVersusDos");
 const bumeranVersus = document.getElementById("bumeranVersus");
 const proyectilMagoVersus = document.getElementById("proyectilMagoVersus");
+const proyectilMagoJugadorVersus = document.getElementById(
+  "proyectilMagoJugadorVersus",
+);
+const proyectilGuardianaVersus = document.getElementById(
+  "proyectilGuardianaVersus",
+);
 const cinematicaFinalVersus = document.getElementById("cinematicaFinalVersus");
 const fondoCinematicaVersus = document.getElementById("fondoCinematicaVersus");
 const particulasEclipseVersus = document.getElementById("particulasEclipseVersus");
@@ -76,6 +97,9 @@ const btnProbarCinematicaExplorador = document.getElementById(
 const btnProbarCinematicaMago = document.getElementById("btnProbarCinematicaMago");
 const btnProbarCinematicaGuardiana = document.getElementById(
   "btnProbarCinematicaGuardiana",
+);
+const btnProbarAtaqueElegido = document.getElementById(
+  "btnProbarAtaqueElegido",
 );
 const btnSalirJuego = document.getElementById("btnSalirJuego");
 const btnMisionAnterior = document.getElementById("btnMisionAnterior");
@@ -459,11 +483,37 @@ function continuarAventura() {
 
 btnSiguiente.addEventListener("click", continuarAventura);
 
+function seleccionarPersonajeVersus(personaje) {
+  if (!personajesVersus[personaje]) return;
+  personajeJugadorVersus = personaje;
+  tarjetasPersonajesVersus.forEach((tarjeta) => {
+    const seleccionada = tarjeta.dataset.personaje === personaje;
+    tarjeta.classList.toggle("seleccionada", seleccionada);
+    tarjeta.setAttribute("aria-checked", `${seleccionada}`);
+  });
+  btnConfirmarPersonajeVersus.textContent = `Luchar con ${personajesVersus[personaje].nombre}`;
+}
+
+function abrirSeleccionPersonajeVersus() {
+  seleccionarPersonajeVersus(personajeJugadorVersus);
+  mostrarPantalla(pantallaSeleccionPersonajeVersus);
+}
+
 btnVersus.addEventListener("click", () => {
   cancelarSecuenciaNarrativaActual();
   detenerSonidos();
-  abrirPreparacionVersus();
+  abrirSeleccionPersonajeVersus();
 });
+
+tarjetasPersonajesVersus.forEach((tarjeta) => {
+  tarjeta.addEventListener("click", () => {
+    seleccionarPersonajeVersus(tarjeta.dataset.personaje);
+  });
+});
+
+btnConfirmarPersonajeVersus.addEventListener("click", abrirPreparacionVersus);
+btnSalirSeleccionPersonajeVersus.addEventListener("click", () => mostrarPantalla(pantallaMenu));
+btnSalirSeleccionPersonajeVersusVertical.addEventListener("click", () => mostrarPantalla(pantallaMenu));
 
 function volverAlMenuDesdePreparacionVersus() {
   if (transicionCombateVersus) clearTimeout(transicionCombateVersus);
@@ -1026,6 +1076,29 @@ const srcExploradorPreparaBumeran = "assets/images/personajes/versus/explorador-
 const srcExploradorLanzaBumeran = "assets/images/personajes/versus/explorador-bumeran-lanzamiento.png";
 const srcMagoBaseVersus = "assets/images/personajes/versus/mago-base.png";
 const srcMagoAtaqueVersus = "assets/images/personajes/versus/mago-ataque.png";
+const srcGuardianaBaseVersus = "assets/images/personajes/coleccion/guardiana-bosque-base.png";
+const srcGuardianaAtaqueVersus = "assets/images/personajes/coleccion/guardiana-bosque-ataque-raices.png";
+const personajesVersus = {
+  explorador: {
+    nombre: "Explorador",
+    base: srcExploradorBaseVersus,
+    ataque: "bumeran",
+    final: "trampa-selvatica",
+  },
+  mago: {
+    nombre: "Mago",
+    base: srcMagoBaseVersus,
+    ataque: "magia",
+    final: "eclipse-violeta",
+  },
+  guardiana: {
+    nombre: "Guardiana",
+    base: srcGuardianaBaseVersus,
+    ataque: "raices",
+    final: "prision-esmeralda",
+  },
+};
+let personajeJugadorVersus = "explorador";
 
 const demoVersus = {
   tematica: "desierto",
@@ -1066,11 +1139,20 @@ function programarPasoAtaqueVersus(accion, demora, atacante) {
 function limpiarAnimacionAtaqueJugadorVersus() {
   demoVersus.temporizadoresAtaqueJugador.forEach(clearTimeout);
   demoVersus.temporizadoresAtaqueJugador = [];
-  personajeVersusUno.src = srcExploradorBaseVersus;
-  personajeVersusUno.classList.remove("preparando-bumeran", "lanzando-bumeran");
+  personajeVersusUno.src = personajesVersus[personajeJugadorVersus].base;
+  personajeVersusUno.classList.remove(
+    "preparando-bumeran",
+    "lanzando-bumeran",
+    "concentrando-hechizo",
+    "lanzando-hechizo",
+    "lanzando-viento",
+  );
   personajeVersusDos.classList.remove("recibiendo-dano");
   vidasVersusDos.classList.remove("recibiendo-dano");
   bumeranVersus.classList.remove("volando");
+  proyectilMagoJugadorVersus.classList.remove("volando");
+  proyectilGuardianaVersus.classList.remove("volando");
+  herramientasPruebasVersus.classList.remove("ataque-en-curso");
 }
 
 function limpiarAnimacionAtaqueRivalVersus() {
@@ -1088,14 +1170,30 @@ function limpiarAnimacionAtaqueVersus() {
   limpiarAnimacionAtaqueRivalVersus();
 }
 
+function configurarPersonajesCombateVersus() {
+  const personaje = personajesVersus[personajeJugadorVersus];
+  personajeVersusUno.src = personaje.base;
+  personajeVersusUno.alt = `${personaje.nombre} del jugador 1`;
+  personajeVersusUno.classList.remove(
+    "personaje-explorador",
+    "personaje-mago",
+    "personaje-guardiana",
+  );
+  personajeVersusUno.classList.add(`personaje-${personajeJugadorVersus}`);
+  personajeVersusDos.src = srcMagoBaseVersus;
+  personajeVersusDos.alt = "Mago del jugador 2";
+}
+
 function reproducirAtaqueBumeranVersus() {
   limpiarAnimacionAtaqueJugadorVersus();
+  herramientasPruebasVersus.classList.add("ataque-en-curso");
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     personajeVersusDos.classList.add("recibiendo-dano");
     programarPasoAtaqueVersus(() => {
       personajeVersusDos.classList.remove("recibiendo-dano");
     }, 220, "jugador");
+    programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 280, "jugador");
     return;
   }
 
@@ -1121,6 +1219,85 @@ function reproducirAtaqueBumeranVersus() {
   }, 1110, "jugador");
 
   programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1510, "jugador");
+}
+
+function reproducirAtaqueMagoJugadorVersus() {
+  limpiarAnimacionAtaqueJugadorVersus();
+  herramientasPruebasVersus.classList.add("ataque-en-curso");
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    personajeVersusDos.classList.add("recibiendo-dano");
+    programarPasoAtaqueVersus(() => {
+      personajeVersusDos.classList.remove("recibiendo-dano");
+    }, 220, "jugador");
+    programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 280, "jugador");
+    return;
+  }
+
+  personajeVersusUno.classList.add("concentrando-hechizo");
+  programarPasoAtaqueVersus(() => {
+    personajeVersusUno.src = srcMagoAtaqueVersus;
+    personajeVersusUno.classList.remove("concentrando-hechizo");
+    personajeVersusUno.classList.add("lanzando-hechizo");
+    void proyectilMagoJugadorVersus.offsetWidth;
+    proyectilMagoJugadorVersus.classList.add("volando");
+  }, 220, "jugador");
+
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.add("recibiendo-dano");
+    vidasVersusDos.classList.add("recibiendo-dano");
+  }, 760, "jugador");
+
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.remove("recibiendo-dano");
+    vidasVersusDos.classList.remove("recibiendo-dano");
+  }, 1080, "jugador");
+
+  programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1300, "jugador");
+}
+
+function reproducirAtaqueGuardianaVersus() {
+  limpiarAnimacionAtaqueJugadorVersus();
+  herramientasPruebasVersus.classList.add("ataque-en-curso");
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    personajeVersusDos.classList.add("recibiendo-dano");
+    programarPasoAtaqueVersus(() => {
+      personajeVersusDos.classList.remove("recibiendo-dano");
+    }, 220, "jugador");
+    programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 280, "jugador");
+    return;
+  }
+
+  personajeVersusUno.src = srcGuardianaAtaqueVersus;
+  personajeVersusUno.classList.add("lanzando-viento");
+  void proyectilGuardianaVersus.offsetWidth;
+  proyectilGuardianaVersus.classList.add("volando");
+
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.add("recibiendo-dano");
+    vidasVersusDos.classList.add("recibiendo-dano");
+  }, 610, "jugador");
+
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.remove("recibiendo-dano");
+    vidasVersusDos.classList.remove("recibiendo-dano");
+  }, 980, "jugador");
+
+  programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1380, "jugador");
+}
+
+function reproducirAtaqueJugadorVersus() {
+  const ataque = personajesVersus[personajeJugadorVersus].ataque;
+  if (ataque === "magia") {
+    reproducirAtaqueMagoJugadorVersus();
+    return;
+  }
+  if (ataque === "raices") {
+    reproducirAtaqueGuardianaVersus();
+    return;
+  }
+  reproducirAtaqueBumeranVersus();
 }
 
 function reproducirAtaqueMagoVersus() {
@@ -1198,6 +1375,7 @@ function prepararDueloVersus() {
   cancelarCinematicaFinalVersus();
   detenerRondaVersus();
   limpiarAnimacionAtaqueVersus();
+  configurarPersonajesCombateVersus();
   demoVersus.tematica = tematicaVersus.value;
   demoVersus.palabrasJugador = mezclarPalabrasVersus(
     bancosPalabrasVersus[demoVersus.tematica],
@@ -1463,7 +1641,7 @@ function avanzarPalabraJugadorVersus(acertada) {
 
   if (acertada) {
     demoVersus.vidasRival -= 1;
-    reproducirAtaqueBumeranVersus();
+    reproducirAtaqueJugadorVersus();
     mostrarAvisoAvanceVersus(
       `¡Palabra ${numeroPalabra} superada! Atacaste al rival.`,
       "acierto",
@@ -1520,7 +1698,7 @@ function avanzarPalabraRivalVersus(acertada) {
     );
   } else {
     demoVersus.vidasRival -= 1;
-    reproducirAtaqueBumeranVersus();
+    reproducirAtaqueJugadorVersus();
     mostrarAvisoAvanceVersus(
       `El rival agotó la energía de su palabra ${numeroPalabra} y perdió un corazón.`,
       "acierto",
@@ -1596,7 +1774,13 @@ function finalizarPartidaVersus(ganador, detalle) {
   }
 
   if (ganador === "jugador") {
-    reproducirTrampaSelvaticaVersus().then(() => {
+    const finalElegido = personajesVersus[personajeJugadorVersus].final;
+    const reproducirFinal = finalElegido === "prision-esmeralda"
+      ? reproducirPrisionEsmeraldaVersus
+      : finalElegido === "eclipse-violeta"
+        ? reproducirEclipseVioletaVersus
+        : reproducirTrampaSelvaticaVersus;
+    reproducirFinal().then(() => {
       mostrarResultadoPartidaVersus(ganador, detalle);
     });
     return;
@@ -1732,44 +1916,31 @@ function cancelarCinematicaFinalVersus() {
 
 btnSaltarCinematicaVersus.addEventListener("click", completarCinematicaFinalVersus);
 
-function probarCinematicaVersus(ganador) {
+function probarCinematicaVersus(personaje) {
   if (!modoPruebasActivo || demoVersus.partidaFinalizada) return;
-
-  if (ganador === "jugador") {
-    demoVersus.indiceJugador = maximoPalabrasVersus;
-    demoVersus.finalizadoJugador = true;
-    demoVersus.motivoFinalJugador = "completo";
-    demoVersus.vidasRival = 0;
-    actualizarVidasVersus();
-    finalizarPartidaVersus(
-      "jugador",
-      "Cinemática del explorador iniciada desde el Modo Pruebas.",
-    );
-    return;
-  }
-
-  demoVersus.indiceRival = maximoPalabrasVersus;
-  demoVersus.finalizadoRival = true;
-  demoVersus.motivoFinalRival = "completo";
-  demoVersus.vidasJugador = 0;
-  actualizarVidasVersus();
-  finalizarPartidaVersus(
-    "rival",
-    "Cinemática del mago iniciada desde el Modo Pruebas.",
-  );
+  const reproducir = personaje === "guardiana"
+    ? reproducirPrisionEsmeraldaVersus
+    : personaje === "mago"
+      ? reproducirEclipseVioletaVersus
+      : reproducirTrampaSelvaticaVersus;
+  void reproducir();
 }
 
 btnProbarCinematicaExplorador.addEventListener("click", () => {
-  probarCinematicaVersus("jugador");
+  probarCinematicaVersus("explorador");
 });
 
 btnProbarCinematicaMago.addEventListener("click", () => {
-  probarCinematicaVersus("rival");
+  probarCinematicaVersus("mago");
 });
 
 btnProbarCinematicaGuardiana.addEventListener("click", () => {
+  probarCinematicaVersus("guardiana");
+});
+
+btnProbarAtaqueElegido.addEventListener("click", () => {
   if (!modoPruebasActivo || demoVersus.partidaFinalizada) return;
-  void reproducirPrisionEsmeraldaVersus();
+  reproducirAtaqueJugadorVersus();
 });
 
 btnRevanchaVersus.addEventListener("click", prepararDueloVersus);

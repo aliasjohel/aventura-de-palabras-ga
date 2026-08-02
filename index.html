@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aventura de Palabras - GA Games</title>
-    <link rel="stylesheet" href="css/styles.css?v=20260802-fauces-aspiracion-4">
+    <link rel="stylesheet" href="css/styles.css?v=20260802-proyectiles-magicos-2">
 </head>
 
 <body>
@@ -151,6 +151,54 @@
             </div>
         </section>
 
+        <section id="pantallaSeleccionPersonajeVersus" class="pantalla pantalla-seleccion-personaje-versus"
+            aria-labelledby="tituloSeleccionPersonajeVersus">
+            <div class="seleccion-personaje-marco">
+                <button id="btnSalirSeleccionPersonajeVersus" class="versus-volver" type="button">&larr; Volver</button>
+
+                <header class="seleccion-personaje-cabecera">
+                    <p>ELIGE A TU CAMPE&Oacute;N</p>
+                    <h2 id="tituloSeleccionPersonajeVersus">Selecci&oacute;n de personaje</h2>
+                    <span>Todos est&aacute;n disponibles durante el desarrollo.</span>
+                </header>
+
+                <div class="lista-personajes-versus" role="radiogroup" aria-label="Personajes disponibles">
+                    <button class="tarjeta-personaje-versus seleccionada" type="button" role="radio"
+                        aria-checked="true" data-personaje="explorador">
+                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <img src="assets/images/personajes/versus/explorador-base.png" alt="Explorador">
+                        <strong>Explorador</strong>
+                        <small>Bumer&aacute;n &middot; Trampa Selv&aacute;tica</small>
+                    </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio"
+                        aria-checked="false" data-personaje="mago">
+                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <img src="assets/images/personajes/versus/mago-base.png" alt="Mago">
+                        <strong>Mago</strong>
+                        <small>Fuego arcano &middot; Eclipse Violeta</small>
+                    </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio"
+                        aria-checked="false" data-personaje="guardiana">
+                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <img src="assets/images/personajes/coleccion/guardiana-bosque-base.png" alt="Guardiana del Bosque">
+                        <strong>Guardiana</strong>
+                        <small>Viento de hojas &middot; Fauces Esmeralda</small>
+                    </button>
+                </div>
+
+                <button id="btnConfirmarPersonajeVersus" class="btn-confirmar-personaje-versus" type="button">
+                    Luchar con Explorador
+                </button>
+            </div>
+
+            <div class="versus-aviso-orientacion" role="status">
+                <span>&#8635;</span>
+                <strong>Gir&aacute; el celular</strong>
+                <p>El modo versus se juega en horizontal.</p>
+                <button id="btnSalirSeleccionPersonajeVersusVertical" type="button">Volver al men&uacute;</button>
+            </div>
+        </section>
+
         <section id="pantallaPreparacionVersus" class="pantalla pantalla-preparacion-versus"
             aria-labelledby="tituloPreparacionVersus">
             <div class="preparacion-versus-marco">
@@ -281,7 +329,11 @@
                     <img id="bumeranVersus" class="bumeran-versus" src="assets/images/personajes/versus/bumeran-explorador.png"
                         alt="" aria-hidden="true">
                     <img id="proyectilMagoVersus" class="proyectil-mago-versus"
-                        src="assets/images/personajes/versus/proyectil-mago.png" alt="" aria-hidden="true">
+                        src="assets/images/personajes/versus/bola-fuego-mago.png" alt="" aria-hidden="true">
+                    <img id="proyectilMagoJugadorVersus" class="proyectil-mago-versus desde-jugador"
+                        src="assets/images/personajes/versus/bola-fuego-mago.png" alt="" aria-hidden="true">
+                    <img id="proyectilGuardianaVersus" class="proyectil-guardiana-versus"
+                        src="assets/images/personajes/versus/esfera-viento-hojas.png" alt="" aria-hidden="true">
 
                     <div class="versus-insignia" aria-hidden="true">VS</div>
 
@@ -329,6 +381,7 @@
                     <button id="btnProbarCinematicaExplorador" type="button">🌿 Probar explorador</button>
                     <button id="btnProbarCinematicaMago" type="button">🔮 Probar mago</button>
                     <button id="btnProbarCinematicaGuardiana" type="button">🌱 Probar guardiana</button>
+                    <button id="btnProbarAtaqueElegido" type="button">⚡ Probar ataque elegido</button>
                 </div>
 
                 <div id="avisoAvanceVersus" class="aviso-avance-versus oculto" role="status" aria-live="polite"></div>
@@ -481,7 +534,7 @@
     <button id="btnSaltarNarrativa" class="btn-saltar-narrativa oculto" type="button"
         aria-label="Saltar secuencia narrativa">Saltar</button>
 
-    <script src="js/app.js?v=20260802-fauces-aspiracion-4"></script>
+    <script src="js/app.js?v=20260802-proyectiles-magicos-2"></script>
 </body>
 
 </html>
