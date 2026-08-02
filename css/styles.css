@@ -1029,6 +1029,7 @@ button:disabled {
 }
 
 .versus-personaje-uno.lanzando-viento {
+    transform-origin: 50% 80%;
     animation: lanzarVientoGuardianaVersus 1.3s ease-out both;
 }
 
@@ -1140,9 +1141,9 @@ button:disabled {
 }
 
 @keyframes lanzarVientoGuardianaVersus {
-    0% { transform: translateX(-8px); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.62)); }
-    28%, 72% { transform: translateX(7px); filter: brightness(1.15) drop-shadow(0 0 16px rgba(90, 224, 93, 0.78)); }
-    100% { transform: translateX(0); }
+    0% { transform: translateX(-8px) scale(1.17); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.62)); }
+    28%, 72% { transform: translateX(7px) scale(1.2); filter: brightness(1.15) drop-shadow(0 0 16px rgba(90, 224, 93, 0.78)); }
+    100% { transform: translateX(0) scale(1.17); }
 }
 
 @keyframes vueloEsferaVientoGuardianaVersus {
