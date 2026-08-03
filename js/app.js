@@ -716,6 +716,7 @@ btnContinuarHistoria.addEventListener("click", async () => {
 
     modalHistoria.classList.add("oculto");
     modalHistoria.classList.remove("cerrando");
+    protegerTransicionTrasCartel(secuenciaNarrativa);
 
     if (presentacionMisionYaCargada) {
       presentacionMisionYaCargada = false;
@@ -2093,12 +2094,15 @@ btnProbarAtaqueElegido.addEventListener("click", () => {
 btnRevanchaVersus.addEventListener("click", prepararDueloVersus);
 
 // Control reutilizable para cualquier secuencia narrativa presente o futura.
-// Las esperas y animaciones siguen su ruta normal, pero se completan al instante.
-function iniciarSecuenciaNarrativa(alSaltar = null) {
+function iniciarSecuenciaNarrativa(
+  alSaltar = null,
+  { saltarSoloCartel = false } = {},
+) {
   const secuencia = {
     alSaltar,
     esperas: new Set(),
     saltada: false,
+    saltarSoloCartel,
   };
 
   secuenciaNarrativaActual = secuencia;
@@ -2148,6 +2152,14 @@ function solicitarSaltoNarrativo() {
   });
 
   secuencia.alSaltar?.();
+}
+
+function protegerTransicionTrasCartel(secuencia) {
+  if (!secuencia?.saltarSoloCartel) return;
+
+  secuencia.saltada = false;
+  btnSaltarNarrativa.disabled = true;
+  btnSaltarNarrativa.classList.add("oculto");
 }
 
 function finalizarSecuenciaNarrativa(secuencia) {
@@ -2205,9 +2217,12 @@ function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
   modalHistoria.classList.remove("oculto");
   modalHistoria.classList.add("abriendo");
   finalizarSecuenciaNarrativa(secuenciaHistoriaActiva);
-  secuenciaHistoriaActiva = iniciarSecuenciaNarrativa(() => {
-    btnContinuarHistoria.click();
-  });
+  secuenciaHistoriaActiva = iniciarSecuenciaNarrativa(
+    () => {
+      btnContinuarHistoria.click();
+    },
+    { saltarSoloCartel: true },
+  );
 
   const duracion = prefiereReducirMovimiento.matches
     ? duracionPresentacionMisionReducida
