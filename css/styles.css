@@ -1824,6 +1824,7 @@ button:disabled {
 }
 
 .cinematica-victima-fauces {
+    --direccion-victima-fauces: 1;
     right: 8%;
     bottom: 2%;
     width: min(32vw, 380px);
@@ -1835,12 +1836,14 @@ button:disabled {
 }
 
 .cinematica-victima-fauces.victima-fauces-explorador {
+    --direccion-victima-fauces: -1;
     right: 9%;
     width: min(30vw, 355px);
     height: 72%;
 }
 
 .cinematica-victima-fauces.victima-fauces-guardiana {
+    --direccion-victima-fauces: -1;
     right: 7%;
     bottom: -1%;
     width: min(36vw, 425px);
@@ -2250,11 +2253,11 @@ button:disabled {
 }
 
 @keyframes presaFaucesEsmeraldaVersus {
-    0%, 10% { opacity: 0; transform: translateX(18%) scale(0.88); }
-    18%, 42% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
-    47% { opacity: 1; transform: translate(-3vw, -5vh) scale(0.9) rotate(-2deg); }
-    53% { opacity: 1; transform: translate(-7vw, -14vh) scale(0.64) rotate(-5deg); }
-    58%, 100% { opacity: 0; transform: translate(-11vw, -18vh) scale(0.28) rotate(-9deg); filter: brightness(1.55) blur(0.7px); }
+    0%, 10% { opacity: 0; transform: translateX(18%) scale(0.88) scaleX(var(--direccion-victima-fauces)); }
+    18%, 42% { opacity: 1; transform: translate(0, 0) scale(1) scaleX(var(--direccion-victima-fauces)) rotate(0deg); }
+    47% { opacity: 1; transform: translate(-3vw, -5vh) scale(0.9) scaleX(var(--direccion-victima-fauces)) rotate(-2deg); }
+    53% { opacity: 1; transform: translate(-7vw, -14vh) scale(0.64) scaleX(var(--direccion-victima-fauces)) rotate(-5deg); }
+    58%, 100% { opacity: 0; transform: translate(-11vw, -18vh) scale(0.28) scaleX(var(--direccion-victima-fauces)) rotate(-9deg); filter: brightness(1.55) blur(0.7px); }
 }
 
 @keyframes broteFaucesEsmeraldaVersus {
