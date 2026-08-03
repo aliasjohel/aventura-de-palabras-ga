@@ -183,6 +183,10 @@ musicaPrologo.volume = 0.25;
 const sonidoComenzarAventura = new Audio(
   "assets/sounds/comenzar-aventura.wav",
 );
+Object.values(sonidos).forEach((sonido) => {
+  sonido.preload = "none";
+});
+sonidoComenzarAventura.preload = "none";
 
 let colaSonidos = [];
 let audioDesbloqueado = false;
@@ -266,6 +270,7 @@ const clasesEstadoExplorador = [
 ];
 const duracionReaccionExplorador = 900;
 const imagenesExploradorPrecargadas = new Map();
+const imagenesPrecargadas = new Map();
 const intervaloSpriteCaminata = 150;
 const spritesCaminataPorEscenario = {
   0: crearRutasSpritesCaminata("bosque"),
@@ -273,6 +278,65 @@ const spritesCaminataPorEscenario = {
 const spritesPortalPorEscenario = {
   0: crearRutasSpritesCaminata("portal-bosque", "explorador-portal"),
 };
+const escenasPorEscenario = [
+  [
+    {
+      fondos: ["bosque-0.png", "bosque-1.png"],
+      texto:
+        "🌲 Encuentra la palabra secreta para comenzar tu viaje por el Bosque Encantado.",
+    },
+    {
+      fondos: ["bosque-2.png"],
+      texto:
+        "🪨 Resuelve la palabra secreta para encontrar un camino alrededor de la roca.",
+    },
+    {
+      fondos: ["bosque-3.png"],
+      texto: "🌿 Resuelve la palabra para encontrar un paso entre las ramas.",
+    },
+    {
+      fondos: ["bosque-4.png"],
+      texto:
+        "⛈️ Encuentra la palabra secreta para atravesar la tormenta y continuar el viaje.",
+    },
+    {
+      fondos: ["bosque-5.png"],
+      texto:
+        "🌫️ Solo la palabra correcta te ayudará a encontrar el camino entre la niebla.",
+    },
+    {
+      fondos: ["bosque-6.png"],
+      texto:
+        "🐺 Resuelve la palabra para escabullirte de los lobos y continuar el viaje.",
+    },
+    {
+      fondos: ["bosque-7.png"],
+      texto:
+        "🌲 La palabra secreta revelará el sendero oculto del Bosque Prohibido.",
+    },
+    {
+      fondos: ["bosque-8-peligroso.png", "bosque-8.png"],
+      texto:
+        "🌉 Descubre la palabra para cruzar el viejo puente con seguridad.",
+    },
+    {
+      fondos: ["bosque-9.png"],
+      texto:
+        "💎 Solo quien resuelva la palabra podrá acercarse al Cristal de la Sabiduría.",
+    },
+    {
+      fondos: ["bosque-10-apagado.png", "bosque-10.png"],
+      texto: "🌌 La última palabra abrirá el Portal de los Mundos.",
+    },
+  ],
+  [
+    {
+      fondos: ["desierto-1.png"],
+      texto:
+        "🌵 Descubre la palabra secreta para comenzar tu expedición por el Desierto Perdido.",
+    },
+  ],
+];
 
 document.addEventListener("touchstart", desbloquearAudio, { once: true });
 document.addEventListener("click", desbloquearAudio, { once: true });
@@ -485,7 +549,7 @@ function continuarAventura() {
     return;
   }
 
-  iniciarMisionAventura();
+  void iniciarMisionAventura();
 }
 
 btnSiguiente.addEventListener("click", continuarAventura);
@@ -753,6 +817,7 @@ btnComenzarPrologo.addEventListener("click", async () => {
     await Promise.all([
       esperarTransicionHistoria(),
       desvanecerMusicaPrologo(1000),
+      precargarRecursosCriticosMision(),
     ]);
 
     modalPrologo.classList.add("oculto");
@@ -843,7 +908,7 @@ btnReintentar.addEventListener("click", () => {
   sonidoNarrativoPendiente = "";
   historiaMisionPendiente = false;
 
-  iniciarMisionAventura();
+  void iniciarMisionAventura();
 });
 
 btnNuevaAventura.addEventListener("click", () => {
@@ -2363,6 +2428,7 @@ function actualizarVistaMisionDev() {
 
 function mostrarPrologo() {
   solicitarOrientacion("portrait");
+  void precargarRecursosCriticosMision();
   btnComenzarPrologo.disabled = false;
   modalPrologo.classList.remove("cerrando", "oculto");
   modalPrologo.classList.add("abriendo");
@@ -3236,19 +3302,22 @@ function animarPolvoImpacto() {
   temporizadorLimpieza = setTimeout(eliminarPolvo, 1500);
 }
 
-function obtenerEstadoBaseExplorador() {
+function obtenerEstadoBaseExplorador(
+  escenario = escenarioActual,
+  mision = misionActual,
+) {
   const estadoConfigurado =
-    estadosExploradorPorEscenario[escenarioActual]?.[misionActual];
+    estadosExploradorPorEscenario[escenario]?.[mision];
 
   if (estadoConfigurado) return estadoConfigurado;
 
-  if (misionActual <= 1) return "feliz";
+  if (mision <= 1) return "feliz";
 
-  if (misionActual <= 3) return "nervioso";
+  if (mision <= 3) return "nervioso";
 
-  if (misionActual <= 5) return "preocupado";
+  if (mision <= 5) return "preocupado";
 
-  if (escenarioActual === 0 && misionActual <= 9) return "feliz";
+  if (escenario === 0 && mision <= 9) return "feliz";
 
   return "triste";
 }
@@ -3302,7 +3371,7 @@ function logAudioEvento(mensaje, detalle = "") {
   console.log(`[audio-evento] ${mensaje}`, detalle);
 }
 
-function iniciarMisionAventura({ presentarMision = false } = {}) {
+async function iniciarMisionAventura({ presentarMision = false } = {}) {
   ocultarMensajeDesafioSuperado();
   detenerPolvoImpacto();
   detenerAmbientePuente();
@@ -3310,6 +3379,7 @@ function iniciarMisionAventura({ presentarMision = false } = {}) {
   detenerAmbienteHojas();
   detenerTormenta();
   detenerEfectos();
+  await precargarRecursosCriticosMision();
   actualizarAmbienteMision();
 
   desafioActual = desafiosCompletados + 1;
@@ -3330,6 +3400,10 @@ function iniciarMisionAventura({ presentarMision = false } = {}) {
   actualizarVidas();
   personaje.textContent = "😄";
   actualizarEscenaPorMision();
+  await Promise.all([
+    esperarCargaFondoEscenario(),
+    esperarCargaImagen(personajeImagen),
+  ]);
   actualizarAmbientePuenteMision();
   actualizarAmbienteCristalMision();
   actualizarPortalMision();
@@ -3360,6 +3434,7 @@ function iniciarMisionAventura({ presentarMision = false } = {}) {
   }
 
   mostrarPantalla(pantallaJuego);
+  programarPrecargaRecursosSecundarios();
 
   if (portalFinalizado) {
     requestAnimationFrame(() => {
@@ -3564,12 +3639,8 @@ actualizarModoPruebas(
 );
 actualizarControlesDev();
 crearTecladoVersus();
-precargarImagenesBosque();
-precargarImagenesExplorador();
-precargarSpritesCaminata();
+void precargarRecursosCriticosMision();
 precargarImagenesHojas();
-precargarRecursosCinematicaSantuario();
-precargarSonidos();
 
 function cambiarPersonaje(estado) {
   personajeImagen.src = obtenerSrcExplorador(estado);
@@ -3583,74 +3654,41 @@ function cambiarPersonaje(estado) {
   }
 }
 
-function actualizarEscenaPorMision() {
-  const escenasPorEscenario = [
-    [
-      {
-        fondo: desafiosCompletados > 0 ? "bosque-1.png" : "bosque-0.png",
-        texto:
-          "🌲 Encuentra la palabra secreta para comenzar tu viaje por el Bosque Encantado.",
-      },
-      {
-        fondo: "bosque-2.png",
-        texto:
-          "🪨 Resuelve la palabra secreta para encontrar un camino alrededor de la roca.",
-      },
-      {
-        fondo: "bosque-3.png",
-        texto: "🌿 Resuelve la palabra para encontrar un paso entre las ramas.",
-      },
-      {
-        fondo: "bosque-4.png",
-        texto:
-          "⛈️ Encuentra la palabra secreta para atravesar la tormenta y continuar el viaje.",
-      },
-      {
-        fondo: "bosque-5.png",
-        texto:
-          "🌫️ Solo la palabra correcta te ayudará a encontrar el camino entre la niebla.",
-      },
-      {
-        fondo: "bosque-6.png",
-        texto:
-          "🐺 Resuelve la palabra para escabullirte de los lobos y continuar el viaje.",
-      },
-      {
-        fondo: "bosque-7.png",
-        texto:
-          "🌲 La palabra secreta revelará el sendero oculto del Bosque Prohibido.",
-      },
-      {
-        fondo: "bosque-8-peligroso.png",
-        texto:
-          "🌉 Descubre la palabra para cruzar el viejo puente con seguridad.",
-      },
-      {
-        fondo: "bosque-9.png",
-        texto:
-          "💎 Solo quien resuelva la palabra podrá acercarse al Cristal de la Sabiduría.",
-      },
-      {
-        fondo: "bosque-10-apagado.png",
-        texto: "🌌 La última palabra abrirá el Portal de los Mundos.",
-      },
-    ],
-    [
-      {
-        fondo: "desierto-1.png",
-        texto:
-          "🌵 Descubre la palabra secreta para comenzar tu expedición por el Desierto Perdido.",
-      },
-    ],
-  ];
-
+function obtenerEscenaMision(
+  escenario = escenarioActual,
+  mision = misionActual,
+) {
   const escenasPorMision =
-    escenasPorEscenario[escenarioActual] || escenasPorEscenario[0];
-  const escena =
-    escenasPorMision[Math.min(misionActual, escenasPorMision.length - 1)];
-  const fondoPortalActivo =
-    escenarioActual === 0 && misionActual === 9 && portalAbierto;
-  const nombreFondo = fondoPortalActivo ? "bosque-10.png" : escena.fondo;
+    escenasPorEscenario[escenario] || escenasPorEscenario[0];
+
+  return escenasPorMision[Math.min(mision, escenasPorMision.length - 1)];
+}
+
+function obtenerNombreFondoMision(
+  escenario = escenarioActual,
+  mision = misionActual,
+  escena = obtenerEscenaMision(escenario, mision),
+) {
+  let variante = 0;
+
+  if (escenario === 0 && mision === 0 && desafiosCompletados > 0) {
+    variante = 1;
+  }
+
+  if (escenario === 0 && mision === 9 && portalAbierto) {
+    variante = 1;
+  }
+
+  return escena.fondos[variante] || escena.fondos[0];
+}
+
+function actualizarEscenaPorMision() {
+  const escena = obtenerEscenaMision();
+  const nombreFondo = obtenerNombreFondoMision(
+    escenarioActual,
+    misionActual,
+    escena,
+  );
 
   contenedorEscenario.classList.toggle(
     "escenario-desierto",
@@ -5420,70 +5458,123 @@ function cargarImagenExplorador(estado) {
     return imagenesExploradorPrecargadas.get(estado);
   }
 
-  const img = new Image();
-  const promesaCarga = new Promise((resolve) => {
-    img.onload = () => {
-      if (!img.decode) {
-        resolve();
-        return;
-      }
-
-      img.decode().then(resolve).catch(resolve);
-    };
-    img.onerror = resolve;
-  });
-
-  img.src = obtenerSrcExplorador(estado);
+  const promesaCarga = precargarImagen(obtenerSrcExplorador(estado));
   imagenesExploradorPrecargadas.set(estado, promesaCarga);
 
   return promesaCarga;
 }
 
-function precargarImagenesBosque() {
-  for (let i = 0; i <= 10; i++) {
-    const img = new Image();
-    img.src = `assets/images/fondos/bosque-${i}.png`;
+function precargarImagen(src) {
+  const recursoExistente = imagenesPrecargadas.get(src);
+  if (recursoExistente) return recursoExistente.promesa;
+
+  const imagen = new Image();
+  imagen.decoding = "async";
+
+  const promesa = new Promise((resolve) => {
+    let finalizada = false;
+    const finalizar = async () => {
+      if (finalizada) return;
+      finalizada = true;
+
+      if (imagen.naturalWidth > 0 && imagen.decode) {
+        await imagen.decode().catch(() => {});
+      }
+
+      resolve();
+    };
+
+    imagen.addEventListener("load", finalizar, { once: true });
+    imagen.addEventListener("error", finalizar, { once: true });
+    imagen.src = src;
+
+    if (imagen.complete) void finalizar();
+  });
+
+  imagenesPrecargadas.set(src, { imagen, promesa });
+  return promesa;
+}
+
+function precargarRecursosCriticosMision(
+  escenario = escenarioActual,
+  mision = misionActual,
+) {
+  const escena = obtenerEscenaMision(escenario, mision);
+  const nombreFondo = obtenerNombreFondoMision(escenario, mision, escena);
+  const estadoExplorador = obtenerEstadoBaseExplorador(escenario, mision);
+
+  return Promise.all([
+    precargarImagen(`assets/images/fondos/${nombreFondo}`),
+    cargarImagenExplorador(estadoExplorador),
+  ]);
+}
+
+function obtenerSiguienteMisionParaPrecarga(escenario, mision) {
+  const escenasActuales = escenasPorEscenario[escenario];
+
+  if (mision + 1 < escenasActuales.length) {
+    return { escenario, mision: mision + 1 };
   }
 
-  const fondoPortalApagado = new Image();
-  fondoPortalApagado.src = "assets/images/fondos/bosque-10-apagado.png";
+  if (escenario + 1 < escenasPorEscenario.length) {
+    return { escenario: escenario + 1, mision: 0 };
+  }
 
-  const fondoPuentePeligroso = new Image();
-  fondoPuentePeligroso.src =
-    "assets/images/fondos/bosque-8-peligroso.png";
+  return null;
 }
 
-function precargarImagenesExplorador() {
-  [
-    "acierto",
-    "celebrando",
-    "desanimado",
-    "feliz",
-    "nervioso",
-    "pensando",
-    "preocupado",
-    "triste",
-  ].forEach((estado) => {
-    cargarImagenExplorador(estado);
-  });
+async function precargarRecursosSecundariosMision(escenario, mision) {
+  await Promise.all(
+    ["pensando", "acierto", "desanimado", "celebrando"].map(
+      cargarImagenExplorador,
+    ),
+  );
+
+  const escenaActual = obtenerEscenaMision(escenario, mision);
+  const siguienteMision = obtenerSiguienteMisionParaPrecarga(escenario, mision);
+  const rutas = escenaActual.fondos.map(
+    (nombre) => `assets/images/fondos/${nombre}`,
+  );
+
+  if (siguienteMision) {
+    const siguienteEscena = obtenerEscenaMision(
+      siguienteMision.escenario,
+      siguienteMision.mision,
+    );
+    rutas.push(
+      ...siguienteEscena.fondos.map(
+        (nombre) => `assets/images/fondos/${nombre}`,
+      ),
+    );
+  }
+
+  rutas.push(...obtenerSpritesCaminata(escenario));
+
+  if (escenario === 0 && mision >= 7) {
+    rutas.push(...obtenerSpritesCaminata(escenario, "portal"));
+  }
+
+  await Promise.all(rutas.map(precargarImagen));
+
+  if (escenario === 0 && mision >= 8) {
+    precargarRecursosCinematicaSantuario();
+  }
 }
 
-function precargarSpritesCaminata() {
-  [
-    ...Object.values(spritesCaminataPorEscenario),
-    ...Object.values(spritesPortalPorEscenario),
-  ]
-    .flat()
-    .forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
+function programarPrecargaRecursosSecundarios() {
+  const escenario = escenarioActual;
+  const mision = misionActual;
+
+  setTimeout(() => {
+    void precargarRecursosSecundariosMision(escenario, mision);
+  }, 700);
 }
 
 function precargarImagenesHojas() {
   [1, 2].forEach((numero) => {
-    const img = new Image();
-    img.src = `assets/images/elementos/hoja-${numero}.png?v=20260717-hojas-transparentes-1`;
+    void precargarImagen(
+      `assets/images/elementos/hoja-${numero}.png?v=20260717-hojas-transparentes-1`,
+    );
   });
 }
 
@@ -5494,7 +5585,6 @@ function precargarRecursosCinematicaSantuario() {
     "explorador-sosteniendo-cristal.png",
     "cristal-sabiduria-esmeralda.png",
   ].forEach((nombre) => {
-    const img = new Image();
-    img.src = `assets/images/elements/${nombre}`;
+    void precargarImagen(`assets/images/elements/${nombre}`);
   });
 }

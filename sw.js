@@ -1,4 +1,4 @@
-const CACHE_NAME = "aventura-palabras-runtime-v2";
+const CACHE_NAME = "aventura-palabras-runtime-v3";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -45,7 +45,7 @@ async function responderDesdeRed(request) {
     }
     return response;
   } catch (error) {
-    const cachedResponse = await cache.match(request);
+    const cachedResponse = await cache.match(request, { ignoreSearch: true });
     if (cachedResponse) return cachedResponse;
 
     if (request.mode === "navigate") {
@@ -57,6 +57,28 @@ async function responderDesdeRed(request) {
   }
 }
 
+async function responderRecursoEstatico(event) {
+  const { request } = event;
+  const cache = await caches.open(CACHE_NAME);
+  const cachedResponse = await cache.match(request, { ignoreSearch: true });
+  const actualizarCache = fetch(request, { cache: "no-cache" }).then(
+    async (response) => {
+      if (response.ok) {
+        await cache.put(request, response.clone());
+      }
+
+      return response;
+    },
+  );
+
+  if (cachedResponse) {
+    event.waitUntil(actualizarCache.catch(() => {}));
+    return cachedResponse;
+  }
+
+  return actualizarCache;
+}
+
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   const url = new URL(request.url);
@@ -66,6 +88,11 @@ self.addEventListener("fetch", (event) => {
     || url.origin !== self.location.origin
     || request.headers.has("range")
   ) {
+    return;
+  }
+
+  if (["image", "audio", "font"].includes(request.destination)) {
+    event.respondWith(responderRecursoEstatico(event));
     return;
   }
 
