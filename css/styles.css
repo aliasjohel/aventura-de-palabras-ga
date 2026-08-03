@@ -1528,6 +1528,28 @@ button:disabled {
     white-space: nowrap;
 }
 
+.selector-victima-pruebas-versus {
+    display: grid;
+    gap: 1px;
+    color: #cfe8d1;
+    font-size: 0.46rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.selector-victima-pruebas-versus select {
+    min-width: 76px;
+    padding: 3px 5px;
+    border: 1px solid rgba(105, 190, 91, 0.62);
+    border-radius: 5px;
+    background: #152e1d;
+    color: #fff;
+    font: 700 0.57rem Arial, sans-serif;
+}
+
 .herramientas-pruebas-versus button:first-of-type {
     border-color: rgba(105, 190, 91, 0.62);
     background: #244b2e;
@@ -1778,7 +1800,7 @@ button:disabled {
 .cinematica-mago-atrapado,
 .cinematica-tronco-trampa,
 .cinematica-guardiana-prision,
-.cinematica-mago-presa-carnivora,
+.cinematica-victima-fauces,
 .cinematica-carnivora {
     position: absolute;
     z-index: 5;
@@ -1801,15 +1823,28 @@ button:disabled {
     bottom: -10%;
 }
 
-.cinematica-mago-presa-carnivora {
+.cinematica-victima-fauces {
     right: 8%;
     bottom: 2%;
-    width: min(38vw, 450px);
-    height: 82%;
+    width: min(32vw, 380px);
+    height: 74%;
     object-position: center bottom;
     opacity: 0;
     transform-origin: 50% 80%;
     filter: drop-shadow(0 17px 15px rgba(0, 0, 0, 0.82));
+}
+
+.cinematica-victima-fauces.victima-fauces-explorador {
+    right: 9%;
+    width: min(30vw, 355px);
+    height: 72%;
+}
+
+.cinematica-victima-fauces.victima-fauces-guardiana {
+    right: 7%;
+    bottom: -1%;
+    width: min(36vw, 425px);
+    height: 80%;
 }
 
 .cinematica-carnivora {
@@ -2075,7 +2110,7 @@ button:disabled {
     animation: victoriaGuardianaPrisionVersus 5.2s ease both;
 }
 
-.cinematica-final-versus.prision-esmeralda.activa .cinematica-mago-presa-carnivora {
+.cinematica-final-versus.prision-esmeralda.activa .cinematica-victima-fauces {
     animation: presaFaucesEsmeraldaVersus 5.2s ease both;
 }
 
@@ -2216,9 +2251,10 @@ button:disabled {
 
 @keyframes presaFaucesEsmeraldaVersus {
     0%, 10% { opacity: 0; transform: translateX(18%) scale(0.88); }
-    18%, 49% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
-    53% { opacity: 1; transform: translate(-1.5vw, -2vh) scale(0.98) rotate(-3deg); }
-    58%, 100% { opacity: 0; transform: translate(-3vw, -6vh) scale(0.9) rotate(-7deg); filter: brightness(1.45) blur(0.4px); }
+    18%, 42% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+    47% { opacity: 1; transform: translate(-3vw, -5vh) scale(0.9) rotate(-2deg); }
+    53% { opacity: 1; transform: translate(-7vw, -14vh) scale(0.64) rotate(-5deg); }
+    58%, 100% { opacity: 0; transform: translate(-11vw, -18vh) scale(0.28) rotate(-9deg); filter: brightness(1.55) blur(0.7px); }
 }
 
 @keyframes broteFaucesEsmeraldaVersus {

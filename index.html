@@ -380,6 +380,14 @@
                     <span>MODO PRUEBAS</span>
                     <button id="btnProbarCinematicaExplorador" type="button">🌿 Probar explorador</button>
                     <button id="btnProbarCinematicaMago" type="button">🔮 Probar mago</button>
+                    <label class="selector-victima-pruebas-versus" for="victimaPruebaFaucesVersus">
+                        Víctima
+                        <select id="victimaPruebaFaucesVersus" aria-label="Víctima de Fauces Esmeralda">
+                            <option value="explorador">Explorador</option>
+                            <option value="mago" selected>Mago</option>
+                            <option value="guardiana">Guardiana</option>
+                        </select>
+                    </label>
                     <button id="btnProbarCinematicaGuardiana" type="button">🌱 Probar guardiana</button>
                     <button id="btnProbarAtaqueElegido" type="button">⚡ Probar ataque elegido</button>
                 </div>
@@ -426,7 +434,7 @@
                     <img class="cinematica-guardiana-prision cinematica-guardiana-victoria"
                         src="assets/images/personajes/coleccion/guardiana-bosque-victoria.png"
                         alt="" aria-hidden="true">
-                    <img class="cinematica-mago-presa-carnivora"
+                    <img id="victimaFaucesVersus" class="cinematica-victima-fauces victima-fauces-mago"
                         src="assets/images/personajes/versus/mago-base.png"
                         alt="" aria-hidden="true">
                     <img class="cinematica-carnivora cinematica-carnivora-brote"
@@ -435,7 +443,8 @@
                     <img class="cinematica-carnivora cinematica-carnivora-abierta"
                         src="assets/images/personajes/versus/carnivora-abierta.png"
                         alt="" aria-hidden="true">
-                    <img class="cinematica-carnivora cinematica-carnivora-devorando"
+                    <img id="carnivoraDevorandoVersus"
+                        class="cinematica-carnivora cinematica-carnivora-devorando"
                         src="assets/images/personajes/versus/carnivora-devorando.png"
                         alt="" aria-hidden="true">
                     <img class="cinematica-carnivora cinematica-carnivora-cerrada"

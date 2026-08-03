@@ -98,6 +98,13 @@ const btnProbarCinematicaMago = document.getElementById("btnProbarCinematicaMago
 const btnProbarCinematicaGuardiana = document.getElementById(
   "btnProbarCinematicaGuardiana",
 );
+const victimaPruebaFaucesVersus = document.getElementById(
+  "victimaPruebaFaucesVersus",
+);
+const victimaFaucesVersus = document.getElementById("victimaFaucesVersus");
+const carnivoraDevorandoVersus = document.getElementById(
+  "carnivoraDevorandoVersus",
+);
 const btnProbarAtaqueElegido = document.getElementById(
   "btnProbarAtaqueElegido",
 );
@@ -1099,6 +1106,25 @@ const personajesVersus = {
   },
 };
 let personajeJugadorVersus = "explorador";
+let personajeRivalVersus = "mago";
+
+const victimasFaucesVersus = {
+  explorador: {
+    nombre: "Explorador",
+    imagen: srcExploradorBaseVersus,
+    imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-explorador.png",
+  },
+  mago: {
+    nombre: "Mago",
+    imagen: srcMagoBaseVersus,
+    imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando.png",
+  },
+  guardiana: {
+    nombre: "Guardiana",
+    imagen: srcGuardianaBaseVersus,
+    imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-guardiana.png",
+  },
+};
 
 const demoVersus = {
   tematica: "desierto",
@@ -1858,9 +1884,23 @@ function reproducirTrampaSelvaticaVersus() {
   });
 }
 
-function reproducirPrisionEsmeraldaVersus() {
+function configurarVictimaFaucesVersus(personaje = personajeRivalVersus) {
+  const victima = victimasFaucesVersus[personaje] || victimasFaucesVersus.mago;
+  victimaFaucesVersus.src = victima.imagen;
+  carnivoraDevorandoVersus.src = victima.imagenAtrapado;
+  victimaFaucesVersus.alt = `${victima.nombre} atrapado por Fauces Esmeralda`;
+  victimaFaucesVersus.classList.remove(
+    "victima-fauces-explorador",
+    "victima-fauces-mago",
+    "victima-fauces-guardiana",
+  );
+  victimaFaucesVersus.classList.add(`victima-fauces-${personaje in victimasFaucesVersus ? personaje : "mago"}`);
+}
+
+function reproducirPrisionEsmeraldaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   crearParticulasEclipseVersus();
+  configurarVictimaFaucesVersus(victima);
   fondoCinematicaVersus.src = fondoVersus.src;
   etiquetaCinematicaVersus.textContent = "TÉCNICA ANCESTRAL";
   tituloCinematicaVersus.textContent = "FAUCES ESMERALDA";
@@ -1918,11 +1958,14 @@ btnSaltarCinematicaVersus.addEventListener("click", completarCinematicaFinalVers
 
 function probarCinematicaVersus(personaje) {
   if (!modoPruebasActivo || demoVersus.partidaFinalizada) return;
-  const reproducir = personaje === "guardiana"
-    ? reproducirPrisionEsmeraldaVersus
-    : personaje === "mago"
-      ? reproducirEclipseVioletaVersus
-      : reproducirTrampaSelvaticaVersus;
+  if (personaje === "guardiana") {
+    void reproducirPrisionEsmeraldaVersus(victimaPruebaFaucesVersus.value);
+    return;
+  }
+
+  const reproducir = personaje === "mago"
+    ? reproducirEclipseVioletaVersus
+    : reproducirTrampaSelvaticaVersus;
   void reproducir();
 }
 
