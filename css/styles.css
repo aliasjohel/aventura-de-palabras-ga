@@ -1072,7 +1072,7 @@ button:disabled {
     z-index: 4;
     top: 43%;
     left: 24%;
-    width: clamp(190px, 27vw, 330px);
+    width: clamp(165px, 23vw, 285px);
     opacity: 0;
     pointer-events: none;
     filter:
@@ -2576,7 +2576,7 @@ button:disabled {
     }
 
     .proyectil-guardiana-versus {
-        width: clamp(150px, 24vw, 230px);
+        width: clamp(130px, 20vw, 195px);
     }
 
     .preparacion-versus-marco {
