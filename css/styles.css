@@ -2780,6 +2780,12 @@ button:disabled {
     will-change: transform;
 }
 
+.capa-puente-antiguo,
+.capa-energia-cristal {
+    scale: 1.1;
+    transform-origin: center;
+}
+
 .recorte-puente-tablas {
     clip-path: polygon(58% 29%, 64% 29%, 62% 48%, 58% 69%, 34% 72%, 49% 52%);
     animation: balancearPuente 7.5s ease-in-out infinite alternate;
@@ -3634,6 +3640,8 @@ button:disabled {
     height: 100%;
     object-fit: contain;
     display: block;
+    scale: 1.1;
+    transform-origin: center;
 }
 
 .escenario.escenario-desierto {
@@ -4096,6 +4104,7 @@ button:disabled {
     object-fit: contain;
     object-position: center bottom;
     transform-origin: center bottom;
+    scale: 1.1;
     transition: filter 0.35s ease;
     animation: respirar 2.4s ease-in-out infinite;
 }
