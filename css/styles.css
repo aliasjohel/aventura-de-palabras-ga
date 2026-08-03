@@ -1091,8 +1091,8 @@ button:disabled {
 }
 
 @keyframes lanzarBumeranVersus {
-    0%, 78% { transform: translateX(8px); }
-    100% { transform: translateX(0); }
+    0%, 78% { transform: translate(8px, 1.5%) scale(1.075); }
+    100% { transform: translate(0, 1.5%) scale(1.075); }
 }
 
 @keyframes concentrarHechizoVersus {
@@ -1164,9 +1164,9 @@ button:disabled {
 }
 
 @keyframes lanzarVientoGuardianaVersus {
-    0% { transform: translateX(-8px) scale(1.17); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.62)); }
-    28%, 72% { transform: translateX(7px) scale(1.2); filter: brightness(1.15) drop-shadow(0 0 16px rgba(90, 224, 93, 0.78)); }
-    100% { transform: translateX(0) scale(1.17); }
+    0% { transform: translate(-8px, 13.3%) scale(1.39); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.62)); }
+    28%, 72% { transform: translate(7px, 13.3%) scale(1.415); filter: brightness(1.15) drop-shadow(0 0 16px rgba(90, 224, 93, 0.78)); }
+    100% { transform: translate(0, 13.3%) scale(1.39); }
 }
 
 @keyframes vueloEsferaVientoGuardianaVersus {
