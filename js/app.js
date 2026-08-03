@@ -722,6 +722,8 @@ btnContinuarHistoria.addEventListener("click", async () => {
 });
 
 btnJugar.addEventListener("click", async () => {
+  solicitarOrientacion("portrait");
+
   if (!localStorage.getItem("progresoAventuraGA")) {
     reiniciarEstadoAventura();
     mostrarPrologo();
@@ -1024,12 +1026,49 @@ function verificarEstado() {
 // Utilidades
 // ====================
 
+function solicitarOrientacion(orientacion = null) {
+  const controladorOrientacion = globalThis.screen?.orientation;
+
+  if (!controladorOrientacion) return;
+
+  try {
+    if (!orientacion) {
+      controladorOrientacion.unlock?.();
+      return;
+    }
+
+    const solicitudBloqueo = controladorOrientacion.lock?.(orientacion);
+    solicitudBloqueo?.catch(() => {});
+  } catch {
+    // El navegador puede rechazar el bloqueo fuera de una PWA instalada.
+  }
+}
+
+function actualizarOrientacionPantalla(pantallaSeleccionada) {
+  if (pantallaSeleccionada === pantallaJuego) {
+    solicitarOrientacion("portrait");
+    return;
+  }
+
+  if (
+    pantallaSeleccionada === pantallaSeleccionPersonajeVersus
+    || pantallaSeleccionada === pantallaPreparacionVersus
+    || pantallaSeleccionada === pantallaVersus
+  ) {
+    solicitarOrientacion("landscape");
+    return;
+  }
+
+  solicitarOrientacion();
+}
+
 function mostrarPantalla(pantallaSeleccionada) {
   document.querySelectorAll(".pantalla").forEach((pantalla) => {
     pantalla.classList.remove("activa");
   });
 
   pantallaSeleccionada.classList.add("activa");
+  actualizarOrientacionPantalla(pantallaSeleccionada);
 }
 
 function crearTecladoVersus() {
@@ -2323,6 +2362,7 @@ function actualizarVistaMisionDev() {
 }
 
 function mostrarPrologo() {
+  solicitarOrientacion("portrait");
   btnComenzarPrologo.disabled = false;
   modalPrologo.classList.remove("cerrando", "oculto");
   modalPrologo.classList.add("abriendo");
