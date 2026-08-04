@@ -15,7 +15,7 @@
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260803-escena-110-1">
+    <link rel="stylesheet" href="css/styles.css?v=20260803-entrada-versus-1">
 </head>
 
 <body>
@@ -303,7 +303,7 @@
         </section>
 
         <section id="pantallaVersus" class="pantalla pantalla-versus" aria-labelledby="tituloVersus">
-            <div class="versus-marco">
+            <div id="marcoVersus" class="versus-marco">
                 <header class="versus-cabecera">
                     <div class="versus-jugador versus-jugador-uno">
                         <span class="versus-etiqueta">JUGADOR 1</span>
@@ -344,6 +344,25 @@
                         src="assets/images/personajes/versus/bola-fuego-mago.png" alt="" aria-hidden="true">
                     <img id="proyectilGuardianaVersus" class="proyectil-guardiana-versus"
                         src="assets/images/personajes/versus/halcon-espiritual-guardiana.png" alt="" aria-hidden="true">
+
+                    <div id="entradaDueloVersus" class="entrada-duelo-versus oculto" aria-live="polite">
+                        <div class="entrada-efecto entrada-efecto-uno" aria-hidden="true">
+                            <i></i><i></i><i></i><i></i><i></i>
+                        </div>
+                        <div class="entrada-efecto entrada-efecto-dos" aria-hidden="true">
+                            <i></i><i></i><i></i><i></i><i></i>
+                        </div>
+                        <img class="entrada-ave-guardiana"
+                            src="assets/images/personajes/versus/halcon-espiritual-guardiana.png"
+                            alt="" aria-hidden="true">
+                        <div class="entrada-anuncio-versus">
+                            <small>PREP&Aacute;RATE</small>
+                            <strong>&iexcl;DUELO!</strong>
+                        </div>
+                        <button id="btnSaltarEntradaVersus" class="btn-saltar-entrada-versus" type="button">
+                            Saltar entrada
+                        </button>
+                    </div>
 
                     <div class="versus-insignia" aria-hidden="true">VS</div>
 
@@ -553,7 +572,7 @@
     <button id="btnSaltarNarrativa" class="btn-saltar-narrativa oculto" type="button"
         aria-label="Saltar secuencia narrativa">Saltar</button>
 
-    <script src="js/app.js?v=20260803-salto-cartel-1"></script>
+    <script src="js/app.js?v=20260803-entrada-versus-1"></script>
     <script src="js/pwa.js?v=20260803-pwa-1"></script>
 </body>
 

@@ -21,6 +21,7 @@ const pantallaPreparacionVersus = document.getElementById(
   "pantallaPreparacionVersus",
 );
 const pantallaVersus = document.getElementById("pantallaVersus");
+const marcoVersus = document.getElementById("marcoVersus");
 
 const btnJugar = document.getElementById("btnJugar");
 const btnVersus = document.getElementById("btnVersus");
@@ -75,6 +76,10 @@ const proyectilMagoJugadorVersus = document.getElementById(
 );
 const proyectilGuardianaVersus = document.getElementById(
   "proyectilGuardianaVersus",
+);
+const entradaDueloVersus = document.getElementById("entradaDueloVersus");
+const btnSaltarEntradaVersus = document.getElementById(
+  "btnSaltarEntradaVersus",
 );
 const cinematicaFinalVersus = document.getElementById("cinematicaFinalVersus");
 const fondoCinematicaVersus = document.getElementById("fondoCinematicaVersus");
@@ -670,8 +675,9 @@ formPreparacionVersus.addEventListener("submit", (evento) => {
 
   transicionCombateVersus = setTimeout(() => {
     transicionCombateVersus = null;
-    prepararDueloVersus();
+    prepararDueloVersus({ comenzarRonda: false });
     mostrarPantalla(pantallaVersus);
+    requestAnimationFrame(iniciarEntradaDueloVersus);
   }, modoPruebasActivo ? 150 : 1100);
 });
 
@@ -1183,6 +1189,7 @@ const maximoPalabrasVersus = 3;
 const maximoErroresVersus = 6;
 const intervaloJugadaRivalVersus = 3000;
 const probabilidadAciertoRivalVersus = 0.56;
+const duracionEntradaDueloVersus = 3200;
 const srcExploradorBaseVersus = "assets/images/personajes/versus/explorador-base.png";
 const srcExploradorPreparaBumeran = "assets/images/personajes/versus/explorador-bumeran-preparacion.png";
 const srcExploradorLanzaBumeran = "assets/images/personajes/versus/explorador-bumeran-lanzamiento.png";
@@ -1256,6 +1263,8 @@ const demoVersus = {
   temporizadoresAtaqueRival: [],
   temporizadorCinematica: null,
   resolverCinematica: null,
+  temporizadoresEntrada: [],
+  entradaActiva: false,
   partidaFinalizada: false,
 };
 
@@ -1313,6 +1322,91 @@ function configurarPersonajesCombateVersus() {
   personajeVersusUno.classList.add(`personaje-${personajeJugadorVersus}`);
   personajeVersusDos.src = srcMagoBaseVersus;
   personajeVersusDos.alt = "Mago del jugador 2";
+}
+
+function programarPasoEntradaVersus(accion, demora) {
+  const temporizador = setTimeout(accion, demora);
+  demoVersus.temporizadoresEntrada.push(temporizador);
+}
+
+function limpiarEntradaDueloVersus() {
+  demoVersus.temporizadoresEntrada.forEach(clearTimeout);
+  demoVersus.temporizadoresEntrada = [];
+  demoVersus.entradaActiva = false;
+  marcoVersus.classList.remove("duelo-en-introduccion");
+  entradaDueloVersus.className = "entrada-duelo-versus oculto";
+  personajeVersusUno.classList.remove(
+    "entrando-duelo",
+    "entrada-explorador",
+    "entrada-mago",
+    "entrada-guardiana",
+  );
+  personajeVersusDos.classList.remove("entrando-duelo", "entrada-mago-rival");
+  bumeranVersus.classList.remove("mostrando-entrada");
+}
+
+function comenzarRondaVersus() {
+  mostrarEstadoProgresoVersus(
+    document.getElementById("estadoProgresoUno"),
+    "Elegí una letra",
+  );
+  mostrarEstadoProgresoVersus(
+    document.getElementById("estadoProgresoDos"),
+    "Pensando...",
+  );
+  habilitarTecladoVersus();
+  demoVersus.intervaloTiempo = setInterval(actualizarRelojesVersus, 1000);
+  demoVersus.intervaloRival = setInterval(
+    jugarTurnoRivalVersus,
+    modoPruebasActivo ? intervaloJugadaRivalVersus * 4 : intervaloJugadaRivalVersus,
+  );
+}
+
+function finalizarEntradaDueloVersus() {
+  if (!demoVersus.entradaActiva) return;
+  limpiarEntradaDueloVersus();
+  configurarPersonajesCombateVersus();
+  comenzarRondaVersus();
+}
+
+function iniciarEntradaDueloVersus() {
+  if (demoVersus.partidaFinalizada || demoVersus.entradaActiva) return;
+
+  const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const duracion = movimientoReducido ? 450 : duracionEntradaDueloVersus;
+  demoVersus.entradaActiva = true;
+  bloquearTecladoDemoVersus();
+  marcoVersus.classList.add("duelo-en-introduccion");
+  entradaDueloVersus.className = [
+    "entrada-duelo-versus",
+    `entrada-jugador-${personajeJugadorVersus}`,
+  ].join(" ");
+  personajeVersusUno.classList.add("entrando-duelo", `entrada-${personajeJugadorVersus}`);
+  personajeVersusDos.classList.add("entrando-duelo", "entrada-mago-rival");
+  mostrarEstadoProgresoVersus(
+    document.getElementById("estadoProgresoUno"),
+    "Preparándose...",
+  );
+  mostrarEstadoProgresoVersus(
+    document.getElementById("estadoProgresoDos"),
+    "Preparándose...",
+  );
+
+  if (!movimientoReducido && personajeJugadorVersus === "explorador") {
+    programarPasoEntradaVersus(() => {
+      personajeVersusUno.src = srcExploradorPreparaBumeran;
+      bumeranVersus.classList.add("mostrando-entrada");
+    }, 1280);
+    programarPasoEntradaVersus(() => {
+      personajeVersusUno.src = srcExploradorBaseVersus;
+      bumeranVersus.classList.remove("mostrando-entrada");
+    }, 2180);
+  }
+
+  programarPasoEntradaVersus(() => {
+    entradaDueloVersus.classList.add("mostrando-duelo");
+  }, movimientoReducido ? 80 : 2250);
+  programarPasoEntradaVersus(finalizarEntradaDueloVersus, duracion);
 }
 
 function reproducirAtaqueBumeranVersus() {
@@ -1502,7 +1596,7 @@ function mezclarPalabrasVersus(palabras) {
   return copia;
 }
 
-function prepararDueloVersus() {
+function prepararDueloVersus({ comenzarRonda = true } = {}) {
   cancelarCinematicaFinalVersus();
   detenerRondaVersus();
   limpiarAnimacionAtaqueVersus();
@@ -1534,17 +1628,11 @@ function prepararDueloVersus() {
   actualizarVidasVersus();
   actualizarIntentosVersus(document.getElementById("intentosVersusUno"), 0, "Jugador 1");
   actualizarIntentosVersus(document.getElementById("intentosVersusDos"), 0, "El rival");
-  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoUno"), "Elegí una letra");
-  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), "Pensando...");
-  habilitarTecladoVersus();
+  bloquearTecladoDemoVersus();
   actualizarProgresosVersus();
   actualizarTiemposVersus();
 
-  demoVersus.intervaloTiempo = setInterval(actualizarRelojesVersus, 1000);
-  demoVersus.intervaloRival = setInterval(
-    jugarTurnoRivalVersus,
-    modoPruebasActivo ? intervaloJugadaRivalVersus * 4 : intervaloJugadaRivalVersus,
-  );
+  if (comenzarRonda) comenzarRondaVersus();
 }
 
 function detenerRondaVersus() {
@@ -1554,6 +1642,7 @@ function detenerRondaVersus() {
   demoVersus.intervaloRival = null;
   if (demoVersus.temporizadorAviso) clearTimeout(demoVersus.temporizadorAviso);
   demoVersus.temporizadorAviso = null;
+  limpiarEntradaDueloVersus();
   limpiarAnimacionAtaqueVersus();
 }
 
@@ -2091,7 +2180,8 @@ btnProbarAtaqueElegido.addEventListener("click", () => {
   reproducirAtaqueJugadorVersus();
 });
 
-btnRevanchaVersus.addEventListener("click", prepararDueloVersus);
+btnSaltarEntradaVersus.addEventListener("click", finalizarEntradaDueloVersus);
+btnRevanchaVersus.addEventListener("click", () => prepararDueloVersus());
 
 // Control reutilizable para cualquier secuencia narrativa presente o futura.
 function iniciarSecuenciaNarrativa(
