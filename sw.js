@@ -1,4 +1,4 @@
-const CACHE_NAME = "aventura-palabras-runtime-v3";
+const CACHE_NAME = "aventura-palabras-runtime-v4";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -19,7 +19,6 @@ self.addEventListener("install", (event) => {
       { cache: "reload" },
     ));
     await cache.addAll(requests);
-    await self.skipWaiting();
   })());
 });
 

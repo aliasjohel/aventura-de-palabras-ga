@@ -180,6 +180,10 @@ const sonidos = {
   ),
   cristalCasilla: new Audio("assets/sounds/cristal-casilla.mp3"),
   comienzaMundo2: new Audio("assets/sounds/comienza-mundo-2.mp3"),
+  versusAtaqueUno: new Audio("assets/sounds/ataque-1.mp3"),
+  versusAtaqueDos: new Audio("assets/sounds/ataque-2.mp3"),
+  versusFight: new Audio("assets/sounds/fight.mp3"),
+  versusFinish: new Audio("assets/sounds/finish.mp3"),
 };
 
 const musicaPrologo = new Audio("assets/sounds/prologo.mp3");
@@ -197,7 +201,34 @@ let colaSonidos = [];
 let audioDesbloqueado = false;
 let ambienteActual = "";
 let temporizadorCrujidoPuente = null;
+const instanciasSonidoVersus = new Set();
 const debugAudio = true;
+
+function reproducirSonidoVersus(nombre, volumen = 0.68) {
+  const fuente = sonidos[nombre];
+  if (!fuente) return;
+
+  const instancia = new Audio(fuente.currentSrc || fuente.src);
+  instancia.volume = volumen;
+  instancia.preload = "auto";
+  instanciasSonidoVersus.add(instancia);
+
+  const liberar = () => instanciasSonidoVersus.delete(instancia);
+  instancia.addEventListener("ended", liberar, { once: true });
+  instancia.addEventListener("error", liberar, { once: true });
+  instancia.play().catch((error) => {
+    liberar();
+    logAudio(`${nombre} versus bloqueado`, error);
+  });
+}
+
+function detenerSonidosVersus() {
+  instanciasSonidoVersus.forEach((instancia) => {
+    instancia.pause();
+    instancia.currentTime = 0;
+  });
+  instanciasSonidoVersus.clear();
+}
 
 const ambientesPorMision = {
   6: "bosqueProhibido",
@@ -1369,6 +1400,7 @@ function finalizarEntradaDueloVersus() {
   if (!demoVersus.entradaActiva) return;
   limpiarEntradaDueloVersus();
   configurarPersonajesCombateVersus();
+  reproducirSonidoVersus("versusFight", 0.78);
   comenzarRondaVersus();
 }
 
@@ -1417,6 +1449,10 @@ function reproducirAtaqueBumeranVersus() {
   herramientasPruebasVersus.classList.add("ataque-en-curso");
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    reproducirSonidoVersus("versusAtaqueUno", 0.72);
+    programarPasoAtaqueVersus(() => {
+      reproducirSonidoVersus("versusAtaqueDos", 0.76);
+    }, 110, "jugador");
     personajeVersusDos.classList.add("recibiendo-dano");
     programarPasoAtaqueVersus(() => {
       personajeVersusDos.classList.remove("recibiendo-dano");
@@ -1434,11 +1470,13 @@ function reproducirAtaqueBumeranVersus() {
     personajeVersusUno.classList.add("lanzando-bumeran");
     void bumeranVersus.offsetWidth;
     bumeranVersus.classList.add("volando");
+    reproducirSonidoVersus("versusAtaqueUno", 0.72);
   }, 260, "jugador");
 
   programarPasoAtaqueVersus(() => {
     personajeVersusDos.classList.add("recibiendo-dano");
     vidasVersusDos.classList.add("recibiendo-dano");
+    reproducirSonidoVersus("versusAtaqueDos", 0.78);
   }, 760, "jugador");
 
   programarPasoAtaqueVersus(() => {
@@ -1454,6 +1492,10 @@ function reproducirAtaqueMagoJugadorVersus() {
   herramientasPruebasVersus.classList.add("ataque-en-curso");
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    reproducirSonidoVersus("versusAtaqueUno", 0.72);
+    programarPasoAtaqueVersus(() => {
+      reproducirSonidoVersus("versusAtaqueDos", 0.76);
+    }, 110, "jugador");
     personajeVersusDos.classList.add("recibiendo-dano");
     programarPasoAtaqueVersus(() => {
       personajeVersusDos.classList.remove("recibiendo-dano");
@@ -1469,11 +1511,13 @@ function reproducirAtaqueMagoJugadorVersus() {
     personajeVersusUno.classList.add("lanzando-hechizo");
     void proyectilMagoJugadorVersus.offsetWidth;
     proyectilMagoJugadorVersus.classList.add("volando");
+    reproducirSonidoVersus("versusAtaqueUno", 0.72);
   }, 220, "jugador");
 
   programarPasoAtaqueVersus(() => {
     personajeVersusDos.classList.add("recibiendo-dano");
     vidasVersusDos.classList.add("recibiendo-dano");
+    reproducirSonidoVersus("versusAtaqueDos", 0.78);
   }, 760, "jugador");
 
   programarPasoAtaqueVersus(() => {
@@ -1489,6 +1533,10 @@ function reproducirAtaqueGuardianaVersus() {
   herramientasPruebasVersus.classList.add("ataque-en-curso");
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    reproducirSonidoVersus("versusAtaqueUno", 0.72);
+    programarPasoAtaqueVersus(() => {
+      reproducirSonidoVersus("versusAtaqueDos", 0.76);
+    }, 110, "jugador");
     personajeVersusDos.classList.add("recibiendo-dano");
     programarPasoAtaqueVersus(() => {
       personajeVersusDos.classList.remove("recibiendo-dano");
@@ -1501,10 +1549,12 @@ function reproducirAtaqueGuardianaVersus() {
   personajeVersusUno.classList.add("lanzando-viento");
   void proyectilGuardianaVersus.offsetWidth;
   proyectilGuardianaVersus.classList.add("volando");
+  reproducirSonidoVersus("versusAtaqueUno", 0.72);
 
   programarPasoAtaqueVersus(() => {
     personajeVersusDos.classList.add("recibiendo-dano");
     vidasVersusDos.classList.add("recibiendo-dano");
+    reproducirSonidoVersus("versusAtaqueDos", 0.78);
   }, 610, "jugador");
 
   programarPasoAtaqueVersus(() => {
@@ -1532,6 +1582,10 @@ function reproducirAtaqueMagoVersus() {
   limpiarAnimacionAtaqueRivalVersus();
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    reproducirSonidoVersus("versusAtaqueUno", 0.72);
+    programarPasoAtaqueVersus(() => {
+      reproducirSonidoVersus("versusAtaqueDos", 0.76);
+    }, 110, "rival");
     personajeVersusUno.classList.add("recibiendo-dano-magico");
     programarPasoAtaqueVersus(() => {
       personajeVersusUno.classList.remove("recibiendo-dano-magico");
@@ -1547,11 +1601,13 @@ function reproducirAtaqueMagoVersus() {
     personajeVersusDos.classList.add("lanzando-hechizo");
     void proyectilMagoVersus.offsetWidth;
     proyectilMagoVersus.classList.add("volando");
+    reproducirSonidoVersus("versusAtaqueUno", 0.72);
   }, 220, "rival");
 
   programarPasoAtaqueVersus(() => {
     personajeVersusUno.classList.add("recibiendo-dano-magico");
     vidasVersusUno.classList.add("recibiendo-dano");
+    reproducirSonidoVersus("versusAtaqueDos", 0.78);
   }, 760, "rival");
 
   programarPasoAtaqueVersus(() => {
@@ -1635,7 +1691,10 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
   actualizarProgresosVersus();
   actualizarTiemposVersus();
 
-  if (comenzarRonda) comenzarRondaVersus();
+  if (comenzarRonda) {
+    reproducirSonidoVersus("versusFight", 0.76);
+    comenzarRondaVersus();
+  }
 }
 
 function detenerRondaVersus() {
@@ -1645,6 +1704,7 @@ function detenerRondaVersus() {
   demoVersus.intervaloRival = null;
   if (demoVersus.temporizadorAviso) clearTimeout(demoVersus.temporizadorAviso);
   demoVersus.temporizadorAviso = null;
+  detenerSonidosVersus();
   limpiarEntradaDueloVersus();
   limpiarAnimacionAtaqueVersus();
 }
@@ -1660,8 +1720,10 @@ function jugarLetraDemoVersus(letra, boton) {
   demoVersus.letrasJugador.add(letra);
 
   if (palabraJugador.includes(letra)) {
+    reproducirSonidoVersus("acertar", 0.5);
     mostrarEstadoProgresoVersus(estadoJugador, "¡Acierto!", "acierto");
   } else {
+    reproducirSonidoVersus("error", 0.48);
     demoVersus.erroresJugador += 1;
     actualizarIntentosVersus(intentosJugador, demoVersus.erroresJugador, "Jugador 1");
     mostrarEstadoProgresoVersus(estadoJugador, "Fallaste", "error");
@@ -2014,6 +2076,8 @@ function finalizarPartidaVersus(ganador, detalle) {
 
 function mostrarResultadoPartidaVersus(ganador, detalle) {
 
+  reproducirSonidoVersus(ganador === "jugador" ? "victoria" : "derrota", 0.72);
+
   iconoResultadoVersus.textContent = ganador === "jugador" ? "🏆" : ganador === "rival" ? "🛡️" : "⚔️";
   etiquetaResultadoVersus.textContent = ganador === "empate" ? "DUELO EMPATADO" : "DUELO FINALIZADO";
   tituloResultadoVersus.textContent = ganador === "jugador"
@@ -2049,6 +2113,7 @@ function reproducirEclipseVioletaVersus() {
   void cinematicaFinalVersus.offsetWidth;
   cinematicaFinalVersus.classList.add("activa");
   btnSaltarCinematicaVersus.focus();
+  reproducirSonidoVersus("versusFinish", 0.82);
 
   return new Promise((resolve) => {
     demoVersus.resolverCinematica = resolve;
@@ -2071,6 +2136,7 @@ function reproducirTrampaSelvaticaVersus() {
   void cinematicaFinalVersus.offsetWidth;
   cinematicaFinalVersus.classList.add("activa");
   btnSaltarCinematicaVersus.focus();
+  reproducirSonidoVersus("versusFinish", 0.82);
 
   return new Promise((resolve) => {
     demoVersus.resolverCinematica = resolve;
@@ -2107,6 +2173,7 @@ function reproducirPrisionEsmeraldaVersus(victima = personajeRivalVersus) {
   void cinematicaFinalVersus.offsetWidth;
   cinematicaFinalVersus.classList.add("activa");
   btnSaltarCinematicaVersus.focus();
+  reproducirSonidoVersus("versusFinish", 0.82);
 
   return new Promise((resolve) => {
     demoVersus.resolverCinematica = resolve;
@@ -2122,6 +2189,7 @@ function completarCinematicaFinalVersus() {
     clearTimeout(demoVersus.temporizadorCinematica);
     demoVersus.temporizadorCinematica = null;
   }
+  detenerSonidosVersus();
   cinematicaFinalVersus.classList.remove("activa");
   cinematicaFinalVersus.classList.add("oculto");
   cinematicaFinalVersus.classList.remove(
@@ -2140,6 +2208,7 @@ function cancelarCinematicaFinalVersus() {
     clearTimeout(demoVersus.temporizadorCinematica);
     demoVersus.temporizadorCinematica = null;
   }
+  detenerSonidosVersus();
   cinematicaFinalVersus.classList.remove("activa");
   cinematicaFinalVersus.classList.add("oculto");
   cinematicaFinalVersus.classList.remove(
@@ -2964,6 +3033,7 @@ function detenerSonidos() {
   detenerPresenciaBosque();
   detenerAranaBosque();
   detenerVientoArena();
+  detenerSonidosVersus();
   detenerEfectos();
   detenerAmbiente();
 }
