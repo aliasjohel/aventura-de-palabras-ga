@@ -1007,7 +1007,7 @@ button:disabled {
 }
 
 .entrada-efecto-uno { left: 5%; }
-.entrada-efecto-dos { right: 4%; }
+.entrada-efecto-dos { right: 9%; }
 
 .entrada-efecto i {
     position: absolute;
@@ -1032,6 +1032,10 @@ button:disabled {
 .entrada-jugador-mago .entrada-efecto-uno {
     opacity: 0.78;
     animation: revelarLlamasEntradaVersus 2.25s ease-out both;
+}
+
+.entrada-jugador-mago .entrada-efecto-uno {
+    left: 10%;
 }
 
 .entrada-jugador-explorador .entrada-efecto-uno {

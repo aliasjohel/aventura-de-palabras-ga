@@ -1117,7 +1117,10 @@ function solicitarOrientacion(orientacion = null) {
 }
 
 function actualizarOrientacionPantalla(pantallaSeleccionada) {
-  if (pantallaSeleccionada === pantallaJuego) {
+  if (
+    pantallaSeleccionada === pantallaMenu
+    || pantallaSeleccionada === pantallaJuego
+  ) {
     solicitarOrientacion("portrait");
     return;
   }
@@ -3744,6 +3747,7 @@ actualizarModoPruebas(
 );
 actualizarControlesDev();
 crearTecladoVersus();
+actualizarOrientacionPantalla(pantallaMenu);
 void precargarRecursosCriticosMision();
 precargarImagenesHojas();
 
