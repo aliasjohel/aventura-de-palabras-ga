@@ -1,14 +1,19 @@
-const CACHE_NAME = "aventura-palabras-runtime-v4";
+const CACHE_NAME = "aventura-palabras-runtime-v5";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
   "./css/styles.css",
+  "./css/intro.css",
+  "./js/intro.js",
   "./js/app.js",
   "./js/pwa.js",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.png",
   "./assets/icons/icon-maskable-512.png",
+  "./assets/images/elements/cristal-sabiduria-esmeralda.png",
+  "./assets/sounds/cristal-casilla.mp3",
+  "./assets/sounds/prologo.mp3",
 ];
 
 self.addEventListener("install", (event) => {

@@ -1,0 +1,257 @@
+/* Secuencia de apertura oficial. Se mantiene aislada del resto del juego. */
+body.intro-pendiente {
+    overflow: hidden;
+    background: #000;
+}
+
+body.intro-pendiente > .app,
+body.intro-pendiente > .aviso-actualizacion-pwa,
+body.intro-pendiente > .btn-saltar-narrativa {
+    visibility: hidden;
+}
+
+.intro-oficial {
+    position: fixed;
+    z-index: 10000;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    background: #000;
+    color: #fff;
+    cursor: pointer;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.intro-oficial::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: -25%;
+    opacity: 0;
+    background:
+        radial-gradient(circle at 50% 51%, rgba(36, 244, 135, 0.25), transparent 17%),
+        radial-gradient(circle at 50% 55%, rgba(3, 61, 47, 0.28), #000 53%);
+    transition: opacity 900ms ease;
+}
+
+.intro-oficial.intro-iniciada::before {
+    opacity: 1;
+}
+
+.intro-escena {
+    position: relative;
+    width: min(88vw, 680px);
+    height: min(88vh, 720px);
+    display: grid;
+    place-items: center;
+    perspective: 1200px;
+}
+
+.intro-libro {
+    position: absolute;
+    width: min(77vw, 510px);
+    aspect-ratio: 1;
+    object-fit: contain;
+    opacity: 0;
+    filter: brightness(0.3) saturate(0.55) drop-shadow(0 0 0 rgba(47, 239, 139, 0));
+    clip-path: inset(49% 4% 5% 4% round 7%);
+    transform: translateY(12%) rotateX(73deg) scaleX(0.82) scaleY(0.48);
+    transform-origin: 50% 73%;
+    will-change: transform, filter, clip-path, opacity;
+}
+
+.intro-iniciada .intro-libro {
+    animation: introAbrirLibro 2.05s 500ms cubic-bezier(0.2, 0.72, 0.22, 1) forwards;
+}
+
+.intro-resplandor {
+    position: absolute;
+    width: min(64vw, 430px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    opacity: 0;
+    background: radial-gradient(circle, rgba(58, 255, 148, 0.32), rgba(25, 182, 116, 0.08) 43%, transparent 70%);
+    filter: blur(13px);
+    transform: translateY(18%) scale(0.25);
+    mix-blend-mode: screen;
+}
+
+.intro-iniciada .intro-resplandor {
+    animation: introPulsoLibro 2.6s 720ms ease-in-out forwards;
+}
+
+.intro-cristal {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    top: 50%;
+    width: clamp(38px, 9vw, 70px);
+    height: auto;
+    opacity: 0;
+    filter: brightness(1.08) saturate(1.08) drop-shadow(0 0 14px rgba(68, 255, 133, 0.8));
+    transform: translate(-50%, 65%) scale(0.18) rotateY(0deg);
+    will-change: transform, opacity, filter;
+}
+
+.intro-iniciada .intro-cristal {
+    animation: introElevarCristal 1.25s 2.25s cubic-bezier(0.18, 0.75, 0.28, 1) forwards;
+}
+
+.intro-particulas {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    pointer-events: none;
+}
+
+.intro-particula {
+    --x: 0px;
+    --y: -80px;
+    --d: 0ms;
+    position: absolute;
+    left: 50%;
+    top: 54%;
+    width: 4px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    opacity: 0;
+    background: #a8ffd0;
+    box-shadow: 0 0 7px 2px rgba(52, 255, 143, 0.75);
+}
+
+.intro-iniciada .intro-particula {
+    animation: introParticula 1.45s calc(2.35s + var(--d)) ease-out infinite;
+}
+
+.intro-destello {
+    position: absolute;
+    z-index: 4;
+    inset: -35%;
+    opacity: 0;
+    pointer-events: none;
+    background: radial-gradient(circle, #effff3 0 4%, #50ff9d 15%, rgba(18, 190, 105, 0.72) 31%, transparent 58%);
+    transform: scale(0.05);
+    mix-blend-mode: screen;
+}
+
+.intro-iniciada .intro-destello {
+    animation: introDestello 980ms 3.35s ease-out forwards;
+}
+
+.intro-logo {
+    position: absolute;
+    z-index: 5;
+    left: 50%;
+    top: 50%;
+    width: min(92vw, 720px);
+    text-align: center;
+    opacity: 0;
+    transform: translate(-50%, -42%) scale(0.94);
+    text-shadow: 0 3px 9px #000, 0 0 25px rgba(39, 238, 137, 0.48);
+}
+
+.intro-iniciada .intro-logo {
+    animation: introAparecerLogo 700ms 3.67s cubic-bezier(0.2, 0.76, 0.25, 1) forwards;
+}
+
+.intro-logo-titulo {
+    display: block;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2rem, 8.2vw, 4.8rem);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    color: #fff8cf;
+}
+
+.intro-logo-estudio {
+    display: block;
+    margin-top: 17px;
+    font-size: clamp(0.72rem, 2.3vw, 1.15rem);
+    font-weight: 700;
+    letter-spacing: 0.48em;
+    text-transform: uppercase;
+    color: #78f4b3;
+}
+
+.intro-omitir {
+    position: absolute;
+    z-index: 8;
+    right: max(18px, env(safe-area-inset-right));
+    bottom: max(15px, env(safe-area-inset-bottom));
+    opacity: 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.48);
+}
+
+.intro-iniciada .intro-omitir {
+    animation: introMostrarOmitir 500ms 900ms ease forwards;
+}
+
+.intro-oficial.intro-finalizando {
+    cursor: default;
+    animation: introSalida 720ms ease-in-out forwards;
+}
+
+@keyframes introAbrirLibro {
+    0% { opacity: 0; clip-path: inset(49% 4% 5% 4% round 7%); transform: translateY(12%) rotateX(73deg) scaleX(0.82) scaleY(0.48); }
+    22% { opacity: 1; filter: brightness(0.48) saturate(0.72) drop-shadow(0 0 9px rgba(47, 239, 139, 0.34)); }
+    100% { opacity: 1; clip-path: inset(0 round 7%); transform: translateY(0) rotateX(0) scale(1); filter: brightness(0.8) saturate(0.92) drop-shadow(0 0 24px rgba(47, 239, 139, 0.34)); }
+}
+
+@keyframes introPulsoLibro {
+    0% { opacity: 0; transform: translateY(18%) scale(0.25); }
+    45% { opacity: 0.62; }
+    100% { opacity: 0.34; transform: translateY(0) scale(1.22); }
+}
+
+@keyframes introElevarCristal {
+    0% { opacity: 0; transform: translate(-50%, 65%) scale(0.18) rotateY(0deg); }
+    26% { opacity: 1; }
+    100% { opacity: 1; transform: translate(-50%, -118%) scale(1) rotateY(180deg); }
+}
+
+@keyframes introParticula {
+    0% { opacity: 0; transform: translate(0, 0) scale(0.3); }
+    18% { opacity: 0.85; }
+    100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(0.05); }
+}
+
+@keyframes introDestello {
+    0% { opacity: 0; transform: scale(0.05); }
+    32% { opacity: 1; transform: scale(0.48); }
+    58% { opacity: 0.95; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.35); }
+}
+
+@keyframes introAparecerLogo {
+    from { opacity: 0; transform: translate(-50%, -42%) scale(0.94); filter: blur(4px); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+}
+
+@keyframes introMostrarOmitir { to { opacity: 1; } }
+
+@keyframes introSalida {
+    0% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+    .intro-escena { height: 96vh; }
+    .intro-libro { width: min(47vw, 390px); }
+    .intro-cristal { width: clamp(34px, 6vw, 54px); }
+    .intro-logo-titulo { font-size: clamp(1.8rem, 6vw, 3.5rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .intro-iniciada .intro-libro { animation-duration: 500ms; }
+    .intro-iniciada .intro-cristal { animation-duration: 400ms; animation-delay: 850ms; }
+    .intro-iniciada .intro-particula { animation: none; }
+    .intro-iniciada .intro-destello { animation-delay: 1.2s; animation-duration: 450ms; }
+    .intro-iniciada .intro-logo { animation-delay: 1.3s; animation-duration: 350ms; }
+}
