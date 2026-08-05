@@ -1,0 +1,40 @@
+const assert = require("node:assert/strict");
+const engine = require("../js/versus-engine.js");
+
+assert.equal(engine.normalizarPalabra("  árbol-ñandú  "), "ÁRBOLÑANDÚ");
+assert.equal(engine.obtenerClavePalabra("cañón"), "CAÑON");
+
+let turno = engine.evaluarLetra({ palabra: "SOL", letra: "S" });
+assert.equal(turno.resultado, "acierto");
+assert.deepEqual(turno.letras, ["S"]);
+
+turno = engine.evaluarLetra({ palabra: "SOL", letras: turno.letras, errores: turno.errores, letra: "S" });
+assert.equal(turno.resultado, "repetida");
+
+turno = engine.evaluarLetra({ palabra: "SOL", letras: ["S", "O"], letra: "L" });
+assert.equal(turno.resultado, "completa");
+assert.equal(turno.palabraCompleta, true);
+
+turno = engine.evaluarLetra({ palabra: "ANA", errores: 5, letra: "Z" });
+assert.equal(turno.errores, 6);
+assert.equal(turno.sinIntentos, true);
+
+assert.deepEqual(engine.obtenerProgreso("SOL", ["S", "L"]), ["S", "_", "L"]);
+assert.equal(engine.reducirTiempo(1), 0);
+assert.equal(engine.reducirTiempo(0), 0);
+assert.equal(
+  engine.resolverGanador(
+    { vidas: 2, palabras: 2, letras: 8, tiempo: 30 },
+    { vidas: 2, palabras: 1, letras: 9, tiempo: 40 },
+  ),
+  "jugador",
+);
+assert.equal(
+  engine.resolverGanador(
+    { vidas: 2, palabras: 2, letras: 8, tiempo: 30 },
+    { vidas: 2, palabras: 2, letras: 8, tiempo: 30 },
+  ),
+  "empate",
+);
+
+console.log("versus-engine: 12 comprobaciones correctas");

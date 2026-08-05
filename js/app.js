@@ -14,6 +14,7 @@ const ranuraCristalBosque = document.getElementById("ranuraCristalBosque");
 const cristalPanelBosque = document.getElementById("cristalPanelBosque");
 const pantallaMenu = document.getElementById("pantallaMenu");
 const pantallaJuego = document.getElementById("pantallaJuego");
+const pantallaSalaVersus = document.getElementById("pantallaSalaVersus");
 const pantallaSeleccionPersonajeVersus = document.getElementById(
   "pantallaSeleccionPersonajeVersus",
 );
@@ -25,6 +26,21 @@ const marcoVersus = document.getElementById("marcoVersus");
 
 const btnJugar = document.getElementById("btnJugar");
 const btnVersus = document.getElementById("btnVersus");
+const btnSalirSalaVersus = document.getElementById("btnSalirSalaVersus");
+const btnSalirSalaVersusVertical = document.getElementById("btnSalirSalaVersusVertical");
+const inicioSalaVersus = document.getElementById("inicioSalaVersus");
+const esperaSalaVersus = document.getElementById("esperaSalaVersus");
+const aliasSalaVersus = document.getElementById("aliasSalaVersus");
+const codigoSalaVersus = document.getElementById("codigoSalaVersus");
+const btnCrearSalaVersus = document.getElementById("btnCrearSalaVersus");
+const btnUnirseSalaVersus = document.getElementById("btnUnirseSalaVersus");
+const errorSalaVersus = document.getElementById("errorSalaVersus");
+const codigoCreadoVersus = document.getElementById("codigoCreadoVersus");
+const btnCopiarCodigoVersus = document.getElementById("btnCopiarCodigoVersus");
+const jugadoresSalaVersus = document.getElementById("jugadoresSalaVersus");
+const estadoSalaVersus = document.getElementById("estadoSalaVersus");
+const btnRivalPruebaVersus = document.getElementById("btnRivalPruebaVersus");
+const btnContinuarSalaVersus = document.getElementById("btnContinuarSalaVersus");
 const btnSalirSeleccionPersonajeVersus = document.getElementById(
   "btnSalirSeleccionPersonajeVersus",
 );
@@ -579,6 +595,66 @@ let secuenciaIntroduccionMundoActiva = null;
 let modoPruebasActivo = false;
 let maximoEscenarioDesbloqueado = 0;
 const desafiosPorMision = 3;
+const adaptadorSalasVersus = VersusRoom.crearAdaptadorLocal();
+
+function mostrarErrorSalaVersus(mensaje = "") {
+  errorSalaVersus.textContent = mensaje;
+}
+
+function actualizarSalaVersus(sala) {
+  if (!sala) {
+    inicioSalaVersus.classList.remove("oculto");
+    esperaSalaVersus.classList.add("oculto");
+    return;
+  }
+
+  inicioSalaVersus.classList.add("oculto");
+  esperaSalaVersus.classList.remove("oculto");
+  codigoCreadoVersus.textContent = sala.codigo;
+  jugadoresSalaVersus.replaceChildren();
+
+  for (let indice = 0; indice < 2; indice += 1) {
+    const jugador = sala.jugadores[indice];
+    const tarjeta = document.createElement("article");
+    tarjeta.className = `jugador-sala-versus${jugador ? "" : " vacio"}`;
+    const etiqueta = document.createElement("span");
+    etiqueta.textContent = `JUGADOR ${indice + 1}${jugador?.anfitrion ? " · ANFITRIÓN" : ""}`;
+    const nombre = document.createElement("strong");
+    nombre.textContent = jugador?.alias || "Esperando rival…";
+    tarjeta.append(etiqueta, nombre);
+    jugadoresSalaVersus.append(tarjeta);
+  }
+
+  const salaCompleta = sala.jugadores.length === 2;
+  btnContinuarSalaVersus.disabled = !salaCompleta;
+  estadoSalaVersus.textContent = salaCompleta
+    ? "¡Los dos jugadores están conectados! Ya pueden continuar."
+    : "Esperando al segundo jugador…";
+  btnRivalPruebaVersus.classList.toggle("oculto", !modoPruebasActivo || salaCompleta);
+}
+
+function abrirSalaVersus() {
+  mostrarErrorSalaVersus();
+  actualizarSalaVersus(adaptadorSalasVersus.obtenerSala());
+  mostrarPantalla(pantallaSalaVersus);
+}
+
+function salirDeSalaVersus() {
+  adaptadorSalasVersus.salirSala();
+  mostrarPantalla(pantallaMenu);
+}
+
+function ejecutarAccionSalaVersus(accion) {
+  mostrarErrorSalaVersus();
+  try {
+    const sala = accion();
+    actualizarSalaVersus(sala);
+  } catch (error) {
+    mostrarErrorSalaVersus(error.message || "No pudimos completar la acción.");
+  }
+}
+
+adaptadorSalasVersus.suscribir(actualizarSalaVersus);
 
 // ====================
 // Eventos
@@ -627,8 +703,41 @@ btnVersus.addEventListener("click", () => {
   reproducirSonidoComenzarAventura();
   cancelarSecuenciaNarrativaActual();
   detenerSonidos();
-  abrirSeleccionPersonajeVersus();
+  abrirSalaVersus();
 });
+
+btnCrearSalaVersus.addEventListener("click", () => ejecutarAccionSalaVersus(() => (
+  adaptadorSalasVersus.crearSala({ alias: aliasSalaVersus.value })
+)));
+
+btnUnirseSalaVersus.addEventListener("click", () => ejecutarAccionSalaVersus(() => (
+  adaptadorSalasVersus.unirseSala({
+    alias: aliasSalaVersus.value,
+    codigo: codigoSalaVersus.value,
+  })
+)));
+
+codigoSalaVersus.addEventListener("input", () => {
+  codigoSalaVersus.value = VersusRoom.limpiarCodigo(codigoSalaVersus.value);
+});
+
+btnCopiarCodigoVersus.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(codigoCreadoVersus.textContent);
+    btnCopiarCodigoVersus.textContent = "Copiado";
+    setTimeout(() => { btnCopiarCodigoVersus.textContent = "Copiar"; }, 1300);
+  } catch (error) {
+    estadoSalaVersus.textContent = `Código: ${codigoCreadoVersus.textContent}`;
+  }
+});
+
+btnRivalPruebaVersus.addEventListener("click", () => ejecutarAccionSalaVersus(() => (
+  adaptadorSalasVersus.agregarRivalDePrueba()
+)));
+
+btnContinuarSalaVersus.addEventListener("click", abrirSeleccionPersonajeVersus);
+btnSalirSalaVersus.addEventListener("click", salirDeSalaVersus);
+btnSalirSalaVersusVertical.addEventListener("click", salirDeSalaVersus);
 
 tarjetasPersonajesVersus.forEach((tarjeta) => {
   tarjeta.addEventListener("click", () => {
@@ -641,14 +750,14 @@ btnConfirmarPersonajeVersus.addEventListener("click", () => {
   reproducirSonidoComenzarAventura();
   abrirPreparacionVersus();
 });
-btnSalirSeleccionPersonajeVersus.addEventListener("click", () => mostrarPantalla(pantallaMenu));
-btnSalirSeleccionPersonajeVersusVertical.addEventListener("click", () => mostrarPantalla(pantallaMenu));
+btnSalirSeleccionPersonajeVersus.addEventListener("click", abrirSalaVersus);
+btnSalirSeleccionPersonajeVersusVertical.addEventListener("click", abrirSalaVersus);
 
 function volverAlMenuDesdePreparacionVersus() {
   if (transicionCombateVersus) clearTimeout(transicionCombateVersus);
   transicionCombateVersus = null;
   esperaRivalVersus.classList.add("oculto");
-  mostrarPantalla(pantallaMenu);
+  mostrarPantalla(pantallaSeleccionPersonajeVersus);
 }
 
 btnSalirPreparacionVersus.addEventListener("click", volverAlMenuDesdePreparacionVersus);
@@ -658,18 +767,11 @@ let palabrasSecretasVersus = [];
 let transicionCombateVersus = null;
 
 function limpiarPalabraParaVersus(valor) {
-  return valor
-    .toLocaleUpperCase("es-AR")
-    .replace(/[^A-ZÁÉÍÓÚÜÑ]/g, "")
-    .slice(0, maximoLetrasPalabraVersus);
+  return VersusEngine.normalizarPalabra(valor, maximoLetrasPalabraVersus);
 }
 
 function obtenerClavePalabraVersus(valor) {
-  return valor
-    .replace(/Ñ/g, "\uE000")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\uE000/g, "Ñ");
+  return VersusEngine.obtenerClavePalabra(valor);
 }
 
 function validarPreparacionVersus(mostrarErrores = false) {
@@ -765,6 +867,7 @@ btnCompletarPalabrasPruebasVersus.addEventListener("click", () => {
 function volverAlMenuDesdeVersus() {
   cancelarCinematicaFinalVersus();
   detenerRondaVersus();
+  adaptadorSalasVersus.salirSala();
   mostrarPantalla(pantallaMenu);
 }
 
@@ -1200,7 +1303,8 @@ function actualizarOrientacionPantalla(pantallaSeleccionada) {
   }
 
   if (
-    pantallaSeleccionada === pantallaSeleccionPersonajeVersus
+    pantallaSeleccionada === pantallaSalaVersus
+    || pantallaSeleccionada === pantallaSeleccionPersonajeVersus
     || pantallaSeleccionada === pantallaPreparacionVersus
     || pantallaSeleccionada === pantallaVersus
   ) {
@@ -1870,26 +1974,32 @@ function jugarLetraDemoVersus(letra, boton) {
   const palabraJugador = obtenerPalabraActualJugadorVersus();
 
   boton.disabled = true;
-  demoVersus.letrasJugador.add(letra);
+  const turno = VersusEngine.evaluarLetra({
+    palabra: palabraJugador,
+    letras: [...demoVersus.letrasJugador],
+    errores: demoVersus.erroresJugador,
+    letra,
+  });
+  demoVersus.letrasJugador = new Set(turno.letras);
+  demoVersus.erroresJugador = turno.errores;
 
-  if (palabraJugador.includes(letra)) {
+  if (turno.resultado === "acierto" || turno.resultado === "completa") {
     reproducirSonidoVersus("acertar", 0.5);
     mostrarEstadoProgresoVersus(estadoJugador, "¡Acierto!", "acierto");
   } else {
     reproducirSonidoVersus("error", 0.48);
-    demoVersus.erroresJugador += 1;
     actualizarIntentosVersus(intentosJugador, demoVersus.erroresJugador, "Jugador 1");
     mostrarEstadoProgresoVersus(estadoJugador, "Fallaste", "error");
   }
 
   actualizarProgresosVersus();
 
-  if (palabraCompletadaVersus(palabraJugador, demoVersus.letrasJugador)) {
+  if (turno.palabraCompleta) {
     avanzarPalabraJugadorVersus(true);
     return;
   }
 
-  if (demoVersus.erroresJugador >= maximoErroresVersus) {
+  if (turno.sinIntentos) {
     avanzarPalabraJugadorVersus(false);
   }
 }
@@ -1910,12 +2020,18 @@ function jugarTurnoRivalVersus() {
   const letra = opciones[Math.floor(Math.random() * opciones.length)];
   if (!letra) return;
 
-  demoVersus.letrasRival.add(letra);
+  const turno = VersusEngine.evaluarLetra({
+    palabra: palabraRival,
+    letras: [...demoVersus.letrasRival],
+    errores: demoVersus.erroresRival,
+    letra,
+  });
+  demoVersus.letrasRival = new Set(turno.letras);
+  demoVersus.erroresRival = turno.errores;
   const estadoRival = document.getElementById("estadoProgresoDos");
-  if (palabraRival.includes(letra)) {
+  if (turno.resultado === "acierto" || turno.resultado === "completa") {
     mostrarEstadoProgresoVersus(estadoRival, "El rival acertó", "acierto");
   } else {
-    demoVersus.erroresRival += 1;
     actualizarIntentosVersus(
       document.getElementById("intentosVersusDos"),
       demoVersus.erroresRival,
@@ -1926,9 +2042,9 @@ function jugarTurnoRivalVersus() {
 
   actualizarProgresosVersus();
 
-  if (palabraCompletadaVersus(palabraRival, demoVersus.letrasRival)) {
+  if (turno.palabraCompleta) {
     avanzarPalabraRivalVersus(true);
-  } else if (demoVersus.erroresRival >= maximoErroresVersus) {
+  } else if (turno.sinIntentos) {
     avanzarPalabraRivalVersus(false);
   }
 }
@@ -1944,11 +2060,11 @@ function obtenerPalabraActualRivalVersus() {
 }
 
 function palabraCompletadaVersus(palabra, letras) {
-  return [...palabra].every((letra) => letras.has(letra));
+  return VersusEngine.palabraCompletada(palabra, [...letras]);
 }
 
 function contarLetrasDescubiertasVersus(palabra, letras) {
-  return [...palabra].filter((letra) => letras.has(letra)).length;
+  return VersusEngine.contarDescubiertas(palabra, [...letras]);
 }
 
 function actualizarProgresosVersus() {
@@ -1956,10 +2072,15 @@ function actualizarProgresosVersus() {
   const palabraRival = document.getElementById("palabraVersusDos");
   const objetivoJugador = obtenerPalabraActualJugadorVersus();
   const objetivoRival = obtenerPalabraActualRivalVersus();
-  const progresoJugador = [...objetivoJugador]
-    .map((letra) => demoVersus.letrasJugador.has(letra) ? letra : "_");
-  const progresoRival = [...objetivoRival]
-    .map((letra) => demoVersus.letrasRival.has(letra) ? "?" : "_");
+  const progresoJugador = VersusEngine.obtenerProgreso(
+    objetivoJugador,
+    [...demoVersus.letrasJugador],
+  );
+  const progresoRival = VersusEngine.obtenerProgreso(
+    objetivoRival,
+    [...demoVersus.letrasRival],
+    true,
+  );
 
   const temaJugador = nombresTematicasVersus[demoVersus.tematicaParaJugador];
   const temaRival = nombresTematicasVersus[demoVersus.tematicaParaRival];

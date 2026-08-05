@@ -23,7 +23,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260805-ramas-mision-3-1">
+    <link rel="stylesheet" href="css/styles.css?v=20260805-salas-versus-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -198,6 +198,75 @@
                     <button id="btnContinuarHistoria" class="control-presentacion-mision" type="button" tabindex="-1"
                         aria-hidden="true" hidden>Comenzar misión</button>
                 </div>
+            </div>
+        </section>
+
+        <section id="pantallaSalaVersus" class="pantalla pantalla-sala-versus" aria-labelledby="tituloSalaVersus">
+            <div class="sala-versus-marco">
+                <button id="btnSalirSalaVersus" class="versus-volver" type="button">&larr; Volver</button>
+
+                <header class="sala-versus-cabecera">
+                    <p>DUELO ENTRE JUGADORES</p>
+                    <h2 id="tituloSalaVersus">Sala multijugador</h2>
+                    <span>Cre&aacute; una partida o ingres&aacute; con el c&oacute;digo de tu rival.</span>
+                </header>
+
+                <div id="inicioSalaVersus" class="inicio-sala-versus">
+                    <label class="campo-sala-versus campo-alias-versus" for="aliasSalaVersus">
+                        <span>Tu nombre</span>
+                        <input id="aliasSalaVersus" type="text" minlength="2" maxlength="16"
+                            autocomplete="nickname" placeholder="Ej: Gabi">
+                    </label>
+
+                    <div class="acciones-sala-versus">
+                        <article class="opcion-sala-versus">
+                            <span class="icono-opcion-sala" aria-hidden="true">&#10022;</span>
+                            <h3>Crear sala</h3>
+                            <p>Gener&aacute; un c&oacute;digo para compartir con tu rival.</p>
+                            <button id="btnCrearSalaVersus" type="button">Crear partida</button>
+                        </article>
+
+                        <article class="opcion-sala-versus">
+                            <span class="icono-opcion-sala" aria-hidden="true">&#9876;</span>
+                            <h3>Unirse</h3>
+                            <p>Ingres&aacute; el c&oacute;digo de seis caracteres.</p>
+                            <label class="campo-codigo-versus" for="codigoSalaVersus">
+                                <span class="sr-only">C&oacute;digo de sala</span>
+                                <input id="codigoSalaVersus" type="text" maxlength="6" inputmode="text"
+                                    autocomplete="off" autocapitalize="characters" placeholder="ABC123">
+                            </label>
+                            <button id="btnUnirseSalaVersus" type="button">Ingresar a sala</button>
+                        </article>
+                    </div>
+                    <p id="errorSalaVersus" class="error-sala-versus" role="alert" aria-live="polite"></p>
+                </div>
+
+                <div id="esperaSalaVersus" class="espera-sala-versus oculto">
+                    <div class="codigo-creado-versus">
+                        <span>C&Oacute;DIGO DE SALA</span>
+                        <strong id="codigoCreadoVersus">------</strong>
+                        <button id="btnCopiarCodigoVersus" class="btn-copiar-codigo-versus" type="button">Copiar</button>
+                    </div>
+
+                    <div id="jugadoresSalaVersus" class="jugadores-sala-versus"></div>
+                    <p id="estadoSalaVersus" class="estado-sala-versus" role="status" aria-live="polite">
+                        Esperando al segundo jugador&hellip;
+                    </p>
+                    <button id="btnRivalPruebaVersus" class="btn-rival-prueba-versus oculto" type="button">
+                        Agregar rival de prueba
+                    </button>
+                    <button id="btnContinuarSalaVersus" class="btn-continuar-sala-versus" type="button" disabled>
+                        Elegir personaje
+                    </button>
+                    <small class="nota-adaptador-versus">Vista local de desarrollo. La conexi&oacute;n entre celulares se activar&aacute; con Supabase.</small>
+                </div>
+            </div>
+
+            <div class="versus-aviso-orientacion" role="status">
+                <span aria-hidden="true">&#8635;</span>
+                <strong>Gir&aacute; tu celular</strong>
+                <small>La sala multijugador se disfruta en horizontal.</small>
+                <button id="btnSalirSalaVersusVertical" type="button">Volver al men&uacute;</button>
             </div>
         </section>
 
@@ -663,7 +732,9 @@
         aria-label="Saltar secuencia narrativa">Saltar</button>
 
     <script src="js/intro.js?v=20260805-musica-menu-4"></script>
-    <script src="js/app.js?v=20260805-tematicas-versus-1"></script>
+    <script src="js/versus-engine.js?v=20260805-salas-versus-1"></script>
+    <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
+    <script src="js/app.js?v=20260805-salas-versus-1"></script>
     <script src="js/pwa.js?v=20260804-dragon-versus-1"></script>
 </body>
 
