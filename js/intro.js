@@ -53,7 +53,7 @@
     || new Audio("assets/sounds/melodia-menu.mp3");
   globalThis.musicaMenuAventura = musicaMenu;
   sonidoMagico.volume = 0.16;
-  musicaMenu.volume = 0.2;
+  musicaMenu.volume = 0.32;
   musicaMenu.loop = true;
   sonidoMagico.preload = "auto";
   musicaMenu.preload = "auto";
