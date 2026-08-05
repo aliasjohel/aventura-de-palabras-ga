@@ -1417,9 +1417,10 @@ function comenzarRondaVersus() {
 
 function finalizarEntradaDueloVersus() {
   if (!demoVersus.entradaActiva) return;
+  const anuncioDueloMostrado = entradaDueloVersus.classList.contains("mostrando-duelo");
   limpiarEntradaDueloVersus();
   configurarPersonajesCombateVersus();
-  reproducirSonidoVersus("versusFight", 0.78);
+  if (!anuncioDueloMostrado) reproducirSonidoVersus("versusFight", 0.78);
   comenzarRondaVersus();
 }
 
@@ -1459,6 +1460,7 @@ function iniciarEntradaDueloVersus() {
 
   programarPasoEntradaVersus(() => {
     entradaDueloVersus.classList.add("mostrando-duelo");
+    reproducirSonidoVersus("versusFight", 0.78);
   }, movimientoReducido ? 80 : 2250);
   programarPasoEntradaVersus(finalizarEntradaDueloVersus, duracion);
 }
