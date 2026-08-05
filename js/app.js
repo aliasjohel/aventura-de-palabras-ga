@@ -199,10 +199,14 @@ musicaPrologo.volume = 0.25;
 const sonidoComenzarAventura = new Audio(
   "assets/sounds/comenzar-aventura.wav",
 );
+const sonidoSeleccionPersonaje = new Audio(
+  "assets/sounds/seleccion-personaje.mp3",
+);
 Object.values(sonidos).forEach((sonido) => {
   sonido.preload = "none";
 });
-sonidoComenzarAventura.preload = "none";
+sonidoComenzarAventura.preload = "auto";
+sonidoSeleccionPersonaje.preload = "auto";
 
 let colaSonidos = [];
 let audioDesbloqueado = false;
@@ -614,6 +618,7 @@ function abrirSeleccionPersonajeVersus() {
 }
 
 btnVersus.addEventListener("click", () => {
+  reproducirSonidoComenzarAventura();
   cancelarSecuenciaNarrativaActual();
   detenerSonidos();
   abrirSeleccionPersonajeVersus();
@@ -621,11 +626,15 @@ btnVersus.addEventListener("click", () => {
 
 tarjetasPersonajesVersus.forEach((tarjeta) => {
   tarjeta.addEventListener("click", () => {
+    reproducirSonidoSeleccionPersonaje();
     seleccionarPersonajeVersus(tarjeta.dataset.personaje);
   });
 });
 
-btnConfirmarPersonajeVersus.addEventListener("click", abrirPreparacionVersus);
+btnConfirmarPersonajeVersus.addEventListener("click", () => {
+  reproducirSonidoComenzarAventura();
+  abrirPreparacionVersus();
+});
 btnSalirSeleccionPersonajeVersus.addEventListener("click", () => mostrarPantalla(pantallaMenu));
 btnSalirSeleccionPersonajeVersusVertical.addEventListener("click", () => mostrarPantalla(pantallaMenu));
 
@@ -831,6 +840,7 @@ btnContinuarHistoria.addEventListener("click", async () => {
 });
 
 btnJugar.addEventListener("click", async () => {
+  reproducirSonidoComenzarAventura();
   solicitarOrientacion("portrait");
 
   if (!localStorage.getItem("progresoAventuraGA")) {
@@ -963,6 +973,7 @@ btnNuevaAventura.addEventListener("click", () => {
 
   if (!confirmar) return;
 
+  reproducirSonidoComenzarAventura();
   localStorage.removeItem("progresoAventuraGA");
   reiniciarEstadoAventura();
   mostrarPrologo();
@@ -3078,6 +3089,13 @@ function reproducirSonidoComenzarAventura() {
   sonidoComenzarAventura.currentTime = 0;
   sonidoComenzarAventura.play().catch((error) => {
     logAudio("sonido de comenzar aventura bloqueado", error);
+  });
+}
+
+function reproducirSonidoSeleccionPersonaje() {
+  sonidoSeleccionPersonaje.currentTime = 0;
+  sonidoSeleccionPersonaje.play().catch((error) => {
+    logAudio("sonido de selección de personaje bloqueado", error);
   });
 }
 
