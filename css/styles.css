@@ -6591,13 +6591,21 @@ button:disabled {
     margin-left: clamp(24px, 8vw, 128px);
     padding: clamp(18px, 3vw, 28px);
     overflow-y: auto;
-    border: 1px solid rgba(226, 190, 103, 0.3);
+    border: 1px solid rgba(231, 195, 111, 0.58);
     border-radius: 24px;
-    background: linear-gradient(155deg, rgba(3, 14, 21, 0.86), rgba(5, 24, 27, 0.64));
+    background: linear-gradient(
+        180deg,
+        rgba(3, 14, 21, 0.66) 0%,
+        rgba(4, 19, 24, 0.43) 52%,
+        rgba(5, 24, 27, 0.2) 100%
+    );
     box-shadow:
-        0 22px 58px rgba(0, 0, 0, 0.58),
-        inset 0 0 30px rgba(73, 212, 146, 0.05);
-    backdrop-filter: blur(7px);
+        0 18px 45px rgba(0, 0, 0, 0.38),
+        0 0 18px rgba(213, 173, 78, 0.08),
+        inset 0 1px 0 rgba(255, 235, 173, 0.16),
+        inset 0 0 30px rgba(73, 212, 146, 0.035);
+    backdrop-filter: blur(4px) saturate(1.08);
+    -webkit-backdrop-filter: blur(4px) saturate(1.08);
     scrollbar-width: thin;
 }
 
@@ -6823,10 +6831,15 @@ button:disabled {
     .menu-contenido {
         width: min(100%, 410px);
         max-height: calc(100dvh - max(24px, env(safe-area-inset-top) + env(safe-area-inset-bottom)));
-        margin: 0;
+        margin: max(-24px, calc(8px - max(12px, env(safe-area-inset-top)))) 0 0;
         padding: 16px;
         gap: 9px;
-        background: linear-gradient(160deg, rgba(2, 12, 18, 0.82), rgba(4, 22, 24, 0.6));
+        background: linear-gradient(
+            180deg,
+            rgba(2, 12, 18, 0.64) 0%,
+            rgba(3, 17, 22, 0.4) 50%,
+            rgba(4, 22, 24, 0.16) 100%
+        );
     }
 
     #pantallaMenu .titulo { font-size: clamp(1.9rem, 9vw, 2.35rem); }
