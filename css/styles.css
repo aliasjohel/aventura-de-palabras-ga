@@ -6530,6 +6530,338 @@ button:disabled {
     }
 }
 
+/* Menú principal: escena animada que presenta el inicio de la aventura. */
+#pantallaMenu {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 0;
+    background: #020b12;
+    box-shadow: none;
+}
+
+#pantallaMenu.activa {
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+}
+
+.menu-escena-animada {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.menu-escena-animada::before {
+    content: "";
+    position: absolute;
+    inset: -3%;
+    background: url("../assets/images/fondos/menu-inicio-aventura.png") center / cover no-repeat;
+    filter: saturate(0.94) brightness(0.88);
+    transform: scale(1.035);
+    animation: menuFondoRespira 24s ease-in-out infinite alternate;
+}
+
+.menu-escena-animada::after {
+    content: "";
+    position: absolute;
+    z-index: 4;
+    inset: 0;
+    background:
+        linear-gradient(90deg, rgba(0, 6, 11, 0.82) 0%, rgba(1, 10, 16, 0.55) 34%, rgba(1, 9, 15, 0.12) 64%, rgba(0, 4, 8, 0.35) 100%),
+        radial-gradient(ellipse at 50% 48%, transparent 35%, rgba(0, 4, 8, 0.46) 100%);
+}
+
+.menu-contenido {
+    position: relative;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: min(390px, calc(100vw - 48px));
+    max-height: calc(100dvh - 32px);
+    margin-left: clamp(24px, 8vw, 128px);
+    padding: clamp(18px, 3vw, 28px);
+    overflow-y: auto;
+    border: 1px solid rgba(226, 190, 103, 0.3);
+    border-radius: 24px;
+    background: linear-gradient(155deg, rgba(3, 14, 21, 0.86), rgba(5, 24, 27, 0.64));
+    box-shadow:
+        0 22px 58px rgba(0, 0, 0, 0.58),
+        inset 0 0 30px rgba(73, 212, 146, 0.05);
+    backdrop-filter: blur(7px);
+    scrollbar-width: thin;
+}
+
+#pantallaMenu .studio {
+    color: #eecf79;
+    text-shadow: 0 2px 8px #000, 0 0 16px rgba(240, 195, 78, 0.28);
+}
+
+#pantallaMenu .titulo {
+    max-width: 340px;
+    color: #fff5cd;
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.02;
+    text-shadow: 0 3px 10px #000, 0 0 24px rgba(74, 226, 155, 0.2);
+}
+
+#pantallaMenu .subtitulo {
+    margin-bottom: 4px;
+    color: rgba(238, 250, 246, 0.86);
+    text-align: center;
+    text-shadow: 0 2px 6px #000;
+}
+
+#pantallaMenu .menu-contenido > button {
+    width: min(100%, 320px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.36);
+}
+
+#pantallaMenu #btnJugar {
+    background: linear-gradient(180deg, #2dbd70, #177943);
+    box-shadow: 0 5px 0 #0c4d2a, 0 8px 18px rgba(0, 0, 0, 0.42);
+}
+
+#pantallaMenu .control-modo-pruebas {
+    margin-top: 2px;
+    background: rgba(0, 6, 10, 0.58);
+}
+
+.menu-cristal-flotante {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    top: calc(50% + 18vmax);
+    width: clamp(68px, 9vmax, 148px);
+    height: auto;
+    opacity: 0.94;
+    transform: translate(-50%, -100%);
+    transform-origin: 50% 100%;
+    filter: brightness(0.9) saturate(1.02) drop-shadow(0 0 13px rgba(52, 255, 139, 0.66));
+    animation: menuCristalFlota 4.8s ease-in-out infinite;
+}
+
+.menu-niebla {
+    position: absolute;
+    z-index: 2;
+    left: -30%;
+    width: 160%;
+    height: 30%;
+    border-radius: 50%;
+    opacity: 0.2;
+    background:
+        radial-gradient(ellipse at 24% 50%, rgba(177, 224, 218, 0.38), transparent 25%),
+        radial-gradient(ellipse at 57% 48%, rgba(122, 189, 192, 0.32), transparent 31%),
+        radial-gradient(ellipse at 83% 55%, rgba(182, 222, 214, 0.27), transparent 24%);
+    filter: blur(18px);
+}
+
+.menu-niebla-uno {
+    bottom: 11%;
+    animation: menuNieblaDeriva 28s ease-in-out infinite alternate;
+}
+
+.menu-niebla-dos {
+    bottom: 31%;
+    opacity: 0.12;
+    transform: scaleX(-1);
+    animation: menuNieblaDeriva 36s -12s ease-in-out infinite alternate-reverse;
+}
+
+.menu-antorcha {
+    position: absolute;
+    z-index: 3;
+    top: 43%;
+    width: 46px;
+    height: 118px;
+    filter: drop-shadow(0 0 9px rgba(255, 153, 48, 0.45));
+}
+
+.menu-antorcha-izquierda { left: 13%; }
+.menu-antorcha-derecha { right: 13%; }
+
+.menu-antorcha::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 29px;
+    width: 5px;
+    height: 89px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #16100b, #70502b 45%, #191109);
+    transform: translateX(-50%);
+}
+
+.menu-antorcha::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 25px;
+    width: 38px;
+    height: 12px;
+    border-radius: 4px 4px 50% 50%;
+    background: #21160d;
+    box-shadow: 0 0 28px 13px rgba(255, 125, 27, 0.22);
+    transform: translateX(-50%);
+    animation: menuLuzAntorcha 1.4s ease-in-out infinite alternate;
+}
+
+.menu-antorcha i {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 0;
+    width: 19px;
+    height: 34px;
+    border-radius: 65% 35% 60% 40%;
+    background: radial-gradient(circle at 50% 70%, #fff5a5 0 14%, #ffb23f 31%, #f15b20 65%, transparent 68%);
+    transform: translateX(-50%) rotate(3deg);
+    transform-origin: 50% 100%;
+    filter: drop-shadow(0 0 9px #ff982d);
+    animation: menuFuegoAntorcha 760ms ease-in-out infinite alternate;
+}
+
+.menu-antorcha-derecha i { animation-delay: -380ms; }
+
+.menu-particulas,
+.menu-hojas {
+    position: absolute;
+    z-index: 3;
+    inset: 0;
+}
+
+.menu-particulas i {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: 4px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    opacity: 0;
+    background: #a7ffd0;
+    box-shadow: 0 0 7px 2px rgba(64, 255, 149, 0.62);
+    animation: menuParticulaAsciende 8s var(--d) ease-in-out infinite;
+}
+
+.menu-hojas i {
+    position: absolute;
+    left: var(--x);
+    top: -5%;
+    width: 14px;
+    height: 7px;
+    border-radius: 90% 10% 90% 10%;
+    opacity: 0;
+    background: linear-gradient(135deg, #426d42, #152d23);
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
+    animation: menuHojaCae 14s var(--d) linear infinite;
+}
+
+@keyframes menuFondoRespira {
+    from { transform: scale(1.035) translate3d(-0.25%, -0.15%, 0); }
+    to { transform: scale(1.075) translate3d(0.35%, 0.3%, 0); }
+}
+
+@keyframes menuCristalFlota {
+    0%, 100% { transform: translate(-50%, -100%) translateY(3px) rotateY(-5deg); filter: brightness(0.88) saturate(1) drop-shadow(0 0 11px rgba(52, 255, 139, 0.58)); }
+    50% { transform: translate(-50%, -100%) translateY(-7px) rotateY(7deg); filter: brightness(1.05) saturate(1.08) drop-shadow(0 0 19px rgba(52, 255, 139, 0.78)); }
+}
+
+@keyframes menuNieblaDeriva {
+    from { transform: translateX(-5%) scaleY(0.9); }
+    to { transform: translateX(7%) scaleY(1.08); }
+}
+
+@keyframes menuFuegoAntorcha {
+    0% { transform: translateX(-50%) rotate(-5deg) scale(0.88, 0.94); }
+    55% { transform: translateX(-50%) rotate(4deg) scale(1.02, 1.1); }
+    100% { transform: translateX(-50%) rotate(-2deg) scale(0.94, 1.18); }
+}
+
+@keyframes menuLuzAntorcha {
+    from { box-shadow: 0 0 23px 10px rgba(255, 125, 27, 0.18); }
+    to { box-shadow: 0 0 38px 18px rgba(255, 151, 48, 0.3); }
+}
+
+@keyframes menuParticulaAsciende {
+    0%, 100% { opacity: 0; transform: translate3d(0, 16px, 0) scale(0.35); }
+    18% { opacity: 0.72; }
+    72% { opacity: 0.42; }
+    88% { opacity: 0; transform: translate3d(10px, -74px, 0) scale(0.8); }
+}
+
+@keyframes menuHojaCae {
+    0% { opacity: 0; transform: translate3d(-18px, -8vh, 0) rotate(var(--r)); }
+    12% { opacity: 0.62; }
+    52% { transform: translate3d(48px, 52vh, 0) rotate(calc(var(--r) + 190deg)); }
+    88% { opacity: 0.48; }
+    100% { opacity: 0; transform: translate3d(-25px, 106vh, 0) rotate(calc(var(--r) + 390deg)); }
+}
+
+@media (max-width: 700px) {
+    #pantallaMenu.activa {
+        align-items: center;
+        justify-content: flex-start;
+        padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+    }
+
+    .menu-escena-animada::after {
+        background:
+            linear-gradient(180deg, rgba(0, 7, 12, 0.52), rgba(0, 7, 12, 0.2) 52%, rgba(0, 5, 9, 0.5)),
+            radial-gradient(ellipse at 50% 34%, rgba(0, 5, 9, 0.46), transparent 70%);
+    }
+
+    .menu-contenido {
+        width: min(100%, 410px);
+        max-height: calc(100dvh - max(24px, env(safe-area-inset-top) + env(safe-area-inset-bottom)));
+        margin: 0;
+        padding: 16px;
+        gap: 9px;
+        background: linear-gradient(160deg, rgba(2, 12, 18, 0.82), rgba(4, 22, 24, 0.6));
+    }
+
+    #pantallaMenu .titulo { font-size: clamp(1.9rem, 9vw, 2.35rem); }
+    #pantallaMenu .menu-contenido > button { padding: 12px 14px; }
+
+    .menu-antorcha { top: 54%; transform: scale(0.82); }
+    .menu-antorcha-izquierda { left: 4%; }
+    .menu-antorcha-derecha { right: 4%; }
+}
+
+@media (max-height: 650px) {
+    .menu-contenido { gap: 6px; padding-block: 10px; }
+    #pantallaMenu .studio { font-size: 0.88rem; }
+    #pantallaMenu .titulo { font-size: 1.75rem; }
+    #pantallaMenu .subtitulo { font-size: 0.86rem; }
+    #pantallaMenu .menu-contenido > button { padding: 9px 12px; }
+    #pantallaMenu .control-modo-pruebas { padding-block: 5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .menu-escena-animada::before,
+    .menu-cristal-flotante,
+    .menu-niebla,
+    .menu-antorcha::after,
+    .menu-antorcha i,
+    .menu-particulas i,
+    .menu-hojas i {
+        animation: none;
+    }
+
+    .menu-cristal-flotante { transform: translate(-50%, -100%); }
+    .menu-particulas i,
+    .menu-hojas i { display: none; }
+}
+
 /* Dragón multijugador: selector, rugido y Llamado de la Matriarca. */
 .lista-personajes-versus {
     grid-template-columns: repeat(4, minmax(0, 1fr));

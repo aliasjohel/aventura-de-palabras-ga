@@ -22,7 +22,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
-    <link rel="stylesheet" href="css/styles.css?v=20260804-matriarca-dialogo-1">
+    <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
+    <link rel="stylesheet" href="css/styles.css?v=20260805-menu-animado-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -33,31 +34,60 @@
     <main class="app">
 
         <section id="pantallaMenu" class="pantalla activa">
-            <h2 class="studio">GA Games</h2>
-            <h1 class="titulo">Aventura de Palabras</h1>
-            <p class="subtitulo">Explorá mundos resolviendo palabras</p>
+            <div class="menu-escena-animada" aria-hidden="true">
+                <div class="menu-niebla menu-niebla-uno"></div>
+                <div class="menu-niebla menu-niebla-dos"></div>
+                <div class="menu-antorcha menu-antorcha-izquierda"><i></i></div>
+                <div class="menu-antorcha menu-antorcha-derecha"><i></i></div>
+                <img class="menu-cristal-flotante" src="assets/images/intro/cristal-icono.png" alt="">
+                <div class="menu-particulas">
+                    <i style="--x: 18%; --y: 72%; --d: 0s"></i>
+                    <i style="--x: 27%; --y: 58%; --d: -2.7s"></i>
+                    <i style="--x: 36%; --y: 77%; --d: -5.1s"></i>
+                    <i style="--x: 44%; --y: 62%; --d: -1.4s"></i>
+                    <i style="--x: 52%; --y: 73%; --d: -4.2s"></i>
+                    <i style="--x: 60%; --y: 55%; --d: -6.3s"></i>
+                    <i style="--x: 68%; --y: 79%; --d: -3.4s"></i>
+                    <i style="--x: 76%; --y: 64%; --d: -0.8s"></i>
+                    <i style="--x: 83%; --y: 75%; --d: -5.7s"></i>
+                    <i style="--x: 49%; --y: 47%; --d: -7.2s"></i>
+                </div>
+                <div class="menu-hojas">
+                    <i style="--x: 8%; --d: -1s; --r: 18deg"></i>
+                    <i style="--x: 23%; --d: -6s; --r: -28deg"></i>
+                    <i style="--x: 67%; --d: -3.5s; --r: 36deg"></i>
+                    <i style="--x: 88%; --d: -8s; --r: -14deg"></i>
+                    <i style="--x: 47%; --d: -10s; --r: 52deg"></i>
+                </div>
+            </div>
 
-            <button id="btnJugar">🆕 Nueva aventura</button>
-            <button id="btnNuevaAventura" class="secundario oculto">
-                🆕 Nueva aventura
-            </button>
-            <button id="btnVersus" class="btn-versus-menu">⚔️ Multijugador</button>
-            <button disabled>Estadísticas</button>
-            <button disabled>Configuración</button>
+            <div class="menu-contenido">
+                <h2 class="studio">GA Games</h2>
+                <h1 class="titulo">Aventura de Palabras</h1>
+                <p class="subtitulo">Explorá mundos resolviendo palabras</p>
 
-            <label class="control-modo-pruebas" for="modoPruebas">
-                <input id="modoPruebas" type="checkbox">
-                <span>Modo Pruebas</span>
-            </label>
+                <button id="btnJugar">🆕 Nueva aventura</button>
+                <button id="btnNuevaAventura" class="secundario oculto">
+                    🆕 Nueva aventura
+                </button>
+                <button id="btnVersus" class="btn-versus-menu">⚔️ Multijugador</button>
+                <button disabled>Estadísticas</button>
+                <button disabled>Configuración</button>
 
-            <div id="panelModoPruebas" class="panel-modo-pruebas oculto" aria-label="Herramientas de prueba">
-                <label for="selectorMundoPruebas">Mundo</label>
-                <select id="selectorMundoPruebas"></select>
+                <label class="control-modo-pruebas" for="modoPruebas">
+                    <input id="modoPruebas" type="checkbox">
+                    <span>Modo Pruebas</span>
+                </label>
 
-                <label for="selectorMisionPruebas">Misión</label>
-                <select id="selectorMisionPruebas"></select>
+                <div id="panelModoPruebas" class="panel-modo-pruebas oculto" aria-label="Herramientas de prueba">
+                    <label for="selectorMundoPruebas">Mundo</label>
+                    <select id="selectorMundoPruebas"></select>
 
-                <button id="btnIniciarMisionPruebas" type="button">Iniciar misión</button>
+                    <label for="selectorMisionPruebas">Misión</label>
+                    <select id="selectorMisionPruebas"></select>
+
+                    <button id="btnIniciarMisionPruebas" type="button">Iniciar misión</button>
+                </div>
             </div>
         </section>
 
