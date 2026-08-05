@@ -89,10 +89,10 @@ body.intro-pendiente > .btn-saltar-narrativa {
     z-index: 3;
     left: 50%;
     top: 50%;
-    width: clamp(38px, 9vw, 70px);
+    width: clamp(86px, 20vw, 130px);
     height: auto;
     opacity: 0;
-    filter: brightness(1.08) saturate(1.08) drop-shadow(0 0 14px rgba(68, 255, 133, 0.8));
+    filter: brightness(1.02) saturate(1.04) drop-shadow(0 0 18px rgba(68, 255, 133, 0.72));
     transform: translate(-50%, 65%) scale(0.18) rotateY(0deg);
     will-change: transform, opacity, filter;
 }
@@ -213,7 +213,7 @@ body.intro-pendiente > .btn-saltar-narrativa {
 @keyframes introElevarCristal {
     0% { opacity: 0; transform: translate(-50%, 65%) scale(0.18) rotateY(0deg); }
     26% { opacity: 1; }
-    100% { opacity: 1; transform: translate(-50%, -118%) scale(1) rotateY(180deg); }
+    100% { opacity: 1; transform: translate(-50%, -70%) scale(1) rotateY(180deg); }
 }
 
 @keyframes introParticula {
@@ -244,7 +244,7 @@ body.intro-pendiente > .btn-saltar-narrativa {
 @media (max-height: 560px) and (orientation: landscape) {
     .intro-escena { height: 96vh; }
     .intro-libro { width: min(47vw, 390px); }
-    .intro-cristal { width: clamp(34px, 6vw, 54px); }
+    .intro-cristal { width: clamp(66px, 12vw, 100px); }
     .intro-logo-titulo { font-size: clamp(1.8rem, 6vw, 3.5rem); }
 }
 

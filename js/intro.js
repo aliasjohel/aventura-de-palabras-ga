@@ -20,7 +20,7 @@
       <div class="intro-resplandor"></div>
       <img class="intro-libro" src="assets/images/intro/libro-intro-sin-cristal.png" alt="">
       <div class="intro-particulas"></div>
-      <img class="intro-cristal" src="assets/images/elements/cristal-sabiduria-esmeralda.png" alt="">
+      <img class="intro-cristal" src="assets/images/intro/cristal-icono.png" alt="">
       <div class="intro-destello"></div>
       <div class="intro-logo">
         <span class="intro-logo-titulo">Aventura de Palabras</span>
