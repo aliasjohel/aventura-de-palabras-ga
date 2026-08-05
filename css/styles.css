@@ -6615,7 +6615,7 @@ button:disabled {
 .matriarca-impacto,
 .matriarca-polvo,
 .cinematica-dragon-victoria,
-.matriarca-remate {
+.matriarca-llamado {
     position: absolute;
     opacity: 0;
     pointer-events: none;
@@ -6721,7 +6721,7 @@ button:disabled {
     width: min(46vw, 560px);
 }
 
-.matriarca-remate {
+.matriarca-llamado {
     z-index: 11;
     left: 32%;
     bottom: 18%;
@@ -6796,8 +6796,8 @@ button:disabled {
     animation: festejoDragonMatriarcaVersus 6.2s ease both;
 }
 
-.cinematica-final-versus.llamado-matriarca.activa .matriarca-remate {
-    animation: remateDragonMatriarcaVersus 6.2s ease both;
+.cinematica-final-versus.llamado-matriarca.activa .matriarca-llamado {
+    animation: llamadoDragonMatriarcaVersus 6.2s ease both;
 }
 
 .cinematica-final-versus.llamado-matriarca.activa .eclipse-particulas i {
@@ -6865,10 +6865,10 @@ button:disabled {
     96%, 100% { opacity: 0; transform: translateX(0) scale(1.02); }
 }
 
-@keyframes remateDragonMatriarcaVersus {
-    0%, 70% { opacity: 0; transform: translateY(8px) scale(0.92); }
-    76%, 90% { opacity: 1; transform: translateY(0) scale(1); }
-    96%, 100% { opacity: 0; }
+@keyframes llamadoDragonMatriarcaVersus {
+    0%, 21% { opacity: 0; transform: translateY(8px) scale(0.92); }
+    27%, 40% { opacity: 1; transform: translateY(0) scale(1); }
+    46%, 100% { opacity: 0; transform: translateY(-5px) scale(0.98); }
 }
 
 @keyframes destelloPisotonMatriarcaVersus {
@@ -6896,7 +6896,6 @@ button:disabled {
 
     .cinematica-final-versus.llamado-matriarca .cinematica-pata-matriarca,
     .cinematica-final-versus.llamado-matriarca .cinematica-dragon-victoria,
-    .cinematica-final-versus.llamado-matriarca .matriarca-remate,
     .cinematica-final-versus.llamado-matriarca .cinematica-final-titulos span,
     .cinematica-final-versus.llamado-matriarca .cinematica-final-titulos h2 {
         opacity: 1;
@@ -6919,7 +6918,7 @@ button:disabled {
         width: min(42vw, 500px);
     }
 
-    .matriarca-remate {
+    .matriarca-llamado {
         bottom: 13%;
     }
 }
