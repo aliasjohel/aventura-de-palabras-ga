@@ -77,6 +77,7 @@ const proyectilMagoJugadorVersus = document.getElementById(
 const proyectilGuardianaVersus = document.getElementById(
   "proyectilGuardianaVersus",
 );
+const rugidoDragonVersus = document.getElementById("rugidoDragonVersus");
 const entradaDueloVersus = document.getElementById("entradaDueloVersus");
 const btnSaltarEntradaVersus = document.getElementById(
   "btnSaltarEntradaVersus",
@@ -102,6 +103,12 @@ const btnProbarCinematicaExplorador = document.getElementById(
 const btnProbarCinematicaMago = document.getElementById("btnProbarCinematicaMago");
 const btnProbarCinematicaGuardiana = document.getElementById(
   "btnProbarCinematicaGuardiana",
+);
+const btnProbarCinematicaDragon = document.getElementById(
+  "btnProbarCinematicaDragon",
+);
+const rivalCinematicaMatriarca = document.querySelector(
+  ".cinematica-rival-matriarca",
 );
 const victimaPruebaFaucesVersus = document.getElementById(
   "victimaPruebaFaucesVersus",
@@ -1231,6 +1238,8 @@ const srcMagoBaseVersus = "assets/images/personajes/versus/mago-base.png";
 const srcMagoAtaqueVersus = "assets/images/personajes/versus/mago-ataque.png";
 const srcGuardianaBaseVersus = "assets/images/personajes/coleccion/guardiana-bosque-base.png";
 const srcGuardianaAtaqueVersus = "assets/images/personajes/coleccion/guardiana-bosque-ataque-raices.png";
+const srcDragonBaseVersus = "assets/images/personajes/versus/dragon-base.png";
+const srcDragonAtaqueVersus = "assets/images/personajes/versus/dragon-ataque.png";
 const personajesVersus = {
   explorador: {
     nombre: "Explorador",
@@ -1249,6 +1258,12 @@ const personajesVersus = {
     base: srcGuardianaBaseVersus,
     ataque: "raices",
     final: "prision-esmeralda",
+  },
+  dragon: {
+    nombre: "Dragón",
+    base: srcDragonBaseVersus,
+    ataque: "rugido-dragon",
+    final: "llamado-matriarca",
   },
 };
 let personajeJugadorVersus = "explorador";
@@ -1320,12 +1335,14 @@ function limpiarAnimacionAtaqueJugadorVersus() {
     "concentrando-hechizo",
     "lanzando-hechizo",
     "lanzando-viento",
+    "rugiendo-dragon",
   );
   personajeVersusDos.classList.remove("recibiendo-dano");
   vidasVersusDos.classList.remove("recibiendo-dano");
   bumeranVersus.classList.remove("volando");
   proyectilMagoJugadorVersus.classList.remove("volando");
   proyectilGuardianaVersus.classList.remove("volando");
+  rugidoDragonVersus.classList.remove("volando");
   herramientasPruebasVersus.classList.remove("ataque-en-curso");
 }
 
@@ -1352,6 +1369,7 @@ function configurarPersonajesCombateVersus() {
     "personaje-explorador",
     "personaje-mago",
     "personaje-guardiana",
+    "personaje-dragon",
   );
   personajeVersusUno.classList.add(`personaje-${personajeJugadorVersus}`);
   personajeVersusDos.src = srcMagoBaseVersus;
@@ -1374,6 +1392,7 @@ function limpiarEntradaDueloVersus() {
     "entrada-explorador",
     "entrada-mago",
     "entrada-guardiana",
+    "entrada-dragon",
   );
   personajeVersusDos.classList.remove("entrando-duelo", "entrada-mago-rival");
   bumeranVersus.classList.remove("mostrando-entrada");
@@ -1565,6 +1584,43 @@ function reproducirAtaqueGuardianaVersus() {
   programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1380, "jugador");
 }
 
+function reproducirAtaqueDragonVersus() {
+  limpiarAnimacionAtaqueJugadorVersus();
+  herramientasPruebasVersus.classList.add("ataque-en-curso");
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    reproducirSonidoVersus("versusAtaqueUno", 0.68);
+    personajeVersusDos.classList.add("recibiendo-dano");
+    programarPasoAtaqueVersus(() => {
+      personajeVersusDos.classList.remove("recibiendo-dano");
+    }, 220, "jugador");
+    programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 280, "jugador");
+    return;
+  }
+
+  personajeVersusUno.src = srcDragonAtaqueVersus;
+  personajeVersusUno.classList.add("rugiendo-dragon");
+
+  programarPasoAtaqueVersus(() => {
+    void rugidoDragonVersus.offsetWidth;
+    rugidoDragonVersus.classList.add("volando");
+    reproducirSonidoVersus("versusAtaqueUno", 0.7);
+  }, 180, "jugador");
+
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.add("recibiendo-dano");
+    vidasVersusDos.classList.add("recibiendo-dano");
+    reproducirSonidoVersus("versusAtaqueDos", 0.82);
+  }, 660, "jugador");
+
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.remove("recibiendo-dano");
+    vidasVersusDos.classList.remove("recibiendo-dano");
+  }, 1010, "jugador");
+
+  programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1320, "jugador");
+}
+
 function reproducirAtaqueJugadorVersus() {
   const ataque = personajesVersus[personajeJugadorVersus].ataque;
   if (ataque === "magia") {
@@ -1573,6 +1629,10 @@ function reproducirAtaqueJugadorVersus() {
   }
   if (ataque === "raices") {
     reproducirAtaqueGuardianaVersus();
+    return;
+  }
+  if (ataque === "rugido-dragon") {
+    reproducirAtaqueDragonVersus();
     return;
   }
   reproducirAtaqueBumeranVersus();
@@ -2064,7 +2124,9 @@ function finalizarPartidaVersus(ganador, detalle) {
       ? reproducirPrisionEsmeraldaVersus
       : finalElegido === "eclipse-violeta"
         ? reproducirEclipseVioletaVersus
-        : reproducirTrampaSelvaticaVersus;
+        : finalElegido === "llamado-matriarca"
+          ? reproducirLlamadoMatriarcaVersus
+          : reproducirTrampaSelvaticaVersus;
     reproducirFinal().then(() => {
       mostrarResultadoPartidaVersus(ganador, detalle);
     });
@@ -2184,6 +2246,35 @@ function reproducirPrisionEsmeraldaVersus(victima = personajeRivalVersus) {
   });
 }
 
+function reproducirLlamadoMatriarcaVersus() {
+  cancelarCinematicaFinalVersus();
+  crearParticulasEclipseVersus();
+  fondoCinematicaVersus.src = fondoVersus.src;
+  rivalCinematicaMatriarca.src = personajesVersus[personajeRivalVersus].base;
+  rivalCinematicaMatriarca.alt = `${personajesVersus[personajeRivalVersus].nombre} frente a la Matriarca`;
+  etiquetaCinematicaVersus.textContent = "AUXILIO ANCESTRAL";
+  tituloCinematicaVersus.textContent = "LLAMADO DE LA MATRIARCA";
+  cinematicaFinalVersus.classList.remove(
+    "eclipse-violeta",
+    "trampa-selvatica",
+    "prision-esmeralda",
+  );
+  cinematicaFinalVersus.classList.add("llamado-matriarca");
+  cinematicaFinalVersus.classList.remove("oculto");
+  void cinematicaFinalVersus.offsetWidth;
+  cinematicaFinalVersus.classList.add("activa");
+  btnSaltarCinematicaVersus.focus();
+  reproducirSonidoVersus("versusFinish", 0.82);
+
+  return new Promise((resolve) => {
+    demoVersus.resolverCinematica = resolve;
+    demoVersus.temporizadorCinematica = setTimeout(
+      completarCinematicaFinalVersus,
+      6200,
+    );
+  });
+}
+
 function completarCinematicaFinalVersus() {
   if (demoVersus.temporizadorCinematica) {
     clearTimeout(demoVersus.temporizadorCinematica);
@@ -2196,6 +2287,7 @@ function completarCinematicaFinalVersus() {
     "eclipse-violeta",
     "trampa-selvatica",
     "prision-esmeralda",
+    "llamado-matriarca",
   );
   particulasEclipseVersus.replaceChildren();
   const resolver = demoVersus.resolverCinematica;
@@ -2215,6 +2307,7 @@ function cancelarCinematicaFinalVersus() {
     "eclipse-violeta",
     "trampa-selvatica",
     "prision-esmeralda",
+    "llamado-matriarca",
   );
   particulasEclipseVersus.replaceChildren();
   demoVersus.resolverCinematica = null;
@@ -2226,6 +2319,10 @@ function probarCinematicaVersus(personaje) {
   if (!modoPruebasActivo || demoVersus.partidaFinalizada) return;
   if (personaje === "guardiana") {
     void reproducirPrisionEsmeraldaVersus(victimaPruebaFaucesVersus.value);
+    return;
+  }
+  if (personaje === "dragon") {
+    void reproducirLlamadoMatriarcaVersus();
     return;
   }
 
@@ -2245,6 +2342,10 @@ btnProbarCinematicaMago.addEventListener("click", () => {
 
 btnProbarCinematicaGuardiana.addEventListener("click", () => {
   probarCinematicaVersus("guardiana");
+});
+
+btnProbarCinematicaDragon.addEventListener("click", () => {
+  probarCinematicaVersus("dragon");
 });
 
 btnProbarAtaqueElegido.addEventListener("click", () => {

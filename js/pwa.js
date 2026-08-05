@@ -63,6 +63,11 @@ async function registrarAplicacionInstalable() {
   });
 
   new MutationObserver(() => {
+    if (!menuPrincipalPwa.classList.contains("activa")) {
+      if (!avisoActualizacion.hidden) avisoPendiente = true;
+      avisoActualizacion.hidden = true;
+      return;
+    }
     if (avisoPendiente && menuPrincipalPwa.classList.contains("activa")) {
       presentarAvisoActualizacion();
     }

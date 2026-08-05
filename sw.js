@@ -1,4 +1,4 @@
-const CACHE_NAME = "aventura-palabras-runtime-v5";
+const CACHE_NAME = "aventura-palabras-runtime-v6";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -12,6 +12,11 @@ const CORE_ASSETS = [
   "./assets/icons/icon-512.png",
   "./assets/icons/icon-maskable-512.png",
   "./assets/images/elements/cristal-sabiduria-esmeralda.png",
+  "./assets/images/personajes/versus/dragon-base.png",
+  "./assets/images/personajes/versus/dragon-ataque.png",
+  "./assets/images/personajes/versus/dragon-llamando.png",
+  "./assets/images/personajes/versus/dragon-victoria.png",
+  "./assets/images/personajes/versus/mama-dragon-pata.png",
   "./assets/sounds/cristal-casilla.mp3",
   "./assets/sounds/prologo.mp3",
 ];
