@@ -200,7 +200,7 @@ const musicaMenu = globalThis.musicaMenuAventura
   || new Audio("assets/sounds/melodia-menu.mp3");
 globalThis.musicaMenuAventura = musicaMenu;
 musicaMenu.loop = true;
-musicaMenu.volume = 0.32;
+musicaMenu.volume = 0.7;
 musicaMenu.preload = "auto";
 const sonidoComenzarAventura = new Audio(
   "assets/sounds/comenzar-aventura.wav",
