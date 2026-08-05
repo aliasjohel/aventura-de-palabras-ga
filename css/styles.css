@@ -3097,6 +3097,118 @@ button:disabled {
     pointer-events: none;
 }
 
+/* Ramas animadas de la mision 3: el sendero empieza libre y se bloquea con el crujido. */
+.capa-ramas-bloqueo {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+    scale: 1.1;
+    transform-origin: center;
+}
+
+.rama-bloqueo {
+    position: absolute;
+    display: block;
+    width: var(--ancho-rama);
+    height: auto;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    transform-origin: var(--origen-rama);
+    filter: brightness(0.9) saturate(0.92) drop-shadow(0 7px 5px rgba(0, 0, 0, 0.55));
+    will-change: transform, opacity;
+}
+
+.rama-bloqueo-1 {
+    --ancho-rama: 105%;
+    --rotacion-rama: 13deg;
+    --rotacion-inicial: -4deg;
+    --entrada-x: -5%;
+    --entrada-y: -82%;
+    --escala-x-inicial: 0.94;
+    --origen-rama: 20% 50%;
+    --retraso-rama: 0ms;
+    top: -24%;
+    left: -30%;
+}
+
+.rama-bloqueo-2 {
+    --ancho-rama: 96%;
+    --rotacion-rama: -15deg;
+    --rotacion-inicial: -15deg;
+    --entrada-x: 0%;
+    --entrada-y: 0%;
+    --escala-x-inicial: 0.08;
+    --origen-rama: 88% 50%;
+    --retraso-rama: 420ms;
+    top: -10%;
+    left: 25%;
+}
+
+.rama-bloqueo-3 {
+    --ancho-rama: 116%;
+    --rotacion-rama: 20deg;
+    --rotacion-inicial: 4deg;
+    --entrada-x: -8%;
+    --entrada-y: -92%;
+    --escala-x-inicial: 0.96;
+    --origen-rama: 28% 50%;
+    --retraso-rama: 980ms;
+    top: 8%;
+    left: -36%;
+}
+
+.rama-bloqueo-4 {
+    --ancho-rama: 108%;
+    --rotacion-rama: -18deg;
+    --rotacion-inicial: -18deg;
+    --entrada-x: 0%;
+    --entrada-y: 0%;
+    --escala-x-inicial: 0.06;
+    --origen-rama: 89% 50%;
+    --retraso-rama: 1540ms;
+    top: 22%;
+    left: 18%;
+}
+
+.capa-ramas-bloqueo.ramas-activas .rama-bloqueo {
+    animation: bloquearSenderoConRama 1280ms var(--retraso-rama) cubic-bezier(0.2, 0.78, 0.25, 1) forwards;
+}
+
+.capa-ramas-bloqueo.ramas-colocadas .rama-bloqueo {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(var(--rotacion-rama)) scaleX(1);
+}
+
+@keyframes bloquearSenderoConRama {
+    0% {
+        opacity: 0;
+        transform:
+            translate3d(var(--entrada-x), var(--entrada-y), 0)
+            rotate(var(--rotacion-inicial))
+            scaleX(var(--escala-x-inicial));
+    }
+
+    16% { opacity: 1; }
+
+    78% {
+        opacity: 1;
+        transform: translate3d(0, 2.5%, 0) rotate(var(--rotacion-rama)) scaleX(1);
+    }
+
+    90% {
+        transform: translate3d(0, -1.2%, 0) rotate(var(--rotacion-rama)) scaleX(1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotate(var(--rotacion-rama)) scaleX(1);
+    }
+}
+
 /* Recortes del fondo original: mueven solo el puente de la mision 8. */
 .capa-puente-antiguo {
     position: absolute;
@@ -6912,6 +7024,13 @@ button:disabled {
     .menu-cristal-flotante { transform: translate(-50%, -100%); }
     .menu-particulas i,
     .menu-hojas i { display: none; }
+
+    .capa-ramas-bloqueo .rama-bloqueo {
+        animation: none !important;
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotate(var(--rotacion-rama)) scaleX(1);
+        will-change: auto;
+    }
 }
 
 /* Dragón multijugador: selector, rugido y Llamado de la Matriarca. */

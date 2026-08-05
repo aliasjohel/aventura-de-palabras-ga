@@ -344,7 +344,7 @@ const escenasPorEscenario = [
         "🪨 Resuelve la palabra secreta para encontrar un camino alrededor de la roca.",
     },
     {
-      fondos: ["bosque-3.png"],
+      fondos: ["bosque-3-despejado.png"],
       texto: "🌿 Resuelve la palabra para encontrar un paso entre las ramas.",
     },
     {
@@ -816,6 +816,10 @@ btnContinuarHistoria.addEventListener("click", async () => {
     if (sonidoNarrativoPendiente) {
       if (sonidoNarrativoPendiente === "piedra") {
         animarImpactoPiedra();
+      }
+
+      if (sonidoNarrativoPendiente === "ramas") {
+        activarBloqueoRamas();
       }
 
       reproducirSonido(sonidoNarrativoPendiente);
@@ -3193,6 +3197,7 @@ function detenerSonidos() {
   detenerAmbienteCristal();
   detenerPortalMision();
   detenerAmbienteHojas();
+  detenerBloqueoRamas();
   detenerTormenta();
   detenerNiebla();
   detenerMiradasLobos();
@@ -3233,6 +3238,57 @@ function detenerAmbienteHojas() {
   contenedorEscenario
     .querySelectorAll(".capa-hojas-viento")
     .forEach((capa) => capa.remove());
+}
+
+function detenerBloqueoRamas() {
+  contenedorEscenario
+    .querySelectorAll(".capa-ramas-bloqueo")
+    .forEach((capa) => capa.remove());
+}
+
+function actualizarBloqueoRamasMision() {
+  detenerBloqueoRamas();
+
+  if (escenarioActual !== 0 || misionActual !== 2) return;
+
+  const capa = document.createElement("div");
+  capa.className = "capa-ramas-bloqueo";
+  capa.setAttribute("aria-hidden", "true");
+
+  for (let indice = 1; indice <= 4; indice++) {
+    const rama = document.createElement("img");
+    rama.className = `rama-bloqueo rama-bloqueo-${indice}`;
+    rama.src = "assets/images/elementos/rama-bloqueo-bosque.png";
+    rama.alt = "";
+    capa.appendChild(rama);
+  }
+
+  contenedorEscenario.insertBefore(capa, personajeImagen);
+
+  if (desafiosCompletados > 0 || prefiereReducirMovimiento.matches) {
+    capa.classList.add("ramas-colocadas");
+    return;
+  }
+
+  const esperaSonidoNarrativo =
+    historiaMisionPendiente && sonidoNarrativoPendiente === "ramas";
+
+  if (!esperaSonidoNarrativo) {
+    requestAnimationFrame(() => activarBloqueoRamas());
+  }
+}
+
+function activarBloqueoRamas() {
+  const capa = contenedorEscenario.querySelector(".capa-ramas-bloqueo");
+  if (!capa || capa.classList.contains("ramas-activas")) return;
+
+  capa.classList.remove("ramas-colocadas");
+  void capa.offsetWidth;
+  capa.classList.add("ramas-activas");
+
+  contenedorEscenario.classList.remove("temblor");
+  void contenedorEscenario.offsetWidth;
+  contenedorEscenario.classList.add("temblor");
 }
 
 function detenerVientoArena() {
@@ -4040,6 +4096,7 @@ function actualizarEscenaPorMision() {
     escenarioActual === 1,
   );
   fondoEscenario.src = `assets/images/fondos/${nombreFondo}`;
+  actualizarBloqueoRamasMision();
   actualizarVientoArenaMision();
   volverEstadoBaseExplorador();
 }
@@ -5850,6 +5907,9 @@ function precargarRecursosCriticosMision(
 
   return Promise.all([
     precargarImagen(`assets/images/fondos/${nombreFondo}`),
+    escenario === 0 && mision === 2
+      ? precargarImagen("assets/images/elementos/rama-bloqueo-bosque.png")
+      : Promise.resolve(),
     cargarImagenExplorador(estadoExplorador),
   ]);
 }
