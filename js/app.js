@@ -658,11 +658,18 @@ let palabrasSecretasVersus = [];
 let transicionCombateVersus = null;
 
 function limpiarPalabraParaVersus(valor) {
-  return valor.toLocaleUpperCase("es-AR").replace(/[^A-ZÁÉÍÓÚÜÑ]/g, "");
+  return valor
+    .toLocaleUpperCase("es-AR")
+    .replace(/[^A-ZÁÉÍÓÚÜÑ]/g, "")
+    .slice(0, maximoLetrasPalabraVersus);
 }
 
 function obtenerClavePalabraVersus(valor) {
-  return valor.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return valor
+    .replace(/Ñ/g, "\uE000")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\uE000/g, "Ñ");
 }
 
 function validarPreparacionVersus(mostrarErrores = false) {
@@ -675,16 +682,24 @@ function validarPreparacionVersus(mostrarErrores = false) {
     const contador = campo.querySelector(".contador-palabra-versus");
     const error = campo.querySelector(".error-palabra-versus");
     const valor = valores[indice];
-    const repetida = valor.length >= 3 && claves.some(
+    const repetida = valor.length >= minimoLetrasPalabraVersus && claves.some(
       (otra, otroIndice) => otroIndice !== indice && otra === claves[indice],
     );
     let mensaje = "";
 
     contador.textContent = `${valor.length} ${valor.length === 1 ? "letra" : "letras"}`;
-    if (valor.length > 0 && valor.length < 2) mensaje = "Debe tener al menos 2 letras.";
+    if (valor.length > 0 && valor.length < minimoLetrasPalabraVersus) {
+      mensaje = `Debe tener al menos ${minimoLetrasPalabraVersus} letras.`;
+    }
+    if (valor.length > maximoLetrasPalabraVersus) {
+      mensaje = `Puede tener hasta ${maximoLetrasPalabraVersus} letras.`;
+    }
     if (repetida) mensaje = "Esta palabra está repetida.";
 
-    const valida = valor.length >= 2 && !repetida;
+    const valida =
+      valor.length >= minimoLetrasPalabraVersus &&
+      valor.length <= maximoLetrasPalabraVersus &&
+      !repetida;
     formularioValido = formularioValido && valida;
     input.classList.toggle("invalida", mostrarErrores && !valida);
     error.textContent = mostrarErrores ? mensaje : "";
@@ -1235,25 +1250,68 @@ function crearTecladoVersus() {
 // Duelo local de tres rondas. Cuando exista el servidor, las palabras y jugadas
 // del rival llegarán desde el otro dispositivo en lugar de esta simulación.
 const bancosPalabrasVersus = {
-  desierto: aventura[1].palabras.map((item) => item.palabra),
-  bosque: aventura[0].palabras.map((item) => item.palabra),
+  paises: [
+    "ARGENTINA", "BRASIL", "CHILE", "PERU", "ESPAÑA",
+    "MEXICO", "CANADA", "ITALIA", "JAPON", "INDIA",
+  ],
+  frutas: [
+    "MANZANA", "PERA", "UVA", "KIWI", "MANGO",
+    "LIMON", "NARANJA", "BANANA", "CIRUELA", "MELON",
+  ],
   animales: [
     "AGUILA", "BALLENA", "CABALLO", "CONEJO", "DELFIN",
     "GATO", "JIRAFA", "LEON", "PANDA", "TIGRE",
   ],
+  comidas: [
+    "PIZZA", "PASTA", "EMPANADA", "MILANESA", "LOCRO",
+    "SOPA", "ARROZ", "TORTILLA", "ENSALADA", "HELADO",
+  ],
+  profesiones: [
+    "MEDICO", "DOCENTE", "BOMBERO", "ABOGADO", "ARTISTA",
+    "PANADERO", "PILOTO", "ACTOR", "COCINERO", "DENTISTA",
+  ],
+  deportes: [
+    "FUTBOL", "TENIS", "RUGBY", "HOCKEY", "BOXEO",
+    "NATACION", "CICLISMO", "VOLEY", "GOLF", "JUDO",
+  ],
+  transportes: [
+    "AUTO", "TREN", "BARCO", "AVION", "METRO",
+    "BICICLETA", "CAMION", "COLECTIVO", "TRANVIA", "MOTO",
+  ],
+  objetos: [
+    "MESA", "SILLA", "RELOJ", "LLAVE", "VASO",
+    "LAMPARA", "CUADERNO", "ESPEJO", "BOTELLA", "TIJERA",
+  ],
+  naturaleza: [
+    "SOL", "MAR", "RIO", "LUNA", "MONTAÑA",
+    "VOLCAN", "BOSQUE", "NUBE", "VIENTO", "LAGUNA",
+  ],
+  nombres: [
+    "ANA", "LUZ", "LEO", "JUAN", "SOFIA",
+    "MARTINA", "TOMAS", "CARLOS", "ELENA", "JULIAN",
+  ],
 };
-const fondosTematicaVersus = {
-  desierto: "assets/images/fondos/desierto-1.png",
-  bosque: "assets/images/fondos/bosque-1.png",
-  animales: "assets/images/fondos/bosque-6.png",
+const nombresTematicasVersus = {
+  paises: "Países",
+  frutas: "Frutas",
+  animales: "Animales",
+  comidas: "Comidas",
+  profesiones: "Profesiones",
+  deportes: "Deportes",
+  transportes: "Transportes",
+  objetos: "Objetos",
+  naturaleza: "Naturaleza",
+  nombres: "Nombres",
 };
-const descripcionFondosVersus = {
-  desierto: "Ruinas del desierto",
-  bosque: "Sendero del bosque encantado",
-  animales: "Bosque de los animales",
-};
+const arenasVersus = [
+  { src: "assets/images/fondos/desierto-1.png", alt: "Ruinas antiguas de combate" },
+  { src: "assets/images/fondos/bosque-1.png", alt: "Sendero del bosque encantado" },
+  { src: "assets/images/fondos/bosque-6.png", alt: "Bosque misterioso de combate" },
+];
 const duracionPartidaVersus = 150;
 const maximoPalabrasVersus = 3;
+const minimoLetrasPalabraVersus = 3;
+const maximoLetrasPalabraVersus = 12;
 const maximoErroresVersus = 6;
 const intervaloJugadaRivalVersus = 3000;
 const probabilidadAciertoRivalVersus = 0.56;
@@ -1315,7 +1373,8 @@ const victimasFaucesVersus = {
 };
 
 const demoVersus = {
-  tematica: "desierto",
+  tematicaParaJugador: "frutas",
+  tematicaParaRival: "paises",
   palabrasJugador: [],
   palabrasRival: [],
   indiceJugador: 0,
@@ -1749,9 +1808,13 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
   detenerRondaVersus();
   limpiarAnimacionAtaqueVersus();
   configurarPersonajesCombateVersus();
-  demoVersus.tematica = tematicaVersus.value;
+  const tematicasDisponibles = Object.keys(bancosPalabrasVersus);
+  demoVersus.tematicaParaRival = tematicaVersus.value;
+  demoVersus.tematicaParaJugador = tematicasDisponibles[
+    Math.floor(Math.random() * tematicasDisponibles.length)
+  ];
   demoVersus.palabrasJugador = mezclarPalabrasVersus(
-    bancosPalabrasVersus[demoVersus.tematica],
+    bancosPalabrasVersus[demoVersus.tematicaParaJugador],
   ).slice(0, maximoPalabrasVersus);
   demoVersus.palabrasRival = palabrasSecretasVersus.map(obtenerClavePalabraVersus);
   demoVersus.indiceJugador = 0;
@@ -1769,8 +1832,9 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
   demoVersus.motivoFinalJugador = "";
   demoVersus.motivoFinalRival = "";
   demoVersus.partidaFinalizada = false;
-  fondoVersus.src = fondosTematicaVersus[demoVersus.tematica];
-  fondoVersus.alt = descripcionFondosVersus[demoVersus.tematica];
+  const arena = arenasVersus[Math.floor(Math.random() * arenasVersus.length)];
+  fondoVersus.src = arena.src;
+  fondoVersus.alt = arena.alt;
   resultadoRondaVersus.classList.add("oculto");
   avisoAvanceVersus.classList.add("oculto");
   actualizarVidasVersus();
@@ -1897,12 +1961,15 @@ function actualizarProgresosVersus() {
   const progresoRival = [...objetivoRival]
     .map((letra) => demoVersus.letrasRival.has(letra) ? "?" : "_");
 
+  const temaJugador = nombresTematicasVersus[demoVersus.tematicaParaJugador];
+  const temaRival = nombresTematicasVersus[demoVersus.tematicaParaRival];
+
   tituloProgresoUno.textContent = demoVersus.finalizadoJugador
     ? "TU RECORRIDO TERMINÓ"
-    : `TU PALABRA ${demoVersus.indiceJugador + 1}/${maximoPalabrasVersus}`;
+    : `TU DESAFÍO · ${temaJugador.toUpperCase()} ${demoVersus.indiceJugador + 1}/${maximoPalabrasVersus}`;
   tituloProgresoDos.textContent = demoVersus.finalizadoRival
     ? "EL RIVAL TERMINÓ"
-    : `RIVAL: PALABRA ${demoVersus.indiceRival + 1}/${maximoPalabrasVersus}`;
+    : `RIVAL · ${temaRival.toUpperCase()} ${demoVersus.indiceRival + 1}/${maximoPalabrasVersus}`;
   tituloVersus.textContent = `J1 ${Math.min(demoVersus.indiceJugador, maximoPalabrasVersus)}/3 · J2 ${Math.min(demoVersus.indiceRival, maximoPalabrasVersus)}/3`;
 
   if (demoVersus.finalizadoJugador) {

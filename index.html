@@ -264,27 +264,34 @@
                 <header class="preparacion-versus-cabecera">
                     <p>DUELO DE PALABRAS</p>
                     <h2 id="tituloPreparacionVersus">Prepar&aacute; tus palabras secretas</h2>
-                    <span>El rival deber&aacute; adivinarlas durante el combate.</span>
+                    <span>Eleg&iacute; una tem&aacute;tica y tres palabras para desafiar al rival.</span>
                 </header>
 
                 <div class="preparacion-versus-cuerpo">
                     <form id="formPreparacionVersus" class="form-preparacion-versus" novalidate>
                         <label class="campo-tematica-versus" for="tematicaVersus">
-                            <span>Tem&aacute;tica del duelo</span>
+                            <span>Tem&aacute;tica que resolver&aacute; tu rival</span>
                             <select id="tematicaVersus">
-                                <option value="desierto">🏜️ Desierto</option>
-                                <option value="bosque">🌲 Bosque</option>
-                                <option value="animales">🐾 Animales</option>
+                                <option value="paises">&#127758; Pa&iacute;ses</option>
+                                <option value="frutas">&#127822; Frutas</option>
+                                <option value="animales">&#128062; Animales</option>
+                                <option value="comidas">&#127860; Comidas</option>
+                                <option value="profesiones">&#129520; Profesiones</option>
+                                <option value="deportes">&#9917; Deportes</option>
+                                <option value="transportes">&#128690; Transportes</option>
+                                <option value="objetos">&#129513; Objetos</option>
+                                <option value="naturaleza">&#127807; Naturaleza</option>
+                                <option value="nombres">&#128292; Nombres</option>
                             </select>
                         </label>
 
                         <fieldset class="palabras-secretas-versus">
-                            <legend>Tus tres palabras</legend>
+                            <legend>Tus tres palabras para el rival</legend>
 
                             <label class="campo-palabra-secreta" for="palabraSecretaVersus1">
                                 <b>1</b>
                                 <input id="palabraSecretaVersus1" class="input-palabra-versus" type="text"
-                                    minlength="2" autocomplete="off" spellcheck="false"
+                                    minlength="3" maxlength="12" autocomplete="off" spellcheck="false"
                                     placeholder="Primera palabra">
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
@@ -293,7 +300,7 @@
                             <label class="campo-palabra-secreta" for="palabraSecretaVersus2">
                                 <b>2</b>
                                 <input id="palabraSecretaVersus2" class="input-palabra-versus" type="text"
-                                    minlength="2" autocomplete="off" spellcheck="false"
+                                    minlength="3" maxlength="12" autocomplete="off" spellcheck="false"
                                     placeholder="Segunda palabra">
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
@@ -302,7 +309,7 @@
                             <label class="campo-palabra-secreta" for="palabraSecretaVersus3">
                                 <b>3</b>
                                 <input id="palabraSecretaVersus3" class="input-palabra-versus" type="text"
-                                    minlength="2" autocomplete="off" spellcheck="false"
+                                    minlength="3" maxlength="12" autocomplete="off" spellcheck="false"
                                     placeholder="Tercera palabra">
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
@@ -324,9 +331,10 @@
                         </div>
                         <h3>Reglas</h3>
                         <ul>
-                            <li>Desde 2 letras, sin m&aacute;ximo.</li>
+                            <li>Entre 3 y 12 letras.</li>
                             <li>Sin espacios ni n&uacute;meros.</li>
                             <li>No se pueden repetir.</li>
+                            <li>Deben respetar la tem&aacute;tica elegida.</li>
                             <li>Tu rival no podr&aacute; verlas.</li>
                             <li>Agotar los 6 intentos quita un coraz&oacute;n.</li>
                         </ul>
@@ -655,7 +663,7 @@
         aria-label="Saltar secuencia narrativa">Saltar</button>
 
     <script src="js/intro.js?v=20260805-musica-menu-4"></script>
-    <script src="js/app.js?v=20260805-ramas-mision-3-1"></script>
+    <script src="js/app.js?v=20260805-tematicas-versus-1"></script>
     <script src="js/pwa.js?v=20260804-dragon-versus-1"></script>
 </body>
 
