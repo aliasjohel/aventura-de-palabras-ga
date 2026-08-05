@@ -196,6 +196,12 @@ const sonidos = {
 const musicaPrologo = new Audio("assets/sounds/prologo.mp3");
 musicaPrologo.loop = false;
 musicaPrologo.volume = 0.25;
+const musicaMenu = globalThis.musicaMenuAventura
+  || new Audio("assets/sounds/melodia-menu.mp3");
+globalThis.musicaMenuAventura = musicaMenu;
+musicaMenu.loop = true;
+musicaMenu.volume = 0.2;
+musicaMenu.preload = "auto";
 const sonidoComenzarAventura = new Audio(
   "assets/sounds/comenzar-aventura.wav",
 );
@@ -1193,6 +1199,12 @@ function mostrarPantalla(pantallaSeleccionada) {
 
   pantallaSeleccionada.classList.add("activa");
   actualizarOrientacionPantalla(pantallaSeleccionada);
+
+  if (pantallaSeleccionada === pantallaMenu) {
+    reproducirMusicaMenu();
+  } else {
+    pausarMusicaMenu();
+  }
 }
 
 function crearTecladoVersus() {
@@ -3077,6 +3089,7 @@ function desbloquearAudio() {
 }
 
 function reproducirMusicaPrologo() {
+  pausarMusicaMenu();
   musicaPrologo.pause();
   musicaPrologo.currentTime = 0;
   musicaPrologo.volume = 0.25;
@@ -3084,6 +3097,38 @@ function reproducirMusicaPrologo() {
     logAudio("musica del prologo bloqueada", error);
   });
 }
+
+function reproducirMusicaMenu() {
+  if (!musicaMenu.paused) return;
+
+  musicaMenu.play().catch((error) => {
+    logAudio("melodía del menú bloqueada", error);
+  });
+}
+
+function pausarMusicaMenu() {
+  musicaMenu.pause();
+}
+
+function activarMusicaMenuPorInteraccion() {
+  if (pantallaMenu.classList.contains("activa")) reproducirMusicaMenu();
+}
+
+document.addEventListener("pointerdown", activarMusicaMenuPorInteraccion, { once: true });
+document.addEventListener("keydown", activarMusicaMenuPorInteraccion, { once: true });
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    pausarMusicaMenu();
+    return;
+  }
+
+  if (
+    pantallaMenu.classList.contains("activa")
+    && !document.body.classList.contains("intro-pendiente")
+  ) {
+    reproducirMusicaMenu();
+  }
+});
 
 function reproducirSonidoComenzarAventura() {
   sonidoComenzarAventura.currentTime = 0;

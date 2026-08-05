@@ -1,4 +1,4 @@
-const CACHE_NAME = "aventura-palabras-runtime-v9";
+const CACHE_NAME = "aventura-palabras-runtime-v10";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -21,6 +21,7 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/mama-dragon-pata.png",
   "./assets/sounds/cristal-casilla.mp3",
   "./assets/sounds/comenzar-aventura.wav",
+  "./assets/sounds/melodia-menu.mp3",
   "./assets/sounds/seleccion-personaje.mp3",
   "./assets/sounds/prologo.mp3",
 ];

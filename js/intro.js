@@ -49,29 +49,29 @@
   document.body.prepend(intro);
 
   const sonidoMagico = new Audio("assets/sounds/cristal-casilla.mp3");
-  const musicaPrincipal = new Audio("assets/sounds/prologo.mp3");
+  const musicaMenu = globalThis.musicaMenuAventura
+    || new Audio("assets/sounds/melodia-menu.mp3");
+  globalThis.musicaMenuAventura = musicaMenu;
   sonidoMagico.volume = 0.16;
-  musicaPrincipal.volume = 0.12;
+  musicaMenu.volume = 0.2;
+  musicaMenu.loop = true;
   sonidoMagico.preload = "auto";
-  musicaPrincipal.preload = "auto";
+  musicaMenu.preload = "auto";
 
   let finalizada = false;
   let temporizadorFinal = 0;
   let temporizadorSonido = 0;
-  let temporizadorMusica = 0;
 
-  const reproducir = (audio) => {
-    audio.currentTime = 0;
+  const reproducir = (audio, { reiniciar = true } = {}) => {
+    if (reiniciar) audio.currentTime = 0;
     audio.play().catch(() => {
       // Los navegadores pueden bloquear audio antes de la primera interacción.
     });
   };
 
-  const detenerAudio = () => {
-    [sonidoMagico, musicaPrincipal].forEach((audio) => {
-      audio.pause();
-      audio.currentTime = 0;
-    });
+  const detenerSonidoMagico = () => {
+    sonidoMagico.pause();
+    sonidoMagico.currentTime = 0;
   };
 
   const finalizar = (evento) => {
@@ -85,8 +85,7 @@
 
     window.clearTimeout(temporizadorFinal);
     window.clearTimeout(temporizadorSonido);
-    window.clearTimeout(temporizadorMusica);
-    detenerAudio();
+    detenerSonidoMagico();
     intro.classList.add("intro-finalizando");
     document.body.classList.remove("intro-pendiente");
 
@@ -96,11 +95,16 @@
     }, DURACION_SALIDA);
   };
 
-  const omitirConTeclado = (evento) => {
-    if (["Enter", " ", "Escape"].includes(evento.key)) finalizar(evento);
+  const omitir = (evento) => {
+    reproducir(musicaMenu, { reiniciar: false });
+    finalizar(evento);
   };
 
-  intro.addEventListener("pointerdown", finalizar);
+  const omitirConTeclado = (evento) => {
+    if (["Enter", " ", "Escape"].includes(evento.key)) omitir(evento);
+  };
+
+  intro.addEventListener("pointerdown", omitir);
   intro.addEventListener("keydown", omitirConTeclado);
 
   // El navegador puede cargar el juego en paralelo durante el medio segundo negro.
@@ -108,7 +112,7 @@
     if (finalizada) return;
     intro.classList.add("intro-iniciada");
     reproducir(sonidoMagico);
-    temporizadorMusica = window.setTimeout(() => reproducir(musicaPrincipal), reducirMovimiento ? 1300 : 3650);
+    reproducir(musicaMenu, { reiniciar: false });
   }, RETRASO_INICIO);
 
   temporizadorFinal = window.setTimeout(
