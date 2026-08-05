@@ -1,4 +1,4 @@
-const CACHE_NAME = "aventura-palabras-runtime-v6";
+const CACHE_NAME = "aventura-palabras-runtime-v7";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -10,6 +10,7 @@ const CORE_ASSETS = [
   "./js/pwa.js",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.png",
+  "./assets/images/intro/libro-intro-sin-cristal.png",
   "./assets/icons/icon-maskable-512.png",
   "./assets/images/elements/cristal-sabiduria-esmeralda.png",
   "./assets/images/personajes/versus/dragon-base.png",

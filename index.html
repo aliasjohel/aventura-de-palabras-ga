@@ -12,11 +12,18 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Aventura">
     <title>Aventura de Palabras - GA Games</title>
+    <style>
+        /* Evita que el menú llegue a verse antes de cargar los estilos de la introducción. */
+        html { background: #000; }
+        body.intro-pendiente { margin: 0; background: #000; overflow: hidden; }
+        body.intro-pendiente > .app { visibility: hidden; }
+    </style>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="stylesheet" href="css/styles.css?v=20260804-dragon-versus-1">
-    <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-1">
+    <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
+    <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-2">
 </head>
 
 <body class="intro-pendiente">
@@ -615,7 +622,7 @@
     <button id="btnSaltarNarrativa" class="btn-saltar-narrativa oculto" type="button"
         aria-label="Saltar secuencia narrativa">Saltar</button>
 
-    <script src="js/intro.js?v=20260804-intro-oficial-1"></script>
+    <script src="js/intro.js?v=20260804-intro-oficial-2"></script>
     <script src="js/app.js?v=20260804-dragon-versus-1"></script>
     <script src="js/pwa.js?v=20260804-dragon-versus-1"></script>
 </body>

@@ -18,7 +18,7 @@
   intro.innerHTML = `
     <div class="intro-escena" aria-hidden="true">
       <div class="intro-resplandor"></div>
-      <img class="intro-libro" src="assets/icons/icon-512.png" alt="">
+      <img class="intro-libro" src="assets/images/intro/libro-intro-sin-cristal.png" alt="">
       <div class="intro-particulas"></div>
       <img class="intro-cristal" src="assets/images/elements/cristal-sabiduria-esmeralda.png" alt="">
       <div class="intro-destello"></div>
