@@ -14,13 +14,29 @@
 
     let usuarioId = null;
     let salaActual = null;
+    let partidaActual = null;
     let canalSala = null;
     let intervaloVerificacionSala = null;
     let recargaEnCurso = null;
     let recargaSolicitada = false;
     const suscriptores = new Set();
+    const suscriptoresPartida = new Set();
 
     const emitir = (sala) => suscriptores.forEach((suscriptor) => suscriptor(sala));
+    const emitirPartida = (partida) => (
+      suscriptoresPartida.forEach((suscriptor) => suscriptor(partida))
+    );
+
+    async function cargarPartida() {
+      if (!salaActual?.id || salaActual.estado !== "playing") return partidaActual;
+      const { data, error } = await cliente.rpc("get_versus_match_state", {
+        p_room_id: salaActual.id,
+      });
+      if (error) throw traducirError(error, "No pudimos sincronizar el combate.");
+      partidaActual = data;
+      emitirPartida(partidaActual);
+      return partidaActual;
+    }
 
     async function inicializar() {
       const { data: sesionActual, error: errorSesion } = await cliente.auth.getSession();
@@ -71,6 +87,7 @@
         })),
       };
       emitir(salaActual);
+      if (salaActual.estado === "playing") await cargarPartida();
       return salaActual;
     }
 
@@ -116,6 +133,12 @@
           table: "versus_players",
           filter: `room_id=eq.${roomId}`,
         }, () => { void recargarSala(); })
+        .on("postgres_changes", {
+          event: "*",
+          schema: "public",
+          table: "versus_matches",
+          filter: `room_id=eq.${roomId}`,
+        }, () => { void cargarPartida(); })
         .subscribe();
       intervaloVerificacionSala = setInterval(() => { void recargarSala(); }, 4000);
     }
@@ -187,7 +210,9 @@
       const roomId = salaActual?.id;
       await detenerCanal();
       salaActual = null;
+      partidaActual = null;
       emitir(null);
+      emitirPartida(null);
       if (!roomId) return;
 
       const { error } = await cliente.rpc("leave_versus_room", { p_room_id: roomId });
@@ -199,6 +224,23 @@
       return () => suscriptores.delete(suscriptor);
     }
 
+    function suscribirPartida(suscriptor) {
+      suscriptoresPartida.add(suscriptor);
+      return () => suscriptoresPartida.delete(suscriptor);
+    }
+
+    async function jugarLetra(letra) {
+      if (!salaActual?.id) throw new Error("No hay una sala activa.");
+      const { data, error } = await cliente.rpc("play_versus_letter", {
+        p_room_id: salaActual.id,
+        p_letter: letra,
+      });
+      if (error) throw traducirError(error, "No pudimos enviar la letra.");
+      partidaActual = data;
+      emitirPartida(partidaActual);
+      return partidaActual;
+    }
+
     return Object.freeze({
       proveedor: "supabase",
       inicializar,
@@ -207,9 +249,13 @@
       actualizarPersonaje,
       guardarDesafio,
       cancelarDesafio,
+      cargarPartida,
+      jugarLetra,
       salirSala,
       suscribir,
+      suscribirPartida,
       obtenerSala: () => salaActual,
+      obtenerPartida: () => partidaActual,
       obtenerUsuarioId: () => usuarioId,
     });
   }

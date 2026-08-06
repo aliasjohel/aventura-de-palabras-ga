@@ -606,6 +606,12 @@ const desafiosPorMision = 3;
 const adaptadorLocalSalasVersus = VersusRoom.crearAdaptadorLocal();
 let adaptadorSalasVersus = adaptadorLocalSalasVersus;
 let promesaConexionSalasVersus = null;
+let cancelarSuscripcionPartidaVersus = null;
+let partidaOnlineVersus = null;
+let partidaOnlineIniciada = false;
+let ultimoEventoPartidaVersus = -1;
+let desfaseServidorVersus = 0;
+let jugadaOnlineEnCurso = false;
 let cancelarSuscripcionSalasVersus = adaptadorSalasVersus.suscribir(
   actualizarEstadoMultijugador,
 );
@@ -629,6 +635,10 @@ async function asegurarConexionSalasVersus() {
     adaptadorSalasVersus = adaptadorSupabase;
     cancelarSuscripcionSalasVersus = adaptadorSalasVersus.suscribir(
       actualizarEstadoMultijugador,
+    );
+    cancelarSuscripcionPartidaVersus?.();
+    cancelarSuscripcionPartidaVersus = adaptadorSalasVersus.suscribirPartida(
+      actualizarPartidaOnline,
     );
     return adaptadorSalasVersus;
   })();
@@ -772,6 +782,170 @@ function actualizarPreparacionRemota(sala) {
     : `Esperando a ${jugadorRival?.alias || "tu rival"}…`;
 }
 
+function obtenerNombreTemaVersus(tema) {
+  return nombresTematicasVersus[tema] || tema || "Sorpresa";
+}
+
+function actualizarRelojPartidaOnline() {
+  if (!partidaOnlineVersus) return;
+  const restante = Math.max(0, Math.ceil(
+    (Date.parse(partidaOnlineVersus.deadlineAt) - (Date.now() + desfaseServidorVersus)) / 1000,
+  ));
+  demoVersus.tiempoJugador = restante;
+  demoVersus.tiempoRival = restante;
+  actualizarTiemposVersus();
+  if (restante === 0 && partidaOnlineVersus.status === "playing") {
+    void adaptadorSalasVersus.cargarPartida?.();
+  }
+}
+
+function actualizarTecladoPartidaOnline(partida) {
+  const comenzo = Date.now() + desfaseServidorVersus >= Date.parse(partida.startedAt);
+  const usadas = new Set(partida.me?.usedLetters || []);
+  tecladoVersus.querySelectorAll("button").forEach((boton) => {
+    boton.disabled = jugadaOnlineEnCurso
+      || partida.status !== "playing"
+      || !comenzo
+      || partida.me?.finished
+      || usadas.has(boton.textContent);
+  });
+}
+
+function renderizarPartidaOnline(partida) {
+  const propio = partida.me;
+  const rival = partida.opponent;
+  if (!propio || !rival) return;
+
+  demoVersus.tematicaParaJugador = propio.theme;
+  demoVersus.tematicaParaRival = rival.theme;
+  demoVersus.indiceJugador = propio.wordIndex;
+  demoVersus.indiceRival = rival.wordIndex;
+  demoVersus.erroresJugador = propio.errors;
+  demoVersus.erroresRival = rival.errors;
+  demoVersus.vidasJugador = propio.lives;
+  demoVersus.vidasRival = rival.lives;
+  demoVersus.finalizadoJugador = propio.finished;
+  demoVersus.finalizadoRival = rival.finished;
+  demoVersus.motivoFinalJugador = propio.finishReason || "";
+  demoVersus.motivoFinalRival = rival.finishReason || "";
+
+  tituloProgresoUno.textContent = propio.finished
+    ? "TU RECORRIDO TERMINÓ"
+    : `TU DESAFÍO · ${obtenerNombreTemaVersus(propio.theme).toUpperCase()} ${propio.wordIndex + 1}/${maximoPalabrasVersus}`;
+  tituloProgresoDos.textContent = rival.finished
+    ? "EL RIVAL TERMINÓ"
+    : `RIVAL · ${obtenerNombreTemaVersus(rival.theme).toUpperCase()} ${rival.wordIndex + 1}/${maximoPalabrasVersus}`;
+  tituloVersus.textContent = `J1 ${propio.completedWords}/3 · J2 ${rival.completedWords}/3`;
+
+  const palabraPropia = document.getElementById("palabraVersusUno");
+  const palabraRival = document.getElementById("palabraVersusDos");
+  palabraPropia.textContent = propio.finished
+    ? (propio.finishReason === "lives"
+      ? "SIN CORAZONES"
+      : propio.finishReason === "time" ? "TIEMPO AGOTADO" : `✓ ${propio.completedWords} PALABRAS`)
+    : (propio.progress || []).join(" ");
+  palabraRival.textContent = rival.finished
+    ? (rival.finishReason === "lives"
+      ? "SIN CORAZONES"
+      : rival.finishReason === "time" ? "TIEMPO AGOTADO" : `✓ ${rival.completedWords} PALABRAS`)
+    : (rival.progress || []).join(" ");
+  palabraPropia.setAttribute("aria-label", `Tu progreso: ${palabraPropia.textContent}`);
+  palabraRival.setAttribute("aria-label", `Progreso rival: ${palabraRival.textContent}`);
+  ajustarPalabraLargaVersus(palabraPropia, propio.wordLength || 0);
+  ajustarPalabraLargaVersus(palabraRival, rival.wordLength || 0);
+  actualizarIntentosVersus(document.getElementById("intentosVersusUno"), propio.errors, "Jugador 1");
+  actualizarIntentosVersus(document.getElementById("intentosVersusDos"), rival.errors, "El rival");
+  actualizarVidasVersus();
+  actualizarRelojPartidaOnline();
+  actualizarTecladoPartidaOnline(partida);
+}
+
+function procesarEventoPartidaOnline(partida) {
+  if (partida.eventSequence <= ultimoEventoPartidaVersus) return;
+  ultimoEventoPartidaVersus = partida.eventSequence;
+  const evento = partida.lastEvent;
+  if (!evento) return;
+  const propio = evento.actorId === partida.me?.userId;
+  const estadoPropio = document.getElementById("estadoProgresoUno");
+  const estadoRival = document.getElementById("estadoProgresoDos");
+
+  if (evento.type === "hit") {
+    mostrarEstadoProgresoVersus(propio ? estadoPropio : estadoRival, propio ? "¡Acierto!" : "El rival acertó", "acierto");
+    if (propio) reproducirSonidoVersus("acertar", 0.5);
+  } else if (evento.type === "miss") {
+    mostrarEstadoProgresoVersus(propio ? estadoPropio : estadoRival, propio ? "Fallaste" : "El rival falló", "error");
+    if (propio) reproducirSonidoVersus("error", 0.48);
+  } else if (evento.type === "word_complete") {
+    if (propio) reproducirAtaqueJugadorVersus();
+    else reproducirAtaqueMagoVersus();
+    mostrarAvisoAvanceVersus(
+      propio ? "¡Palabra superada! Atacaste al rival." : "El rival superó una palabra y te atacó.",
+      propio ? "acierto" : "error",
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 260 : 1300,
+    );
+  } else if (evento.type === "word_failed") {
+    if (propio) reproducirAtaqueMagoVersus();
+    else reproducirAtaqueJugadorVersus();
+    mostrarAvisoAvanceVersus(
+      propio ? "Agotaste los intentos y perdiste un corazón." : "El rival agotó sus intentos y perdió un corazón.",
+      propio ? "error" : "acierto",
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 260 : 1300,
+    );
+  }
+}
+
+function finalizarPartidaOnline(partida) {
+  if (demoVersus.partidaFinalizada) return;
+  demoVersus.partidaFinalizada = true;
+  detenerRondaVersus();
+  bloquearTecladoDemoVersus();
+  const ganador = !partida.winnerId
+    ? "empate"
+    : partida.winnerId === partida.me?.userId ? "jugador" : "rival";
+  const detalle = ganador === "empate"
+    ? "La partida terminó empatada."
+    : ganador === "jugador" ? "¡Ganaste el duelo en línea!" : "Tu rival ganó el duelo en línea.";
+  mostrarResultadoPartidaVersus(ganador, detalle);
+}
+
+function actualizarPartidaOnline(partida) {
+  if (adaptadorSalasVersus.proveedor !== "supabase" || !partida) return;
+  const esNueva = partidaOnlineVersus?.matchId !== partida.matchId;
+  partidaOnlineVersus = partida;
+  desfaseServidorVersus = Date.parse(partida.serverTime) - Date.now();
+
+  if (esNueva) {
+    detenerRondaVersus();
+    cancelarCinematicaFinalVersus();
+    limpiarAnimacionAtaqueVersus();
+    demoVersus.partidaFinalizada = false;
+    partidaOnlineIniciada = false;
+    ultimoEventoPartidaVersus = partida.eventSequence || 0;
+    const sala = adaptadorSalasVersus.obtenerSala();
+    const usuarioId = adaptadorSalasVersus.obtenerUsuarioId?.();
+    const propio = sala?.jugadores.find((jugador) => jugador.id === usuarioId);
+    const rival = sala?.jugadores.find((jugador) => jugador.id !== usuarioId);
+    if (propio?.personaje && personajesVersus[propio.personaje]) personajeJugadorVersus = propio.personaje;
+    if (rival?.personaje && personajesVersus[rival.personaje]) personajeRivalVersus = rival.personaje;
+    const arena = arenasVersus[partida.arenaIndex] || arenasVersus[0];
+    fondoVersus.src = arena.src;
+    fondoVersus.alt = arena.alt;
+    resultadoRondaVersus.classList.add("oculto");
+    avisoAvanceVersus.classList.add("oculto");
+    configurarPersonajesCombateVersus();
+  }
+
+  renderizarPartidaOnline(partida);
+  procesarEventoPartidaOnline(partida);
+
+  if (!partidaOnlineIniciada && partida.status === "playing") {
+    partidaOnlineIniciada = true;
+    mostrarPantalla(pantallaVersus);
+    requestAnimationFrame(iniciarEntradaDueloVersus);
+  }
+  if (partida.status === "finished") finalizarPartidaOnline(partida);
+}
+
 async function abrirSalaVersus() {
   mostrarErrorSalaVersus();
   mostrarPantalla(pantallaSalaVersus);
@@ -795,6 +969,8 @@ async function salirDeSalaVersus() {
   } catch (error) {
     console.warn("No se pudo cerrar la sala remota.", error);
   }
+  partidaOnlineVersus = null;
+  partidaOnlineIniciada = false;
   mostrarPantalla(pantallaMenu);
 }
 
@@ -1114,6 +1290,8 @@ async function volverAlMenuDesdeVersus() {
   } catch (error) {
     console.warn("No se pudo cerrar la sala remota.", error);
   }
+  partidaOnlineVersus = null;
+  partidaOnlineIniciada = false;
   mostrarPantalla(pantallaMenu);
 }
 
@@ -1589,7 +1767,7 @@ function crearTecladoVersus() {
       botonLetra.textContent = letra;
       botonLetra.className = "letra-versus";
       botonLetra.setAttribute("aria-label", `Letra ${letra}`);
-      botonLetra.addEventListener("click", () => jugarLetraDemoVersus(letra, botonLetra));
+      botonLetra.addEventListener("click", () => jugarLetraVersus(letra, botonLetra));
       filaTeclado.appendChild(botonLetra);
     });
 
@@ -1785,7 +1963,7 @@ function limpiarAnimacionAtaqueJugadorVersus() {
 function limpiarAnimacionAtaqueRivalVersus() {
   demoVersus.temporizadoresAtaqueRival.forEach(clearTimeout);
   demoVersus.temporizadoresAtaqueRival = [];
-  personajeVersusDos.src = srcMagoBaseVersus;
+  personajeVersusDos.src = personajesVersus[personajeRivalVersus]?.base || srcMagoBaseVersus;
   personajeVersusDos.classList.remove("concentrando-hechizo", "lanzando-hechizo");
   personajeVersusUno.classList.remove("recibiendo-dano-magico");
   vidasVersusUno.classList.remove("recibiendo-dano");
@@ -1808,8 +1986,9 @@ function configurarPersonajesCombateVersus() {
     "personaje-dragon",
   );
   personajeVersusUno.classList.add(`personaje-${personajeJugadorVersus}`);
-  personajeVersusDos.src = srcMagoBaseVersus;
-  personajeVersusDos.alt = "Mago del jugador 2";
+  const personajeRival = personajesVersus[personajeRivalVersus] || personajesVersus.mago;
+  personajeVersusDos.src = personajeRival.base;
+  personajeVersusDos.alt = `${personajeRival.nombre} del jugador 2`;
 }
 
 function programarPasoEntradaVersus(accion, demora) {
@@ -1839,16 +2018,41 @@ function comenzarRondaVersus() {
     document.getElementById("estadoProgresoUno"),
     "Elegí una letra",
   );
-  mostrarEstadoProgresoVersus(
-    document.getElementById("estadoProgresoDos"),
-    "Pensando...",
-  );
+  if (adaptadorSalasVersus.proveedor === "supabase" && partidaOnlineVersus) {
+    mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), "Rival conectado");
+    actualizarTecladoPartidaOnline(partidaOnlineVersus);
+    demoVersus.intervaloTiempo = setInterval(actualizarRelojPartidaOnline, 1000);
+    return;
+  }
+  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), "Pensando...");
   habilitarTecladoVersus();
   demoVersus.intervaloTiempo = setInterval(actualizarRelojesVersus, 1000);
   demoVersus.intervaloRival = setInterval(
     jugarTurnoRivalVersus,
     modoPruebasActivo ? intervaloJugadaRivalVersus * 4 : intervaloJugadaRivalVersus,
   );
+}
+
+async function jugarLetraVersus(letra, boton) {
+  if (adaptadorSalasVersus.proveedor !== "supabase") {
+    jugarLetraDemoVersus(letra, boton);
+    return;
+  }
+  if (boton.disabled || jugadaOnlineEnCurso || !partidaOnlineVersus) return;
+  jugadaOnlineEnCurso = true;
+  actualizarTecladoPartidaOnline(partidaOnlineVersus);
+  try {
+    await adaptadorSalasVersus.jugarLetra(letra);
+  } catch (error) {
+    mostrarEstadoProgresoVersus(
+      document.getElementById("estadoProgresoUno"),
+      error.message || "No pudimos enviar la letra.",
+      "error",
+    );
+  } finally {
+    jugadaOnlineEnCurso = false;
+    if (partidaOnlineVersus) actualizarTecladoPartidaOnline(partidaOnlineVersus);
+  }
 }
 
 function finalizarEntradaDueloVersus() {
@@ -2605,13 +2809,14 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
 
   iconoResultadoVersus.textContent = ganador === "jugador" ? "🏆" : ganador === "rival" ? "🛡️" : "⚔️";
   etiquetaResultadoVersus.textContent = ganador === "empate" ? "DUELO EMPATADO" : "DUELO FINALIZADO";
+  const esOnline = adaptadorSalasVersus.proveedor === "supabase";
   tituloResultadoVersus.textContent = ganador === "jugador"
-    ? "¡Victoria del Jugador 1!"
+    ? (esOnline ? "¡Ganaste el duelo!" : "¡Victoria del Jugador 1!")
     : ganador === "rival"
-      ? "Victoria del Jugador 2"
+      ? (esOnline ? "Victoria de tu rival" : "Victoria del Jugador 2")
       : "¡Duelo empatado!";
   detalleResultadoVersus.textContent = detalle;
-  btnRevanchaVersus.classList.remove("oculto");
+  btnRevanchaVersus.classList.toggle("oculto", esOnline);
   resultadoRondaVersus.classList.remove("oculto");
 }
 
