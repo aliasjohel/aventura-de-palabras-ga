@@ -41,6 +41,7 @@ const jugadoresSalaVersus = document.getElementById("jugadoresSalaVersus");
 const estadoSalaVersus = document.getElementById("estadoSalaVersus");
 const btnRivalPruebaVersus = document.getElementById("btnRivalPruebaVersus");
 const btnContinuarSalaVersus = document.getElementById("btnContinuarSalaVersus");
+const notaAdaptadorVersus = document.querySelector(".nota-adaptador-versus");
 const btnSalirSeleccionPersonajeVersus = document.getElementById(
   "btnSalirSeleccionPersonajeVersus",
 );
@@ -595,7 +596,38 @@ let secuenciaIntroduccionMundoActiva = null;
 let modoPruebasActivo = false;
 let maximoEscenarioDesbloqueado = 0;
 const desafiosPorMision = 3;
-const adaptadorSalasVersus = VersusRoom.crearAdaptadorLocal();
+const adaptadorLocalSalasVersus = VersusRoom.crearAdaptadorLocal();
+let adaptadorSalasVersus = adaptadorLocalSalasVersus;
+let promesaConexionSalasVersus = null;
+let cancelarSuscripcionSalasVersus = adaptadorSalasVersus.suscribir(actualizarSalaVersus);
+
+async function asegurarConexionSalasVersus() {
+  if (adaptadorSalasVersus.proveedor === "supabase") return adaptadorSalasVersus;
+  if (promesaConexionSalasVersus) return promesaConexionSalasVersus;
+
+  promesaConexionSalasVersus = (async () => {
+    const configurado = globalThis.AventuraSupabase?.configuracionDisponible?.();
+    if (!configurado) return adaptadorLocalSalasVersus;
+
+    const cliente = globalThis.AventuraSupabase.obtenerCliente();
+    if (!cliente || !globalThis.VersusRoomSupabase) {
+      throw new Error("No se pudo cargar la conexión con Supabase. Revisá tu conexión a internet.");
+    }
+
+    const adaptadorSupabase = VersusRoomSupabase.crearAdaptador(cliente);
+    await adaptadorSupabase.inicializar();
+    cancelarSuscripcionSalasVersus?.();
+    adaptadorSalasVersus = adaptadorSupabase;
+    cancelarSuscripcionSalasVersus = adaptadorSalasVersus.suscribir(actualizarSalaVersus);
+    return adaptadorSalasVersus;
+  })();
+
+  try {
+    return await promesaConexionSalasVersus;
+  } finally {
+    promesaConexionSalasVersus = null;
+  }
+}
 
 function mostrarErrorSalaVersus(mensaje = "") {
   errorSalaVersus.textContent = mensaje;
@@ -630,31 +662,56 @@ function actualizarSalaVersus(sala) {
   estadoSalaVersus.textContent = salaCompleta
     ? "¡Los dos jugadores están conectados! Ya pueden continuar."
     : "Esperando al segundo jugador…";
-  btnRivalPruebaVersus.classList.toggle("oculto", !modoPruebasActivo || salaCompleta);
+  notaAdaptadorVersus.textContent = adaptadorSalasVersus.proveedor === "supabase"
+    ? "Conectado a Supabase · sala sincronizada en tiempo real."
+    : "Vista local de desarrollo. La conexión entre celulares requiere Supabase.";
+  btnRivalPruebaVersus.classList.toggle(
+    "oculto",
+    adaptadorSalasVersus.proveedor !== "local" || !modoPruebasActivo || salaCompleta,
+  );
 }
 
-function abrirSalaVersus() {
+async function abrirSalaVersus() {
   mostrarErrorSalaVersus();
-  actualizarSalaVersus(adaptadorSalasVersus.obtenerSala());
   mostrarPantalla(pantallaSalaVersus);
-}
+  btnCrearSalaVersus.disabled = true;
+  btnUnirseSalaVersus.disabled = true;
 
-function salirDeSalaVersus() {
-  adaptadorSalasVersus.salirSala();
-  mostrarPantalla(pantallaMenu);
-}
-
-function ejecutarAccionSalaVersus(accion) {
-  mostrarErrorSalaVersus();
   try {
-    const sala = accion();
-    actualizarSalaVersus(sala);
+    await asegurarConexionSalasVersus();
+    actualizarSalaVersus(adaptadorSalasVersus.obtenerSala());
   } catch (error) {
-    mostrarErrorSalaVersus(error.message || "No pudimos completar la acción.");
+    mostrarErrorSalaVersus(error.message || "No pudimos conectarnos con Supabase.");
+  } finally {
+    btnCrearSalaVersus.disabled = false;
+    btnUnirseSalaVersus.disabled = false;
   }
 }
 
-adaptadorSalasVersus.suscribir(actualizarSalaVersus);
+async function salirDeSalaVersus() {
+  try {
+    await adaptadorSalasVersus.salirSala();
+  } catch (error) {
+    console.warn("No se pudo cerrar la sala remota.", error);
+  }
+  mostrarPantalla(pantallaMenu);
+}
+
+async function ejecutarAccionSalaVersus(accion) {
+  mostrarErrorSalaVersus();
+  btnCrearSalaVersus.disabled = true;
+  btnUnirseSalaVersus.disabled = true;
+  try {
+    await asegurarConexionSalasVersus();
+    const sala = await accion();
+    actualizarSalaVersus(sala);
+  } catch (error) {
+    mostrarErrorSalaVersus(error.message || "No pudimos completar la acción.");
+  } finally {
+    btnCrearSalaVersus.disabled = false;
+    btnUnirseSalaVersus.disabled = false;
+  }
+}
 
 // ====================
 // Eventos
@@ -732,7 +789,7 @@ btnCopiarCodigoVersus.addEventListener("click", async () => {
 });
 
 btnRivalPruebaVersus.addEventListener("click", () => ejecutarAccionSalaVersus(() => (
-  adaptadorSalasVersus.agregarRivalDePrueba()
+  adaptadorSalasVersus.agregarRivalDePrueba?.()
 )));
 
 btnContinuarSalaVersus.addEventListener("click", abrirSeleccionPersonajeVersus);
@@ -864,10 +921,14 @@ btnCompletarPalabrasPruebasVersus.addEventListener("click", () => {
   btnConfirmarPalabrasVersus.focus();
 });
 
-function volverAlMenuDesdeVersus() {
+async function volverAlMenuDesdeVersus() {
   cancelarCinematicaFinalVersus();
   detenerRondaVersus();
-  adaptadorSalasVersus.salirSala();
+  try {
+    await adaptadorSalasVersus.salirSala();
+  } catch (error) {
+    console.warn("No se pudo cerrar la sala remota.", error);
+  }
   mostrarPantalla(pantallaMenu);
 }
 

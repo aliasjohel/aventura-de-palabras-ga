@@ -1,4 +1,4 @@
-const CACHE_NAME = "aventura-palabras-runtime-v14";
+const CACHE_NAME = "aventura-palabras-runtime-v16";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -6,8 +6,11 @@ const CORE_ASSETS = [
   "./css/styles.css",
   "./css/intro.css",
   "./js/intro.js",
+  "./js/supabase-config.js",
+  "./js/supabase-client.js",
   "./js/versus-engine.js",
   "./js/versus-room.js",
+  "./js/versus-room-supabase.js",
   "./js/app.js",
   "./js/pwa.js",
   "./assets/icons/icon-192.png",
