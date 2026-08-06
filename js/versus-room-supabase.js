@@ -21,6 +21,24 @@
     let recargaSolicitada = false;
     const suscriptores = new Set();
     const suscriptoresPartida = new Set();
+    const claveSalaActiva = "aventura-versus-room-id";
+
+    function recordarSala(roomId) {
+      try {
+        if (roomId) raiz.localStorage?.setItem(claveSalaActiva, roomId);
+        else raiz.localStorage?.removeItem(claveSalaActiva);
+      } catch (error) {
+        console.warn("No pudimos recordar la sala activa.", error);
+      }
+    }
+
+    function obtenerSalaRecordada() {
+      try {
+        return raiz.localStorage?.getItem(claveSalaActiva) || null;
+      } catch (error) {
+        return null;
+      }
+    }
 
     const emitir = (sala) => suscriptores.forEach((suscriptor) => suscriptor(sala));
     const emitirPartida = (partida) => (
@@ -28,7 +46,9 @@
     );
 
     async function cargarPartida() {
-      if (!salaActual?.id || salaActual.estado !== "playing") return partidaActual;
+      if (!salaActual?.id || !["playing", "finished"].includes(salaActual.estado)) {
+        return partidaActual;
+      }
       const { data, error } = await cliente.rpc("get_versus_match_state", {
         p_room_id: salaActual.id,
       });
@@ -51,13 +71,18 @@
 
       if (!sesion?.user?.id) throw new Error("Supabase no devolvió una identidad de jugador.");
       usuarioId = sesion.user.id;
+      const roomId = obtenerSalaRecordada();
+      if (roomId && /^[0-9a-f-]{36}$/i.test(roomId)) {
+        await cargarSala(roomId);
+        if (salaActual) await escucharSala(roomId);
+      }
       return usuarioId;
     }
 
     async function cargarSala(roomId) {
       const [{ data: sala, error: errorSala }, { data: jugadores, error: errorJugadores }] = await Promise.all([
         cliente.from("versus_rooms").select("id, code, status, host_id, created_at, updated_at").eq("id", roomId).maybeSingle(),
-        cliente.from("versus_players").select("id, user_id, alias, slot, ready, character_key, theme_key, preparation_ready, joined_at").eq("room_id", roomId).order("slot"),
+        cliente.from("versus_players").select("id, user_id, alias, slot, ready, character_key, theme_key, preparation_ready, rematch_ready, joined_at").eq("room_id", roomId).order("slot"),
       ]);
 
       if (errorSala) throw traducirError(errorSala, "No pudimos leer la sala.");
@@ -65,7 +90,10 @@
 
       if (!sala) {
         salaActual = null;
+        partidaActual = null;
+        recordarSala(null);
         emitir(null);
+        emitirPartida(null);
         return null;
       }
 
@@ -84,10 +112,17 @@
           personaje: jugador.character_key,
           tematica: jugador.theme_key,
           preparacionLista: jugador.preparation_ready,
+          revanchaLista: jugador.rematch_ready,
         })),
       };
+      recordarSala(salaActual.id);
       emitir(salaActual);
-      if (salaActual.estado === "playing") await cargarPartida();
+      if (["playing", "finished"].includes(salaActual.estado)) {
+        await cargarPartida();
+      } else if (partidaActual) {
+        partidaActual = null;
+        emitirPartida(null);
+      }
       return salaActual;
     }
 
@@ -206,11 +241,22 @@
       return salaActual;
     }
 
+    async function pedirRevancha() {
+      if (!salaActual?.id) throw new Error("No hay una sala activa.");
+      const { data, error } = await cliente.rpc("request_versus_rematch", {
+        p_room_id: salaActual.id,
+      });
+      if (error) throw traducirError(error, "No pudimos solicitar la revancha.");
+      await cargarSala(data.id);
+      return salaActual;
+    }
+
     async function salirSala() {
       const roomId = salaActual?.id;
       await detenerCanal();
       salaActual = null;
       partidaActual = null;
+      recordarSala(null);
       emitir(null);
       emitirPartida(null);
       if (!roomId) return;
@@ -249,6 +295,7 @@
       actualizarPersonaje,
       guardarDesafio,
       cancelarDesafio,
+      pedirRevancha,
       cargarPartida,
       jugarLetra,
       salirSala,

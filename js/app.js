@@ -612,6 +612,8 @@ let partidaOnlineIniciada = false;
 let ultimoEventoPartidaVersus = -1;
 let desfaseServidorVersus = 0;
 let jugadaOnlineEnCurso = false;
+let salidaSalaVersusEnCurso = false;
+let revanchaVersusEnCurso = false;
 let cancelarSuscripcionSalasVersus = adaptadorSalasVersus.suscribir(
   actualizarEstadoMultijugador,
 );
@@ -640,6 +642,8 @@ async function asegurarConexionSalasVersus() {
     cancelarSuscripcionPartidaVersus = adaptadorSalasVersus.suscribirPartida(
       actualizarPartidaOnline,
     );
+    actualizarEstadoMultijugador(adaptadorSalasVersus.obtenerSala());
+    actualizarPartidaOnline(adaptadorSalasVersus.obtenerPartida());
     return adaptadorSalasVersus;
   })();
 
@@ -740,9 +744,46 @@ function actualizarEstadoMultijugador(sala) {
   actualizarSalaVersus(sala);
   actualizarSeleccionPersonajeRemota(sala);
   actualizarPreparacionRemota(sala);
+
+  if (adaptadorSalasVersus.proveedor !== "supabase") return;
+
+  if (sala?.estado === "finished") actualizarEstadoRevanchaVersus(sala);
+
+  if (
+    sala?.estado === "preparing"
+    && sala.jugadores.length === 2
+    && pantallaVersus.classList.contains("activa")
+  ) {
+    prepararInterfazRevanchaVersus();
+    return;
+  }
+
+  if (
+    !salidaSalaVersusEnCurso
+    && pantallaVersus.classList.contains("activa")
+    && (!sala || sala.jugadores.length < 2)
+  ) {
+    mostrarAbandonoRivalVersus();
+    return;
+  }
+
+  if (
+    !salidaSalaVersusEnCurso
+    && sala
+    && sala.jugadores.length < 2
+    && (
+      pantallaSeleccionPersonajeVersus.classList.contains("activa")
+      || pantallaPreparacionVersus.classList.contains("activa")
+    )
+  ) {
+    mostrarPantalla(pantallaSalaVersus);
+    mostrarErrorSalaVersus("El rival abandonó la sala. Podés esperar a otro jugador o volver al menú.");
+    return;
+  }
+
   if (
     !sala
-    && adaptadorSalasVersus.proveedor === "supabase"
+    && !salidaSalaVersusEnCurso
     && (
       pantallaSeleccionPersonajeVersus.classList.contains("activa")
       || pantallaPreparacionVersus.classList.contains("activa")
@@ -751,6 +792,47 @@ function actualizarEstadoMultijugador(sala) {
     mostrarPantalla(pantallaSalaVersus);
     mostrarErrorSalaVersus("La sala fue cerrada por el anfitrión.");
   }
+}
+
+function actualizarEstadoRevanchaVersus(sala) {
+  const usuarioId = adaptadorSalasVersus.obtenerUsuarioId?.();
+  const propio = sala.jugadores.find((jugador) => jugador.id === usuarioId);
+  const rival = sala.jugadores.find((jugador) => jugador.id !== usuarioId);
+  if (!propio || !rival || resultadoRondaVersus.classList.contains("oculto")) return;
+
+  btnRevanchaVersus.classList.remove("oculto");
+  btnRevanchaVersus.disabled = revanchaVersusEnCurso || Boolean(propio.revanchaLista);
+  btnRevanchaVersus.textContent = propio.revanchaLista
+    ? "Esperando al rival…"
+    : rival.revanchaLista ? "Aceptar revancha" : "Pedir revancha";
+}
+
+function prepararInterfazRevanchaVersus() {
+  cancelarCinematicaFinalVersus();
+  detenerRondaVersus();
+  resultadoRondaVersus.classList.add("oculto");
+  btnRevanchaVersus.disabled = false;
+  btnRevanchaVersus.textContent = "Pedir revancha";
+  revanchaVersusEnCurso = false;
+  partidaOnlineVersus = null;
+  partidaOnlineIniciada = false;
+  ultimoEventoPartidaVersus = -1;
+  demoVersus.partidaFinalizada = false;
+  abrirPreparacionVersus();
+}
+
+function mostrarAbandonoRivalVersus() {
+  if (demoVersus.partidaFinalizada) {
+    btnRevanchaVersus.classList.add("oculto");
+    return;
+  }
+  demoVersus.partidaFinalizada = true;
+  detenerRondaVersus();
+  bloquearTecladoDemoVersus();
+  mostrarResultadoPartidaVersus("jugador", "El rival abandonó la sala. La partida terminó.");
+  tituloResultadoVersus.textContent = "El rival abandonó";
+  etiquetaResultadoVersus.textContent = "PARTIDA INTERRUMPIDA";
+  btnRevanchaVersus.classList.add("oculto");
 }
 
 function actualizarPreparacionRemota(sala) {
@@ -909,7 +991,12 @@ function finalizarPartidaOnline(partida) {
 }
 
 function actualizarPartidaOnline(partida) {
-  if (adaptadorSalasVersus.proveedor !== "supabase" || !partida) return;
+  if (adaptadorSalasVersus.proveedor !== "supabase") return;
+  if (!partida) {
+    partidaOnlineVersus = null;
+    partidaOnlineIniciada = false;
+    return;
+  }
   const esNueva = partidaOnlineVersus?.matchId !== partida.matchId;
   partidaOnlineVersus = partida;
   desfaseServidorVersus = Date.parse(partida.serverTime) - Date.now();
@@ -941,7 +1028,16 @@ function actualizarPartidaOnline(partida) {
   if (!partidaOnlineIniciada && partida.status === "playing") {
     partidaOnlineIniciada = true;
     mostrarPantalla(pantallaVersus);
-    requestAnimationFrame(iniciarEntradaDueloVersus);
+    const tiempoTranscurrido = Date.parse(partida.serverTime) - Date.parse(partida.startedAt);
+    if (tiempoTranscurrido > duracionEntradaDueloVersus + 1000) {
+      configurarPersonajesCombateVersus();
+      comenzarRondaVersus();
+    } else {
+      requestAnimationFrame(iniciarEntradaDueloVersus);
+    }
+  } else if (!partidaOnlineIniciada && partida.status === "finished") {
+    partidaOnlineIniciada = true;
+    mostrarPantalla(pantallaVersus);
   }
   if (partida.status === "finished") finalizarPartidaOnline(partida);
 }
@@ -964,10 +1060,13 @@ async function abrirSalaVersus() {
 }
 
 async function salirDeSalaVersus() {
+  salidaSalaVersusEnCurso = true;
   try {
     await adaptadorSalasVersus.salirSala();
   } catch (error) {
     console.warn("No se pudo cerrar la sala remota.", error);
+  } finally {
+    salidaSalaVersusEnCurso = false;
   }
   partidaOnlineVersus = null;
   partidaOnlineIniciada = false;
@@ -1285,10 +1384,13 @@ btnCompletarPalabrasPruebasVersus.addEventListener("click", () => {
 async function volverAlMenuDesdeVersus() {
   cancelarCinematicaFinalVersus();
   detenerRondaVersus();
+  salidaSalaVersusEnCurso = true;
   try {
     await adaptadorSalasVersus.salirSala();
   } catch (error) {
     console.warn("No se pudo cerrar la sala remota.", error);
+  } finally {
+    salidaSalaVersusEnCurso = false;
   }
   partidaOnlineVersus = null;
   partidaOnlineIniciada = false;
@@ -2816,8 +2918,11 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
       ? (esOnline ? "Victoria de tu rival" : "Victoria del Jugador 2")
       : "¡Duelo empatado!";
   detalleResultadoVersus.textContent = detalle;
-  btnRevanchaVersus.classList.toggle("oculto", esOnline);
+  btnRevanchaVersus.classList.remove("oculto");
+  btnRevanchaVersus.disabled = false;
+  btnRevanchaVersus.textContent = esOnline ? "Pedir revancha" : "Jugar de nuevo";
   resultadoRondaVersus.classList.remove("oculto");
+  if (esOnline) actualizarEstadoRevanchaVersus(adaptadorSalasVersus.obtenerSala());
 }
 
 function crearParticulasEclipseVersus() {
@@ -3022,7 +3127,28 @@ btnProbarAtaqueElegido.addEventListener("click", () => {
 });
 
 btnSaltarEntradaVersus.addEventListener("click", finalizarEntradaDueloVersus);
-btnRevanchaVersus.addEventListener("click", () => prepararDueloVersus());
+btnRevanchaVersus.addEventListener("click", async () => {
+  if (adaptadorSalasVersus.proveedor !== "supabase") {
+    prepararDueloVersus();
+    return;
+  }
+  if (revanchaVersusEnCurso || btnRevanchaVersus.disabled) return;
+  revanchaVersusEnCurso = true;
+  btnRevanchaVersus.disabled = true;
+  btnRevanchaVersus.textContent = "Enviando…";
+  try {
+    const sala = await adaptadorSalasVersus.pedirRevancha();
+    actualizarEstadoMultijugador(sala);
+  } catch (error) {
+    btnRevanchaVersus.disabled = false;
+    btnRevanchaVersus.textContent = "Reintentar revancha";
+    detalleResultadoVersus.textContent = error.message || "No pudimos solicitar la revancha.";
+  } finally {
+    revanchaVersusEnCurso = false;
+    const sala = adaptadorSalasVersus.obtenerSala();
+    if (sala?.estado === "finished") actualizarEstadoRevanchaVersus(sala);
+  }
+});
 
 // Control reutilizable para cualquier secuencia narrativa presente o futura.
 function iniciarSecuenciaNarrativa(
