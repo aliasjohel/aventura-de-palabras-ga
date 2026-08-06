@@ -1005,6 +1005,21 @@ button:disabled {
     font-size: 0.76rem;
 }
 
+.estado-preparacion-rival-versus {
+    min-height: 1em;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.7rem;
+    text-align: center;
+}
+
+.estado-preparacion-rival-versus.listo {
+    color: #9fe0ae;
+}
+
+.estado-preparacion-rival-versus.error {
+    color: #ff9b8d;
+}
+
 .reglas-preparacion-versus {
     position: relative;
     padding: 15px;

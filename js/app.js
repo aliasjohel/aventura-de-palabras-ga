@@ -70,6 +70,11 @@ const btnCompletarPalabrasPruebasVersus = document.getElementById(
   "btnCompletarPalabrasPruebasVersus",
 );
 const esperaRivalVersus = document.getElementById("esperaRivalVersus");
+const tituloEsperaRivalVersus = esperaRivalVersus.querySelector("strong");
+const textoEsperaRivalVersus = esperaRivalVersus.querySelector("p");
+const estadoPreparacionRivalVersus = document.getElementById(
+  "estadoPreparacionRivalVersus",
+);
 const btnSalirVersus = document.getElementById("btnSalirVersus");
 const btnSalirVersusVertical = document.getElementById(
   "btnSalirVersusVertical",
@@ -724,6 +729,7 @@ function actualizarSeleccionPersonajeRemota(sala) {
 function actualizarEstadoMultijugador(sala) {
   actualizarSalaVersus(sala);
   actualizarSeleccionPersonajeRemota(sala);
+  actualizarPreparacionRemota(sala);
   if (
     !sala
     && adaptadorSalasVersus.proveedor === "supabase"
@@ -735,6 +741,35 @@ function actualizarEstadoMultijugador(sala) {
     mostrarPantalla(pantallaSalaVersus);
     mostrarErrorSalaVersus("La sala fue cerrada por el anfitrión.");
   }
+}
+
+function actualizarPreparacionRemota(sala) {
+  if (adaptadorSalasVersus.proveedor !== "supabase" || !sala) return;
+
+  const usuarioId = adaptadorSalasVersus.obtenerUsuarioId?.();
+  const jugadorPropio = sala.jugadores.find((jugador) => jugador.id === usuarioId);
+  const jugadorRival = sala.jugadores.find((jugador) => jugador.id !== usuarioId);
+  const propioListo = Boolean(jugadorPropio?.preparacionLista);
+  const rivalListo = Boolean(jugadorRival?.preparacionLista);
+  const nombreTemaRival = nombresTematicasVersus[jugadorRival?.tematica];
+
+  estadoPreparacionRivalVersus.className = `estado-preparacion-rival-versus${rivalListo ? " listo" : ""}`;
+  estadoPreparacionRivalVersus.textContent = rivalListo
+    ? `${jugadorRival.alias} ya preparó tu desafío${nombreTemaRival ? ` · ${nombreTemaRival}` : ""}.`
+    : `${jugadorRival?.alias || "Tu rival"} está preparando su desafío…`;
+
+  if (!propioListo) return;
+
+  inputsPalabrasVersus.forEach((input) => { input.disabled = true; });
+  tematicaVersus.disabled = true;
+  btnConfirmarPalabrasVersus.disabled = true;
+  esperaRivalVersus.classList.remove("oculto");
+  tituloEsperaRivalVersus.textContent = rivalListo
+    ? "Ambos desafíos están listos"
+    : "Tus palabras están protegidas";
+  textoEsperaRivalVersus.textContent = rivalListo
+    ? "Preparando el combate en línea…"
+    : `Esperando a ${jugadorRival?.alias || "tu rival"}…`;
 }
 
 async function abrirSalaVersus() {
@@ -899,12 +934,15 @@ async function volverASalaDesdeSeleccionVersus() {
   const sala = adaptadorSalasVersus.obtenerSala();
   const usuarioId = adaptadorSalasVersus.obtenerUsuarioId?.();
   const jugadorPropio = sala?.jugadores.find((jugador) => jugador.id === usuarioId);
-  if (adaptadorSalasVersus.proveedor === "supabase" && jugadorPropio?.listo) {
+  if (adaptadorSalasVersus.proveedor === "supabase" && jugadorPropio) {
     try {
-      await adaptadorSalasVersus.actualizarPersonaje({
-        personaje: jugadorPropio.personaje || personajeJugadorVersus,
-        listo: false,
-      });
+      if (jugadorPropio.preparacionLista) await adaptadorSalasVersus.cancelarDesafio();
+      if (jugadorPropio.listo) {
+        await adaptadorSalasVersus.actualizarPersonaje({
+          personaje: jugadorPropio.personaje || personajeJugadorVersus,
+          listo: false,
+        });
+      }
     } catch (error) {
       estadoPersonajePropioVersus.className = "error";
       estadoPersonajePropioVersus.textContent = error.message;
@@ -924,6 +962,9 @@ async function volverAlMenuDesdePreparacionVersus() {
   const sala = adaptadorSalasVersus.obtenerSala();
   if (adaptadorSalasVersus.proveedor === "supabase" && sala) {
     try {
+      const usuarioId = adaptadorSalasVersus.obtenerUsuarioId?.();
+      const jugadorPropio = sala.jugadores.find((jugador) => jugador.id === usuarioId);
+      if (jugadorPropio?.preparacionLista) await adaptadorSalasVersus.cancelarDesafio();
       await adaptadorSalasVersus.actualizarPersonaje({
         personaje: personajeJugadorVersus,
         listo: false,
@@ -993,6 +1034,10 @@ function abrirPreparacionVersus() {
   palabrasSecretasVersus = [];
   formPreparacionVersus.reset();
   esperaRivalVersus.classList.add("oculto");
+  tituloEsperaRivalVersus.textContent = "Palabras listas";
+  textoEsperaRivalVersus.textContent = "Esperando al rival…";
+  estadoPreparacionRivalVersus.className = "estado-preparacion-rival-versus";
+  estadoPreparacionRivalVersus.textContent = "Tu rival está preparando su desafío…";
   inputsPalabrasVersus.forEach((input) => {
     input.disabled = false;
     input.classList.remove("invalida");
@@ -1000,6 +1045,7 @@ function abrirPreparacionVersus() {
   tematicaVersus.disabled = false;
   validarPreparacionVersus();
   mostrarPantalla(pantallaPreparacionVersus);
+  actualizarPreparacionRemota(adaptadorSalasVersus.obtenerSala());
 }
 
 inputsPalabrasVersus.forEach((input) => {
@@ -1009,7 +1055,7 @@ inputsPalabrasVersus.forEach((input) => {
   });
 });
 
-formPreparacionVersus.addEventListener("submit", (evento) => {
+formPreparacionVersus.addEventListener("submit", async (evento) => {
   evento.preventDefault();
   if (!validarPreparacionVersus(true)) return;
 
@@ -1018,6 +1064,26 @@ formPreparacionVersus.addEventListener("submit", (evento) => {
   tematicaVersus.disabled = true;
   btnConfirmarPalabrasVersus.disabled = true;
   esperaRivalVersus.classList.remove("oculto");
+
+  if (adaptadorSalasVersus.proveedor === "supabase") {
+    tituloEsperaRivalVersus.textContent = "Protegiendo tus palabras…";
+    textoEsperaRivalVersus.textContent = "Guardando el desafío de forma segura.";
+    try {
+      const sala = await adaptadorSalasVersus.guardarDesafio({
+        tematica: tematicaVersus.value,
+        palabras: palabrasSecretasVersus,
+      });
+      actualizarEstadoMultijugador(sala);
+    } catch (error) {
+      esperaRivalVersus.classList.add("oculto");
+      inputsPalabrasVersus.forEach((input) => { input.disabled = false; });
+      tematicaVersus.disabled = false;
+      estadoPreparacionRivalVersus.className = "estado-preparacion-rival-versus error";
+      estadoPreparacionRivalVersus.textContent = error.message || "No pudimos guardar el desafío.";
+      validarPreparacionVersus(true);
+    }
+    return;
+  }
 
   transicionCombateVersus = setTimeout(() => {
     transicionCombateVersus = null;

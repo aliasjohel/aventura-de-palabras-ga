@@ -17,6 +17,7 @@
     let canalSala = null;
     let intervaloVerificacionSala = null;
     let recargaEnCurso = null;
+    let recargaSolicitada = false;
     const suscriptores = new Set();
 
     const emitir = (sala) => suscriptores.forEach((suscriptor) => suscriptor(sala));
@@ -40,7 +41,7 @@
     async function cargarSala(roomId) {
       const [{ data: sala, error: errorSala }, { data: jugadores, error: errorJugadores }] = await Promise.all([
         cliente.from("versus_rooms").select("id, code, status, host_id, created_at, updated_at").eq("id", roomId).maybeSingle(),
-        cliente.from("versus_players").select("id, user_id, alias, slot, ready, character_key, joined_at").eq("room_id", roomId).order("slot"),
+        cliente.from("versus_players").select("id, user_id, alias, slot, ready, character_key, theme_key, preparation_ready, joined_at").eq("room_id", roomId).order("slot"),
       ]);
 
       if (errorSala) throw traducirError(errorSala, "No pudimos leer la sala.");
@@ -65,6 +66,8 @@
           anfitrion: jugador.slot === 1,
           listo: jugador.ready,
           personaje: jugador.character_key,
+          tematica: jugador.theme_key,
+          preparacionLista: jugador.preparation_ready,
         })),
       };
       emitir(salaActual);
@@ -73,8 +76,18 @@
 
     async function recargarSala() {
       if (!salaActual?.id) return null;
-      if (recargaEnCurso) return recargaEnCurso;
-      recargaEnCurso = cargarSala(salaActual.id).finally(() => { recargaEnCurso = null; });
+      if (recargaEnCurso) {
+        recargaSolicitada = true;
+        return recargaEnCurso;
+      }
+      recargaEnCurso = (async () => {
+        do {
+          recargaSolicitada = false;
+          if (!salaActual?.id) return null;
+          await cargarSala(salaActual.id);
+        } while (recargaSolicitada && salaActual);
+        return salaActual;
+      })().finally(() => { recargaEnCurso = null; });
       return recargaEnCurso;
     }
 
@@ -148,6 +161,28 @@
       return salaActual;
     }
 
+    async function guardarDesafio({ tematica, palabras }) {
+      if (!salaActual?.id) throw new Error("No hay una sala activa.");
+      const { data, error } = await cliente.rpc("set_versus_challenge", {
+        p_room_id: salaActual.id,
+        p_theme_key: tematica,
+        p_words: palabras,
+      });
+      if (error) throw traducirError(error, "No pudimos guardar las palabras.");
+      await cargarSala(data.id);
+      return salaActual;
+    }
+
+    async function cancelarDesafio() {
+      if (!salaActual?.id) return salaActual;
+      const { data, error } = await cliente.rpc("cancel_versus_challenge", {
+        p_room_id: salaActual.id,
+      });
+      if (error) throw traducirError(error, "No pudimos cancelar las palabras.");
+      await cargarSala(data.id);
+      return salaActual;
+    }
+
     async function salirSala() {
       const roomId = salaActual?.id;
       await detenerCanal();
@@ -170,6 +205,8 @@
       crearSala,
       unirseSala,
       actualizarPersonaje,
+      guardarDesafio,
+      cancelarDesafio,
       salirSala,
       suscribir,
       obtenerSala: () => salaActual,
