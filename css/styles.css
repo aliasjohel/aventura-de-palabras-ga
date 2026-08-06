@@ -772,6 +772,11 @@ button:disabled {
     filter: drop-shadow(0 8px 7px rgba(0, 0, 0, 0.66));
 }
 
+/* El mago original mira al lado contrario: en el selector se presenta como el resto. */
+.tarjeta-personaje-versus[data-personaje="mago"] img {
+    transform: scaleX(-1);
+}
+
 .tarjeta-personaje-versus strong {
     color: #f3d69b;
     font-family: Georgia, "Times New Roman", serif;
@@ -1326,6 +1331,28 @@ button:disabled {
     animation: respirarPersonajeDosVersus 3.35s ease-in-out -1.1s infinite;
 }
 
+.versus-personaje-dos.personaje-explorador,
+.versus-personaje-dos.personaje-guardiana,
+.versus-personaje-dos.personaje-dragon {
+    transform: scaleX(-1);
+    animation-name: respirarPersonajeDosInvertidoVersus;
+}
+
+.versus-personaje-dos.personaje-explorador {
+    right: 1%;
+    width: clamp(190px, 36vw, 420px);
+}
+
+.versus-personaje-dos.personaje-guardiana {
+    right: 10%;
+    width: clamp(180px, 34vw, 400px);
+}
+
+.versus-personaje-dos.personaje-dragon {
+    right: 5%;
+    width: clamp(205px, 39vw, 450px);
+}
+
 .versus-personaje-uno.personaje-guardiana {
     left: 10%;
     width: clamp(180px, 34vw, 400px);
@@ -1452,6 +1479,12 @@ button:disabled {
     animation: entradaMagoRivalVersus 2.3s ease-out both;
 }
 
+.versus-personaje-dos.entrando-duelo.entrada-explorador-rival,
+.versus-personaje-dos.entrando-duelo.entrada-guardiana-rival,
+.versus-personaje-dos.entrando-duelo.entrada-dragon-rival {
+    animation: entradaPersonajeRivalInvertidoVersus 2.45s ease-out both;
+}
+
 .bumeran-versus.mostrando-entrada {
     opacity: 1;
     animation: gestoBumeranEntradaVersus 900ms ease-in-out both;
@@ -1520,6 +1553,13 @@ button:disabled {
     100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.65)); }
 }
 
+@keyframes entradaPersonajeRivalInvertidoVersus {
+    0% { opacity: 0; transform: translateX(82%) scaleX(-1) scale(0.92); }
+    48% { opacity: 1; transform: translateX(0) scaleX(-1) scale(1.035); }
+    76% { transform: translateX(-3px) scaleX(-1) scale(0.99); }
+    100% { opacity: 1; transform: translateX(0) scaleX(-1) scale(1); }
+}
+
 @keyframes entradaGuardianaVersus {
     0% { opacity: 0; transform: translate(-30%, -22%) scale(0.72); filter: brightness(1.7) blur(4px); }
     58% { opacity: 1; transform: translate(0, 2%) scale(1.035); filter: brightness(1.18) drop-shadow(0 0 20px #55e36f); }
@@ -1579,6 +1619,12 @@ button:disabled {
     76% { transform: translateY(-1px) rotate(0deg) scale(1.003, 0.997); }
 }
 
+@keyframes respirarPersonajeDosInvertidoVersus {
+    0%, 100% { transform: translateY(0) scaleX(-1) rotate(-0.18deg) scale(1); }
+    52% { transform: translateY(-3px) scaleX(-1) rotate(0.22deg) scale(1.008, 0.992); }
+    76% { transform: translateY(-1px) scaleX(-1) rotate(0deg) scale(1.003, 0.997); }
+}
+
 @keyframes respirarMagoJugadorVersus {
     0%, 100% { transform: translateY(0) scaleX(-1) rotate(0.18deg) scale(1); }
     52% { transform: translateY(-3px) scaleX(-1) rotate(-0.22deg) scale(1.008, 0.992); }
@@ -1606,6 +1652,15 @@ button:disabled {
 
 .bumeran-versus.volando {
     animation: vueloBumeranVersus 1.22s linear both;
+}
+
+.bumeran-versus.desde-rival {
+    left: auto;
+    right: 24%;
+}
+
+.bumeran-versus.desde-rival.volando {
+    animation-name: vueloBumeranRivalVersus;
 }
 
 .proyectil-mago-versus {
@@ -1672,12 +1727,43 @@ button:disabled {
     animation: vueloHalconEspiritualGuardianaVersus 980ms cubic-bezier(0.16, 0.78, 0.2, 1) both;
 }
 
+.proyectil-guardiana-versus.desde-rival {
+    left: auto;
+    right: 24%;
+}
+
+.proyectil-guardiana-versus.desde-rival.volando {
+    animation-name: vueloHalconEspiritualGuardianaRivalVersus;
+}
+
+.versus-personaje-dos.personaje-explorador.preparando-bumeran {
+    animation: prepararBumeranRivalVersus 260ms ease-out both;
+}
+
+.versus-personaje-dos.personaje-explorador.lanzando-bumeran {
+    animation: lanzarBumeranRivalVersus 1.25s ease-out both;
+}
+
+.versus-personaje-dos.personaje-guardiana.lanzando-viento {
+    animation: lanzarVientoGuardianaRivalVersus 1.3s ease-out both;
+}
+
 .versus-personaje-dos.recibiendo-dano {
     animation: danoMagoVersus 350ms ease-out both;
 }
 
 .versus-personaje-uno.recibiendo-dano-magico {
     animation: danoExploradorMagicoVersus 330ms ease-out both;
+}
+
+.versus-personaje-dos.personaje-explorador.recibiendo-dano,
+.versus-personaje-dos.personaje-guardiana.recibiendo-dano,
+.versus-personaje-dos.personaje-dragon.recibiendo-dano {
+    animation: danoRivalInvertidoVersus 350ms ease-out both;
+}
+
+.versus-personaje-uno.personaje-mago.recibiendo-dano-magico {
+    animation: danoJugadorMagoInvertidoVersus 330ms ease-out both;
 }
 
 .versus-corazones.recibiendo-dano {
@@ -1820,6 +1906,54 @@ button:disabled {
         opacity: 0;
         transform: translate(-50%, -50%) rotate(1620deg) scale(0.72);
     }
+}
+
+@keyframes vueloBumeranRivalVersus {
+    0% { right: 24%; opacity: 0; transform: translate(50%, -50%) rotate(0deg) scaleX(-1) scale(0.72); }
+    8% { opacity: 1; }
+    46% { right: 76%; opacity: 1; transform: translate(50%, -50%) rotate(-720deg) scaleX(-1) scale(1); }
+    54% { right: 76%; opacity: 1; transform: translate(50%, -50%) rotate(-900deg) scaleX(-1) scale(1); }
+    94% { opacity: 1; }
+    100% { right: 24%; opacity: 0; transform: translate(50%, -50%) rotate(-1620deg) scaleX(-1) scale(0.72); }
+}
+
+@keyframes vueloHalconEspiritualGuardianaRivalVersus {
+    0% { right: 22%; opacity: 0; transform: translate(50%, -50%) scaleX(-1) scale(0.42) rotate(5deg); }
+    10% { opacity: 1; }
+    38% { right: 48%; opacity: 1; transform: translate(50%, -50%) scaleX(-1) scale(0.84) rotate(-2deg); }
+    68% { right: 74%; opacity: 1; transform: translate(50%, -50%) scaleX(-1) scale(1.02) rotate(2deg); }
+    84% { right: 78%; opacity: 1; transform: translate(50%, -50%) scaleX(-1) scale(1.16) rotate(-1deg); }
+    100% { right: 82%; opacity: 0; transform: translate(50%, -50%) scaleX(-1) scale(0.72); }
+}
+
+@keyframes prepararBumeranRivalVersus {
+    from { transform: translateX(10px) scaleX(-1) scale(0.98); }
+    to { transform: translateX(0) scaleX(-1) scale(1); }
+}
+
+@keyframes lanzarBumeranRivalVersus {
+    0%, 78% { transform: translate(-8px, 1.5%) scaleX(-1) scale(1.075); }
+    100% { transform: translate(0, 1.5%) scaleX(-1) scale(1.075); }
+}
+
+@keyframes lanzarVientoGuardianaRivalVersus {
+    0% { transform: translate(8px, 13.3%) scaleX(-1) scale(1.39); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.62)); }
+    28%, 72% { transform: translate(-7px, 13.3%) scaleX(-1) scale(1.415); filter: brightness(1.15) drop-shadow(0 0 16px rgba(90, 224, 93, 0.78)); }
+    100% { transform: translate(0, 13.3%) scaleX(-1) scale(1.39); }
+}
+
+@keyframes danoRivalInvertidoVersus {
+    0%, 100% { transform: translateX(0) scaleX(-1); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.65)); }
+    22% { transform: translateX(16px) scaleX(-1) rotate(-2deg); filter: brightness(1.8) sepia(0.5) drop-shadow(0 0 16px #ffba58); }
+    48% { transform: translateX(-9px) scaleX(-1) rotate(1deg); }
+    72% { transform: translateX(6px) scaleX(-1); }
+}
+
+@keyframes danoJugadorMagoInvertidoVersus {
+    0%, 100% { transform: translateX(0) scaleX(-1); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.62)); }
+    24% { transform: translateX(-14px) scaleX(-1) rotate(2deg); filter: brightness(1.7) saturate(1.5) drop-shadow(0 0 17px #a637ff); }
+    52% { transform: translateX(8px) scaleX(-1) rotate(-1deg); }
+    76% { transform: translateX(-4px) scaleX(-1); }
 }
 
 @keyframes danoMagoVersus {
@@ -7318,6 +7452,10 @@ button:disabled {
     animation: rugirDragonVersus 1.22s ease-out both;
 }
 
+.versus-personaje-dos.personaje-dragon.rugiendo-dragon {
+    animation: rugirDragonRivalVersus 1.22s ease-out both;
+}
+
 .rugido-dragon-versus {
     position: absolute;
     z-index: 4;
@@ -7348,9 +7486,23 @@ button:disabled {
 .rugido-dragon-versus.volando i:nth-child(2) { animation-delay: 90ms; }
 .rugido-dragon-versus.volando i:nth-child(3) { animation-delay: 180ms; }
 
+.rugido-dragon-versus.desde-rival {
+    left: auto;
+    right: 29%;
+}
+
+.rugido-dragon-versus.desde-rival.volando i {
+    animation-name: ondaRugidoDragonRivalVersus;
+}
+
 @keyframes rugirDragonVersus {
     0%, 100% { transform: translateX(0) scale(1); }
     18%, 68% { transform: translateX(10px) scale(1.035); filter: brightness(1.2) drop-shadow(0 0 18px rgba(58, 235, 255, 0.75)); }
+}
+
+@keyframes rugirDragonRivalVersus {
+    0%, 100% { transform: translateX(0) scaleX(-1) scale(1); }
+    18%, 68% { transform: translateX(-10px) scaleX(-1) scale(1.035); filter: brightness(1.2) drop-shadow(0 0 18px rgba(58, 235, 255, 0.75)); }
 }
 
 @keyframes ondaRugidoDragonVersus {
@@ -7358,6 +7510,13 @@ button:disabled {
     15% { opacity: 1; }
     72% { opacity: 0.82; }
     100% { opacity: 0; transform: translate(calc(46vw - 50%), -50%) rotate(90deg) scale(2.25); }
+}
+
+@keyframes ondaRugidoDragonRivalVersus {
+    0% { opacity: 0; transform: translate(50%, -50%) rotate(90deg) scale(0.18); }
+    15% { opacity: 1; }
+    72% { opacity: 0.82; }
+    100% { opacity: 0; transform: translate(calc(-46vw + 50%), -50%) rotate(90deg) scale(2.25); }
 }
 
 .cinematica-final-versus.llamado-matriarca::after {
