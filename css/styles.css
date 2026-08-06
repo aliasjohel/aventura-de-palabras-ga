@@ -807,6 +807,30 @@ button:disabled {
     box-shadow: 0 3px 0 #15391c;
 }
 
+.estado-personajes-remotos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 7px 18px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: clamp(0.62rem, 1vw, 0.78rem);
+    text-align: center;
+}
+
+.estado-personajes-remotos span::before {
+    content: "◆";
+    margin-right: 6px;
+    color: #d4a34f;
+}
+
+.estado-personajes-remotos .listo {
+    color: #a7e7b3;
+}
+
+.estado-personajes-remotos .error {
+    color: #ff9b8d;
+}
+
 .pantalla-preparacion-versus {
     position: relative;
     width: 100%;

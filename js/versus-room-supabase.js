@@ -15,6 +15,7 @@
     let usuarioId = null;
     let salaActual = null;
     let canalSala = null;
+    let intervaloVerificacionSala = null;
     let recargaEnCurso = null;
     const suscriptores = new Set();
 
@@ -78,6 +79,8 @@
     }
 
     async function detenerCanal() {
+      if (intervaloVerificacionSala) clearInterval(intervaloVerificacionSala);
+      intervaloVerificacionSala = null;
       if (!canalSala) return;
       const canal = canalSala;
       canalSala = null;
@@ -101,6 +104,7 @@
           filter: `room_id=eq.${roomId}`,
         }, () => { void recargarSala(); })
         .subscribe();
+      intervaloVerificacionSala = setInterval(() => { void recargarSala(); }, 4000);
     }
 
     async function crearSala({ alias }) {
@@ -132,6 +136,18 @@
       return salaActual;
     }
 
+    async function actualizarPersonaje({ personaje, listo = true }) {
+      if (!salaActual?.id) throw new Error("No hay una sala activa.");
+      const { data, error } = await cliente.rpc("set_versus_character", {
+        p_room_id: salaActual.id,
+        p_character_key: personaje,
+        p_ready: listo,
+      });
+      if (error) throw traducirError(error, "No pudimos guardar el personaje.");
+      await cargarSala(data.id);
+      return salaActual;
+    }
+
     async function salirSala() {
       const roomId = salaActual?.id;
       await detenerCanal();
@@ -153,6 +169,7 @@
       inicializar,
       crearSala,
       unirseSala,
+      actualizarPersonaje,
       salirSala,
       suscribir,
       obtenerSala: () => salaActual,

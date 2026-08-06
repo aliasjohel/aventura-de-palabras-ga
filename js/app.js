@@ -51,6 +51,8 @@ const btnSalirSeleccionPersonajeVersusVertical = document.getElementById(
 const btnConfirmarPersonajeVersus = document.getElementById(
   "btnConfirmarPersonajeVersus",
 );
+const estadoPersonajePropioVersus = document.getElementById("estadoPersonajePropioVersus");
+const estadoPersonajeRivalVersus = document.getElementById("estadoPersonajeRivalVersus");
 const tarjetasPersonajesVersus = [
   ...document.querySelectorAll(".tarjeta-personaje-versus"),
 ];
@@ -599,7 +601,9 @@ const desafiosPorMision = 3;
 const adaptadorLocalSalasVersus = VersusRoom.crearAdaptadorLocal();
 let adaptadorSalasVersus = adaptadorLocalSalasVersus;
 let promesaConexionSalasVersus = null;
-let cancelarSuscripcionSalasVersus = adaptadorSalasVersus.suscribir(actualizarSalaVersus);
+let cancelarSuscripcionSalasVersus = adaptadorSalasVersus.suscribir(
+  actualizarEstadoMultijugador,
+);
 
 async function asegurarConexionSalasVersus() {
   if (adaptadorSalasVersus.proveedor === "supabase") return adaptadorSalasVersus;
@@ -618,7 +622,9 @@ async function asegurarConexionSalasVersus() {
     await adaptadorSupabase.inicializar();
     cancelarSuscripcionSalasVersus?.();
     adaptadorSalasVersus = adaptadorSupabase;
-    cancelarSuscripcionSalasVersus = adaptadorSalasVersus.suscribir(actualizarSalaVersus);
+    cancelarSuscripcionSalasVersus = adaptadorSalasVersus.suscribir(
+      actualizarEstadoMultijugador,
+    );
     return adaptadorSalasVersus;
   })();
 
@@ -669,6 +675,66 @@ function actualizarSalaVersus(sala) {
     "oculto",
     adaptadorSalasVersus.proveedor !== "local" || !modoPruebasActivo || salaCompleta,
   );
+}
+
+function actualizarSeleccionPersonajeRemota(sala) {
+  if (adaptadorSalasVersus.proveedor !== "supabase" || !sala) return;
+
+  const usuarioId = adaptadorSalasVersus.obtenerUsuarioId?.();
+  const jugadorPropio = sala.jugadores.find((jugador) => jugador.id === usuarioId);
+  const jugadorRival = sala.jugadores.find((jugador) => jugador.id !== usuarioId);
+
+  if (jugadorPropio?.personaje && personajesVersus[jugadorPropio.personaje]) {
+    seleccionarPersonajeVersus(jugadorPropio.personaje);
+  }
+
+  const propioListo = Boolean(jugadorPropio?.listo);
+  const rivalListo = Boolean(jugadorRival?.listo);
+  tarjetasPersonajesVersus.forEach((tarjeta) => { tarjeta.disabled = propioListo; });
+  btnConfirmarPersonajeVersus.disabled = propioListo;
+
+  estadoPersonajePropioVersus.className = propioListo ? "listo" : "";
+  estadoPersonajePropioVersus.textContent = propioListo
+    ? `${jugadorPropio.alias}: ${personajesVersus[jugadorPropio.personaje].nombre} listo.`
+    : "Elegí tu personaje.";
+
+  estadoPersonajeRivalVersus.className = rivalListo ? "listo" : "";
+  estadoPersonajeRivalVersus.textContent = rivalListo
+    ? `${jugadorRival.alias} eligió ${personajesVersus[jugadorRival.personaje].nombre}.`
+    : `${jugadorRival?.alias || "Tu rival"} está eligiendo…`;
+
+  if (rivalListo && personajesVersus[jugadorRival.personaje]) {
+    personajeRivalVersus = jugadorRival.personaje;
+  }
+
+  const ambosListos = sala.jugadores.length === 2 && sala.jugadores.every(
+    (jugador) => jugador.listo && personajesVersus[jugador.personaje],
+  );
+  if (ambosListos && pantallaSeleccionPersonajeVersus.classList.contains("activa")) {
+    abrirPreparacionVersus();
+  } else if (
+    !ambosListos
+    && pantallaPreparacionVersus.classList.contains("activa")
+    && sala.estado === "complete"
+  ) {
+    mostrarPantalla(pantallaSeleccionPersonajeVersus);
+  }
+}
+
+function actualizarEstadoMultijugador(sala) {
+  actualizarSalaVersus(sala);
+  actualizarSeleccionPersonajeRemota(sala);
+  if (
+    !sala
+    && adaptadorSalasVersus.proveedor === "supabase"
+    && (
+      pantallaSeleccionPersonajeVersus.classList.contains("activa")
+      || pantallaPreparacionVersus.classList.contains("activa")
+    )
+  ) {
+    mostrarPantalla(pantallaSalaVersus);
+    mostrarErrorSalaVersus("La sala fue cerrada por el anfitrión.");
+  }
 }
 
 async function abrirSalaVersus() {
@@ -754,6 +820,7 @@ function seleccionarPersonajeVersus(personaje) {
 function abrirSeleccionPersonajeVersus() {
   seleccionarPersonajeVersus(personajeJugadorVersus);
   mostrarPantalla(pantallaSeleccionPersonajeVersus);
+  actualizarSeleccionPersonajeRemota(adaptadorSalasVersus.obtenerSala());
 }
 
 btnVersus.addEventListener("click", () => {
@@ -803,18 +870,70 @@ tarjetasPersonajesVersus.forEach((tarjeta) => {
   });
 });
 
-btnConfirmarPersonajeVersus.addEventListener("click", () => {
+btnConfirmarPersonajeVersus.addEventListener("click", async () => {
   reproducirSonidoComenzarAventura();
-  abrirPreparacionVersus();
-});
-btnSalirSeleccionPersonajeVersus.addEventListener("click", abrirSalaVersus);
-btnSalirSeleccionPersonajeVersusVertical.addEventListener("click", abrirSalaVersus);
+  if (adaptadorSalasVersus.proveedor !== "supabase") {
+    abrirPreparacionVersus();
+    return;
+  }
 
-function volverAlMenuDesdePreparacionVersus() {
+  btnConfirmarPersonajeVersus.disabled = true;
+  tarjetasPersonajesVersus.forEach((tarjeta) => { tarjeta.disabled = true; });
+  estadoPersonajePropioVersus.className = "";
+  estadoPersonajePropioVersus.textContent = "Guardando tu elección…";
+  try {
+    const sala = await adaptadorSalasVersus.actualizarPersonaje({
+      personaje: personajeJugadorVersus,
+      listo: true,
+    });
+    actualizarEstadoMultijugador(sala);
+  } catch (error) {
+    estadoPersonajePropioVersus.className = "error";
+    estadoPersonajePropioVersus.textContent = error.message || "No pudimos guardar tu personaje.";
+    btnConfirmarPersonajeVersus.disabled = false;
+    tarjetasPersonajesVersus.forEach((tarjeta) => { tarjeta.disabled = false; });
+  }
+});
+
+async function volverASalaDesdeSeleccionVersus() {
+  const sala = adaptadorSalasVersus.obtenerSala();
+  const usuarioId = adaptadorSalasVersus.obtenerUsuarioId?.();
+  const jugadorPropio = sala?.jugadores.find((jugador) => jugador.id === usuarioId);
+  if (adaptadorSalasVersus.proveedor === "supabase" && jugadorPropio?.listo) {
+    try {
+      await adaptadorSalasVersus.actualizarPersonaje({
+        personaje: jugadorPropio.personaje || personajeJugadorVersus,
+        listo: false,
+      });
+    } catch (error) {
+      estadoPersonajePropioVersus.className = "error";
+      estadoPersonajePropioVersus.textContent = error.message;
+      return;
+    }
+  }
+  await abrirSalaVersus();
+}
+
+btnSalirSeleccionPersonajeVersus.addEventListener("click", volverASalaDesdeSeleccionVersus);
+btnSalirSeleccionPersonajeVersusVertical.addEventListener("click", volverASalaDesdeSeleccionVersus);
+
+async function volverAlMenuDesdePreparacionVersus() {
   if (transicionCombateVersus) clearTimeout(transicionCombateVersus);
   transicionCombateVersus = null;
   esperaRivalVersus.classList.add("oculto");
+  const sala = adaptadorSalasVersus.obtenerSala();
+  if (adaptadorSalasVersus.proveedor === "supabase" && sala) {
+    try {
+      await adaptadorSalasVersus.actualizarPersonaje({
+        personaje: personajeJugadorVersus,
+        listo: false,
+      });
+    } catch (error) {
+      console.warn("No se pudo cancelar la preparación remota.", error);
+    }
+  }
   mostrarPantalla(pantallaSeleccionPersonajeVersus);
+  actualizarSeleccionPersonajeRemota(adaptadorSalasVersus.obtenerSala());
 }
 
 btnSalirPreparacionVersus.addEventListener("click", volverAlMenuDesdePreparacionVersus);

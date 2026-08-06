@@ -124,6 +124,7 @@
       salirSala,
       suscribir,
       obtenerSala: () => salaActual,
+      obtenerUsuarioId: () => clienteId,
       limpiarAlias,
       limpiarCodigo,
     });
