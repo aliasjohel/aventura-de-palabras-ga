@@ -46,12 +46,14 @@ assert.match(estilos, /cinematica-mago-atrapado\.victima-final-mago[\s\S]+--dire
 assert.match(estilos, /capturaMagoTrampaVersus[\s\S]+scaleX\(var\(--direccion-victima-trampa\)\)/);
 assert.match(estilos, /--direccion-victima-eclipse: 1/);
 assert.match(estilos, /cinematica-explorador-atrapado\.victima-final-guardiana\.reaccion-final-activa[\s\S]+--direccion-victima-eclipse: -1/);
+assert.match(estilos, /cinematica-explorador-atrapado\.victima-final-mago[\s\S]+--direccion-victima-eclipse: -1/);
 assert.match(estilos, /capturaExploradorEclipseVersus[\s\S]+scaleX\(var\(--direccion-victima-eclipse\)\)/);
 assert.match(app, /programarReaccionVictimaFinalVersus\(victimaTrampaVersus, victima, 2200\)/);
 assert.match(app, /programarReaccionVictimaFinalVersus\(victimaEclipseVersus, victima, 2150\)/);
 assert.match(app, /programarReaccionVictimaFinalVersus\(rivalCinematicaMatriarca, victima, 2700\)/);
 assert.match(estilos, /--direccion-victima-matriarca: -1/);
 assert.match(estilos, /cinematica-rival-matriarca\.victima-final-guardiana\.reaccion-final-activa[\s\S]+--direccion-victima-matriarca: 1/);
+assert.match(estilos, /cinematica-rival-matriarca\.victima-final-mago[\s\S]+--direccion-victima-matriarca: 1/);
 
 assert.match(app, /function iniciarPruebaVersusLocal\(\)/);
 assert.match(estilos, /personaje-dos\.personaje-guardiana/);
@@ -59,4 +61,4 @@ assert.match(estilos, /entrada-guardiana-rival/);
 assert.match(estilos, /vueloHalconEspiritualGuardianaRivalVersus/);
 assert.match(estilos, /tarjeta-personaje-versus\[data-personaje="mago"\]/);
 
-console.log("versus-ui: 40 comprobaciones correctas");
+console.log("versus-ui: 42 comprobaciones correctas");

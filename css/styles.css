@@ -2711,6 +2711,10 @@ button:disabled {
     --direccion-victima-eclipse: -1;
 }
 
+.cinematica-explorador-atrapado.victima-final-mago {
+    --direccion-victima-eclipse: -1;
+}
+
 .eclipse-particulas {
     position: absolute;
     z-index: 6;
@@ -7642,6 +7646,10 @@ button:disabled {
 }
 
 .cinematica-rival-matriarca.victima-final-guardiana.reaccion-final-activa {
+    --direccion-victima-matriarca: 1;
+}
+
+.cinematica-rival-matriarca.victima-final-mago {
     --direccion-victima-matriarca: 1;
 }
 
