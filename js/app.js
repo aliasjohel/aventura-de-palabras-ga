@@ -2048,6 +2048,7 @@ const demoVersus = {
   temporizadoresAtaqueJugador: [],
   temporizadoresAtaqueRival: [],
   temporizadorCinematica: null,
+  temporizadorReaccionCinematica: null,
   resolverCinematica: null,
   temporizadoresEntrada: [],
   entradaActiva: false,
@@ -3104,8 +3105,9 @@ const posesReaccionVictimaVersus = {
 function configurarVictimaFinalVersus(elemento, personaje) {
   const clave = personaje in personajesVersus ? personaje : "mago";
   const victima = personajesVersus[clave];
-  elemento.src = posesReaccionVictimaVersus[clave];
+  elemento.src = victima.base;
   elemento.alt = `${victima.nombre}, objetivo de la técnica final`;
+  elemento.classList.remove("reaccion-final-activa");
   elemento.classList.remove(
     "victima-final-explorador",
     "victima-final-mago",
@@ -3113,12 +3115,22 @@ function configurarVictimaFinalVersus(elemento, personaje) {
     "victima-final-dragon",
   );
   elemento.classList.add(`victima-final-${clave}`);
+  return clave;
+}
+
+function programarReaccionVictimaFinalVersus(elemento, personaje, demora) {
+  const clave = configurarVictimaFinalVersus(elemento, personaje);
+  demoVersus.temporizadorReaccionCinematica = setTimeout(() => {
+    elemento.src = posesReaccionVictimaVersus[clave];
+    elemento.classList.add("reaccion-final-activa");
+    demoVersus.temporizadorReaccionCinematica = null;
+  }, demora);
 }
 
 function reproducirEclipseVioletaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   crearParticulasEclipseVersus();
-  configurarVictimaFinalVersus(victimaEclipseVersus, victima);
+  programarReaccionVictimaFinalVersus(victimaEclipseVersus, victima, 2150);
   fondoCinematicaVersus.src = fondoVersus.src;
   etiquetaCinematicaVersus.textContent = "GOLPE LEGENDARIO";
   tituloCinematicaVersus.textContent = "ECLIPSE VIOLETA";
@@ -3142,7 +3154,7 @@ function reproducirEclipseVioletaVersus(victima = personajeRivalVersus) {
 function reproducirTrampaSelvaticaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   crearParticulasEclipseVersus();
-  configurarVictimaFinalVersus(victimaTrampaVersus, victima);
+  programarReaccionVictimaFinalVersus(victimaTrampaVersus, victima, 2200);
   fondoCinematicaVersus.src = fondoVersus.src;
   etiquetaCinematicaVersus.textContent = "TÉCNICA SECRETA";
   tituloCinematicaVersus.textContent = "TRAMPA SELVÁTICA";
@@ -3204,7 +3216,7 @@ function reproducirLlamadoMatriarcaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   crearParticulasEclipseVersus();
   fondoCinematicaVersus.src = fondoVersus.src;
-  configurarVictimaFinalVersus(rivalCinematicaMatriarca, victima);
+  programarReaccionVictimaFinalVersus(rivalCinematicaMatriarca, victima, 2700);
   etiquetaCinematicaVersus.textContent = "AUXILIO ANCESTRAL";
   tituloCinematicaVersus.textContent = "LLAMADO DE LA MATRIARCA";
   cinematicaFinalVersus.classList.remove(
@@ -3229,6 +3241,10 @@ function reproducirLlamadoMatriarcaVersus(victima = personajeRivalVersus) {
 }
 
 function completarCinematicaFinalVersus() {
+  if (demoVersus.temporizadorReaccionCinematica) {
+    clearTimeout(demoVersus.temporizadorReaccionCinematica);
+    demoVersus.temporizadorReaccionCinematica = null;
+  }
   if (demoVersus.temporizadorCinematica) {
     clearTimeout(demoVersus.temporizadorCinematica);
     demoVersus.temporizadorCinematica = null;
@@ -3249,6 +3265,10 @@ function completarCinematicaFinalVersus() {
 }
 
 function cancelarCinematicaFinalVersus() {
+  if (demoVersus.temporizadorReaccionCinematica) {
+    clearTimeout(demoVersus.temporizadorReaccionCinematica);
+    demoVersus.temporizadorReaccionCinematica = null;
+  }
   if (demoVersus.temporizadorCinematica) {
     clearTimeout(demoVersus.temporizadorCinematica);
     demoVersus.temporizadorCinematica = null;

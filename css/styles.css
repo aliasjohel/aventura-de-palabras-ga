@@ -2631,6 +2631,7 @@ button:disabled {
 }
 
 .cinematica-mago-atrapado {
+    --direccion-victima-trampa: -1;
     right: 7%;
     bottom: 4%;
     width: min(40vw, 470px);
@@ -2638,6 +2639,18 @@ button:disabled {
     object-position: center;
     opacity: 0;
     filter: drop-shadow(0 16px 14px rgba(0, 0, 0, 0.78));
+}
+
+.cinematica-mago-atrapado.victima-final-guardiana {
+    --direccion-victima-trampa: -1;
+}
+
+.cinematica-mago-atrapado.victima-final-guardiana.reaccion-final-activa {
+    --direccion-victima-trampa: 1;
+}
+
+.cinematica-mago-atrapado.victima-final-mago {
+    --direccion-victima-trampa: 1;
 }
 
 .cinematica-explorador-atrapado.victima-final-mago,
@@ -2684,6 +2697,7 @@ button:disabled {
 }
 
 .cinematica-explorador-atrapado {
+    --direccion-victima-eclipse: 1;
     left: 11%;
     bottom: 3%;
     width: min(38vw, 440px);
@@ -2691,6 +2705,10 @@ button:disabled {
     object-position: center;
     opacity: 0;
     filter: drop-shadow(0 16px 13px rgba(0, 0, 0, 0.75));
+}
+
+.cinematica-explorador-atrapado.victima-final-guardiana.reaccion-final-activa {
+    --direccion-victima-eclipse: -1;
 }
 
 .eclipse-particulas {
@@ -2964,12 +2982,12 @@ button:disabled {
 }
 
 @keyframes capturaMagoTrampaVersus {
-    0%, 13% { opacity: 0; transform: translateY(8%) scale(0.86) rotate(0deg) scaleX(-1); }
-    23%, 49% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg) scaleX(-1); }
-    52% { opacity: 1; transform: translate(3vw, -1vh) scale(1.02) rotate(6deg) scaleX(-1); filter: brightness(1.4) drop-shadow(0 0 13px #ffd67a); }
-    59% { opacity: 1; transform: translate(24vw, -9vh) scale(0.88) rotate(18deg) scaleX(-1); filter: brightness(1.18) blur(0.3px); }
-    69% { opacity: 0.65; transform: translate(49vw, -20vh) scale(0.62) rotate(36deg) scaleX(-1); filter: blur(1.2px); }
-    76%, 100% { opacity: 0; transform: translate(70vw, -30vh) scale(0.42) rotate(52deg) scaleX(-1); filter: blur(2px); }
+    0%, 13% { opacity: 0; transform: translateY(8%) scale(0.86) rotate(0deg) scaleX(var(--direccion-victima-trampa)); }
+    23%, 49% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg) scaleX(var(--direccion-victima-trampa)); }
+    52% { opacity: 1; transform: translate(3vw, -1vh) scale(1.02) rotate(6deg) scaleX(var(--direccion-victima-trampa)); filter: brightness(1.4) drop-shadow(0 0 13px #ffd67a); }
+    59% { opacity: 1; transform: translate(24vw, -9vh) scale(0.88) rotate(18deg) scaleX(var(--direccion-victima-trampa)); filter: brightness(1.18) blur(0.3px); }
+    69% { opacity: 0.65; transform: translate(49vw, -20vh) scale(0.62) rotate(36deg) scaleX(var(--direccion-victima-trampa)); filter: blur(1.2px); }
+    76%, 100% { opacity: 0; transform: translate(70vw, -30vh) scale(0.42) rotate(52deg) scaleX(var(--direccion-victima-trampa)); filter: blur(2px); }
 }
 
 @keyframes balanceoTroncoTrampaVersus {
@@ -3100,11 +3118,11 @@ button:disabled {
 }
 
 @keyframes capturaExploradorEclipseVersus {
-    0%, 17% { opacity: 0; transform: translateY(20%) scale(0.82) rotate(0deg); }
-    30% { opacity: 1; transform: translateY(2%) scale(1) rotate(-2deg); }
-    48% { opacity: 1; transform: translateY(-7%) scale(1.04) rotate(2deg); filter: brightness(1.2) saturate(1.2) drop-shadow(0 0 18px #b13eff); }
-    59% { opacity: 1; transform: translateY(-10%) scale(1.02) rotate(-2deg); filter: brightness(1.75) saturate(0.55) drop-shadow(0 0 27px #e4a6ff); }
-    69%, 100% { opacity: 0; transform: translateY(-15%) scale(0.18) rotate(10deg); filter: brightness(2.5) blur(3px); }
+    0%, 17% { opacity: 0; transform: translateY(20%) scale(0.82) rotate(0deg) scaleX(var(--direccion-victima-eclipse)); }
+    30% { opacity: 1; transform: translateY(2%) scale(1) rotate(-2deg) scaleX(var(--direccion-victima-eclipse)); }
+    48% { opacity: 1; transform: translateY(-7%) scale(1.04) rotate(2deg) scaleX(var(--direccion-victima-eclipse)); filter: brightness(1.2) saturate(1.2) drop-shadow(0 0 18px #b13eff); }
+    59% { opacity: 1; transform: translateY(-10%) scale(1.02) rotate(-2deg) scaleX(var(--direccion-victima-eclipse)); filter: brightness(1.75) saturate(0.55) drop-shadow(0 0 27px #e4a6ff); }
+    69%, 100% { opacity: 0; transform: translateY(-15%) scale(0.18) rotate(10deg) scaleX(var(--direccion-victima-eclipse)); filter: brightness(2.5) blur(3px); }
 }
 
 @keyframes resplandorEclipseVersus {
@@ -7612,6 +7630,7 @@ button:disabled {
 }
 
 .cinematica-rival-matriarca {
+    --direccion-victima-matriarca: -1;
     z-index: 5;
     right: 5%;
     bottom: -4%;
@@ -7620,6 +7639,10 @@ button:disabled {
     object-fit: contain;
     object-position: right bottom;
     filter: drop-shadow(0 16px 14px rgba(0, 0, 0, 0.8));
+}
+
+.cinematica-rival-matriarca.victima-final-guardiana.reaccion-final-activa {
+    --direccion-victima-matriarca: 1;
 }
 
 .cinematica-pata-matriarca {
@@ -7768,10 +7791,10 @@ button:disabled {
 }
 
 @keyframes rivalEsperaMatriarcaVersus {
-    0%, 11% { opacity: 0; transform: translateX(14%) scale(0.9); }
-    19%, 47% { opacity: 1; transform: translateX(0) scale(1); }
-    51% { opacity: 1; transform: translateX(-2%) scale(0.98) rotate(-2deg); filter: brightness(1.35); }
-    55%, 100% { opacity: 0; transform: translateY(8%) scale(0.9); }
+    0%, 11% { opacity: 0; transform: translateX(14%) scale(0.9) scaleX(var(--direccion-victima-matriarca)); }
+    19%, 47% { opacity: 1; transform: translateX(0) scale(1) scaleX(var(--direccion-victima-matriarca)); }
+    51% { opacity: 1; transform: translateX(-2%) scale(0.98) rotate(-2deg) scaleX(var(--direccion-victima-matriarca)); filter: brightness(1.35); }
+    55%, 100% { opacity: 0; transform: translateY(8%) scale(0.9) scaleX(var(--direccion-victima-matriarca)); }
 }
 
 @keyframes cieloMatriarcaVersus {
