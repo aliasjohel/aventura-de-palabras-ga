@@ -2964,12 +2964,12 @@ button:disabled {
 }
 
 @keyframes capturaMagoTrampaVersus {
-    0%, 13% { opacity: 0; transform: translateY(8%) scale(0.86) rotate(0deg); }
-    23%, 49% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
-    52% { opacity: 1; transform: translate(3vw, -1vh) scale(1.02) rotate(6deg); filter: brightness(1.4) drop-shadow(0 0 13px #ffd67a); }
-    59% { opacity: 1; transform: translate(24vw, -9vh) scale(0.88) rotate(18deg); filter: brightness(1.18) blur(0.3px); }
-    69% { opacity: 0.65; transform: translate(49vw, -20vh) scale(0.62) rotate(36deg); filter: blur(1.2px); }
-    76%, 100% { opacity: 0; transform: translate(70vw, -30vh) scale(0.42) rotate(52deg); filter: blur(2px); }
+    0%, 13% { opacity: 0; transform: translateY(8%) scale(0.86) rotate(0deg) scaleX(-1); }
+    23%, 49% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg) scaleX(-1); }
+    52% { opacity: 1; transform: translate(3vw, -1vh) scale(1.02) rotate(6deg) scaleX(-1); filter: brightness(1.4) drop-shadow(0 0 13px #ffd67a); }
+    59% { opacity: 1; transform: translate(24vw, -9vh) scale(0.88) rotate(18deg) scaleX(-1); filter: brightness(1.18) blur(0.3px); }
+    69% { opacity: 0.65; transform: translate(49vw, -20vh) scale(0.62) rotate(36deg) scaleX(-1); filter: blur(1.2px); }
+    76%, 100% { opacity: 0; transform: translate(70vw, -30vh) scale(0.42) rotate(52deg) scaleX(-1); filter: blur(2px); }
 }
 
 @keyframes balanceoTroncoTrampaVersus {

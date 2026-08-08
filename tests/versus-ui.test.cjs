@@ -37,7 +37,10 @@ assert.match(app, /reproducirTrampaSelvaticaVersus\(personajeVictima\)/);
 assert.match(app, /reproducirLlamadoMatriarcaVersus\(personajeVictima\)/);
 for (const victima of ["explorador", "mago", "guardiana", "dragon"]) {
   assert.match(estilos, new RegExp(`victima-final-${victima}`));
+  assert.match(app, new RegExp(`${victima}: "assets/images/personajes/versus/.+"`));
 }
+assert.match(app, /configurarVictimaFinalVersus\(rivalCinematicaMatriarca, victima\)/);
+assert.match(estilos, /capturaMagoTrampaVersus[\s\S]+scaleX\(-1\)/);
 
 assert.match(app, /function iniciarPruebaVersusLocal\(\)/);
 assert.match(estilos, /personaje-dos\.personaje-guardiana/);
@@ -45,4 +48,4 @@ assert.match(estilos, /entrada-guardiana-rival/);
 assert.match(estilos, /vueloHalconEspiritualGuardianaRivalVersus/);
 assert.match(estilos, /tarjeta-personaje-versus\[data-personaje="mago"\]/);
 
-console.log("versus-ui: 22 comprobaciones correctas");
+console.log("versus-ui: 28 comprobaciones correctas");

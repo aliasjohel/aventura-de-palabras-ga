@@ -3094,19 +3094,17 @@ function crearParticulasEclipseVersus() {
   }
 }
 
-const posesEspecialesVictimaFinalVersus = {
-  eclipse: {
-    explorador: "assets/images/personajes/versus/explorador-atrapado-eclipse.png",
-  },
-  trampa: {
-    mago: "assets/images/personajes/versus/mago-atrapado-trampa.png",
-  },
+const posesReaccionVictimaVersus = {
+  explorador: "assets/images/personajes/versus/explorador-atrapado-eclipse.png",
+  mago: "assets/images/personajes/versus/mago-atrapado-trampa.png",
+  guardiana: "assets/images/personajes/versus/guardiana-susto-impacto.png",
+  dragon: "assets/images/personajes/versus/dragon-susto-impacto.png",
 };
 
-function configurarVictimaFinalVersus(elemento, personaje, final) {
+function configurarVictimaFinalVersus(elemento, personaje) {
   const clave = personaje in personajesVersus ? personaje : "mago";
   const victima = personajesVersus[clave];
-  elemento.src = posesEspecialesVictimaFinalVersus[final]?.[clave] || victima.base;
+  elemento.src = posesReaccionVictimaVersus[clave];
   elemento.alt = `${victima.nombre}, objetivo de la técnica final`;
   elemento.classList.remove(
     "victima-final-explorador",
@@ -3120,7 +3118,7 @@ function configurarVictimaFinalVersus(elemento, personaje, final) {
 function reproducirEclipseVioletaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   crearParticulasEclipseVersus();
-  configurarVictimaFinalVersus(victimaEclipseVersus, victima, "eclipse");
+  configurarVictimaFinalVersus(victimaEclipseVersus, victima);
   fondoCinematicaVersus.src = fondoVersus.src;
   etiquetaCinematicaVersus.textContent = "GOLPE LEGENDARIO";
   tituloCinematicaVersus.textContent = "ECLIPSE VIOLETA";
@@ -3144,7 +3142,7 @@ function reproducirEclipseVioletaVersus(victima = personajeRivalVersus) {
 function reproducirTrampaSelvaticaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   crearParticulasEclipseVersus();
-  configurarVictimaFinalVersus(victimaTrampaVersus, victima, "trampa");
+  configurarVictimaFinalVersus(victimaTrampaVersus, victima);
   fondoCinematicaVersus.src = fondoVersus.src;
   etiquetaCinematicaVersus.textContent = "TÉCNICA SECRETA";
   tituloCinematicaVersus.textContent = "TRAMPA SELVÁTICA";
@@ -3206,9 +3204,7 @@ function reproducirLlamadoMatriarcaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   crearParticulasEclipseVersus();
   fondoCinematicaVersus.src = fondoVersus.src;
-  const personajeVictima = personajesVersus[victima] || personajesVersus.mago;
-  rivalCinematicaMatriarca.src = personajeVictima.base;
-  rivalCinematicaMatriarca.alt = `${personajeVictima.nombre} frente a la Matriarca`;
+  configurarVictimaFinalVersus(rivalCinematicaMatriarca, victima);
   etiquetaCinematicaVersus.textContent = "AUXILIO ANCESTRAL";
   tituloCinematicaVersus.textContent = "LLAMADO DE LA MATRIARCA";
   cinematicaFinalVersus.classList.remove(
