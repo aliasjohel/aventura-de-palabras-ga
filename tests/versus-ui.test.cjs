@@ -74,6 +74,7 @@ assert.match(estilos, /translate\(-12vw, -2vh\)/);
 assert.match(app, /function animarCambioOrdenTecladoVersus\(reordenar\)/);
 assert.match(app, /transform 680ms cubic-bezier/);
 assert.match(app, /explorador-lupa\.png/);
+assert.match(app, /guardiana: \{ nombre: "Enredo de raíces"[\s\S]+duracion: 4000/);
 assert.match(app, /dragon: \{ nombre: "Rugido"[\s\S]+duracion: 4000/);
 assert.match(app, /mago: \{ nombre: "Caos arcano"[\s\S]+duracion: 5000/);
 assert.match(html, /enredaderas-teclado-versus\.png/);

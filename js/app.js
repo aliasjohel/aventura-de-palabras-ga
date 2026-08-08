@@ -2334,7 +2334,7 @@ const personajesVersus = {
 };
 const habilidadesVersus = Object.freeze({
   explorador: { nombre: "Lupa", icono: "🔍", efecto: "hint", duracion: 0 },
-  guardiana: { nombre: "Enredo de raíces", icono: "🌿", efecto: "roots", duracion: 3000 },
+  guardiana: { nombre: "Enredo de raíces", icono: "🌿", efecto: "roots", duracion: 4000 },
   dragon: { nombre: "Rugido", icono: "🐉", efecto: "roar", duracion: 4000 },
   mago: { nombre: "Caos arcano", icono: "🔮", efecto: "shuffle", duracion: 5000 },
 });

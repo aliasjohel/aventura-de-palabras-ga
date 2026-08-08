@@ -19,6 +19,10 @@ const effectDurations = fs.readFileSync(
   path.join(migrations, "20260808230456_versus_ability_effect_durations.sql"),
   "utf8",
 );
+const guardianDuration = fs.readFileSync(
+  path.join(migrations, "20260808233756_versus_guardian_roots_four_seconds.sql"),
+  "utf8",
+);
 
 assert.match(accents, /translate\(upper\(coalesce\(p_value, ''\)\), 'ÁÉÍÓÚÜ', 'AEIOUU'\)/);
 assert.match(accents, /versus_letter_key\(character\) = any/);
@@ -34,5 +38,6 @@ assert.match(effectDurations, /when 'guardiana' then interval '3 seconds'/);
 assert.match(effectDurations, /when 'dragon' then interval '4 seconds'/);
 assert.match(effectDurations, /else interval '5 seconds'/);
 assert.match(effectDurations, /revoke execute on function public\.activate_versus_ability\(uuid\) from public, anon/);
+assert.match(guardianDuration, /when 'guardiana' then interval '4 seconds'/);
 
-console.log("versus-migrations: 14 comprobaciones correctas");
+console.log("versus-migrations: 15 comprobaciones correctas");
