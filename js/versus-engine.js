@@ -13,9 +13,10 @@
     minimoLetras: 3,
     maximoLetras: 12,
     maximoErrores: 6,
-    maximoPalabras: 3,
-    vidasIniciales: 3,
-    duracionSegundos: 150,
+    maximoPalabras: 5,
+    vidasIniciales: 5,
+    duracionSegundos: 240,
+    letrasParaHabilidad: 8,
   });
 
   function normalizarPalabra(valor, maximoLetras = CONFIG.maximoLetras) {
@@ -89,6 +90,13 @@
     return Math.max(0, Number(tiempo || 0) - Math.max(0, segundos));
   }
 
+  function sumarCargaHabilidad(carga, letrasReveladas) {
+    return Math.min(
+      CONFIG.letrasParaHabilidad,
+      Math.max(0, Number(carga || 0)) + Math.max(0, Number(letrasReveladas || 0)),
+    );
+  }
+
   function resolverGanador(jugador, rival) {
     const puntaje = (competidor) => ({
       vidas: Number(competidor.vidas || 0),
@@ -117,6 +125,7 @@
     palabraCompletada,
     obtenerProgreso,
     contarDescubiertas,
+    sumarCargaHabilidad,
     reducirTiempo,
     resolverGanador,
   });

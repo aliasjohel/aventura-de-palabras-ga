@@ -282,6 +282,16 @@
         p_letter: letra,
       });
       if (error) throw traducirError(error, "No pudimos enviar la letra.");
+      // Recarga el estado enriquecido con carga, pista y efectos.
+      return cargarPartida();
+    }
+
+    async function activarHabilidad() {
+      if (!salaActual?.id) throw new Error("No hay una sala activa.");
+      const { data, error } = await cliente.rpc("activate_versus_ability", {
+        p_room_id: salaActual.id,
+      });
+      if (error) throw traducirError(error, "No pudimos activar la habilidad.");
       partidaActual = data;
       emitirPartida(partidaActual);
       return partidaActual;
@@ -298,6 +308,7 @@
       pedirRevancha,
       cargarPartida,
       jugarLetra,
+      activarHabilidad,
       salirSala,
       suscribir,
       suscribirPartida,

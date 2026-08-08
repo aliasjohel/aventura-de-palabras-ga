@@ -5,6 +5,7 @@ const path = require("node:path");
 const raiz = path.resolve(__dirname, "..");
 const app = fs.readFileSync(path.join(raiz, "js", "app.js"), "utf8");
 const estilos = fs.readFileSync(path.join(raiz, "css", "styles.css"), "utf8");
+const html = fs.readFileSync(path.join(raiz, "index.html"), "utf8");
 
 const eventosOnline = app.slice(
   app.indexOf("function procesarEventoPartidaOnline"),
@@ -60,5 +61,26 @@ assert.match(estilos, /personaje-dos\.personaje-guardiana/);
 assert.match(estilos, /entrada-guardiana-rival/);
 assert.match(estilos, /vueloHalconEspiritualGuardianaRivalVersus/);
 assert.match(estilos, /tarjeta-personaje-versus\[data-personaje="mago"\]/);
+assert.match(app, /function completarPalabrasAleatoriasVersus\(\)/);
+assert.match(app, /function activarHabilidadVersus\(\)/);
+assert.match(app, /efecto === "roots"/);
+assert.match(app, /efecto === "roar"/);
+assert.match(app, /efecto === "shuffle"/);
+assert.match(estilos, /\.teclado-versus\.efecto-raices/);
+assert.match(estilos, /\.teclado-versus\.efecto-rugido/);
+assert.match(estilos, /\.teclado-versus\.efecto-caos/);
+assert.match(app, /function reproducirAnimacionHabilidadVersus\(/);
+assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeJugadorVersus/);
+assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeRivalVersus/);
+for (const habilidad of ["explorador", "mago", "guardiana", "dragon"]) {
+  assert.match(estilos, new RegExp(`habilidad-${habilidad}`));
+  assert.match(html, new RegExp(`data-habilidad="${habilidad}"`));
+}
+assert.match(html, /id="herramientasHabilidadesPruebasVersus"/);
+assert.match(html, /id="origenHabilidadPruebaVersus"/);
+assert.match(app, /function probarHabilidadEspecialVersus\(personaje\)/);
+assert.match(app, /probarHabilidadEspecialVersus\(boton\.dataset\.habilidad\)/);
+assert.match(app, /herramientasHabilidadesPruebasVersus\.classList\.toggle\("oculto", !modoPruebasActivo\)/);
+assert.match(estilos, /\.herramientas-habilidades-pruebas-versus/);
 
-console.log("versus-ui: 42 comprobaciones correctas");
+console.log("versus-ui: comprobaciones correctas");

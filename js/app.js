@@ -66,6 +66,7 @@ const formPreparacionVersus = document.getElementById("formPreparacionVersus");
 const tematicaVersus = document.getElementById("tematicaVersus");
 const inputsPalabrasVersus = [...document.querySelectorAll(".input-palabra-versus")];
 const btnConfirmarPalabrasVersus = document.getElementById("btnConfirmarPalabrasVersus");
+const btnPalabrasAleatoriasVersus = document.getElementById("btnPalabrasAleatoriasVersus");
 const btnCompletarPalabrasPruebasVersus = document.getElementById(
   "btnCompletarPalabrasPruebasVersus",
 );
@@ -87,6 +88,12 @@ const tiempoVersusDos = document.getElementById("tiempoVersusDos");
 const textoTiempoVersusUno = document.getElementById("textoTiempoVersusUno");
 const textoTiempoVersusDos = document.getElementById("textoTiempoVersusDos");
 const mensajeRondaVersus = document.getElementById("mensajeRondaVersus");
+const btnHabilidadVersus = document.getElementById("btnHabilidadVersus");
+const iconoHabilidadVersus = document.getElementById("iconoHabilidadVersus");
+const nombreHabilidadVersus = document.getElementById("nombreHabilidadVersus");
+const cargaHabilidadVersus = document.getElementById("cargaHabilidadVersus");
+const progresoHabilidadVersus = document.getElementById("progresoHabilidadVersus");
+const animacionHabilidadVersus = document.getElementById("animacionHabilidadVersus");
 const tituloVersus = document.getElementById("tituloVersus");
 const tituloProgresoUno = document.getElementById("tituloProgresoUno");
 const tituloProgresoDos = document.getElementById("tituloProgresoDos");
@@ -121,6 +128,13 @@ const detalleResultadoVersus = document.getElementById("detalleResultadoVersus")
 const btnRevanchaVersus = document.getElementById("btnRevanchaVersus");
 const btnMenuResultadoVersus = document.getElementById("btnMenuResultadoVersus");
 const herramientasPruebasVersus = document.getElementById("herramientasPruebasVersus");
+const herramientasHabilidadesPruebasVersus = document.getElementById(
+  "herramientasHabilidadesPruebasVersus",
+);
+const origenHabilidadPruebaVersus = document.getElementById("origenHabilidadPruebaVersus");
+const botonesProbarHabilidadVersus = [
+  ...document.querySelectorAll(".btn-probar-habilidad-versus"),
+];
 const btnProbarCinematicaExplorador = document.getElementById(
   "btnProbarCinematicaExplorador",
 );
@@ -856,6 +870,7 @@ function actualizarPreparacionRemota(sala) {
 
   inputsPalabrasVersus.forEach((input) => { input.disabled = true; });
   tematicaVersus.disabled = true;
+  btnPalabrasAleatoriasVersus.disabled = true;
   btnConfirmarPalabrasVersus.disabled = true;
   esperaRivalVersus.classList.remove("oculto");
   tituloEsperaRivalVersus.textContent = rivalListo
@@ -886,8 +901,11 @@ function actualizarRelojPartidaOnline() {
 function actualizarTecladoPartidaOnline(partida) {
   const comenzo = Date.now() + desfaseServidorVersus >= Date.parse(partida.startedAt);
   const usadas = new Set(partida.me?.usedLetters || []);
+  const efectoRaicesActivo = partida.me?.activeEffect === "roots"
+    && Date.now() + desfaseServidorVersus < Date.parse(partida.me?.effectExpiresAt || 0);
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = jugadaOnlineEnCurso
+      || efectoRaicesActivo
       || partida.status !== "playing"
       || !comenzo
       || partida.me?.finished
@@ -913,13 +931,47 @@ function renderizarPartidaOnline(partida) {
   demoVersus.motivoFinalJugador = propio.finishReason || "";
   demoVersus.motivoFinalRival = rival.finishReason || "";
 
+  const firmaEfecto = `${propio.activeEffect || ""}:${propio.effectExpiresAt || ""}`;
+  if (demoVersus.firmaEfectoHabilidad !== firmaEfecto) {
+    demoVersus.firmaEfectoHabilidad = firmaEfecto;
+    const restanteEfecto = propio.effectExpiresAt
+      ? Math.max(0, Date.parse(propio.effectExpiresAt) - (Date.now() + desfaseServidorVersus))
+      : 0;
+    const eventoHabilidadRival = partida.lastEvent?.type === "ability_used"
+      && partida.lastEvent.actorId !== propio.userId
+      && partida.eventSequence > ultimoEventoPartidaVersus;
+    if (eventoHabilidadRival && propio.activeEffect && restanteEfecto > 0) {
+      const personajeAtacante = partida.lastEvent.character || personajeRivalVersus;
+      reproducirAnimacionHabilidadVersus(personajeAtacante, {
+        desdeRival: true,
+        alImpactar: () => {
+          const restanteAlImpactar = Math.max(
+            0,
+            Date.parse(propio.effectExpiresAt) - (Date.now() + desfaseServidorVersus),
+          );
+          aplicarEfectoVisualHabilidadVersus(propio.activeEffect, restanteAlImpactar);
+        },
+      });
+    } else {
+      aplicarEfectoVisualHabilidadVersus(propio.activeEffect || "", restanteEfecto);
+    }
+  }
+  const lupaPropiaRecienActivada = partida.lastEvent?.type === "ability_used"
+    && partida.lastEvent.actorId === propio.userId
+    && partida.lastEvent.character === "explorador"
+    && partida.eventSequence > ultimoEventoPartidaVersus;
+  actualizarPanelHabilidadVersus(
+    propio.abilityCharge || 0,
+    lupaPropiaRecienActivada ? "" : (propio.abilityHint || ""),
+  );
+
   tituloProgresoUno.textContent = propio.finished
     ? "TU RECORRIDO TERMINÓ"
     : `TU DESAFÍO · ${obtenerNombreTemaVersus(propio.theme).toUpperCase()} ${propio.wordIndex + 1}/${maximoPalabrasVersus}`;
   tituloProgresoDos.textContent = rival.finished
     ? "EL RIVAL TERMINÓ"
     : `RIVAL · ${obtenerNombreTemaVersus(rival.theme).toUpperCase()} ${rival.wordIndex + 1}/${maximoPalabrasVersus}`;
-  tituloVersus.textContent = `J1 ${propio.completedWords}/3 · J2 ${rival.completedWords}/3`;
+  tituloVersus.textContent = `J1 ${propio.completedWords}/${maximoPalabrasVersus} · J2 ${rival.completedWords}/${maximoPalabrasVersus}`;
 
   const palabraPropia = document.getElementById("palabraVersusUno");
   const palabraRival = document.getElementById("palabraVersusDos");
@@ -974,6 +1026,23 @@ function procesarEventoPartidaOnline(partida) {
       propio ? "Agotaste los intentos y perdiste un corazón." : "El rival agotó sus intentos y perdió un corazón.",
       propio ? "error" : "acierto",
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 260 : 1300,
+    );
+  } else if (evento.type === "ability_used") {
+    const habilidad = habilidadesVersus[evento.character] || habilidadesVersus.explorador;
+    if (propio) {
+      reproducirAnimacionHabilidadVersus(evento.character || personajeJugadorVersus, {
+        alImpactar: () => {
+          if (evento.character === "explorador") {
+            actualizarPistaLupaVersus(partida.me?.abilityHint || "");
+          }
+        },
+      });
+    } else if (evento.character === "explorador") {
+      reproducirAnimacionHabilidadVersus("explorador", { desdeRival: true });
+    }
+    mostrarAvisoAvanceVersus(
+      propio ? `¡Activaste ${habilidad.nombre}!` : `El rival activó ${habilidad.nombre}.`,
+      propio ? "acierto" : "error",
     );
   }
 }
@@ -1339,6 +1408,7 @@ function abrirPreparacionVersus() {
     input.classList.remove("invalida");
   });
   tematicaVersus.disabled = false;
+  btnPalabrasAleatoriasVersus.disabled = false;
   validarPreparacionVersus();
   mostrarPantalla(pantallaPreparacionVersus);
   actualizarPreparacionRemota(adaptadorSalasVersus.obtenerSala());
@@ -1351,6 +1421,18 @@ inputsPalabrasVersus.forEach((input) => {
   });
 });
 
+function completarPalabrasAleatoriasVersus() {
+  const banco = bancosPalabrasVersus[tematicaVersus.value] || [];
+  const seleccion = mezclarPalabrasVersus(banco).slice(0, maximoPalabrasVersus);
+  inputsPalabrasVersus.forEach((input, indice) => {
+    input.value = seleccion[indice] || "";
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  btnConfirmarPalabrasVersus.focus();
+}
+
+btnPalabrasAleatoriasVersus.addEventListener("click", completarPalabrasAleatoriasVersus);
+
 formPreparacionVersus.addEventListener("submit", async (evento) => {
   evento.preventDefault();
   if (!validarPreparacionVersus(true)) return;
@@ -1358,6 +1440,7 @@ formPreparacionVersus.addEventListener("submit", async (evento) => {
   palabrasSecretasVersus = inputsPalabrasVersus.map((input) => input.value);
   inputsPalabrasVersus.forEach((input) => { input.disabled = true; });
   tematicaVersus.disabled = true;
+  btnPalabrasAleatoriasVersus.disabled = true;
   btnConfirmarPalabrasVersus.disabled = true;
   esperaRivalVersus.classList.remove("oculto");
 
@@ -1374,6 +1457,7 @@ formPreparacionVersus.addEventListener("submit", async (evento) => {
       esperaRivalVersus.classList.add("oculto");
       inputsPalabrasVersus.forEach((input) => { input.disabled = false; });
       tematicaVersus.disabled = false;
+      btnPalabrasAleatoriasVersus.disabled = false;
       estadoPreparacionRivalVersus.className = "estado-preparacion-rival-versus error";
       estadoPreparacionRivalVersus.textContent = error.message || "No pudimos guardar el desafío.";
       validarPreparacionVersus(true);
@@ -1391,15 +1475,7 @@ formPreparacionVersus.addEventListener("submit", async (evento) => {
 
 btnCompletarPalabrasPruebasVersus.addEventListener("click", () => {
   if (!modoPruebasActivo) return;
-  const palabrasDePrueba = bancosPalabrasVersus[tematicaVersus.value].slice(
-    0,
-    maximoPalabrasVersus,
-  );
-  inputsPalabrasVersus.forEach((input, indice) => {
-    input.value = palabrasDePrueba[indice];
-    input.dispatchEvent(new Event("input", { bubbles: true }));
-  });
-  btnConfirmarPalabrasVersus.focus();
+  completarPalabrasAleatoriasVersus();
 });
 
 async function volverAlMenuDesdeVersus() {
@@ -1898,8 +1974,223 @@ function crearTecladoVersus() {
   });
 }
 
-// Duelo local de tres rondas. Cuando exista el servidor, las palabras y jugadas
-// del rival llegarán desde el otro dispositivo en lugar de esta simulación.
+function restaurarOrdenTecladoVersus() {
+  const botones = new Map(
+    [...tecladoVersus.querySelectorAll("button")].map((boton) => [boton.textContent, boton]),
+  );
+  [...tecladoVersus.children].forEach((fila, indice) => {
+    filasTeclado[indice].forEach((letra) => fila.appendChild(botones.get(letra)));
+  });
+}
+
+function desordenarTecladoVersus() {
+  const botones = mezclarPalabrasVersus([...tecladoVersus.querySelectorAll("button")]);
+  let desplazamiento = 0;
+  [...tecladoVersus.children].forEach((fila, indice) => {
+    const cantidad = filasTeclado[indice].length;
+    botones.slice(desplazamiento, desplazamiento + cantidad).forEach((boton) => fila.appendChild(boton));
+    desplazamiento += cantidad;
+  });
+}
+
+function actualizarPistaLupaVersus(letra = "") {
+  tecladoVersus.querySelectorAll("button").forEach((boton) => {
+    boton.classList.toggle("pista-lupa", Boolean(letra) && boton.textContent === letra);
+  });
+}
+
+function limpiarAnimacionHabilidadVersus() {
+  demoVersus.temporizadoresHabilidad.forEach(clearTimeout);
+  demoVersus.temporizadoresHabilidad = [];
+  animacionHabilidadVersus.className = "animacion-habilidad-versus";
+  herramientasHabilidadesPruebasVersus.classList.remove("ataque-en-curso");
+  [personajeVersusUno, personajeVersusDos].forEach((personaje) => {
+    personaje.classList.remove("usando-habilidad");
+  });
+  if (personajesVersus[personajeJugadorVersus]) {
+    personajeVersusUno.src = personajesVersus[personajeJugadorVersus].base;
+  }
+  if (personajesVersus[personajeRivalVersus]) {
+    personajeVersusDos.src = personajesVersus[personajeRivalVersus].base;
+  }
+}
+
+function programarPasoHabilidadVersus(accion, demora) {
+  const temporizador = setTimeout(accion, demora);
+  demoVersus.temporizadoresHabilidad.push(temporizador);
+}
+
+function reproducirAnimacionHabilidadVersus(
+  personaje,
+  { desdeRival = false, alImpactar = () => {} } = {},
+) {
+  limpiarAnimacionHabilidadVersus();
+  herramientasHabilidadesPruebasVersus.classList.add("ataque-en-curso");
+  const atacante = desdeRival ? personajeVersusDos : personajeVersusUno;
+  const pose = {
+    explorador: srcExploradorAtaqueVersus,
+    mago: srcMagoAtaqueVersus,
+    guardiana: srcGuardianaAtaqueVersus,
+    dragon: srcDragonAtaqueVersus,
+  }[personaje];
+  if (pose) atacante.src = pose;
+  atacante.classList.add("usando-habilidad");
+
+  animacionHabilidadVersus.className = [
+    "animacion-habilidad-versus",
+    `habilidad-${personaje}`,
+    desdeRival ? "desde-rival" : "desde-jugador",
+  ].join(" ");
+  void animacionHabilidadVersus.offsetWidth;
+  animacionHabilidadVersus.classList.add("activa");
+  reproducirSonidoVersus(desdeRival ? "versusAtaqueDos" : "versusAtaqueUno", 0.5);
+
+  const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  programarPasoHabilidadVersus(alImpactar, movimientoReducido ? 80 : 560);
+  programarPasoHabilidadVersus(limpiarAnimacionHabilidadVersus, movimientoReducido ? 180 : 1120);
+}
+
+function sincronizarTecladoDemoVersus() {
+  const bloqueado = demoVersus.finalizadoJugador
+    || demoVersus.partidaFinalizada
+    || tecladoVersus.classList.contains("efecto-raices");
+  tecladoVersus.querySelectorAll("button").forEach((boton) => {
+    boton.disabled = bloqueado || demoVersus.letrasJugador.has(boton.textContent);
+  });
+}
+
+function limpiarEfectoVisualHabilidadVersus() {
+  if (demoVersus.temporizadorEfectoHabilidad) clearTimeout(demoVersus.temporizadorEfectoHabilidad);
+  demoVersus.temporizadorEfectoHabilidad = null;
+  tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos");
+  restaurarOrdenTecladoVersus();
+}
+
+function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
+  limpiarEfectoVisualHabilidadVersus();
+  if (!efecto || milisegundos <= 0) {
+    if (adaptadorSalasVersus.proveedor === "supabase" && partidaOnlineVersus) {
+      actualizarTecladoPartidaOnline(partidaOnlineVersus);
+    } else {
+      sincronizarTecladoDemoVersus();
+    }
+    return;
+  }
+
+  if (efecto === "roots") tecladoVersus.classList.add("efecto-raices");
+  if (efecto === "roar") tecladoVersus.classList.add("efecto-rugido");
+  if (efecto === "shuffle") {
+    tecladoVersus.classList.add("efecto-caos");
+    desordenarTecladoVersus();
+  }
+  if (efecto === "roots") tecladoVersus.querySelectorAll("button").forEach((boton) => { boton.disabled = true; });
+
+  demoVersus.temporizadorEfectoHabilidad = setTimeout(() => {
+    demoVersus.temporizadorEfectoHabilidad = null;
+    tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos");
+    restaurarOrdenTecladoVersus();
+    if (adaptadorSalasVersus.proveedor === "supabase" && partidaOnlineVersus) {
+      actualizarTecladoPartidaOnline(partidaOnlineVersus);
+    } else {
+      sincronizarTecladoDemoVersus();
+    }
+  }, milisegundos);
+}
+
+function obtenerPistaLupaVersus(palabra, letrasUsadas) {
+  const pendientes = [...new Set([...VersusEngine.obtenerClavePalabra(palabra)])]
+    .filter((letra) => !letrasUsadas.has(letra));
+  return pendientes[Math.floor(Math.random() * pendientes.length)] || "";
+}
+
+function actualizarPanelHabilidadVersus(carga = demoVersus.cargaHabilidadJugador, pista = "") {
+  const habilidad = habilidadesVersus[personajeJugadorVersus] || habilidadesVersus.explorador;
+  const lista = carga >= letrasParaHabilidadVersus;
+  iconoHabilidadVersus.textContent = habilidad.icono;
+  nombreHabilidadVersus.textContent = habilidad.nombre;
+  cargaHabilidadVersus.textContent = lista ? "¡Lista para usar!" : `${carga}/${letrasParaHabilidadVersus} letras`;
+  progresoHabilidadVersus.style.width = `${Math.min(100, (carga / letrasParaHabilidadVersus) * 100)}%`;
+  btnHabilidadVersus.classList.toggle("lista", lista);
+  btnHabilidadVersus.disabled = !lista || demoVersus.partidaFinalizada || jugadaOnlineEnCurso;
+  btnHabilidadVersus.setAttribute(
+    "aria-label",
+    lista ? `${habilidad.nombre}: lista para usar` : `${habilidad.nombre}: ${carga} de ${letrasParaHabilidadVersus} letras`,
+  );
+  actualizarPistaLupaVersus(pista);
+}
+
+function activarHabilidadLocalVersus() {
+  if (demoVersus.cargaHabilidadJugador < letrasParaHabilidadVersus || demoVersus.partidaFinalizada) return;
+  const habilidad = habilidadesVersus[personajeJugadorVersus];
+  demoVersus.cargaHabilidadJugador = 0;
+  if (habilidad.efecto === "hint") {
+    const pista = obtenerPistaLupaVersus(
+      obtenerPalabraActualJugadorVersus(),
+      demoVersus.letrasJugador,
+    );
+    demoVersus.pistaLupaJugador = pista;
+    actualizarPanelHabilidadVersus(0);
+    reproducirAnimacionHabilidadVersus(personajeJugadorVersus, {
+      alImpactar: () => {
+        actualizarPanelHabilidadVersus(0, pista);
+        mostrarAvisoAvanceVersus(`La lupa señaló la letra ${pista}.`, "acierto");
+      },
+    });
+  } else {
+    reproducirAnimacionHabilidadVersus(personajeJugadorVersus, {
+      alImpactar: () => {
+        demoVersus.efectoRival = habilidad.efecto;
+        demoVersus.efectoRivalHasta = Date.now() + habilidad.duracion;
+        mostrarAvisoAvanceVersus(`¡${habilidad.nombre} afectó al rival!`, "acierto");
+      },
+    });
+  }
+  actualizarPanelHabilidadVersus(0);
+}
+
+function activarHabilidadRivalLocalVersus() {
+  if (demoVersus.cargaHabilidadRival < letrasParaHabilidadVersus || demoVersus.partidaFinalizada) return;
+  const habilidad = habilidadesVersus[personajeRivalVersus] || habilidadesVersus.mago;
+  if (habilidad.efecto === "hint") {
+    const pista = obtenerPistaLupaVersus(
+      obtenerPalabraActualRivalVersus(),
+      demoVersus.letrasRival,
+    );
+    if (!pista) return;
+    demoVersus.pistaLupaRival = pista;
+    reproducirAnimacionHabilidadVersus(personajeRivalVersus, { desdeRival: true });
+  } else {
+    reproducirAnimacionHabilidadVersus(personajeRivalVersus, {
+      desdeRival: true,
+      alImpactar: () => aplicarEfectoVisualHabilidadVersus(habilidad.efecto, habilidad.duracion),
+    });
+  }
+  demoVersus.cargaHabilidadRival = 0;
+  mostrarAvisoAvanceVersus(`El rival activó ${habilidad.nombre}.`, "error");
+}
+
+async function activarHabilidadVersus() {
+  if (btnHabilidadVersus.disabled) return;
+  if (adaptadorSalasVersus.proveedor !== "supabase") {
+    activarHabilidadLocalVersus();
+    return;
+  }
+  jugadaOnlineEnCurso = true;
+  actualizarPanelHabilidadVersus(partidaOnlineVersus?.me?.abilityCharge || 0, partidaOnlineVersus?.me?.abilityHint || "");
+  try {
+    await adaptadorSalasVersus.activarHabilidad();
+  } catch (error) {
+    mostrarAvisoAvanceVersus(error.message || "No pudimos activar la habilidad.", "error");
+  } finally {
+    jugadaOnlineEnCurso = false;
+    if (partidaOnlineVersus) renderizarPartidaOnline(partidaOnlineVersus);
+  }
+}
+
+btnHabilidadVersus.addEventListener("click", activarHabilidadVersus);
+
+// Duelo local de cinco rondas. En línea, las palabras y jugadas del rival
+// llegan desde el otro dispositivo en lugar de esta simulación.
 const bancosPalabrasVersus = {
   paises: [
     "ARGENTINA", "BRASIL", "CHILE", "PERU", "ESPAÑA",
@@ -1959,8 +2250,9 @@ const arenasVersus = [
   { src: "assets/images/fondos/bosque-1.png", alt: "Sendero del bosque encantado" },
   { src: "assets/images/fondos/bosque-6.png", alt: "Bosque misterioso de combate" },
 ];
-const duracionPartidaVersus = 150;
-const maximoPalabrasVersus = 3;
+const duracionPartidaVersus = VersusEngine.CONFIG.duracionSegundos;
+const maximoPalabrasVersus = VersusEngine.CONFIG.maximoPalabras;
+const vidasInicialesVersus = VersusEngine.CONFIG.vidasIniciales;
 const minimoLetrasPalabraVersus = 3;
 const maximoLetrasPalabraVersus = 12;
 const maximoErroresVersus = 6;
@@ -1968,6 +2260,7 @@ const intervaloJugadaRivalVersus = 3000;
 const probabilidadAciertoRivalVersus = 0.56;
 const duracionEntradaDueloVersus = 3200;
 const srcExploradorBaseVersus = "assets/images/personajes/versus/explorador-base.png";
+const srcExploradorAtaqueVersus = "assets/images/personajes/versus/explorador-ataque.png";
 const srcExploradorPreparaBumeran = "assets/images/personajes/versus/explorador-bumeran-preparacion.png";
 const srcExploradorLanzaBumeran = "assets/images/personajes/versus/explorador-bumeran-lanzamiento.png";
 const srcMagoBaseVersus = "assets/images/personajes/versus/mago-base.png";
@@ -2002,6 +2295,13 @@ const personajesVersus = {
     final: "llamado-matriarca",
   },
 };
+const habilidadesVersus = Object.freeze({
+  explorador: { nombre: "Lupa", icono: "🔍", efecto: "hint", duracion: 0 },
+  guardiana: { nombre: "Enredo de raíces", icono: "🌿", efecto: "roots", duracion: 2000 },
+  dragon: { nombre: "Rugido", icono: "🐉", efecto: "roar", duracion: 3000 },
+  mago: { nombre: "Caos arcano", icono: "🔮", efecto: "shuffle", duracion: 4000 },
+});
+const letrasParaHabilidadVersus = VersusEngine.CONFIG.letrasParaHabilidad;
 let personajeJugadorVersus = "explorador";
 let personajeRivalVersus = "mago";
 
@@ -2034,8 +2334,17 @@ const demoVersus = {
   letrasRival: new Set(),
   erroresJugador: 0,
   erroresRival: 0,
-  vidasJugador: 3,
-  vidasRival: 3,
+  vidasJugador: vidasInicialesVersus,
+  vidasRival: vidasInicialesVersus,
+  cargaHabilidadJugador: 0,
+  cargaHabilidadRival: 0,
+  pistaLupaJugador: "",
+  pistaLupaRival: "",
+  efectoRivalHasta: 0,
+  efectoRival: "",
+  firmaEfectoHabilidad: "",
+  temporizadorEfectoHabilidad: null,
+  temporizadoresHabilidad: [],
   tiempoJugador: duracionPartidaVersus,
   tiempoRival: duracionPartidaVersus,
   finalizadoJugador: false,
@@ -2130,6 +2439,14 @@ function configurarPersonajesCombateVersus() {
     "personaje-dragon",
   );
   personajeVersusDos.classList.add(`personaje-${personajeRivalVersus}`);
+  actualizarPanelHabilidadVersus(
+    adaptadorSalasVersus.proveedor === "supabase"
+      ? (partidaOnlineVersus?.me?.abilityCharge || 0)
+      : demoVersus.cargaHabilidadJugador,
+    adaptadorSalasVersus.proveedor === "supabase"
+      ? (partidaOnlineVersus?.me?.abilityHint || "")
+      : demoVersus.pistaLupaJugador,
+  );
 }
 
 function programarPasoEntradaVersus(accion, demora) {
@@ -2591,8 +2908,9 @@ function bloquearTecladoDemoVersus() {
 }
 
 function habilitarTecladoVersus() {
+  const bloqueadoPorRaices = tecladoVersus.classList.contains("efecto-raices");
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
-    boton.disabled = false;
+    boton.disabled = bloqueadoPorRaices;
   });
 }
 
@@ -2618,15 +2936,22 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
   demoVersus.palabrasJugador = mezclarPalabrasVersus(
     bancosPalabrasVersus[demoVersus.tematicaParaJugador],
   ).slice(0, maximoPalabrasVersus);
-  demoVersus.palabrasRival = palabrasSecretasVersus.map(obtenerClavePalabraVersus);
+  demoVersus.palabrasRival = palabrasSecretasVersus.map(limpiarPalabraParaVersus);
   demoVersus.indiceJugador = 0;
   demoVersus.indiceRival = 0;
   demoVersus.letrasJugador.clear();
   demoVersus.letrasRival.clear();
   demoVersus.erroresJugador = 0;
   demoVersus.erroresRival = 0;
-  demoVersus.vidasJugador = 3;
-  demoVersus.vidasRival = 3;
+  demoVersus.cargaHabilidadJugador = 0;
+  demoVersus.cargaHabilidadRival = 0;
+  demoVersus.pistaLupaJugador = "";
+  demoVersus.pistaLupaRival = "";
+  demoVersus.efectoRival = "";
+  demoVersus.efectoRivalHasta = 0;
+  demoVersus.firmaEfectoHabilidad = "";
+  demoVersus.vidasJugador = vidasInicialesVersus;
+  demoVersus.vidasRival = vidasInicialesVersus;
   demoVersus.tiempoJugador = duracionPartidaVersus;
   demoVersus.tiempoRival = duracionPartidaVersus;
   demoVersus.finalizadoJugador = false;
@@ -2640,6 +2965,7 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
   resultadoRondaVersus.classList.add("oculto");
   avisoAvanceVersus.classList.add("oculto");
   actualizarVidasVersus();
+  actualizarPanelHabilidadVersus(0);
   actualizarIntentosVersus(document.getElementById("intentosVersusUno"), 0, "Jugador 1");
   actualizarIntentosVersus(document.getElementById("intentosVersusDos"), 0, "El rival");
   bloquearTecladoDemoVersus();
@@ -2659,6 +2985,10 @@ function detenerRondaVersus() {
   demoVersus.intervaloRival = null;
   if (demoVersus.temporizadorAviso) clearTimeout(demoVersus.temporizadorAviso);
   demoVersus.temporizadorAviso = null;
+  limpiarAnimacionHabilidadVersus();
+  limpiarEfectoVisualHabilidadVersus();
+  demoVersus.firmaEfectoHabilidad = "";
+  btnHabilidadVersus.disabled = true;
   detenerSonidosVersus();
   limpiarEntradaDueloVersus();
   limpiarAnimacionAtaqueVersus();
@@ -2670,6 +3000,10 @@ function jugarLetraDemoVersus(letra, boton) {
   const estadoJugador = document.getElementById("estadoProgresoUno");
   const intentosJugador = document.getElementById("intentosVersusUno");
   const palabraJugador = obtenerPalabraActualJugadorVersus();
+  const descubiertasAntes = VersusEngine.contarDescubiertas(
+    palabraJugador,
+    [...demoVersus.letrasJugador],
+  );
 
   boton.disabled = true;
   const turno = VersusEngine.evaluarLetra({
@@ -2680,6 +3014,16 @@ function jugarLetraDemoVersus(letra, boton) {
   });
   demoVersus.letrasJugador = new Set(turno.letras);
   demoVersus.erroresJugador = turno.errores;
+
+  if (turno.resultado === "acierto" || turno.resultado === "completa") {
+    const descubiertasDespues = VersusEngine.contarDescubiertas(palabraJugador, turno.letras);
+    demoVersus.cargaHabilidadJugador = VersusEngine.sumarCargaHabilidad(
+      demoVersus.cargaHabilidadJugador,
+      descubiertasDespues - descubiertasAntes,
+    );
+    if (demoVersus.pistaLupaJugador === letra) demoVersus.pistaLupaJugador = "";
+    actualizarPanelHabilidadVersus(demoVersus.cargaHabilidadJugador, demoVersus.pistaLupaJugador);
+  }
 
   if (turno.resultado === "acierto" || turno.resultado === "completa") {
     reproducirSonidoVersus("acertar", 0.5);
@@ -2705,18 +3049,33 @@ function jugarLetraDemoVersus(letra, boton) {
 function jugarTurnoRivalVersus() {
   if (demoVersus.finalizadoRival || demoVersus.partidaFinalizada) return;
 
+  const efectoActivo = Date.now() < demoVersus.efectoRivalHasta ? demoVersus.efectoRival : "";
+  if (efectoActivo === "roots") return;
+  activarHabilidadRivalLocalVersus();
+
   const alfabeto = filasTeclado.flat();
   const palabraRival = obtenerPalabraActualRivalVersus();
-  const letrasPendientes = [...new Set(palabraRival)]
+  const palabraRivalClave = obtenerClavePalabraVersus(palabraRival);
+  const descubiertasAntes = VersusEngine.contarDescubiertas(
+    palabraRival,
+    [...demoVersus.letrasRival],
+  );
+  const letrasPendientes = [...new Set(palabraRivalClave)]
     .filter((letra) => !demoVersus.letrasRival.has(letra));
   const letrasIncorrectas = alfabeto.filter(
-    (letra) => !palabraRival.includes(letra) && !demoVersus.letrasRival.has(letra),
+    (letra) => !palabraRivalClave.includes(letra) && !demoVersus.letrasRival.has(letra),
   );
-  const acierta = Math.random() < probabilidadAciertoRivalVersus
+  const probabilidadAcierto = efectoActivo === "roar" || efectoActivo === "shuffle"
+    ? 0.25
+    : probabilidadAciertoRivalVersus;
+  const acierta = Boolean(demoVersus.pistaLupaRival)
+    || Math.random() < probabilidadAcierto
     || letrasIncorrectas.length === 0;
   const opciones = acierta ? letrasPendientes : letrasIncorrectas;
-  const letra = opciones[Math.floor(Math.random() * opciones.length)];
+  const letra = demoVersus.pistaLupaRival
+    || opciones[Math.floor(Math.random() * opciones.length)];
   if (!letra) return;
+  demoVersus.pistaLupaRival = "";
 
   const turno = VersusEngine.evaluarLetra({
     palabra: palabraRival,
@@ -2726,6 +3085,14 @@ function jugarTurnoRivalVersus() {
   });
   demoVersus.letrasRival = new Set(turno.letras);
   demoVersus.erroresRival = turno.errores;
+  if (turno.resultado === "acierto" || turno.resultado === "completa") {
+    const descubiertasDespues = VersusEngine.contarDescubiertas(palabraRival, turno.letras);
+    demoVersus.cargaHabilidadRival = VersusEngine.sumarCargaHabilidad(
+      demoVersus.cargaHabilidadRival,
+      descubiertasDespues - descubiertasAntes,
+    );
+    if (!turno.palabraCompleta) activarHabilidadRivalLocalVersus();
+  }
   const estadoRival = document.getElementById("estadoProgresoDos");
   if (turno.resultado === "acierto" || turno.resultado === "completa") {
     mostrarEstadoProgresoVersus(estadoRival, "El rival acertó", "acierto");
@@ -2787,12 +3154,12 @@ function actualizarProgresosVersus() {
   tituloProgresoDos.textContent = demoVersus.finalizadoRival
     ? "EL RIVAL TERMINÓ"
     : `RIVAL · ${temaRival.toUpperCase()} ${demoVersus.indiceRival + 1}/${maximoPalabrasVersus}`;
-  tituloVersus.textContent = `J1 ${Math.min(demoVersus.indiceJugador, maximoPalabrasVersus)}/3 · J2 ${Math.min(demoVersus.indiceRival, maximoPalabrasVersus)}/3`;
+  tituloVersus.textContent = `J1 ${Math.min(demoVersus.indiceJugador, maximoPalabrasVersus)}/${maximoPalabrasVersus} · J2 ${Math.min(demoVersus.indiceRival, maximoPalabrasVersus)}/${maximoPalabrasVersus}`;
 
   if (demoVersus.finalizadoJugador) {
     palabraJugador.textContent = demoVersus.motivoFinalJugador === "tiempo"
       ? "TIEMPO AGOTADO"
-      : "✓ 3 PALABRAS";
+      : `✓ ${maximoPalabrasVersus} PALABRAS`;
   } else {
     palabraJugador.textContent = progresoJugador.join(" ");
   }
@@ -2801,7 +3168,7 @@ function actualizarProgresosVersus() {
   if (demoVersus.finalizadoRival) {
     palabraRival.textContent = demoVersus.motivoFinalRival === "tiempo"
       ? "TIEMPO AGOTADO"
-      : "✓ 3 PALABRAS";
+      : `✓ ${maximoPalabrasVersus} PALABRAS`;
   } else {
     palabraRival.textContent = progresoRival.join(" ");
   }
@@ -2864,7 +3231,7 @@ function actualizarVidasVersus() {
 }
 
 function actualizarCorazonesVersus(elemento, vidasActuales, nombre) {
-  elemento.innerHTML = Array.from({ length: 3 }, (_, indice) => (
+  elemento.innerHTML = Array.from({ length: vidasInicialesVersus }, (_, indice) => (
     `<span class="${indice < vidasActuales ? "" : "perdido"}">♥</span>`
   )).join(" ");
   elemento.setAttribute("aria-label", `${nombre}: ${vidasActuales} vidas`);
@@ -3324,6 +3691,36 @@ btnProbarAtaqueElegido.addEventListener("click", () => {
   reproducirAtaqueJugadorVersus();
 });
 
+function probarHabilidadEspecialVersus(personaje) {
+  if (!modoPruebasActivo || demoVersus.partidaFinalizada || !habilidadesVersus[personaje]) return;
+  const desdeRival = origenHabilidadPruebaVersus.value === "rival";
+  actualizarPistaLupaVersus();
+  aplicarEfectoVisualHabilidadVersus("", 0);
+
+  reproducirAnimacionHabilidadVersus(personaje, {
+    desdeRival,
+    alImpactar: () => {
+      const habilidad = habilidadesVersus[personaje];
+      if (habilidad.efecto === "hint") {
+        const teclasDisponibles = [...tecladoVersus.querySelectorAll("button:not(:disabled)")];
+        const tecla = teclasDisponibles[Math.floor(Math.random() * teclasDisponibles.length)]
+          || tecladoVersus.querySelector("button");
+        actualizarPistaLupaVersus(tecla?.textContent || "A");
+      } else if (desdeRival) {
+        aplicarEfectoVisualHabilidadVersus(habilidad.efecto, habilidad.duracion);
+      }
+      mostrarAvisoAvanceVersus(
+        `${habilidad.nombre} · ${desdeRival ? "vista del rival" : "vista del jugador"}`,
+        desdeRival ? "error" : "acierto",
+      );
+    },
+  });
+}
+
+botonesProbarHabilidadVersus.forEach((boton) => {
+  boton.addEventListener("click", () => probarHabilidadEspecialVersus(boton.dataset.habilidad));
+});
+
 btnSaltarEntradaVersus.addEventListener("click", finalizarEntradaDueloVersus);
 btnRevanchaVersus.addEventListener("click", async () => {
   if (adaptadorSalasVersus.proveedor !== "supabase") {
@@ -3532,6 +3929,7 @@ function actualizarModoPruebas(activar, { restaurarProgreso = true } = {}) {
   panelModoPruebas.classList.toggle("oculto", !modoPruebasActivo);
   btnCompletarPalabrasPruebasVersus.classList.toggle("oculto", !modoPruebasActivo);
   herramientasPruebasVersus.classList.toggle("oculto", !modoPruebasActivo);
+  herramientasHabilidadesPruebasVersus.classList.toggle("oculto", !modoPruebasActivo);
   localStorage.setItem(
     "modoPruebasAventuraGA",
     modoPruebasActivo ? "activo" : "inactivo",

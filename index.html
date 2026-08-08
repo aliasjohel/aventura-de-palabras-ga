@@ -23,7 +23,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260806-versus-personajes-1">
+    <link rel="stylesheet" href="css/styles.css?v=20260808-habilidades-versus-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -338,7 +338,7 @@
                 <header class="preparacion-versus-cabecera">
                     <p>DUELO DE PALABRAS</p>
                     <h2 id="tituloPreparacionVersus">Prepar&aacute; tus palabras secretas</h2>
-                    <span>Eleg&iacute; una tem&aacute;tica y tres palabras para desafiar al rival.</span>
+                    <span>Eleg&iacute; una tem&aacute;tica y cinco palabras para desafiar al rival.</span>
                 </header>
 
                 <div class="preparacion-versus-cuerpo">
@@ -360,7 +360,7 @@
                         </label>
 
                         <fieldset class="palabras-secretas-versus">
-                            <legend>Tus tres palabras para el rival</legend>
+                            <legend>Tus cinco palabras para el rival</legend>
 
                             <label class="campo-palabra-secreta" for="palabraSecretaVersus1">
                                 <b>1</b>
@@ -388,7 +388,28 @@
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </label>
+
+                            <label class="campo-palabra-secreta" for="palabraSecretaVersus4">
+                                <b>4</b>
+                                <input id="palabraSecretaVersus4" class="input-palabra-versus" type="text"
+                                    minlength="3" maxlength="12" autocomplete="off" spellcheck="false"
+                                    placeholder="Cuarta palabra">
+                                <small class="contador-palabra-versus">0 letras</small>
+                                <em class="error-palabra-versus" aria-live="polite"></em>
+                            </label>
+
+                            <label class="campo-palabra-secreta" for="palabraSecretaVersus5">
+                                <b>5</b>
+                                <input id="palabraSecretaVersus5" class="input-palabra-versus" type="text"
+                                    minlength="3" maxlength="12" autocomplete="off" spellcheck="false"
+                                    placeholder="Quinta palabra">
+                                <small class="contador-palabra-versus">0 letras</small>
+                                <em class="error-palabra-versus" aria-live="polite"></em>
+                            </label>
                         </fieldset>
+
+                        <button id="btnPalabrasAleatoriasVersus" class="btn-palabras-aleatorias-versus"
+                            type="button">✨ Elegir palabras por m&iacute;</button>
 
                         <button id="btnConfirmarPalabrasVersus" class="btn-confirmar-palabras-versus" type="submit"
                             disabled>Confirmar palabras</button>
@@ -438,9 +459,9 @@
                 <header class="versus-cabecera">
                     <div class="versus-jugador versus-jugador-uno">
                         <span class="versus-etiqueta">JUGADOR 1</span>
-                        <div id="vidasVersusUno" class="versus-corazones" aria-label="Jugador 1: tres vidas">♥ ♥ ♥</div>
-                        <div id="tiempoVersusUno" class="versus-tiempo-personal" aria-label="Tiempo del jugador 1: 2 minutos 30 segundos">
-                            <span>TIEMPO</span><strong id="textoTiempoVersusUno">02:30</strong>
+                        <div id="vidasVersusUno" class="versus-corazones" aria-label="Jugador 1: cinco vidas">♥ ♥ ♥ ♥ ♥</div>
+                        <div id="tiempoVersusUno" class="versus-tiempo-personal" aria-label="Tiempo del jugador 1: 4 minutos">
+                            <span>TIEMPO</span><strong id="textoTiempoVersusUno">04:00</strong>
                         </div>
                     </div>
 
@@ -451,9 +472,9 @@
 
                     <div class="versus-jugador versus-jugador-dos">
                         <span class="versus-etiqueta">JUGADOR 2</span>
-                        <div id="vidasVersusDos" class="versus-corazones" aria-label="Jugador 2: tres vidas">♥ ♥ ♥</div>
-                        <div id="tiempoVersusDos" class="versus-tiempo-personal" aria-label="Tiempo del jugador 2: 2 minutos 30 segundos">
-                            <span>TIEMPO</span><strong id="textoTiempoVersusDos">02:30</strong>
+                        <div id="vidasVersusDos" class="versus-corazones" aria-label="Jugador 2: cinco vidas">♥ ♥ ♥ ♥ ♥</div>
+                        <div id="tiempoVersusDos" class="versus-tiempo-personal" aria-label="Tiempo del jugador 2: 4 minutos">
+                            <span>TIEMPO</span><strong id="textoTiempoVersusDos">04:00</strong>
                         </div>
                     </div>
                 </header>
@@ -503,7 +524,7 @@
                     <div class="versus-progresos" aria-label="Progreso de ambos jugadores">
                         <section class="versus-palabra versus-palabra-uno" aria-labelledby="tituloProgresoUno">
                             <div class="versus-palabra-cabecera">
-                                <span id="tituloProgresoUno">TU PALABRA 1/3</span>
+                                <span id="tituloProgresoUno">TU PALABRA 1/5</span>
                                 <small id="estadoProgresoUno" aria-live="polite">Eleg&iacute; una letra</small>
                             </div>
                             <strong id="palabraVersusUno" aria-label="Palabra sin descubrir">_ _ _ _ _ _ _ _</strong>
@@ -515,7 +536,7 @@
 
                         <section class="versus-palabra versus-palabra-dos" aria-labelledby="tituloProgresoDos">
                             <div class="versus-palabra-cabecera">
-                                <span id="tituloProgresoDos">RIVAL: PALABRA 1/3</span>
+                                <span id="tituloProgresoDos">RIVAL: PALABRA 1/5</span>
                                 <small id="estadoProgresoDos" aria-live="polite">Esperando jugada...</small>
                             </div>
                             <strong id="palabraVersusDos" aria-label="El rival no descubri&oacute; ninguna letra">_ _ _ _ _ _ _ _</strong>
@@ -527,16 +548,36 @@
                     </div>
                 </div>
 
+                <div id="animacionHabilidadVersus" class="animacion-habilidad-versus" aria-hidden="true">
+                    <div class="habilidad-lupa-versus">
+                        <span>🔎</span><i></i><b></b>
+                    </div>
+                    <div class="habilidad-magia-versus"><i></i><b></b><span></span></div>
+                    <div class="habilidad-rugido-versus"><i></i><i></i><i></i></div>
+                    <div class="habilidad-raices-versus"><i></i><i></i><i></i><i></i></div>
+                    <div class="impacto-habilidad-versus"></div>
+                </div>
+
                 <div class="versus-controles">
-                    <div class="versus-turno">
-                        <span>⚔️</span>
-                        <p id="mensajeRondaVersus">Cada error gasta un intento</p>
+                    <div class="versus-panel-accion">
+                        <div class="versus-turno">
+                            <span>⚔️</span>
+                            <p id="mensajeRondaVersus">Cada error gasta un intento</p>
+                        </div>
+                        <button id="btnHabilidadVersus" class="btn-habilidad-versus" type="button" disabled>
+                            <span id="iconoHabilidadVersus" aria-hidden="true">🔍</span>
+                            <span class="habilidad-versus-texto">
+                                <strong id="nombreHabilidadVersus">Lupa</strong>
+                                <small id="cargaHabilidadVersus">0/8 letras</small>
+                            </span>
+                            <i class="barra-habilidad-versus" aria-hidden="true"><b id="progresoHabilidadVersus"></b></i>
+                        </button>
                     </div>
                     <div id="tecladoVersus" class="teclado-versus" aria-label="Teclado de combate"></div>
                 </div>
 
                 <button id="btnSalirVersus" class="versus-volver" type="button">← Volver</button>
-                <p id="tituloVersus" class="versus-prototipo">J1 0/3 · J2 0/3</p>
+                <p id="tituloVersus" class="versus-prototipo">J1 0/5 · J2 0/5</p>
 
                 <div id="herramientasPruebasVersus" class="herramientas-pruebas-versus oculto"
                     aria-label="Herramientas de prueba del modo versus">
@@ -555,6 +596,23 @@
                     <button id="btnProbarCinematicaGuardiana" type="button">🌱 Probar guardiana</button>
                     <button id="btnProbarCinematicaDragon" type="button">&#128009; Probar drag&oacute;n</button>
                     <button id="btnProbarAtaqueElegido" type="button">⚡ Probar ataque elegido</button>
+                </div>
+
+                <div id="herramientasHabilidadesPruebasVersus"
+                    class="herramientas-habilidades-pruebas-versus oculto"
+                    aria-label="Pruebas de habilidades especiales">
+                    <span>HABILIDADES</span>
+                    <label for="origenHabilidadPruebaVersus">
+                        Vista
+                        <select id="origenHabilidadPruebaVersus" aria-label="Origen de la habilidad de prueba">
+                            <option value="jugador">Desde mi personaje</option>
+                            <option value="rival">Desde el rival</option>
+                        </select>
+                    </label>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="explorador" type="button">🔍 Lupa</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="guardiana" type="button">🌿 Raíces</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="dragon" type="button">🐉 Rugido</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="mago" type="button">🔮 Caos</button>
                 </div>
 
                 <div id="avisoAvanceVersus" class="aviso-avance-versus oculto" role="status" aria-live="polite"></div>
@@ -743,10 +801,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="js/supabase-config.js?v=20260805-supabase-1"></script>
     <script src="js/supabase-client.js?v=20260805-supabase-1"></script>
-    <script src="js/versus-engine.js?v=20260805-salas-versus-1"></script>
+    <script src="js/versus-engine.js?v=20260808-habilidades-versus-1"></script>
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
-    <script src="js/versus-room-supabase.js?v=20260805-revancha-online-1"></script>
-    <script src="js/app.js?v=20260807-reacciones-cinematicas-2"></script>
+    <script src="js/versus-room-supabase.js?v=20260808-habilidades-versus-1"></script>
+    <script src="js/app.js?v=20260808-habilidades-versus-1"></script>
     <script src="js/pwa.js?v=20260804-dragon-versus-1"></script>
 </body>
 
