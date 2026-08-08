@@ -1974,23 +1974,59 @@ function crearTecladoVersus() {
   });
 }
 
-function restaurarOrdenTecladoVersus() {
+function animarCambioOrdenTecladoVersus(reordenar) {
+  const botones = [...tecladoVersus.querySelectorAll("button")];
+  const posicionesIniciales = new Map(
+    botones.map((boton) => [boton, boton.getBoundingClientRect()]),
+  );
+  reordenar();
+  tecladoVersus.classList.add("reordenando-caos");
+  botones.forEach((boton) => {
+    const inicio = posicionesIniciales.get(boton);
+    const destino = boton.getBoundingClientRect();
+    boton.style.transition = "none";
+    boton.style.transform = `translate(${inicio.left - destino.left}px, ${inicio.top - destino.top}px)`;
+  });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    botones.forEach((boton) => {
+      boton.style.transition = "transform 680ms cubic-bezier(0.2, 0.78, 0.18, 1)";
+      boton.style.transform = "translate(0, 0)";
+    });
+  }));
+  setTimeout(() => {
+    tecladoVersus.classList.remove("reordenando-caos");
+    botones.forEach((boton) => {
+      boton.style.removeProperty("transition");
+      boton.style.removeProperty("transform");
+    });
+  }, 720);
+}
+
+function restaurarOrdenTecladoVersus(animar = false) {
   const botones = new Map(
     [...tecladoVersus.querySelectorAll("button")].map((boton) => [boton.textContent, boton]),
   );
-  [...tecladoVersus.children].forEach((fila, indice) => {
-    filasTeclado[indice].forEach((letra) => fila.appendChild(botones.get(letra)));
-  });
+  const restaurar = () => {
+    [...tecladoVersus.children].forEach((fila, indice) => {
+      filasTeclado[indice].forEach((letra) => fila.appendChild(botones.get(letra)));
+    });
+  };
+  if (animar) animarCambioOrdenTecladoVersus(restaurar);
+  else restaurar();
 }
 
-function desordenarTecladoVersus() {
+function desordenarTecladoVersus(animar = true) {
   const botones = mezclarPalabrasVersus([...tecladoVersus.querySelectorAll("button")]);
-  let desplazamiento = 0;
-  [...tecladoVersus.children].forEach((fila, indice) => {
-    const cantidad = filasTeclado[indice].length;
-    botones.slice(desplazamiento, desplazamiento + cantidad).forEach((boton) => fila.appendChild(boton));
-    desplazamiento += cantidad;
-  });
+  const desordenar = () => {
+    let desplazamiento = 0;
+    [...tecladoVersus.children].forEach((fila, indice) => {
+      const cantidad = filasTeclado[indice].length;
+      botones.slice(desplazamiento, desplazamiento + cantidad).forEach((boton) => fila.appendChild(boton));
+      desplazamiento += cantidad;
+    });
+  };
+  if (animar) animarCambioOrdenTecladoVersus(desordenar);
+  else desordenar();
 }
 
 function actualizarPistaLupaVersus(letra = "") {
@@ -2028,7 +2064,7 @@ function reproducirAnimacionHabilidadVersus(
   herramientasHabilidadesPruebasVersus.classList.add("ataque-en-curso");
   const atacante = desdeRival ? personajeVersusDos : personajeVersusUno;
   const pose = {
-    explorador: srcExploradorAtaqueVersus,
+    explorador: srcExploradorLupaVersus,
     mago: srcMagoAtaqueVersus,
     guardiana: srcGuardianaAtaqueVersus,
     dragon: srcDragonAtaqueVersus,
@@ -2081,14 +2117,15 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
   if (efecto === "roar") tecladoVersus.classList.add("efecto-rugido");
   if (efecto === "shuffle") {
     tecladoVersus.classList.add("efecto-caos");
-    desordenarTecladoVersus();
+    desordenarTecladoVersus(true);
   }
   if (efecto === "roots") tecladoVersus.querySelectorAll("button").forEach((boton) => { boton.disabled = true; });
 
   demoVersus.temporizadorEfectoHabilidad = setTimeout(() => {
     demoVersus.temporizadorEfectoHabilidad = null;
+    const restaurarConAnimacion = tecladoVersus.classList.contains("efecto-caos");
     tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos");
-    restaurarOrdenTecladoVersus();
+    restaurarOrdenTecladoVersus(restaurarConAnimacion);
     if (adaptadorSalasVersus.proveedor === "supabase" && partidaOnlineVersus) {
       actualizarTecladoPartidaOnline(partidaOnlineVersus);
     } else {
@@ -2260,7 +2297,7 @@ const intervaloJugadaRivalVersus = 3000;
 const probabilidadAciertoRivalVersus = 0.56;
 const duracionEntradaDueloVersus = 3200;
 const srcExploradorBaseVersus = "assets/images/personajes/versus/explorador-base.png";
-const srcExploradorAtaqueVersus = "assets/images/personajes/versus/explorador-ataque.png";
+const srcExploradorLupaVersus = "assets/images/personajes/versus/explorador-lupa.png";
 const srcExploradorPreparaBumeran = "assets/images/personajes/versus/explorador-bumeran-preparacion.png";
 const srcExploradorLanzaBumeran = "assets/images/personajes/versus/explorador-bumeran-lanzamiento.png";
 const srcMagoBaseVersus = "assets/images/personajes/versus/mago-base.png";
@@ -2297,9 +2334,9 @@ const personajesVersus = {
 };
 const habilidadesVersus = Object.freeze({
   explorador: { nombre: "Lupa", icono: "🔍", efecto: "hint", duracion: 0 },
-  guardiana: { nombre: "Enredo de raíces", icono: "🌿", efecto: "roots", duracion: 2000 },
-  dragon: { nombre: "Rugido", icono: "🐉", efecto: "roar", duracion: 3000 },
-  mago: { nombre: "Caos arcano", icono: "🔮", efecto: "shuffle", duracion: 4000 },
+  guardiana: { nombre: "Enredo de raíces", icono: "🌿", efecto: "roots", duracion: 3000 },
+  dragon: { nombre: "Rugido", icono: "🐉", efecto: "roar", duracion: 4000 },
+  mago: { nombre: "Caos arcano", icono: "🔮", efecto: "shuffle", duracion: 5000 },
 });
 const letrasParaHabilidadVersus = VersusEngine.CONFIG.letrasParaHabilidad;
 let personajeJugadorVersus = "explorador";

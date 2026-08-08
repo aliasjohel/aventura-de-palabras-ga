@@ -2279,30 +2279,33 @@ button:disabled {
 }
 
 .teclado-versus.efecto-raices::after {
-    content: "🌿  ╱╲  🌿  ╲╱  🌿";
+    content: "";
     position: absolute;
     z-index: 4;
-    inset: -5px;
-    display: grid;
-    place-items: center;
-    border: 3px solid rgba(62, 131, 49, 0.92);
-    border-radius: 14px;
-    background: rgba(19, 54, 20, 0.54);
-    color: #a8e26f;
-    font-size: clamp(1rem, 3vw, 2rem);
-    letter-spacing: 0.12em;
-    text-shadow: 0 2px 5px #071b08;
+    right: -3%;
+    bottom: -20%;
+    left: -3%;
+    height: 170%;
+    background: url("../assets/images/elementos/enredaderas-teclado-versus.png") center bottom / 100% 100% no-repeat;
+    filter: drop-shadow(0 5px 6px rgba(4, 24, 6, 0.78));
     pointer-events: auto;
-    animation: crecerRaicesHabilidadVersus 180ms ease-out both;
+    transform-origin: center bottom;
+    animation: crecerRaicesHabilidadVersus 620ms cubic-bezier(0.12, 0.78, 0.18, 1) both;
 }
 
 .teclado-versus.efecto-rugido {
-    animation: temblorRugidoHabilidadVersus 90ms linear infinite;
+    z-index: 16;
+    animation: temblorRugidoHabilidadVersus 520ms linear infinite;
 }
 
 .teclado-versus.efecto-caos .letra-versus {
     border-color: #8255ac;
     background: linear-gradient(180deg, #593275, #2e193f);
+    box-shadow: 0 0 10px rgba(170, 91, 235, 0.7), 0 3px 0 #1b0b29;
+}
+
+.teclado-versus.reordenando-caos .letra-versus {
+    z-index: 3;
 }
 
 .animacion-habilidad-versus {
@@ -2343,57 +2346,11 @@ button:disabled {
     display: block;
 }
 
-.habilidad-lupa-versus span {
-    position: absolute;
-    left: 20vw;
-    top: 37vh;
-    font-size: clamp(2rem, 5vw, 4.2rem);
-    filter: drop-shadow(0 0 12px #fff3a0);
-    animation: sacarLupaHabilidadVersus 900ms ease-out both;
-}
-
-.desde-rival .habilidad-lupa-versus span {
-    left: auto;
-    right: 20vw;
-    transform: scaleX(-1);
-}
-
-.habilidad-lupa-versus i {
-    position: absolute;
-    left: 25%;
-    top: 48%;
-    width: 58%;
-    height: 12px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, rgba(255, 250, 180, 0), #fff7a1 25%, #fff 75%, rgba(255, 255, 255, 0));
-    box-shadow: 0 0 13px #fff6a0, 0 0 30px rgba(255, 238, 89, 0.7);
-    transform: rotate(27deg) scaleX(0);
-    transform-origin: left center;
-    animation: barridoLupaHabilidadVersus 900ms 180ms ease-out both;
-}
-
-.desde-rival .habilidad-lupa-versus i {
-    left: 66%;
-    top: 45%;
-    width: 12%;
-    transform: rotate(78deg) scaleX(0);
-}
-
-.habilidad-lupa-versus b {
-    position: absolute;
-    right: 21%;
-    bottom: 7%;
-    width: clamp(42px, 7vw, 80px);
-    aspect-ratio: 1;
-    border: 4px solid rgba(255, 249, 153, 0.9);
-    border-radius: 50%;
-    box-shadow: 0 0 20px #fff27a, inset 0 0 22px rgba(255, 245, 115, 0.75);
-    animation: focoLupaHabilidadVersus 900ms 480ms ease-out both;
-}
-
-.desde-rival .habilidad-lupa-versus b {
-    right: 19%;
-    bottom: 23%;
+.habilidad-lupa-versus {
+    inset: 0;
+    background: radial-gradient(circle at 72% 86%, rgba(255, 248, 169, 0.68), transparent 12%);
+    opacity: 0;
+    animation: destelloLupaHabilidadVersus 1120ms ease-out both;
 }
 
 .habilidad-magia-versus i,
@@ -2445,36 +2402,28 @@ button:disabled {
 .habilidad-rugido-versus i:nth-child(3) { animation-delay: 220ms; }
 
 .habilidad-raices-versus {
-    right: 18%;
-    bottom: 3%;
-    width: 48%;
-    height: 34%;
+    right: 0;
+    bottom: -7%;
+    width: 67%;
+    height: 27%;
+    overflow: visible;
 }
 
 .desde-jugador.habilidad-guardiana .habilidad-raices-versus {
     right: 3%;
-    bottom: 18%;
-    width: 30%;
+    bottom: 12%;
+    width: 36%;
+    height: 30%;
 }
 
-.habilidad-raices-versus i {
-    position: absolute;
-    bottom: -20%;
-    width: clamp(10px, 1.6vw, 20px);
-    height: 120%;
-    border: 4px solid #4b8b37;
-    border-block-width: 0;
-    border-radius: 60% 20% 45% 30%;
-    background: linear-gradient(90deg, #254b1c, #74ae48, #294f1d);
-    box-shadow: 0 0 10px rgba(112, 190, 70, 0.65);
-    transform-origin: bottom;
-    animation: crecerEnredaderaHabilidadVersus 800ms 180ms cubic-bezier(0.16, 0.8, 0.2, 1) both;
+.habilidad-raices-versus img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    filter: drop-shadow(0 7px 8px rgba(3, 19, 5, 0.8));
+    transform-origin: center bottom;
+    animation: crecerEnredaderaHabilidadVersus 900ms 100ms cubic-bezier(0.12, 0.82, 0.18, 1) both;
 }
-
-.habilidad-raices-versus i:nth-child(1) { left: 8%; transform: rotate(-23deg); }
-.habilidad-raices-versus i:nth-child(2) { left: 35%; transform: rotate(14deg); animation-delay: 260ms; }
-.habilidad-raices-versus i:nth-child(3) { left: 62%; transform: rotate(-11deg); animation-delay: 220ms; }
-.habilidad-raices-versus i:nth-child(4) { left: 88%; transform: rotate(24deg); animation-delay: 310ms; }
 
 .impacto-habilidad-versus {
     right: 18%;
@@ -2505,22 +2454,9 @@ button:disabled {
     background: radial-gradient(ellipse, rgba(255, 235, 174, 0.9), rgba(255, 111, 32, 0.42) 24%, transparent 68%);
 }
 
-@keyframes sacarLupaHabilidadVersus {
-    0% { opacity: 0; transform: translate(-18px, 18px) rotate(-28deg) scale(0.4); }
-    35%, 78% { opacity: 1; transform: translate(0, 0) rotate(8deg) scale(1); }
-    100% { opacity: 0; transform: translate(5px, -4px) rotate(4deg) scale(0.92); }
-}
-
-@keyframes barridoLupaHabilidadVersus {
-    0%, 18% { opacity: 0; transform: rotate(27deg) scaleX(0); }
-    35%, 78% { opacity: 1; transform: rotate(27deg) scaleX(1); }
-    100% { opacity: 0; transform: rotate(27deg) scaleX(1); }
-}
-
-@keyframes focoLupaHabilidadVersus {
-    0% { opacity: 0; transform: scale(0.25); }
-    45%, 78% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(1.45); }
+@keyframes destelloLupaHabilidadVersus {
+    0%, 18%, 100% { opacity: 0; }
+    38%, 82% { opacity: 1; }
 }
 
 @keyframes proyectilCaosHabilidadVersus {
@@ -2554,9 +2490,10 @@ button:disabled {
 }
 
 @keyframes crecerEnredaderaHabilidadVersus {
-    from { opacity: 0; scale: 1 0; }
-    35% { opacity: 1; }
-    to { opacity: 1; scale: 1 1; }
+    0% { opacity: 0; transform: translateY(75%) scale(0.72, 0.18); }
+    38% { opacity: 1; }
+    72% { transform: translateY(-4%) scale(1.03, 1.06); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes impactoHabilidadVersus {
@@ -2574,14 +2511,20 @@ button:disabled {
 }
 
 @keyframes crecerRaicesHabilidadVersus {
-    from { opacity: 0; transform: scale(0.72); }
+    0% { opacity: 0; transform: translateY(72%) scale(0.7, 0.2); }
+    58% { opacity: 1; transform: translateY(-5%) scale(1.04, 1.08); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes temblorRugidoHabilidadVersus {
     0%, 100% { transform: translate(0, 0) rotate(0); }
-    25% { transform: translate(-3px, 2px) rotate(-0.7deg); }
-    50% { transform: translate(3px, -2px) rotate(0.7deg); }
-    75% { transform: translate(-2px, -1px) rotate(0.4deg); }
+    10% { transform: translate(-9vw, 3vh) rotate(-2.4deg); }
+    22% { transform: translate(11vw, -4vh) rotate(2.8deg); }
+    36% { transform: translate(-12vw, -2vh) rotate(-3deg); }
+    50% { transform: translate(10vw, 5vh) rotate(2.5deg); }
+    64% { transform: translate(-8vw, 5vh) rotate(-2deg); }
+    78% { transform: translate(12vw, -3vh) rotate(3deg); }
+    90% { transform: translate(-5vw, -4vh) rotate(-1.4deg); }
 }
 
 .fila-teclado-versus {

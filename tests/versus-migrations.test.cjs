@@ -15,6 +15,10 @@ const abilities = fs.readFileSync(
   path.join(migrations, "20260808222852_versus_character_abilities.sql"),
   "utf8",
 );
+const effectDurations = fs.readFileSync(
+  path.join(migrations, "20260808230456_versus_ability_effect_durations.sql"),
+  "utf8",
+);
 
 assert.match(accents, /translate\(upper\(coalesce\(p_value, ''\)\), 'ÁÉÍÓÚÜ', 'AEIOUU'\)/);
 assert.match(accents, /versus_letter_key\(character\) = any/);
@@ -26,5 +30,9 @@ assert.match(abilities, /when 'guardiana' then interval '2 seconds'/);
 assert.match(abilities, /when 'dragon' then interval '3 seconds'/);
 assert.match(abilities, /else interval '4 seconds'/);
 assert.match(abilities, /'type', 'ability_used'/);
+assert.match(effectDurations, /when 'guardiana' then interval '3 seconds'/);
+assert.match(effectDurations, /when 'dragon' then interval '4 seconds'/);
+assert.match(effectDurations, /else interval '5 seconds'/);
+assert.match(effectDurations, /revoke execute on function public\.activate_versus_ability\(uuid\) from public, anon/);
 
-console.log("versus-migrations: 10 comprobaciones correctas");
+console.log("versus-migrations: 14 comprobaciones correctas");
