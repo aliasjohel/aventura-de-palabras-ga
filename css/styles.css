@@ -2640,6 +2640,27 @@ button:disabled {
     filter: drop-shadow(0 16px 14px rgba(0, 0, 0, 0.78));
 }
 
+.cinematica-explorador-atrapado.victima-final-mago,
+.cinematica-explorador-atrapado.victima-final-guardiana,
+.cinematica-explorador-atrapado.victima-final-dragon,
+.cinematica-mago-atrapado.victima-final-explorador,
+.cinematica-mago-atrapado.victima-final-guardiana,
+.cinematica-mago-atrapado.victima-final-dragon {
+    object-position: center bottom;
+}
+
+.cinematica-explorador-atrapado.victima-final-guardiana,
+.cinematica-mago-atrapado.victima-final-guardiana {
+    width: min(42vw, 490px);
+    height: 82%;
+}
+
+.cinematica-explorador-atrapado.victima-final-dragon,
+.cinematica-mago-atrapado.victima-final-dragon {
+    width: min(45vw, 530px);
+    height: 84%;
+}
+
 .cinematica-tronco-trampa {
     z-index: 7;
     top: -6%;

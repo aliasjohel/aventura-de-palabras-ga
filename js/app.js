@@ -131,6 +131,8 @@ const btnProbarCinematicaGuardiana = document.getElementById(
 const btnProbarCinematicaDragon = document.getElementById(
   "btnProbarCinematicaDragon",
 );
+const victimaEclipseVersus = document.getElementById("victimaEclipseVersus");
+const victimaTrampaVersus = document.getElementById("victimaTrampaVersus");
 const rivalCinematicaMatriarca = document.querySelector(
   ".cinematica-rival-matriarca",
 );
@@ -3031,11 +3033,13 @@ function obtenerReproductorFinalVersus(personajeGanador, personajeVictima) {
   if (finalElegido === "prision-esmeralda") {
     return () => reproducirPrisionEsmeraldaVersus(personajeVictima);
   }
-  if (finalElegido === "eclipse-violeta") return reproducirEclipseVioletaVersus;
+  if (finalElegido === "eclipse-violeta") {
+    return () => reproducirEclipseVioletaVersus(personajeVictima);
+  }
   if (finalElegido === "llamado-matriarca") {
     return () => reproducirLlamadoMatriarcaVersus(personajeVictima);
   }
-  return reproducirTrampaSelvaticaVersus;
+  return () => reproducirTrampaSelvaticaVersus(personajeVictima);
 }
 
 function reproducirCierrePartidaVersus(ganador, detalle) {
@@ -3090,9 +3094,33 @@ function crearParticulasEclipseVersus() {
   }
 }
 
-function reproducirEclipseVioletaVersus() {
+const posesEspecialesVictimaFinalVersus = {
+  eclipse: {
+    explorador: "assets/images/personajes/versus/explorador-atrapado-eclipse.png",
+  },
+  trampa: {
+    mago: "assets/images/personajes/versus/mago-atrapado-trampa.png",
+  },
+};
+
+function configurarVictimaFinalVersus(elemento, personaje, final) {
+  const clave = personaje in personajesVersus ? personaje : "mago";
+  const victima = personajesVersus[clave];
+  elemento.src = posesEspecialesVictimaFinalVersus[final]?.[clave] || victima.base;
+  elemento.alt = `${victima.nombre}, objetivo de la técnica final`;
+  elemento.classList.remove(
+    "victima-final-explorador",
+    "victima-final-mago",
+    "victima-final-guardiana",
+    "victima-final-dragon",
+  );
+  elemento.classList.add(`victima-final-${clave}`);
+}
+
+function reproducirEclipseVioletaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   crearParticulasEclipseVersus();
+  configurarVictimaFinalVersus(victimaEclipseVersus, victima, "eclipse");
   fondoCinematicaVersus.src = fondoVersus.src;
   etiquetaCinematicaVersus.textContent = "GOLPE LEGENDARIO";
   tituloCinematicaVersus.textContent = "ECLIPSE VIOLETA";
@@ -3113,9 +3141,10 @@ function reproducirEclipseVioletaVersus() {
   });
 }
 
-function reproducirTrampaSelvaticaVersus() {
+function reproducirTrampaSelvaticaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   crearParticulasEclipseVersus();
+  configurarVictimaFinalVersus(victimaTrampaVersus, victima, "trampa");
   fondoCinematicaVersus.src = fondoVersus.src;
   etiquetaCinematicaVersus.textContent = "TÉCNICA SECRETA";
   tituloCinematicaVersus.textContent = "TRAMPA SELVÁTICA";
@@ -3250,14 +3279,14 @@ function probarCinematicaVersus(personaje) {
     return;
   }
   if (personaje === "dragon") {
-    void reproducirLlamadoMatriarcaVersus();
+    void reproducirLlamadoMatriarcaVersus(victimaPruebaFaucesVersus.value);
     return;
   }
 
   const reproducir = personaje === "mago"
     ? reproducirEclipseVioletaVersus
     : reproducirTrampaSelvaticaVersus;
-  void reproducir();
+  void reproducir(victimaPruebaFaucesVersus.value);
 }
 
 btnProbarCinematicaExplorador.addEventListener("click", () => {

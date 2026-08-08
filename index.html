@@ -549,6 +549,7 @@
                             <option value="explorador">Explorador</option>
                             <option value="mago" selected>Mago</option>
                             <option value="guardiana">Guardiana</option>
+                            <option value="dragon">Drag&oacute;n</option>
                         </select>
                     </label>
                     <button id="btnProbarCinematicaGuardiana" type="button">🌱 Probar guardiana</button>
@@ -577,7 +578,7 @@
                         <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
                     </div>
                     <div id="particulasEclipseVersus" class="eclipse-particulas" aria-hidden="true"></div>
-                    <img class="cinematica-explorador-atrapado"
+                    <img id="victimaEclipseVersus" class="cinematica-explorador-atrapado victima-final-explorador"
                         src="assets/images/personajes/versus/explorador-atrapado-eclipse.png"
                         alt="" aria-hidden="true">
                     <img class="cinematica-mago-eclipse"
@@ -586,7 +587,7 @@
                     <img class="cinematica-explorador-trampa"
                         src="assets/images/personajes/versus/explorador-trampa-ancestral.png"
                         alt="" aria-hidden="true">
-                    <img class="cinematica-mago-atrapado"
+                    <img id="victimaTrampaVersus" class="cinematica-mago-atrapado victima-final-mago"
                         src="assets/images/personajes/versus/mago-atrapado-trampa.png"
                         alt="" aria-hidden="true">
                     <img class="cinematica-tronco-trampa"
@@ -745,7 +746,7 @@
     <script src="js/versus-engine.js?v=20260805-salas-versus-1"></script>
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
     <script src="js/versus-room-supabase.js?v=20260805-revancha-online-1"></script>
-    <script src="js/app.js?v=20260806-versus-personajes-1"></script>
+    <script src="js/app.js?v=20260807-victimas-cinematicas-1"></script>
     <script src="js/pwa.js?v=20260804-dragon-versus-1"></script>
 </body>
 
