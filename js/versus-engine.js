@@ -71,15 +71,17 @@
   }
 
   function obtenerProgreso(palabra, letras = [], ocultarAciertos = false) {
-    const usadas = new Set(letras);
-    return [...obtenerClavePalabra(palabra)].map((letra) => {
+    const original = [...normalizarPalabra(palabra)];
+    const clave = [...obtenerClavePalabra(palabra)];
+    const usadas = new Set(letras.map((letra) => obtenerClavePalabra(letra).slice(0, 1)));
+    return clave.map((letra, indice) => {
       if (!usadas.has(letra)) return "_";
-      return ocultarAciertos ? "?" : letra;
+      return ocultarAciertos ? "?" : original[indice];
     });
   }
 
   function contarDescubiertas(palabra, letras = []) {
-    const usadas = new Set(letras);
+    const usadas = new Set(letras.map((letra) => obtenerClavePalabra(letra).slice(0, 1)));
     return [...obtenerClavePalabra(palabra)].filter((letra) => usadas.has(letra)).length;
   }
 

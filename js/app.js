@@ -2748,9 +2748,7 @@ function jugarTurnoRivalVersus() {
 }
 
 function obtenerPalabraActualJugadorVersus() {
-  return obtenerClavePalabraVersus(
-    demoVersus.palabrasJugador[demoVersus.indiceJugador] || "",
-  );
+  return demoVersus.palabrasJugador[demoVersus.indiceJugador] || "";
 }
 
 function obtenerPalabraActualRivalVersus() {

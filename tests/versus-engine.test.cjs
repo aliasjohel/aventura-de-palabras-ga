@@ -20,6 +20,9 @@ assert.equal(turno.errores, 6);
 assert.equal(turno.sinIntentos, true);
 
 assert.deepEqual(engine.obtenerProgreso("SOL", ["S", "L"]), ["S", "_", "L"]);
+assert.deepEqual(engine.obtenerProgreso("ÁFRICA", ["A"]), ["Á", "_", "_", "_", "_", "A"]);
+assert.deepEqual(engine.obtenerProgreso("MAMÁ", ["Á"]), ["_", "A", "_", "Á"]);
+assert.equal(engine.contarDescubiertas("MAMÁ", ["A"]), 2);
 assert.equal(engine.reducirTiempo(1), 0);
 assert.equal(engine.reducirTiempo(0), 0);
 assert.equal(
