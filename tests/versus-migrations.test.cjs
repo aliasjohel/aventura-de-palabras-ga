@@ -4,15 +4,15 @@ const path = require("node:path");
 
 const migrations = path.resolve(__dirname, "..", "supabase", "migrations");
 const accents = fs.readFileSync(
-  path.join(migrations, "20260808_01_versus_accent_equivalence.sql"),
+  path.join(migrations, "20260808222835_versus_accent_equivalence.sql"),
   "utf8",
 );
 const fiveRounds = fs.readFileSync(
-  path.join(migrations, "20260808_02_versus_five_rounds.sql"),
+  path.join(migrations, "20260808222843_versus_five_rounds.sql"),
   "utf8",
 );
 const abilities = fs.readFileSync(
-  path.join(migrations, "20260808_03_versus_character_abilities.sql"),
+  path.join(migrations, "20260808222852_versus_character_abilities.sql"),
   "utf8",
 );
 
