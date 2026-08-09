@@ -2429,10 +2429,15 @@ const victimasFaucesVersus = {
     imagen: srcGuardianaBaseVersus,
     imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-guardiana.png",
   },
+  dragon: {
+    nombre: "Dragón",
+    imagen: srcDragonBaseVersus,
+    imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-dragon.png",
+  },
   hombre_lobo: {
     nombre: "Hombre Lobo",
     imagen: srcHombreLoboBaseVersus,
-    imagenAtrapado: "assets/images/personajes/versus/hombre-lobo-impacto.png",
+    imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-hombre-lobo.png",
   },
 };
 
@@ -3728,6 +3733,7 @@ function configurarVictimaFaucesVersus(personaje = personajeRivalVersus) {
     "victima-fauces-explorador",
     "victima-fauces-mago",
     "victima-fauces-guardiana",
+    "victima-fauces-dragon",
     "victima-fauces-hombre_lobo",
   );
   victimaFaucesVersus.classList.add(`victima-fauces-${personaje in victimasFaucesVersus ? personaje : "mago"}`);

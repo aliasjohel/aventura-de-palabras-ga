@@ -3001,6 +3001,14 @@ button:disabled {
     height: 80%;
 }
 
+.cinematica-victima-fauces.victima-fauces-hombre_lobo {
+    --direccion-victima-fauces: -1;
+}
+
+.cinematica-victima-fauces.victima-fauces-dragon {
+    --direccion-victima-fauces: -1;
+}
+
 .cinematica-carnivora {
     left: 22%;
     bottom: -7%;
@@ -8635,6 +8643,12 @@ button:disabled {
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
+    /* En celulares el ancho reducido de cada tarjeta ya agranda visualmente al
+       mago horizontal; una escala propia evita que se recorte por arriba. */
+    .tarjeta-personaje-versus[data-personaje="mago"] img {
+        transform: translateY(-8%) scale(-1.4, 1.4);
+    }
+
     .tarjeta-personaje-versus small {
         font-size: clamp(0.48rem, 0.75vw, 0.62rem);
     }
