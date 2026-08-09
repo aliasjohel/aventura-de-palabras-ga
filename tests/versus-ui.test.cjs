@@ -22,7 +22,7 @@ const cierreOnline = app.slice(
 assert.match(cierreOnline, /reproducirCierrePartidaVersus\(ganador, detalle\)/);
 assert.doesNotMatch(cierreOnline, /mostrarResultadoPartidaVersus\(ganador, detalle\)/);
 
-for (const ataque of ["bumeran", "raices", "rugido-dragon", "zarpazo-feral", "corte-sombrio"]) {
+for (const ataque of ["bumeran", "raices", "rugido-dragon", "zarpazo-feral", "corte-sombrio", "corte-solar"]) {
   assert.match(app, new RegExp(`ataque === "${ataque}"`));
 }
 for (const final of [
@@ -31,6 +31,7 @@ for (const final of [
   "llamado-matriarca",
   "caceria-luna-llena",
   "legion-umbria",
+  "juicio-amanecer",
 ]) {
   assert.match(app, new RegExp(`finalElegido === "${final}"`));
 }
@@ -39,7 +40,7 @@ assert.match(app, /reproducirEclipseVioletaVersus\(personajeVictima\)/);
 assert.match(app, /reproducirTrampaSelvaticaVersus\(personajeVictima\)/);
 assert.match(app, /reproducirLlamadoMatriarcaVersus\(personajeVictima\)/);
 assert.match(app, /reproducirCaceriaLunaLlenaVersus\(personajeVictima\)/);
-for (const victima of ["explorador", "mago", "guardiana", "dragon", "hombre_lobo"]) {
+for (const victima of ["explorador", "mago", "guardiana", "dragon", "hombre_lobo", "guardian_alba"]) {
   assert.match(estilos, new RegExp(`victima-final-${victima}`));
   assert.match(app, new RegExp(`${victima}: "assets/images/personajes/versus/.+"`));
 }
@@ -110,7 +111,7 @@ assert.match(html, /enredaderas-teclado-versus\.png/);
 assert.match(app, /function reproducirAnimacionHabilidadVersus\(/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeJugadorVersus/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeRivalVersus/);
-for (const habilidad of ["explorador", "mago", "guardiana", "dragon", "hombre_lobo", "t_shadow"]) {
+for (const habilidad of ["explorador", "mago", "guardiana", "dragon", "hombre_lobo", "t_shadow", "guardian_alba"]) {
   assert.match(estilos, new RegExp(`habilidad-${habilidad}`));
   assert.match(html, new RegExp(`data-habilidad="${habilidad}"`));
 }
@@ -135,5 +136,21 @@ assert.equal((html.match(/class="cinematica-shadow-clon/g) || []).length, 6);
 assert.match(estilos, /\.shadow-final-cortes \{[^}]+top:45%/);
 assert.match(estilos, /@keyframes ataqueClonSeisShadowVersus/);
 assert.match(html, /t-shadow-victoria\.png/);
+assert.match(app, /guardian_alba: \{[\s\S]+ataque: "corte-solar"[\s\S]+final: "juicio-amanecer"/);
+assert.match(app, /guardian_alba: \{ nombre: "Ruptura celeste"[\s\S]+efecto: "key_bounce"[\s\S]+duracion: 5000/);
+assert.match(app, /function prepararTeclasRotasVersus\(\)/);
+assert.match(app, /tecla\.textContent = boton\.textContent/);
+assert.match(estilos, /@keyframes reboteTeclaRotaVersus/);
+assert.match(estilos, /@keyframes explosionTecladoLumenVersus/);
+assert.match(estilos, /@keyframes fracturaTeclaLumenVersus/);
+assert.match(app, /function reproducirJuicioAmanecerVersus\(/);
+assert.match(estilos, /juicio-amanecer\.activa \.cinematica-alba-victoria/);
+assert.match(html, /guardian-alba-base\.png/);
+assert.match(app, /srcGuardianAlbaAtaqueVersus/);
+assert.match(html, /guardian-alba-final-carga\.png/);
+assert.match(html, /guardian-alba-esfera-solar\.png/);
+assert.match(estilos, /@keyframes esferaSolarJuicioAlbaVersus/);
+assert.match(app, /guardian-alba-habilidad\.png/);
+assert.match(html, /guardian-alba-victoria\.png/);
 
 console.log("versus-ui: comprobaciones correctas");

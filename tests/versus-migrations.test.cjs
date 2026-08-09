@@ -35,6 +35,10 @@ const fiveSecondAbilities = fs.readFileSync(
   path.join(migrations, "20260809141942_versus_ability_duration_five_seconds.sql"),
   "utf8",
 );
+const guardianAlba = fs.readFileSync(
+  path.join(migrations, "20260809175550_add_guardian_alba.sql"),
+  "utf8",
+);
 const dictionary = fs.readFileSync(
   path.join(migrations, "20260809015253_versus_thematic_dictionary.sql"),
   "utf8",
@@ -68,6 +72,11 @@ assert.match(shadow, /revoke execute on function public\.activate_versus_ability
 assert.match(fiveSecondAbilities, /v_expires_at := now\(\) \+ interval '5 seconds'/);
 assert.match(fiveSecondAbilities, /when 't_shadow' then 'black_hole'/);
 assert.match(fiveSecondAbilities, /revoke execute on function public\.activate_versus_ability\(uuid\) from public, anon/);
+assert.match(guardianAlba, /'guardian_alba'/);
+assert.match(guardianAlba, /when 'guardian_alba' then 'key_bounce'/);
+assert.match(guardianAlba, /active_effect in \('roots', 'roar', 'shuffle', 'invert', 'black_hole', 'key_bounce'\)/);
+assert.match(guardianAlba, /v_expires_at := now\(\) \+ interval '5 seconds'/);
+assert.match(guardianAlba, /revoke execute on function public\.set_versus_character\(uuid, text, boolean\) from public, anon/);
 assert.match(dictionary, /create schema if not exists private/);
 assert.match(dictionary, /alter table private\.versus_word_dictionary enable row level security/);
 assert.match(dictionary, /revoke all on table private\.versus_word_dictionary from public, anon, authenticated/);
@@ -75,4 +84,4 @@ assert.match(dictionary, /dictionary\.word_key = public\.versus_letter_key\(supp
 assert.match(dictionary, /before insert or update of theme_key, words/);
 assert.match(dictionary, /Una o más palabras no figuran en el diccionario/);
 
-console.log("versus-migrations: 26 comprobaciones correctas");
+console.log("versus-migrations: 31 comprobaciones correctas");

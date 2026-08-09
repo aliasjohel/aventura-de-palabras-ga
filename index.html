@@ -23,7 +23,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260809-shadow-6">
+    <link rel="stylesheet" href="css/styles.css?v=20260809-guardian-alba-2">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -324,6 +324,13 @@
                         <strong>T. Shadow</strong>
                         <small>Corte sombr&iacute;o &middot; Legi&oacute;n Umbr&iacute;a</small>
                     </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio"
+                        aria-checked="false" data-personaje="guardian_alba">
+                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <img src="assets/images/personajes/versus/guardian-alba-base.png" alt="Guardi&aacute;n del Alba">
+                        <strong>A. Lumen</strong>
+                        <small>Corte solar &middot; Juicio del Amanecer</small>
+                    </button>
                 </div>
 
                 <div class="estado-personajes-remotos" aria-live="polite">
@@ -519,6 +526,9 @@
                     <div id="corteShadowVersus" class="corte-shadow-versus" aria-hidden="true">
                         <i></i><i></i><i></i>
                     </div>
+                    <div id="corteLumenVersus" class="corte-lumen-versus" aria-hidden="true">
+                        <i></i><b></b><span></span>
+                    </div>
 
                     <div id="entradaDueloVersus" class="entrada-duelo-versus oculto" aria-live="polite">
                         <div class="entrada-efecto entrada-efecto-uno" aria-hidden="true">
@@ -577,8 +587,11 @@
                     </div>
                     <div class="habilidad-lobo-versus"><i></i><i></i><i></i></div>
                     <div class="habilidad-agujero-negro-versus"><i></i><b></b><span></span></div>
+                    <div class="habilidad-rayo-lumen-versus"><i></i><b></b><span></span></div>
                     <div class="impacto-habilidad-versus"></div>
                 </div>
+
+                <div id="teclasRotasVersus" class="teclas-rotas-versus" aria-hidden="true"></div>
 
                 <div class="versus-controles">
                     <div class="versus-panel-accion">
@@ -615,12 +628,14 @@
                             <option value="dragon">Drag&oacute;n</option>
                             <option value="hombre_lobo">Hombre Lobo</option>
                             <option value="t_shadow">T. Shadow</option>
+                            <option value="guardian_alba">A. Lumen</option>
                         </select>
                     </label>
                     <button id="btnProbarCinematicaGuardiana" type="button">🌱 Probar guardiana</button>
                     <button id="btnProbarCinematicaDragon" type="button">&#128009; Probar drag&oacute;n</button>
                     <button id="btnProbarCinematicaHombreLobo" type="button">&#127769; Probar hombre lobo</button>
                     <button id="btnProbarCinematicaShadow" type="button">&#127761; Probar T. Shadow</button>
+                    <button id="btnProbarCinematicaGuardianAlba" type="button">&#9728; Probar A. Lumen</button>
                     <button id="btnProbarAtaqueElegido" type="button">⚡ Probar ataque elegido</button>
                 </div>
 
@@ -641,6 +656,7 @@
                     <button class="btn-probar-habilidad-versus" data-habilidad="mago" type="button">🔮 Caos</button>
                     <button class="btn-probar-habilidad-versus" data-habilidad="hombre_lobo" type="button">🌕 Inversi&oacute;n</button>
                     <button class="btn-probar-habilidad-versus" data-habilidad="t_shadow" type="button">&#127761; Vac&iacute;o</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="guardian_alba" type="button">&#9728; Ruptura</button>
                 </div>
 
                 <div id="avisoAvanceVersus" class="aviso-avance-versus oculto" role="status" aria-live="polite"></div>
@@ -763,6 +779,19 @@
                         src="assets/images/personajes/versus/t-shadow-ojos.png" alt="" aria-hidden="true">
                     <img class="cinematica-shadow-victoria"
                         src="assets/images/personajes/versus/t-shadow-victoria.png" alt="" aria-hidden="true">
+                    <div class="alba-final-cielo" aria-hidden="true"><i></i><i></i><i></i></div>
+                    <div class="alba-final-sello" aria-hidden="true"></div>
+                    <img id="victimaGuardianAlbaVersus" class="cinematica-victima-alba victima-final-mago"
+                        src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
+                    <img class="cinematica-alba-ataque"
+                        src="assets/images/personajes/versus/guardian-alba-final-carga.png" alt="" aria-hidden="true">
+                    <div class="alba-final-rayo-carga" aria-hidden="true"><i></i><b></b></div>
+                    <img class="alba-final-esfera-solar"
+                        src="assets/images/personajes/versus/guardian-alba-esfera-solar.png" alt="" aria-hidden="true">
+                    <div class="alba-final-rayos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+                    <div class="alba-final-impacto" aria-hidden="true"></div>
+                    <img class="cinematica-alba-victoria"
+                        src="assets/images/personajes/versus/guardian-alba-victoria.png" alt="" aria-hidden="true">
                     <div class="eclipse-destello" aria-hidden="true"></div>
                     <div class="cinematica-final-titulos">
                         <span id="etiquetaCinematicaVersus">GOLPE LEGENDARIO</span>
@@ -876,7 +905,7 @@
     <script src="js/versus-engine.js?v=20260808-habilidades-versus-2"></script>
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
     <script src="js/versus-room-supabase.js?v=20260808-hombre-lobo-2"></script>
-    <script src="js/app.js?v=20260809-shadow-6"></script>
+    <script src="js/app.js?v=20260809-guardian-alba-2"></script>
     <script src="js/pwa.js?v=20260808-hombre-lobo-2"></script>
 </body>
 

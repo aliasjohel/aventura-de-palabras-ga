@@ -5,6 +5,300 @@
     box-sizing: border-box;
 }
 
+/* A. Lumen: Corte Solar, Ruptura Celeste y Juicio del Amanecer. */
+.lista-personajes-versus {
+    grid-template-columns: repeat(auto-fit, minmax(clamp(92px, 10vw, 138px), 1fr));
+    gap: clamp(6px, 1vw, 13px);
+}
+
+.tarjeta-personaje-versus[data-personaje="guardian_alba"] {
+    background:
+        radial-gradient(circle at 50% 32%, rgba(255, 235, 149, 0.42), transparent 48%),
+        linear-gradient(180deg, rgba(37, 45, 54, 0.98), rgba(13, 20, 28, 0.99));
+}
+
+.tarjeta-personaje-versus[data-personaje="guardian_alba"].seleccionada {
+    border-color: #ffe69a;
+    background:
+        radial-gradient(circle at 50% 34%, rgba(255, 234, 142, 0.55), transparent 52%),
+        linear-gradient(180deg, rgba(57, 62, 65, 0.99), rgba(25, 31, 38, 0.99));
+    box-shadow: 0 0 25px rgba(255, 218, 105, 0.56), inset 0 0 26px rgba(96, 222, 255, 0.14);
+}
+
+.versus-personaje-uno.personaje-guardian_alba,
+.versus-personaje-dos.personaje-guardian_alba {
+    width: clamp(190px, 34vw, 405px);
+    filter: drop-shadow(0 13px 10px rgba(0, 0, 0, 0.72)) drop-shadow(0 0 9px rgba(255, 224, 126, 0.62));
+}
+
+.versus-personaje-uno.personaje-guardian_alba { left: 2%; }
+.versus-personaje-dos.personaje-guardian_alba {
+    right: 2%;
+    transform: scaleX(-1);
+    animation-name: respirarPersonajeDosInvertidoVersus;
+}
+
+.versus-personaje-uno.entrando-duelo.entrada-guardian_alba {
+    animation: entradaGuardianAlbaJugadorVersus 2.2s cubic-bezier(.16,.75,.22,1) both;
+}
+
+.versus-personaje-dos.entrando-duelo.entrada-guardian_alba-rival {
+    animation: entradaGuardianAlbaRivalVersus 2.2s cubic-bezier(.16,.75,.22,1) both;
+}
+
+@keyframes entradaGuardianAlbaJugadorVersus {
+    0% { opacity:0; transform:translateX(-16%) scale(.76); filter:brightness(3) blur(13px); }
+    45% { opacity:.8; filter:brightness(1.75) drop-shadow(0 0 30px #ffe590); }
+    100% { opacity:1; transform:translateX(0) scale(1); }
+}
+
+@keyframes entradaGuardianAlbaRivalVersus {
+    0% { opacity:0; transform:translateX(16%) scaleX(-1) scale(.76); filter:brightness(3) blur(13px); }
+    45% { opacity:.8; filter:brightness(1.75) drop-shadow(0 0 30px #ffe590); }
+    100% { opacity:1; transform:translateX(0) scaleX(-1) scale(1); }
+}
+
+.corte-lumen-versus {
+    position:absolute;
+    z-index:9;
+    left:20%;
+    top:30%;
+    width:58%;
+    height:40%;
+    opacity:0;
+    pointer-events:none;
+}
+
+.corte-lumen-versus i,
+.corte-lumen-versus b,
+.corte-lumen-versus span {
+    position:absolute;
+    left:0;
+    top:42%;
+    width:100%;
+    height:clamp(4px,.65vw,8px);
+    border-radius:50%;
+    background:linear-gradient(90deg,transparent,#64e8ff 12%,#fff 42% 64%,#ffd35c 86%,transparent);
+    box-shadow:0 0 8px #fff,0 0 20px #ffd868,0 0 34px rgba(77,218,255,.72);
+    transform:rotate(-11deg);
+}
+.corte-lumen-versus b { top:25%; opacity:.6; transform:rotate(8deg) scaleX(.82); }
+.corte-lumen-versus span { top:60%; opacity:.42; transform:rotate(-2deg) scaleX(.7); }
+.corte-lumen-versus.volando { animation:corteSolarJugadorVersus 820ms ease-out both; }
+.corte-lumen-versus.desde-rival { transform:scaleX(-1); }
+.corte-lumen-versus.desde-rival.volando { animation-name:corteSolarRivalVersus; }
+.personaje-guardian_alba.lanzando-lumen { animation:impulsoLumenJugadorVersus 900ms ease-out both; }
+.versus-personaje-dos.personaje-guardian_alba.lanzando-lumen { animation-name:impulsoLumenRivalVersus; }
+
+@keyframes corteSolarJugadorVersus { 0%{opacity:0;transform:translateX(-15%) scale(.45)} 22%,64%{opacity:1} 100%{opacity:0;transform:translateX(32%) scale(1.25)} }
+@keyframes corteSolarRivalVersus { 0%{opacity:0;transform:translateX(15%) scaleX(-1) scale(.45)} 22%,64%{opacity:1} 100%{opacity:0;transform:translateX(-32%) scaleX(-1) scale(1.25)} }
+@keyframes impulsoLumenJugadorVersus { 0%,100%{transform:translateX(0)} 46%{transform:translateX(10vw) scale(1.04);filter:brightness(1.35) drop-shadow(0 0 22px #ffe48b)} }
+@keyframes impulsoLumenRivalVersus { 0%,100%{transform:translateX(0) scaleX(-1)} 46%{transform:translateX(-10vw) scaleX(-1) scale(1.04);filter:brightness(1.35) drop-shadow(0 0 22px #ffe48b)} }
+
+.animacion-habilidad-versus.habilidad-guardian_alba .habilidad-rayo-lumen-versus { display:block; }
+.animacion-habilidad-versus.activa .habilidad-rayo-lumen-versus { position:absolute; }
+.habilidad-rayo-lumen-versus {
+    left:31%;
+    top:43%;
+    width:min(43vw,590px);
+    height:10px;
+    transform:rotate(47deg);
+    transform-origin:left center;
+}
+.desde-rival .habilidad-rayo-lumen-versus {
+    left:76%;
+    right:auto;
+    transform:rotate(133deg);
+    transform-origin:left center;
+}
+.habilidad-rayo-lumen-versus i,
+.habilidad-rayo-lumen-versus b {
+    position:absolute;
+    inset:0;
+    border-radius:999px;
+    background:linear-gradient(90deg,#fff9d0,#fff 35%,#7ceaff 76%,transparent);
+    box-shadow:0 0 8px #fff,0 0 22px #ffd75f,0 0 42px rgba(80,224,255,.85);
+    animation:disparoRupturaCelesteVersus 980ms cubic-bezier(.16,.78,.18,1) both;
+}
+.habilidad-rayo-lumen-versus b { inset:-5px 0; opacity:.3; animation-delay:55ms; }
+.habilidad-rayo-lumen-versus span {
+    position:absolute;
+    right:-10px;
+    top:50%;
+    width:clamp(30px,5vw,64px);
+    aspect-ratio:1;
+    border-radius:50%;
+    background:radial-gradient(circle,#fff 0 12%,#fff3a6 26%,rgba(82,224,255,.72) 45%,transparent 72%);
+    transform:translateY(-50%);
+    animation:impactoRupturaCelesteVersus 980ms ease-out both;
+}
+.desde-rival .habilidad-rayo-lumen-versus span { right:-10px; left:auto; }
+.habilidad-guardian_alba .impacto-habilidad-versus {
+    background:radial-gradient(ellipse,#fff,rgba(255,221,93,.62) 24%,rgba(74,222,255,.3) 43%,transparent 69%);
+}
+@keyframes disparoRupturaCelesteVersus { 0%,12%{opacity:0;scale:0 1} 24%{opacity:1;scale:1 1} 70%{opacity:1} 100%{opacity:0;scale:1 .18} }
+@keyframes impactoRupturaCelesteVersus { 0%,35%{opacity:0;scale:.15} 54%{opacity:1;scale:1.4} 100%{opacity:0;scale:2.4} }
+
+.teclas-rotas-versus {
+    position:absolute;
+    z-index:24;
+    inset:0;
+    display:none;
+    overflow:hidden;
+    pointer-events:none;
+}
+.teclas-rotas-versus.activa { display:block; }
+.teclas-rotas-versus::before,
+.teclas-rotas-versus::after {
+    content:"";
+    position:absolute;
+    z-index:2;
+    left:var(--explosion-x,62%);
+    top:var(--explosion-y,88%);
+    width:clamp(70px,13vw,170px);
+    aspect-ratio:1;
+    border-radius:50%;
+    pointer-events:none;
+    transform:translate(-50%,-50%) scale(.08);
+}
+.teclas-rotas-versus::before {
+    background:radial-gradient(circle,#fff 0 8%,#fff1a6 18%,rgba(77,224,255,.7) 34%,rgba(255,196,58,.25) 52%,transparent 72%);
+    filter:drop-shadow(0 0 18px #fff) drop-shadow(0 0 30px #ffd75c);
+    animation:explosionTecladoLumenVersus 980ms ease-out both;
+}
+.teclas-rotas-versus::after {
+    border:clamp(3px,.6vw,8px) solid rgba(255,239,171,.92);
+    box-shadow:0 0 16px #fff,0 0 34px rgba(65,220,255,.72);
+    animation:ondaExplosionTecladoLumenVersus 1050ms ease-out both;
+}
+.teclas-rotas-versus span {
+    position:absolute;
+    display:grid;
+    place-items:center;
+    width:clamp(25px,3.3vw,42px);
+    aspect-ratio:1;
+    z-index:3;
+    border:2px solid #aeeeff;
+    border-radius:7px;
+    clip-path:polygon(0 0,100% 0,100% 37%,86% 48%,100% 60%,100% 100%,0 100%,0 64%,13% 51%,0 39%);
+    background:linear-gradient(165deg,#29495e,#142b3d 55%,#081621);
+    color:#fff;
+    font:900 clamp(.72rem,1.55vw,1.12rem) Arial,sans-serif;
+    text-shadow:0 1px 2px #000,0 0 5px #7cecff;
+    box-shadow:inset 0 0 8px rgba(115,226,255,.36),0 0 7px #fff,0 0 17px rgba(255,211,84,.76),0 4px 0 rgba(2,12,20,.78);
+    animation:reboteTeclaRotaVersus var(--duracion-rotura) cubic-bezier(.42,.05,.58,.95) var(--demora-rotura) infinite alternate both;
+    will-change:transform;
+}
+.teclas-rotas-versus span::after {
+    content:"";
+    position:absolute;
+    left:8%;
+    top:5%;
+    width:28%;
+    height:32%;
+    border-right:1px solid rgba(255,255,255,.72);
+    border-bottom:1px solid rgba(255,255,255,.5);
+    transform:skew(-18deg) rotate(12deg);
+}
+.teclado-versus.efecto-teclas-rotas .letra-versus { animation:fracturaTeclaLumenVersus 440ms ease-in both; }
+@keyframes fracturaTeclaLumenVersus {
+    0%,35%{opacity:1;transform:translate(0,0) scale(1)}
+    48%{transform:translate(-2px,2px) rotate(-3deg) scale(1.08);filter:brightness(2)}
+    62%{transform:translate(3px,-2px) rotate(4deg) scale(.92)}
+    100%{opacity:0;transform:scale(.25) rotate(18deg)}
+}
+@keyframes explosionTecladoLumenVersus {
+    0%,8%{opacity:0;transform:translate(-50%,-50%) scale(.08)}
+    28%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(1.45)}
+}
+@keyframes ondaExplosionTecladoLumenVersus {
+    0%,18%{opacity:0;transform:translate(-50%,-50%) scale(.1)}
+    36%{opacity:1}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(1.65)}
+}
+@keyframes reboteTeclaRotaVersus {
+    0%{opacity:0;transform:translate(0,0) rotate(0) scale(.55)}
+    8%{opacity:1;transform:translate(0,0) rotate(0) scale(.9)}
+    33%{transform:translate(var(--rotura-x1),var(--rotura-y1)) rotate(calc(var(--giro-rotura) * .35)) scale(1.04)}
+    66%{transform:translate(var(--rotura-x2),var(--rotura-y2)) rotate(calc(var(--giro-rotura) * .7)) scale(.9)}
+    100%{transform:translate(var(--rotura-x3),var(--rotura-y3)) rotate(var(--giro-rotura)) scale(1.08)}
+}
+
+.alba-final-cielo,
+.alba-final-sello,
+.cinematica-victima-alba,
+.cinematica-alba-ataque,
+.alba-final-rayo-carga,
+.alba-final-esfera-solar,
+.alba-final-rayos,
+.alba-final-impacto,
+.cinematica-alba-victoria { position:absolute; opacity:0; pointer-events:none; }
+.cinematica-final-versus.juicio-amanecer { background:#080b12; }
+.cinematica-final-versus.juicio-amanecer.activa { animation-duration:6.5s; }
+.cinematica-final-versus.juicio-amanecer.activa .cinematica-final-fondo { animation-duration:6.5s; }
+.cinematica-final-versus.juicio-amanecer::after {
+    content:"";
+    position:absolute;
+    z-index:2;
+    inset:0;
+    background:radial-gradient(circle at 62% 42%,rgba(255,232,143,.32),rgba(5,9,18,.94) 72%);
+}
+.cinematica-final-versus.juicio-amanecer .cinematica-final-fondo { filter:brightness(.28) saturate(.58); transform:scale(1.07); }
+.alba-final-cielo { z-index:3; inset:0; background:radial-gradient(circle at 50% -8%,#fff 0 1%,#ffe59a 5%,rgba(76,219,255,.2) 18%,transparent 46%); }
+.alba-final-cielo i { position:absolute; left:50%; top:-45%; width:2px; height:135%; background:linear-gradient(#fff,rgba(255,220,103,.55),transparent); transform-origin:bottom; box-shadow:0 0 18px #ffe59a; }
+.alba-final-cielo i:nth-child(1){transform:rotate(-32deg)} .alba-final-cielo i:nth-child(2){transform:rotate(0)} .alba-final-cielo i:nth-child(3){transform:rotate(32deg)}
+.alba-final-sello { z-index:4; left:62%; top:34%; width:min(31vw,370px); aspect-ratio:1; border:clamp(3px,.45vw,6px) double #ffe18a; border-radius:50%; box-shadow:0 0 22px #fff3bc,inset 0 0 32px rgba(91,224,255,.42); transform:translate(-50%,-50%); }
+.alba-final-sello::before,.alba-final-sello::after { content:""; position:absolute; inset:9%; border:2px dashed rgba(126,232,255,.86); border-radius:50%; }
+.alba-final-sello::after { inset:27%; border-style:solid; border-color:#fff1ae; }
+.cinematica-victima-alba { z-index:5; left:67%; bottom:2%; width:min(29vw,330px); filter:drop-shadow(0 14px 12px #000); }
+.cinematica-victima-alba.victima-final-guardian_alba { width:min(38vw,430px); transform:scaleX(-1); }
+.cinematica-alba-ataque { z-index:6; left:-2%; bottom:-6%; width:min(48vw,560px); filter:drop-shadow(0 0 20px rgba(255,225,127,.62)) drop-shadow(0 16px 12px #000); }
+.alba-final-rayo-carga { z-index:7; left:34%; top:31%; width:30%; height:clamp(7px,1vw,13px); transform:rotate(2deg); transform-origin:left center; }
+.alba-final-rayo-carga i,
+.alba-final-rayo-carga b { position:absolute; inset:0; border-radius:999px; background:linear-gradient(90deg,#fff,#fff4a6 38%,#78eaff 76%,transparent); box-shadow:0 0 9px #fff,0 0 24px #ffd75e,0 0 38px rgba(79,224,255,.78); }
+.alba-final-rayo-carga b { inset:-5px 0; opacity:.34; }
+.alba-final-esfera-solar { z-index:8; left:62%; top:34%; width:min(31vw,380px); transform:translate(-50%,-50%); filter:drop-shadow(0 0 18px #fff) drop-shadow(0 0 38px #ffd85f); }
+.cinematica-final-versus.juicio-amanecer .alba-final-rayos { display:none; }
+.alba-final-rayos { z-index:7; inset:0; }
+.alba-final-rayos i { position:absolute; top:-18%; width:clamp(8px,1.3vw,18px); height:122%; border-radius:50%; background:linear-gradient(#fff,#fff4b4 55%,rgba(75,222,255,.5),transparent); box-shadow:0 0 14px #fff,0 0 36px #ffd95e; transform:rotate(4deg); }
+.alba-final-rayos i:nth-child(1){left:55%}.alba-final-rayos i:nth-child(2){left:61%}.alba-final-rayos i:nth-child(3){left:67%}.alba-final-rayos i:nth-child(4){left:73%}.alba-final-rayos i:nth-child(5){left:79%}
+.alba-final-impacto { z-index:9; left:75%; top:62%; width:min(55vw,640px); aspect-ratio:1; border-radius:50%; background:radial-gradient(circle,#fff 0 4%,#fff2a1 12%,rgba(65,219,255,.48) 29%,rgba(255,207,68,.2) 48%,transparent 70%); transform:translate(-50%,-50%); }
+.cinematica-alba-victoria { z-index:10; left:50%; bottom:-5%; width:min(48vw,550px); filter:drop-shadow(0 0 27px rgba(255,225,122,.9)) drop-shadow(0 16px 12px #000); }
+.cinematica-final-versus.juicio-amanecer .cinematica-final-titulos { z-index:12; text-shadow:0 0 12px #ffd969,3px 4px #111827; }
+.cinematica-final-versus.juicio-amanecer .cinematica-final-titulos span { color:#9deeff; }
+.juicio-amanecer.activa .alba-final-cielo { animation:cieloJuicioAlbaVersus 6.5s ease both; }
+.juicio-amanecer.activa .alba-final-sello { animation:selloJuicioAlbaVersus 6.5s linear both; }
+.juicio-amanecer.activa .cinematica-victima-alba { animation:victimaJuicioAlbaVersus 6.5s ease both; }
+.juicio-amanecer.activa .cinematica-alba-ataque { animation:ataqueJuicioAlbaVersus 6.5s ease both; }
+.juicio-amanecer.activa .alba-final-rayo-carga { animation:rayoCargaJuicioAlbaVersus 6.5s ease both; }
+.juicio-amanecer.activa .alba-final-esfera-solar { animation:esferaSolarJuicioAlbaVersus 6.5s cubic-bezier(.18,.72,.2,1) both; }
+.juicio-amanecer.activa .alba-final-rayos i { animation:rayoJuicioAlbaVersus 6.5s ease both; }
+.juicio-amanecer.activa .alba-final-rayos i:nth-child(2){animation-delay:.07s}.juicio-amanecer.activa .alba-final-rayos i:nth-child(3){animation-delay:.14s}.juicio-amanecer.activa .alba-final-rayos i:nth-child(4){animation-delay:.21s}.juicio-amanecer.activa .alba-final-rayos i:nth-child(5){animation-delay:.28s}
+.juicio-amanecer.activa .alba-final-impacto { animation:impactoJuicioAlbaVersus 6.5s ease both; }
+.juicio-amanecer.activa .cinematica-alba-victoria { animation:victoriaJuicioAlbaVersus 6.5s ease both; }
+@keyframes cieloJuicioAlbaVersus { 0%,100%{opacity:0} 8%,86%{opacity:1} }
+@keyframes selloJuicioAlbaVersus { 0%,9%,57%,100%{opacity:0;transform:translate(-50%,-50%) scale(.18) rotate(0)} 18%,48%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(210deg)} }
+@keyframes victimaJuicioAlbaVersus { 0%,46%{opacity:1} 53%,59%{opacity:1;transform:translate(-2%,2%) rotate(-2deg);filter:brightness(2.1) drop-shadow(0 0 28px #ffe38c)} 66%,100%{opacity:0;transform:translateY(4%) scale(.76)} }
+@keyframes ataqueJuicioAlbaVersus { 0%,5%{opacity:0;transform:translateX(-18%) scale(.8)} 12%,49%{opacity:1;transform:translateX(0) scale(1)} 58%,100%{opacity:0;transform:translateX(8%) scale(1.05)} }
+@keyframes rayoCargaJuicioAlbaVersus { 0%,10%,53%,100%{opacity:0;scale:0 1} 17%{opacity:1;scale:.35 1} 25%,47%{opacity:1;scale:1 1} }
+@keyframes esferaSolarJuicioAlbaVersus { 0%,10%{opacity:0;transform:translate(-50%,-50%) scale(.08) rotate(0)} 18%{opacity:.85;transform:translate(-50%,-50%) scale(.34) rotate(30deg)} 34%,48%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(145deg)} 58%{opacity:1;transform:translate(calc(-50% + 13vw),calc(-50% + 28vh)) scale(.48) rotate(245deg)} 64%,100%{opacity:0;transform:translate(calc(-50% + 13vw),calc(-50% + 28vh)) scale(1.45) rotate(290deg)} }
+@keyframes rayoJuicioAlbaVersus { 0%,29%,37%,100%{opacity:0;transform:translateY(-18%) scaleY(.08)} 31%,35%{opacity:1;transform:translateY(0) scaleY(1)} }
+@keyframes impactoJuicioAlbaVersus { 0%,53%,70%,100%{opacity:0;transform:translate(-50%,-50%) scale(.08)} 59%{opacity:1;transform:translate(-50%,-50%) scale(1.28)} 66%{opacity:.42;transform:translate(-50%,-50%) scale(2)} }
+@keyframes victoriaJuicioAlbaVersus { 0%,65%,100%{opacity:0;transform:translateX(-50%) translateY(12%) scale(.55);filter:blur(8px)} 72%{opacity:.5;transform:translateX(-50%) scale(.82);filter:blur(2px)} 80%,94%{opacity:1;transform:translateX(-50%) translateY(0) scale(1);filter:blur(0)} }
+
+@media (orientation: landscape) and (max-height:500px) {
+    .lista-personajes-versus { grid-template-columns:repeat(auto-fit,minmax(88px,1fr)); gap:6px; }
+    .tarjeta-personaje-versus { height:clamp(142px,48vh,215px); }
+    .cinematica-alba-ataque { width:min(44vw,470px); }
+    .cinematica-alba-victoria { width:min(42vw,470px); }
+}
+
+@media (prefers-reduced-motion:reduce) {
+    .teclas-rotas-versus span { animation-duration:1.2s; }
+    .cinematica-final-versus.juicio-amanecer .cinematica-alba-victoria { opacity:1; transform:translateX(-50%); }
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     min-height: 100vh;
@@ -9022,5 +9316,18 @@ button:disabled {
     35%,
     65% {
         opacity: 0.52;
+    }
+}
+
+/* Selector extensible: nuevas tarjetas se distribuyen y saltan de fila sin rediseño. */
+.lista-personajes-versus {
+    grid-template-columns: repeat(auto-fit, minmax(clamp(92px, 10vw, 138px), 1fr));
+    gap: clamp(6px, 1vw, 13px);
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+    .lista-personajes-versus {
+        grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+        gap: 6px;
     }
 }
