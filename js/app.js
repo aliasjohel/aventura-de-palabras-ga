@@ -1364,6 +1364,7 @@ function obtenerClavePalabraVersus(valor) {
 function validarPreparacionVersus(mostrarErrores = false) {
   const valores = inputsPalabrasVersus.map((input) => input.value);
   const claves = valores.map(obtenerClavePalabraVersus);
+  const clavesDiccionario = clavesBancosPalabrasVersus[tematicaVersus.value] || new Set();
   let formularioValido = true;
 
   inputsPalabrasVersus.forEach((input, indice) => {
@@ -1374,6 +1375,7 @@ function validarPreparacionVersus(mostrarErrores = false) {
     const repetida = valor.length >= minimoLetrasPalabraVersus && claves.some(
       (otra, otroIndice) => otroIndice !== indice && otra === claves[indice],
     );
+    const figuraEnDiccionario = clavesDiccionario.has(claves[indice]);
     let mensaje = "";
 
     contador.textContent = `${valor.length} ${valor.length === 1 ? "letra" : "letras"}`;
@@ -1383,11 +1385,19 @@ function validarPreparacionVersus(mostrarErrores = false) {
     if (valor.length > maximoLetrasPalabraVersus) {
       mensaje = `Puede tener hasta ${maximoLetrasPalabraVersus} letras.`;
     }
+    if (
+      valor.length >= minimoLetrasPalabraVersus &&
+      valor.length <= maximoLetrasPalabraVersus &&
+      !figuraEnDiccionario
+    ) {
+      mensaje = `No figura en el diccionario de ${nombresTematicasVersus[tematicaVersus.value] || "esta temática"}.`;
+    }
     if (repetida) mensaje = "Esta palabra está repetida.";
 
     const valida =
       valor.length >= minimoLetrasPalabraVersus &&
       valor.length <= maximoLetrasPalabraVersus &&
+      figuraEnDiccionario &&
       !repetida;
     formularioValido = formularioValido && valida;
     input.classList.toggle("invalida", mostrarErrores && !valida);
@@ -1425,6 +1435,8 @@ inputsPalabrasVersus.forEach((input) => {
     validarPreparacionVersus(true);
   });
 });
+
+tematicaVersus.addEventListener("change", () => validarPreparacionVersus(true));
 
 function completarPalabrasAleatoriasVersus() {
   const banco = bancosPalabrasVersus[tematicaVersus.value] || [];
@@ -2243,46 +2255,82 @@ btnHabilidadVersus.addEventListener("click", activarHabilidadVersus);
 // llegan desde el otro dispositivo en lugar de esta simulación.
 const bancosPalabrasVersus = {
   paises: [
-    "ARGENTINA", "BRASIL", "CHILE", "PERU", "ESPAÑA",
-    "MEXICO", "CANADA", "ITALIA", "JAPON", "INDIA",
+    "ARGENTINA", "BRASIL", "CHILE", "PERÚ", "ESPAÑA", "MÉXICO", "CANADÁ", "ITALIA", "JAPÓN", "INDIA",
+    "FRANCIA", "ALEMANIA", "PORTUGAL", "URUGUAY", "PARAGUAY", "BOLIVIA", "COLOMBIA", "ECUADOR", "VENEZUELA", "PANAMÁ",
+    "CUBA", "HAITÍ", "JAMAICA", "BELICE", "GUATEMALA", "HONDURAS", "NICARAGUA", "DOMINICA", "GRANADA", "BAHAMAS",
+    "SUIZA", "AUSTRIA", "BÉLGICA", "GRECIA", "POLONIA", "CROACIA", "SERBIA", "RUMANIA", "BULGARIA", "UCRANIA",
+    "RUSIA", "CHINA", "TAILANDIA", "VIETNAM", "EGIPTO", "MARRUECOS", "KENIA", "ANGOLA", "AUSTRALIA", "TURQUÍA",
   ],
   frutas: [
-    "MANZANA", "PERA", "UVA", "KIWI", "MANGO",
-    "LIMON", "NARANJA", "BANANA", "CIRUELA", "MELON",
+    "MANZANA", "PERA", "UVA", "KIWI", "MANGO", "LIMÓN", "NARANJA", "BANANA", "CIRUELA", "MELÓN",
+    "SANDÍA", "PAPAYA", "ANANÁ", "DURAZNO", "CEREZA", "FRUTILLA", "MANDARINA", "POMELO", "COCO", "HIGO",
+    "GRANADA", "GUAYABA", "MARACUYÁ", "MEMBRILLO", "DAMASCO", "ARÁNDANO", "FRAMBUESA", "MORA", "GROSELLA", "LIMA",
+    "PALTA", "TOMATE", "CAQUI", "LICHI", "NÍSPERO", "TUNA", "DÁTIL", "ACEITUNA", "BERGAMOTA", "CHIRIMOYA",
+    "PITAHAYA", "TAMARINDO", "CARAMBOLA", "KUMQUAT", "TORONJA", "UCHUVA", "YACA", "MAMÓN", "ZARZAMORA", "NECTARINA",
   ],
   animales: [
-    "AGUILA", "BALLENA", "CABALLO", "CONEJO", "DELFIN",
-    "GATO", "JIRAFA", "LEON", "PANDA", "TIGRE",
+    "ÁGUILA", "BALLENA", "CABALLO", "CONEJO", "DELFÍN", "GATO", "JIRAFA", "LEÓN", "PANDA", "TIGRE",
+    "PERRO", "ELEFANTE", "COCODRILO", "TORTUGA", "CANGURO", "KOALA", "CEBRA", "RINOCERONTE", "HIPOPÓTAMO", "MONO",
+    "GORILA", "CHIMPANCÉ", "PINGÜINO", "TIBURÓN", "PULPO", "CALAMAR", "FOCA", "NUTRIA", "CASTOR", "ARDILLA",
+    "LOBO", "ZORRO", "OSO", "PUMA", "JAGUAR", "LEOPARDO", "GUEPARDO", "HIENA", "BÚFALO", "BISONTE",
+    "CAMELLO", "LLAMA", "CABRA", "OVEJA", "CERDO", "GALLO", "GALLINA", "PATO", "CISNE", "BÚHO",
   ],
   comidas: [
-    "PIZZA", "PASTA", "EMPANADA", "MILANESA", "LOCRO",
-    "SOPA", "ARROZ", "TORTILLA", "ENSALADA", "HELADO",
+    "PIZZA", "PASTA", "EMPANADA", "MILANESA", "LOCRO", "SOPA", "ARROZ", "TORTILLA", "ENSALADA", "HELADO",
+    "HAMBURGUESA", "LASAÑA", "RAVIOLES", "ÑOQUIS", "ASADO", "GUISO", "TARTA", "PANQUEQUE", "ALBÓNDIGA", "CROQUETA",
+    "SÁNDWICH", "TAMAL", "HUMITA", "AREPA", "TACOS", "BURRITO", "CEVICHE", "SUSHI", "RAMEN", "PAELLA",
+    "RISOTTO", "POLENTA", "PURÉ", "OMELETTE", "CHURRASCO", "CHORIZO", "MATAMBRE", "PARRILLA", "CALZONE", "FOCACCIA",
+    "CHURRO", "FLAN", "BROWNIE", "GALLETA", "BIZCOCHO", "TORTA", "PASTEL", "BUDÍN", "MOUSSE", "GELATINA",
   ],
   profesiones: [
-    "MEDICO", "DOCENTE", "BOMBERO", "ABOGADO", "ARTISTA",
-    "PANADERO", "PILOTO", "ACTOR", "COCINERO", "DENTISTA",
+    "MÉDICO", "DOCENTE", "BOMBERO", "ABOGADO", "ARTISTA", "PANADERO", "PILOTO", "ACTOR", "COCINERO", "DENTISTA",
+    "INGENIERO", "ARQUITECTO", "ENFERMERO", "PERIODISTA", "CONTADOR", "MECÁNICO", "ELECTRICISTA", "CARPINTERO", "PLOMERO", "JARDINERO",
+    "VETERINARIO", "FARMACÉUTICO", "PSICÓLOGO", "FOTÓGRAFO", "DISEÑADOR", "PROGRAMADOR", "CIENTÍFICO", "ESCRITOR", "MÚSICO", "PINTOR",
+    "ESCULTOR", "BAILARÍN", "CANTANTE", "DIRECTOR", "CAMARÓGRAFO", "POLICÍA", "SOLDADO", "MARINERO", "TAXISTA", "CHOFER",
+    "CARTERO", "CAJERO", "VENDEDOR", "SECRETARIO", "TRADUCTOR", "LOCUTOR", "AZAFATA", "AGRÓNOMO", "BIÓLOGO", "GEÓLOGO",
   ],
   deportes: [
-    "FUTBOL", "TENIS", "RUGBY", "HOCKEY", "BOXEO",
-    "NATACION", "CICLISMO", "VOLEY", "GOLF", "JUDO",
+    "FÚTBOL", "TENIS", "RUGBY", "HOCKEY", "BOXEO", "NATACIÓN", "CICLISMO", "VOLEY", "GOLF", "JUDO",
+    "BÁSQUET", "HANDBALL", "BÉISBOL", "SOFTBOL", "CRÍQUET", "PÁDEL", "SQUASH", "SURF", "REMO", "VELA",
+    "ATLETISMO", "TRIATLÓN", "MARATÓN", "ESGRIMA", "KARATE", "TAEKWONDO", "SUMO", "LUCHA", "POLO", "BOCHAS",
+    "BILLAR", "AJEDREZ", "PATINAJE", "ESQUÍ", "SNOWBOARD", "ALPINISMO", "ESCALADA", "EQUITACIÓN", "CANOTAJE", "KAYAK",
+    "MOTOCROSS", "RALLY", "KARTING", "BOWLING", "BÁDMINTON", "WATERPOLO", "LACROSSE", "FUTSAL", "ARQUERÍA", "GIMNASIA",
   ],
   transportes: [
-    "AUTO", "TREN", "BARCO", "AVION", "METRO",
-    "BICICLETA", "CAMION", "COLECTIVO", "TRANVIA", "MOTO",
+    "AUTO", "TREN", "BARCO", "AVIÓN", "METRO", "BICICLETA", "CAMIÓN", "COLECTIVO", "TRANVÍA", "MOTO",
+    "TAXI", "SUBTE", "ÓMNIBUS", "TRACTOR", "CAMIONETA", "FURGONETA", "MONOPATÍN", "TRICICLO", "CUATRICICLO", "MOTONETA",
+    "VELERO", "LANCHA", "CANOA", "KAYAK", "BOTE", "YATE", "FERRY", "BUQUE", "CRUCERO", "SUBMARINO",
+    "HELICÓPTERO", "AVIONETA", "PLANEADOR", "DIRIGIBLE", "GLOBO", "COHETE", "LANZADERA", "HIDROAVIÓN", "TELEFÉRICO", "FUNICULAR",
+    "AMBULANCIA", "PATRULLERO", "REMOLQUE", "CARRETA", "CARRO", "TRINEO", "LOCOMOTORA", "MOTOCICLETA", "AERONAVE", "CATAMARÁN",
   ],
   objetos: [
-    "MESA", "SILLA", "RELOJ", "LLAVE", "VASO",
-    "LAMPARA", "CUADERNO", "ESPEJO", "BOTELLA", "TIJERA",
+    "MESA", "SILLA", "RELOJ", "LLAVE", "VASO", "LÁMPARA", "CUADERNO", "ESPEJO", "BOTELLA", "TIJERA",
+    "PLATO", "TAZA", "TENEDOR", "CUCHILLO", "CUCHARA", "OLLA", "SARTÉN", "JARRA", "TERMO", "MATE",
+    "MOCHILA", "CARTERA", "BILLETERA", "PARAGUAS", "SOMBRERO", "ZAPATO", "CAMISA", "PANTALÓN", "BUFANDA", "GUANTE",
+    "TELÉFONO", "TABLETA", "RADIO", "CÁMARA", "AURICULAR", "TECLADO", "PANTALLA", "CONTROL", "CARGADOR", "BATERÍA",
+    "MARTILLO", "SERRUCHO", "PINZA", "CLAVO", "TORNILLO", "ESCOBA", "PALA", "CEPILLO", "PEINE", "ALMOHADA",
   ],
   naturaleza: [
-    "SOL", "MAR", "RIO", "LUNA", "MONTAÑA",
-    "VOLCAN", "BOSQUE", "NUBE", "VIENTO", "LAGUNA",
+    "SOL", "MAR", "RÍO", "LUNA", "MONTAÑA", "VOLCÁN", "BOSQUE", "NUBE", "VIENTO", "LAGUNA",
+    "OCÉANO", "PLAYA", "ISLA", "VALLE", "COLINA", "PRADERA", "DESIERTO", "SELVA", "CASCADA", "ARROYO",
+    "LAGO", "GLACIAR", "ICEBERG", "ACANTILADO", "CUEVA", "ROCA", "PIEDRA", "ARENA", "TIERRA", "BARRO",
+    "LLUVIA", "NIEVE", "GRANIZO", "TORMENTA", "TRUENO", "RELÁMPAGO", "NIEBLA", "ROCÍO", "HIELO", "ESCARCHA",
+    "ÁRBOL", "FLOR", "HOJA", "RAMA", "RAÍZ", "MUSGO", "HONGO", "SEMILLA", "PÉTALO", "JUNCAL",
   ],
   nombres: [
-    "ANA", "LUZ", "LEO", "JUAN", "SOFIA",
-    "MARTINA", "TOMAS", "CARLOS", "ELENA", "JULIAN",
+    "ANA", "LUZ", "LEO", "JUAN", "SOFÍA", "MARTINA", "TOMÁS", "CARLOS", "ELENA", "JULIÁN",
+    "MARÍA", "PEDRO", "LUCÍA", "DIEGO", "CAMILA", "MATEO", "VALENTINA", "SANTIAGO", "EMILIA", "NICOLÁS",
+    "PAULA", "PABLO", "LAURA", "MARCOS", "DANIELA", "GABRIELA", "FEDERICO", "AGUSTINA", "SEBASTIÁN", "VICTORIA",
+    "FLORENCIA", "FRANCO", "ROMINA", "BRUNO", "JULIETA", "FACUNDO", "ROCÍO", "IGNACIO", "MALENA", "SIMÓN",
+    "NOELIA", "RENZO", "CATALINA", "BENJAMÍN", "MICAELA", "JOAQUÍN", "MILAGROS", "BAUTISTA", "ABRIL", "ALMA",
   ],
 };
+const clavesBancosPalabrasVersus = Object.fromEntries(
+  Object.entries(bancosPalabrasVersus).map(([tematica, palabras]) => [
+    tematica,
+    new Set(palabras.map((palabra) => VersusEngine.obtenerClavePalabra(palabra))),
+  ]),
+);
 const nombresTematicasVersus = {
   paises: "Países",
   frutas: "Frutas",

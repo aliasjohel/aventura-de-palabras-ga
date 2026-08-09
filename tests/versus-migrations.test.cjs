@@ -27,6 +27,10 @@ const werewolf = fs.readFileSync(
   path.join(migrations, "20260809001114_versus_werewolf_full_moon_hunt.sql"),
   "utf8",
 );
+const dictionary = fs.readFileSync(
+  path.join(migrations, "20260809015253_versus_thematic_dictionary.sql"),
+  "utf8",
+);
 
 assert.match(accents, /translate\(upper\(coalesce\(p_value, ''\)\), 'ÁÉÍÓÚÜ', 'AEIOUU'\)/);
 assert.match(accents, /versus_letter_key\(character\) = any/);
@@ -48,5 +52,11 @@ assert.match(werewolf, /when 'hombre_lobo' then 'invert'/);
 assert.match(werewolf, /when 'hombre_lobo' then interval '4 seconds'/);
 assert.match(werewolf, /active_effect in \('roots', 'roar', 'shuffle', 'invert'\)/);
 assert.match(werewolf, /revoke execute on function public\.activate_versus_ability\(uuid\)[\s\S]+from public, anon/);
+assert.match(dictionary, /create schema if not exists private/);
+assert.match(dictionary, /alter table private\.versus_word_dictionary enable row level security/);
+assert.match(dictionary, /revoke all on table private\.versus_word_dictionary from public, anon, authenticated/);
+assert.match(dictionary, /dictionary\.word_key = public\.versus_letter_key\(supplied\.word\)/);
+assert.match(dictionary, /before insert or update of theme_key, words/);
+assert.match(dictionary, /Una o más palabras no figuran en el diccionario/);
 
-console.log("versus-migrations: 20 comprobaciones correctas");
+console.log("versus-migrations: 26 comprobaciones correctas");
