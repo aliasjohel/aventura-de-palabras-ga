@@ -87,6 +87,7 @@ assert.match(app, /function reproducirCaceriaLunaLlenaVersus\(/);
 assert.match(estilos, /lobos-espectrales-final/);
 assert.match(html, /garra-pantalla-rota\.png/);
 assert.match(estilos, /oscuridad-caceria-final/);
+assert.match(estilos, /data-personaje="mago"[^}]+translateY\(-47%\) scale\(-2\.2, 2\.2\)/);
 assert.match(html, /CACER|Cacer/);
 assert.match(html, /enredaderas-teclado-versus\.png/);
 assert.match(app, /function reproducirAnimacionHabilidadVersus\(/);

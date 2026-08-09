@@ -774,7 +774,7 @@ button:disabled {
 
 /* El mago original mira al lado contrario: en el selector se presenta como el resto. */
 .tarjeta-personaje-versus[data-personaje="mago"] img {
-    transform: scaleX(-1);
+    transform: translateY(-47%) scale(-2.2, 2.2);
 }
 
 .tarjeta-personaje-versus strong {
