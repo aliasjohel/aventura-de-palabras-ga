@@ -22,13 +22,14 @@ const cierreOnline = app.slice(
 assert.match(cierreOnline, /reproducirCierrePartidaVersus\(ganador, detalle\)/);
 assert.doesNotMatch(cierreOnline, /mostrarResultadoPartidaVersus\(ganador, detalle\)/);
 
-for (const ataque of ["bumeran", "raices", "rugido-dragon"]) {
+for (const ataque of ["bumeran", "raices", "rugido-dragon", "zarpazo-feral"]) {
   assert.match(app, new RegExp(`ataque === "${ataque}"`));
 }
 for (const final of [
   "prision-esmeralda",
   "eclipse-violeta",
   "llamado-matriarca",
+  "caceria-luna-llena",
 ]) {
   assert.match(app, new RegExp(`finalElegido === "${final}"`));
 }
@@ -36,7 +37,8 @@ for (const final of [
 assert.match(app, /reproducirEclipseVioletaVersus\(personajeVictima\)/);
 assert.match(app, /reproducirTrampaSelvaticaVersus\(personajeVictima\)/);
 assert.match(app, /reproducirLlamadoMatriarcaVersus\(personajeVictima\)/);
-for (const victima of ["explorador", "mago", "guardiana", "dragon"]) {
+assert.match(app, /reproducirCaceriaLunaLlenaVersus\(personajeVictima\)/);
+for (const victima of ["explorador", "mago", "guardiana", "dragon", "hombre_lobo"]) {
   assert.match(estilos, new RegExp(`victima-final-${victima}`));
   assert.match(app, new RegExp(`${victima}: "assets/images/personajes/versus/.+"`));
 }
@@ -66,9 +68,11 @@ assert.match(app, /function activarHabilidadVersus\(\)/);
 assert.match(app, /efecto === "roots"/);
 assert.match(app, /efecto === "roar"/);
 assert.match(app, /efecto === "shuffle"/);
+assert.match(app, /efecto === "invert"/);
 assert.match(estilos, /\.teclado-versus\.efecto-raices/);
 assert.match(estilos, /\.teclado-versus\.efecto-rugido/);
 assert.match(estilos, /\.teclado-versus\.efecto-caos/);
+assert.match(estilos, /\.versus-marco\.efecto-inversion-lunar/);
 assert.match(estilos, /enredaderas-teclado-versus\.png/);
 assert.match(estilos, /translate\(-12vw, -2vh\)/);
 assert.match(app, /function animarCambioOrdenTecladoVersus\(reordenar\)/);
@@ -77,11 +81,18 @@ assert.match(app, /explorador-lupa\.png/);
 assert.match(app, /guardiana: \{ nombre: "Enredo de raíces"[\s\S]+duracion: 4000/);
 assert.match(app, /dragon: \{ nombre: "Rugido"[\s\S]+duracion: 4000/);
 assert.match(app, /mago: \{ nombre: "Caos arcano"[\s\S]+duracion: 5000/);
+assert.match(app, /hombre_lobo: \{ nombre: "Inversión lunar"[\s\S]+duracion: 4000/);
+assert.match(app, /hombre-lobo-zarpazo\.png/);
+assert.match(app, /function reproducirCaceriaLunaLlenaVersus\(/);
+assert.match(estilos, /lobos-espectrales-final/);
+assert.match(html, /garra-pantalla-rota\.png/);
+assert.match(estilos, /oscuridad-caceria-final/);
+assert.match(html, /CACER|Cacer/);
 assert.match(html, /enredaderas-teclado-versus\.png/);
 assert.match(app, /function reproducirAnimacionHabilidadVersus\(/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeJugadorVersus/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeRivalVersus/);
-for (const habilidad of ["explorador", "mago", "guardiana", "dragon"]) {
+for (const habilidad of ["explorador", "mago", "guardiana", "dragon", "hombre_lobo"]) {
   assert.match(estilos, new RegExp(`habilidad-${habilidad}`));
   assert.match(html, new RegExp(`data-habilidad="${habilidad}"`));
 }

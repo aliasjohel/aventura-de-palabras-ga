@@ -109,6 +109,7 @@ const proyectilGuardianaVersus = document.getElementById(
   "proyectilGuardianaVersus",
 );
 const rugidoDragonVersus = document.getElementById("rugidoDragonVersus");
+const zarpazoLoboVersus = document.getElementById("zarpazoLoboVersus");
 const entradaDueloVersus = document.getElementById("entradaDueloVersus");
 const btnSaltarEntradaVersus = document.getElementById(
   "btnSaltarEntradaVersus",
@@ -145,11 +146,15 @@ const btnProbarCinematicaGuardiana = document.getElementById(
 const btnProbarCinematicaDragon = document.getElementById(
   "btnProbarCinematicaDragon",
 );
+const btnProbarCinematicaHombreLobo = document.getElementById(
+  "btnProbarCinematicaHombreLobo",
+);
 const victimaEclipseVersus = document.getElementById("victimaEclipseVersus");
 const victimaTrampaVersus = document.getElementById("victimaTrampaVersus");
 const rivalCinematicaMatriarca = document.querySelector(
   ".cinematica-rival-matriarca",
 );
+const victimaCaceriaVersus = document.getElementById("victimaCaceriaVersus");
 const victimaPruebaFaucesVersus = document.getElementById(
   "victimaPruebaFaucesVersus",
 );
@@ -2068,6 +2073,7 @@ function reproducirAnimacionHabilidadVersus(
     mago: srcMagoAtaqueVersus,
     guardiana: srcGuardianaAtaqueVersus,
     dragon: srcDragonAtaqueVersus,
+    hombre_lobo: srcHombreLoboSaltoVersus,
   }[personaje];
   if (pose) atacante.src = pose;
   atacante.classList.add("usando-habilidad");
@@ -2099,6 +2105,7 @@ function limpiarEfectoVisualHabilidadVersus() {
   if (demoVersus.temporizadorEfectoHabilidad) clearTimeout(demoVersus.temporizadorEfectoHabilidad);
   demoVersus.temporizadorEfectoHabilidad = null;
   tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos");
+  marcoVersus.classList.remove("efecto-inversion-lunar");
   restaurarOrdenTecladoVersus();
 }
 
@@ -2119,12 +2126,18 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
     tecladoVersus.classList.add("efecto-caos");
     desordenarTecladoVersus(true);
   }
+  if (efecto === "invert") {
+    marcoVersus.style.setProperty("--duracion-inversion-lunar", `${milisegundos}ms`);
+    marcoVersus.classList.add("efecto-inversion-lunar");
+  }
   if (efecto === "roots") tecladoVersus.querySelectorAll("button").forEach((boton) => { boton.disabled = true; });
 
   demoVersus.temporizadorEfectoHabilidad = setTimeout(() => {
     demoVersus.temporizadorEfectoHabilidad = null;
     const restaurarConAnimacion = tecladoVersus.classList.contains("efecto-caos");
     tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos");
+    marcoVersus.classList.remove("efecto-inversion-lunar");
+    marcoVersus.style.removeProperty("--duracion-inversion-lunar");
     restaurarOrdenTecladoVersus(restaurarConAnimacion);
     if (adaptadorSalasVersus.proveedor === "supabase" && partidaOnlineVersus) {
       actualizarTecladoPartidaOnline(partidaOnlineVersus);
@@ -2306,6 +2319,9 @@ const srcGuardianaBaseVersus = "assets/images/personajes/coleccion/guardiana-bos
 const srcGuardianaAtaqueVersus = "assets/images/personajes/coleccion/guardiana-bosque-ataque-raices.png";
 const srcDragonBaseVersus = "assets/images/personajes/versus/dragon-base.png";
 const srcDragonAtaqueVersus = "assets/images/personajes/versus/dragon-ataque.png";
+const srcHombreLoboBaseVersus = "assets/images/personajes/versus/hombre-lobo-base.png";
+const srcHombreLoboZarpazoVersus = "assets/images/personajes/versus/hombre-lobo-zarpazo.png";
+const srcHombreLoboSaltoVersus = "assets/images/personajes/versus/hombre-lobo-salto-lunar.png";
 const personajesVersus = {
   explorador: {
     nombre: "Explorador",
@@ -2331,12 +2347,19 @@ const personajesVersus = {
     ataque: "rugido-dragon",
     final: "llamado-matriarca",
   },
+  hombre_lobo: {
+    nombre: "Hombre Lobo",
+    base: srcHombreLoboBaseVersus,
+    ataque: "zarpazo-feral",
+    final: "caceria-luna-llena",
+  },
 };
 const habilidadesVersus = Object.freeze({
   explorador: { nombre: "Lupa", icono: "🔍", efecto: "hint", duracion: 0 },
   guardiana: { nombre: "Enredo de raíces", icono: "🌿", efecto: "roots", duracion: 4000 },
   dragon: { nombre: "Rugido", icono: "🐉", efecto: "roar", duracion: 4000 },
   mago: { nombre: "Caos arcano", icono: "🔮", efecto: "shuffle", duracion: 5000 },
+  hombre_lobo: { nombre: "Inversión lunar", icono: "🌕", efecto: "invert", duracion: 4000 },
 });
 const letrasParaHabilidadVersus = VersusEngine.CONFIG.letrasParaHabilidad;
 let personajeJugadorVersus = "explorador";
@@ -2357,6 +2380,11 @@ const victimasFaucesVersus = {
     nombre: "Guardiana",
     imagen: srcGuardianaBaseVersus,
     imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-guardiana.png",
+  },
+  hombre_lobo: {
+    nombre: "Hombre Lobo",
+    imagen: srcHombreLoboBaseVersus,
+    imagenAtrapado: "assets/images/personajes/versus/hombre-lobo-impacto.png",
   },
 };
 
@@ -2420,6 +2448,7 @@ function limpiarAnimacionAtaqueJugadorVersus() {
     "lanzando-hechizo",
     "lanzando-viento",
     "rugiendo-dragon",
+    "zarpando-lobo",
   );
   personajeVersusDos.classList.remove("recibiendo-dano");
   vidasVersusDos.classList.remove("recibiendo-dano");
@@ -2427,6 +2456,7 @@ function limpiarAnimacionAtaqueJugadorVersus() {
   proyectilMagoJugadorVersus.classList.remove("volando");
   proyectilGuardianaVersus.classList.remove("volando");
   rugidoDragonVersus.classList.remove("volando");
+  zarpazoLoboVersus.classList.remove("volando", "desde-rival");
   herramientasPruebasVersus.classList.remove("ataque-en-curso");
 }
 
@@ -2441,6 +2471,7 @@ function limpiarAnimacionAtaqueRivalVersus() {
     "lanzando-hechizo",
     "lanzando-viento",
     "rugiendo-dragon",
+    "zarpando-lobo",
   );
   personajeVersusUno.classList.remove("recibiendo-dano-magico");
   vidasVersusUno.classList.remove("recibiendo-dano");
@@ -2448,6 +2479,7 @@ function limpiarAnimacionAtaqueRivalVersus() {
   bumeranVersus.classList.remove("volando", "desde-rival");
   proyectilGuardianaVersus.classList.remove("volando", "desde-rival");
   rugidoDragonVersus.classList.remove("volando", "desde-rival");
+  zarpazoLoboVersus.classList.remove("volando", "desde-rival");
 }
 
 function limpiarAnimacionAtaqueVersus() {
@@ -2464,6 +2496,7 @@ function configurarPersonajesCombateVersus() {
     "personaje-mago",
     "personaje-guardiana",
     "personaje-dragon",
+    "personaje-hombre_lobo",
   );
   personajeVersusUno.classList.add(`personaje-${personajeJugadorVersus}`);
   const personajeRival = personajesVersus[personajeRivalVersus] || personajesVersus.mago;
@@ -2474,6 +2507,7 @@ function configurarPersonajesCombateVersus() {
     "personaje-mago",
     "personaje-guardiana",
     "personaje-dragon",
+    "personaje-hombre_lobo",
   );
   personajeVersusDos.classList.add(`personaje-${personajeRivalVersus}`);
   actualizarPanelHabilidadVersus(
@@ -2503,6 +2537,7 @@ function limpiarEntradaDueloVersus() {
     "entrada-mago",
     "entrada-guardiana",
     "entrada-dragon",
+    "entrada-hombre_lobo",
   );
   personajeVersusDos.classList.remove(
     "entrando-duelo",
@@ -2510,6 +2545,7 @@ function limpiarEntradaDueloVersus() {
     "entrada-mago-rival",
     "entrada-guardiana-rival",
     "entrada-dragon-rival",
+    "entrada-hombre_lobo-rival",
   );
   bumeranVersus.classList.remove("mostrando-entrada");
 }
@@ -2767,6 +2803,36 @@ function reproducirAtaqueDragonVersus() {
   programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1320, "jugador");
 }
 
+function reproducirAtaqueHombreLoboVersus() {
+  limpiarAnimacionAtaqueJugadorVersus();
+  herramientasPruebasVersus.classList.add("ataque-en-curso");
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    reproducirSonidoVersus("versusAtaqueUno", 0.76);
+    personajeVersusDos.classList.add("recibiendo-dano");
+    programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 280, "jugador");
+    return;
+  }
+
+  personajeVersusUno.src = srcHombreLoboZarpazoVersus;
+  personajeVersusUno.classList.add("zarpando-lobo");
+  zarpazoLoboVersus.classList.remove("desde-rival");
+  void zarpazoLoboVersus.offsetWidth;
+  zarpazoLoboVersus.classList.add("volando");
+  reproducirSonidoVersus("versusAtaqueUno", 0.78);
+
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.add("recibiendo-dano");
+    vidasVersusDos.classList.add("recibiendo-dano");
+    reproducirSonidoVersus("versusAtaqueDos", 0.84);
+  }, 610, "jugador");
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.remove("recibiendo-dano");
+    vidasVersusDos.classList.remove("recibiendo-dano");
+  }, 990, "jugador");
+  programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1420, "jugador");
+}
+
 function reproducirAtaqueJugadorVersus() {
   const ataque = personajesVersus[personajeJugadorVersus].ataque;
   if (ataque === "magia") {
@@ -2779,6 +2845,10 @@ function reproducirAtaqueJugadorVersus() {
   }
   if (ataque === "rugido-dragon") {
     reproducirAtaqueDragonVersus();
+    return;
+  }
+  if (ataque === "zarpazo-feral") {
+    reproducirAtaqueHombreLoboVersus();
     return;
   }
   reproducirAtaqueBumeranVersus();
@@ -2882,6 +2952,21 @@ function reproducirAtaqueDragonRivalVersus() {
   programarImpactoRivalVersus(660, 1320);
 }
 
+function reproducirAtaqueHombreLoboRivalVersus() {
+  limpiarAnimacionAtaqueRivalVersus();
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    reproducirImpactoRivalReducidoVersus();
+    return;
+  }
+  personajeVersusDos.src = srcHombreLoboZarpazoVersus;
+  personajeVersusDos.classList.add("zarpando-lobo");
+  zarpazoLoboVersus.classList.add("desde-rival");
+  void zarpazoLoboVersus.offsetWidth;
+  zarpazoLoboVersus.classList.add("volando");
+  reproducirSonidoVersus("versusAtaqueUno", 0.78);
+  programarImpactoRivalVersus(610, 1420);
+}
+
 function reproducirImpactoRivalReducidoVersus() {
   reproducirSonidoVersus("versusAtaqueUno", 0.72);
   personajeVersusUno.classList.add("recibiendo-dano-magico");
@@ -2917,6 +3002,10 @@ function reproducirAtaqueRivalVersus() {
   }
   if (ataque === "rugido-dragon") {
     reproducirAtaqueDragonRivalVersus();
+    return;
+  }
+  if (ataque === "zarpazo-feral") {
+    reproducirAtaqueHombreLoboRivalVersus();
     return;
   }
   reproducirAtaqueMagoVersus();
@@ -3442,6 +3531,9 @@ function obtenerReproductorFinalVersus(personajeGanador, personajeVictima) {
   if (finalElegido === "llamado-matriarca") {
     return () => reproducirLlamadoMatriarcaVersus(personajeVictima);
   }
+  if (finalElegido === "caceria-luna-llena") {
+    return () => reproducirCaceriaLunaLlenaVersus(personajeVictima);
+  }
   return () => reproducirTrampaSelvaticaVersus(personajeVictima);
 }
 
@@ -3502,6 +3594,7 @@ const posesReaccionVictimaVersus = {
   mago: "assets/images/personajes/versus/mago-atrapado-trampa.png",
   guardiana: "assets/images/personajes/versus/guardiana-susto-impacto.png",
   dragon: "assets/images/personajes/versus/dragon-susto-impacto.png",
+  hombre_lobo: "assets/images/personajes/versus/hombre-lobo-impacto.png",
 };
 
 function configurarVictimaFinalVersus(elemento, personaje) {
@@ -3515,6 +3608,7 @@ function configurarVictimaFinalVersus(elemento, personaje) {
     "victima-final-mago",
     "victima-final-guardiana",
     "victima-final-dragon",
+    "victima-final-hombre_lobo",
   );
   elemento.classList.add(`victima-final-${clave}`);
   return clave;
@@ -3586,6 +3680,7 @@ function configurarVictimaFaucesVersus(personaje = personajeRivalVersus) {
     "victima-fauces-explorador",
     "victima-fauces-mago",
     "victima-fauces-guardiana",
+    "victima-fauces-hombre_lobo",
   );
   victimaFaucesVersus.classList.add(`victima-fauces-${personaje in victimasFaucesVersus ? personaje : "mago"}`);
 }
@@ -3642,6 +3737,35 @@ function reproducirLlamadoMatriarcaVersus(victima = personajeRivalVersus) {
   });
 }
 
+function reproducirCaceriaLunaLlenaVersus(victima = personajeRivalVersus) {
+  cancelarCinematicaFinalVersus();
+  crearParticulasEclipseVersus();
+  fondoCinematicaVersus.src = fondoVersus.src;
+  programarReaccionVictimaFinalVersus(victimaCaceriaVersus, victima, 3050);
+  etiquetaCinematicaVersus.textContent = "CAZA ANCESTRAL";
+  tituloCinematicaVersus.textContent = "CACERÍA DE LUNA LLENA";
+  cinematicaFinalVersus.classList.remove(
+    "eclipse-violeta",
+    "trampa-selvatica",
+    "prision-esmeralda",
+    "llamado-matriarca",
+  );
+  cinematicaFinalVersus.classList.add("caceria-luna-llena");
+  cinematicaFinalVersus.classList.remove("oculto");
+  void cinematicaFinalVersus.offsetWidth;
+  cinematicaFinalVersus.classList.add("activa");
+  btnSaltarCinematicaVersus.focus();
+  reproducirSonidoVersus("versusFinish", 0.88);
+
+  return new Promise((resolve) => {
+    demoVersus.resolverCinematica = resolve;
+    demoVersus.temporizadorCinematica = setTimeout(
+      completarCinematicaFinalVersus,
+      6800,
+    );
+  });
+}
+
 function completarCinematicaFinalVersus() {
   if (demoVersus.temporizadorReaccionCinematica) {
     clearTimeout(demoVersus.temporizadorReaccionCinematica);
@@ -3659,6 +3783,7 @@ function completarCinematicaFinalVersus() {
     "trampa-selvatica",
     "prision-esmeralda",
     "llamado-matriarca",
+    "caceria-luna-llena",
   );
   particulasEclipseVersus.replaceChildren();
   const resolver = demoVersus.resolverCinematica;
@@ -3683,6 +3808,7 @@ function cancelarCinematicaFinalVersus() {
     "trampa-selvatica",
     "prision-esmeralda",
     "llamado-matriarca",
+    "caceria-luna-llena",
   );
   particulasEclipseVersus.replaceChildren();
   demoVersus.resolverCinematica = null;
@@ -3698,6 +3824,10 @@ function probarCinematicaVersus(personaje) {
   }
   if (personaje === "dragon") {
     void reproducirLlamadoMatriarcaVersus(victimaPruebaFaucesVersus.value);
+    return;
+  }
+  if (personaje === "hombre_lobo") {
+    void reproducirCaceriaLunaLlenaVersus(victimaPruebaFaucesVersus.value);
     return;
   }
 
@@ -3721,6 +3851,10 @@ btnProbarCinematicaGuardiana.addEventListener("click", () => {
 
 btnProbarCinematicaDragon.addEventListener("click", () => {
   probarCinematicaVersus("dragon");
+});
+
+btnProbarCinematicaHombreLobo.addEventListener("click", () => {
+  probarCinematicaVersus("hombre_lobo");
 });
 
 btnProbarAtaqueElegido.addEventListener("click", () => {

@@ -23,7 +23,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260808-habilidades-versus-2">
+    <link rel="stylesheet" href="css/styles.css?v=20260808-hombre-lobo-2">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -310,6 +310,13 @@
                         <strong>Drag&oacute;n</strong>
                         <small>Rugido drac&oacute;nico &middot; Llamado de la Matriarca</small>
                     </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio"
+                        aria-checked="false" data-personaje="hombre_lobo">
+                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <img src="assets/images/personajes/versus/hombre-lobo-base.png" alt="Hombre lobo">
+                        <strong>Hombre Lobo</strong>
+                        <small>Zarpazo Feral &middot; Cacer&iacute;a de Luna Llena</small>
+                    </button>
                 </div>
 
                 <div class="estado-personajes-remotos" aria-live="polite">
@@ -499,6 +506,9 @@
                     <div id="rugidoDragonVersus" class="rugido-dragon-versus" aria-hidden="true">
                         <i></i><i></i><i></i>
                     </div>
+                    <div id="zarpazoLoboVersus" class="zarpazo-lobo-versus" aria-hidden="true">
+                        <i></i><i></i><i></i>
+                    </div>
 
                     <div id="entradaDueloVersus" class="entrada-duelo-versus oculto" aria-live="polite">
                         <div class="entrada-efecto entrada-efecto-uno" aria-hidden="true">
@@ -555,6 +565,7 @@
                     <div class="habilidad-raices-versus">
                         <img src="assets/images/elementos/enredaderas-teclado-versus.png" alt="">
                     </div>
+                    <div class="habilidad-lobo-versus"><i></i><i></i><i></i></div>
                     <div class="impacto-habilidad-versus"></div>
                 </div>
 
@@ -591,10 +602,12 @@
                             <option value="mago" selected>Mago</option>
                             <option value="guardiana">Guardiana</option>
                             <option value="dragon">Drag&oacute;n</option>
+                            <option value="hombre_lobo">Hombre Lobo</option>
                         </select>
                     </label>
                     <button id="btnProbarCinematicaGuardiana" type="button">🌱 Probar guardiana</button>
                     <button id="btnProbarCinematicaDragon" type="button">&#128009; Probar drag&oacute;n</button>
+                    <button id="btnProbarCinematicaHombreLobo" type="button">&#127769; Probar hombre lobo</button>
                     <button id="btnProbarAtaqueElegido" type="button">⚡ Probar ataque elegido</button>
                 </div>
 
@@ -613,6 +626,7 @@
                     <button class="btn-probar-habilidad-versus" data-habilidad="guardiana" type="button">🌿 Raíces</button>
                     <button class="btn-probar-habilidad-versus" data-habilidad="dragon" type="button">🐉 Rugido</button>
                     <button class="btn-probar-habilidad-versus" data-habilidad="mago" type="button">🔮 Caos</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="hombre_lobo" type="button">🌕 Inversi&oacute;n</button>
                 </div>
 
                 <div id="avisoAvanceVersus" class="aviso-avance-versus oculto" role="status" aria-live="polite"></div>
@@ -691,6 +705,20 @@
                         src="assets/images/personajes/versus/dragon-victoria.png"
                         alt="" aria-hidden="true">
                     <div class="matriarca-llamado" aria-hidden="true">&iexcl;Mam&aacute;&aacute;&aacute;!</div>
+                    <div class="luna-llena-lobo" aria-hidden="true"></div>
+                    <img class="lobos-espectrales-final"
+                        src="assets/images/personajes/versus/lobos-espectrales.png"
+                        alt="" aria-hidden="true">
+                    <img id="victimaCaceriaVersus" class="cinematica-victima-caceria victima-final-mago"
+                        src="assets/images/personajes/versus/mago-base.png"
+                        alt="" aria-hidden="true">
+                    <img class="cinematica-lobo-salto"
+                        src="assets/images/personajes/versus/hombre-lobo-salto-lunar.png"
+                        alt="" aria-hidden="true">
+                    <img class="garra-pantalla-caceria"
+                        src="assets/images/personajes/versus/garra-pantalla-rota.png"
+                        alt="" aria-hidden="true">
+                    <div class="oscuridad-caceria-final" aria-hidden="true"></div>
                     <div class="eclipse-destello" aria-hidden="true"></div>
                     <div class="cinematica-final-titulos">
                         <span id="etiquetaCinematicaVersus">GOLPE LEGENDARIO</span>
@@ -803,9 +831,9 @@
     <script src="js/supabase-client.js?v=20260805-supabase-1"></script>
     <script src="js/versus-engine.js?v=20260808-habilidades-versus-2"></script>
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
-    <script src="js/versus-room-supabase.js?v=20260808-habilidades-versus-2"></script>
-    <script src="js/app.js?v=20260808-habilidades-versus-2"></script>
-    <script src="js/pwa.js?v=20260804-dragon-versus-1"></script>
+    <script src="js/versus-room-supabase.js?v=20260808-hombre-lobo-2"></script>
+    <script src="js/app.js?v=20260808-hombre-lobo-2"></script>
+    <script src="js/pwa.js?v=20260808-hombre-lobo-2"></script>
 </body>
 
 </html>
