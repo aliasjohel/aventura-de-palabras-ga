@@ -2889,6 +2889,35 @@ button:disabled {
     transform: translateX(-50%);
     backdrop-filter: blur(5px);
     transition: opacity 140ms ease, transform 140ms ease;
+    max-width: calc(100% - 20px);
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(247, 201, 72, 0.76) rgba(255, 255, 255, 0.08);
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+}
+
+.herramientas-pruebas-versus > * {
+    flex: 0 0 auto;
+}
+
+.herramientas-pruebas-versus::-webkit-scrollbar,
+.herramientas-habilidades-pruebas-versus::-webkit-scrollbar {
+    height: 5px;
+}
+
+.herramientas-pruebas-versus::-webkit-scrollbar-track,
+.herramientas-habilidades-pruebas-versus::-webkit-scrollbar-track {
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.herramientas-pruebas-versus::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(247, 201, 72, 0.76);
 }
 
 .herramientas-pruebas-versus.ataque-en-curso {
@@ -2963,6 +2992,24 @@ button:disabled {
     transform: translateX(-50%);
     backdrop-filter: blur(5px);
     transition: opacity 140ms ease, transform 140ms ease;
+    max-width: calc(100% - 20px);
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(93, 190, 226, 0.8) rgba(255, 255, 255, 0.08);
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+}
+
+.herramientas-habilidades-pruebas-versus > * {
+    flex: 0 0 auto;
+}
+
+.herramientas-habilidades-pruebas-versus::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(93, 190, 226, 0.8);
 }
 
 .herramientas-habilidades-pruebas-versus.ataque-en-curso {
@@ -9338,6 +9385,27 @@ button:disabled {
 
 /* Ajustes de cinemáticas para celulares en horizontal. */
 @media (orientation: landscape) and (max-height: 600px) {
+    .herramientas-pruebas-versus,
+    .herramientas-habilidades-pruebas-versus {
+        left: 8px;
+        right: 8px;
+        width: auto;
+        max-width: none;
+        transform: none;
+        padding-bottom: 7px;
+        scroll-snap-type: x proximity;
+    }
+
+    .herramientas-pruebas-versus > *,
+    .herramientas-habilidades-pruebas-versus > * {
+        scroll-snap-align: start;
+    }
+
+    .herramientas-pruebas-versus.ataque-en-curso,
+    .herramientas-habilidades-pruebas-versus.ataque-en-curso {
+        transform: translateY(-8px);
+    }
+
     .desde-jugador.habilidad-guardiana .habilidad-raices-versus {
         right: 2%;
         bottom: 28%;
