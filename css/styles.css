@@ -2947,6 +2947,7 @@ button:disabled {
 
 .cinematica-mago-eclipse,
 .cinematica-explorador-atrapado,
+.cinematica-remolino-arcano,
 .cinematica-explorador-trampa,
 .cinematica-mago-atrapado,
 .cinematica-tronco-trampa,
@@ -2958,6 +2959,94 @@ button:disabled {
     object-fit: contain;
     pointer-events: none;
 }
+
+.cinematica-remolino-arcano {
+    position: absolute;
+    left: 5%;
+    bottom: -7%;
+    width: min(58vw, 670px);
+    height: 94%;
+    opacity: 0;
+    transform-origin: 50% 93%;
+    pointer-events: none;
+}
+
+.cinematica-remolino-arcano img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+    filter: drop-shadow(0 0 12px rgba(191, 69, 255, 0.82)) drop-shadow(0 0 28px rgba(91, 201, 255, 0.45));
+    transform-origin: 50% 72%;
+}
+
+.remolino-arcano-fondo {
+    z-index: 4;
+}
+
+.remolino-arcano-frente {
+    z-index: 6;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0 34%, rgba(0, 0, 0, 0.18) 39%, #000 49% 100%);
+    mask-image: linear-gradient(to bottom, transparent 0 34%, rgba(0, 0, 0, 0.18) 39%, #000 49% 100%);
+}
+
+.remolino-arcano-frente img {
+    filter: brightness(1.08) drop-shadow(0 0 13px rgba(214, 91, 255, 0.9)) drop-shadow(0 0 25px rgba(90, 215, 255, 0.5));
+}
+
+.remolino-lineas-viento {
+    position: absolute;
+    z-index: 7;
+    left: 5%;
+    bottom: -7%;
+    width: min(58vw, 670px);
+    height: 94%;
+    opacity: 0;
+    transform-origin: 50% 93%;
+    pointer-events: none;
+}
+
+.remolino-lineas-viento i {
+    --inicio-viento: -6%;
+    --fin-viento: 6%;
+    position: absolute;
+    top: var(--alto-viento);
+    left: 50%;
+    width: var(--ancho-viento);
+    height: clamp(24px, 5.5vw, 68px);
+    border-top: clamp(2px, 0.32vw, 4px) solid rgba(225, 155, 255, 0.92);
+    border-radius: 50%;
+    opacity: 0;
+    filter: drop-shadow(0 0 4px #d858ff) drop-shadow(0 0 9px rgba(86, 207, 255, 0.82));
+    transform: translate(-50%, -50%) translateX(var(--inicio-viento)) scaleX(0.28) rotate(var(--inclinacion-viento));
+}
+
+.remolino-lineas-viento i::after {
+    content: "";
+    position: absolute;
+    top: -4px;
+    right: 7%;
+    width: clamp(5px, 0.7vw, 9px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #c9f7ff;
+    box-shadow: 0 0 9px #72dfff, 0 0 14px #c65bff;
+}
+
+.remolino-lineas-viento i:nth-child(even) {
+    --inicio-viento: 6%;
+    --fin-viento: -6%;
+    border-top-color: rgba(112, 226, 255, 0.94);
+}
+
+.remolino-lineas-viento i:nth-child(1) { --alto-viento: 25%; --ancho-viento: 50%; --inclinacion-viento: -5deg; --demora-viento: 0ms; }
+.remolino-lineas-viento i:nth-child(2) { --alto-viento: 34%; --ancho-viento: 58%; --inclinacion-viento: 4deg; --demora-viento: 130ms; }
+.remolino-lineas-viento i:nth-child(3) { --alto-viento: 44%; --ancho-viento: 63%; --inclinacion-viento: -3deg; --demora-viento: 55ms; }
+.remolino-lineas-viento i:nth-child(4) { --alto-viento: 53%; --ancho-viento: 57%; --inclinacion-viento: 5deg; --demora-viento: 190ms; }
+.remolino-lineas-viento i:nth-child(5) { --alto-viento: 62%; --ancho-viento: 50%; --inclinacion-viento: -4deg; --demora-viento: 95ms; }
+.remolino-lineas-viento i:nth-child(6) { --alto-viento: 70%; --ancho-viento: 43%; --inclinacion-viento: 4deg; --demora-viento: 235ms; }
+.remolino-lineas-viento i:nth-child(7) { --alto-viento: 78%; --ancho-viento: 36%; --inclinacion-viento: -5deg; --demora-viento: 145ms; }
+.remolino-lineas-viento i:nth-child(8) { --alto-viento: 85%; --ancho-viento: 29%; --inclinacion-viento: 3deg; --demora-viento: 275ms; }
 
 .cinematica-guardiana-prision {
     left: -2%;
@@ -3254,6 +3343,18 @@ button:disabled {
     animation: capturaExploradorEclipseVersus 5.2s ease both;
 }
 
+.cinematica-final-versus.eclipse-violeta.activa .cinematica-remolino-arcano {
+    animation: remolinoArcanoMagoVersus 5.2s linear both;
+}
+
+.cinematica-final-versus.eclipse-violeta.activa .remolino-lineas-viento {
+    animation: remolinoArcanoMagoVersus 5.2s linear both;
+}
+
+.cinematica-final-versus.eclipse-violeta.activa .remolino-lineas-viento i {
+    animation: barridoVientoRemolinoVersus 620ms ease-in-out calc(1.45s + var(--demora-viento)) 5 both;
+}
+
 .cinematica-final-versus.eclipse-violeta.activa .eclipse-resplandor {
     animation: resplandorEclipseVersus 5.2s ease both;
 }
@@ -3534,9 +3635,29 @@ button:disabled {
 @keyframes capturaExploradorEclipseVersus {
     0%, 17% { opacity: 0; transform: translateY(20%) scale(0.82) rotate(0deg) scaleX(var(--direccion-victima-eclipse)); }
     30% { opacity: 1; transform: translateY(2%) scale(1) rotate(-2deg) scaleX(var(--direccion-victima-eclipse)); }
-    48% { opacity: 1; transform: translateY(-7%) scale(1.04) rotate(2deg) scaleX(var(--direccion-victima-eclipse)); filter: brightness(1.2) saturate(1.2) drop-shadow(0 0 18px #b13eff); }
-    59% { opacity: 1; transform: translateY(-10%) scale(1.02) rotate(-2deg) scaleX(var(--direccion-victima-eclipse)); filter: brightness(1.75) saturate(0.55) drop-shadow(0 0 27px #e4a6ff); }
-    69%, 100% { opacity: 0; transform: translateY(-15%) scale(0.18) rotate(10deg) scaleX(var(--direccion-victima-eclipse)); filter: brightness(2.5) blur(3px); }
+    45% { opacity: 1; transform: translateY(-5%) scale(1.03) rotate(2deg) scaleX(var(--direccion-victima-eclipse)); filter: brightness(1.2) saturate(1.2) drop-shadow(0 0 18px #b13eff); }
+    53% { opacity: 1; transform: translateY(-8%) scale(0.98) rotate(-4deg) scaleX(var(--direccion-victima-eclipse)); filter: brightness(1.45) saturate(0.85) drop-shadow(0 0 24px #e4a6ff); }
+    60% { opacity: 0.92; transform: translateY(8%) scale(0.72) rotate(8deg) scaleX(var(--direccion-victima-eclipse)); filter: brightness(1.9) saturate(0.65) blur(0.4px) drop-shadow(0 0 28px #e4a6ff); }
+    69%, 100% { opacity: 0; transform: translateY(48%) scale(0.12) rotate(24deg) scaleX(var(--direccion-victima-eclipse)); filter: brightness(2.7) blur(3px); }
+}
+
+@keyframes remolinoArcanoMagoVersus {
+    0%, 17% { opacity: 0; transform: translateY(18%) scale(0.14, 0.06) rotate(-3deg); }
+    24% { opacity: 0.68; transform: translateY(11%) scale(0.48, 0.32) rotate(1deg); }
+    33% { opacity: 0.96; transform: translateY(3%) scale(0.88, 0.82) rotate(-1deg); }
+    39% { opacity: 1; transform: translateY(0) scale(0.98, 0.96) rotate(1deg); }
+    50% { opacity: 1; transform: translateY(-2%) scale(1.03, 1.04) rotate(-1deg); }
+    62% { opacity: 0.97; transform: translateY(-5%) scale(0.9, 1.08) rotate(2deg); }
+    74% { opacity: 0.76; transform: translateY(-12%) scale(0.54, 1.12) rotate(-2deg); }
+    84%, 100% { opacity: 0; transform: translateY(-25%) scale(0.1, 1.2) rotate(3deg); }
+}
+
+@keyframes barridoVientoRemolinoVersus {
+    0% { opacity: 0; transform: translate(-50%, -50%) translateX(var(--inicio-viento)) scaleX(0.22) rotate(var(--inclinacion-viento)); }
+    22% { opacity: 0.95; }
+    50% { opacity: 1; transform: translate(-50%, -50%) translateX(0) scaleX(1.08) rotate(var(--inclinacion-viento)); }
+    78% { opacity: 0.86; }
+    100% { opacity: 0; transform: translate(-50%, -50%) translateX(var(--fin-viento)) scaleX(0.24) rotate(var(--inclinacion-viento)); }
 }
 
 @keyframes resplandorEclipseVersus {
@@ -3600,6 +3721,7 @@ button:disabled {
 
     .cinematica-final-versus.eclipse-violeta .cinematica-mago-eclipse,
     .cinematica-final-versus.eclipse-violeta .cinematica-explorador-atrapado,
+    .cinematica-final-versus.eclipse-violeta .cinematica-remolino-arcano,
     .cinematica-final-versus.trampa-selvatica .cinematica-explorador-trampa,
     .cinematica-final-versus.trampa-selvatica .cinematica-mago-atrapado,
     .cinematica-final-versus.trampa-selvatica .cinematica-tronco-trampa,
