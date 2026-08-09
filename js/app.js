@@ -1996,6 +1996,11 @@ function crearTecladoVersus() {
 
     tecladoVersus.appendChild(filaTeclado);
   });
+  const vorticeInterior = document.createElement("span");
+  vorticeInterior.className = "vortice-interior-agujero-versus";
+  vorticeInterior.setAttribute("aria-hidden", "true");
+  for (let indice = 0; indice < 6; indice += 1) vorticeInterior.appendChild(document.createElement("i"));
+  tecladoVersus.appendChild(vorticeInterior);
 }
 
 function animarCambioOrdenTecladoVersus(reordenar) {
@@ -2031,7 +2036,7 @@ function restaurarOrdenTecladoVersus(animar = false) {
     [...tecladoVersus.querySelectorAll("button")].map((boton) => [boton.textContent, boton]),
   );
   const restaurar = () => {
-    [...tecladoVersus.children].forEach((fila, indice) => {
+    [...tecladoVersus.querySelectorAll(".fila-teclado-versus")].forEach((fila, indice) => {
       filasTeclado[indice].forEach((letra) => fila.appendChild(botones.get(letra)));
     });
   };
@@ -2043,7 +2048,7 @@ function desordenarTecladoVersus(animar = true) {
   const botones = mezclarPalabrasVersus([...tecladoVersus.querySelectorAll("button")]);
   const desordenar = () => {
     let desplazamiento = 0;
-    [...tecladoVersus.children].forEach((fila, indice) => {
+    [...tecladoVersus.querySelectorAll(".fila-teclado-versus")].forEach((fila, indice) => {
       const cantidad = filasTeclado[indice].length;
       botones.slice(desplazamiento, desplazamiento + cantidad).forEach((boton) => fila.appendChild(boton));
       desplazamiento += cantidad;

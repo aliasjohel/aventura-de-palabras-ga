@@ -1,4 +1,4 @@
-const CACHE_NAME = "aventura-palabras-runtime-v38";
+const CACHE_NAME = "aventura-palabras-runtime-v40";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -42,6 +42,7 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/t-shadow-base.png",
   "./assets/images/personajes/versus/t-shadow-ataque.png",
   "./assets/images/personajes/versus/t-shadow-victoria.png",
+  "./assets/images/personajes/versus/t-shadow-ojos.png",
   "./assets/sounds/cristal-casilla.mp3",
   "./assets/sounds/comenzar-aventura.wav",
   "./assets/sounds/melodia-menu.mp3",

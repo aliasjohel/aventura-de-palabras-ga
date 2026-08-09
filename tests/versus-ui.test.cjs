@@ -127,9 +127,10 @@ assert.match(estilos, /@keyframes absorberTeclaAgujeroNegroVersus/);
 assert.match(app, /function reproducirLegionUmbriaVersus\(/);
 assert.match(estilos, /ataqueClonUnoShadowVersus/);
 assert.match(estilos, /fusionLegionShadowVersus/);
-assert.match(html, /class="shadow-final-ojos"/);
+assert.match(html, /class="shadow-final-ojos"[\s\S]+t-shadow-ojos\.png/);
 assert.match(estilos, /@keyframes ojosLegionShadowVersus/);
-assert.match(estilos, /repeating-conic-gradient\(from 8deg/);
+assert.match(app, /vortice-interior-agujero-versus/);
+assert.match(estilos, /@keyframes rotarAnilloVorticeVersus/);
 assert.match(html, /t-shadow-victoria\.png/);
 
 console.log("versus-ui: comprobaciones correctas");
