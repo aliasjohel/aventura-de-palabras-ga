@@ -7627,9 +7627,185 @@ button:disabled {
     }
 }
 
+/* T. Shadow: Vacío devorador, Corte sombrío y Legión Umbría. */
+.lista-personajes-versus {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.tarjeta-personaje-versus[data-personaje="t_shadow"] {
+    background:
+        radial-gradient(circle at 50% 34%, rgba(132, 49, 214, 0.35), transparent 48%),
+        linear-gradient(180deg, rgba(18, 16, 27, 0.99), rgba(7, 7, 12, 0.99));
+}
+
+.tarjeta-personaje-versus[data-personaje="t_shadow"].seleccionada {
+    border-color: #a85bff;
+    box-shadow: 0 0 24px rgba(133, 51, 226, 0.58), inset 0 0 24px rgba(105, 34, 177, 0.18);
+}
+
+.versus-personaje-uno.personaje-t_shadow,
+.versus-personaje-dos.personaje-t_shadow {
+    width: clamp(190px, 36vw, 420px);
+    filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 8px rgba(123, 42, 221, 0.55));
+}
+
+.versus-personaje-uno.personaje-t_shadow { left: 4%; }
+.versus-personaje-dos.personaje-t_shadow { right: 3%; transform: scaleX(-1); animation-name: respirarPersonajeDosInvertidoVersus; }
+.versus-personaje-uno.entrando-duelo.entrada-t_shadow { animation: entradaShadowJugadorVersus 2.15s ease-out both; }
+.versus-personaje-dos.entrando-duelo.entrada-t_shadow-rival { animation: entradaShadowRivalVersus 2.15s ease-out both; }
+
+@keyframes entradaShadowJugadorVersus {
+    0% { opacity: 0; transform: translateX(-18%) scale(.82); filter: blur(14px) brightness(.3); }
+    45% { opacity: .55; filter: blur(5px) brightness(.7) drop-shadow(0 0 25px #8128da); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes entradaShadowRivalVersus {
+    0% { opacity: 0; transform: translateX(18%) scaleX(-1) scale(.82); filter: blur(14px) brightness(.3); }
+    45% { opacity: .55; filter: blur(5px) brightness(.7) drop-shadow(0 0 25px #8128da); }
+    100% { opacity: 1; transform: translateX(0) scaleX(-1) scale(1); }
+}
+
+.corte-shadow-versus {
+    position: absolute;
+    z-index: 8;
+    left: 20%;
+    top: 28%;
+    width: 56%;
+    height: 45%;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.corte-shadow-versus i {
+    position: absolute;
+    inset: 5% 0;
+    border-top: clamp(4px, .7vw, 8px) solid #c678ff;
+    border-radius: 50%;
+    filter: drop-shadow(0 0 7px #7517c9) drop-shadow(0 0 15px #390269);
+    transform: rotate(-16deg);
+}
+.corte-shadow-versus i:nth-child(2) { inset: 22% 3% 0; transform: rotate(8deg) scale(.88); }
+.corte-shadow-versus i:nth-child(3) { inset: 38% 10% 0; transform: rotate(-5deg) scale(.72); }
+.corte-shadow-versus.volando { animation: corteShadowJugadorVersus 820ms ease-out both; }
+.corte-shadow-versus.desde-rival { transform: scaleX(-1); }
+.corte-shadow-versus.desde-rival.volando { animation-name: corteShadowRivalVersus; }
+
+@keyframes corteShadowJugadorVersus {
+    0% { opacity: 0; transform: translateX(-18%) scale(.55); }
+    28%, 64% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(28%) scale(1.15); }
+}
+@keyframes corteShadowRivalVersus {
+    0% { opacity: 0; transform: translateX(18%) scaleX(-1) scale(.55); }
+    28%, 64% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(-28%) scaleX(-1) scale(1.15); }
+}
+
+.personaje-t_shadow.cortando-shadow { animation: embestidaShadowJugadorVersus 850ms ease-out both; }
+.versus-personaje-dos.personaje-t_shadow.cortando-shadow { animation-name: embestidaShadowRivalVersus; }
+@keyframes embestidaShadowJugadorVersus { 0%,100% { transform: translateX(0); } 48% { transform: translateX(19vw) scale(1.06); } }
+@keyframes embestidaShadowRivalVersus { 0%,100% { transform: translateX(0) scaleX(-1); } 48% { transform: translateX(-19vw) scaleX(-1) scale(1.06); } }
+
+.animacion-habilidad-versus.habilidad-t_shadow .habilidad-agujero-negro-versus { display: block; }
+.animacion-habilidad-versus.activa .habilidad-agujero-negro-versus { position: absolute; }
+.habilidad-agujero-negro-versus {
+    left: 25%; top: 42%; width: clamp(34px, 6vw, 70px); aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, #000 0 33%, #421075 39%, #bd62ff 48%, transparent 66%);
+    box-shadow: 0 0 14px #8c32d9, 0 0 35px rgba(109, 28, 181, .85);
+    animation: lanzarAgujeroShadowVersus 920ms cubic-bezier(.18,.75,.22,1) both;
+}
+.habilidad-agujero-negro-versus i,
+.habilidad-agujero-negro-versus b,
+.habilidad-agujero-negro-versus span {
+    position: absolute; inset: -28%; border: 3px solid rgba(198, 120, 255, .75); border-left-color: transparent;
+    border-radius: 50%; animation: rotarAgujeroShadowVersus 260ms linear infinite;
+}
+.habilidad-agujero-negro-versus b { inset: -48%; opacity: .55; animation-direction: reverse; }
+.habilidad-agujero-negro-versus span { inset: -68%; opacity: .3; }
+.desde-rival .habilidad-agujero-negro-versus { left: auto; right: 25%; animation-name: lanzarAgujeroShadowRivalVersus; }
+@keyframes rotarAgujeroShadowVersus { to { transform: rotate(360deg); } }
+@keyframes lanzarAgujeroShadowVersus { 0% { opacity:0; transform:scale(.2); } 25% { opacity:1; } 100% { opacity:0; transform:translate(54vw,40vh) scale(1.7); } }
+@keyframes lanzarAgujeroShadowRivalVersus { 0% { opacity:0; transform:scale(.2); } 25% { opacity:1; } 100% { opacity:0; transform:translate(-11vw,42vh) scale(1.7); } }
+
+.teclado-versus.efecto-agujero-negro { z-index: 17; isolation: isolate; }
+.teclado-versus.efecto-agujero-negro::before {
+    content: ""; position: absolute; z-index: 6; left: 50%; top: 50%; width: clamp(55px, 11vw, 125px); aspect-ratio: 1;
+    border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle, #000 0 30%, #180227 34%, #7220b4 43%, #c671ff 48%, transparent 66%);
+    box-shadow: 0 0 20px #8b2bd2, 0 0 48px rgba(98, 22, 161, .85);
+    animation: vivirAgujeroTecladoVersus var(--duracion-agujero-negro, 4000ms) ease-in-out both;
+}
+.teclado-versus.efecto-agujero-negro::after {
+    content: ""; position: absolute; z-index: 5; left: 50%; top: 50%; width: clamp(82px, 17vw, 190px); aspect-ratio: 1;
+    border: 5px solid rgba(172, 82, 238, .64); border-left-color: transparent; border-bottom-color: rgba(84, 19, 139, .22);
+    border-radius: 50%; pointer-events: none;
+    animation: girarDiscoTecladoVersus 340ms linear infinite, vivirAgujeroTecladoVersus var(--duracion-agujero-negro, 4000ms) ease-in-out both;
+}
+.teclado-versus.efecto-agujero-negro .letra-versus {
+    position: relative; z-index: 7; transform-origin: center;
+    animation: absorberTeclaAgujeroNegroVersus 3.1s ease-in-out var(--demora-agujero) both;
+}
+@keyframes vivirAgujeroTecladoVersus { 0%,100% { opacity:0; transform:translate(-50%,-50%) scale(.05); } 12%,82% { opacity:1; transform:translate(-50%,-50%) scale(1); } }
+@keyframes girarDiscoTecladoVersus { to { rotate: 360deg; } }
+@keyframes absorberTeclaAgujeroNegroVersus {
+    0%,10% { opacity:1; transform:translate(0,0) rotate(0) scale(1); }
+    42%,62% { opacity:0; transform:translate(var(--absorcion-x),var(--absorcion-y)) rotate(var(--giro-agujero)) scale(.05); }
+    100% { opacity:1; transform:translate(0,0) rotate(0) scale(1); }
+}
+
+.shadow-final-vortice,
+.cinematica-victima-shadow,
+.cinematica-shadow-clon,
+.shadow-final-cortes,
+.shadow-final-fusion,
+.cinematica-shadow-victoria { position: absolute; z-index: 4; opacity: 0; pointer-events: none; }
+.cinematica-final-versus.legion-umbria::after { content:""; position:absolute; z-index:2; inset:0; background:radial-gradient(circle at 70% 48%,rgba(105,25,174,.28),rgba(1,0,5,.9) 72%); }
+.cinematica-final-versus.legion-umbria.activa { animation-duration: 6.5s; }
+.cinematica-final-versus.legion-umbria.activa .cinematica-final-fondo { animation-duration: 6.5s; }
+.cinematica-final-versus.legion-umbria .cinematica-final-fondo { filter: brightness(.2) saturate(.55) hue-rotate(220deg); transform: scale(1.08); }
+.cinematica-final-versus.legion-umbria.activa .shadow-final-vortice {
+    inset: 0; opacity: 1; background: repeating-conic-gradient(from 20deg at 72% 54%, transparent 0 13deg, rgba(110,30,184,.13) 15deg 18deg);
+    animation: rotarVorticeFinalShadowVersus 2.3s linear infinite;
+}
+.cinematica-victima-shadow { left: 9%; bottom: 3%; width: min(33vw,390px); filter:drop-shadow(0 12px 10px #000); }
+.cinematica-victima-shadow.victima-final-t_shadow { width:min(35vw,420px); transform:scaleX(-1); }
+.legion-umbria.activa .cinematica-victima-shadow { animation: victimaLegionShadowVersus 6.5s ease both; }
+.cinematica-shadow-clon { width:min(34vw,410px); right:4%; bottom:-1%; filter:brightness(.24) saturate(2.4) hue-rotate(230deg) drop-shadow(0 0 18px #8e32e5); }
+.legion-umbria.activa .sombra-clon-uno { animation: ataqueClonUnoShadowVersus 6.5s ease both; }
+.legion-umbria.activa .sombra-clon-dos { animation: ataqueClonDosShadowVersus 6.5s ease both; }
+.legion-umbria.activa .sombra-clon-tres { animation: ataqueClonTresShadowVersus 6.5s ease both; }
+.shadow-final-cortes { z-index:7; left:5%; top:22%; width:46%; height:58%; }
+.shadow-final-cortes i { position:absolute; inset:20% 0; border-top:8px solid #d89aff; border-radius:50%; filter:drop-shadow(0 0 12px #7a20c2); transform:rotate(-18deg); }
+.shadow-final-cortes i:nth-child(2){ transform:rotate(12deg); }.shadow-final-cortes i:nth-child(3){transform:rotate(-2deg) scale(.75)}
+.legion-umbria.activa .shadow-final-cortes { animation: cortesLegionShadowVersus 6.5s steps(1) both; }
+.shadow-final-fusion { z-index:8; right:13%; bottom:8%; width:23vw; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle,#fff 0 3%,#9d40e5 12%,rgba(57,4,101,.65) 34%,transparent 67%); }
+.legion-umbria.activa .shadow-final-fusion { animation:fusionLegionShadowVersus 6.5s ease both; }
+.cinematica-shadow-victoria { z-index:9; right:5%; bottom:-2%; width:min(38vw,460px); filter:drop-shadow(0 0 18px #7e24c5) drop-shadow(0 15px 10px #000); }
+.legion-umbria.activa .cinematica-shadow-victoria { animation:victoriaLegionShadowVersus 6.5s ease both; }
+.cinematica-final-versus.legion-umbria .cinematica-final-titulos { z-index:12; }
+@keyframes rotarVorticeFinalShadowVersus { to { transform:rotate(360deg) scale(1.1); } }
+@keyframes ataqueClonUnoShadowVersus { 0%,8%,30%,100%{opacity:0;transform:translate(0,0) scale(.82)} 13%,23%{opacity:.88;transform:translate(-54vw,-5vh) scale(1)} 72%{opacity:.65;transform:translate(0,0) scale(.5)} }
+@keyframes ataqueClonDosShadowVersus { 0%,24%,47%,100%{opacity:0;transform:translate(5vw,-15vh) scale(.8)} 29%,40%{opacity:.82;transform:translate(-53vw,8vh) scale(.96)} 72%{opacity:.65;transform:translate(0,0) scale(.5)} }
+@keyframes ataqueClonTresShadowVersus { 0%,40%,64%,100%{opacity:0;transform:translate(3vw,12vh) scale(.85)} 45%,56%{opacity:.9;transform:translate(-55vw,-1vh) scale(1.04)} 72%{opacity:.7;transform:translate(0,0) scale(.5)} }
+@keyframes victimaLegionShadowVersus { 0%,10%{opacity:1;transform:translate(0)} 18%,58%{opacity:1;transform:translate(-1vw) rotate(-3deg);filter:brightness(.7) drop-shadow(0 0 16px #b55eff)} 64%,100%{opacity:0;transform:translate(-5vw) scale(.8)} }
+@keyframes cortesLegionShadowVersus { 0%,12%,22%,29%,39%,46%,56%,100%{opacity:0} 13%,21%,30%,38%,47%,55%{opacity:1} }
+@keyframes fusionLegionShadowVersus { 0%,64%,85%,100%{opacity:0;transform:scale(.2)} 72%{opacity:1;transform:scale(1.4)} 80%{opacity:.7;transform:scale(.65)} }
+@keyframes victoriaLegionShadowVersus { 0%,72%{opacity:0;transform:translateY(12%) scale(.75)} 82%,94%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:0;transform:scale(1.04)} }
+
+@media (orientation: landscape) and (max-height: 500px) {
+    .lista-personajes-versus { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .teclado-versus.efecto-agujero-negro .letra-versus { animation-duration: 3.1s; }
+    .cinematica-final-versus.legion-umbria .cinematica-shadow-victoria { opacity: 1; }
+}
+
 /* Hombre Lobo: Zarpazo Feral, Inversión Lunar y Cacería de Luna Llena. */
 .lista-personajes-versus {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: clamp(7px, 1.15vw, 15px);
 }
 
@@ -7957,7 +8133,7 @@ button:disabled {
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
-    .lista-personajes-versus { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; }
+    .lista-personajes-versus { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 7px; }
     .tarjeta-personaje-versus { height: clamp(150px, 49vh, 225px); padding-inline: 5px; }
     .garra-pantalla-caceria { object-fit: cover; }
 }
@@ -8355,7 +8531,7 @@ button:disabled {
 
 /* Dragón multijugador: selector, rugido y Llamado de la Matriarca. */
 .lista-personajes-versus {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .versus-personaje-uno.personaje-dragon {

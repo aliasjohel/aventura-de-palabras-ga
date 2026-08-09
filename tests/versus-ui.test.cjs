@@ -22,7 +22,7 @@ const cierreOnline = app.slice(
 assert.match(cierreOnline, /reproducirCierrePartidaVersus\(ganador, detalle\)/);
 assert.doesNotMatch(cierreOnline, /mostrarResultadoPartidaVersus\(ganador, detalle\)/);
 
-for (const ataque of ["bumeran", "raices", "rugido-dragon", "zarpazo-feral"]) {
+for (const ataque of ["bumeran", "raices", "rugido-dragon", "zarpazo-feral", "corte-sombrio"]) {
   assert.match(app, new RegExp(`ataque === "${ataque}"`));
 }
 for (const final of [
@@ -30,6 +30,7 @@ for (const final of [
   "eclipse-violeta",
   "llamado-matriarca",
   "caceria-luna-llena",
+  "legion-umbria",
 ]) {
   assert.match(app, new RegExp(`finalElegido === "${final}"`));
 }
@@ -42,6 +43,8 @@ for (const victima of ["explorador", "mago", "guardiana", "dragon", "hombre_lobo
   assert.match(estilos, new RegExp(`victima-final-${victima}`));
   assert.match(app, new RegExp(`${victima}: "assets/images/personajes/versus/.+"`));
 }
+assert.match(estilos, /victima-final-t_shadow/);
+assert.match(app, /t_shadow: srcShadowAtaqueVersus/);
 assert.match(estilos, /--direccion-victima-trampa: -1/);
 assert.match(estilos, /cinematica-mago-atrapado\.victima-final-guardiana \{[\s\S]+--direccion-victima-trampa: -1/);
 assert.match(estilos, /cinematica-mago-atrapado\.victima-final-guardiana\.reaccion-final-activa[\s\S]+--direccion-victima-trampa: 1/);
@@ -107,7 +110,7 @@ assert.match(html, /enredaderas-teclado-versus\.png/);
 assert.match(app, /function reproducirAnimacionHabilidadVersus\(/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeJugadorVersus/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeRivalVersus/);
-for (const habilidad of ["explorador", "mago", "guardiana", "dragon", "hombre_lobo"]) {
+for (const habilidad of ["explorador", "mago", "guardiana", "dragon", "hombre_lobo", "t_shadow"]) {
   assert.match(estilos, new RegExp(`habilidad-${habilidad}`));
   assert.match(html, new RegExp(`data-habilidad="${habilidad}"`));
 }
@@ -117,5 +120,13 @@ assert.match(app, /function probarHabilidadEspecialVersus\(personaje\)/);
 assert.match(app, /probarHabilidadEspecialVersus\(boton\.dataset\.habilidad\)/);
 assert.match(app, /herramientasHabilidadesPruebasVersus\.classList\.toggle\("oculto", !modoPruebasActivo\)/);
 assert.match(estilos, /\.herramientas-habilidades-pruebas-versus/);
+assert.match(app, /t_shadow: \{ nombre: "Vacío devorador"[\s\S]+efecto: "black_hole"[\s\S]+duracion: 4000/);
+assert.match(app, /function prepararAgujeroNegroTecladoVersus\(\)/);
+assert.match(estilos, /\.teclado-versus\.efecto-agujero-negro/);
+assert.match(estilos, /@keyframes absorberTeclaAgujeroNegroVersus/);
+assert.match(app, /function reproducirLegionUmbriaVersus\(/);
+assert.match(estilos, /ataqueClonUnoShadowVersus/);
+assert.match(estilos, /fusionLegionShadowVersus/);
+assert.match(html, /t-shadow-victoria\.png/);
 
 console.log("versus-ui: comprobaciones correctas");

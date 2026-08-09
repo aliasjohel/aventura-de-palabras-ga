@@ -23,7 +23,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260808-personajes-7">
+    <link rel="stylesheet" href="css/styles.css?v=20260809-shadow-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -317,6 +317,13 @@
                         <strong>Hombre Lobo</strong>
                         <small>Zarpazo Feral &middot; Cacer&iacute;a de Luna Llena</small>
                     </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio"
+                        aria-checked="false" data-personaje="t_shadow">
+                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <img src="assets/images/personajes/versus/t-shadow-base.png" alt="T. Shadow">
+                        <strong>T. Shadow</strong>
+                        <small>Corte sombr&iacute;o &middot; Legi&oacute;n Umbr&iacute;a</small>
+                    </button>
                 </div>
 
                 <div class="estado-personajes-remotos" aria-live="polite">
@@ -509,6 +516,9 @@
                     <div id="zarpazoLoboVersus" class="zarpazo-lobo-versus" aria-hidden="true">
                         <i></i><i></i><i></i>
                     </div>
+                    <div id="corteShadowVersus" class="corte-shadow-versus" aria-hidden="true">
+                        <i></i><i></i><i></i>
+                    </div>
 
                     <div id="entradaDueloVersus" class="entrada-duelo-versus oculto" aria-live="polite">
                         <div class="entrada-efecto entrada-efecto-uno" aria-hidden="true">
@@ -566,6 +576,7 @@
                         <img src="assets/images/elementos/enredaderas-teclado-versus.png" alt="">
                     </div>
                     <div class="habilidad-lobo-versus"><i></i><i></i><i></i></div>
+                    <div class="habilidad-agujero-negro-versus"><i></i><b></b><span></span></div>
                     <div class="impacto-habilidad-versus"></div>
                 </div>
 
@@ -603,11 +614,13 @@
                             <option value="guardiana">Guardiana</option>
                             <option value="dragon">Drag&oacute;n</option>
                             <option value="hombre_lobo">Hombre Lobo</option>
+                            <option value="t_shadow">T. Shadow</option>
                         </select>
                     </label>
                     <button id="btnProbarCinematicaGuardiana" type="button">🌱 Probar guardiana</button>
                     <button id="btnProbarCinematicaDragon" type="button">&#128009; Probar drag&oacute;n</button>
                     <button id="btnProbarCinematicaHombreLobo" type="button">&#127769; Probar hombre lobo</button>
+                    <button id="btnProbarCinematicaShadow" type="button">&#127761; Probar T. Shadow</button>
                     <button id="btnProbarAtaqueElegido" type="button">⚡ Probar ataque elegido</button>
                 </div>
 
@@ -627,6 +640,7 @@
                     <button class="btn-probar-habilidad-versus" data-habilidad="dragon" type="button">🐉 Rugido</button>
                     <button class="btn-probar-habilidad-versus" data-habilidad="mago" type="button">🔮 Caos</button>
                     <button class="btn-probar-habilidad-versus" data-habilidad="hombre_lobo" type="button">🌕 Inversi&oacute;n</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="t_shadow" type="button">&#127761; Vac&iacute;o</button>
                 </div>
 
                 <div id="avisoAvanceVersus" class="aviso-avance-versus oculto" role="status" aria-live="polite"></div>
@@ -728,6 +742,19 @@
                         src="assets/images/personajes/versus/garra-pantalla-rota.png"
                         alt="" aria-hidden="true">
                     <div class="oscuridad-caceria-final" aria-hidden="true"></div>
+                    <div class="shadow-final-vortice" aria-hidden="true"></div>
+                    <img id="victimaShadowVersus" class="cinematica-victima-shadow victima-final-mago"
+                        src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
+                    <img class="cinematica-shadow-clon sombra-clon-uno"
+                        src="assets/images/personajes/versus/t-shadow-ataque.png" alt="" aria-hidden="true">
+                    <img class="cinematica-shadow-clon sombra-clon-dos"
+                        src="assets/images/personajes/versus/t-shadow-ataque.png" alt="" aria-hidden="true">
+                    <img class="cinematica-shadow-clon sombra-clon-tres"
+                        src="assets/images/personajes/versus/t-shadow-ataque.png" alt="" aria-hidden="true">
+                    <div class="shadow-final-cortes" aria-hidden="true"><i></i><i></i><i></i></div>
+                    <div class="shadow-final-fusion" aria-hidden="true"></div>
+                    <img class="cinematica-shadow-victoria"
+                        src="assets/images/personajes/versus/t-shadow-victoria.png" alt="" aria-hidden="true">
                     <div class="eclipse-destello" aria-hidden="true"></div>
                     <div class="cinematica-final-titulos">
                         <span id="etiquetaCinematicaVersus">GOLPE LEGENDARIO</span>
@@ -841,7 +868,7 @@
     <script src="js/versus-engine.js?v=20260808-habilidades-versus-2"></script>
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
     <script src="js/versus-room-supabase.js?v=20260808-hombre-lobo-2"></script>
-    <script src="js/app.js?v=20260808-personajes-7"></script>
+    <script src="js/app.js?v=20260809-shadow-1"></script>
     <script src="js/pwa.js?v=20260808-hombre-lobo-2"></script>
 </body>
 

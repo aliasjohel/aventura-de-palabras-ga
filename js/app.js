@@ -110,6 +110,7 @@ const proyectilGuardianaVersus = document.getElementById(
 );
 const rugidoDragonVersus = document.getElementById("rugidoDragonVersus");
 const zarpazoLoboVersus = document.getElementById("zarpazoLoboVersus");
+const corteShadowVersus = document.getElementById("corteShadowVersus");
 const entradaDueloVersus = document.getElementById("entradaDueloVersus");
 const btnSaltarEntradaVersus = document.getElementById(
   "btnSaltarEntradaVersus",
@@ -149,12 +150,14 @@ const btnProbarCinematicaDragon = document.getElementById(
 const btnProbarCinematicaHombreLobo = document.getElementById(
   "btnProbarCinematicaHombreLobo",
 );
+const btnProbarCinematicaShadow = document.getElementById("btnProbarCinematicaShadow");
 const victimaEclipseVersus = document.getElementById("victimaEclipseVersus");
 const victimaTrampaVersus = document.getElementById("victimaTrampaVersus");
 const rivalCinematicaMatriarca = document.querySelector(
   ".cinematica-rival-matriarca",
 );
 const victimaCaceriaVersus = document.getElementById("victimaCaceriaVersus");
+const victimaShadowVersus = document.getElementById("victimaShadowVersus");
 const victimaPruebaFaucesVersus = document.getElementById(
   "victimaPruebaFaucesVersus",
 );
@@ -906,11 +909,11 @@ function actualizarRelojPartidaOnline() {
 function actualizarTecladoPartidaOnline(partida) {
   const comenzo = Date.now() + desfaseServidorVersus >= Date.parse(partida.startedAt);
   const usadas = new Set(partida.me?.usedLetters || []);
-  const efectoRaicesActivo = partida.me?.activeEffect === "roots"
+  const efectoBloqueoActivo = ["roots", "black_hole"].includes(partida.me?.activeEffect)
     && Date.now() + desfaseServidorVersus < Date.parse(partida.me?.effectExpiresAt || 0);
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = jugadaOnlineEnCurso
-      || efectoRaicesActivo
+      || efectoBloqueoActivo
       || partida.status !== "playing"
       || !comenzo
       || partida.me?.finished
@@ -1973,6 +1976,7 @@ function mostrarPantalla(pantallaSeleccionada) {
 function crearTecladoVersus() {
   if (tecladoVersus.children.length > 0) return;
 
+  let indiceTecla = 0;
   filasTeclado.forEach((fila) => {
     const filaTeclado = document.createElement("div");
     filaTeclado.className = "fila-teclado-versus";
@@ -1983,8 +1987,11 @@ function crearTecladoVersus() {
       botonLetra.textContent = letra;
       botonLetra.className = "letra-versus";
       botonLetra.setAttribute("aria-label", `Letra ${letra}`);
+      botonLetra.style.setProperty("--demora-agujero", `${indiceTecla * 30}ms`);
+      botonLetra.style.setProperty("--giro-agujero", `${(indiceTecla % 2 ? -1 : 1) * (180 + (indiceTecla % 5) * 36)}deg`);
       botonLetra.addEventListener("click", () => jugarLetraVersus(letra, botonLetra));
       filaTeclado.appendChild(botonLetra);
+      indiceTecla += 1;
     });
 
     tecladoVersus.appendChild(filaTeclado);
@@ -2086,6 +2093,7 @@ function reproducirAnimacionHabilidadVersus(
     guardiana: srcGuardianaAtaqueVersus,
     dragon: srcDragonAtaqueVersus,
     hombre_lobo: srcHombreLoboSaltoVersus,
+    t_shadow: srcShadowAtaqueVersus,
   }[personaje];
   if (pose) atacante.src = pose;
   atacante.classList.add("usando-habilidad");
@@ -2107,7 +2115,8 @@ function reproducirAnimacionHabilidadVersus(
 function sincronizarTecladoDemoVersus() {
   const bloqueado = demoVersus.finalizadoJugador
     || demoVersus.partidaFinalizada
-    || tecladoVersus.classList.contains("efecto-raices");
+    || tecladoVersus.classList.contains("efecto-raices")
+    || tecladoVersus.classList.contains("efecto-agujero-negro");
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = bloqueado || demoVersus.letrasJugador.has(boton.textContent);
   });
@@ -2116,9 +2125,20 @@ function sincronizarTecladoDemoVersus() {
 function limpiarEfectoVisualHabilidadVersus() {
   if (demoVersus.temporizadorEfectoHabilidad) clearTimeout(demoVersus.temporizadorEfectoHabilidad);
   demoVersus.temporizadorEfectoHabilidad = null;
-  tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos");
+  tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos", "efecto-agujero-negro");
   marcoVersus.classList.remove("efecto-inversion-lunar");
   restaurarOrdenTecladoVersus();
+}
+
+function prepararAgujeroNegroTecladoVersus() {
+  const teclado = tecladoVersus.getBoundingClientRect();
+  const centroX = teclado.left + teclado.width / 2;
+  const centroY = teclado.top + teclado.height / 2;
+  tecladoVersus.querySelectorAll("button").forEach((boton) => {
+    const tecla = boton.getBoundingClientRect();
+    boton.style.setProperty("--absorcion-x", `${centroX - tecla.left - tecla.width / 2}px`);
+    boton.style.setProperty("--absorcion-y", `${centroY - tecla.top - tecla.height / 2}px`);
+  });
 }
 
 function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
@@ -2142,12 +2162,18 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
     marcoVersus.style.setProperty("--duracion-inversion-lunar", `${milisegundos}ms`);
     marcoVersus.classList.add("efecto-inversion-lunar");
   }
-  if (efecto === "roots") tecladoVersus.querySelectorAll("button").forEach((boton) => { boton.disabled = true; });
+  if (efecto === "black_hole") {
+    prepararAgujeroNegroTecladoVersus();
+    tecladoVersus.style.setProperty("--duracion-agujero-negro", `${milisegundos}ms`);
+    tecladoVersus.classList.add("efecto-agujero-negro");
+  }
+  if (["roots", "black_hole"].includes(efecto)) tecladoVersus.querySelectorAll("button").forEach((boton) => { boton.disabled = true; });
 
   demoVersus.temporizadorEfectoHabilidad = setTimeout(() => {
     demoVersus.temporizadorEfectoHabilidad = null;
     const restaurarConAnimacion = tecladoVersus.classList.contains("efecto-caos");
-    tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos");
+    tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos", "efecto-agujero-negro");
+    tecladoVersus.style.removeProperty("--duracion-agujero-negro");
     marcoVersus.classList.remove("efecto-inversion-lunar");
     marcoVersus.style.removeProperty("--duracion-inversion-lunar");
     restaurarOrdenTecladoVersus(restaurarConAnimacion);
@@ -2370,6 +2396,9 @@ const srcDragonAtaqueVersus = "assets/images/personajes/versus/dragon-ataque.png
 const srcHombreLoboBaseVersus = "assets/images/personajes/versus/hombre-lobo-base.png";
 const srcHombreLoboZarpazoVersus = "assets/images/personajes/versus/hombre-lobo-zarpazo.png";
 const srcHombreLoboSaltoVersus = "assets/images/personajes/versus/hombre-lobo-salto-lunar.png";
+const srcShadowBaseVersus = "assets/images/personajes/versus/t-shadow-base.png";
+const srcShadowAtaqueVersus = "assets/images/personajes/versus/t-shadow-ataque.png";
+const srcShadowVictoriaVersus = "assets/images/personajes/versus/t-shadow-victoria.png";
 const personajesVersus = {
   explorador: {
     nombre: "Explorador",
@@ -2401,6 +2430,12 @@ const personajesVersus = {
     ataque: "zarpazo-feral",
     final: "caceria-luna-llena",
   },
+  t_shadow: {
+    nombre: "T. Shadow",
+    base: srcShadowBaseVersus,
+    ataque: "corte-sombrio",
+    final: "legion-umbria",
+  },
 };
 const habilidadesVersus = Object.freeze({
   explorador: { nombre: "Lupa", icono: "🔍", efecto: "hint", duracion: 0 },
@@ -2408,6 +2443,7 @@ const habilidadesVersus = Object.freeze({
   dragon: { nombre: "Rugido", icono: "🐉", efecto: "roar", duracion: 4000 },
   mago: { nombre: "Caos arcano", icono: "🔮", efecto: "shuffle", duracion: 5000 },
   hombre_lobo: { nombre: "Inversión lunar", icono: "🌕", efecto: "invert", duracion: 4000 },
+  t_shadow: { nombre: "Vacío devorador", icono: "🌑", efecto: "black_hole", duracion: 4000 },
 });
 const letrasParaHabilidadVersus = VersusEngine.CONFIG.letrasParaHabilidad;
 let personajeJugadorVersus = "explorador";
@@ -2438,6 +2474,11 @@ const victimasFaucesVersus = {
     nombre: "Hombre Lobo",
     imagen: srcHombreLoboBaseVersus,
     imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-hombre-lobo.png",
+  },
+  t_shadow: {
+    nombre: "T. Shadow",
+    imagen: srcShadowBaseVersus,
+    imagenAtrapado: srcShadowBaseVersus,
   },
 };
 
@@ -2502,6 +2543,7 @@ function limpiarAnimacionAtaqueJugadorVersus() {
     "lanzando-viento",
     "rugiendo-dragon",
     "zarpando-lobo",
+    "cortando-shadow",
   );
   personajeVersusDos.classList.remove("recibiendo-dano");
   vidasVersusDos.classList.remove("recibiendo-dano");
@@ -2510,6 +2552,7 @@ function limpiarAnimacionAtaqueJugadorVersus() {
   proyectilGuardianaVersus.classList.remove("volando");
   rugidoDragonVersus.classList.remove("volando");
   zarpazoLoboVersus.classList.remove("volando", "desde-rival");
+  corteShadowVersus.classList.remove("volando", "desde-rival");
   herramientasPruebasVersus.classList.remove("ataque-en-curso");
 }
 
@@ -2525,6 +2568,7 @@ function limpiarAnimacionAtaqueRivalVersus() {
     "lanzando-viento",
     "rugiendo-dragon",
     "zarpando-lobo",
+    "cortando-shadow",
   );
   personajeVersusUno.classList.remove("recibiendo-dano-magico");
   vidasVersusUno.classList.remove("recibiendo-dano");
@@ -2533,6 +2577,7 @@ function limpiarAnimacionAtaqueRivalVersus() {
   proyectilGuardianaVersus.classList.remove("volando", "desde-rival");
   rugidoDragonVersus.classList.remove("volando", "desde-rival");
   zarpazoLoboVersus.classList.remove("volando", "desde-rival");
+  corteShadowVersus.classList.remove("volando", "desde-rival");
 }
 
 function limpiarAnimacionAtaqueVersus() {
@@ -2550,6 +2595,7 @@ function configurarPersonajesCombateVersus() {
     "personaje-guardiana",
     "personaje-dragon",
     "personaje-hombre_lobo",
+    "personaje-t_shadow",
   );
   personajeVersusUno.classList.add(`personaje-${personajeJugadorVersus}`);
   const personajeRival = personajesVersus[personajeRivalVersus] || personajesVersus.mago;
@@ -2561,6 +2607,7 @@ function configurarPersonajesCombateVersus() {
     "personaje-guardiana",
     "personaje-dragon",
     "personaje-hombre_lobo",
+    "personaje-t_shadow",
   );
   personajeVersusDos.classList.add(`personaje-${personajeRivalVersus}`);
   actualizarPanelHabilidadVersus(
@@ -2591,6 +2638,7 @@ function limpiarEntradaDueloVersus() {
     "entrada-guardiana",
     "entrada-dragon",
     "entrada-hombre_lobo",
+    "entrada-t_shadow",
   );
   personajeVersusDos.classList.remove(
     "entrando-duelo",
@@ -2599,6 +2647,7 @@ function limpiarEntradaDueloVersus() {
     "entrada-guardiana-rival",
     "entrada-dragon-rival",
     "entrada-hombre_lobo-rival",
+    "entrada-t_shadow-rival",
   );
   bumeranVersus.classList.remove("mostrando-entrada");
 }
@@ -2886,6 +2935,27 @@ function reproducirAtaqueHombreLoboVersus() {
   programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1420, "jugador");
 }
 
+function reproducirAtaqueShadowVersus() {
+  limpiarAnimacionAtaqueJugadorVersus();
+  herramientasPruebasVersus.classList.add("ataque-en-curso");
+  personajeVersusUno.src = srcShadowAtaqueVersus;
+  personajeVersusUno.classList.add("cortando-shadow");
+  corteShadowVersus.classList.remove("desde-rival");
+  void corteShadowVersus.offsetWidth;
+  corteShadowVersus.classList.add("volando");
+  reproducirSonidoVersus("versusAtaqueUno", 0.78);
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.add("recibiendo-dano");
+    vidasVersusDos.classList.add("recibiendo-dano");
+    reproducirSonidoVersus("versusAtaqueDos", 0.84);
+  }, 520, "jugador");
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.remove("recibiendo-dano");
+    vidasVersusDos.classList.remove("recibiendo-dano");
+  }, 900, "jugador");
+  programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1260, "jugador");
+}
+
 function reproducirAtaqueJugadorVersus() {
   const ataque = personajesVersus[personajeJugadorVersus].ataque;
   if (ataque === "magia") {
@@ -2902,6 +2972,10 @@ function reproducirAtaqueJugadorVersus() {
   }
   if (ataque === "zarpazo-feral") {
     reproducirAtaqueHombreLoboVersus();
+    return;
+  }
+  if (ataque === "corte-sombrio") {
+    reproducirAtaqueShadowVersus();
     return;
   }
   reproducirAtaqueBumeranVersus();
@@ -3020,6 +3094,17 @@ function reproducirAtaqueHombreLoboRivalVersus() {
   programarImpactoRivalVersus(610, 1420);
 }
 
+function reproducirAtaqueShadowRivalVersus() {
+  limpiarAnimacionAtaqueRivalVersus();
+  personajeVersusDos.src = srcShadowAtaqueVersus;
+  personajeVersusDos.classList.add("cortando-shadow");
+  corteShadowVersus.classList.add("desde-rival");
+  void corteShadowVersus.offsetWidth;
+  corteShadowVersus.classList.add("volando");
+  reproducirSonidoVersus("versusAtaqueUno", 0.78);
+  programarImpactoRivalVersus(520, 1260);
+}
+
 function reproducirImpactoRivalReducidoVersus() {
   reproducirSonidoVersus("versusAtaqueUno", 0.72);
   personajeVersusUno.classList.add("recibiendo-dano-magico");
@@ -3061,6 +3146,10 @@ function reproducirAtaqueRivalVersus() {
     reproducirAtaqueHombreLoboRivalVersus();
     return;
   }
+  if (ataque === "corte-sombrio") {
+    reproducirAtaqueShadowRivalVersus();
+    return;
+  }
   reproducirAtaqueMagoVersus();
 }
 
@@ -3087,7 +3176,8 @@ function bloquearTecladoDemoVersus() {
 }
 
 function habilitarTecladoVersus() {
-  const bloqueadoPorRaices = tecladoVersus.classList.contains("efecto-raices");
+  const bloqueadoPorRaices = tecladoVersus.classList.contains("efecto-raices")
+    || tecladoVersus.classList.contains("efecto-agujero-negro");
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = bloqueadoPorRaices;
   });
@@ -3587,6 +3677,9 @@ function obtenerReproductorFinalVersus(personajeGanador, personajeVictima) {
   if (finalElegido === "caceria-luna-llena") {
     return () => reproducirCaceriaLunaLlenaVersus(personajeVictima);
   }
+  if (finalElegido === "legion-umbria") {
+    return () => reproducirLegionUmbriaVersus(personajeVictima);
+  }
   return () => reproducirTrampaSelvaticaVersus(personajeVictima);
 }
 
@@ -3648,6 +3741,7 @@ const posesReaccionVictimaVersus = {
   guardiana: "assets/images/personajes/versus/guardiana-susto-impacto.png",
   dragon: "assets/images/personajes/versus/dragon-susto-impacto.png",
   hombre_lobo: "assets/images/personajes/versus/hombre-lobo-impacto.png",
+  t_shadow: srcShadowAtaqueVersus,
 };
 
 function configurarVictimaFinalVersus(elemento, personaje) {
@@ -3662,6 +3756,7 @@ function configurarVictimaFinalVersus(elemento, personaje) {
     "victima-final-guardiana",
     "victima-final-dragon",
     "victima-final-hombre_lobo",
+    "victima-final-t_shadow",
   );
   elemento.classList.add(`victima-final-${clave}`);
   return clave;
@@ -3735,6 +3830,7 @@ function configurarVictimaFaucesVersus(personaje = personajeRivalVersus) {
     "victima-fauces-guardiana",
     "victima-fauces-dragon",
     "victima-fauces-hombre_lobo",
+    "victima-fauces-t_shadow",
   );
   victimaFaucesVersus.classList.add(`victima-fauces-${personaje in victimasFaucesVersus ? personaje : "mago"}`);
 }
@@ -3820,6 +3916,32 @@ function reproducirCaceriaLunaLlenaVersus(victima = personajeRivalVersus) {
   });
 }
 
+function reproducirLegionUmbriaVersus(victima = personajeRivalVersus) {
+  cancelarCinematicaFinalVersus();
+  fondoCinematicaVersus.src = fondoVersus.src;
+  programarReaccionVictimaFinalVersus(victimaShadowVersus, victima, 2350);
+  etiquetaCinematicaVersus.textContent = "TÉCNICA PROHIBIDA";
+  tituloCinematicaVersus.textContent = "LEGIÓN UMBRÍA";
+  cinematicaFinalVersus.classList.remove(
+    "eclipse-violeta",
+    "trampa-selvatica",
+    "prision-esmeralda",
+    "llamado-matriarca",
+    "caceria-luna-llena",
+  );
+  cinematicaFinalVersus.classList.add("legion-umbria");
+  cinematicaFinalVersus.classList.remove("oculto");
+  void cinematicaFinalVersus.offsetWidth;
+  cinematicaFinalVersus.classList.add("activa");
+  btnSaltarCinematicaVersus.focus();
+  reproducirSonidoVersus("versusFinish", 0.9);
+
+  return new Promise((resolve) => {
+    demoVersus.resolverCinematica = resolve;
+    demoVersus.temporizadorCinematica = setTimeout(completarCinematicaFinalVersus, 6500);
+  });
+}
+
 function completarCinematicaFinalVersus() {
   if (demoVersus.temporizadorReaccionCinematica) {
     clearTimeout(demoVersus.temporizadorReaccionCinematica);
@@ -3838,6 +3960,7 @@ function completarCinematicaFinalVersus() {
     "prision-esmeralda",
     "llamado-matriarca",
     "caceria-luna-llena",
+    "legion-umbria",
   );
   particulasEclipseVersus.replaceChildren();
   const resolver = demoVersus.resolverCinematica;
@@ -3863,6 +3986,7 @@ function cancelarCinematicaFinalVersus() {
     "prision-esmeralda",
     "llamado-matriarca",
     "caceria-luna-llena",
+    "legion-umbria",
   );
   particulasEclipseVersus.replaceChildren();
   demoVersus.resolverCinematica = null;
@@ -3882,6 +4006,10 @@ function probarCinematicaVersus(personaje) {
   }
   if (personaje === "hombre_lobo") {
     void reproducirCaceriaLunaLlenaVersus(victimaPruebaFaucesVersus.value);
+    return;
+  }
+  if (personaje === "t_shadow") {
+    void reproducirLegionUmbriaVersus(victimaPruebaFaucesVersus.value);
     return;
   }
 
@@ -3909,6 +4037,10 @@ btnProbarCinematicaDragon.addEventListener("click", () => {
 
 btnProbarCinematicaHombreLobo.addEventListener("click", () => {
   probarCinematicaVersus("hombre_lobo");
+});
+
+btnProbarCinematicaShadow.addEventListener("click", () => {
+  probarCinematicaVersus("t_shadow");
 });
 
 btnProbarAtaqueElegido.addEventListener("click", () => {

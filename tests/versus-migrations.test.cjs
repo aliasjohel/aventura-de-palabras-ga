@@ -27,6 +27,10 @@ const werewolf = fs.readFileSync(
   path.join(migrations, "20260809001114_versus_werewolf_full_moon_hunt.sql"),
   "utf8",
 );
+const shadow = fs.readFileSync(
+  path.join(migrations, "20260809130731_versus_t_shadow_black_hole.sql"),
+  "utf8",
+);
 const dictionary = fs.readFileSync(
   path.join(migrations, "20260809015253_versus_thematic_dictionary.sql"),
   "utf8",
@@ -52,6 +56,11 @@ assert.match(werewolf, /when 'hombre_lobo' then 'invert'/);
 assert.match(werewolf, /when 'hombre_lobo' then interval '4 seconds'/);
 assert.match(werewolf, /active_effect in \('roots', 'roar', 'shuffle', 'invert'\)/);
 assert.match(werewolf, /revoke execute on function public\.activate_versus_ability\(uuid\)[\s\S]+from public, anon/);
+assert.match(shadow, /'t_shadow'/);
+assert.match(shadow, /when 't_shadow' then 'black_hole'/);
+assert.match(shadow, /active_effect in \('roots', 'roar', 'shuffle', 'invert', 'black_hole'\)/);
+assert.match(shadow, /when 'mago' then interval '5 seconds'[\s\S]+else interval '4 seconds'/);
+assert.match(shadow, /revoke execute on function public\.activate_versus_ability\(uuid\) from public, anon/);
 assert.match(dictionary, /create schema if not exists private/);
 assert.match(dictionary, /alter table private\.versus_word_dictionary enable row level security/);
 assert.match(dictionary, /revoke all on table private\.versus_word_dictionary from public, anon, authenticated/);
