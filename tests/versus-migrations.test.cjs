@@ -28,15 +28,15 @@ const werewolf = fs.readFileSync(
   "utf8",
 );
 const shadow = fs.readFileSync(
-  path.join(migrations, "20260809130731_versus_t_shadow_black_hole.sql"),
+  path.join(migrations, "20260809194727_versus_t_shadow_black_hole.sql"),
   "utf8",
 );
 const fiveSecondAbilities = fs.readFileSync(
-  path.join(migrations, "20260809141942_versus_ability_duration_five_seconds.sql"),
+  path.join(migrations, "20260809194802_versus_ability_duration_five_seconds.sql"),
   "utf8",
 );
 const guardianAlba = fs.readFileSync(
-  path.join(migrations, "20260809175550_add_guardian_alba.sql"),
+  path.join(migrations, "20260809194812_add_guardian_alba.sql"),
   "utf8",
 );
 const dictionary = fs.readFileSync(

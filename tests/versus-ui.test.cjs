@@ -40,12 +40,17 @@ assert.match(app, /reproducirEclipseVioletaVersus\(personajeVictima\)/);
 assert.match(app, /reproducirTrampaSelvaticaVersus\(personajeVictima\)/);
 assert.match(app, /reproducirLlamadoMatriarcaVersus\(personajeVictima\)/);
 assert.match(app, /reproducirCaceriaLunaLlenaVersus\(personajeVictima\)/);
-for (const victima of ["explorador", "mago", "guardiana", "dragon", "hombre_lobo", "guardian_alba"]) {
+for (const victima of ["explorador", "mago", "guardiana", "dragon"]) {
   assert.match(estilos, new RegExp(`victima-final-${victima}`));
   assert.match(app, new RegExp(`${victima}: "assets/images/personajes/versus/.+"`));
 }
+for (const victima of ["hombre_lobo", "guardian_alba"]) {
+  assert.match(estilos, new RegExp(`victima-final-${victima}`));
+}
 assert.match(estilos, /victima-final-t_shadow/);
-assert.match(app, /t_shadow: srcShadowAtaqueVersus/);
+assert.match(app, /t_shadow: srcShadowImpactoVersus/);
+assert.match(app, /hombre_lobo: srcHombreLoboImpactoVersus/);
+assert.match(app, /guardian_alba: srcGuardianAlbaImpactoVersus/);
 assert.match(estilos, /--direccion-victima-trampa: -1/);
 assert.match(estilos, /cinematica-mago-atrapado\.victima-final-guardiana \{[\s\S]+--direccion-victima-trampa: -1/);
 assert.match(estilos, /cinematica-mago-atrapado\.victima-final-guardiana\.reaccion-final-activa[\s\S]+--direccion-victima-trampa: 1/);
@@ -102,8 +107,13 @@ assert.match(html, /garra-pantalla-rota\.png/);
 assert.match(estilos, /oscuridad-caceria-final/);
 assert.match(estilos, /data-personaje="mago"[^}]+translateY\(-47%\) scale\(-2\.2, 2\.2\)/);
 assert.match(estilos, /max-height: 500px[\s\S]+data-personaje="mago"[^}]+translateY\(-8%\) scale\(-1\.4, 1\.4\)/);
-assert.match(app, /hombre_lobo:[\s\S]+imagenAtrapado: "assets\/images\/personajes\/versus\/carnivora-devorando-hombre-lobo\.png"/);
+assert.match(app, /hombre_lobo:[\s\S]+imagenAtrapado: "assets\/images\/personajes\/versus\/carnivora-devorando-hombre-lobo-v2\.png"/);
 assert.match(estilos, /victima-fauces-hombre_lobo[^}]+--direccion-victima-fauces: -1/);
+assert.match(app, /t_shadow:[\s\S]+imagenAtrapado: "assets\/images\/personajes\/versus\/carnivora-devorando-t-shadow\.png"/);
+assert.match(app, /guardian_alba:[\s\S]+imagenAtrapado: "assets\/images\/personajes\/versus\/carnivora-devorando-guardian-alba\.png"/);
+assert.match(app, /function observarPoseDanoPersonajeVersus\(/);
+assert.match(estilos, /max-height: 600px[\s\S]+alba-final-rayo-carga[\s\S]+height: clamp\(14px, 2\.7vh, 18px\)/);
+assert.match(estilos, /max-height: 600px[\s\S]+cinematica-shadow-victoria[\s\S]+width: min\(32vw, 58vh\)/);
 assert.match(app, /dragon:[\s\S]+imagenAtrapado: "assets\/images\/personajes\/versus\/carnivora-devorando-dragon\.png"/);
 assert.match(estilos, /victima-fauces-dragon[^}]+--direccion-victima-fauces: -1/);
 assert.match(html, /CACER|Cacer/);

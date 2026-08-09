@@ -2448,12 +2448,15 @@ const srcDragonAtaqueVersus = "assets/images/personajes/versus/dragon-ataque.png
 const srcHombreLoboBaseVersus = "assets/images/personajes/versus/hombre-lobo-base.png";
 const srcHombreLoboZarpazoVersus = "assets/images/personajes/versus/hombre-lobo-zarpazo.png";
 const srcHombreLoboSaltoVersus = "assets/images/personajes/versus/hombre-lobo-salto-lunar.png";
+const srcHombreLoboImpactoVersus = "assets/images/personajes/versus/hombre-lobo-impacto-v2.png";
 const srcShadowBaseVersus = "assets/images/personajes/versus/t-shadow-base.png";
 const srcShadowAtaqueVersus = "assets/images/personajes/versus/t-shadow-ataque.png";
+const srcShadowImpactoVersus = "assets/images/personajes/versus/t-shadow-impacto.png";
 const srcShadowVictoriaVersus = "assets/images/personajes/versus/t-shadow-victoria.png";
 const srcGuardianAlbaBaseVersus = "assets/images/personajes/versus/guardian-alba-base.png";
 const srcGuardianAlbaAtaqueVersus = "assets/images/personajes/versus/guardian-alba-ataque.png";
 const srcGuardianAlbaHabilidadVersus = "assets/images/personajes/versus/guardian-alba-habilidad.png";
+const srcGuardianAlbaImpactoVersus = "assets/images/personajes/versus/guardian-alba-impacto.png";
 const srcGuardianAlbaFinalCargaVersus = "assets/images/personajes/versus/guardian-alba-final-carga.png";
 const srcGuardianAlbaVictoriaVersus = "assets/images/personajes/versus/guardian-alba-victoria.png";
 const personajesVersus = {
@@ -2537,19 +2540,43 @@ const victimasFaucesVersus = {
   hombre_lobo: {
     nombre: "Hombre Lobo",
     imagen: srcHombreLoboBaseVersus,
-    imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-hombre-lobo.png",
+    imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-hombre-lobo-v2.png",
   },
   t_shadow: {
     nombre: "T. Shadow",
     imagen: srcShadowBaseVersus,
-    imagenAtrapado: srcShadowBaseVersus,
+    imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-t-shadow.png",
   },
   guardian_alba: {
     nombre: "A. Lumen",
     imagen: srcGuardianAlbaBaseVersus,
-    imagenAtrapado: srcGuardianAlbaBaseVersus,
+    imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-guardian-alba.png",
   },
 };
+
+const posesDanoPersonajeVersus = {
+  hombre_lobo: srcHombreLoboImpactoVersus,
+  t_shadow: srcShadowImpactoVersus,
+  guardian_alba: srcGuardianAlbaImpactoVersus,
+};
+
+function observarPoseDanoPersonajeVersus(elemento, obtenerPersonaje) {
+  new MutationObserver(() => {
+    const personaje = obtenerPersonaje();
+    const pose = posesDanoPersonajeVersus[personaje];
+    if (!pose) return;
+    const recibiendoDano = elemento.classList.contains("recibiendo-dano")
+      || elemento.classList.contains("recibiendo-dano-magico");
+    if (recibiendoDano) {
+      elemento.src = pose;
+    } else if (elemento.src.endsWith(pose)) {
+      elemento.src = personajesVersus[personaje].base;
+    }
+  }).observe(elemento, { attributes: true, attributeFilter: ["class"] });
+}
+
+observarPoseDanoPersonajeVersus(personajeVersusUno, () => personajeJugadorVersus);
+observarPoseDanoPersonajeVersus(personajeVersusDos, () => personajeRivalVersus);
 
 const demoVersus = {
   tematicaParaJugador: "frutas",
@@ -2600,10 +2627,20 @@ function programarPasoAtaqueVersus(accion, demora, atacante) {
   grupo.push(temporizador);
 }
 
+function mostrarPoseDanoPersonajeVersus(elemento, personaje) {
+  const pose = posesDanoPersonajeVersus[personaje];
+  if (pose) elemento.src = pose;
+}
+
+function restaurarPoseBasePersonajeVersus(elemento, personaje) {
+  if (personajesVersus[personaje]) elemento.src = personajesVersus[personaje].base;
+}
+
 function limpiarAnimacionAtaqueJugadorVersus() {
   demoVersus.temporizadoresAtaqueJugador.forEach(clearTimeout);
   demoVersus.temporizadoresAtaqueJugador = [];
   personajeVersusUno.src = personajesVersus[personajeJugadorVersus].base;
+  restaurarPoseBasePersonajeVersus(personajeVersusDos, personajeRivalVersus);
   personajeVersusUno.classList.remove(
     "preparando-bumeran",
     "lanzando-bumeran",
@@ -2631,6 +2668,7 @@ function limpiarAnimacionAtaqueRivalVersus() {
   demoVersus.temporizadoresAtaqueRival.forEach(clearTimeout);
   demoVersus.temporizadoresAtaqueRival = [];
   personajeVersusDos.src = personajesVersus[personajeRivalVersus]?.base || srcMagoBaseVersus;
+  restaurarPoseBasePersonajeVersus(personajeVersusUno, personajeJugadorVersus);
   personajeVersusDos.classList.remove(
     "preparando-bumeran",
     "lanzando-bumeran",
@@ -3861,9 +3899,9 @@ const posesReaccionVictimaVersus = {
   mago: "assets/images/personajes/versus/mago-atrapado-trampa.png",
   guardiana: "assets/images/personajes/versus/guardiana-susto-impacto.png",
   dragon: "assets/images/personajes/versus/dragon-susto-impacto.png",
-  hombre_lobo: "assets/images/personajes/versus/hombre-lobo-impacto.png",
-  t_shadow: srcShadowAtaqueVersus,
-  guardian_alba: "assets/images/personajes/versus/guardian-alba-habilidad.png",
+  hombre_lobo: srcHombreLoboImpactoVersus,
+  t_shadow: srcShadowImpactoVersus,
+  guardian_alba: srcGuardianAlbaImpactoVersus,
 };
 
 function configurarVictimaFinalVersus(elemento, personaje) {

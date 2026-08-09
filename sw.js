@@ -1,4 +1,4 @@
-const CACHE_NAME = "aventura-palabras-runtime-v44";
+const CACHE_NAME = "aventura-palabras-runtime-v45";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -36,6 +36,8 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/hombre-lobo-aullido.png",
   "./assets/images/personajes/versus/hombre-lobo-impacto.png",
   "./assets/images/personajes/versus/carnivora-devorando-hombre-lobo.png",
+  "./assets/images/personajes/versus/hombre-lobo-impacto-v2.png",
+  "./assets/images/personajes/versus/carnivora-devorando-hombre-lobo-v2.png",
   "./assets/images/personajes/versus/carnivora-devorando-dragon.png",
   "./assets/images/personajes/versus/lobos-espectrales.png",
   "./assets/images/personajes/versus/garra-pantalla-rota.png",
@@ -43,12 +45,16 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/t-shadow-ataque.png",
   "./assets/images/personajes/versus/t-shadow-victoria.png",
   "./assets/images/personajes/versus/t-shadow-ojos.png",
+  "./assets/images/personajes/versus/t-shadow-impacto.png",
+  "./assets/images/personajes/versus/carnivora-devorando-t-shadow.png",
   "./assets/images/personajes/versus/guardian-alba-base.png",
   "./assets/images/personajes/versus/guardian-alba-ataque.png",
   "./assets/images/personajes/versus/guardian-alba-habilidad.png",
   "./assets/images/personajes/versus/guardian-alba-final-carga.png",
   "./assets/images/personajes/versus/guardian-alba-esfera-solar.png",
   "./assets/images/personajes/versus/guardian-alba-victoria.png",
+  "./assets/images/personajes/versus/guardian-alba-impacto.png",
+  "./assets/images/personajes/versus/carnivora-devorando-guardian-alba.png",
   "./assets/sounds/cristal-casilla.mp3",
   "./assets/sounds/comenzar-aventura.wav",
   "./assets/sounds/melodia-menu.mp3",

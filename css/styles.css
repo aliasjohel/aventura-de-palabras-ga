@@ -473,6 +473,7 @@ body {
     }
 }
 
+
 .top-juego {
     /* Categoria, mision y vidas en la parte superior */
     width: 100%;
@@ -9332,5 +9333,48 @@ button:disabled {
     .lista-personajes-versus {
         grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
         gap: 6px;
+    }
+}
+
+/* Ajustes de cinemáticas para celulares en horizontal. */
+@media (orientation: landscape) and (max-height: 600px) {
+    .desde-jugador.habilidad-guardiana .habilidad-raices-versus {
+        right: 2%;
+        bottom: 28%;
+        width: 40%;
+        height: 25%;
+    }
+
+    .cinematica-final-versus.juicio-amanecer .cinematica-alba-ataque {
+        left: 2%;
+        bottom: -2%;
+        width: min(34vw, 58vh);
+    }
+
+    .cinematica-final-versus.juicio-amanecer .alba-final-sello,
+    .cinematica-final-versus.juicio-amanecer .alba-final-esfera-solar {
+        left: 64%;
+        top: 30%;
+        width: min(40vw, 60vh);
+    }
+
+    .cinematica-final-versus.juicio-amanecer .alba-final-rayo-carga {
+        left: 21.5%;
+        top: 30%;
+        width: 42.5%;
+        height: clamp(14px, 2.7vh, 18px);
+        transform: rotate(0deg);
+    }
+
+    .cinematica-final-versus.juicio-amanecer .alba-final-rayo-carga b {
+        inset: -7px 0;
+    }
+
+    .cinematica-final-versus.juicio-amanecer .cinematica-alba-victoria,
+    .cinematica-final-versus.legion-umbria .cinematica-shadow-victoria {
+        bottom: 0;
+        width: min(32vw, 58vh);
+        max-height: 94%;
+        object-fit: contain;
     }
 }
