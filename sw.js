@@ -1,4 +1,4 @@
-const CACHE_NAME = "aventura-palabras-runtime-v40";
+const CACHE_NAME = "aventura-palabras-runtime-v41";
 const CORE_ASSETS = [
   "./",
   "./index.html",

@@ -31,6 +31,10 @@ const shadow = fs.readFileSync(
   path.join(migrations, "20260809130731_versus_t_shadow_black_hole.sql"),
   "utf8",
 );
+const fiveSecondAbilities = fs.readFileSync(
+  path.join(migrations, "20260809141942_versus_ability_duration_five_seconds.sql"),
+  "utf8",
+);
 const dictionary = fs.readFileSync(
   path.join(migrations, "20260809015253_versus_thematic_dictionary.sql"),
   "utf8",
@@ -61,6 +65,9 @@ assert.match(shadow, /when 't_shadow' then 'black_hole'/);
 assert.match(shadow, /active_effect in \('roots', 'roar', 'shuffle', 'invert', 'black_hole'\)/);
 assert.match(shadow, /when 'mago' then interval '5 seconds'[\s\S]+else interval '4 seconds'/);
 assert.match(shadow, /revoke execute on function public\.activate_versus_ability\(uuid\) from public, anon/);
+assert.match(fiveSecondAbilities, /v_expires_at := now\(\) \+ interval '5 seconds'/);
+assert.match(fiveSecondAbilities, /when 't_shadow' then 'black_hole'/);
+assert.match(fiveSecondAbilities, /revoke execute on function public\.activate_versus_ability\(uuid\) from public, anon/);
 assert.match(dictionary, /create schema if not exists private/);
 assert.match(dictionary, /alter table private\.versus_word_dictionary enable row level security/);
 assert.match(dictionary, /revoke all on table private\.versus_word_dictionary from public, anon, authenticated/);

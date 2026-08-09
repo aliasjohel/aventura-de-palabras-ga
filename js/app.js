@@ -2444,11 +2444,11 @@ const personajesVersus = {
 };
 const habilidadesVersus = Object.freeze({
   explorador: { nombre: "Lupa", icono: "🔍", efecto: "hint", duracion: 0 },
-  guardiana: { nombre: "Enredo de raíces", icono: "🌿", efecto: "roots", duracion: 4000 },
-  dragon: { nombre: "Rugido", icono: "🐉", efecto: "roar", duracion: 4000 },
+  guardiana: { nombre: "Enredo de raíces", icono: "🌿", efecto: "roots", duracion: 5000 },
+  dragon: { nombre: "Rugido", icono: "🐉", efecto: "roar", duracion: 5000 },
   mago: { nombre: "Caos arcano", icono: "🔮", efecto: "shuffle", duracion: 5000 },
-  hombre_lobo: { nombre: "Inversión lunar", icono: "🌕", efecto: "invert", duracion: 4000 },
-  t_shadow: { nombre: "Vacío devorador", icono: "🌑", efecto: "black_hole", duracion: 4000 },
+  hombre_lobo: { nombre: "Inversión lunar", icono: "🌕", efecto: "invert", duracion: 5000 },
+  t_shadow: { nombre: "Vacío devorador", icono: "🌑", efecto: "black_hole", duracion: 5000 },
 });
 const letrasParaHabilidadVersus = VersusEngine.CONFIG.letrasParaHabilidad;
 let personajeJugadorVersus = "explorador";
