@@ -248,17 +248,18 @@
 .alba-final-cielo { z-index:3; inset:0; background:radial-gradient(circle at 50% -8%,#fff 0 1%,#ffe59a 5%,rgba(76,219,255,.2) 18%,transparent 46%); }
 .alba-final-cielo i { position:absolute; left:50%; top:-45%; width:2px; height:135%; background:linear-gradient(#fff,rgba(255,220,103,.55),transparent); transform-origin:bottom; box-shadow:0 0 18px #ffe59a; }
 .alba-final-cielo i:nth-child(1){transform:rotate(-32deg)} .alba-final-cielo i:nth-child(2){transform:rotate(0)} .alba-final-cielo i:nth-child(3){transform:rotate(32deg)}
-.alba-final-sello { z-index:4; left:62%; top:34%; width:min(31vw,370px); aspect-ratio:1; border:clamp(3px,.45vw,6px) double #ffe18a; border-radius:50%; box-shadow:0 0 22px #fff3bc,inset 0 0 32px rgba(91,224,255,.42); transform:translate(-50%,-50%); }
+.alba-final-sello { z-index:4; left:63%; top:34%; width:min(39vw,480px); aspect-ratio:1; border:clamp(3px,.45vw,6px) double #ffe18a; border-radius:50%; box-shadow:0 0 22px #fff3bc,inset 0 0 32px rgba(91,224,255,.42); transform:translate(-50%,-50%); }
 .alba-final-sello::before,.alba-final-sello::after { content:""; position:absolute; inset:9%; border:2px dashed rgba(126,232,255,.86); border-radius:50%; }
 .alba-final-sello::after { inset:27%; border-style:solid; border-color:#fff1ae; }
 .cinematica-victima-alba { z-index:5; left:67%; bottom:2%; width:min(29vw,330px); filter:drop-shadow(0 14px 12px #000); }
 .cinematica-victima-alba.victima-final-guardian_alba { width:min(38vw,430px); transform:scaleX(-1); }
-.cinematica-alba-ataque { z-index:6; left:-2%; bottom:-6%; width:min(48vw,560px); filter:drop-shadow(0 0 20px rgba(255,225,127,.62)) drop-shadow(0 16px 12px #000); }
-.alba-final-rayo-carga { z-index:7; left:34%; top:31%; width:30%; height:clamp(7px,1vw,13px); transform:rotate(2deg); transform-origin:left center; }
+.cinematica-alba-ataque { z-index:6; left:.5%; bottom:-6%; width:min(38vw,440px); filter:drop-shadow(0 0 20px rgba(255,225,127,.62)) drop-shadow(0 16px 12px #000); }
+.alba-final-rayo-carga { z-index:7; left:24%; top:34%; width:39%; height:clamp(7px,1vw,13px); transform:rotate(0deg); transform-origin:left center; }
 .alba-final-rayo-carga i,
-.alba-final-rayo-carga b { position:absolute; inset:0; border-radius:999px; background:linear-gradient(90deg,#fff,#fff4a6 38%,#78eaff 76%,transparent); box-shadow:0 0 9px #fff,0 0 24px #ffd75e,0 0 38px rgba(79,224,255,.78); }
-.alba-final-rayo-carga b { inset:-5px 0; opacity:.34; }
-.alba-final-esfera-solar { z-index:8; left:62%; top:34%; width:min(31vw,380px); transform:translate(-50%,-50%); filter:drop-shadow(0 0 18px #fff) drop-shadow(0 0 38px #ffd85f); }
+.alba-final-rayo-carga b { position:absolute; inset:0; border-radius:999px; background:linear-gradient(90deg,#fff 0 12%,#fff4a6 27%,#74ecff 42%,#fff 57%,#ffd85e 73%,transparent 100%); background-size:210% 100%; box-shadow:0 0 9px #fff,0 0 24px #ffd75e,0 0 38px rgba(79,224,255,.78); }
+.alba-final-rayo-carga i { animation:flujoRayoCargaAlbaVersus .5s linear infinite; }
+.alba-final-rayo-carga b { inset:-5px 0; opacity:.34; animation:pulsoRayoCargaAlbaVersus .62s ease-in-out infinite alternate; }
+.alba-final-esfera-solar { z-index:8; left:63%; top:34%; width:min(39vw,500px); transform:translate(-50%,-50%); filter:drop-shadow(0 0 18px #fff) drop-shadow(0 0 38px #ffd85f); }
 .cinematica-final-versus.juicio-amanecer .alba-final-rayos { display:none; }
 .alba-final-rayos { z-index:7; inset:0; }
 .alba-final-rayos i { position:absolute; top:-18%; width:clamp(8px,1.3vw,18px); height:122%; border-radius:50%; background:linear-gradient(#fff,#fff4b4 55%,rgba(75,222,255,.5),transparent); box-shadow:0 0 14px #fff,0 0 36px #ffd95e; transform:rotate(4deg); }
@@ -281,8 +282,10 @@
 @keyframes selloJuicioAlbaVersus { 0%,9%,57%,100%{opacity:0;transform:translate(-50%,-50%) scale(.18) rotate(0)} 18%,48%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(210deg)} }
 @keyframes victimaJuicioAlbaVersus { 0%,46%{opacity:1} 53%,59%{opacity:1;transform:translate(-2%,2%) rotate(-2deg);filter:brightness(2.1) drop-shadow(0 0 28px #ffe38c)} 66%,100%{opacity:0;transform:translateY(4%) scale(.76)} }
 @keyframes ataqueJuicioAlbaVersus { 0%,5%{opacity:0;transform:translateX(-18%) scale(.8)} 12%,49%{opacity:1;transform:translateX(0) scale(1)} 58%,100%{opacity:0;transform:translateX(8%) scale(1.05)} }
-@keyframes rayoCargaJuicioAlbaVersus { 0%,10%,53%,100%{opacity:0;scale:0 1} 17%{opacity:1;scale:.35 1} 25%,47%{opacity:1;scale:1 1} }
-@keyframes esferaSolarJuicioAlbaVersus { 0%,10%{opacity:0;transform:translate(-50%,-50%) scale(.08) rotate(0)} 18%{opacity:.85;transform:translate(-50%,-50%) scale(.34) rotate(30deg)} 34%,48%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(145deg)} 58%{opacity:1;transform:translate(calc(-50% + 13vw),calc(-50% + 28vh)) scale(.48) rotate(245deg)} 64%,100%{opacity:0;transform:translate(calc(-50% + 13vw),calc(-50% + 28vh)) scale(1.45) rotate(290deg)} }
+@keyframes rayoCargaJuicioAlbaVersus { 0%,10%,53%,100%{opacity:0;scale:0 1} 17%{opacity:1;scale:.28 1} 25%,47%{opacity:1;scale:1 1} }
+@keyframes flujoRayoCargaAlbaVersus { from{background-position:100% 0} to{background-position:-110% 0} }
+@keyframes pulsoRayoCargaAlbaVersus { from{filter:brightness(.9);transform:scaleY(.72)} to{filter:brightness(1.7);transform:scaleY(1.28)} }
+@keyframes esferaSolarJuicioAlbaVersus { 0%,10%{opacity:0;transform:translate(-50%,-50%) scale(.06) rotate(0)} 18%{opacity:.85;transform:translate(-50%,-50%) scale(.28) rotate(30deg)} 34%,48%{opacity:1;transform:translate(-50%,-50%) scale(1.06) rotate(145deg)} 58%{opacity:1;transform:translate(calc(-50% + 12vw),calc(-50% + 28vh)) scale(.42) rotate(245deg)} 64%,100%{opacity:0;transform:translate(calc(-50% + 12vw),calc(-50% + 28vh)) scale(1.38) rotate(290deg)} }
 @keyframes rayoJuicioAlbaVersus { 0%,29%,37%,100%{opacity:0;transform:translateY(-18%) scaleY(.08)} 31%,35%{opacity:1;transform:translateY(0) scaleY(1)} }
 @keyframes impactoJuicioAlbaVersus { 0%,53%,70%,100%{opacity:0;transform:translate(-50%,-50%) scale(.08)} 59%{opacity:1;transform:translate(-50%,-50%) scale(1.28)} 66%{opacity:.42;transform:translate(-50%,-50%) scale(2)} }
 @keyframes victoriaJuicioAlbaVersus { 0%,65%,100%{opacity:0;transform:translateX(-50%) translateY(12%) scale(.55);filter:blur(8px)} 72%{opacity:.5;transform:translateX(-50%) scale(.82);filter:blur(2px)} 80%,94%{opacity:1;transform:translateX(-50%) translateY(0) scale(1);filter:blur(0)} }
@@ -290,7 +293,7 @@
 @media (orientation: landscape) and (max-height:500px) {
     .lista-personajes-versus { grid-template-columns:repeat(auto-fit,minmax(88px,1fr)); gap:6px; }
     .tarjeta-personaje-versus { height:clamp(142px,48vh,215px); }
-    .cinematica-alba-ataque { width:min(44vw,470px); }
+    .cinematica-alba-ataque { width:min(35vw,400px); }
     .cinematica-alba-victoria { width:min(42vw,470px); }
 }
 
