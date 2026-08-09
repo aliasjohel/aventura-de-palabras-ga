@@ -7719,11 +7719,11 @@ button:disabled {
 .habilidad-agujero-negro-versus i,
 .habilidad-agujero-negro-versus b,
 .habilidad-agujero-negro-versus span {
-    position: absolute; inset: -28%; border: 3px solid rgba(198, 120, 255, .75); border-left-color: transparent;
+    position: absolute; inset: -8%; border: 2px solid rgba(198, 120, 255, .75); border-left-color: transparent;
     border-radius: 50%; animation: rotarAgujeroShadowVersus 260ms linear infinite;
 }
-.habilidad-agujero-negro-versus b { inset: -48%; opacity: .55; animation-direction: reverse; }
-.habilidad-agujero-negro-versus span { inset: -68%; opacity: .3; }
+.habilidad-agujero-negro-versus b { inset: -14%; opacity: .55; animation-direction: reverse; }
+.habilidad-agujero-negro-versus span { inset: -20%; opacity: .3; }
 .desde-rival .habilidad-agujero-negro-versus { left: auto; right: 25%; animation-name: lanzarAgujeroShadowRivalVersus; }
 @keyframes rotarAgujeroShadowVersus { to { transform: rotate(360deg); } }
 @keyframes lanzarAgujeroShadowVersus { 0% { opacity:0; transform:scale(.2); } 25% { opacity:1; } 100% { opacity:0; transform:translate(54vw,40vh) scale(1.7); } }
@@ -7738,13 +7738,18 @@ button:disabled {
     animation: vivirAgujeroTecladoVersus var(--duracion-agujero-negro, 4000ms) ease-in-out both;
 }
 .teclado-versus.efecto-agujero-negro::after {
-    content: ""; position: absolute; z-index: 5; left: 50%; top: 50%; width: clamp(82px, 17vw, 190px); aspect-ratio: 1;
-    border: 5px solid rgba(172, 82, 238, .64); border-left-color: transparent; border-bottom-color: rgba(84, 19, 139, .22);
+    content: ""; position: absolute; z-index: 7; left: 50%; top: 50%; width: clamp(56px, 11.5vw, 130px); aspect-ratio: 1;
     border-radius: 50%; pointer-events: none;
+    background:
+        repeating-conic-gradient(from 8deg, rgba(221, 158, 255, .92) 0 7deg, transparent 8deg 24deg),
+        repeating-conic-gradient(from 16deg, transparent 0 13deg, rgba(118, 39, 177, .78) 14deg 19deg, transparent 20deg 34deg);
+    -webkit-mask: radial-gradient(circle, transparent 0 37%, #000 40% 48%, transparent 52%);
+    mask: radial-gradient(circle, transparent 0 37%, #000 40% 48%, transparent 52%);
+    filter: drop-shadow(0 0 3px #ca75ff);
     animation: girarDiscoTecladoVersus 340ms linear infinite, vivirAgujeroTecladoVersus var(--duracion-agujero-negro, 4000ms) ease-in-out both;
 }
 .teclado-versus.efecto-agujero-negro .letra-versus {
-    position: relative; z-index: 7; transform-origin: center;
+    position: relative; z-index: 8; transform-origin: center;
     animation: absorberTeclaAgujeroNegroVersus 3.1s ease-in-out var(--demora-agujero) both;
 }
 @keyframes vivirAgujeroTecladoVersus { 0%,100% { opacity:0; transform:translate(-50%,-50%) scale(.05); } 12%,82% { opacity:1; transform:translate(-50%,-50%) scale(1); } }
@@ -7760,6 +7765,7 @@ button:disabled {
 .cinematica-shadow-clon,
 .shadow-final-cortes,
 .shadow-final-fusion,
+.shadow-final-ojos,
 .cinematica-shadow-victoria { position: absolute; z-index: 4; opacity: 0; pointer-events: none; }
 .cinematica-final-versus.legion-umbria::after { content:""; position:absolute; z-index:2; inset:0; background:radial-gradient(circle at 70% 48%,rgba(105,25,174,.28),rgba(1,0,5,.9) 72%); }
 .cinematica-final-versus.legion-umbria.activa { animation-duration: 6.5s; }
@@ -7769,30 +7775,38 @@ button:disabled {
     inset: 0; opacity: 1; background: repeating-conic-gradient(from 20deg at 72% 54%, transparent 0 13deg, rgba(110,30,184,.13) 15deg 18deg);
     animation: rotarVorticeFinalShadowVersus 2.3s linear infinite;
 }
-.cinematica-victima-shadow { left: 9%; bottom: 3%; width: min(33vw,390px); filter:drop-shadow(0 12px 10px #000); }
+.cinematica-victima-shadow { left: 38%; bottom: 3%; width: min(27vw,320px); filter:drop-shadow(0 12px 10px #000); }
 .cinematica-victima-shadow.victima-final-t_shadow { width:min(35vw,420px); transform:scaleX(-1); }
 .legion-umbria.activa .cinematica-victima-shadow { animation: victimaLegionShadowVersus 6.5s ease both; }
-.cinematica-shadow-clon { width:min(34vw,410px); right:4%; bottom:-1%; filter:brightness(.24) saturate(2.4) hue-rotate(230deg) drop-shadow(0 0 18px #8e32e5); }
+.cinematica-shadow-clon { width:min(23vw,285px); filter:brightness(.2) saturate(2.6) hue-rotate(230deg) drop-shadow(0 0 18px #8e32e5); }
+.sombra-clon-uno { left:3%; bottom:-2%; }
+.sombra-clon-dos { right:2%; bottom:1%; transform:scaleX(-1); }
+.sombra-clon-tres { left:38%; top:14%; }
 .legion-umbria.activa .sombra-clon-uno { animation: ataqueClonUnoShadowVersus 6.5s ease both; }
 .legion-umbria.activa .sombra-clon-dos { animation: ataqueClonDosShadowVersus 6.5s ease both; }
 .legion-umbria.activa .sombra-clon-tres { animation: ataqueClonTresShadowVersus 6.5s ease both; }
-.shadow-final-cortes { z-index:7; left:5%; top:22%; width:46%; height:58%; }
+.shadow-final-cortes { z-index:7; left:28%; top:22%; width:44%; height:58%; }
 .shadow-final-cortes i { position:absolute; inset:20% 0; border-top:8px solid #d89aff; border-radius:50%; filter:drop-shadow(0 0 12px #7a20c2); transform:rotate(-18deg); }
 .shadow-final-cortes i:nth-child(2){ transform:rotate(12deg); }.shadow-final-cortes i:nth-child(3){transform:rotate(-2deg) scale(.75)}
 .legion-umbria.activa .shadow-final-cortes { animation: cortesLegionShadowVersus 6.5s steps(1) both; }
-.shadow-final-fusion { z-index:8; right:13%; bottom:8%; width:23vw; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle,#fff 0 3%,#9d40e5 12%,rgba(57,4,101,.65) 34%,transparent 67%); }
+.shadow-final-fusion { z-index:8; left:50%; bottom:9%; width:23vw; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle,#fff 0 3%,#9d40e5 12%,rgba(57,4,101,.65) 34%,transparent 67%); transform:translateX(-50%); }
 .legion-umbria.activa .shadow-final-fusion { animation:fusionLegionShadowVersus 6.5s ease both; }
-.cinematica-shadow-victoria { z-index:9; right:5%; bottom:-2%; width:min(38vw,460px); filter:drop-shadow(0 0 18px #7e24c5) drop-shadow(0 15px 10px #000); }
+.shadow-final-ojos { z-index:10; left:50%; top:37%; display:flex; gap:clamp(22px,3.2vw,42px); transform:translateX(-50%); }
+.shadow-final-ojos i { display:block; width:clamp(20px,3.2vw,40px); height:clamp(7px,1.1vw,14px); clip-path:polygon(0 0,100% 28%,76% 100%,10% 72%); background:#d97cff; box-shadow:0 0 8px #fff,0 0 18px #a631ff,0 0 36px #7211c2; filter:drop-shadow(0 0 8px #b83dff); transform:skewX(14deg) rotate(7deg); }
+.shadow-final-ojos i:last-child { transform:scaleX(-1) skewX(14deg) rotate(7deg); }
+.legion-umbria.activa .shadow-final-ojos { animation:ojosLegionShadowVersus 6.5s ease both; }
+.cinematica-shadow-victoria { z-index:9; left:50%; bottom:-3%; width:min(48vw,500px); filter:drop-shadow(0 0 24px #7e24c5) drop-shadow(0 15px 10px #000); }
 .legion-umbria.activa .cinematica-shadow-victoria { animation:victoriaLegionShadowVersus 6.5s ease both; }
 .cinematica-final-versus.legion-umbria .cinematica-final-titulos { z-index:12; }
 @keyframes rotarVorticeFinalShadowVersus { to { transform:rotate(360deg) scale(1.1); } }
-@keyframes ataqueClonUnoShadowVersus { 0%,8%,30%,100%{opacity:0;transform:translate(0,0) scale(.82)} 13%,23%{opacity:.88;transform:translate(-54vw,-5vh) scale(1)} 72%{opacity:.65;transform:translate(0,0) scale(.5)} }
-@keyframes ataqueClonDosShadowVersus { 0%,24%,47%,100%{opacity:0;transform:translate(5vw,-15vh) scale(.8)} 29%,40%{opacity:.82;transform:translate(-53vw,8vh) scale(.96)} 72%{opacity:.65;transform:translate(0,0) scale(.5)} }
-@keyframes ataqueClonTresShadowVersus { 0%,40%,64%,100%{opacity:0;transform:translate(3vw,12vh) scale(.85)} 45%,56%{opacity:.9;transform:translate(-55vw,-1vh) scale(1.04)} 72%{opacity:.7;transform:translate(0,0) scale(.5)} }
-@keyframes victimaLegionShadowVersus { 0%,10%{opacity:1;transform:translate(0)} 18%,58%{opacity:1;transform:translate(-1vw) rotate(-3deg);filter:brightness(.7) drop-shadow(0 0 16px #b55eff)} 64%,100%{opacity:0;transform:translate(-5vw) scale(.8)} }
-@keyframes cortesLegionShadowVersus { 0%,12%,22%,29%,39%,46%,56%,100%{opacity:0} 13%,21%,30%,38%,47%,55%{opacity:1} }
-@keyframes fusionLegionShadowVersus { 0%,64%,85%,100%{opacity:0;transform:scale(.2)} 72%{opacity:1;transform:scale(1.4)} 80%{opacity:.7;transform:scale(.65)} }
-@keyframes victoriaLegionShadowVersus { 0%,72%{opacity:0;transform:translateY(12%) scale(.75)} 82%,94%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:0;transform:scale(1.04)} }
+@keyframes ataqueClonUnoShadowVersus { 0%,6%,48%,60%,100%{opacity:0;transform:translate(0,0) scale(.8)} 10%,15%{opacity:.7;transform:translate(0,0) scale(.9)} 21%,37%{opacity:.86;transform:translate(30vw,-1vh) scale(1.02)} 55%{opacity:.7;transform:translate(43vw,0) scale(.25)} }
+@keyframes ataqueClonDosShadowVersus { 0%,8%,51%,61%,100%{opacity:0;transform:scaleX(-1) translate(0,0) scale(.8)} 12%,18%{opacity:.7;transform:scaleX(-1) translate(0,0) scale(.9)} 24%,40%{opacity:.84;transform:scaleX(-1) translate(30vw,-1vh) scale(1)} 56%{opacity:.68;transform:scaleX(-1) translate(43vw,0) scale(.25)} }
+@keyframes ataqueClonTresShadowVersus { 0%,10%,54%,62%,100%{opacity:0;transform:translate(0,0) scale(.78)} 14%,21%{opacity:.72;transform:translate(0,0) scale(.88)} 27%,43%{opacity:.88;transform:translate(0,18vh) scale(1)} 57%{opacity:.7;transform:translate(0,32vh) scale(.24)} }
+@keyframes victimaLegionShadowVersus { 0%,9%{opacity:1;transform:translate(0)} 16%,48%{opacity:1;transform:rotate(-2deg);filter:brightness(.65) drop-shadow(0 0 18px #b55eff)} 56%,100%{opacity:0;transform:scale(.72)} }
+@keyframes cortesLegionShadowVersus { 0%,12%,18%,21%,27%,30%,36%,100%{opacity:0} 13%,17%,22%,26%,31%,35%{opacity:1} }
+@keyframes fusionLegionShadowVersus { 0%,49%,67%,100%{opacity:0;transform:translateX(-50%) scale(.18)} 56%{opacity:1;transform:translateX(-50%) scale(1.45)} 63%{opacity:.75;transform:translateX(-50%) scale(.58)} }
+@keyframes ojosLegionShadowVersus { 0%,62%,79%,100%{opacity:0;filter:blur(5px)} 67%,75%{opacity:1;filter:blur(0);transform:translateX(-50%) scale(1.12)} }
+@keyframes victoriaLegionShadowVersus { 0%,74%{opacity:0;transform:translateX(-50%) translateY(9%) scale(.7)} 82%,94%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)} 100%{opacity:0;transform:translateX(-50%) scale(1.04)} }
 
 @media (orientation: landscape) and (max-height: 500px) {
     .lista-personajes-versus { grid-template-columns: repeat(6, minmax(0, 1fr)); }
