@@ -7,7 +7,7 @@ const app = fs.readFileSync(path.join(raiz, "js", "app.js"), "utf8");
 const estilos = fs.readFileSync(path.join(raiz, "css", "styles.css"), "utf8");
 const html = fs.readFileSync(path.join(raiz, "index.html"), "utf8");
 const migracionPalabraPerdida = fs.readFileSync(
-  path.join(raiz, "supabase", "migrations", "20260810020000_reveal_failed_versus_word.sql"),
+  path.join(raiz, "supabase", "migrations", "20260811014047_reveal_failed_versus_word.sql"),
   "utf8",
 );
 
