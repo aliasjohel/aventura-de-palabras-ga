@@ -2427,6 +2427,193 @@ button:disabled {
     to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
+.versus-palabra-uno.efecto-raices-desafio {
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.versus-palabra-uno.efecto-raices-desafio::before,
+.versus-palabra-uno.efecto-raices-desafio::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+}
+
+.versus-palabra-uno.efecto-raices-desafio::before {
+    z-index: 18;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(12, 48, 17, 0.42), rgba(3, 24, 7, 0.82));
+    animation: oscurecerRaicesDesafioVersus 620ms ease-out both;
+}
+
+.versus-palabra-uno.efecto-raices-desafio::after {
+    z-index: 20;
+    right: -4%;
+    bottom: -34%;
+    left: -4%;
+    height: 190%;
+    background: url("../assets/images/elementos/enredaderas-teclado-versus.png") center bottom / 108% 100% no-repeat;
+    filter: drop-shadow(0 3px 5px rgba(2, 18, 4, 0.9));
+    transform-origin: center bottom;
+    animation: crecerRaicesDesafioVersus 680ms cubic-bezier(0.12, 0.78, 0.18, 1) both;
+}
+
+@keyframes oscurecerRaicesDesafioVersus {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes crecerRaicesDesafioVersus {
+    0% { opacity: 0; transform: translateY(78%) scale(0.74, 0.2); }
+    58% { opacity: 1; transform: translateY(-3%) scale(1.04, 1.08); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.versus-palabra-uno.efecto-rugido-desafio {
+    z-index: 16;
+    animation: temblorDesafioRugidoVersus 150ms linear infinite;
+}
+
+.versus-palabra-uno.efecto-rugido-desafio strong,
+.versus-palabra-uno.efecto-rugido-desafio .versus-palabra-cabecera,
+.versus-palabra-uno.efecto-rugido-desafio .versus-intentos {
+    animation: distorsionDesafioRugidoVersus 210ms steps(2, end) infinite alternate;
+}
+
+@keyframes temblorDesafioRugidoVersus {
+    0%, 100% { transform: translate(0, 0) rotate(0); }
+    20% { transform: translate(-7px, 3px) rotate(-1deg); }
+    40% { transform: translate(8px, -3px) rotate(1.2deg); }
+    60% { transform: translate(-5px, -2px) rotate(-0.8deg); }
+    80% { transform: translate(6px, 3px) rotate(0.7deg); }
+}
+
+@keyframes distorsionDesafioRugidoVersus {
+    from { filter: blur(0); text-shadow: -2px 0 rgba(195, 45, 20, 0.5); }
+    to { filter: blur(1.35px); text-shadow: 3px 1px rgba(255, 174, 46, 0.75); }
+}
+
+.versus-palabra-uno.efecto-caos-desafio {
+    isolation: isolate;
+    overflow: hidden;
+    border-color: #7e3db0;
+    box-shadow: inset 0 0 22px rgba(97, 26, 143, 0.58), 0 0 16px rgba(175, 73, 238, 0.7);
+    animation: pulsoPanelCaosVersus 520ms ease-in-out infinite alternate;
+}
+
+.versus-palabra-uno.efecto-caos-desafio::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: -120%;
+    background: repeating-conic-gradient(
+        from 0deg,
+        rgba(70, 12, 105, 0.68) 0 13deg,
+        rgba(192, 92, 247, 0.15) 17deg 29deg,
+        transparent 34deg 46deg
+    );
+    pointer-events: none;
+    animation: remolinoPanelCaosVersus 1.15s linear infinite;
+}
+
+.versus-palabra-uno.efecto-caos-desafio > * {
+    position: relative;
+    z-index: 2;
+}
+
+.versus-palabra-uno.efecto-caos-desafio strong {
+    color: #f1d0ff;
+    text-shadow: -4px 0 #54206f, 4px 0 #b95be9;
+    animation: letrasCaosDesafioVersus 360ms steps(2, end) infinite;
+}
+
+.versus-palabra-uno.efecto-caos-desafio .versus-palabra-cabecera {
+    animation: cabeceraCaosDesafioVersus 480ms steps(2, end) infinite alternate;
+}
+
+.versus-palabra-uno.efecto-caos-desafio .versus-intentos {
+    animation: intentosCaosDesafioVersus 420ms steps(2, end) infinite reverse;
+}
+
+@keyframes remolinoPanelCaosVersus {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulsoPanelCaosVersus {
+    to { filter: hue-rotate(24deg) brightness(1.08); }
+}
+
+@keyframes letrasCaosDesafioVersus {
+    0% { transform: translate(-9px, 1px) skewX(-8deg); letter-spacing: 0.02em; }
+    33% { transform: translate(8px, -2px) skewX(6deg); letter-spacing: 0.16em; }
+    66% { transform: translate(-3px, 3px) skewX(3deg); letter-spacing: 0.08em; }
+    100% { transform: translate(6px, 1px) skewX(-5deg); letter-spacing: 0.13em; }
+}
+
+@keyframes cabeceraCaosDesafioVersus {
+    from { transform: translateX(-7px) rotate(-1deg); filter: blur(0.2px); }
+    to { transform: translateX(8px) rotate(1deg); filter: blur(1px); }
+}
+
+@keyframes intentosCaosDesafioVersus {
+    from { transform: translateX(-6px) scaleX(0.94); }
+    to { transform: translateX(7px) scaleX(1.06); }
+}
+
+.versus-palabra-uno.efecto-ruptura-desafio {
+    isolation: isolate;
+    overflow: hidden;
+    border-color: #ffe69a;
+    box-shadow: inset 0 0 18px rgba(255, 244, 184, 0.72), 0 0 20px rgba(255, 226, 110, 0.86);
+}
+
+.versus-palabra-uno.efecto-ruptura-desafio::before,
+.versus-palabra-uno.efecto-ruptura-desafio::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.versus-palabra-uno.efecto-ruptura-desafio::before {
+    z-index: 18;
+    background: rgba(255, 248, 202, 0.44);
+    animation: destelloRupturaDesafioVersus 560ms steps(2, end) infinite;
+}
+
+.versus-palabra-uno.efecto-ruptura-desafio::after {
+    z-index: 20;
+    opacity: 0.82;
+    background:
+        linear-gradient(112deg, transparent 0 27%, #fff 28% 29%, transparent 30% 100%),
+        linear-gradient(68deg, transparent 0 52%, #ffe695 53% 54%, transparent 55% 100%),
+        linear-gradient(126deg, transparent 0 69%, #fff8ca 70% 71%, transparent 72% 100%);
+    filter: drop-shadow(0 0 4px #fff4a7);
+    animation: grietasRupturaDesafioVersus 680ms steps(2, end) infinite alternate;
+}
+
+.versus-palabra-uno.efecto-ruptura-desafio strong,
+.versus-palabra-uno.efecto-ruptura-desafio .versus-palabra-cabecera,
+.versus-palabra-uno.efecto-ruptura-desafio .versus-intentos {
+    animation: reboteRupturaDesafioVersus 520ms cubic-bezier(0.42, 0.05, 0.58, 0.95) infinite alternate;
+}
+
+@keyframes destelloRupturaDesafioVersus {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.72; }
+}
+
+@keyframes grietasRupturaDesafioVersus {
+    from { transform: translateX(-3px) scale(1.02); }
+    to { transform: translateX(4px) scale(1.08); }
+}
+
+@keyframes reboteRupturaDesafioVersus {
+    0% { opacity: 1; transform: translate(-5px, 3px) rotate(-1deg); filter: blur(0); }
+    45% { opacity: 0.22; transform: translate(7px, -4px) rotate(1.6deg); filter: blur(1.4px); }
+    100% { opacity: 0.78; transform: translate(-2px, -1px) rotate(-0.6deg); filter: blur(0.5px); }
+}
+
 .versus-palabra-uno {
     border-color: #2d7095;
     box-shadow:
@@ -4127,12 +4314,28 @@ button:disabled {
     .btn-habilidad-versus.lista,
     .letra-versus.pista-lupa,
     .teclado-versus.efecto-raices::after,
-    .teclado-versus.efecto-rugido {
+    .teclado-versus.efecto-rugido,
+    .versus-palabra-uno.efecto-raices-desafio::before,
+    .versus-palabra-uno.efecto-raices-desafio::after,
+    .versus-palabra-uno.efecto-rugido-desafio,
+    .versus-palabra-uno.efecto-rugido-desafio *,
+    .versus-palabra-uno.efecto-caos-desafio,
+    .versus-palabra-uno.efecto-caos-desafio *,
+    .versus-palabra-uno.efecto-caos-desafio::before,
+    .versus-palabra-uno.efecto-ruptura-desafio *,
+    .versus-palabra-uno.efecto-ruptura-desafio::before,
+    .versus-palabra-uno.efecto-ruptura-desafio::after {
         animation: none !important;
     }
 
     .teclado-versus.efecto-rugido {
         filter: drop-shadow(0 0 8px rgba(255, 184, 69, 0.75));
+    }
+
+    .versus-palabra-uno.efecto-rugido-desafio strong,
+    .versus-palabra-uno.efecto-caos-desafio strong,
+    .versus-palabra-uno.efecto-ruptura-desafio strong {
+        filter: blur(1px);
     }
 
     .cinematica-final-versus.activa,

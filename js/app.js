@@ -2078,6 +2078,19 @@ function desordenarTecladoVersus(animar = true) {
   else desordenar();
 }
 
+function detenerCaosContinuoTecladoVersus() {
+  if (demoVersus.intervaloCaosHabilidad) clearInterval(demoVersus.intervaloCaosHabilidad);
+  demoVersus.intervaloCaosHabilidad = null;
+}
+
+function iniciarCaosContinuoTecladoVersus() {
+  desordenarTecladoVersus(true);
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  demoVersus.intervaloCaosHabilidad = setInterval(() => {
+    desordenarTecladoVersus(true);
+  }, 760);
+}
+
 function actualizarPistaLupaVersus(letra = "") {
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.classList.toggle("pista-lupa", Boolean(letra) && boton.textContent === letra);
@@ -2152,9 +2165,16 @@ function sincronizarTecladoDemoVersus() {
 function limpiarEfectoVisualHabilidadVersus() {
   if (demoVersus.temporizadorEfectoHabilidad) clearTimeout(demoVersus.temporizadorEfectoHabilidad);
   demoVersus.temporizadorEfectoHabilidad = null;
+  detenerCaosContinuoTecladoVersus();
   tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos", "efecto-agujero-negro", "efecto-teclas-rotas");
   tecladoVersus.style.removeProperty("--duracion-agujero-negro");
-  desafioJugadorVersus.classList.remove("efecto-agujero-negro-desafio");
+  desafioJugadorVersus.classList.remove(
+    "efecto-raices-desafio",
+    "efecto-rugido-desafio",
+    "efecto-caos-desafio",
+    "efecto-agujero-negro-desafio",
+    "efecto-ruptura-desafio",
+  );
   desafioJugadorVersus.style.removeProperty("--duracion-agujero-negro");
   marcoVersus.classList.remove("efecto-inversion-lunar");
   teclasRotasVersus.classList.remove("activa");
@@ -2215,11 +2235,18 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
     return;
   }
 
-  if (efecto === "roots") tecladoVersus.classList.add("efecto-raices");
-  if (efecto === "roar") tecladoVersus.classList.add("efecto-rugido");
+  if (efecto === "roots") {
+    tecladoVersus.classList.add("efecto-raices");
+    desafioJugadorVersus.classList.add("efecto-raices-desafio");
+  }
+  if (efecto === "roar") {
+    tecladoVersus.classList.add("efecto-rugido");
+    desafioJugadorVersus.classList.add("efecto-rugido-desafio");
+  }
   if (efecto === "shuffle") {
     tecladoVersus.classList.add("efecto-caos");
-    desordenarTecladoVersus(true);
+    desafioJugadorVersus.classList.add("efecto-caos-desafio");
+    iniciarCaosContinuoTecladoVersus();
   }
   if (efecto === "invert") {
     marcoVersus.style.setProperty("--duracion-inversion-lunar", `${milisegundos}ms`);
@@ -2235,15 +2262,23 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
   if (efecto === "key_bounce") {
     prepararTeclasRotasVersus();
     tecladoVersus.classList.add("efecto-teclas-rotas");
+    desafioJugadorVersus.classList.add("efecto-ruptura-desafio");
   }
   if (["roots", "black_hole", "key_bounce"].includes(efecto)) tecladoVersus.querySelectorAll("button").forEach((boton) => { boton.disabled = true; });
 
   demoVersus.temporizadorEfectoHabilidad = setTimeout(() => {
     demoVersus.temporizadorEfectoHabilidad = null;
     const restaurarConAnimacion = tecladoVersus.classList.contains("efecto-caos");
+    detenerCaosContinuoTecladoVersus();
     tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos", "efecto-agujero-negro", "efecto-teclas-rotas");
     tecladoVersus.style.removeProperty("--duracion-agujero-negro");
-    desafioJugadorVersus.classList.remove("efecto-agujero-negro-desafio");
+    desafioJugadorVersus.classList.remove(
+      "efecto-raices-desafio",
+      "efecto-rugido-desafio",
+      "efecto-caos-desafio",
+      "efecto-agujero-negro-desafio",
+      "efecto-ruptura-desafio",
+    );
     desafioJugadorVersus.style.removeProperty("--duracion-agujero-negro");
     teclasRotasVersus.classList.remove("activa");
     teclasRotasVersus.replaceChildren();
@@ -2620,6 +2655,7 @@ const demoVersus = {
   efectoRival: "",
   firmaEfectoHabilidad: "",
   temporizadorEfectoHabilidad: null,
+  intervaloCaosHabilidad: null,
   temporizadoresHabilidad: [],
   tiempoJugador: duracionPartidaVersus,
   tiempoRival: duracionPartidaVersus,
