@@ -156,6 +156,7 @@ assert.match(app, /desafioJugadorVersus\.classList\.remove\("efecto-agujero-negr
 assert.match(estilos, /\.versus-palabra-uno\.efecto-agujero-negro-desafio::before/);
 assert.match(estilos, /@keyframes oscurecerDesafioAgujeroVersus/);
 assert.match(estilos, /@keyframes rotarAgujeroDesafioVersus/);
+assert.match(estilos, /transform: translate\(-50%, -50%\) rotate\(360deg\)/);
 assert.match(app, /function reproducirLegionUmbriaVersus\(/);
 assert.match(estilos, /ataqueClonUnoShadowVersus/);
 assert.match(estilos, /fusionLegionShadowVersus/);
