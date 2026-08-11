@@ -97,6 +97,7 @@ const animacionHabilidadVersus = document.getElementById("animacionHabilidadVers
 const tituloVersus = document.getElementById("tituloVersus");
 const tituloProgresoUno = document.getElementById("tituloProgresoUno");
 const tituloProgresoDos = document.getElementById("tituloProgresoDos");
+const desafioJugadorVersus = document.getElementById("desafioJugadorVersus");
 const revelacionPalabraVersusUno = document.getElementById("revelacionPalabraVersusUno");
 const revelacionPalabraVersusDos = document.getElementById("revelacionPalabraVersusDos");
 const fondoVersus = document.querySelector(".versus-fondo");
@@ -2152,6 +2153,9 @@ function limpiarEfectoVisualHabilidadVersus() {
   if (demoVersus.temporizadorEfectoHabilidad) clearTimeout(demoVersus.temporizadorEfectoHabilidad);
   demoVersus.temporizadorEfectoHabilidad = null;
   tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos", "efecto-agujero-negro", "efecto-teclas-rotas");
+  tecladoVersus.style.removeProperty("--duracion-agujero-negro");
+  desafioJugadorVersus.classList.remove("efecto-agujero-negro-desafio");
+  desafioJugadorVersus.style.removeProperty("--duracion-agujero-negro");
   marcoVersus.classList.remove("efecto-inversion-lunar");
   teclasRotasVersus.classList.remove("activa");
   teclasRotasVersus.replaceChildren();
@@ -2225,6 +2229,8 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
     prepararAgujeroNegroTecladoVersus();
     tecladoVersus.style.setProperty("--duracion-agujero-negro", `${milisegundos}ms`);
     tecladoVersus.classList.add("efecto-agujero-negro");
+    desafioJugadorVersus.style.setProperty("--duracion-agujero-negro", `${milisegundos}ms`);
+    desafioJugadorVersus.classList.add("efecto-agujero-negro-desafio");
   }
   if (efecto === "key_bounce") {
     prepararTeclasRotasVersus();
@@ -2237,6 +2243,8 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
     const restaurarConAnimacion = tecladoVersus.classList.contains("efecto-caos");
     tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos", "efecto-agujero-negro", "efecto-teclas-rotas");
     tecladoVersus.style.removeProperty("--duracion-agujero-negro");
+    desafioJugadorVersus.classList.remove("efecto-agujero-negro-desafio");
+    desafioJugadorVersus.style.removeProperty("--duracion-agujero-negro");
     teclasRotasVersus.classList.remove("activa");
     teclasRotasVersus.replaceChildren();
     marcoVersus.classList.remove("efecto-inversion-lunar");

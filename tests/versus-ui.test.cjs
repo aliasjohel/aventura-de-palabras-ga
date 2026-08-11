@@ -150,6 +150,12 @@ assert.match(app, /t_shadow: \{ nombre: "Vacío devorador"[\s\S]+efecto: "black_
 assert.match(app, /function prepararAgujeroNegroTecladoVersus\(\)/);
 assert.match(estilos, /\.teclado-versus\.efecto-agujero-negro/);
 assert.match(estilos, /@keyframes absorberTeclaAgujeroNegroVersus/);
+assert.match(html, /id="desafioJugadorVersus"/);
+assert.match(app, /desafioJugadorVersus\.classList\.add\("efecto-agujero-negro-desafio"\)/);
+assert.match(app, /desafioJugadorVersus\.classList\.remove\("efecto-agujero-negro-desafio"\)/);
+assert.match(estilos, /\.versus-palabra-uno\.efecto-agujero-negro-desafio::before/);
+assert.match(estilos, /@keyframes oscurecerDesafioAgujeroVersus/);
+assert.match(estilos, /@keyframes rotarAgujeroDesafioVersus/);
 assert.match(app, /function reproducirLegionUmbriaVersus\(/);
 assert.match(estilos, /ataqueClonUnoShadowVersus/);
 assert.match(estilos, /fusionLegionShadowVersus/);
