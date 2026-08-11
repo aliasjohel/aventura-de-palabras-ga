@@ -97,6 +97,8 @@ const animacionHabilidadVersus = document.getElementById("animacionHabilidadVers
 const tituloVersus = document.getElementById("tituloVersus");
 const tituloProgresoUno = document.getElementById("tituloProgresoUno");
 const tituloProgresoDos = document.getElementById("tituloProgresoDos");
+const revelacionPalabraVersusUno = document.getElementById("revelacionPalabraVersusUno");
+const revelacionPalabraVersusDos = document.getElementById("revelacionPalabraVersusDos");
 const fondoVersus = document.querySelector(".versus-fondo");
 const personajeVersusUno = document.getElementById("personajeVersusUno");
 const personajeVersusDos = document.getElementById("personajeVersusDos");
@@ -1013,7 +1015,11 @@ function renderizarPartidaOnline(partida) {
 function procesarEventoPartidaOnline(partida) {
   if (partida.eventSequence <= ultimoEventoPartidaVersus) return;
   ultimoEventoPartidaVersus = partida.eventSequence;
-  const evento = partida.lastEvent;
+  const eventoFinal = partida.lastEvent;
+  const evento = eventoFinal?.type === "match_finished"
+    && eventoFinal.previousEvent?.type === "word_failed"
+    ? eventoFinal.previousEvent
+    : eventoFinal;
   if (!evento) return;
   const propio = evento.actorId === partida.me?.userId;
   const estadoPropio = document.getElementById("estadoProgresoUno");
@@ -1034,6 +1040,12 @@ function procesarEventoPartidaOnline(partida) {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 260 : 1300,
     );
   } else if (evento.type === "word_failed") {
+    mostrarRevelacionPalabraVersus(
+      propio ? revelacionPalabraVersusUno : revelacionPalabraVersusDos,
+      evento.word,
+      propio ? partida.me?.theme : partida.opponent?.theme,
+      propio ? "temporizadorRevelacionJugador" : "temporizadorRevelacionRival",
+    );
     if (propio) reproducirAtaqueRivalVersus();
     else reproducirAtaqueJugadorVersus();
     mostrarAvisoAvanceVersus(
@@ -1088,6 +1100,7 @@ function actualizarPartidaOnline(partida) {
 
   if (esNueva) {
     detenerRondaVersus();
+    ocultarRevelacionesPalabrasVersus();
     cancelarCinematicaFinalVersus();
     limpiarAnimacionAtaqueVersus();
     demoVersus.partidaFinalizada = false;
@@ -2609,6 +2622,8 @@ const demoVersus = {
   intervaloTiempo: null,
   intervaloRival: null,
   temporizadorAviso: null,
+  temporizadorRevelacionJugador: null,
+  temporizadorRevelacionRival: null,
   temporizadoresAtaqueJugador: [],
   temporizadoresAtaqueRival: [],
   temporizadorCinematica: null,
@@ -3313,6 +3328,44 @@ function mostrarEstadoProgresoVersus(elemento, mensaje, tipo = "") {
   elemento.className = tipo;
 }
 
+function ocultarRevelacionPalabraVersus(elemento, claveTemporizador) {
+  if (demoVersus[claveTemporizador]) clearTimeout(demoVersus[claveTemporizador]);
+  demoVersus[claveTemporizador] = null;
+  elemento.hidden = true;
+  elemento.textContent = "";
+}
+
+function mostrarRevelacionPalabraVersus(elemento, palabra, tematica, claveTemporizador) {
+  if (!palabra) return;
+  ocultarRevelacionPalabraVersus(elemento, claveTemporizador);
+  const etiqueta = document.createElement("span");
+  const respuesta = document.createElement("strong");
+  etiqueta.textContent = "La palabra era ";
+  respuesta.textContent = palabra;
+  elemento.append(
+    etiqueta,
+    respuesta,
+    document.createTextNode(` · Tema: ${obtenerNombreTemaVersus(tematica).toLowerCase()}`),
+  );
+  elemento.hidden = false;
+  demoVersus[claveTemporizador] = setTimeout(() => {
+    elemento.hidden = true;
+    elemento.textContent = "";
+    demoVersus[claveTemporizador] = null;
+  }, 4200);
+}
+
+function ocultarRevelacionesPalabrasVersus() {
+  ocultarRevelacionPalabraVersus(
+    revelacionPalabraVersusUno,
+    "temporizadorRevelacionJugador",
+  );
+  ocultarRevelacionPalabraVersus(
+    revelacionPalabraVersusDos,
+    "temporizadorRevelacionRival",
+  );
+}
+
 function actualizarIntentosVersus(contenedor, errores, nombreJugador) {
   const restantes = Math.max(0, maximoErroresVersus - errores);
   [...contenedor.children].forEach((intento, indice) => {
@@ -3351,6 +3404,7 @@ function mezclarPalabrasVersus(palabras) {
 function prepararDueloVersus({ comenzarRonda = true } = {}) {
   cancelarCinematicaFinalVersus();
   detenerRondaVersus();
+  ocultarRevelacionesPalabrasVersus();
   limpiarAnimacionAtaqueVersus();
   configurarPersonajesCombateVersus();
   const tematicasDisponibles = Object.keys(bancosPalabrasVersus);
@@ -3685,6 +3739,7 @@ function mostrarAvisoAvanceVersus(mensaje, tipo = "", demora = 0) {
 
 function avanzarPalabraJugadorVersus(acertada) {
   const numeroPalabra = demoVersus.indiceJugador + 1;
+  const palabraPerdida = obtenerPalabraActualJugadorVersus();
   demoVersus.indiceJugador += 1;
   demoVersus.letrasJugador.clear();
   demoVersus.erroresJugador = 0;
@@ -3698,6 +3753,12 @@ function avanzarPalabraJugadorVersus(acertada) {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 260 : 1550,
     );
   } else {
+    mostrarRevelacionPalabraVersus(
+      revelacionPalabraVersusUno,
+      palabraPerdida,
+      demoVersus.tematicaParaJugador,
+      "temporizadorRevelacionJugador",
+    );
     demoVersus.vidasJugador -= 1;
     reproducirAtaqueRivalVersus();
     mostrarAvisoAvanceVersus(
@@ -3734,6 +3795,7 @@ function avanzarPalabraJugadorVersus(acertada) {
 
 function avanzarPalabraRivalVersus(acertada) {
   const numeroPalabra = demoVersus.indiceRival + 1;
+  const palabraPerdida = obtenerPalabraActualRivalVersus();
   demoVersus.indiceRival += 1;
   demoVersus.letrasRival.clear();
   demoVersus.erroresRival = 0;
@@ -3747,6 +3809,12 @@ function avanzarPalabraRivalVersus(acertada) {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 260 : 1300,
     );
   } else {
+    mostrarRevelacionPalabraVersus(
+      revelacionPalabraVersusDos,
+      palabraPerdida,
+      demoVersus.tematicaParaRival,
+      "temporizadorRevelacionRival",
+    );
     demoVersus.vidasRival -= 1;
     reproducirAtaqueJugadorVersus();
     mostrarAvisoAvanceVersus(

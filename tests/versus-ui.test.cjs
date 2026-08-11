@@ -6,6 +6,10 @@ const raiz = path.resolve(__dirname, "..");
 const app = fs.readFileSync(path.join(raiz, "js", "app.js"), "utf8");
 const estilos = fs.readFileSync(path.join(raiz, "css", "styles.css"), "utf8");
 const html = fs.readFileSync(path.join(raiz, "index.html"), "utf8");
+const migracionPalabraPerdida = fs.readFileSync(
+  path.join(raiz, "supabase", "migrations", "20260810020000_reveal_failed_versus_word.sql"),
+  "utf8",
+);
 
 const eventosOnline = app.slice(
   app.indexOf("function procesarEventoPartidaOnline"),
@@ -14,6 +18,14 @@ const eventosOnline = app.slice(
 assert.match(eventosOnline, /else reproducirAtaqueRivalVersus\(\)/);
 assert.match(eventosOnline, /if \(propio\) reproducirAtaqueRivalVersus\(\)/);
 assert.doesNotMatch(eventosOnline, /else reproducirAtaqueMagoVersus\(\)/);
+assert.match(eventosOnline, /evento\.word/);
+assert.match(html, /id="revelacionPalabraVersusUno"[\s\S]+id="revelacionPalabraVersusDos"/);
+assert.match(estilos, /\.versus-palabra-revelada/);
+assert.match(app, /function mostrarRevelacionPalabraVersus\(/);
+assert.match(app, /La palabra era/);
+assert.match(migracionPalabraPerdida, /'type', 'word_failed'[\s\S]+?'word', v_word/);
+assert.match(migracionPalabraPerdida, /'previousEvent', last_event/);
+assert.match(eventosOnline, /eventoFinal\.previousEvent/);
 
 const cierreOnline = app.slice(
   app.indexOf("function finalizarPartidaOnline"),

@@ -2419,6 +2419,29 @@ button:disabled {
 .versus-palabra small.error { color: #b12824; }
 .versus-palabra small.agotado { color: #761d1a; }
 
+.versus-palabra-revelada {
+    margin: 1px 0 4px;
+    color: #761d1a;
+    font-size: clamp(0.55rem, 1.15vw, 0.8rem);
+    font-weight: 700;
+    line-height: 1.15;
+    animation: aparecerPalabraReveladaVersus 220ms ease-out;
+}
+
+.versus-palabra p.versus-palabra-revelada > strong {
+    display: inline;
+    overflow: visible;
+    color: inherit;
+    font-size: 1.08em;
+    letter-spacing: 0.035em;
+    white-space: normal;
+}
+
+@keyframes aparecerPalabraReveladaVersus {
+    from { opacity: 0; transform: translateY(3px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .versus-palabra strong {
     display: block;
     overflow: hidden;
