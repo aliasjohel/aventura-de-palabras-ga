@@ -10427,10 +10427,10 @@ button:disabled {
   pointer-events:none;filter:drop-shadow(0 0 10px #ffbe55) drop-shadow(0 0 22px #f3310b);
 }
 .corte-infernal-versus.volando { display:block;animation:corteInfernalJugador .82s cubic-bezier(.2,.76,.2,1) both; }
-.corte-infernal-versus.desde-rival { left:auto;right:24%;transform:scaleX(-1); }
+.corte-infernal-versus.desde-rival { left:auto;right:24%; }
 .corte-infernal-versus.desde-rival.volando { animation-name:corteInfernalRival; }
-@keyframes corteInfernalJugador { 0%{opacity:0;transform:translateX(-3vw) scale(.28) rotate(-16deg)} 18%{opacity:1} 68%{opacity:1;transform:translateX(39vw) scale(1) rotate(8deg)} 100%{opacity:0;transform:translateX(43vw) scale(1.35) rotate(14deg);filter:brightness(2.4)} }
-@keyframes corteInfernalRival { 0%{opacity:0;transform:translateX(3vw) scaleX(-1) scale(.28) rotate(-16deg)} 18%{opacity:1} 68%{opacity:1;transform:translateX(-39vw) scaleX(-1) scale(1) rotate(8deg)} 100%{opacity:0;transform:translateX(-43vw) scaleX(-1) scale(1.35) rotate(14deg);filter:brightness(2.4)} }
+@keyframes corteInfernalJugador { 0%{opacity:0;transform:translateX(-3vw) scaleX(-1) scale(.28) rotate(-16deg)} 18%{opacity:1} 68%{opacity:1;transform:translateX(39vw) scaleX(-1) scale(1) rotate(8deg)} 100%{opacity:0;transform:translateX(43vw) scaleX(-1) scale(1.35) rotate(14deg);filter:brightness(2.4)} }
+@keyframes corteInfernalRival { 0%{opacity:0;transform:translateX(3vw) scale(.28) rotate(-16deg)} 18%{opacity:1} 68%{opacity:1;transform:translateX(-39vw) scale(1) rotate(8deg)} 100%{opacity:0;transform:translateX(-43vw) scale(1.35) rotate(14deg);filter:brightness(2.4)} }
 
 .habilidad-azrak-versus { display:none;position:absolute;inset:0;z-index:20;overflow:hidden;pointer-events:none; }
 .animacion-habilidad-versus.habilidad-azrak .habilidad-azrak-versus { display:block; }

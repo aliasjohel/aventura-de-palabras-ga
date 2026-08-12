@@ -258,5 +258,7 @@ assert.match(html, /eclipse-infernal-azrak\.png/);
 assert.match(estilos, /@keyframes calaveraIgneaJugador/);
 assert.match(estilos, /tecla-calavera-ignea/);
 assert.match(estilos, /@keyframes eclipseAzrakFinal/);
+assert.match(estilos, /corteInfernalJugador[^}]+scaleX\(-1\)/);
+assert.doesNotMatch(app, /aplicarFalloForzadoRivalLocalVersus[\s\S]+?animarTeclaCalaveraIgneaVersus\(letra\)[\s\S]+?function aplicarFalloForzadoJugadorLocalVersus/);
 
 console.log("versus-ui: comprobaciones correctas");

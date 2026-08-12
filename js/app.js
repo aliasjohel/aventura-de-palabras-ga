@@ -1137,8 +1137,6 @@ function procesarEventoPartidaOnline(partida) {
         alImpactar: () => {
           if (evento.character === "explorador") {
             actualizarPistaLupaVersus(partida.me?.abilityHint || "");
-          } else if (evento.character === "azrak") {
-            animarTeclaCalaveraIgneaVersus(evento.letter || "");
           }
         },
       });
@@ -2482,7 +2480,6 @@ function aplicarFalloForzadoRivalLocalVersus() {
   });
   demoVersus.letrasRival = new Set(turno.letras);
   demoVersus.erroresRival = turno.errores;
-  animarTeclaCalaveraIgneaVersus(letra);
   actualizarIntentosVersus(document.getElementById("intentosVersusDos"), turno.errores, "El rival");
   mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), `Azrak forzó la ${letra}`, "error");
   actualizarProgresosVersus();
@@ -4826,8 +4823,10 @@ function probarHabilidadEspecialVersus(personaje) {
           desdeRival ? obtenerPalabraActualJugadorVersus() : obtenerPalabraActualRivalVersus(),
           desdeRival ? demoVersus.letrasJugador : demoVersus.letrasRival,
         );
-        animarTeclaCalaveraIgneaVersus(letra, desdeRival);
-        if (desdeRival) vibrarImpactoVersus();
+        if (desdeRival) {
+          animarTeclaCalaveraIgneaVersus(letra, true);
+          vibrarImpactoVersus();
+        }
       } else if (desdeRival) {
         aplicarEfectoVisualHabilidadVersus(habilidad.efecto, habilidad.duracion);
       }
