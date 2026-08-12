@@ -144,7 +144,7 @@ assert.match(html, /enredaderas-teclado-versus\.png/);
 assert.match(app, /function reproducirAnimacionHabilidadVersus\(/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeJugadorVersus/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeRivalVersus/);
-for (const habilidad of ["explorador", "mago", "guardiana", "dragon", "hombre_lobo", "t_shadow", "guardian_alba"]) {
+for (const habilidad of ["explorador", "mago", "guardiana", "dragon", "hombre_lobo", "t_shadow", "guardian_alba", "dragon_hielo"]) {
   assert.match(estilos, new RegExp(`habilidad-${habilidad}`));
   assert.match(html, new RegExp(`data-habilidad="${habilidad}"`));
 }
@@ -202,5 +202,39 @@ assert.match(estilos, /@keyframes esferaSolarJuicioAlbaVersus \{.*?34%,48%.*?sca
 assert.match(estilos, /max-height: 600px[\s\S]+\.alba-final-esfera-solar \{[\s\S]+width: min\(44vw, 66vh\)/);
 assert.match(app, /guardian-alba-habilidad\.png/);
 assert.match(html, /guardian-alba-victoria\.png/);
+assert.match(html, /data-personaje="dragon_hielo"/);
+assert.match(app, /dragon_hielo: \{[\s\S]+ataque: "aliento-glacial"[\s\S]+final: "cero-absoluto"/);
+assert.match(app, /dragon_hielo: \{ nombre: "Invierno absoluto"[\s\S]+efecto: "ice_screen"[\s\S]+duracion: 5000/);
+assert.match(app, /function reproducirAtaqueDragonHieloVersus\(/);
+assert.match(app, /function reproducirCeroAbsolutoVersus\(/);
+assert.match(app, /marcoVersus\.classList\.add\("efecto-invierno-absoluto"\)/);
+assert.match(estilos, /congelacion-nivor-versus\.activa/);
+assert.match(estilos, /@keyframes congelarPantallaNivor/);
+assert.match(estilos, /@keyframes entradaNivorJugadorVersus/);
+assert.match(html, /dragon-hielo-victoria\.png/);
+assert.match(html, /dragon-hielo-frontal-alas\.png/);
+assert.match(estilos, /nivor-final-astro/);
+assert.match(estilos, /nivor-final-onda/);
+assert.match(estilos, /temblorCeroAbsolutoV5/);
+assert.match(html, /class="cinematica-nivor-ataque-final"[\s\S]+dragon-hielo-ataque-v2\.png/);
+assert.doesNotMatch(html, /nivor-final-rayo/);
+assert.match(app, /function programarAleteoEntradaNivor\(/);
+assert.match(app, /dragon-hielo-aleteo-alto\.png/);
+assert.match(app, /dragon-hielo-aleteo-bajo\.png/);
+assert.match(app, /dragon-hielo-descenso-alto\.png/);
+assert.match(app, /dragon-hielo-descenso-bajo\.png/);
+assert.match(estilos, /@keyframes aterrizajeNivorJugador/);
+assert.match(app, /function prepararBarridoHieloNivorVersus\(/);
+assert.match(app, /hielo-pantalla-nivor-1\.png/);
+assert.match(app, /hielo-pantalla-nivor-2\.png/);
+assert.match(app, /hielo-pantalla-nivor-3\.png/);
+assert.match(app, /estela-escarcha-nivor\.png/);
+assert.match(html, /prision-hielo-nivor\.png/);
+assert.match(html, /cubos-hielo-nivor\.png/);
+assert.match(html, /ventisca-nivor\.png/);
+assert.match(estilos, /@keyframes barridoHieloNivor/);
+assert.match(estilos, /@keyframes avanceEscarchaNivor/);
+assert.match(estilos, /nivor-en-vuelo/);
+assert.match(estilos, /@keyframes picadaCeroAbsolutoV2/);
 
 console.log("versus-ui: comprobaciones correctas");
