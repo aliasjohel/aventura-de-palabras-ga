@@ -10397,3 +10397,90 @@ button:disabled {
   .cinematica-victima-nivor{left:74%}
   .nivor-final-prision{left:59%;width:32%}
 }
+
+/* Azrak, guerrero infernal */
+.tarjeta-personaje-versus[data-personaje="azrak"] {
+  background:linear-gradient(155deg,rgba(57,8,12,.98),rgba(124,26,12,.91));
+  border-color:rgba(255,126,44,.68);
+}
+.tarjeta-personaje-versus[data-personaje="azrak"].seleccionada {
+  box-shadow:0 0 0 2px #ffc07a,0 0 30px rgba(255,68,13,.76);
+}
+.versus-personaje-uno.personaje-azrak,
+.versus-personaje-dos.personaje-azrak {
+  bottom:14%;
+  width:min(24vw,315px);
+  filter:drop-shadow(0 0 16px rgba(255,68,13,.66));
+}
+.versus-personaje-dos.personaje-azrak { transform:scaleX(-1);animation-name:respirarPersonajeDosInvertidoVersus; }
+.versus-personaje-uno.entrando-duelo.entrada-azrak { animation:entradaAzrakJugador 1.35s cubic-bezier(.16,.8,.2,1) both; }
+.versus-personaje-dos.entrando-duelo.entrada-azrak-rival { animation:entradaAzrakRival 1.35s cubic-bezier(.16,.8,.2,1) both; }
+@keyframes entradaAzrakJugador { 0%{opacity:0;transform:translate(-38vw,8vh) scale(.7)} 72%{opacity:1;transform:translate(2vw,-1vh) scale(1.06)} 100%{transform:none} }
+@keyframes entradaAzrakRival { 0%{opacity:0;transform:translate(38vw,8vh) scaleX(-1) scale(.7)} 72%{opacity:1;transform:translate(-2vw,-1vh) scaleX(-1) scale(1.06)} 100%{transform:scaleX(-1)} }
+.personaje-azrak.cortando-infernal { animation:impulsoAzrakJugador .78s ease-out both; }
+.versus-personaje-dos.personaje-azrak.cortando-infernal { animation-name:impulsoAzrakRival; }
+@keyframes impulsoAzrakJugador { 0%,100%{transform:none} 38%{transform:translate(3vw,-1vh) scale(1.08)} }
+@keyframes impulsoAzrakRival { 0%,100%{transform:scaleX(-1)} 38%{transform:translate(-3vw,-1vh) scaleX(-1) scale(1.08)} }
+
+.corte-infernal-versus {
+  display:none;position:absolute;z-index:9;left:24%;top:31%;width:clamp(105px,17vw,235px);
+  pointer-events:none;filter:drop-shadow(0 0 10px #ffbe55) drop-shadow(0 0 22px #f3310b);
+}
+.corte-infernal-versus.volando { display:block;animation:corteInfernalJugador .82s cubic-bezier(.2,.76,.2,1) both; }
+.corte-infernal-versus.desde-rival { left:auto;right:24%;transform:scaleX(-1); }
+.corte-infernal-versus.desde-rival.volando { animation-name:corteInfernalRival; }
+@keyframes corteInfernalJugador { 0%{opacity:0;transform:translateX(-3vw) scale(.28) rotate(-16deg)} 18%{opacity:1} 68%{opacity:1;transform:translateX(39vw) scale(1) rotate(8deg)} 100%{opacity:0;transform:translateX(43vw) scale(1.35) rotate(14deg);filter:brightness(2.4)} }
+@keyframes corteInfernalRival { 0%{opacity:0;transform:translateX(3vw) scaleX(-1) scale(.28) rotate(-16deg)} 18%{opacity:1} 68%{opacity:1;transform:translateX(-39vw) scaleX(-1) scale(1) rotate(8deg)} 100%{opacity:0;transform:translateX(-43vw) scaleX(-1) scale(1.35) rotate(14deg);filter:brightness(2.4)} }
+
+.habilidad-azrak-versus { display:none;position:absolute;inset:0;z-index:20;overflow:hidden;pointer-events:none; }
+.animacion-habilidad-versus.habilidad-azrak .habilidad-azrak-versus { display:block; }
+.habilidad-azrak-versus img { position:absolute;left:18%;top:24%;width:min(22vw,285px);filter:drop-shadow(0 0 12px #ffd078) drop-shadow(0 0 30px #f32b08);animation:calaveraIgneaJugador 1.25s cubic-bezier(.18,.74,.2,1) both; }
+.habilidad-azrak.desde-rival .habilidad-azrak-versus img { left:auto;right:18%;animation-name:calaveraIgneaRival; }
+@keyframes calaveraIgneaJugador { 0%{opacity:0;transform:translate(-12vw,8vh) scale(.18) rotate(-25deg)} 20%{opacity:1} 68%{opacity:1;transform:translate(45vw,18vh) scale(.92) rotate(8deg)} 100%{opacity:0;transform:translate(47vw,23vh) scale(1.5) rotate(18deg);filter:brightness(2.5)} }
+@keyframes calaveraIgneaRival { 0%{opacity:0;transform:translate(12vw,8vh) scaleX(-1) scale(.18) rotate(-25deg)} 20%{opacity:1} 68%{opacity:1;transform:translate(-45vw,18vh) scaleX(-1) scale(.92) rotate(8deg)} 100%{opacity:0;transform:translate(-47vw,23vh) scaleX(-1) scale(1.5) rotate(18deg);filter:brightness(2.5)} }
+.teclado-versus button.tecla-calavera-ignea { position:relative;z-index:3;animation:teclaCalaveraIgnea 1.05s ease-out both; }
+.teclado-versus button.tecla-calavera-ignea::after { content:"";position:absolute;inset:-18px -9px -4px;background:radial-gradient(ellipse at 50% 100%,#fff3a5 0 8%,#ff8b19 20%,#e62008 46%,transparent 70%);clip-path:polygon(50% 0,65% 30%,78% 15%,84% 49%,100% 38%,91% 100%,8% 100%,0 42%,20% 54%,28% 21%);z-index:-1;animation:llamaTeclaAzrak .18s ease-in-out infinite alternate;pointer-events:none; }
+@keyframes teclaCalaveraIgnea { 0%{transform:none} 24%{transform:translateY(-5px) scale(1.12);box-shadow:0 0 22px #ff4b0b} 42%{transform:translateY(4px) scale(.92)} 60%,100%{transform:none;filter:sepia(.8) saturate(2.2)} }
+@keyframes llamaTeclaAzrak { to{transform:scaleY(1.16) translateY(-3px);filter:brightness(1.35)} }
+
+.azrak-final-circulo,.cinematica-victima-azrak,.cinematica-azrak-ataque,.azrak-final-eclipse,.azrak-final-corte,.azrak-final-explosion,.cinematica-azrak-victoria { display:none; }
+.cinematica-final-versus.eclipse-infernal.activa { animation:entradaCinematicaVersus 7.6s ease both,temblorAzrakFinal 7.6s linear both; }
+.cinematica-final-versus.eclipse-infernal.activa .azrak-final-circulo,
+.cinematica-final-versus.eclipse-infernal.activa .cinematica-victima-azrak,
+.cinematica-final-versus.eclipse-infernal.activa .cinematica-azrak-ataque,
+.cinematica-final-versus.eclipse-infernal.activa .azrak-final-eclipse,
+.cinematica-final-versus.eclipse-infernal.activa .azrak-final-corte,
+.cinematica-final-versus.eclipse-infernal.activa .azrak-final-explosion,
+.cinematica-final-versus.eclipse-infernal.activa .cinematica-azrak-victoria { display:block;position:absolute; }
+.eclipse-infernal .cinematica-final-fondo { animation:fondoAzrakFinal 7.6s both; }
+.cinematica-victima-azrak { z-index:5;right:7%;bottom:9%;width:min(24vw,310px);height:57%;object-fit:contain;animation:victimaAzrakFinal 7.6s both; }
+.cinematica-azrak-ataque { z-index:7;left:3%;bottom:2%;width:min(39vw,505px);height:73%;object-fit:contain;filter:drop-shadow(0 0 20px #ec3a0a);animation:ataqueAzrakFinal 7.6s both; }
+.azrak-final-circulo { z-index:4;right:8%;top:14%;width:28vw;aspect-ratio:1;border:3px solid #ff6b22;border-radius:50%;box-shadow:0 0 25px #f32d08,inset 0 0 35px #8d0900;animation:circuloAzrakFinal 7.6s both; }
+.azrak-final-circulo::before,.azrak-final-circulo::after,.azrak-final-circulo i,.azrak-final-circulo b { content:"";position:absolute;inset:8%;border:2px solid rgba(255,158,53,.8);transform:rotate(45deg); }
+.azrak-final-circulo::after{inset:22%;transform:rotate(22deg);border-radius:50%}.azrak-final-circulo i{transform:rotate(67deg)}.azrak-final-circulo b{inset:35%;border-radius:50%;background:#ff6a15;box-shadow:0 0 30px #ffb33d}
+.azrak-final-eclipse { z-index:8;left:50%;top:47%;width:min(57vw,72vh);transform:translate(-50%,-50%);filter:drop-shadow(0 0 30px #ff4b0b) drop-shadow(0 0 75px #9e0500);animation:eclipseAzrakFinal 7.6s both; }
+.azrak-final-corte { z-index:10;inset:-30%;background:linear-gradient(168deg,transparent 47%,#fff 49%,#ff9a31 50%,transparent 53%);animation:corteAzrakFinal 7.6s both; }
+.azrak-final-explosion { z-index:11;inset:0;background:radial-gradient(circle,#fff 0 5%,#ffca61 9%,#ff3b0b 21%,rgba(111,0,0,.66) 38%,transparent 62%);animation:explosionAzrakFinal 7.6s both; }
+.cinematica-azrak-victoria { z-index:12;left:50%;bottom:-5%;width:min(33vw,440px);height:83%;object-fit:contain;transform:translateX(-50%);filter:drop-shadow(0 0 24px #f84b16);animation:victoriaAzrakFinal 7.6s both; }
+.cinematica-final-versus.eclipse-infernal.activa .cinematica-final-titulos span { animation:tituloAzrakFinal 7.6s both; }
+.cinematica-final-versus.eclipse-infernal.activa .cinematica-final-titulos h2 { animation:nombreAzrakFinal 7.6s both; }
+@keyframes fondoAzrakFinal { 0%,10%{filter:none} 24%,63%{filter:saturate(.55) sepia(.5) hue-rotate(330deg) brightness(.34)} 69%{filter:brightness(2.5)} 77%,100%{filter:saturate(.45) sepia(.55) hue-rotate(330deg) brightness(.32)} }
+@keyframes victimaAzrakFinal { 0%,30%{opacity:1} 38%,57%{filter:brightness(.5) sepia(1) saturate(4);transform:scale(.94)} 64%,100%{opacity:0;transform:scale(.72)} }
+@keyframes ataqueAzrakFinal { 0%,6%{opacity:0;transform:translateX(-18vw)} 15%,45%{opacity:1;transform:none} 54%,100%{opacity:0;transform:translateY(-5vh) scale(.9)} }
+@keyframes circuloAzrakFinal { 0%,17%{opacity:0;transform:scale(.15) rotate(-90deg)} 34%,53%{opacity:1;transform:scale(1) rotate(0)} 62%,100%{opacity:0;transform:scale(1.35) rotate(70deg)} }
+@keyframes eclipseAzrakFinal { 0%,34%{opacity:0;transform:translate(-50%,34vh) scale(.15)} 47%{opacity:1;transform:translate(-50%,-50%) scale(.72)} 61%{opacity:1;transform:translate(-50%,-50%) scale(1.08)} 69%{opacity:1;transform:translate(-50%,-50%) scale(1.35);filter:brightness(2.3)} 75%,100%{opacity:0;transform:translate(-50%,-50%) scale(1.9)} }
+@keyframes corteAzrakFinal { 0%,63%{opacity:0;transform:translateX(-30%)} 66%{opacity:1} 72%,100%{opacity:0;transform:translateX(30%)} }
+@keyframes explosionAzrakFinal { 0%,67%{opacity:0;transform:scale(.1)} 70%{opacity:1;transform:scale(.6)} 78%{opacity:.8;transform:scale(2.2)} 85%,100%{opacity:0;transform:scale(3)} }
+@keyframes victoriaAzrakFinal { 0%,78%{opacity:0;transform:translate(-50%,12vh) scale(.68)} 88%,100%{opacity:1;transform:translate(-50%,0) scale(1)} }
+@keyframes temblorAzrakFinal { 0%,46%,72%,100%{transform:none} 48%,52%,56%,60%,64%,68%{transform:translate(-4px,3px)} 50%,54%,58%,62%,66%,70%{transform:translate(5px,-4px)} }
+@keyframes tituloAzrakFinal { 0%,78%{opacity:0} 85%,96%{opacity:1} 100%{opacity:0} }
+@keyframes nombreAzrakFinal { 0%,80%{opacity:0;transform:scale(1.4)} 88%,96%{opacity:1;transform:scale(1)} 100%{opacity:0} }
+
+@media (orientation:landscape) and (max-height:600px) {
+  .versus-personaje-uno.personaje-azrak,.versus-personaje-dos.personaje-azrak{width:min(23vw,45vh);bottom:17%}
+  .corte-infernal-versus{top:29%;width:min(17vw,30vh)}
+  .habilidad-azrak-versus img{top:18%;width:min(22vw,38vh)}
+  .cinematica-azrak-ataque{width:min(38vw,72vh)}
+  .cinematica-victima-azrak{width:min(23vw,43vh)}
+  .cinematica-azrak-victoria{width:min(32vw,62vh)}
+}

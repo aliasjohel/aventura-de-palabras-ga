@@ -121,6 +121,7 @@ const zarpazoLoboVersus = document.getElementById("zarpazoLoboVersus");
 const corteShadowVersus = document.getElementById("corteShadowVersus");
 const corteLumenVersus = document.getElementById("corteLumenVersus");
 const alientoHieloVersus = document.getElementById("alientoHieloVersus");
+const corteInfernalVersus = document.getElementById("corteInfernalVersus");
 const congelacionNivorVersus = document.getElementById("congelacionNivorVersus");
 const teclasRotasVersus = document.getElementById("teclasRotasVersus");
 const entradaDueloVersus = document.getElementById("entradaDueloVersus");
@@ -169,6 +170,7 @@ const btnProbarCinematicaGuardianAlba = document.getElementById(
 const btnProbarCinematicaDragonHielo = document.getElementById(
   "btnProbarCinematicaDragonHielo",
 );
+const btnProbarCinematicaAzrak = document.getElementById("btnProbarCinematicaAzrak");
 const victimaEclipseVersus = document.getElementById("victimaEclipseVersus");
 const victimaTrampaVersus = document.getElementById("victimaTrampaVersus");
 const rivalCinematicaMatriarca = document.querySelector(
@@ -178,6 +180,7 @@ const victimaCaceriaVersus = document.getElementById("victimaCaceriaVersus");
 const victimaShadowVersus = document.getElementById("victimaShadowVersus");
 const victimaGuardianAlbaVersus = document.getElementById("victimaGuardianAlbaVersus");
 const victimaNivorVersus = document.getElementById("victimaNivorVersus");
+const victimaAzrakVersus = document.getElementById("victimaAzrakVersus");
 const victimaPruebaFaucesVersus = document.getElementById(
   "victimaPruebaFaucesVersus",
 );
@@ -1091,7 +1094,7 @@ function procesarEventoPartidaOnline(partida) {
   ultimoEventoPartidaVersus = partida.eventSequence;
   const eventoFinal = partida.lastEvent;
   const evento = eventoFinal?.type === "match_finished"
-    && eventoFinal.previousEvent?.type === "word_failed"
+    && ["word_failed", "ability_used"].includes(eventoFinal.previousEvent?.type)
     ? eventoFinal.previousEvent
     : eventoFinal;
   if (!evento) return;
@@ -1134,11 +1137,31 @@ function procesarEventoPartidaOnline(partida) {
         alImpactar: () => {
           if (evento.character === "explorador") {
             actualizarPistaLupaVersus(partida.me?.abilityHint || "");
+          } else if (evento.character === "azrak") {
+            animarTeclaCalaveraIgneaVersus(evento.letter || "");
           }
         },
       });
     } else if (evento.character === "explorador") {
       reproducirAnimacionHabilidadVersus("explorador", { desdeRival: true });
+    } else if (evento.character === "azrak") {
+      reproducirAnimacionHabilidadVersus("azrak", {
+        desdeRival: true,
+        alImpactar: () => {
+          animarTeclaCalaveraIgneaVersus(evento.letter || "", true);
+          vibrarImpactoVersus();
+          reproducirSonidoVersus("error", 0.58);
+          mostrarEstadoProgresoVersus(estadoPropio, `La calavera pulsó ${evento.letter || "una tecla"}`, "error");
+          if (evento.wordFailed && evento.word) {
+            mostrarRevelacionPalabraVersus(
+              revelacionPalabraVersusUno,
+              evento.word,
+              partida.me?.theme,
+              "temporizadorRevelacionJugador",
+            );
+          }
+        },
+      });
     }
     mostrarAvisoAvanceVersus(
       propio ? `¡Activaste ${habilidad.nombre}!` : `El rival activó ${habilidad.nombre}.`,
@@ -2208,6 +2231,7 @@ function reproducirAnimacionHabilidadVersus(
     t_shadow: srcShadowAtaqueVersus,
     guardian_alba: srcGuardianAlbaHabilidadVersus,
     dragon_hielo: srcDragonHieloVueloVersus,
+    azrak: srcAzrakAtaqueVersus,
   }[personaje];
   if (pose) atacante.src = pose;
   atacante.classList.add("usando-habilidad");
@@ -2224,8 +2248,8 @@ function reproducirAnimacionHabilidadVersus(
   animacionHabilidadVersus.classList.add("activa");
   reproducirSonidoVersus(desdeRival ? "versusAtaqueDos" : "versusAtaqueUno", 0.5);
 
-  const demoraImpacto = personaje === "dragon_hielo" ? 140 : 560;
-  const demoraLimpieza = personaje === "dragon_hielo" ? 1900 : 1120;
+  const demoraImpacto = personaje === "dragon_hielo" ? 140 : personaje === "azrak" ? 620 : 560;
+  const demoraLimpieza = personaje === "dragon_hielo" ? 1900 : personaje === "azrak" ? 1380 : 1120;
   programarPasoHabilidadVersus(alImpactar, movimientoReducido ? 80 : demoraImpacto);
   programarPasoHabilidadVersus(limpiarAnimacionHabilidadVersus, movimientoReducido ? 180 : demoraLimpieza);
 }
@@ -2427,6 +2451,66 @@ function obtenerPistaLupaVersus(palabra, letrasUsadas) {
   return pendientes[Math.floor(Math.random() * pendientes.length)] || "";
 }
 
+function obtenerLetraIncorrectaDisponibleVersus(palabra, letrasUsadas) {
+  const clave = obtenerClavePalabraVersus(palabra);
+  const opciones = filasTeclado.flat().filter(
+    (letra) => !clave.includes(letra) && !letrasUsadas.has(letra),
+  );
+  return opciones[Math.floor(Math.random() * opciones.length)] || "";
+}
+
+function animarTeclaCalaveraIgneaVersus(letra, recibida = false) {
+  const tecla = [...tecladoVersus.querySelectorAll("button")]
+    .find((boton) => boton.textContent === letra);
+  if (!tecla) return;
+  tecla.classList.remove("tecla-calavera-ignea", "impacto-recibido");
+  void tecla.offsetWidth;
+  tecla.classList.add("tecla-calavera-ignea");
+  if (recibida) tecla.classList.add("impacto-recibido");
+  setTimeout(() => tecla.classList.remove("tecla-calavera-ignea", "impacto-recibido"), 1100);
+}
+
+function aplicarFalloForzadoRivalLocalVersus() {
+  const palabra = obtenerPalabraActualRivalVersus();
+  const letra = obtenerLetraIncorrectaDisponibleVersus(palabra, demoVersus.letrasRival);
+  if (!letra) return;
+  const turno = VersusEngine.evaluarLetra({
+    palabra,
+    letras: [...demoVersus.letrasRival],
+    errores: demoVersus.erroresRival,
+    letra,
+  });
+  demoVersus.letrasRival = new Set(turno.letras);
+  demoVersus.erroresRival = turno.errores;
+  animarTeclaCalaveraIgneaVersus(letra);
+  actualizarIntentosVersus(document.getElementById("intentosVersusDos"), turno.errores, "El rival");
+  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), `Azrak forzó la ${letra}`, "error");
+  actualizarProgresosVersus();
+  if (turno.sinIntentos) avanzarPalabraRivalVersus(false);
+}
+
+function aplicarFalloForzadoJugadorLocalVersus() {
+  const palabra = obtenerPalabraActualJugadorVersus();
+  const letra = obtenerLetraIncorrectaDisponibleVersus(palabra, demoVersus.letrasJugador);
+  if (!letra) return;
+  const turno = VersusEngine.evaluarLetra({
+    palabra,
+    letras: [...demoVersus.letrasJugador],
+    errores: demoVersus.erroresJugador,
+    letra,
+  });
+  demoVersus.letrasJugador = new Set(turno.letras);
+  demoVersus.erroresJugador = turno.errores;
+  animarTeclaCalaveraIgneaVersus(letra, true);
+  vibrarImpactoVersus();
+  reproducirSonidoVersus("error", 0.58);
+  actualizarIntentosVersus(document.getElementById("intentosVersusUno"), turno.errores, "Jugador 1");
+  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoUno"), `La calavera pulsó ${letra}`, "error");
+  actualizarProgresosVersus();
+  sincronizarTecladoDemoVersus();
+  if (turno.sinIntentos) avanzarPalabraJugadorVersus(false);
+}
+
 function actualizarPanelHabilidadVersus(carga = demoVersus.cargaHabilidadJugador, pista = "") {
   const habilidad = habilidadesVersus[personajeJugadorVersus] || habilidadesVersus.explorador;
   const lista = carga >= letrasParaHabilidadVersus;
@@ -2460,6 +2544,13 @@ function activarHabilidadLocalVersus() {
         mostrarAvisoAvanceVersus(`La lupa señaló la letra ${pista}.`, "acierto");
       },
     });
+  } else if (habilidad.efecto === "forced_miss") {
+    reproducirAnimacionHabilidadVersus(personajeJugadorVersus, {
+      alImpactar: () => {
+        aplicarFalloForzadoRivalLocalVersus();
+        mostrarAvisoAvanceVersus("¡Calavera Ígnea obligó al rival a fallar!", "acierto");
+      },
+    });
   } else {
     reproducirAnimacionHabilidadVersus(personajeJugadorVersus, {
       alImpactar: () => {
@@ -2483,6 +2574,11 @@ function activarHabilidadRivalLocalVersus() {
     if (!pista) return;
     demoVersus.pistaLupaRival = pista;
     reproducirAnimacionHabilidadVersus(personajeRivalVersus, { desdeRival: true });
+  } else if (habilidad.efecto === "forced_miss") {
+    reproducirAnimacionHabilidadVersus(personajeRivalVersus, {
+      desdeRival: true,
+      alImpactar: aplicarFalloForzadoJugadorLocalVersus,
+    });
   } else {
     reproducirAnimacionHabilidadVersus(personajeRivalVersus, {
       desdeRival: true,
@@ -2651,6 +2747,9 @@ const srcDragonHieloAleteoBajoVersus = "assets/images/personajes/versus/dragon-h
 const srcDragonHieloDescensoAltoVersus = "assets/images/personajes/versus/dragon-hielo-descenso-alto.png";
 const srcDragonHieloDescensoBajoVersus = "assets/images/personajes/versus/dragon-hielo-descenso-bajo.png";
 const srcDragonHieloImpactoVersus = "assets/images/personajes/versus/dragon-hielo-impacto.png";
+const srcAzrakBaseVersus = "assets/images/personajes/versus/azrak-base.png";
+const srcAzrakAtaqueVersus = "assets/images/personajes/versus/azrak-ataque.png";
+const srcAzrakImpactoVersus = "assets/images/personajes/versus/azrak-impacto.png";
 const personajesVersus = {
   explorador: {
     nombre: "Explorador",
@@ -2700,6 +2799,12 @@ const personajesVersus = {
     ataque: "aliento-glacial",
     final: "cero-absoluto",
   },
+  azrak: {
+    nombre: "Azrak",
+    base: srcAzrakBaseVersus,
+    ataque: "corte-infernal",
+    final: "eclipse-infernal",
+  },
 };
 const habilidadesVersus = Object.freeze({
   explorador: { nombre: "Lupa", icono: "🔍", efecto: "hint", duracion: 0 },
@@ -2710,6 +2815,7 @@ const habilidadesVersus = Object.freeze({
   t_shadow: { nombre: "Vacío devorador", icono: "🌑", efecto: "black_hole", duracion: 5000 },
   guardian_alba: { nombre: "Ruptura celeste", icono: "☀️", efecto: "key_bounce", duracion: 5000 },
   dragon_hielo: { nombre: "Invierno absoluto", icono: "❄️", efecto: "ice_screen", duracion: 5000 },
+  azrak: { nombre: "Calavera Ígnea", icono: "💀", efecto: "forced_miss", duracion: 0 },
 });
 const letrasParaHabilidadVersus = VersusEngine.CONFIG.letrasParaHabilidad;
 let personajeJugadorVersus = "explorador";
@@ -2756,6 +2862,11 @@ const victimasFaucesVersus = {
     imagen: srcDragonHieloBaseVersus,
     imagenAtrapado: srcDragonHieloImpactoVersus,
   },
+  azrak: {
+    nombre: "Azrak",
+    imagen: srcAzrakBaseVersus,
+    imagenAtrapado: srcAzrakImpactoVersus,
+  },
 };
 
 const posesDanoPersonajeVersus = {
@@ -2763,6 +2874,7 @@ const posesDanoPersonajeVersus = {
   t_shadow: srcShadowImpactoVersus,
   guardian_alba: srcGuardianAlbaImpactoVersus,
   dragon_hielo: srcDragonHieloImpactoVersus,
+  azrak: srcAzrakImpactoVersus,
 };
 
 function observarPoseDanoPersonajeVersus(elemento, obtenerPersonaje) {
@@ -2860,6 +2972,7 @@ function limpiarAnimacionAtaqueJugadorVersus() {
     "cortando-shadow",
     "lanzando-lumen",
     "lanzando-hielo",
+    "cortando-infernal",
   );
   personajeVersusDos.classList.remove("recibiendo-dano");
   vidasVersusDos.classList.remove("recibiendo-dano");
@@ -2871,6 +2984,7 @@ function limpiarAnimacionAtaqueJugadorVersus() {
   corteShadowVersus.classList.remove("volando", "desde-rival");
   corteLumenVersus.classList.remove("volando", "desde-rival");
   alientoHieloVersus.classList.remove("volando", "desde-rival");
+  corteInfernalVersus.classList.remove("volando", "desde-rival");
   herramientasPruebasVersus.classList.remove("ataque-en-curso");
 }
 
@@ -2890,6 +3004,7 @@ function limpiarAnimacionAtaqueRivalVersus() {
     "cortando-shadow",
     "lanzando-lumen",
     "lanzando-hielo",
+    "cortando-infernal",
   );
   personajeVersusUno.classList.remove("recibiendo-dano-magico");
   vidasVersusUno.classList.remove("recibiendo-dano");
@@ -2901,6 +3016,7 @@ function limpiarAnimacionAtaqueRivalVersus() {
   corteShadowVersus.classList.remove("volando", "desde-rival");
   corteLumenVersus.classList.remove("volando", "desde-rival");
   alientoHieloVersus.classList.remove("volando", "desde-rival");
+  corteInfernalVersus.classList.remove("volando", "desde-rival");
 }
 
 function limpiarAnimacionAtaqueVersus() {
@@ -2921,6 +3037,7 @@ function configurarPersonajesCombateVersus() {
     "personaje-t_shadow",
     "personaje-guardian_alba",
     "personaje-dragon_hielo",
+    "personaje-azrak",
   );
   personajeVersusUno.classList.add(`personaje-${personajeJugadorVersus}`);
   const personajeRival = personajesVersus[personajeRivalVersus] || personajesVersus.mago;
@@ -2935,6 +3052,7 @@ function configurarPersonajesCombateVersus() {
     "personaje-t_shadow",
     "personaje-guardian_alba",
     "personaje-dragon_hielo",
+    "personaje-azrak",
   );
   personajeVersusDos.classList.add(`personaje-${personajeRivalVersus}`);
   actualizarPanelHabilidadVersus(
@@ -2981,6 +3099,7 @@ function limpiarEntradaDueloVersus() {
     "entrada-t_shadow",
     "entrada-guardian_alba",
     "entrada-dragon_hielo",
+    "entrada-azrak",
   );
   personajeVersusDos.classList.remove(
     "entrando-duelo",
@@ -2992,6 +3111,7 @@ function limpiarEntradaDueloVersus() {
     "entrada-t_shadow-rival",
     "entrada-guardian_alba-rival",
     "entrada-dragon_hielo-rival",
+    "entrada-azrak-rival",
   );
   bumeranVersus.classList.remove("mostrando-entrada");
 }
@@ -3308,6 +3428,28 @@ function reproducirAtaqueDragonHieloVersus() {
   programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1450, "jugador");
 }
 
+function reproducirAtaqueAzrakVersus() {
+  limpiarAnimacionAtaqueJugadorVersus();
+  herramientasPruebasVersus.classList.add("ataque-en-curso");
+  personajeVersusUno.src = srcAzrakAtaqueVersus;
+  personajeVersusUno.classList.add("cortando-infernal");
+  corteInfernalVersus.classList.remove("desde-rival");
+  void corteInfernalVersus.offsetWidth;
+  corteInfernalVersus.classList.add("volando");
+  reproducirSonidoVersus("versusAtaqueUno", 0.8);
+  programarPasoAtaqueVersus(() => {
+    mostrarPoseDanoPersonajeVersus(personajeVersusDos, personajeRivalVersus);
+    personajeVersusDos.classList.add("recibiendo-dano-magico");
+    vidasVersusDos.classList.add("recibiendo-dano");
+    reproducirSonidoVersus("versusAtaqueDos", 0.86);
+  }, 570, "jugador");
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.remove("recibiendo-dano-magico");
+    vidasVersusDos.classList.remove("recibiendo-dano");
+  }, 950, "jugador");
+  programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1320, "jugador");
+}
+
 function reproducirAtaqueShadowVersus() {
   limpiarAnimacionAtaqueJugadorVersus();
   herramientasPruebasVersus.classList.add("ataque-en-curso");
@@ -3378,6 +3520,10 @@ function reproducirAtaqueJugadorVersus() {
   }
   if (ataque === "aliento-glacial") {
     reproducirAtaqueDragonHieloVersus();
+    return;
+  }
+  if (ataque === "corte-infernal") {
+    reproducirAtaqueAzrakVersus();
     return;
   }
   reproducirAtaqueBumeranVersus();
@@ -3509,6 +3655,17 @@ function reproducirAtaqueDragonHieloRivalVersus() {
   programarImpactoRivalVersus(810, 1450);
 }
 
+function reproducirAtaqueAzrakRivalVersus() {
+  limpiarAnimacionAtaqueRivalVersus();
+  personajeVersusDos.src = srcAzrakAtaqueVersus;
+  personajeVersusDos.classList.add("cortando-infernal");
+  corteInfernalVersus.classList.add("desde-rival");
+  void corteInfernalVersus.offsetWidth;
+  corteInfernalVersus.classList.add("volando");
+  reproducirSonidoVersus("versusAtaqueUno", 0.8);
+  programarImpactoRivalVersus(570, 1320);
+}
+
 function reproducirAtaqueShadowRivalVersus() {
   limpiarAnimacionAtaqueRivalVersus();
   personajeVersusDos.src = srcShadowAtaqueVersus;
@@ -3584,6 +3741,10 @@ function reproducirAtaqueRivalVersus() {
   }
   if (ataque === "aliento-glacial") {
     reproducirAtaqueDragonHieloRivalVersus();
+    return;
+  }
+  if (ataque === "corte-infernal") {
+    reproducirAtaqueAzrakRivalVersus();
     return;
   }
   reproducirAtaqueMagoVersus();
@@ -4177,6 +4338,9 @@ function obtenerReproductorFinalVersus(personajeGanador, personajeVictima) {
   if (finalElegido === "cero-absoluto") {
     return () => reproducirCeroAbsolutoVersus(personajeVictima);
   }
+  if (finalElegido === "eclipse-infernal") {
+    return () => reproducirEclipseInfernalVersus(personajeVictima);
+  }
   return () => reproducirTrampaSelvaticaVersus(personajeVictima);
 }
 
@@ -4241,6 +4405,7 @@ const posesReaccionVictimaVersus = {
   t_shadow: srcShadowImpactoVersus,
   guardian_alba: srcGuardianAlbaImpactoVersus,
   dragon_hielo: srcDragonHieloImpactoVersus,
+  azrak: srcAzrakImpactoVersus,
 };
 
 function configurarVictimaFinalVersus(elemento, personaje) {
@@ -4258,6 +4423,7 @@ function configurarVictimaFinalVersus(elemento, personaje) {
     "victima-final-t_shadow",
     "victima-final-guardian_alba",
     "victima-final-dragon_hielo",
+    "victima-final-azrak",
   );
   elemento.classList.add(`victima-final-${clave}`);
   return clave;
@@ -4333,6 +4499,8 @@ function configurarVictimaFaucesVersus(personaje = personajeRivalVersus) {
     "victima-fauces-hombre_lobo",
     "victima-fauces-t_shadow",
     "victima-fauces-guardian_alba",
+    "victima-fauces-dragon_hielo",
+    "victima-fauces-azrak",
   );
   victimaFaucesVersus.classList.add(`victima-fauces-${personaje in victimasFaucesVersus ? personaje : "mago"}`);
 }
@@ -4483,6 +4651,25 @@ function reproducirCeroAbsolutoVersus(victima = personajeRivalVersus) {
   });
 }
 
+function reproducirEclipseInfernalVersus(victima = personajeRivalVersus) {
+  cancelarCinematicaFinalVersus();
+  fondoCinematicaVersus.src = fondoVersus.src;
+  programarReaccionVictimaFinalVersus(victimaAzrakVersus, victima, 2700);
+  etiquetaCinematicaVersus.textContent = "RITO DEL ABISMO";
+  tituloCinematicaVersus.textContent = "ECLIPSE INFERNAL";
+  cinematicaFinalVersus.classList.add("eclipse-infernal");
+  cinematicaFinalVersus.classList.remove("oculto");
+  void cinematicaFinalVersus.offsetWidth;
+  cinematicaFinalVersus.classList.add("activa");
+  btnSaltarCinematicaVersus.focus();
+  reproducirSonidoVersus("versusFinish", 0.96);
+
+  return new Promise((resolve) => {
+    demoVersus.resolverCinematica = resolve;
+    demoVersus.temporizadorCinematica = setTimeout(completarCinematicaFinalVersus, 7600);
+  });
+}
+
 function completarCinematicaFinalVersus() {
   if (demoVersus.temporizadorReaccionCinematica) {
     clearTimeout(demoVersus.temporizadorReaccionCinematica);
@@ -4504,6 +4691,7 @@ function completarCinematicaFinalVersus() {
     "legion-umbria",
     "juicio-amanecer",
     "cero-absoluto",
+    "eclipse-infernal",
   );
   particulasEclipseVersus.replaceChildren();
   const resolver = demoVersus.resolverCinematica;
@@ -4532,6 +4720,7 @@ function cancelarCinematicaFinalVersus() {
     "legion-umbria",
     "juicio-amanecer",
     "cero-absoluto",
+    "eclipse-infernal",
   );
   particulasEclipseVersus.replaceChildren();
   demoVersus.resolverCinematica = null;
@@ -4563,6 +4752,10 @@ function probarCinematicaVersus(personaje) {
   }
   if (personaje === "dragon_hielo") {
     void reproducirCeroAbsolutoVersus(victimaPruebaFaucesVersus.value);
+    return;
+  }
+  if (personaje === "azrak") {
+    void reproducirEclipseInfernalVersus(victimaPruebaFaucesVersus.value);
     return;
   }
 
@@ -4604,6 +4797,10 @@ btnProbarCinematicaDragonHielo.addEventListener("click", () => {
   probarCinematicaVersus("dragon_hielo");
 });
 
+btnProbarCinematicaAzrak.addEventListener("click", () => {
+  probarCinematicaVersus("azrak");
+});
+
 btnProbarAtaqueElegido.addEventListener("click", () => {
   if (!modoPruebasActivo || demoVersus.partidaFinalizada) return;
   reproducirAtaqueJugadorVersus();
@@ -4624,6 +4821,13 @@ function probarHabilidadEspecialVersus(personaje) {
         const tecla = teclasDisponibles[Math.floor(Math.random() * teclasDisponibles.length)]
           || tecladoVersus.querySelector("button");
         actualizarPistaLupaVersus(tecla?.textContent || "A");
+      } else if (habilidad.efecto === "forced_miss") {
+        const letra = obtenerLetraIncorrectaDisponibleVersus(
+          desdeRival ? obtenerPalabraActualJugadorVersus() : obtenerPalabraActualRivalVersus(),
+          desdeRival ? demoVersus.letrasJugador : demoVersus.letrasRival,
+        );
+        animarTeclaCalaveraIgneaVersus(letra, desdeRival);
+        if (desdeRival) vibrarImpactoVersus();
       } else if (desdeRival) {
         aplicarEfectoVisualHabilidadVersus(habilidad.efecto, habilidad.duracion);
       }

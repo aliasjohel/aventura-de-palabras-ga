@@ -1,4 +1,4 @@
-const CACHE_NAME = "aventura-palabras-runtime-v78";
+const CACHE_NAME = "aventura-palabras-runtime-v79";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -72,6 +72,13 @@ const CORE_ASSETS = [
   "./assets/images/elementos/prision-hielo-nivor.png",
   "./assets/images/elementos/cubos-hielo-nivor.png",
   "./assets/images/elementos/ventisca-nivor.png",
+  "./assets/images/personajes/versus/azrak-base.png",
+  "./assets/images/personajes/versus/azrak-ataque.png",
+  "./assets/images/personajes/versus/azrak-impacto.png",
+  "./assets/images/personajes/versus/azrak-victoria.png",
+  "./assets/images/personajes/versus/corte-infernal-azrak.png",
+  "./assets/images/personajes/versus/calavera-ignea-azrak.png",
+  "./assets/images/personajes/versus/eclipse-infernal-azrak.png",
   "./assets/images/personajes/versus/carnivora-devorando-guardian-alba.png",
   "./assets/sounds/cristal-casilla.mp3",
   "./assets/sounds/comenzar-aventura.wav",

@@ -23,7 +23,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260812-selector-movil-2">
+    <link rel="stylesheet" href="css/styles.css?v=20260812-azrak-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -354,6 +354,13 @@
                         <strong>Nivor</strong>
                         <small>Aliento glacial &middot; Cero Absoluto</small>
                     </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio"
+                        aria-checked="false" data-personaje="azrak">
+                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <img src="assets/images/personajes/versus/azrak-base.png" alt="Azrak, guerrero infernal">
+                        <strong>Azrak</strong>
+                        <small>Corte Infernal &middot; Eclipse Infernal</small>
+                    </button>
                 </div>
 
                 <div class="estado-personajes-remotos" aria-live="polite">
@@ -554,6 +561,8 @@
                     </div>
                     <img id="alientoHieloVersus" class="aliento-hielo-versus"
                         src="assets/images/personajes/versus/orbe-hielo-nivor.png" alt="" aria-hidden="true">
+                    <img id="corteInfernalVersus" class="corte-infernal-versus"
+                        src="assets/images/personajes/versus/corte-infernal-azrak.png" alt="" aria-hidden="true">
 
                     <div id="entradaDueloVersus" class="entrada-duelo-versus oculto" aria-live="polite">
                         <div class="entrada-efecto entrada-efecto-uno" aria-hidden="true">
@@ -624,6 +633,9 @@
                         <img class="nivor-vuelo-bajo" src="assets/images/personajes/versus/dragon-hielo-aleteo-bajo.png" alt="">
                         <i></i><i></i><i></i>
                     </div>
+                    <div class="habilidad-azrak-versus">
+                        <img src="assets/images/personajes/versus/calavera-ignea-azrak.png" alt="">
+                    </div>
                     <div class="impacto-habilidad-versus"></div>
                 </div>
 
@@ -670,6 +682,7 @@
                             <option value="t_shadow">T. Shadow</option>
                             <option value="guardian_alba">A. Lumen</option>
                             <option value="dragon_hielo">Nivor</option>
+                            <option value="azrak">Azrak</option>
                         </select>
                     </label>
                     <button id="btnProbarCinematicaGuardiana" type="button">🌱 Probar guardiana</button>
@@ -678,6 +691,7 @@
                     <button id="btnProbarCinematicaShadow" type="button">&#127761; Probar T. Shadow</button>
                     <button id="btnProbarCinematicaGuardianAlba" type="button">&#9728; Probar A. Lumen</button>
                     <button id="btnProbarCinematicaDragonHielo" type="button">&#10052; Probar Nivor</button>
+                    <button id="btnProbarCinematicaAzrak" type="button">&#128293; Probar Azrak</button>
                     <button id="btnProbarAtaqueElegido" type="button">⚡ Probar ataque elegido</button>
                 </div>
 
@@ -700,6 +714,7 @@
                     <button class="btn-probar-habilidad-versus" data-habilidad="t_shadow" type="button">&#127761; Vac&iacute;o</button>
                     <button class="btn-probar-habilidad-versus" data-habilidad="guardian_alba" type="button">&#9728; Ruptura</button>
                     <button class="btn-probar-habilidad-versus" data-habilidad="dragon_hielo" type="button">&#10052; Invierno</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="azrak" type="button">&#128128; Calavera</button>
                 </div>
 
                 <div id="avisoAvanceVersus" class="aviso-avance-versus oculto" role="status" aria-live="polite"></div>
@@ -859,6 +874,17 @@
                     </div>
                     <img class="cinematica-nivor-victoria"
                         src="assets/images/personajes/versus/dragon-hielo-victoria.png" alt="" aria-hidden="true">
+                    <div class="azrak-final-circulo" aria-hidden="true"><i></i><b></b></div>
+                    <img id="victimaAzrakVersus" class="cinematica-victima-azrak victima-final-mago"
+                        src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
+                    <img class="cinematica-azrak-ataque"
+                        src="assets/images/personajes/versus/azrak-ataque.png" alt="" aria-hidden="true">
+                    <img class="azrak-final-eclipse"
+                        src="assets/images/personajes/versus/eclipse-infernal-azrak.png" alt="" aria-hidden="true">
+                    <div class="azrak-final-corte" aria-hidden="true"></div>
+                    <div class="azrak-final-explosion" aria-hidden="true"></div>
+                    <img class="cinematica-azrak-victoria"
+                        src="assets/images/personajes/versus/azrak-victoria.png" alt="" aria-hidden="true">
                     <div class="eclipse-destello" aria-hidden="true"></div>
                     <div class="cinematica-final-titulos">
                         <span id="etiquetaCinematicaVersus">GOLPE LEGENDARIO</span>
@@ -972,7 +998,7 @@
     <script src="js/versus-engine.js?v=20260808-habilidades-versus-2"></script>
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
     <script src="js/versus-room-supabase.js?v=20260808-hombre-lobo-2"></script>
-    <script src="js/app.js?v=20260812-vibracion-impacto-1"></script>
+    <script src="js/app.js?v=20260812-azrak-1"></script>
     <script src="js/pwa.js?v=20260808-hombre-lobo-2"></script>
 </body>
 

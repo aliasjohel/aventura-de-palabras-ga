@@ -245,5 +245,18 @@ assert.match(estilos, /@keyframes barridoHieloNivor/);
 assert.match(estilos, /@keyframes avanceEscarchaNivor/);
 assert.match(estilos, /nivor-en-vuelo/);
 assert.match(estilos, /@keyframes picadaCeroAbsolutoV2/);
+assert.match(html, /data-personaje="azrak"/);
+assert.match(app, /azrak: \{[\s\S]+ataque: "corte-infernal"[\s\S]+final: "eclipse-infernal"/);
+assert.match(app, /azrak: \{ nombre: "Calavera Ígnea"[\s\S]+efecto: "forced_miss"/);
+assert.match(app, /function obtenerLetraIncorrectaDisponibleVersus\(/);
+assert.match(app, /function aplicarFalloForzadoJugadorLocalVersus\(/);
+assert.match(app, /function reproducirAtaqueAzrakVersus\(/);
+assert.match(app, /function reproducirEclipseInfernalVersus\(/);
+assert.match(html, /corte-infernal-azrak\.png/);
+assert.match(html, /calavera-ignea-azrak\.png/);
+assert.match(html, /eclipse-infernal-azrak\.png/);
+assert.match(estilos, /@keyframes calaveraIgneaJugador/);
+assert.match(estilos, /tecla-calavera-ignea/);
+assert.match(estilos, /@keyframes eclipseAzrakFinal/);
 
 console.log("versus-ui: comprobaciones correctas");

@@ -43,6 +43,10 @@ const nivor = fs.readFileSync(
   path.join(migrations, "20260812222516_add_nivor_ice_dragon.sql"),
   "utf8",
 );
+const azrak = fs.readFileSync(
+  path.join(migrations, "20260812230407_add_azrak_forced_miss.sql"),
+  "utf8",
+);
 const dictionary = fs.readFileSync(
   path.join(migrations, "20260809015253_versus_thematic_dictionary.sql"),
   "utf8",
@@ -86,6 +90,12 @@ assert.match(nivor, /when 'dragon_hielo' then 'ice_screen'/);
 assert.match(nivor, /active_effect in \('roots', 'roar', 'shuffle', 'invert', 'black_hole', 'key_bounce', 'ice_screen'\)/);
 assert.match(nivor, /v_expires_at := now\(\) \+ interval '5 seconds'/);
 assert.match(nivor, /revoke execute on function public\.activate_versus_ability\(uuid\) from public, anon/);
+assert.match(azrak, /'azrak'/);
+assert.match(azrak, /v_effect := 'forced_miss'/);
+assert.match(azrak, /not exists \([\s\S]+versus_letter_key\(character\) = candidate/);
+assert.match(azrak, /v_opponent\.errors \+ 1 >= 6/);
+assert.match(azrak, /'letter', v_forced_letter/);
+assert.match(azrak, /revoke execute on function public\.activate_versus_ability\(uuid\) from public, anon/);
 assert.match(dictionary, /create schema if not exists private/);
 assert.match(dictionary, /alter table private\.versus_word_dictionary enable row level security/);
 assert.match(dictionary, /revoke all on table private\.versus_word_dictionary from public, anon, authenticated/);
