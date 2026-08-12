@@ -134,6 +134,8 @@ assert.match(app, /hombre_lobo:[\s\S]+imagenAtrapado: "assets\/images\/personaje
 assert.match(estilos, /victima-fauces-hombre_lobo[^}]+--direccion-victima-fauces: -1/);
 assert.match(app, /t_shadow:[\s\S]+imagenAtrapado: "assets\/images\/personajes\/versus\/carnivora-devorando-t-shadow\.png"/);
 assert.match(app, /guardian_alba:[\s\S]+imagenAtrapado: "assets\/images\/personajes\/versus\/carnivora-devorando-guardian-alba\.png"/);
+assert.match(app, /dragon_hielo:[\s\S]+imagenAtrapado: "assets\/images\/personajes\/versus\/carnivora-devorando-dragon-hielo\.png"/);
+assert.match(app, /azrak:[\s\S]+imagenAtrapado: "assets\/images\/personajes\/versus\/carnivora-devorando-azrak\.png"/);
 assert.match(app, /function observarPoseDanoPersonajeVersus\(/);
 assert.match(estilos, /max-height: 600px[\s\S]+alba-final-rayo-carga[\s\S]+height: clamp\(14px, 2\.7vh, 18px\)/);
 assert.match(estilos, /max-height: 600px[\s\S]+cinematica-shadow-victoria[\s\S]+width: min\(32vw, 58vh\)/);

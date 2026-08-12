@@ -2857,12 +2857,12 @@ const victimasFaucesVersus = {
   dragon_hielo: {
     nombre: "Nivor",
     imagen: srcDragonHieloBaseVersus,
-    imagenAtrapado: srcDragonHieloImpactoVersus,
+    imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-dragon-hielo.png",
   },
   azrak: {
     nombre: "Azrak",
     imagen: srcAzrakBaseVersus,
-    imagenAtrapado: srcAzrakImpactoVersus,
+    imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-azrak.png",
   },
 };
 

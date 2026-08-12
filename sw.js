@@ -1,4 +1,4 @@
-const CACHE_NAME = "aventura-palabras-runtime-v82";
+const CACHE_NAME = "aventura-palabras-runtime-v83";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -80,6 +80,8 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/calavera-ignea-azrak.png",
   "./assets/images/personajes/versus/eclipse-infernal-azrak.png",
   "./assets/images/personajes/versus/carnivora-devorando-guardian-alba.png",
+  "./assets/images/personajes/versus/carnivora-devorando-dragon-hielo.png",
+  "./assets/images/personajes/versus/carnivora-devorando-azrak.png",
   "./assets/sounds/cristal-casilla.mp3",
   "./assets/sounds/comenzar-aventura.wav",
   "./assets/sounds/melodia-menu.mp3",
