@@ -40,7 +40,7 @@ const guardianAlba = fs.readFileSync(
   "utf8",
 );
 const nivor = fs.readFileSync(
-  path.join(migrations, "20260811190930_add_nivor_ice_dragon.sql"),
+  path.join(migrations, "20260812222516_add_nivor_ice_dragon.sql"),
   "utf8",
 );
 const dictionary = fs.readFileSync(
