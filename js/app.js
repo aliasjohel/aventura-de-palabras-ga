@@ -271,7 +271,7 @@ function vibracionAtaquesActiva() {
   }
 }
 
-function vibrarAtaqueVersus(patron = [55, 35, 85]) {
+function vibrarImpactoVersus(patron = [55, 35, 85]) {
   if (!vibracionAtaquesActiva() || typeof navigator.vibrate !== "function") return false;
   try {
     return navigator.vibrate(patron);
@@ -316,7 +316,7 @@ vibracionAtaques.addEventListener("change", () => {
     // Mantiene el ajuste activo durante la sesión si el navegador bloquea el almacenamiento.
   }
   actualizarControlVibracion();
-  if (vibracionAtaques.checked) vibrarAtaqueVersus([35, 25, 55]);
+  if (vibracionAtaques.checked) vibrarImpactoVersus([35, 25, 55]);
   else if (typeof navigator.vibrate === "function") navigator.vibrate(0);
 });
 document.addEventListener("keydown", (evento) => {
@@ -1106,7 +1106,6 @@ function procesarEventoPartidaOnline(partida) {
     mostrarEstadoProgresoVersus(propio ? estadoPropio : estadoRival, propio ? "Fallaste" : "El rival falló", "error");
     if (propio) reproducirSonidoVersus("error", 0.48);
   } else if (evento.type === "word_complete") {
-    vibrarAtaqueVersus();
     if (propio) reproducirAtaqueJugadorVersus();
     else reproducirAtaqueRivalVersus();
     mostrarAvisoAvanceVersus(
@@ -3390,9 +3389,10 @@ function reproducirAtaqueMagoVersus() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     reproducirSonidoVersus("versusAtaqueUno", 0.72);
     programarPasoAtaqueVersus(() => {
+      vibrarImpactoVersus();
+      personajeVersusUno.classList.add("recibiendo-dano-magico");
       reproducirSonidoVersus("versusAtaqueDos", 0.76);
     }, 110, "rival");
-    personajeVersusUno.classList.add("recibiendo-dano-magico");
     programarPasoAtaqueVersus(() => {
       personajeVersusUno.classList.remove("recibiendo-dano-magico");
     }, 220, "rival");
@@ -3411,6 +3411,7 @@ function reproducirAtaqueMagoVersus() {
   }, 220, "rival");
 
   programarPasoAtaqueVersus(() => {
+    vibrarImpactoVersus();
     personajeVersusUno.classList.add("recibiendo-dano-magico");
     vidasVersusUno.classList.add("recibiendo-dano");
     reproducirSonidoVersus("versusAtaqueDos", 0.78);
@@ -3532,6 +3533,7 @@ function reproducirAtaqueGuardianAlbaRivalVersus() {
 
 function reproducirImpactoRivalReducidoVersus() {
   reproducirSonidoVersus("versusAtaqueUno", 0.72);
+  vibrarImpactoVersus();
   personajeVersusUno.classList.add("recibiendo-dano-magico");
   programarPasoAtaqueVersus(() => {
     personajeVersusUno.classList.remove("recibiendo-dano-magico");
@@ -3542,6 +3544,7 @@ function reproducirImpactoRivalReducidoVersus() {
 
 function programarImpactoRivalVersus(demoraImpacto, demoraLimpieza) {
   programarPasoAtaqueVersus(() => {
+    vibrarImpactoVersus();
     personajeVersusUno.classList.add("recibiendo-dano-magico");
     vidasVersusUno.classList.add("recibiendo-dano");
     reproducirSonidoVersus("versusAtaqueDos", 0.78);
@@ -4010,7 +4013,6 @@ function avanzarPalabraJugadorVersus(acertada) {
 
   if (acertada) {
     demoVersus.vidasRival -= 1;
-    vibrarAtaqueVersus();
     reproducirAtaqueJugadorVersus();
     mostrarAvisoAvanceVersus(
       `¡Palabra ${numeroPalabra} superada! Atacaste al rival.`,
@@ -4067,7 +4069,6 @@ function avanzarPalabraRivalVersus(acertada) {
 
   if (acertada) {
     demoVersus.vidasJugador -= 1;
-    vibrarAtaqueVersus();
     reproducirAtaqueRivalVersus();
     mostrarAvisoAvanceVersus(
       `El rival superó su palabra ${numeroPalabra} y te atacó.`,
