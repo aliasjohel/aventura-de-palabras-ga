@@ -260,5 +260,13 @@ assert.match(estilos, /tecla-calavera-ignea/);
 assert.match(estilos, /@keyframes eclipseAzrakFinal/);
 assert.match(estilos, /corteInfernalJugador[^}]+scaleX\(-1\)/);
 assert.doesNotMatch(app, /aplicarFalloForzadoRivalLocalVersus[\s\S]+?animarTeclaCalaveraIgneaVersus\(letra\)[\s\S]+?function aplicarFalloForzadoJugadorLocalVersus/);
+assert.match(html, /entrada-infernal-azrak entrada-infernal-uno/);
+assert.match(html, /entrada-infernal-azrak entrada-infernal-dos/);
+assert.match(app, /`entrada-rival-\$\{personajeRivalVersus\}`/);
+assert.match(estilos, /@keyframes columnaInfernalAzrak/);
+assert.match(estilos, /@keyframes grietaInfernalAzrak/);
+assert.match(estilos, /entradaAzrakJugador[^}]+translateY\(72vh\)/);
+assert.match(estilos, /entrada-infernal-azrak \{[^}]+height:30%/);
+assert.match(estilos, /entrada-infernal-azrak i \{[^}]+height:29%/);
 
 console.log("versus-ui: comprobaciones correctas");

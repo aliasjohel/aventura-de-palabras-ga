@@ -3175,6 +3175,7 @@ function iniciarEntradaDueloVersus() {
   entradaDueloVersus.className = [
     "entrada-duelo-versus",
     `entrada-jugador-${personajeJugadorVersus}`,
+    `entrada-rival-${personajeRivalVersus}`,
   ].join(" ");
   personajeVersusUno.classList.add("entrando-duelo", `entrada-${personajeJugadorVersus}`);
   personajeVersusDos.classList.add(
