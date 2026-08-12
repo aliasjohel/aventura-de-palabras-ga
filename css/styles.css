@@ -9663,7 +9663,7 @@ button:disabled {
     /* En celulares el ancho reducido de cada tarjeta ya agranda visualmente al
        mago horizontal; conserva una escala cercana a la corrección general. */
     .tarjeta-personaje-versus[data-personaje="mago"] img {
-        transform: translateY(-18%) scale(-2, 2);
+        transform: translateY(-52%) scale(-2, 2);
     }
 
     .tarjeta-personaje-versus small {
