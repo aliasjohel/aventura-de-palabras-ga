@@ -9661,9 +9661,9 @@ button:disabled {
 
 @media (orientation: landscape) and (max-height: 500px) {
     /* En celulares el ancho reducido de cada tarjeta ya agranda visualmente al
-       mago horizontal; una escala propia evita que se recorte por arriba. */
+       mago horizontal; conserva una escala cercana a la corrección general. */
     .tarjeta-personaje-versus[data-personaje="mago"] img {
-        transform: translateY(-8%) scale(-1.4, 1.4);
+        transform: translateY(-18%) scale(-2, 2);
     }
 
     .tarjeta-personaje-versus small {
@@ -9678,6 +9678,31 @@ button:disabled {
 
     .matriarca-llamado {
         bottom: 13%;
+    }
+}
+
+/* Selector en celular horizontal: dos filas necesitan un marco más profundo.
+   El desplazamiento vertical deja el borde por debajo de los personajes actuales
+   y mantiene espacio para sumar nuevos campeones sin que sobresalgan. */
+@media (orientation: landscape) and (max-height: 500px) {
+    .pantalla-seleccion-personaje-versus.activa {
+        place-items: start center;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .seleccion-personaje-marco {
+        max-height: none;
+        margin-block: 1dvh;
+        padding-bottom: 14px;
+    }
+
+    .lista-personajes-versus {
+        align-items: stretch;
+    }
+
+    .tarjeta-personaje-versus {
+        height: clamp(165px, 54dvh, 225px);
     }
 }
 
