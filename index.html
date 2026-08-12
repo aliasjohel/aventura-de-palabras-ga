@@ -23,7 +23,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260812-nivor-36">
+    <link rel="stylesheet" href="css/styles.css?v=20260812-vibracion-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -72,7 +72,7 @@
                 </button>
                 <button id="btnVersus" class="btn-versus-menu">⚔️ Multijugador</button>
                 <button disabled>Estadísticas</button>
-                <button disabled>Configuración</button>
+                <button id="btnConfiguracion" type="button">Configuración</button>
 
                 <label class="control-modo-pruebas" for="modoPruebas">
                     <input id="modoPruebas" type="checkbox">
@@ -87,6 +87,22 @@
                     <select id="selectorMisionPruebas"></select>
 
                     <button id="btnIniciarMisionPruebas" type="button">Iniciar misión</button>
+                </div>
+            </div>
+            <div id="modalConfiguracion" class="modal-configuracion oculto" role="dialog" aria-modal="true"
+                aria-labelledby="tituloConfiguracion">
+                <div class="panel-configuracion">
+                    <span class="etiqueta-configuracion">AJUSTES</span>
+                    <h2 id="tituloConfiguracion">Configuración</h2>
+                    <label class="opcion-configuracion" for="vibracionAtaques">
+                        <span>
+                            <strong>Vibración en ataques</strong>
+                            <small>El celular vibra cuando un personaje completa una palabra y ataca.</small>
+                        </span>
+                        <input id="vibracionAtaques" type="checkbox" role="switch">
+                    </label>
+                    <p id="estadoVibracion" class="estado-vibracion" aria-live="polite"></p>
+                    <button id="btnCerrarConfiguracion" type="button">Listo</button>
                 </div>
             </div>
         </section>
@@ -956,7 +972,7 @@
     <script src="js/versus-engine.js?v=20260808-habilidades-versus-2"></script>
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
     <script src="js/versus-room-supabase.js?v=20260808-hombre-lobo-2"></script>
-    <script src="js/app.js?v=20260812-nivor-28"></script>
+    <script src="js/app.js?v=20260812-vibracion-2"></script>
     <script src="js/pwa.js?v=20260808-hombre-lobo-2"></script>
 </body>
 

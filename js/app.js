@@ -26,6 +26,11 @@ const marcoVersus = document.getElementById("marcoVersus");
 
 const btnJugar = document.getElementById("btnJugar");
 const btnVersus = document.getElementById("btnVersus");
+const btnConfiguracion = document.getElementById("btnConfiguracion");
+const modalConfiguracion = document.getElementById("modalConfiguracion");
+const btnCerrarConfiguracion = document.getElementById("btnCerrarConfiguracion");
+const vibracionAtaques = document.getElementById("vibracionAtaques");
+const estadoVibracion = document.getElementById("estadoVibracion");
 const btnSalirSalaVersus = document.getElementById("btnSalirSalaVersus");
 const btnSalirSalaVersusVertical = document.getElementById("btnSalirSalaVersusVertical");
 const inicioSalaVersus = document.getElementById("inicioSalaVersus");
@@ -255,6 +260,68 @@ const sonidos = {
   versusFight: new Audio("assets/sounds/fight.mp3"),
   versusFinish: new Audio("assets/sounds/finish.mp3"),
 };
+
+const claveVibracionAtaques = "vibracionAtaquesAventuraGA";
+
+function vibracionAtaquesActiva() {
+  try {
+    return localStorage.getItem(claveVibracionAtaques) !== "desactivada";
+  } catch {
+    return true;
+  }
+}
+
+function vibrarAtaqueVersus(patron = [55, 35, 85]) {
+  if (!vibracionAtaquesActiva() || typeof navigator.vibrate !== "function") return false;
+  try {
+    return navigator.vibrate(patron);
+  } catch {
+    return false;
+  }
+}
+
+function actualizarControlVibracion() {
+  if (!vibracionAtaques || !estadoVibracion) return;
+  const activa = vibracionAtaquesActiva();
+  vibracionAtaques.checked = activa;
+  estadoVibracion.textContent = typeof navigator.vibrate === "function"
+    ? (activa ? "Vibración activada" : "Vibración desactivada")
+    : "Este navegador no admite vibración";
+}
+
+function abrirConfiguracion() {
+  modalConfiguracion.classList.remove("oculto");
+  actualizarControlVibracion();
+  vibracionAtaques.focus();
+}
+
+function cerrarConfiguracion() {
+  if (typeof navigator.vibrate === "function") navigator.vibrate(0);
+  modalConfiguracion.classList.add("oculto");
+  btnConfiguracion.focus();
+}
+
+btnConfiguracion.addEventListener("click", abrirConfiguracion);
+btnCerrarConfiguracion.addEventListener("click", cerrarConfiguracion);
+modalConfiguracion.addEventListener("click", (evento) => {
+  if (evento.target === modalConfiguracion) cerrarConfiguracion();
+});
+vibracionAtaques.addEventListener("change", () => {
+  try {
+    localStorage.setItem(
+      claveVibracionAtaques,
+      vibracionAtaques.checked ? "activada" : "desactivada",
+    );
+  } catch {
+    // Mantiene el ajuste activo durante la sesión si el navegador bloquea el almacenamiento.
+  }
+  actualizarControlVibracion();
+  if (vibracionAtaques.checked) vibrarAtaqueVersus([35, 25, 55]);
+  else if (typeof navigator.vibrate === "function") navigator.vibrate(0);
+});
+document.addEventListener("keydown", (evento) => {
+  if (evento.key === "Escape" && !modalConfiguracion.classList.contains("oculto")) cerrarConfiguracion();
+});
 
 const musicaPrologo = new Audio("assets/sounds/prologo.mp3");
 musicaPrologo.loop = false;
@@ -1039,6 +1106,7 @@ function procesarEventoPartidaOnline(partida) {
     mostrarEstadoProgresoVersus(propio ? estadoPropio : estadoRival, propio ? "Fallaste" : "El rival falló", "error");
     if (propio) reproducirSonidoVersus("error", 0.48);
   } else if (evento.type === "word_complete") {
+    vibrarAtaqueVersus();
     if (propio) reproducirAtaqueJugadorVersus();
     else reproducirAtaqueRivalVersus();
     mostrarAvisoAvanceVersus(
@@ -3942,6 +4010,7 @@ function avanzarPalabraJugadorVersus(acertada) {
 
   if (acertada) {
     demoVersus.vidasRival -= 1;
+    vibrarAtaqueVersus();
     reproducirAtaqueJugadorVersus();
     mostrarAvisoAvanceVersus(
       `¡Palabra ${numeroPalabra} superada! Atacaste al rival.`,
@@ -3998,6 +4067,7 @@ function avanzarPalabraRivalVersus(acertada) {
 
   if (acertada) {
     demoVersus.vidasJugador -= 1;
+    vibrarAtaqueVersus();
     reproducirAtaqueRivalVersus();
     mostrarAvisoAvanceVersus(
       `El rival superó su palabra ${numeroPalabra} y te atacó.`,
