@@ -4763,7 +4763,7 @@ button:disabled {
     overflow: hidden;
     pointer-events: none;
     contain: strict;
-    scale: 1.1;
+    scale: 1;
     transform-origin: center;
 }
 
@@ -4781,55 +4781,166 @@ button:disabled {
 }
 
 .rama-bloqueo-1 {
-    --ancho-rama: 105%;
-    --rotacion-rama: 13deg;
+    --ancho-rama: 48%;
+    --rotacion-rama: 19deg;
     --rotacion-inicial: -4deg;
     --entrada-x: -5%;
     --entrada-y: -82%;
     --escala-x-inicial: 0.94;
     --origen-rama: 20% 50%;
     --retraso-rama: 0ms;
-    top: -24%;
-    left: -30%;
+    top: 12%;
+    left: -7%;
 }
 
 .rama-bloqueo-2 {
-    --ancho-rama: 96%;
-    --rotacion-rama: -15deg;
+    --ancho-rama: 43%;
+    --rotacion-rama: -24deg;
     --rotacion-inicial: -15deg;
     --entrada-x: 0%;
     --entrada-y: 0%;
     --escala-x-inicial: 0.08;
     --origen-rama: 88% 50%;
-    --retraso-rama: 420ms;
-    top: -10%;
-    left: 25%;
+    --retraso-rama: 210ms;
+    top: 9%;
+    left: 64%;
 }
 
+.rama-bloqueo-2,
+.rama-bloqueo-5,
+.rama-bloqueo-8,
+.rama-bloqueo-10,
+.rama-bloqueo-12 { --direccion-rama: -1; }
+
 .rama-bloqueo-3 {
-    --ancho-rama: 116%;
-    --rotacion-rama: 20deg;
+    --ancho-rama: 53%;
+    --rotacion-rama: 12deg;
     --rotacion-inicial: 4deg;
     --entrada-x: -8%;
     --entrada-y: -92%;
     --escala-x-inicial: 0.96;
     --origen-rama: 28% 50%;
-    --retraso-rama: 980ms;
-    top: 8%;
-    left: -36%;
+    --retraso-rama: 430ms;
+    top: 29%;
+    left: 4%;
 }
 
 .rama-bloqueo-4 {
-    --ancho-rama: 108%;
-    --rotacion-rama: -18deg;
+    --ancho-rama: 49%;
+    --rotacion-rama: -17deg;
     --rotacion-inicial: -18deg;
     --entrada-x: 0%;
     --entrada-y: 0%;
     --escala-x-inicial: 0.06;
     --origen-rama: 89% 50%;
-    --retraso-rama: 1540ms;
-    top: 22%;
-    left: 18%;
+    --retraso-rama: 650ms;
+    top: 27%;
+    left: 51%;
+}
+
+.rama-bloqueo-5 {
+    --ancho-rama: 42%;
+    --rotacion-rama: 27deg;
+    --rotacion-inicial: 8deg;
+    --entrada-x: -5%;
+    --entrada-y: -88%;
+    --escala-x-inicial: 0.92;
+    --origen-rama: 22% 50%;
+    --retraso-rama: 870ms;
+    top: 47%;
+    left: -3%;
+}
+
+.rama-bloqueo-6 {
+    --ancho-rama: 46%;
+    --rotacion-rama: -29deg;
+    --rotacion-inicial: -12deg;
+    --entrada-x: 0%;
+    --entrada-y: 0%;
+    --escala-x-inicial: 0.08;
+    --origen-rama: 88% 50%;
+    --retraso-rama: 1090ms;
+    top: 45%;
+    left: 61%;
+}
+
+.rama-bloqueo-7 {
+    --ancho-rama: 54%;
+    --rotacion-rama: 14deg;
+    --rotacion-inicial: -3deg;
+    --entrada-x: -6%;
+    --entrada-y: -84%;
+    --escala-x-inicial: 0.94;
+    --origen-rama: 24% 50%;
+    --retraso-rama: 1310ms;
+    top: 64%;
+    left: 10%;
+}
+
+.rama-bloqueo-8 {
+    --ancho-rama: 40%;
+    --rotacion-rama: -20deg;
+    --rotacion-inicial: -20deg;
+    --entrada-x: 0%;
+    --entrada-y: 0%;
+    --escala-x-inicial: 0.07;
+    --origen-rama: 90% 50%;
+    --retraso-rama: 1530ms;
+    top: 66%;
+    left: 67%;
+}
+
+/* Refuerzos centrales: cierran los huecos sin volver a usar ramas gigantes. */
+.rama-bloqueo-9 {
+    --ancho-rama: 39%;
+    --rotacion-rama: 43deg;
+    --rotacion-inicial: 9deg;
+    --entrada-x: -4%;
+    --entrada-y: -90%;
+    --escala-x-inicial: 0.92;
+    --origen-rama: 23% 50%;
+    --retraso-rama: 1680ms;
+    top: 17%;
+    left: 31%;
+}
+
+.rama-bloqueo-10 {
+    --ancho-rama: 45%;
+    --rotacion-rama: -38deg;
+    --rotacion-inicial: -18deg;
+    --entrada-x: 0%;
+    --entrada-y: 0%;
+    --escala-x-inicial: 0.07;
+    --origen-rama: 88% 50%;
+    --retraso-rama: 1830ms;
+    top: 34%;
+    left: 29%;
+}
+
+.rama-bloqueo-11 {
+    --ancho-rama: 48%;
+    --rotacion-rama: 31deg;
+    --rotacion-inicial: 5deg;
+    --entrada-x: -6%;
+    --entrada-y: -86%;
+    --escala-x-inicial: 0.94;
+    --origen-rama: 24% 50%;
+    --retraso-rama: 1980ms;
+    top: 50%;
+    left: 30%;
+}
+
+.rama-bloqueo-12 {
+    --ancho-rama: 43%;
+    --rotacion-rama: -33deg;
+    --rotacion-inicial: -16deg;
+    --entrada-x: 0%;
+    --entrada-y: 0%;
+    --escala-x-inicial: 0.07;
+    --origen-rama: 89% 50%;
+    --retraso-rama: 2130ms;
+    top: 63%;
+    left: 36%;
 }
 
 .capa-ramas-bloqueo.ramas-activas .rama-bloqueo {
@@ -4838,7 +4949,7 @@ button:disabled {
 
 .capa-ramas-bloqueo.ramas-colocadas .rama-bloqueo {
     opacity: 1;
-    transform: translate3d(0, 0, 0) rotate(var(--rotacion-rama)) scaleX(1);
+    transform: translate3d(0, 0, 0) rotate(var(--rotacion-rama)) scaleX(var(--direccion-rama, 1));
 }
 
 @keyframes bloquearSenderoConRama {
@@ -4847,23 +4958,23 @@ button:disabled {
         transform:
             translate3d(var(--entrada-x), var(--entrada-y), 0)
             rotate(var(--rotacion-inicial))
-            scaleX(var(--escala-x-inicial));
+            scaleX(calc(var(--escala-x-inicial) * var(--direccion-rama, 1)));
     }
 
     16% { opacity: 1; }
 
     78% {
         opacity: 1;
-        transform: translate3d(0, 2.5%, 0) rotate(var(--rotacion-rama)) scaleX(1);
+        transform: translate3d(0, 2.5%, 0) rotate(var(--rotacion-rama)) scaleX(var(--direccion-rama, 1));
     }
 
     90% {
-        transform: translate3d(0, -1.2%, 0) rotate(var(--rotacion-rama)) scaleX(1);
+        transform: translate3d(0, -1.2%, 0) rotate(var(--rotacion-rama)) scaleX(var(--direccion-rama, 1));
     }
 
     100% {
         opacity: 1;
-        transform: translate3d(0, 0, 0) rotate(var(--rotacion-rama)) scaleX(1);
+        transform: translate3d(0, 0, 0) rotate(var(--rotacion-rama)) scaleX(var(--direccion-rama, 1));
     }
 }
 

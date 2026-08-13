@@ -270,5 +270,12 @@ assert.match(estilos, /@keyframes grietaInfernalAzrak/);
 assert.match(estilos, /entradaAzrakJugador[^}]+translateY\(72vh\)/);
 assert.match(estilos, /entrada-infernal-azrak \{[^}]+height:30%/);
 assert.match(estilos, /entrada-infernal-azrak i \{[^}]+height:29%/);
+assert.match(app, /for \(let indice = 1; indice <= 12; indice\+\+\)/);
+assert.match(estilos, /\.rama-bloqueo-8/);
+assert.match(estilos, /--ancho-rama: 40%/);
+assert.doesNotMatch(estilos, /--ancho-rama: 1(?:05|08|16)%/);
+assert.match(app, /rama-frondosa-bosque-\$\{variante\}\.png/);
+assert.match(estilos, /--direccion-rama: -1/);
+assert.match(estilos, /\.rama-bloqueo-12/);
 
 console.log("versus-ui: comprobaciones correctas");

@@ -1,4 +1,4 @@
-const CACHE_NAME = "aventura-palabras-runtime-v83";
+const CACHE_NAME = "aventura-palabras-runtime-v86";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -17,6 +17,9 @@ const CORE_ASSETS = [
   "./assets/icons/icon-512.png",
   "./assets/images/intro/libro-intro-sin-cristal.png",
   "./assets/images/intro/cristal-icono.png",
+  "./assets/images/elementos/rama-frondosa-bosque-1.png",
+  "./assets/images/elementos/rama-frondosa-bosque-2.png",
+  "./assets/images/elementos/rama-frondosa-bosque-3.png",
   "./assets/images/fondos/menu-inicio-aventura.png",
   "./assets/icons/icon-maskable-512.png",
   "./assets/images/elements/cristal-sabiduria-esmeralda.png",

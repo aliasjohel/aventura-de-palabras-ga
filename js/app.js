@@ -5738,10 +5738,11 @@ function actualizarBloqueoRamasMision() {
   capa.className = "capa-ramas-bloqueo";
   capa.setAttribute("aria-hidden", "true");
 
-  for (let indice = 1; indice <= 4; indice++) {
+  for (let indice = 1; indice <= 12; indice++) {
     const rama = document.createElement("img");
     rama.className = `rama-bloqueo rama-bloqueo-${indice}`;
-    rama.src = "assets/images/elementos/rama-bloqueo-bosque.png";
+    const variante = ((indice - 1) % 3) + 1;
+    rama.src = `assets/images/elementos/rama-frondosa-bosque-${variante}.png`;
     rama.alt = "";
     capa.appendChild(rama);
   }
