@@ -23,6 +23,12 @@ assert.match(html, /id="revelacionPalabraVersusUno"[\s\S]+id="revelacionPalabraV
 assert.match(estilos, /\.versus-palabra-revelada/);
 assert.match(app, /function mostrarRevelacionPalabraVersus\(/);
 assert.match(app, /La palabra era/);
+assert.match(html, /id="anuncioFinVersus"[\s\S]+FIN DEL JUEGO[\s\S]+id="palabraFinalVersus"/);
+assert.match(estilos, /\.anuncio-fin-versus[\s\S]+@keyframes entradaAnuncioFinVersus/);
+assert.match(app, /function mostrarAnuncioFinVersus\(palabraPerdida = ""\)/);
+assert.match(app, /LA PALABRA ERA: \$\{palabraPerdida\}/);
+assert.match(app, /await mostrarAnuncioFinVersus\(palabraPerdida\)/);
+assert.match(app, /finalizarPartidaVersus\([\s\S]+?palabraPerdida,[\s\S]+?\);/);
 assert.match(migracionPalabraPerdida, /'type', 'word_failed'[\s\S]+?'word', v_word/);
 assert.match(migracionPalabraPerdida, /'previousEvent', last_event/);
 assert.match(eventosOnline, /eventoFinal\.previousEvent/);
@@ -31,7 +37,7 @@ const cierreOnline = app.slice(
   app.indexOf("function finalizarPartidaOnline"),
   app.indexOf("function actualizarPartidaOnline"),
 );
-assert.match(cierreOnline, /reproducirCierrePartidaVersus\(ganador, detalle\)/);
+assert.match(cierreOnline, /reproducirCierrePartidaVersus\(ganador, detalle, palabraPerdida\)/);
 assert.doesNotMatch(cierreOnline, /mostrarResultadoPartidaVersus\(ganador, detalle\)/);
 
 for (const ataque of ["bumeran", "raices", "rugido-dragon", "zarpazo-feral", "corte-sombrio", "corte-solar"]) {
