@@ -5715,6 +5715,295 @@ button:disabled {
     pointer-events: none;
 }
 
+/* Rompecabezas del mural del guardián, previo al Cristal del Bosque. */
+.modal-mural-santuario {
+    position: fixed;
+    inset: 0;
+    z-index: 2600;
+    display: grid;
+    place-items: center;
+    padding: clamp(10px, 2.2vw, 24px);
+    overflow: auto;
+    background:
+        radial-gradient(circle at 50% 42%, rgba(29, 110, 73, 0.27), transparent 42%),
+        rgba(1, 13, 12, 0.94);
+    backdrop-filter: blur(8px);
+}
+
+.modal-mural-santuario.oculto {
+    display: none;
+}
+
+.panel-mural-santuario {
+    width: min(1120px, 96vw);
+    max-height: 96vh;
+    padding: clamp(13px, 2vw, 24px);
+    overflow: auto;
+    border: 1px solid rgba(112, 237, 153, 0.5);
+    border-radius: 22px;
+    background:
+        linear-gradient(145deg, rgba(6, 42, 34, 0.97), rgba(3, 21, 25, 0.98)),
+        #041c19;
+    box-shadow: 0 0 0 4px rgba(21, 80, 61, 0.46), 0 24px 80px rgba(0, 0, 0, 0.72), 0 0 48px rgba(39, 207, 103, 0.14);
+    color: #eaffef;
+}
+
+.cabecera-mural-santuario {
+    text-align: center;
+}
+
+.etiqueta-mural-santuario {
+    color: #8af0ad;
+    font-size: clamp(0.65rem, 1.5vw, 0.82rem);
+    font-weight: 900;
+    letter-spacing: 0.18em;
+}
+
+.cabecera-mural-santuario h2 {
+    margin: 4px 0 3px;
+    color: #f0dca2;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    text-shadow: 0 0 18px rgba(103, 237, 147, 0.24);
+}
+
+.cabecera-mural-santuario p {
+    max-width: 760px;
+    margin: 0 auto 12px;
+    color: #c7dfd1;
+    font-size: clamp(0.76rem, 1.7vw, 0.96rem);
+}
+
+.zona-rompecabezas-mural {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(210px, 1fr);
+    gap: clamp(12px, 2vw, 22px);
+    align-items: center;
+}
+
+.tablero-mural-santuario {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: min(100%, 720px);
+    aspect-ratio: 3 / 2;
+    margin-inline: auto;
+    overflow: hidden;
+    border: clamp(5px, 0.8vw, 9px) ridge #506a47;
+    border-radius: 10px;
+    background: #0b211c;
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.55), 0 0 25px rgba(62, 213, 111, 0.16);
+    isolation: isolate;
+}
+
+.tablero-mural-santuario::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: url("../assets/images/elements/mural-dragon-bosque.png") center / 100% 100% no-repeat;
+    opacity: 0.075;
+    filter: grayscale(0.35) brightness(0.68);
+    transition: opacity 320ms ease, filter 400ms ease;
+    pointer-events: none;
+}
+
+.tablero-mural-santuario.guia-activa::before {
+    z-index: 4;
+    opacity: 0.72;
+    filter: brightness(0.92);
+}
+
+.tablero-mural-santuario.completo::before {
+    opacity: 0;
+}
+
+.tablero-mural-santuario.completo {
+    animation: despertarMuralSantuario 1.8s ease both;
+}
+
+.espacio-mural-santuario {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    min-height: 0;
+    border: 1px dashed rgba(129, 201, 151, 0.24);
+    background: radial-gradient(circle, rgba(65, 137, 94, 0.12), transparent 68%);
+    cursor: pointer;
+}
+
+.espacio-mural-santuario:focus-visible {
+    z-index: 3;
+    outline: 3px solid #e6d280;
+    outline-offset: -4px;
+}
+
+.espacio-mural-santuario.ocupado {
+    border-style: solid;
+    border-color: rgba(104, 159, 113, 0.25);
+    cursor: default;
+}
+
+.espacio-mural-santuario.ocupado:focus-visible {
+    outline: none;
+}
+
+.sector-piezas-mural {
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid rgba(118, 203, 145, 0.25);
+    border-radius: 14px;
+    background: rgba(1, 18, 17, 0.5);
+}
+
+.sector-piezas-mural > strong {
+    display: block;
+    margin-bottom: 9px;
+    color: #bcebc9;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.bandeja-mural-santuario {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    min-height: 150px;
+    align-content: center;
+}
+
+.pieza-mural-santuario {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    min-width: 0;
+    padding: 0;
+    border: 2px solid rgba(191, 225, 172, 0.64);
+    border-radius: 6px;
+    background-image: url("../assets/images/elements/mural-dragon-bosque.png");
+    background-repeat: no-repeat;
+    background-size: 300% 300%;
+    background-position: calc(var(--columna-pieza) * 50%) calc(var(--fila-pieza) * 50%);
+    box-shadow: 0 5px 9px rgba(0, 0, 0, 0.48);
+    cursor: grab;
+    touch-action: none;
+    transition: border-color 180ms ease, filter 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.pieza-mural-santuario:hover,
+.pieza-mural-santuario:focus-visible,
+.pieza-mural-santuario.seleccionada {
+    z-index: 2;
+    border-color: #f1dc82;
+    filter: brightness(1.16);
+    outline: none;
+    transform: translateY(-2px) scale(1.025);
+    box-shadow: 0 0 0 3px rgba(241, 220, 130, 0.22), 0 8px 16px rgba(0, 0, 0, 0.58);
+}
+
+.pieza-mural-santuario.arrastrando {
+    position: fixed;
+    z-index: 5000;
+    margin: 0;
+    pointer-events: none;
+    cursor: grabbing;
+    opacity: 0.92;
+    transform: scale(1.06) rotate(1.5deg);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.66), 0 0 22px rgba(93, 239, 137, 0.4);
+}
+
+.pieza-mural-santuario.colocada {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    cursor: default;
+    transform: none;
+    animation: encajarPiezaMural 420ms cubic-bezier(0.18, 0.8, 0.28, 1) both;
+}
+
+.pieza-mural-santuario.error-encaje {
+    animation: errorPiezaMural 380ms ease;
+}
+
+.estado-mural-santuario {
+    min-height: 1.35em;
+    margin: 11px 0 7px;
+    color: #d9f7e1;
+    font-weight: 700;
+    text-align: center;
+}
+
+.acciones-mural-santuario {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.acciones-mural-santuario button {
+    min-width: 150px;
+    padding: 9px 14px;
+}
+
+#pantallaJuego.rompecabezas-mural-activo > :not(.modal-mural-santuario) {
+    pointer-events: none;
+}
+
+@keyframes encajarPiezaMural {
+    0% { opacity: 0.4; transform: scale(1.14); filter: brightness(1.8); }
+    62% { opacity: 1; transform: scale(0.97); filter: brightness(1.18); }
+    100% { transform: scale(1); filter: none; }
+}
+
+@keyframes errorPiezaMural {
+    25% { transform: translateX(-6px) rotate(-2deg); border-color: #e36650; }
+    50% { transform: translateX(6px) rotate(2deg); }
+    75% { transform: translateX(-3px) rotate(-1deg); }
+}
+
+@keyframes despertarMuralSantuario {
+    0%, 38% { filter: brightness(1); }
+    52% { filter: brightness(1.7) drop-shadow(0 0 12px #57ee8e); }
+    72% { filter: brightness(1.13) drop-shadow(0 0 22px rgba(74, 239, 131, 0.8)); }
+    100% { filter: brightness(1.04) drop-shadow(0 0 10px rgba(74, 239, 131, 0.45)); }
+}
+
+@media (max-width: 760px), (orientation: portrait) {
+    .panel-mural-santuario { width: min(96vw, 700px); }
+    .zona-rompecabezas-mural { grid-template-columns: 1fr; }
+    .tablero-mural-santuario { width: min(90vw, 620px); }
+    .sector-piezas-mural { padding: 8px; }
+    .bandeja-mural-santuario {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        min-height: 0;
+        gap: 6px;
+    }
+    .cabecera-mural-santuario p { margin-bottom: 8px; }
+    .estado-mural-santuario { margin-block: 7px 4px; font-size: 0.82rem; }
+}
+
+@media (orientation: landscape) and (max-height: 620px) {
+    .modal-mural-santuario { padding: 6px; }
+    .panel-mural-santuario { padding: 9px 14px; }
+    .cabecera-mural-santuario p { margin-bottom: 7px; }
+    .zona-rompecabezas-mural { grid-template-columns: minmax(0, 3fr) minmax(180px, 1fr); }
+    .tablero-mural-santuario { width: min(70vw, 660px); max-height: 62vh; }
+    .estado-mural-santuario { margin-block: 5px 3px; }
+    .acciones-mural-santuario button { padding-block: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pieza-mural-santuario,
+    .pieza-mural-santuario.colocada,
+    .pieza-mural-santuario.error-encaje,
+    .tablero-mural-santuario.completo { animation: none; transition: none; }
+}
+
 /* Cinematica final del Santuario de Cristal. */
 .cinematica-santuario {
     position: absolute;
