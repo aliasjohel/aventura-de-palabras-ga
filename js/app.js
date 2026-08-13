@@ -182,7 +182,8 @@ const victimaCaceriaVersus = document.getElementById("victimaCaceriaVersus");
 const victimaShadowVersus = document.getElementById("victimaShadowVersus");
 const victimaGuardianAlbaVersus = document.getElementById("victimaGuardianAlbaVersus");
 const victimaNivorVersus = document.getElementById("victimaNivorVersus");
-const victimaAzrakVersus = document.getElementById("victimaAzrakVersus");
+const victimaPortalAzrakVersus = document.getElementById("victimaPortalAzrakVersus");
+const manoVictimaAzrakVersus = document.getElementById("manoVictimaAzrakVersus");
 const victimaPruebaFaucesVersus = document.getElementById(
   "victimaPruebaFaucesVersus",
 );
@@ -4704,7 +4705,10 @@ function reproducirCeroAbsolutoVersus(victima = personajeRivalVersus) {
 function reproducirEclipseInfernalVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   fondoCinematicaVersus.src = fondoVersus.src;
-  programarReaccionVictimaFinalVersus(victimaAzrakVersus, victima, 2700);
+  const victimaFinal = victima in personajesVersus ? victima : "mago";
+  programarReaccionVictimaFinalVersus(victimaPortalAzrakVersus, victimaFinal, 2850);
+  manoVictimaAzrakVersus.src = `assets/images/personajes/versus/mano-abismo-atrapa-${victimaFinal.replaceAll("_", "-")}.png`;
+  manoVictimaAzrakVersus.alt = `${personajesVersus[victimaFinal].nombre}, atrapado por la Mano del Abismo`;
   etiquetaCinematicaVersus.textContent = "RITO DEL ABISMO";
   tituloCinematicaVersus.textContent = "ECLIPSE INFERNAL";
   cinematicaFinalVersus.classList.add("eclipse-infernal");
@@ -4716,7 +4720,7 @@ function reproducirEclipseInfernalVersus(victima = personajeRivalVersus) {
 
   return new Promise((resolve) => {
     demoVersus.resolverCinematica = resolve;
-    demoVersus.temporizadorCinematica = setTimeout(completarCinematicaFinalVersus, 7600);
+    demoVersus.temporizadorCinematica = setTimeout(completarCinematicaFinalVersus, 8400);
   });
 }
 

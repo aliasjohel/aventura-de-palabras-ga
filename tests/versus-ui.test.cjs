@@ -6,6 +6,7 @@ const raiz = path.resolve(__dirname, "..");
 const app = fs.readFileSync(path.join(raiz, "js", "app.js"), "utf8");
 const estilos = fs.readFileSync(path.join(raiz, "css", "styles.css"), "utf8");
 const html = fs.readFileSync(path.join(raiz, "index.html"), "utf8");
+const serviceWorker = fs.readFileSync(path.join(raiz, "sw.js"), "utf8");
 const migracionPalabraPerdida = fs.readFileSync(
   path.join(raiz, "supabase", "migrations", "20260811014047_reveal_failed_versus_word.sql"),
   "utf8",
@@ -262,10 +263,24 @@ assert.match(app, /function reproducirAtaqueAzrakVersus\(/);
 assert.match(app, /function reproducirEclipseInfernalVersus\(/);
 assert.match(html, /corte-infernal-azrak\.png/);
 assert.match(html, /calavera-ignea-azrak\.png/);
-assert.match(html, /eclipse-infernal-azrak\.png/);
+assert.match(html, /azrak-invocacion-portal\.png/);
+assert.match(html, /mano-abismo-emergiendo-azrak\.png/);
+assert.match(html, /mano-abismo-abierta-azrak\.png/);
+assert.match(html, /id="victimaPortalAzrakVersus"[\s\S]+mago-base\.png/);
+assert.match(html, /id="manoVictimaAzrakVersus"[\s\S]+mano-abismo-atrapa-mago\.png/);
+assert.match(app, /programarReaccionVictimaFinalVersus\(victimaPortalAzrakVersus, victimaFinal, 2850\)/);
+assert.match(app, /mano-abismo-atrapa-\$\{victimaFinal\.replaceAll\("_", "-"\)\}\.png/);
+assert.match(app, /setTimeout\(completarCinematicaFinalVersus, 8400\)/);
+for (const victima of ["explorador", "mago", "guardiana", "dragon", "hombre-lobo", "t-shadow", "guardian-alba", "dragon-hielo", "azrak"]) {
+  assert.match(serviceWorker, new RegExp(`mano-abismo-atrapa-${victima}\\.png`));
+}
 assert.match(estilos, /@keyframes calaveraIgneaJugador/);
 assert.match(estilos, /tecla-calavera-ignea/);
-assert.match(estilos, /@keyframes eclipseAzrakFinal/);
+assert.match(estilos, /@keyframes manoEmergiendoAzrakFinal/);
+assert.match(estilos, /@keyframes manoAbiertaAzrakFinal/);
+assert.match(estilos, /@keyframes victimaAnteManoAzrakFinal/);
+assert.match(estilos, /@keyframes manoVictimaAzrakFinal/);
+assert.match(estilos, /@keyframes fragmentoAzrakFinal/);
 assert.match(estilos, /corteInfernalJugador[^}]+scaleX\(-1\)/);
 assert.doesNotMatch(app, /aplicarFalloForzadoRivalLocalVersus[\s\S]+?animarTeclaCalaveraIgneaVersus\(letra\)[\s\S]+?function aplicarFalloForzadoJugadorLocalVersus/);
 assert.match(html, /entrada-infernal-azrak entrada-infernal-uno/);

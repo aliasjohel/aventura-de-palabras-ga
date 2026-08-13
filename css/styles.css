@@ -4501,6 +4501,11 @@ button:disabled {
         transform: rotate(8deg);
     }
 
+    .cinematica-final-versus.eclipse-infernal .cinematica-azrak-victoria {
+        opacity: 1;
+        transform: translateX(-50%);
+    }
+
 }
 
 .aviso-avance-versus {
@@ -10671,44 +10676,53 @@ button:disabled {
 @keyframes teclaCalaveraIgnea { 0%{transform:none} 24%{transform:translateY(-5px) scale(1.12);box-shadow:0 0 22px #ff4b0b} 42%{transform:translateY(4px) scale(.92)} 60%,100%{transform:none;filter:sepia(.8) saturate(2.2)} }
 @keyframes llamaTeclaAzrak { to{transform:scaleY(1.16) translateY(-3px);filter:brightness(1.35)} }
 
-.azrak-final-circulo,.cinematica-victima-azrak,.cinematica-azrak-ataque,.azrak-final-eclipse,.azrak-final-corte,.azrak-final-explosion,.cinematica-azrak-victoria { display:none; }
-.cinematica-final-versus.eclipse-infernal.activa { animation:entradaCinematicaVersus 7.6s ease both,temblorAzrakFinal 7.6s linear both; }
-.cinematica-final-versus.eclipse-infernal.activa .azrak-final-circulo,
-.cinematica-final-versus.eclipse-infernal.activa .cinematica-victima-azrak,
-.cinematica-final-versus.eclipse-infernal.activa .cinematica-azrak-ataque,
-.cinematica-final-versus.eclipse-infernal.activa .azrak-final-eclipse,
-.cinematica-final-versus.eclipse-infernal.activa .azrak-final-corte,
+.cinematica-azrak-invocacion,.azrak-mano-emergiendo,.azrak-mano-abierta,.cinematica-victima-portal-azrak,.azrak-mano-victima,.azrak-final-restos,.azrak-final-explosion,.cinematica-azrak-victoria { display:none;opacity:0; }
+.cinematica-final-versus.eclipse-infernal.activa { animation:entradaCinematicaVersus 8.4s ease both,temblorAzrakFinal 8.4s linear both; }
+.cinematica-final-versus.eclipse-infernal.activa .cinematica-azrak-invocacion,
+.cinematica-final-versus.eclipse-infernal.activa .azrak-mano-emergiendo,
+.cinematica-final-versus.eclipse-infernal.activa .azrak-mano-abierta,
+.cinematica-final-versus.eclipse-infernal.activa .cinematica-victima-portal-azrak,
+.cinematica-final-versus.eclipse-infernal.activa .azrak-mano-victima,
+.cinematica-final-versus.eclipse-infernal.activa .azrak-final-restos,
 .cinematica-final-versus.eclipse-infernal.activa .azrak-final-explosion,
 .cinematica-final-versus.eclipse-infernal.activa .cinematica-azrak-victoria { display:block;position:absolute; }
-.eclipse-infernal .cinematica-final-fondo { animation:fondoAzrakFinal 7.6s both; }
-.cinematica-victima-azrak { z-index:5;right:7%;bottom:9%;width:min(24vw,310px);height:57%;object-fit:contain;animation:victimaAzrakFinal 7.6s both; }
-.cinematica-azrak-ataque { z-index:7;left:3%;bottom:2%;width:min(39vw,505px);height:73%;object-fit:contain;filter:drop-shadow(0 0 20px #ec3a0a);animation:ataqueAzrakFinal 7.6s both; }
-.azrak-final-circulo { z-index:4;right:8%;top:14%;width:28vw;aspect-ratio:1;border:3px solid #ff6b22;border-radius:50%;box-shadow:0 0 25px #f32d08,inset 0 0 35px #8d0900;animation:circuloAzrakFinal 7.6s both; }
-.azrak-final-circulo::before,.azrak-final-circulo::after,.azrak-final-circulo i,.azrak-final-circulo b { content:"";position:absolute;inset:8%;border:2px solid rgba(255,158,53,.8);transform:rotate(45deg); }
-.azrak-final-circulo::after{inset:22%;transform:rotate(22deg);border-radius:50%}.azrak-final-circulo i{transform:rotate(67deg)}.azrak-final-circulo b{inset:35%;border-radius:50%;background:#ff6a15;box-shadow:0 0 30px #ffb33d}
-.azrak-final-eclipse { z-index:8;left:50%;top:47%;width:min(57vw,72vh);transform:translate(-50%,-50%);filter:drop-shadow(0 0 30px #ff4b0b) drop-shadow(0 0 75px #9e0500);animation:eclipseAzrakFinal 7.6s both; }
-.azrak-final-corte { z-index:10;inset:-30%;background:linear-gradient(168deg,transparent 47%,#fff 49%,#ff9a31 50%,transparent 53%);animation:corteAzrakFinal 7.6s both; }
-.azrak-final-explosion { z-index:11;inset:0;background:radial-gradient(circle,#fff 0 5%,#ffca61 9%,#ff3b0b 21%,rgba(111,0,0,.66) 38%,transparent 62%);animation:explosionAzrakFinal 7.6s both; }
-.cinematica-azrak-victoria { z-index:12;left:50%;bottom:-5%;width:min(33vw,440px);height:83%;object-fit:contain;transform:translateX(-50%);filter:drop-shadow(0 0 24px #f84b16);animation:victoriaAzrakFinal 7.6s both; }
-.cinematica-final-versus.eclipse-infernal.activa .cinematica-final-titulos span { animation:tituloAzrakFinal 7.6s both; }
-.cinematica-final-versus.eclipse-infernal.activa .cinematica-final-titulos h2 { animation:nombreAzrakFinal 7.6s both; }
-@keyframes fondoAzrakFinal { 0%,10%{filter:none} 24%,63%{filter:saturate(.55) sepia(.5) hue-rotate(330deg) brightness(.34)} 69%{filter:brightness(2.5)} 77%,100%{filter:saturate(.45) sepia(.55) hue-rotate(330deg) brightness(.32)} }
-@keyframes victimaAzrakFinal { 0%,30%{opacity:1} 38%,57%{filter:brightness(.5) sepia(1) saturate(4);transform:scale(.94)} 64%,100%{opacity:0;transform:scale(.72)} }
-@keyframes ataqueAzrakFinal { 0%,6%{opacity:0;transform:translateX(-18vw)} 15%,45%{opacity:1;transform:none} 54%,100%{opacity:0;transform:translateY(-5vh) scale(.9)} }
-@keyframes circuloAzrakFinal { 0%,17%{opacity:0;transform:scale(.15) rotate(-90deg)} 34%,53%{opacity:1;transform:scale(1) rotate(0)} 62%,100%{opacity:0;transform:scale(1.35) rotate(70deg)} }
-@keyframes eclipseAzrakFinal { 0%,34%{opacity:0;transform:translate(-50%,34vh) scale(.15)} 47%{opacity:1;transform:translate(-50%,-50%) scale(.72)} 61%{opacity:1;transform:translate(-50%,-50%) scale(1.08)} 69%{opacity:1;transform:translate(-50%,-50%) scale(1.35);filter:brightness(2.3)} 75%,100%{opacity:0;transform:translate(-50%,-50%) scale(1.9)} }
-@keyframes corteAzrakFinal { 0%,63%{opacity:0;transform:translateX(-30%)} 66%{opacity:1} 72%,100%{opacity:0;transform:translateX(30%)} }
-@keyframes explosionAzrakFinal { 0%,67%{opacity:0;transform:scale(.1)} 70%{opacity:1;transform:scale(.6)} 78%{opacity:.8;transform:scale(2.2)} 85%,100%{opacity:0;transform:scale(3)} }
-@keyframes victoriaAzrakFinal { 0%,78%{opacity:0;transform:translate(-50%,12vh) scale(.68)} 88%,100%{opacity:1;transform:translate(-50%,0) scale(1)} }
-@keyframes temblorAzrakFinal { 0%,46%,72%,100%{transform:none} 48%,52%,56%,60%,64%,68%{transform:translate(-4px,3px)} 50%,54%,58%,62%,66%,70%{transform:translate(5px,-4px)} }
-@keyframes tituloAzrakFinal { 0%,78%{opacity:0} 85%,96%{opacity:1} 100%{opacity:0} }
-@keyframes nombreAzrakFinal { 0%,80%{opacity:0;transform:scale(1.4)} 88%,96%{opacity:1;transform:scale(1)} 100%{opacity:0} }
+.eclipse-infernal .cinematica-final-fondo { animation:fondoAzrakFinal 8.4s both; }
+.cinematica-azrak-invocacion { z-index:9;left:1%;bottom:-4%;width:min(39vw,500px);height:88%;object-fit:contain;filter:drop-shadow(0 0 20px #ec3a0a);animation:invocacionAzrakFinal 8.4s both; }
+.azrak-mano-emergiendo,.azrak-mano-abierta,.azrak-mano-victima { z-index:9;right:-2%;bottom:-5%;width:min(54vw,660px);height:96%;object-fit:contain;filter:drop-shadow(0 0 19px #ef3b0b) drop-shadow(0 0 38px rgba(143,4,0,.9));transform-origin:50% 88%; }
+.azrak-mano-emergiendo { animation:manoEmergiendoAzrakFinal 8.4s both; }
+.azrak-mano-abierta { animation:manoAbiertaAzrakFinal 8.4s both; }
+.cinematica-victima-portal-azrak { z-index:10;right:9%;bottom:7%;width:min(25vw,315px);height:62%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 14px 14px rgba(0,0,0,.84)) drop-shadow(0 0 10px rgba(255,82,20,.55));transform-origin:50% 84%;animation:victimaAnteManoAzrakFinal 8.4s both; }
+.cinematica-victima-portal-azrak.victima-final-dragon,.cinematica-victima-portal-azrak.victima-final-dragon_hielo { right:6%;width:min(30vw,375px);height:68%; }
+.cinematica-victima-portal-azrak.victima-final-hombre_lobo { right:7%;width:min(28vw,350px);height:66%; }
+.azrak-mano-victima { animation:manoVictimaAzrakFinal 8.4s both; }
+.azrak-final-restos { z-index:10;right:4%;bottom:2%;width:52%;height:62%;animation:restosAzrakFinal 8.4s both; }
+.azrak-final-restos i { position:absolute;left:50%;bottom:23%;width:clamp(9px,1.5vw,18px);aspect-ratio:1;background:linear-gradient(135deg,#ffbb45,#e62b09 42%,#25040a);clip-path:polygon(50% 0,100% 38%,72% 100%,9% 83%,0 27%);box-shadow:0 0 12px #ff4c0d;animation:fragmentoAzrakFinal 8.4s cubic-bezier(.16,.7,.25,1) both; }
+.azrak-final-restos i:nth-child(2){--x:-19vw;--y:-27vh;--r:-210deg;animation-delay:20ms}.azrak-final-restos i:nth-child(3){--x:17vw;--y:-30vh;--r:185deg;animation-delay:45ms}.azrak-final-restos i:nth-child(4){--x:-23vw;--y:-12vh;--r:250deg;animation-delay:70ms}.azrak-final-restos i:nth-child(5){--x:22vw;--y:-15vh;--r:-260deg;animation-delay:90ms}.azrak-final-restos i:nth-child(6){--x:-10vw;--y:-34vh;--r:310deg;animation-delay:110ms}.azrak-final-restos i:nth-child(7){--x:9vw;--y:-37vh;--r:-330deg;animation-delay:130ms}.azrak-final-restos i:nth-child(8){--x:-27vw;--y:-22vh;--r:170deg;animation-delay:150ms}.azrak-final-restos i:nth-child(9){--x:27vw;--y:-25vh;--r:-190deg;animation-delay:175ms}.azrak-final-restos i:nth-child(10){--x:3vw;--y:-21vh;--r:280deg;animation-delay:200ms}
+.azrak-final-explosion { z-index:11;inset:0;background:radial-gradient(circle at 72% 70%,#fff 0 3%,#ffca61 7%,#ff3b0b 17%,rgba(111,0,0,.62) 31%,transparent 53%);animation:explosionAzrakFinal 8.4s both; }
+.cinematica-azrak-victoria { z-index:12;left:50%;bottom:-5%;width:min(33vw,440px);height:83%;object-fit:contain;transform:translateX(-50%);filter:drop-shadow(0 0 24px #f84b16);animation:victoriaAzrakFinal 8.4s both; }
+.cinematica-final-versus.eclipse-infernal.activa .cinematica-final-titulos span { animation:tituloAzrakFinal 8.4s both; }
+.cinematica-final-versus.eclipse-infernal.activa .cinematica-final-titulos h2 { animation:nombreAzrakFinal 8.4s both; }
+@keyframes fondoAzrakFinal { 0%,8%{filter:none} 20%,68%{filter:saturate(.55) sepia(.5) hue-rotate(330deg) brightness(.3)} 72%{filter:brightness(2.5)} 79%,100%{filter:saturate(.45) sepia(.55) hue-rotate(330deg) brightness(.28)} }
+@keyframes invocacionAzrakFinal { 0%,5%{opacity:0;transform:translateX(-15vw)} 13%,53%{opacity:1;transform:none} 61%,100%{opacity:0;transform:translateY(-3vh) scale(.94)} }
+@keyframes manoEmergiendoAzrakFinal { 0%,14%{opacity:0;transform:translateY(42vh) scale(.54)} 22%,31%{opacity:1;transform:translateY(0) scale(1)} 37%,100%{opacity:0;transform:scale(1.03)} }
+@keyframes manoAbiertaAzrakFinal { 0%,29%{opacity:0;transform:scale(.88)} 36%,44%{opacity:1;transform:scale(1.02)} 49%,100%{opacity:0;transform:scale(1.06)} }
+@keyframes victimaAnteManoAzrakFinal { 0%,10%{opacity:0;transform:translateY(3vh) scale(.94)} 17%,35%{opacity:1;transform:translateY(0) scale(1)} 39%{opacity:1;transform:translateX(-.8vw) rotate(-1deg) scale(.98)} 44%{opacity:1;transform:translateX(.7vw) rotate(1deg) scale(.96)} 48%,100%{opacity:0;transform:translateY(3vh) scale(.88)} }
+@keyframes manoVictimaAzrakFinal { 0%,42%{opacity:0;transform:scale(1.07)} 48%,58%{opacity:1;transform:scale(1)} 68%{opacity:1;transform:translateY(38vh) scale(.62);filter:brightness(.62) drop-shadow(0 0 26px #ff3108)} 72%,100%{opacity:0;transform:translateY(48vh) scale(.25);filter:brightness(2)} }
+@keyframes restosAzrakFinal { 0%,68%{opacity:0} 71%,80%{opacity:1} 86%,100%{opacity:0} }
+@keyframes fragmentoAzrakFinal { 0%,68%{opacity:0;transform:translate(0,0) rotate(0) scale(.2)} 72%{opacity:1} 84%{opacity:1;transform:translate(var(--x,14vw),var(--y,-24vh)) rotate(var(--r,180deg)) scale(1)} 100%{opacity:0;transform:translate(var(--x,14vw),4vh) rotate(var(--r,180deg)) scale(.45)} }
+@keyframes explosionAzrakFinal { 0%,68%{opacity:0;transform:scale(.1)} 72%{opacity:1;transform:scale(.72)} 78%{opacity:.72;transform:scale(2)} 84%,100%{opacity:0;transform:scale(2.8)} }
+@keyframes victoriaAzrakFinal { 0%,77%{opacity:0;transform:translate(-50%,12vh) scale(.68)} 87%,100%{opacity:1;transform:translate(-50%,0) scale(1)} }
+@keyframes temblorAzrakFinal { 0%,45%,67%,100%{transform:none} 48%,52%,56%,60%,64%,70%,74%{transform:translate(-4px,3px)} 50%,54%,58%,62%,66%,72%,76%{transform:translate(5px,-4px)} }
+@keyframes tituloAzrakFinal { 0%,79%{opacity:0} 86%,96%{opacity:1} 100%{opacity:0} }
+@keyframes nombreAzrakFinal { 0%,81%{opacity:0;transform:scale(1.4)} 88%,96%{opacity:1;transform:scale(1)} 100%{opacity:0} }
 
 @media (orientation:landscape) and (max-height:600px) {
   .versus-personaje-uno.personaje-azrak,.versus-personaje-dos.personaje-azrak{width:min(23vw,45vh);bottom:17%}
   .corte-infernal-versus{top:29%;width:min(17vw,30vh)}
   .habilidad-azrak-versus img{top:18%;width:min(22vw,38vh)}
-  .cinematica-azrak-ataque{width:min(38vw,72vh)}
-  .cinematica-victima-azrak{width:min(23vw,43vh)}
+  .cinematica-azrak-invocacion{width:min(37vw,70vh)}
+  .azrak-mano-emergiendo,.azrak-mano-abierta,.azrak-mano-victima{width:min(52vw,88vh)}
+  .cinematica-victima-portal-azrak{width:min(24vw,43vh);height:64%;bottom:5%}
+  .cinematica-victima-portal-azrak.victima-final-dragon,.cinematica-victima-portal-azrak.victima-final-dragon_hielo{width:min(29vw,52vh);height:70%}
   .cinematica-azrak-victoria{width:min(32vw,62vh)}
 }
