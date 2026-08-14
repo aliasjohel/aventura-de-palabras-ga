@@ -7951,7 +7951,8 @@ async function ejecutarDespertarDragonSantuario() {
     "Has reconstruido el sello y superado las pruebas del bosque.";
   dialogo.append(nombre, texto);
   capa.append(destello, dialogo);
-  contenedorEscenario.appendChild(capa);
+  // La capa vive fuera del escenario 16:9 para ocupar todo el viewport vertical.
+  pantallaJuego.appendChild(capa);
   personajeImagen.classList.add("oculto-cinematica");
 
   await Promise.all(planos.map(esperarCargaImagen));
@@ -8139,7 +8140,7 @@ async function volarCristalHaciaPanel() {
 }
 
 function limpiarCinematicaSantuario() {
-  contenedorEscenario
+  pantallaJuego
     .querySelectorAll(".cinematica-santuario, .cinematica-despertar-dragon")
     .forEach((capa) => capa.remove());
   document

@@ -6031,14 +6031,50 @@ button:disabled {
     .panel-mural-santuario { width: min(96vw, 700px); }
     .zona-rompecabezas-mural { grid-template-columns: 1fr; }
     .tablero-mural-santuario { width: min(90vw, 620px); }
-    .sector-piezas-mural { padding: 8px; }
+    .sector-piezas-mural { padding: 4px; }
     .bandeja-mural-santuario {
         grid-template-columns: repeat(5, minmax(0, 1fr));
         min-height: 0;
-        gap: 6px;
+        gap: 4px;
     }
     .cabecera-mural-santuario p { margin-bottom: 8px; }
     .estado-mural-santuario { margin-block: 7px 4px; font-size: 0.82rem; }
+}
+
+/* En celulares verticales, el rompecabezas es una experiencia de pantalla completa. */
+@media (orientation: portrait) and (max-width: 760px) {
+    .modal-mural-santuario {
+        place-items: stretch;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .panel-mural-santuario {
+        width: 100%;
+        min-height: 100vh;
+        min-height: 100dvh;
+        max-height: none;
+        padding:
+            max(10px, env(safe-area-inset-top))
+            max(10px, env(safe-area-inset-right))
+            max(10px, env(safe-area-inset-bottom))
+            max(10px, env(safe-area-inset-left));
+        border: 0;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .tablero-mural-santuario {
+        width: 100%;
+        max-width: 620px;
+    }
+
+    .pieza-mural-santuario {
+        border-width: 3px;
+        border-radius: 8px;
+    }
 }
 
 @media (orientation: landscape) and (max-height: 620px) {
@@ -6059,9 +6095,12 @@ button:disabled {
 
 /* El guardián rompe su envoltura pétrea y recupera los colores del bosque. */
 .cinematica-despertar-dragon {
-    position: absolute;
+    position: fixed;
     inset: 0;
-    z-index: 14;
+    z-index: 2700;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     background: #071a13;
     opacity: 1;

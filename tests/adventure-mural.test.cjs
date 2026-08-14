@@ -43,9 +43,13 @@ assert.match(app, /const completado = await abrirRompecabezasMuralSantuario\(\)/
 assert.match(app, /muralSantuarioCompletado[\s\S]+guardarProgreso\(\)/);
 assert.match(app, /void completarSantuarioConMural\(\)/);
 assert.match(styles, /mural-dragon-bosque\.png/);
+assert.match(styles, /@media \(orientation: portrait\) and \(max-width: 760px\)[\s\S]+\.panel-mural-santuario[\s\S]+min-height: 100dvh/);
+assert.match(styles, /@media \(max-width: 760px\), \(orientation: portrait\)[\s\S]+grid-template-columns: repeat\(5,/);
+assert.match(styles, /\.cinematica-despertar-dragon\s*\{[\s\S]+position: fixed;[\s\S]+height: 100dvh/);
+assert.match(app, /ejecutarDespertarDragonSantuario[\s\S]+pantallaJuego\.appendChild\(capa\)/);
 assert.match(styles, /@keyframes encajarPiezaMural/);
 assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
-assert.match(serviceWorker, /aventura-palabras-runtime-v93/);
+assert.match(serviceWorker, /aventura-palabras-runtime-v94/);
 assert.match(serviceWorker, /assets\/sounds\/colocar-piezas\.mp3/);
 assert.match(serviceWorker, /mural-dragon-bosque\.png/);
 assert.equal(fs.existsSync(mural), true, "Falta el arte del mural del dragón");
