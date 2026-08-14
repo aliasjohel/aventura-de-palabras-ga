@@ -353,11 +353,35 @@ const sonidoComenzarAventura = new Audio(
 const sonidoSeleccionPersonaje = new Audio(
   "assets/sounds/seleccion-personaje.mp3",
 );
+const musicaMuralDragon = new Audio("assets/sounds/mural-dragon1.mp3");
+const musicaCaminaPortal = new Audio("assets/sounds/camina-al-portal.mp3");
+musicaMuralDragon.loop = false;
+musicaMuralDragon.volume = 0.58;
+musicaMuralDragon.preload = "auto";
+musicaCaminaPortal.loop = false;
+musicaCaminaPortal.volume = 0.62;
+musicaCaminaPortal.preload = "auto";
 Object.values(sonidos).forEach((sonido) => {
   sonido.preload = "none";
 });
 sonidoComenzarAventura.preload = "auto";
 sonidoSeleccionPersonaje.preload = "auto";
+
+function reproducirMusicaCinematica(musica, nombre, volumen) {
+  if (!musica.paused && !musica.ended) return;
+
+  musica.currentTime = 0;
+  musica.volume = volumen;
+  musica.play().catch((error) => {
+    logAudio(`${nombre} bloqueada`, error);
+  });
+}
+
+function detenerMusicaCinematica(musica, volumen) {
+  musica.pause();
+  musica.currentTime = 0;
+  musica.volume = volumen;
+}
 
 let colaSonidos = [];
 let audioDesbloqueado = false;
@@ -5762,6 +5786,8 @@ function desvanecerMusicaPrologo(duracion) {
 }
 
 function detenerSonidos() {
+  detenerMusicaCinematica(musicaMuralDragon, 0.58);
+  detenerMusicaCinematica(musicaCaminaPortal, 0.62);
   detenerCicloCaminata();
   limpiarCinematicaSantuario();
   detenerPolvoImpacto();
@@ -7281,6 +7307,11 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
     "caminando",
   );
   personajeImagen.classList.add("explorador-viajando-portal");
+  reproducirMusicaCinematica(
+    musicaCaminaPortal,
+    "música de caminata al portal",
+    0.62,
+  );
 
   let caminata = null;
   let absorcion = null;
@@ -7396,12 +7427,14 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
     luz.remove();
     destello.remove();
 
+    detenerMusicaCinematica(musicaCaminaPortal, 0.62);
     await mostrarIntroduccionMundoDos();
     await iniciarMisionAventura({ presentarMision: true });
     mostrarHistoriaMision({ misionYaCargada: true });
     guardarProgreso();
     restablecerControlesTrasPortal();
   } finally {
+    detenerMusicaCinematica(musicaCaminaPortal, 0.62);
     detenerCicloCaminata();
     caminata?.cancel();
     absorcion?.cancel();
@@ -7767,7 +7800,11 @@ function completarRompecabezasMuralSantuario() {
   btnRetirarPiezaMural.disabled = true;
   btnSalirMuralSantuario.disabled = true;
   estadoMuralSantuario.textContent = "¡El mural del guardián ha despertado!";
-  reproducirSecuenciaSonidos(["piedra", "victoria"]);
+  reproducirMusicaCinematica(
+    musicaMuralDragon,
+    "música del mural del dragón",
+    0.58,
+  );
   setTimeout(() => cerrarRompecabezasMuralSantuario(true), 1800);
 }
 
@@ -7827,6 +7864,11 @@ async function completarSantuarioConCinematica() {
   const secuenciaNarrativa = iniciarSecuenciaNarrativa();
   pantallaJuego.classList.add("cinematica-santuario-activa");
   btnSiguiente.classList.add("oculto");
+  reproducirMusicaCinematica(
+    musicaMuralDragon,
+    "música del mural del dragón",
+    0.58,
+  );
 
   try {
     try {
@@ -7849,6 +7891,7 @@ async function completarSantuarioConCinematica() {
     btnSiguiente.textContent = "➡️ Ir al Portal";
     btnSiguiente.classList.remove("oculto");
   } finally {
+    detenerMusicaCinematica(musicaMuralDragon, 0.58);
     pantallaJuego.classList.remove("cinematica-santuario-activa");
     cinematicaSantuarioActiva = false;
     finalizarSecuenciaNarrativa(secuenciaNarrativa);
@@ -7861,10 +7904,16 @@ async function probarDespertarDragonSantuario() {
   cinematicaSantuarioActiva = true;
   const secuenciaNarrativa = iniciarSecuenciaNarrativa();
   pantallaJuego.classList.add("cinematica-santuario-activa");
+  reproducirMusicaCinematica(
+    musicaMuralDragon,
+    "música del mural del dragón",
+    0.58,
+  );
 
   try {
     await ejecutarDespertarDragonSantuario();
   } finally {
+    detenerMusicaCinematica(musicaMuralDragon, 0.58);
     limpiarCinematicaSantuario();
     finalizarSecuenciaNarrativa(secuenciaNarrativa);
   }
@@ -7909,8 +7958,11 @@ async function ejecutarDespertarDragonSantuario() {
 
   planos[0].classList.add("visible");
   capa.classList.add("mural-rompiendose");
+  sonidos.piedra.volume = 0.22;
   reproducirSonido("piedra");
   await esperarMovimiento(1900);
+  detenerSonido("piedra");
+  sonidos.piedra.volume = 1;
 
   planos[0].classList.remove("visible");
   planos[1].classList.add("visible");
