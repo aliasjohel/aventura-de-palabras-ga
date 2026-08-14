@@ -203,6 +203,7 @@ const tableroMuralSantuario = document.getElementById("tableroMuralSantuario");
 const bandejaMuralSantuario = document.getElementById("bandejaMuralSantuario");
 const estadoMuralSantuario = document.getElementById("estadoMuralSantuario");
 const btnAyudaMuralSantuario = document.getElementById("btnAyudaMuralSantuario");
+const btnRetirarPiezaMural = document.getElementById("btnRetirarPiezaMural");
 const btnSalirMuralSantuario = document.getElementById("btnSalirMuralSantuario");
 const modoPruebas = document.getElementById("modoPruebas");
 const panelModoPruebas = document.getElementById("panelModoPruebas");
@@ -267,6 +268,7 @@ const sonidos = {
     "assets/sounds/diamante-recolectado.mp3",
   ),
   cristalCasilla: new Audio("assets/sounds/cristal-casilla.mp3"),
+  colocarPieza: new Audio("assets/sounds/colocar-piezas.mp3"),
   comienzaMundo2: new Audio("assets/sounds/comienza-mundo-2.mp3"),
   versusAtaqueUno: new Audio("assets/sounds/ataque-1.mp3"),
   versusAtaqueDos: new Audio("assets/sounds/ataque-2.mp3"),
@@ -1853,12 +1855,14 @@ btnMisionSiguiente.addEventListener("click", () => {
   navegarMisionDev(1);
 });
 
-btnProbarMuralSantuario.addEventListener("click", () => {
+btnProbarMuralSantuario.addEventListener("click", async () => {
   if (!modoPruebasActivo || rompecabezasMuralActivo) return;
-  void abrirRompecabezasMuralSantuario();
+  const completado = await abrirRompecabezasMuralSantuario();
+  if (completado) await probarDespertarDragonSantuario();
 });
 
 btnAyudaMuralSantuario.addEventListener("click", mostrarAyudaMuralSantuario);
+btnRetirarPiezaMural.addEventListener("click", retirarPiezaMuralSantuario);
 btnSalirMuralSantuario.addEventListener("click", () => {
   cerrarRompecabezasMuralSantuario(false);
   detenerSonidos();
@@ -4980,6 +4984,7 @@ function solicitarSaltoNarrativo() {
     "#modalPrologo",
     "#modalIntroduccionMundo2",
     ".presentacion-mision",
+    ".cinematica-despertar-dragon",
     ".cinematica-santuario",
     ".capa-portal-magico",
     ".cierre-cinematica-mundo",
@@ -7495,6 +7500,7 @@ function crearPiezaMuralSantuario(indice) {
   pieza.style.setProperty("--fila-pieza", `${fila}`);
   pieza.style.setProperty("--columna-pieza", `${columna}`);
   pieza.addEventListener("pointerdown", iniciarArrastrePiezaMural);
+  pieza.addEventListener("click", (evento) => evento.stopPropagation());
   pieza.addEventListener("keydown", (evento) => {
     if (evento.key !== "Enter" && evento.key !== " ") return;
     evento.preventDefault();
@@ -7507,6 +7513,9 @@ function crearTableroMuralSantuario() {
   tableroMuralSantuario.replaceChildren();
   bandejaMuralSantuario.replaceChildren();
   piezaSeleccionadaMural = null;
+  btnRetirarPiezaMural.disabled = true;
+  btnRetirarPiezaMural.disabled = true;
+  btnRetirarPiezaMural.disabled = true;
 
   for (let indice = 0; indice < 9; indice += 1) {
     const espacio = document.createElement("div");
@@ -7529,47 +7538,56 @@ function crearTableroMuralSantuario() {
 }
 
 function seleccionarPiezaMural(pieza) {
-  if (!rompecabezasMuralActivo || pieza.classList.contains("colocada")) return;
+  if (!rompecabezasMuralActivo) return;
 
   piezaSeleccionadaMural?.classList.remove("seleccionada");
   piezaSeleccionadaMural = piezaSeleccionadaMural === pieza ? null : pieza;
   piezaSeleccionadaMural?.classList.add("seleccionada");
+  btnRetirarPiezaMural.disabled = !piezaSeleccionadaMural?.closest(
+    ".espacio-mural-santuario",
+  );
   estadoMuralSantuario.textContent = piezaSeleccionadaMural
-    ? `Fragmento ${Number(pieza.dataset.indice) + 1} seleccionado. Elegí su espacio en el mural.`
-    : `${contarPiezasMuralColocadas()} de 9 fragmentos colocados`;
+    ? `Fragmento ${Number(pieza.dataset.indice) + 1} seleccionado. Elegí un espacio para moverlo o intercambiarlo.`
+    : `${contarEspaciosMuralOcupados()} de 9 espacios ocupados`;
 }
 
 function iniciarArrastrePiezaMural(evento) {
   const pieza = evento.currentTarget;
-  if (!rompecabezasMuralActivo || pieza.classList.contains("colocada") || evento.button !== 0) return;
+  if (!rompecabezasMuralActivo || evento.button !== 0) return;
 
   evento.preventDefault();
+  const idPuntero = evento.pointerId;
+  const origen = pieza.closest(".espacio-mural-santuario");
   const rectangulo = pieza.getBoundingClientRect();
   const desfaseX = evento.clientX - rectangulo.left;
   const desfaseY = evento.clientY - rectangulo.top;
   const inicioX = evento.clientX;
   const inicioY = evento.clientY;
   let seMovio = false;
+  let fantasma = null;
+
+  pieza.setPointerCapture?.(idPuntero);
 
   const mover = (movimiento) => {
+    if (movimiento.pointerId !== idPuntero) return;
     if (Math.hypot(movimiento.clientX - inicioX, movimiento.clientY - inicioY) > 6) {
       if (!seMovio) {
         seMovio = true;
-        pieza.classList.add("arrastrando");
-        pieza.style.width = `${rectangulo.width}px`;
-        pieza.style.height = `${rectangulo.height}px`;
-        document.body.appendChild(pieza);
+        fantasma = crearFantasmaArrastreMural(pieza, rectangulo);
+        pieza.classList.add("origen-arrastre");
       }
     }
     if (!seMovio) return;
-    pieza.style.left = `${movimiento.clientX - desfaseX}px`;
-    pieza.style.top = `${movimiento.clientY - desfaseY}px`;
+    fantasma.style.left = `${movimiento.clientX - desfaseX}px`;
+    fantasma.style.top = `${movimiento.clientY - desfaseY}px`;
   };
 
   const soltar = (fin) => {
+    if (fin.pointerId !== idPuntero) return;
     window.removeEventListener("pointermove", mover);
     window.removeEventListener("pointerup", soltar);
     window.removeEventListener("pointercancel", cancelar);
+    pieza.releasePointerCapture?.(idPuntero);
 
     if (!seMovio) {
       seleccionarPiezaMural(pieza);
@@ -7578,27 +7596,51 @@ function iniciarArrastrePiezaMural(evento) {
 
     const objetivo = document.elementFromPoint(fin.clientX, fin.clientY);
     const espacio = objetivo?.closest?.(".espacio-mural-santuario");
-    limpiarEstilosArrastrePiezaMural(pieza);
+    const soltoEnBandeja = Boolean(
+      objetivo?.closest?.(".bandeja-mural-santuario"),
+    );
+    limpiarFantasmaArrastreMural(pieza, fantasma);
 
     if (espacio) {
-      intentarEncajarPiezaMural(espacio, pieza);
+      intentarEncajarPiezaMural(espacio, pieza, origen);
       return;
     }
 
-    bandejaMuralSantuario.appendChild(pieza);
+    if (soltoEnBandeja && origen) {
+      retirarPiezaMuralSantuario(pieza, origen);
+    }
   };
 
-  const cancelar = () => {
+  const cancelar = (cancelacion) => {
+    if (cancelacion.pointerId !== idPuntero) return;
     window.removeEventListener("pointermove", mover);
     window.removeEventListener("pointerup", soltar);
     window.removeEventListener("pointercancel", cancelar);
-    limpiarEstilosArrastrePiezaMural(pieza);
-    if (seMovio) bandejaMuralSantuario.appendChild(pieza);
+    pieza.releasePointerCapture?.(idPuntero);
+    limpiarFantasmaArrastreMural(pieza, fantasma);
   };
 
   window.addEventListener("pointermove", mover);
   window.addEventListener("pointerup", soltar);
   window.addEventListener("pointercancel", cancelar);
+}
+
+function crearFantasmaArrastreMural(pieza, rectangulo) {
+  const fantasma = pieza.cloneNode(true);
+  fantasma.classList.remove("seleccionada", "colocada", "origen-arrastre");
+  fantasma.classList.add("arrastrando");
+  fantasma.removeAttribute("aria-label");
+  fantasma.setAttribute("aria-hidden", "true");
+  fantasma.tabIndex = -1;
+  fantasma.style.width = `${rectangulo.width}px`;
+  fantasma.style.height = `${rectangulo.height}px`;
+  document.body.appendChild(fantasma);
+  return fantasma;
+}
+
+function limpiarFantasmaArrastreMural(pieza, fantasma) {
+  pieza.classList.remove("origen-arrastre");
+  fantasma?.remove();
 }
 
 function limpiarEstilosArrastrePiezaMural(pieza) {
@@ -7609,44 +7651,98 @@ function limpiarEstilosArrastrePiezaMural(pieza) {
   pieza.style.removeProperty("top");
 }
 
-function intentarEncajarPiezaMural(espacio, pieza = piezaSeleccionadaMural) {
-  if (!rompecabezasMuralActivo || !pieza || espacio.classList.contains("ocupado")) return;
+function intentarEncajarPiezaMural(
+  espacio,
+  pieza = piezaSeleccionadaMural,
+  origenArrastre = null,
+) {
+  if (!rompecabezasMuralActivo || !pieza) return;
 
-  const indicePieza = Number(pieza.dataset.indice);
-  const indiceEspacio = Number(espacio.dataset.indice);
-
-  if (indicePieza !== indiceEspacio) {
-    pieza.classList.remove("error-encaje");
-    void pieza.offsetWidth;
-    pieza.classList.add("error-encaje");
-    bandejaMuralSantuario.appendChild(pieza);
-    piezaSeleccionadaMural?.classList.remove("seleccionada");
-    piezaSeleccionadaMural = null;
-    estadoMuralSantuario.textContent = "Ese fragmento no encaja ahí. Probá en otro espacio.";
-    reproducirSonido("error");
+  const origen = origenArrastre || pieza.closest(".espacio-mural-santuario");
+  if (origen === espacio) {
+    limpiarSeleccionPiezaMural();
     return;
   }
 
+  const ocupante = espacio.querySelector(":scope > .pieza-mural-santuario");
   limpiarEstilosArrastrePiezaMural(pieza);
-  pieza.classList.remove("seleccionada", "error-encaje");
+  pieza.classList.remove("seleccionada");
   pieza.classList.add("colocada");
-  pieza.setAttribute("aria-disabled", "true");
-  pieza.setAttribute("tabindex", "-1");
-  espacio.classList.add("ocupado");
-  espacio.setAttribute("aria-label", `Espacio ${indiceEspacio + 1}, fragmento colocado`);
-  espacio.removeAttribute("tabindex");
+
+  if (ocupante && ocupante !== pieza) {
+    if (origen) {
+      origen.appendChild(ocupante);
+      actualizarEspacioMural(origen);
+    } else {
+      ocupante.classList.remove("colocada");
+      bandejaMuralSantuario.appendChild(ocupante);
+    }
+  }
+
   espacio.appendChild(pieza);
-  piezaSeleccionadaMural = null;
-  reproducirSonido("cristalCasilla");
-
-  const colocadas = contarPiezasMuralColocadas();
-  estadoMuralSantuario.textContent = `${colocadas} de 9 fragmentos colocados`;
-
-  if (colocadas === 9) completarRompecabezasMuralSantuario();
+  actualizarEspacioMural(espacio);
+  if (origen && origen !== espacio) actualizarEspacioMural(origen);
+  limpiarSeleccionPiezaMural();
+  reproducirSonido("colocarPieza");
+  evaluarSolucionMuralSantuario();
 }
 
-function contarPiezasMuralColocadas() {
-  return tableroMuralSantuario.querySelectorAll(".pieza-mural-santuario.colocada").length;
+function actualizarEspacioMural(espacio) {
+  const ocupado = Boolean(
+    espacio.querySelector(":scope > .pieza-mural-santuario"),
+  );
+  espacio.classList.toggle("ocupado", ocupado);
+  espacio.setAttribute(
+    "aria-label",
+    `Espacio ${Number(espacio.dataset.indice) + 1}, ${ocupado ? "ocupado" : "vacío"}`,
+  );
+}
+
+function limpiarSeleccionPiezaMural() {
+  piezaSeleccionadaMural?.classList.remove("seleccionada");
+  piezaSeleccionadaMural = null;
+  btnRetirarPiezaMural.disabled = true;
+}
+
+function retirarPiezaMuralSantuario(
+  pieza = piezaSeleccionadaMural,
+  origenArrastre = null,
+) {
+  if (!rompecabezasMuralActivo || !pieza) return;
+
+  const origen = origenArrastre || pieza.closest(".espacio-mural-santuario");
+  limpiarEstilosArrastrePiezaMural(pieza);
+  pieza.classList.remove("colocada", "seleccionada");
+  bandejaMuralSantuario.appendChild(pieza);
+  if (origen) actualizarEspacioMural(origen);
+  limpiarSeleccionPiezaMural();
+  estadoMuralSantuario.textContent = `${contarEspaciosMuralOcupados()} de 9 espacios ocupados`;
+}
+
+function evaluarSolucionMuralSantuario() {
+  const espacios = [...tableroMuralSantuario.querySelectorAll(".espacio-mural-santuario")];
+  const ocupadas = contarEspaciosMuralOcupados();
+  estadoMuralSantuario.textContent = `${ocupadas} de 9 espacios ocupados`;
+
+  if (ocupadas < 9) return;
+
+  const resuelto = espacios.every((espacio) => {
+    const pieza = espacio.querySelector(":scope > .pieza-mural-santuario");
+    return pieza?.dataset.indice === espacio.dataset.indice;
+  });
+
+  if (resuelto) {
+    completarRompecabezasMuralSantuario();
+  } else {
+    estadoMuralSantuario.textContent =
+      "El mural aún no despierta. Reordená los fragmentos hasta revelar al dragón.";
+  }
+}
+
+function contarEspaciosMuralOcupados() {
+  return tableroMuralSantuario.querySelectorAll(
+    ".espacio-mural-santuario > .pieza-mural-santuario",
+  ).length;
 }
 
 function mostrarAyudaMuralSantuario() {
@@ -7659,7 +7755,7 @@ function mostrarAyudaMuralSantuario() {
   temporizadorAyudaMural = setTimeout(() => {
     tableroMuralSantuario.classList.remove("guia-activa");
     btnAyudaMuralSantuario.disabled = false;
-    estadoMuralSantuario.textContent = `${contarPiezasMuralColocadas()} de 9 fragmentos colocados`;
+    estadoMuralSantuario.textContent = `${contarEspaciosMuralOcupados()} de 9 espacios ocupados`;
     temporizadorAyudaMural = null;
   }, 3200);
 }
@@ -7668,6 +7764,7 @@ function completarRompecabezasMuralSantuario() {
   tableroMuralSantuario.classList.remove("guia-activa");
   tableroMuralSantuario.classList.add("completo");
   btnAyudaMuralSantuario.disabled = true;
+  btnRetirarPiezaMural.disabled = true;
   btnSalirMuralSantuario.disabled = true;
   estadoMuralSantuario.textContent = "¡El mural del guardián ha despertado!";
   reproducirSecuenciaSonidos(["piedra", "victoria"]);
@@ -7682,8 +7779,9 @@ function abrirRompecabezasMuralSantuario() {
   crearTableroMuralSantuario();
   tableroMuralSantuario.classList.remove("completo", "guia-activa");
   btnAyudaMuralSantuario.disabled = false;
+  btnRetirarPiezaMural.disabled = true;
   btnSalirMuralSantuario.disabled = false;
-  estadoMuralSantuario.textContent = "0 de 9 fragmentos colocados";
+  estadoMuralSantuario.textContent = "0 de 9 espacios ocupados";
   modalMuralSantuario.classList.remove("oculto");
   pantallaJuego.classList.add("rompecabezas-mural-activo");
   bandejaMuralSantuario.querySelector(".pieza-mural-santuario")?.focus();
@@ -7733,6 +7831,7 @@ async function completarSantuarioConCinematica() {
   try {
     try {
       await esperarMovimiento(850);
+      await ejecutarDespertarDragonSantuario();
       await ejecutarCinematicaSantuario();
     } catch (error) {
       console.error(
@@ -7754,6 +7853,88 @@ async function completarSantuarioConCinematica() {
     cinematicaSantuarioActiva = false;
     finalizarSecuenciaNarrativa(secuenciaNarrativa);
   }
+}
+
+async function probarDespertarDragonSantuario() {
+  if (cinematicaSantuarioActiva) return;
+
+  cinematicaSantuarioActiva = true;
+  const secuenciaNarrativa = iniciarSecuenciaNarrativa();
+  pantallaJuego.classList.add("cinematica-santuario-activa");
+
+  try {
+    await ejecutarDespertarDragonSantuario();
+  } finally {
+    limpiarCinematicaSantuario();
+    finalizarSecuenciaNarrativa(secuenciaNarrativa);
+  }
+}
+
+async function ejecutarDespertarDragonSantuario() {
+  detenerAmbienteCristal();
+
+  const capa = document.createElement("div");
+  const destello = document.createElement("div");
+  const dialogo = document.createElement("div");
+  const nombre = document.createElement("strong");
+  const texto = document.createElement("p");
+  const planos = [
+    ["rompe-mural", "assets/images/elements/dragon-guardian-rompe-mural.png"],
+    ["despierto", "assets/images/elements/dragon-guardian-despierto.png"],
+    ["entrega-cristal", "assets/images/elements/dragon-guardian-entrega-cristal.png"],
+  ].map(([nombrePlano, src]) => {
+    const plano = document.createElement("img");
+    plano.className = `plano-despertar-dragon plano-${nombrePlano}`;
+    plano.alt = "";
+    plano.draggable = false;
+    plano.src = src;
+    capa.appendChild(plano);
+    return plano;
+  });
+
+  capa.className = "cinematica-despertar-dragon";
+  destello.className = "destello-despertar-dragon";
+  dialogo.className = "dialogo-despertar-dragon";
+  dialogo.setAttribute("role", "status");
+  dialogo.setAttribute("aria-live", "polite");
+  nombre.textContent = "GUARDIÁN DEL BOSQUE";
+  texto.textContent =
+    "Has reconstruido el sello y superado las pruebas del bosque.";
+  dialogo.append(nombre, texto);
+  capa.append(destello, dialogo);
+  contenedorEscenario.appendChild(capa);
+  personajeImagen.classList.add("oculto-cinematica");
+
+  await Promise.all(planos.map(esperarCargaImagen));
+
+  planos[0].classList.add("visible");
+  capa.classList.add("mural-rompiendose");
+  reproducirSonido("piedra");
+  await esperarMovimiento(1900);
+
+  planos[0].classList.remove("visible");
+  planos[1].classList.add("visible");
+  capa.classList.add("dragon-liberado");
+  dialogo.classList.add("visible");
+  reproducirSonido("cristalCasilla");
+  await esperarMovimiento(2700);
+
+  texto.textContent =
+    "Tu valor demuestra que sos digno. Aceptá el Cristal de la Sabiduría; que su luz guíe tu camino.";
+  dialogo.classList.add("segunda-frase");
+  await esperarMovimiento(2500);
+
+  planos[1].classList.remove("visible");
+  planos[2].classList.add("visible");
+  capa.classList.add("cristal-liberado");
+  reproducirSonido("diamanteRecolectado");
+  await esperarMovimiento(2400);
+
+  dialogo.classList.remove("visible");
+  capa.classList.add("saliendo");
+  await esperarMovimiento(700);
+  capa.remove();
+  personajeImagen.classList.remove("oculto-cinematica");
 }
 
 async function ejecutarCinematicaSantuario() {
@@ -7907,7 +8088,7 @@ async function volarCristalHaciaPanel() {
 
 function limpiarCinematicaSantuario() {
   contenedorEscenario
-    .querySelectorAll(".cinematica-santuario")
+    .querySelectorAll(".cinematica-santuario, .cinematica-despertar-dragon")
     .forEach((capa) => capa.remove());
   document
     .querySelectorAll(".cristal-volador-santuario")
