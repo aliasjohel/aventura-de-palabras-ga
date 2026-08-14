@@ -23,7 +23,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260812-ramas-frondosas-2">
+    <link rel="stylesheet" href="css/styles.css?v=20260813-progreso-pwa-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -1028,6 +1028,14 @@
         <div class="aviso-actualizacion-texto">
             <strong id="tituloActualizacionPwa">Actualizaci&oacute;n disponible</strong>
             <span id="textoActualizacionPwa">Hay una nueva versi&oacute;n de Aventura de Palabras.</span>
+            <div id="progresoActualizacionPwa" class="progreso-actualizacion-pwa" hidden>
+                <div class="progreso-actualizacion-cabecera">
+                    <span id="detalleProgresoActualizacionPwa">Preparando descarga…</span>
+                    <strong id="porcentajeActualizacionPwa">0%</strong>
+                </div>
+                <progress id="barraActualizacionPwa" max="100" value="0"
+                    aria-label="Progreso de descarga de la actualización">0%</progress>
+            </div>
         </div>
         <div id="accionesActualizacionPwa" class="aviso-actualizacion-acciones">
             <button id="btnActualizarAplicacion" type="button">Actualizar ahora</button>
@@ -1046,7 +1054,7 @@
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
     <script src="js/versus-room-supabase.js?v=20260808-hombre-lobo-2"></script>
     <script src="js/app.js?v=20260812-ramas-frondosas-2"></script>
-    <script src="js/pwa.js?v=20260808-hombre-lobo-2"></script>
+    <script src="js/pwa.js?v=20260813-progreso-pwa-1"></script>
 </body>
 
 </html>

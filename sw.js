@@ -1,4 +1,4 @@
-const CACHE_NAME = "aventura-palabras-runtime-v91";
+const CACHE_NAME = "aventura-palabras-runtime-v92";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -28,6 +28,32 @@ const CORE_ASSETS = [
   "./assets/images/elements/dragon-guardian-despierto.png",
   "./assets/images/elements/dragon-guardian-entrega-cristal.png",
   "./assets/sounds/colocar-piezas.mp3",
+  "./assets/sounds/cristal-casilla.mp3",
+  "./assets/sounds/comenzar-aventura.wav",
+  "./assets/sounds/melodia-menu.mp3",
+  "./assets/sounds/seleccion-personaje.mp3",
+  "./assets/sounds/prologo.mp3",
+  "./assets/sounds/acertar.mp3",
+  "./assets/sounds/error.mp3",
+  "./assets/sounds/moneda.mp3",
+  "./assets/sounds/victoria.mp3",
+  "./assets/sounds/derrota.mp3",
+  "./assets/sounds/piedra.mp3",
+  "./assets/sounds/ramas.mp3",
+  "./assets/sounds/lluvia.mp3",
+  "./assets/sounds/niebla.mp3",
+  "./assets/sounds/lobos.mp3",
+  "./assets/sounds/bosque-prohibido.mp3",
+  "./assets/sounds/ambiente-puente.mp3",
+  "./assets/sounds/crujido-puente.mp3",
+  "./assets/sounds/ambiente-santuario.mp3",
+  "./assets/sounds/ambiente-portal.mp3",
+  "./assets/sounds/diamante-recolectado.mp3",
+  "./assets/sounds/comienza-mundo-2.mp3",
+  "./assets/sounds/ataque-1.mp3",
+  "./assets/sounds/ataque-2.mp3",
+  "./assets/sounds/fight.mp3",
+  "./assets/sounds/finish.mp3",
   "./assets/images/personajes/versus/dragon-base.png",
   "./assets/images/personajes/versus/dragon-ataque.png",
   "./assets/images/personajes/versus/dragon-llamando.png",
@@ -101,22 +127,52 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/carnivora-devorando-guardian-alba.png",
   "./assets/images/personajes/versus/carnivora-devorando-dragon-hielo.png",
   "./assets/images/personajes/versus/carnivora-devorando-azrak.png",
-  "./assets/sounds/cristal-casilla.mp3",
-  "./assets/sounds/comenzar-aventura.wav",
-  "./assets/sounds/melodia-menu.mp3",
-  "./assets/sounds/seleccion-personaje.mp3",
-  "./assets/sounds/prologo.mp3",
 ];
 
+async function informarProgresoInstalacion(completados, total, estado = "descargando") {
+  const clientes = await self.clients.matchAll({
+    type: "window",
+    includeUncontrolled: true,
+  });
+  const porcentaje = total > 0 ? Math.round((completados / total) * 100) : 100;
+  clientes.forEach((cliente) => cliente.postMessage({
+    type: "PWA_INSTALL_PROGRESS",
+    estado,
+    completados,
+    total,
+    porcentaje,
+    version: CACHE_NAME,
+  }));
+}
+
+async function instalarRecursosConProgreso() {
+  const cache = await caches.open(CACHE_NAME);
+  const total = CORE_ASSETS.length;
+  let completados = 0;
+
+  await informarProgresoInstalacion(completados, total, "iniciando");
+
+  for (const path of CORE_ASSETS) {
+    const request = new Request(new URL(path, self.registration.scope), {
+      cache: "reload",
+    });
+    const response = await fetch(request);
+    if (!response.ok) {
+      throw new Error(`No se pudo descargar ${path}: ${response.status}`);
+    }
+    await cache.put(request, response);
+    completados += 1;
+    await informarProgresoInstalacion(completados, total);
+  }
+
+  await informarProgresoInstalacion(total, total, "completa");
+}
+
 self.addEventListener("install", (event) => {
-  event.waitUntil((async () => {
-    const cache = await caches.open(CACHE_NAME);
-    const requests = CORE_ASSETS.map((path) => new Request(
-      new URL(path, self.registration.scope),
-      { cache: "reload" },
-    ));
-    await cache.addAll(requests);
-  })());
+  event.waitUntil(instalarRecursosConProgreso().catch(async (error) => {
+    await informarProgresoInstalacion(0, CORE_ASSETS.length, "error");
+    throw error;
+  }));
 });
 
 self.addEventListener("activate", (event) => {

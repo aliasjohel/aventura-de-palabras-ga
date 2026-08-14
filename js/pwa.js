@@ -7,6 +7,10 @@ async function registrarAplicacionInstalable() {
   const iconoActualizacion = document.getElementById("iconoActualizacionPwa");
   const tituloActualizacion = document.getElementById("tituloActualizacionPwa");
   const textoActualizacion = document.getElementById("textoActualizacionPwa");
+  const progresoActualizacion = document.getElementById("progresoActualizacionPwa");
+  const detalleProgreso = document.getElementById("detalleProgresoActualizacionPwa");
+  const porcentajeActualizacion = document.getElementById("porcentajeActualizacionPwa");
+  const barraActualizacion = document.getElementById("barraActualizacionPwa");
   const accionesActualizacion = document.getElementById("accionesActualizacionPwa");
   const btnActualizar = document.getElementById("btnActualizarAplicacion");
   const btnPosponer = document.getElementById("btnPosponerActualizacion");
@@ -14,13 +18,52 @@ async function registrarAplicacionInstalable() {
   let workerEnEspera = null;
   let avisoPendiente = false;
   let recargandoPorActualizacion = false;
+  let progresoInstalacion = null;
+
+  const actualizarBarraDescarga = ({ porcentaje, completados, total, estado }) => {
+    const valor = Math.min(100, Math.max(0, Number(porcentaje) || 0));
+    progresoInstalacion = { porcentaje: valor, completados, total, estado };
+    barraActualizacion.value = valor;
+    barraActualizacion.textContent = `${valor}%`;
+    porcentajeActualizacion.textContent = `${valor}%`;
+    detalleProgreso.textContent = estado === "iniciando"
+      ? "Preparando archivos…"
+      : `${completados} de ${total} archivos descargados`;
+    iconoActualizacion.textContent = "↓";
+    tituloActualizacion.textContent = "Descargando actualización";
+    textoActualizacion.textContent =
+      "Esperá a que finalice para disponer de todas las imágenes y sonidos.";
+    progresoActualizacion.hidden = false;
+    accionesActualizacion.hidden = true;
+    avisoPendiente = !menuPrincipalPwa.classList.contains("activa");
+    avisoActualizacion.hidden = avisoPendiente;
+  };
+
+  const mostrarErrorDescarga = () => {
+    progresoInstalacion = null;
+    iconoActualizacion.textContent = "!";
+    tituloActualizacion.textContent = "No se completó la actualización";
+    textoActualizacion.textContent =
+      "Revisá tu conexión. El juego volverá a intentar la descarga automáticamente.";
+    progresoActualizacion.hidden = true;
+    accionesActualizacion.hidden = true;
+    avisoPendiente = !menuPrincipalPwa.classList.contains("activa");
+    avisoActualizacion.hidden = avisoPendiente;
+  };
 
   const presentarAvisoActualizacion = () => {
     if (!workerEnEspera) return;
     avisoPendiente = false;
     iconoActualizacion.textContent = "↻";
     tituloActualizacion.textContent = "Actualización disponible";
-    textoActualizacion.textContent = "Hay una nueva versión de Aventura de Palabras.";
+    textoActualizacion.textContent = "La descarga llegó al 100%. Ya podés instalar la nueva versión.";
+    barraActualizacion.value = 100;
+    barraActualizacion.textContent = "100%";
+    porcentajeActualizacion.textContent = "100%";
+    detalleProgreso.textContent = progresoInstalacion?.total
+      ? `${progresoInstalacion.total} de ${progresoInstalacion.total} archivos descargados`
+      : "Todos los archivos están listos";
+    progresoActualizacion.hidden = false;
     accionesActualizacion.hidden = false;
     avisoActualizacion.hidden = false;
   };
@@ -44,9 +87,28 @@ async function registrarAplicacionInstalable() {
     worker.addEventListener("statechange", () => {
       if (worker.state === "installed") {
         mostrarActualizacionDisponible(worker);
+      } else if (worker.state === "redundant" && progresoInstalacion) {
+        mostrarErrorDescarga();
       }
     });
   };
+
+  navigator.serviceWorker.addEventListener("message", (event) => {
+    const mensaje = event.data;
+    if (
+      !navigator.serviceWorker.controller
+      || mensaje?.type !== "PWA_INSTALL_PROGRESS"
+    ) {
+      return;
+    }
+
+    if (mensaje.estado === "error") {
+      mostrarErrorDescarga();
+      return;
+    }
+
+    actualizarBarraDescarga(mensaje);
+  });
 
   btnActualizar.addEventListener("click", () => {
     if (!workerEnEspera || recargandoPorActualizacion) return;
@@ -84,6 +146,7 @@ async function registrarAplicacionInstalable() {
     iconoActualizacion.textContent = "✓";
     tituloActualizacion.textContent = "Aplicación actualizada";
     textoActualizacion.textContent = "Ya estás usando la última versión.";
+    progresoActualizacion.hidden = true;
     accionesActualizacion.hidden = true;
     avisoActualizacion.hidden = false;
     window.setTimeout(() => {

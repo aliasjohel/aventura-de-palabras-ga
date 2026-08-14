@@ -428,6 +428,58 @@ body {
     line-height: 1.3;
 }
 
+.progreso-actualizacion-pwa {
+    display: grid;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.progreso-actualizacion-pwa[hidden] {
+    display: none;
+}
+
+.progreso-actualizacion-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    color: rgba(238, 255, 248, 0.82);
+    font-size: 0.7rem;
+}
+
+.progreso-actualizacion-cabecera strong {
+    color: #87f3be;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.progreso-actualizacion-pwa progress {
+    width: 100%;
+    height: 9px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    accent-color: #55d99b;
+}
+
+.progreso-actualizacion-pwa progress::-webkit-progress-bar {
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.progreso-actualizacion-pwa progress::-webkit-progress-value {
+    border-radius: 999px;
+    background: linear-gradient(90deg, #27a96d, #7af0b5);
+    box-shadow: 0 0 9px rgba(86, 232, 161, 0.48);
+}
+
+.progreso-actualizacion-pwa progress::-moz-progress-bar {
+    border-radius: 999px;
+    background: linear-gradient(90deg, #27a96d, #7af0b5);
+}
+
 .aviso-actualizacion-acciones {
     display: flex;
     gap: 7px;

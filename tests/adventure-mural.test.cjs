@@ -41,7 +41,7 @@ assert.match(app, /void completarSantuarioConMural\(\)/);
 assert.match(styles, /mural-dragon-bosque\.png/);
 assert.match(styles, /@keyframes encajarPiezaMural/);
 assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
-assert.match(serviceWorker, /aventura-palabras-runtime-v91/);
+assert.match(serviceWorker, /aventura-palabras-runtime-v92/);
 assert.match(serviceWorker, /assets\/sounds\/colocar-piezas\.mp3/);
 assert.match(serviceWorker, /mural-dragon-bosque\.png/);
 assert.equal(fs.existsSync(mural), true, "Falta el arte del mural del dragón");
