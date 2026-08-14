@@ -20,19 +20,33 @@ async function registrarAplicacionInstalable() {
   let recargandoPorActualizacion = false;
   let progresoInstalacion = null;
 
-  const actualizarBarraDescarga = ({ porcentaje, completados, total, estado }) => {
+  const actualizarBarraDescarga = ({
+    porcentaje,
+    completados,
+    total,
+    descargados = 0,
+    reutilizados = 0,
+    estado,
+  }) => {
     const valor = Math.min(100, Math.max(0, Number(porcentaje) || 0));
-    progresoInstalacion = { porcentaje: valor, completados, total, estado };
+    progresoInstalacion = {
+      porcentaje: valor,
+      completados,
+      total,
+      descargados,
+      reutilizados,
+      estado,
+    };
     barraActualizacion.value = valor;
     barraActualizacion.textContent = `${valor}%`;
     porcentajeActualizacion.textContent = `${valor}%`;
     detalleProgreso.textContent = estado === "iniciando"
-      ? "Preparando archivos…"
-      : `${completados} de ${total} archivos descargados`;
+      ? "Comparando archivos guardados…"
+      : `${completados} de ${total} listos · ${reutilizados} reutilizados · ${descargados} descargados`;
     iconoActualizacion.textContent = "↓";
-    tituloActualizacion.textContent = "Descargando actualización";
+    tituloActualizacion.textContent = "Preparando actualización";
     textoActualizacion.textContent =
-      "Esperá a que finalice para disponer de todas las imágenes y sonidos.";
+      "Se conservarán las imágenes y sonidos que no hayan cambiado.";
     progresoActualizacion.hidden = false;
     accionesActualizacion.hidden = true;
     avisoPendiente = !menuPrincipalPwa.classList.contains("activa");
@@ -56,12 +70,12 @@ async function registrarAplicacionInstalable() {
     avisoPendiente = false;
     iconoActualizacion.textContent = "↻";
     tituloActualizacion.textContent = "Actualización disponible";
-    textoActualizacion.textContent = "La descarga llegó al 100%. Ya podés instalar la nueva versión.";
+    textoActualizacion.textContent = "La actualización está lista. Ya podés instalar la nueva versión.";
     barraActualizacion.value = 100;
     barraActualizacion.textContent = "100%";
     porcentajeActualizacion.textContent = "100%";
     detalleProgreso.textContent = progresoInstalacion?.total
-      ? `${progresoInstalacion.total} de ${progresoInstalacion.total} archivos descargados`
+      ? `${progresoInstalacion.reutilizados} reutilizados · ${progresoInstalacion.descargados} descargados`
       : "Todos los archivos están listos";
     progresoActualizacion.hidden = false;
     accionesActualizacion.hidden = false;
