@@ -23,7 +23,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260817-ojos-lobos-responsive-1">
+    <link rel="stylesheet" href="css/styles.css?v=20260817-amigos-cuentas-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -388,16 +388,77 @@
                 <header class="sala-versus-cabecera">
                     <p>DUELO ENTRE JUGADORES</p>
                     <h2 id="tituloSalaVersus">Sala multijugador</h2>
-                    <span>Cre&aacute; una partida o ingres&aacute; con el c&oacute;digo de tu rival.</span>
+                    <span>Desafi&aacute; a un amigo o jug&aacute; con un c&oacute;digo de sala.</span>
                 </header>
 
                 <div id="inicioSalaVersus" class="inicio-sala-versus">
+                    <section class="panel-amigos-versus" aria-labelledby="tituloAmigosVersus">
+                        <div class="cabecera-amigos-versus">
+                            <div>
+                                <small>CUENTA DE JUGADOR</small>
+                                <h3 id="tituloAmigosVersus">Amigos y desaf&iacute;os</h3>
+                            </div>
+                            <span id="estadoCuentaVersus" class="estado-cuenta-versus">Conectando&hellip;</span>
+                        </div>
+
+                        <div id="registroCuentaVersus" class="registro-cuenta-versus oculto">
+                            <p>Guard&aacute; tu jugador para tener amigos y recibir desaf&iacute;os en cualquier dispositivo.</p>
+                            <label for="correoCuentaVersus">
+                                <span>Tu correo</span>
+                                <input id="correoCuentaVersus" type="email" autocomplete="email"
+                                    placeholder="tu@correo.com">
+                            </label>
+                            <div class="acciones-cuenta-versus">
+                                <button id="btnGuardarCuentaVersus" type="button">Guardar mi jugador</button>
+                                <button id="btnEntrarCuentaVersus" class="secundario" type="button">Ya tengo cuenta</button>
+                                <button id="btnGoogleCuentaVersus" class="secundario" type="button">Continuar con Google</button>
+                            </div>
+                            <small>Pod&eacute;s seguir jugando como invitado si no quer&eacute;s registrarte.</small>
+                        </div>
+
+                        <div id="crearPerfilVersus" class="crear-perfil-versus oculto">
+                            <p>Eleg&iacute; el nombre que ver&aacute;n tus amigos.</p>
+                            <label for="aliasPerfilVersus">
+                                <span>Nombre de jugador</span>
+                                <input id="aliasPerfilVersus" type="text" minlength="2" maxlength="16"
+                                    autocomplete="nickname" placeholder="Ej: Gabi">
+                            </label>
+                            <button id="btnGuardarPerfilVersus" type="button">Crear perfil de Amigos</button>
+                        </div>
+
+                        <div id="contenidoAmigosVersus" class="contenido-amigos-versus oculto">
+                            <div class="identidad-amigos-versus">
+                                <div>
+                                    <small>TU C&Oacute;DIGO DE AMIGO</small>
+                                    <strong id="codigoAmigoVersus">--------</strong>
+                                </div>
+                                <button id="btnCopiarCodigoAmigoVersus" class="secundario" type="button">Copiar</button>
+                            </div>
+                            <form id="formAgregarAmigoVersus" class="agregar-amigo-versus">
+                                <label for="codigoNuevoAmigoVersus" class="sr-only">C&oacute;digo de amigo</label>
+                                <input id="codigoNuevoAmigoVersus" type="text" maxlength="8"
+                                    autocomplete="off" autocapitalize="characters" placeholder="C&Oacute;DIGO DE AMIGO">
+                                <button type="submit">Agregar</button>
+                            </form>
+                            <div id="solicitudesAmigosVersus" class="lista-social-versus"></div>
+                            <div id="invitacionesVersus" class="lista-social-versus"></div>
+                            <div class="titulo-lista-amigos-versus">
+                                <strong>Tus amigos</strong>
+                                <small>Desafialos sin crear una sala</small>
+                            </div>
+                            <div id="listaAmigosVersus" class="lista-social-versus"></div>
+                        </div>
+                        <p id="mensajeAmigosVersus" class="mensaje-amigos-versus" role="status" aria-live="polite"></p>
+                    </section>
+
                     <label class="campo-sala-versus campo-alias-versus" for="aliasSalaVersus">
                         <span>Tu nombre</span>
                         <input id="aliasSalaVersus" type="text" minlength="2" maxlength="16"
                             autocomplete="nickname" placeholder="Ej: Gabi">
                     </label>
 
+                    <details class="salas-manuales-versus" open>
+                        <summary>Jugar con c&oacute;digo de sala</summary>
                     <div class="acciones-sala-versus">
                         <article class="opcion-sala-versus">
                             <span class="icono-opcion-sala" aria-hidden="true">&#10022;</span>
@@ -418,6 +479,7 @@
                             <button id="btnUnirseSalaVersus" type="button">Ingresar a sala</button>
                         </article>
                     </div>
+                    </details>
                     <p id="errorSalaVersus" class="error-sala-versus" role="alert" aria-live="polite"></p>
                 </div>
 
@@ -1196,12 +1258,12 @@
     <script src="js/intro.js?v=20260805-musica-menu-4"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="js/supabase-config.js?v=20260805-supabase-1"></script>
-    <script src="js/supabase-client.js?v=20260805-supabase-1"></script>
+    <script src="js/supabase-client.js?v=20260817-amigos-cuentas-1"></script>
     <script src="js/versus-engine.js?v=20260817-versus-recuperacion-1"></script>
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
-    <script src="js/versus-room-supabase.js?v=20260808-hombre-lobo-2"></script>
+    <script src="js/versus-room-supabase.js?v=20260817-amigos-cuentas-1"></script>
     <script src="js/adventure-puzzles.js?v=20260816-puzzles-bosque-1"></script>
-    <script src="js/app.js?v=20260817-alume-sin-rayo-1"></script>
+    <script src="js/app.js?v=20260817-amigos-cuentas-1"></script>
     <script src="js/pwa.js?v=20260814-cache-diferencial-1"></script>
 </body>
 

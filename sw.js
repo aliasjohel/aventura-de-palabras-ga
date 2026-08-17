@@ -1,11 +1,12 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v98`;
+const CACHE_NAME = `${CACHE_PREFIX}v99`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
   `${CACHE_PREFIX}v95`,
   `${CACHE_PREFIX}v96`,
   `${CACHE_PREFIX}v97`,
+  `${CACHE_PREFIX}v98`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -149,13 +150,15 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260817-ojos-lobos-responsive-1",
-  "./index.html": "20260817-ojos-lobos-responsive-1",
-  "./css/styles.css": "20260817-ojos-lobos-responsive-1",
+  "./": "20260817-amigos-cuentas-1",
+  "./index.html": "20260817-amigos-cuentas-1",
+  "./css/styles.css": "20260817-amigos-cuentas-1",
   "./assets/images/fondos/bosque-6-lobos-v2.png": "20260817-lobos-alineados-1",
   "./js/adventure-puzzles.js": "20260816-puzzles-bosque-1",
   "./js/versus-engine.js": "20260817-versus-recuperacion-1",
-  "./js/app.js": "20260817-arcade-torre-1",
+  "./js/supabase-client.js": "20260817-amigos-cuentas-1",
+  "./js/versus-room-supabase.js": "20260817-amigos-cuentas-1",
+  "./js/app.js": "20260817-amigos-cuentas-1",
   "./assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png": "20260817-alume-sin-rayo-1",
   "./js/pwa.js": "20260814-pwa-diferencial-1",
 };

@@ -83,6 +83,24 @@ const estadoSalaVersus = document.getElementById("estadoSalaVersus");
 const btnRivalPruebaVersus = document.getElementById("btnRivalPruebaVersus");
 const btnContinuarSalaVersus = document.getElementById("btnContinuarSalaVersus");
 const notaAdaptadorVersus = document.querySelector(".nota-adaptador-versus");
+const estadoCuentaVersus = document.getElementById("estadoCuentaVersus");
+const registroCuentaVersus = document.getElementById("registroCuentaVersus");
+const correoCuentaVersus = document.getElementById("correoCuentaVersus");
+const btnGuardarCuentaVersus = document.getElementById("btnGuardarCuentaVersus");
+const btnEntrarCuentaVersus = document.getElementById("btnEntrarCuentaVersus");
+const btnGoogleCuentaVersus = document.getElementById("btnGoogleCuentaVersus");
+const crearPerfilVersus = document.getElementById("crearPerfilVersus");
+const aliasPerfilVersus = document.getElementById("aliasPerfilVersus");
+const btnGuardarPerfilVersus = document.getElementById("btnGuardarPerfilVersus");
+const contenidoAmigosVersus = document.getElementById("contenidoAmigosVersus");
+const codigoAmigoVersus = document.getElementById("codigoAmigoVersus");
+const btnCopiarCodigoAmigoVersus = document.getElementById("btnCopiarCodigoAmigoVersus");
+const formAgregarAmigoVersus = document.getElementById("formAgregarAmigoVersus");
+const codigoNuevoAmigoVersus = document.getElementById("codigoNuevoAmigoVersus");
+const solicitudesAmigosVersus = document.getElementById("solicitudesAmigosVersus");
+const invitacionesVersus = document.getElementById("invitacionesVersus");
+const listaAmigosVersus = document.getElementById("listaAmigosVersus");
+const mensajeAmigosVersus = document.getElementById("mensajeAmigosVersus");
 const btnSalirSeleccionPersonajeVersus = document.getElementById(
   "btnSalirSeleccionPersonajeVersus",
 );
@@ -825,6 +843,8 @@ const adaptadorLocalSalasVersus = VersusRoom.crearAdaptadorLocal();
 let adaptadorSalasVersus = adaptadorLocalSalasVersus;
 let promesaConexionSalasVersus = null;
 let cancelarSuscripcionPartidaVersus = null;
+let cancelarSuscripcionSocialVersus = null;
+let cancelarSuscripcionInvitacionesVersus = null;
 let partidaOnlineVersus = null;
 let partidaOnlineIniciada = false;
 let ultimoEventoPartidaVersus = -1;
@@ -869,6 +889,16 @@ async function asegurarConexionSalasVersus() {
     cancelarSuscripcionPartidaVersus = adaptadorSalasVersus.suscribirPartida(
       actualizarPartidaOnline,
     );
+    cancelarSuscripcionSocialVersus?.();
+    cancelarSuscripcionSocialVersus = adaptadorSalasVersus.suscribirSocial(
+      actualizarPanelAmigosVersus,
+    );
+    cancelarSuscripcionInvitacionesVersus?.();
+    cancelarSuscripcionInvitacionesVersus = adaptadorSalasVersus
+      .suscribirInvitacionesAceptadas((sala) => {
+        actualizarEstadoMultijugador(sala);
+        abrirSeleccionPersonajeVersus();
+      });
     actualizarEstadoMultijugador(adaptadorSalasVersus.obtenerSala());
     actualizarPartidaOnline(adaptadorSalasVersus.obtenerPartida());
     return adaptadorSalasVersus;
@@ -883,6 +913,113 @@ async function asegurarConexionSalasVersus() {
 
 function mostrarErrorSalaVersus(mensaje = "") {
   errorSalaVersus.textContent = mensaje;
+}
+
+function mostrarMensajeAmigosVersus(mensaje = "", esError = false) {
+  mensajeAmigosVersus.textContent = mensaje;
+  mensajeAmigosVersus.classList.toggle("error", esError);
+}
+
+function crearFilaSocialVersus({ nombre, detalle, acciones = [] }) {
+  const fila = document.createElement("article");
+  fila.className = "fila-social-versus";
+  const textos = document.createElement("div");
+  const titulo = document.createElement("strong");
+  titulo.textContent = nombre;
+  const textoDetalle = document.createElement("small");
+  textoDetalle.textContent = detalle;
+  textos.append(titulo, textoDetalle);
+  const botones = document.createElement("div");
+  botones.className = "acciones-fila-social-versus";
+  acciones.forEach(({ texto, accion }) => {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.textContent = texto;
+    boton.addEventListener("click", () => ejecutarAccionAmigosVersus(accion));
+    botones.append(boton);
+  });
+  fila.append(textos, botones);
+  return fila;
+}
+
+function actualizarPanelAmigosVersus(estado, usuario) {
+  const permanente = usuario?.is_anonymous === false;
+  registroCuentaVersus.classList.toggle("oculto", permanente);
+  crearPerfilVersus.classList.toggle("oculto", !permanente || Boolean(estado?.profile));
+  contenidoAmigosVersus.classList.toggle("oculto", !estado?.profile);
+  estadoCuentaVersus.textContent = permanente
+    ? (estado?.profile ? estado.profile.alias : "Cuenta guardada")
+    : "Modo invitado";
+
+  if (!permanente || !estado?.profile) return;
+  aliasSalaVersus.value = estado.profile.alias;
+  codigoAmigoVersus.textContent = estado.profile.friend_code;
+  solicitudesAmigosVersus.replaceChildren();
+  invitacionesVersus.replaceChildren();
+  listaAmigosVersus.replaceChildren();
+
+  (estado.incoming_requests || []).forEach((solicitud) => {
+    solicitudesAmigosVersus.append(crearFilaSocialVersus({
+      nombre: `${solicitud.alias} quiere agregarte`,
+      detalle: `Código ${solicitud.friend_code}`,
+      acciones: [
+        { texto: "Aceptar", accion: () => adaptadorSalasVersus.responderSolicitudAmistad(solicitud.id, true) },
+        { texto: "Rechazar", accion: () => adaptadorSalasVersus.responderSolicitudAmistad(solicitud.id, false) },
+      ],
+    }));
+  });
+  (estado.outgoing_requests || []).forEach((solicitud) => {
+    solicitudesAmigosVersus.append(crearFilaSocialVersus({
+      nombre: `Solicitud enviada a ${solicitud.alias}`,
+      detalle: "Esperando respuesta",
+    }));
+  });
+  (estado.incoming_invites || []).forEach((invitacion) => {
+    invitacionesVersus.append(crearFilaSocialVersus({
+      nombre: `${invitacion.alias} te desafía`,
+      detalle: "Aceptá y la partida comenzará automáticamente",
+      acciones: [
+        { texto: "Aceptar", accion: () => adaptadorSalasVersus.responderInvitacion(invitacion.id, true) },
+        { texto: "Rechazar", accion: () => adaptadorSalasVersus.responderInvitacion(invitacion.id, false) },
+      ],
+    }));
+  });
+  (estado.outgoing_invites || []).forEach((invitacion) => {
+    invitacionesVersus.append(crearFilaSocialVersus({
+      nombre: `Desafío enviado a ${invitacion.alias}`,
+      detalle: "Esperando que acepte",
+      acciones: [
+        { texto: "Cancelar", accion: () => adaptadorSalasVersus.cancelarInvitacion(invitacion.id) },
+      ],
+    }));
+  });
+  (estado.friends || []).forEach((amigo) => {
+    listaAmigosVersus.append(crearFilaSocialVersus({
+      nombre: amigo.alias,
+      detalle: `Código ${amigo.friend_code}`,
+      acciones: [
+        { texto: "Desafiar", accion: () => adaptadorSalasVersus.enviarInvitacion(amigo.user_id) },
+        { texto: "Quitar", accion: () => adaptadorSalasVersus.eliminarAmigo(amigo.friendship_id) },
+      ],
+    }));
+  });
+  if (!(estado.friends || []).length) {
+    listaAmigosVersus.append(crearFilaSocialVersus({
+      nombre: "Todavía no agregaste amigos",
+      detalle: "Compartí tu código o escribí el de otro jugador",
+    }));
+  }
+}
+
+async function ejecutarAccionAmigosVersus(accion, mensajeExito = "Listo") {
+  mostrarMensajeAmigosVersus("Procesando…");
+  try {
+    await asegurarConexionSalasVersus();
+    await accion();
+    mostrarMensajeAmigosVersus(mensajeExito);
+  } catch (error) {
+    mostrarMensajeAmigosVersus(error.message || "No pudimos completar la acción.", true);
+  }
 }
 
 function actualizarSalaVersus(sala) {
@@ -1791,6 +1928,52 @@ function iniciarPruebaVersusLocal() {
   adaptadorSalasVersus.agregarRivalDePrueba("Rival de prueba");
   abrirSeleccionPersonajeVersus();
 }
+
+btnGuardarCuentaVersus.addEventListener("click", () => ejecutarAccionAmigosVersus(
+  () => adaptadorSalasVersus.vincularCorreo(correoCuentaVersus.value),
+  "Te enviamos una confirmación. Abrila desde tu correo para guardar el jugador.",
+));
+
+btnEntrarCuentaVersus.addEventListener("click", () => ejecutarAccionAmigosVersus(
+  () => adaptadorSalasVersus.entrarConCorreo(correoCuentaVersus.value),
+  "Te enviamos un enlace para entrar a tu cuenta.",
+));
+
+btnGoogleCuentaVersus.addEventListener("click", () => ejecutarAccionAmigosVersus(
+  () => adaptadorSalasVersus.vincularGoogle(),
+  "Abriendo Google…",
+));
+
+btnGuardarPerfilVersus.addEventListener("click", () => ejecutarAccionAmigosVersus(
+  async () => {
+    await adaptadorSalasVersus.guardarPerfil(aliasPerfilVersus.value);
+    aliasSalaVersus.value = aliasPerfilVersus.value.trim();
+  },
+  "Perfil creado. Ya podés agregar amigos.",
+));
+
+formAgregarAmigoVersus.addEventListener("submit", (evento) => {
+  evento.preventDefault();
+  void ejecutarAccionAmigosVersus(async () => {
+    await adaptadorSalasVersus.enviarSolicitudAmistad(codigoNuevoAmigoVersus.value);
+    codigoNuevoAmigoVersus.value = "";
+  }, "Solicitud enviada.");
+});
+
+codigoNuevoAmigoVersus.addEventListener("input", () => {
+  codigoNuevoAmigoVersus.value = codigoNuevoAmigoVersus.value
+    .toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 8);
+});
+
+btnCopiarCodigoAmigoVersus.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(codigoAmigoVersus.textContent);
+    btnCopiarCodigoAmigoVersus.textContent = "Copiado";
+    setTimeout(() => { btnCopiarCodigoAmigoVersus.textContent = "Copiar"; }, 1300);
+  } catch (error) {
+    mostrarMensajeAmigosVersus(`Tu código es ${codigoAmigoVersus.textContent}`);
+  }
+});
 
 btnCrearSalaVersus.addEventListener("click", () => ejecutarAccionSalaVersus(() => (
   adaptadorSalasVersus.crearSala({ alias: aliasSalaVersus.value })

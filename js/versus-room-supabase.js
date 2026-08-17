@@ -13,14 +13,21 @@
     if (!cliente) throw new Error("El cliente de Supabase no está disponible.");
 
     let usuarioId = null;
+    let usuarioActual = null;
+    let estadoSocial = null;
     let salaActual = null;
     let partidaActual = null;
     let canalSala = null;
+    let canalSocial = null;
+    let suscripcionAuth = null;
+    let ultimaSalaInvitada = null;
     let intervaloVerificacionSala = null;
     let recargaEnCurso = null;
     let recargaSolicitada = false;
     const suscriptores = new Set();
     const suscriptoresPartida = new Set();
+    const suscriptoresSocial = new Set();
+    const suscriptoresInvitacionAceptada = new Set();
     const claveSalaActiva = "aventura-versus-room-id";
 
     function recordarSala(roomId) {
@@ -44,6 +51,66 @@
     const emitirPartida = (partida) => (
       suscriptoresPartida.forEach((suscriptor) => suscriptor(partida))
     );
+    const emitirSocial = () => suscriptoresSocial.forEach((suscriptor) => (
+      suscriptor(estadoSocial, usuarioActual)
+    ));
+
+    function esCuentaPermanente() {
+      return Boolean(usuarioActual && usuarioActual.is_anonymous === false);
+    }
+
+    function urlRetornoAutenticacion() {
+      return `${raiz.location?.origin || ""}${raiz.location?.pathname || "/"}`;
+    }
+
+    async function detenerCanalSocial() {
+      if (!canalSocial) return;
+      const canal = canalSocial;
+      canalSocial = null;
+      await cliente.removeChannel(canal);
+    }
+
+    async function cargarEstadoSocial() {
+      if (!esCuentaPermanente()) {
+        estadoSocial = null;
+        emitirSocial();
+        return null;
+      }
+      const { data, error } = await cliente.rpc("get_versus_social_state");
+      if (error) throw traducirError(error, "No pudimos cargar Amigos.");
+      estadoSocial = data;
+      emitirSocial();
+      return estadoSocial;
+    }
+
+    async function abrirSalaInvitada(roomId) {
+      if (!roomId || roomId === ultimaSalaInvitada) return;
+      ultimaSalaInvitada = roomId;
+      await cargarSala(roomId);
+      await escucharSala(roomId);
+      suscriptoresInvitacionAceptada.forEach((suscriptor) => suscriptor(salaActual));
+    }
+
+    async function escucharSocial() {
+      await detenerCanalSocial();
+      if (!usuarioId || !esCuentaPermanente()) return;
+      const alCambiar = (cambio) => {
+        void cargarEstadoSocial();
+        const invitacion = cambio?.new;
+        const esAceptacionNueva = cambio?.table === "versus_invites"
+          && cambio?.eventType === "UPDATE"
+          && invitacion?.status === "accepted"
+          && invitacion?.room_id
+          && [invitacion.challenger_id, invitacion.challenged_id].includes(usuarioId);
+        if (esAceptacionNueva) void abrirSalaInvitada(invitacion.room_id);
+      };
+      canalSocial = cliente
+        .channel(`versus-social-${usuarioId}`)
+        .on("postgres_changes", { event: "*", schema: "public", table: "versus_profiles" }, alCambiar)
+        .on("postgres_changes", { event: "*", schema: "public", table: "versus_friendships" }, alCambiar)
+        .on("postgres_changes", { event: "*", schema: "public", table: "versus_invites" }, alCambiar)
+        .subscribe();
+    }
 
     async function cargarPartida() {
       if (!salaActual?.id || !["playing", "finished"].includes(salaActual.estado)) {
@@ -70,7 +137,23 @@
       }
 
       if (!sesion?.user?.id) throw new Error("Supabase no devolvió una identidad de jugador.");
+      usuarioActual = sesion.user;
       usuarioId = sesion.user.id;
+      if (!suscripcionAuth) {
+        const { data } = cliente.auth.onAuthStateChange((_evento, nuevaSesion) => {
+          usuarioActual = nuevaSesion?.user || null;
+          usuarioId = usuarioActual?.id || null;
+          estadoSocial = null;
+          emitirSocial();
+          queueMicrotask(() => {
+            void escucharSocial();
+            if (esCuentaPermanente()) void cargarEstadoSocial();
+          });
+        });
+        suscripcionAuth = data.subscription;
+      }
+      await escucharSocial();
+      if (esCuentaPermanente()) await cargarEstadoSocial();
       const roomId = obtenerSalaRecordada();
       if (roomId && /^[0-9a-f-]{36}$/i.test(roomId)) {
         await cargarSala(roomId);
@@ -275,6 +358,87 @@
       return () => suscriptoresPartida.delete(suscriptor);
     }
 
+    function suscribirSocial(suscriptor) {
+      suscriptoresSocial.add(suscriptor);
+      suscriptor(estadoSocial, usuarioActual);
+      return () => suscriptoresSocial.delete(suscriptor);
+    }
+
+    function suscribirInvitacionesAceptadas(suscriptor) {
+      suscriptoresInvitacionAceptada.add(suscriptor);
+      return () => suscriptoresInvitacionAceptada.delete(suscriptor);
+    }
+
+    async function vincularCorreo(correo) {
+      const email = String(correo || "").trim().toLowerCase();
+      if (!/^\S+@\S+\.\S+$/.test(email)) throw new Error("Escribí un correo válido.");
+      const { error } = await cliente.auth.updateUser(
+        { email },
+        { emailRedirectTo: urlRetornoAutenticacion() },
+      );
+      if (error) throw traducirError(error, "No pudimos enviar la confirmación.");
+      return email;
+    }
+
+    async function entrarConCorreo(correo) {
+      const email = String(correo || "").trim().toLowerCase();
+      if (!/^\S+@\S+\.\S+$/.test(email)) throw new Error("Escribí un correo válido.");
+      const { error } = await cliente.auth.signInWithOtp({
+        email,
+        options: { shouldCreateUser: false, emailRedirectTo: urlRetornoAutenticacion() },
+      });
+      if (error) throw traducirError(error, "No pudimos enviar el enlace de acceso.");
+      return email;
+    }
+
+    async function vincularGoogle() {
+      const { data, error } = await cliente.auth.linkIdentity({
+        provider: "google",
+        options: { redirectTo: urlRetornoAutenticacion() },
+      });
+      if (error) throw traducirError(error, "No pudimos vincular Google.");
+      return data;
+    }
+
+    async function ejecutarRpcSocial(nombre, parametros, respaldo) {
+      const { data, error } = await cliente.rpc(nombre, parametros);
+      if (error) throw traducirError(error, respaldo);
+      await cargarEstadoSocial();
+      return data;
+    }
+
+    const guardarPerfil = (alias) => ejecutarRpcSocial(
+      "upsert_versus_profile", { p_alias: alias }, "No pudimos guardar tu perfil.",
+    );
+    const enviarSolicitudAmistad = (codigo) => ejecutarRpcSocial(
+      "send_versus_friend_request", { p_friend_code: codigo }, "No pudimos enviar la solicitud.",
+    );
+    const responderSolicitudAmistad = (id, aceptar) => ejecutarRpcSocial(
+      "respond_versus_friend_request",
+      { p_friendship_id: id, p_accept: aceptar },
+      "No pudimos responder la solicitud.",
+    );
+    const eliminarAmigo = (id) => ejecutarRpcSocial(
+      "remove_versus_friend", { p_friendship_id: id }, "No pudimos quitar al amigo.",
+    );
+    const enviarInvitacion = (id) => ejecutarRpcSocial(
+      "send_versus_invite", { p_friend_id: id }, "No pudimos enviar el desafío.",
+    );
+    const cancelarInvitacion = (id) => ejecutarRpcSocial(
+      "cancel_versus_invite", { p_invite_id: id }, "No pudimos cancelar el desafío.",
+    );
+    async function responderInvitacion(id, aceptar) {
+      const sala = await ejecutarRpcSocial(
+        "respond_versus_invite",
+        { p_invite_id: id, p_accept: aceptar },
+        "No pudimos responder el desafío.",
+      );
+      if (aceptar && sala?.id) {
+        await abrirSalaInvitada(sala.id);
+      }
+      return sala;
+    }
+
     async function jugarLetra(letra) {
       if (!salaActual?.id) throw new Error("No hay una sala activa.");
       const { data, error } = await cliente.rpc("play_versus_letter", {
@@ -312,9 +476,25 @@
       salirSala,
       suscribir,
       suscribirPartida,
+      suscribirSocial,
+      suscribirInvitacionesAceptadas,
+      cargarEstadoSocial,
+      vincularCorreo,
+      entrarConCorreo,
+      vincularGoogle,
+      guardarPerfil,
+      enviarSolicitudAmistad,
+      responderSolicitudAmistad,
+      eliminarAmigo,
+      enviarInvitacion,
+      cancelarInvitacion,
+      responderInvitacion,
       obtenerSala: () => salaActual,
       obtenerPartida: () => partidaActual,
       obtenerUsuarioId: () => usuarioId,
+      obtenerUsuario: () => usuarioActual,
+      obtenerEstadoSocial: () => estadoSocial,
+      esCuentaPermanente,
     });
   }
 

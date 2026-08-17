@@ -1307,6 +1307,115 @@ button:disabled {
     gap: 14px;
 }
 
+.panel-amigos-versus {
+    display: grid;
+    gap: 12px;
+    width: 100%;
+    padding: clamp(13px, 2vw, 20px);
+    border: 1px solid rgba(98, 188, 158, 0.44);
+    border-radius: 14px;
+    background: linear-gradient(145deg, rgba(8, 48, 46, 0.68), rgba(7, 16, 23, 0.88));
+}
+
+.cabecera-amigos-versus,
+.identidad-amigos-versus,
+.titulo-lista-amigos-versus,
+.fila-social-versus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.cabecera-amigos-versus small,
+.identidad-amigos-versus small {
+    color: #71c9a8;
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.cabecera-amigos-versus h3 { color: #f1d298; font-family: Georgia, serif; }
+.estado-cuenta-versus { color: #aee5cc; font-size: 0.7rem; }
+
+.registro-cuenta-versus,
+.crear-perfil-versus,
+.contenido-amigos-versus {
+    display: grid;
+    gap: 10px;
+}
+
+.registro-cuenta-versus p,
+.crear-perfil-versus p,
+.registro-cuenta-versus > small,
+.titulo-lista-amigos-versus small {
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 0.73rem;
+}
+
+.registro-cuenta-versus label,
+.crear-perfil-versus label {
+    display: grid;
+    gap: 4px;
+    color: #e5c78e;
+    font-size: 0.7rem;
+}
+
+.panel-amigos-versus input {
+    min-width: 0;
+    padding: 9px 11px;
+    border: 1px solid rgba(110, 191, 163, 0.48);
+    border-radius: 8px;
+    outline: none;
+    background: rgba(1, 12, 16, 0.76);
+    color: #f4ffe9;
+}
+
+.acciones-cuenta-versus,
+.agregar-amigo-versus,
+.acciones-fila-social-versus {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.panel-amigos-versus button {
+    padding: 8px 12px;
+    background: linear-gradient(180deg, #418c58, #235a39);
+    color: #efffdc;
+}
+
+.panel-amigos-versus button.secundario,
+.acciones-fila-social-versus button:last-child {
+    border: 1px solid rgba(232, 186, 89, 0.4);
+    background: rgba(80, 57, 20, 0.55);
+    color: #ffe3a6;
+}
+
+.identidad-amigos-versus {
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(5, 19, 23, 0.72);
+}
+
+.identidad-amigos-versus strong { display: block; color: #ffe0a0; letter-spacing: 0.16em; }
+.agregar-amigo-versus input { flex: 1 1 190px; text-transform: uppercase; letter-spacing: 0.1em; }
+.lista-social-versus { display: grid; gap: 7px; }
+
+.fila-social-versus {
+    padding: 9px 11px;
+    border: 1px solid rgba(103, 166, 143, 0.28);
+    border-radius: 9px;
+    background: rgba(6, 24, 27, 0.58);
+}
+
+.fila-social-versus div:first-child { display: grid; gap: 2px; }
+.fila-social-versus small { color: rgba(255, 255, 255, 0.57); font-size: 0.64rem; }
+.mensaje-amigos-versus { min-height: 1em; color: #aee5cc; font-size: 0.72rem; }
+.mensaje-amigos-versus.error { color: #ff9b8d; }
+.salas-manuales-versus { width: 100%; }
+.salas-manuales-versus summary { margin-bottom: 10px; color: #dcb96f; cursor: pointer; font-size: 0.75rem; text-align: center; }
+
 .campo-sala-versus {
     display: grid;
     gap: 6px;
@@ -1427,6 +1536,11 @@ button:disabled {
     .sala-versus-cabecera span { display: none; }
     .inicio-sala-versus,
     .espera-sala-versus { gap: 6px; }
+    .panel-amigos-versus { gap: 7px; padding: 9px 12px; }
+    .registro-cuenta-versus,
+    .crear-perfil-versus,
+    .contenido-amigos-versus { gap: 6px; }
+    .fila-social-versus { padding: 6px 9px; }
 
     .campo-alias-versus {
         display: grid;
