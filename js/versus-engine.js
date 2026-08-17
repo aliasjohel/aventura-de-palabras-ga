@@ -86,6 +86,22 @@
     return [...obtenerClavePalabra(palabra)].filter((letra) => usadas.has(letra)).length;
   }
 
+  function elegirPalabraRecuperacion(banco = [], usadas = [], aleatorio = Math.random) {
+    const clavesUsadas = new Set(usadas.map(obtenerClavePalabra));
+    const disponibles = banco
+      .map((palabra) => normalizarPalabra(palabra))
+      .filter((palabra) => palabra && !clavesUsadas.has(obtenerClavePalabra(palabra)));
+    if (!disponibles.length) return "";
+
+    const valorAleatorio = Math.max(0, Math.min(0.999999999, Number(aleatorio()) || 0));
+    return disponibles[Math.floor(valorAleatorio * disponibles.length)];
+  }
+
+  function obtenerEtiquetaRonda(indice, maximo = CONFIG.maximoPalabras) {
+    const numero = Math.max(0, Number(indice || 0)) + 1;
+    return numero <= maximo ? `${numero}/${maximo}` : `EXTRA ${numero - maximo}`;
+  }
+
   function reducirTiempo(tiempo, segundos = 1) {
     return Math.max(0, Number(tiempo || 0) - Math.max(0, segundos));
   }
@@ -125,6 +141,8 @@
     palabraCompletada,
     obtenerProgreso,
     contarDescubiertas,
+    elegirPalabraRecuperacion,
+    obtenerEtiquetaRonda,
     sumarCargaHabilidad,
     reducirTiempo,
     resolverGanador,

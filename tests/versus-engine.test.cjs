@@ -27,6 +27,13 @@ assert.equal(engine.sumarCargaHabilidad(6, 2), 8);
 assert.equal(engine.sumarCargaHabilidad(8, 4), 8);
 assert.equal(engine.CONFIG.maximoPalabras, 5);
 assert.equal(engine.CONFIG.vidasIniciales, 5);
+assert.equal(
+  engine.elegirPalabraRecuperacion(["PERA", "MANZANA", "LIMÓN"], ["pera", "limon"], () => 0),
+  "MANZANA",
+);
+assert.equal(engine.elegirPalabraRecuperacion(["SOL"], ["sol"], () => 0), "");
+assert.equal(engine.obtenerEtiquetaRonda(4), "5/5");
+assert.equal(engine.obtenerEtiquetaRonda(5), "EXTRA 1");
 assert.equal(engine.reducirTiempo(1), 0);
 assert.equal(engine.reducirTiempo(0), 0);
 assert.equal(
@@ -44,4 +51,4 @@ assert.equal(
   "empate",
 );
 
-console.log("versus-engine: 12 comprobaciones correctas");
+console.log("versus-engine: comprobaciones correctas");

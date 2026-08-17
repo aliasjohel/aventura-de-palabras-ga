@@ -197,6 +197,7 @@ const btnProbarAtaqueElegido = document.getElementById(
 const btnSalirJuego = document.getElementById("btnSalirJuego");
 const btnMisionAnterior = document.getElementById("btnMisionAnterior");
 const btnMisionSiguiente = document.getElementById("btnMisionSiguiente");
+const btnProbarPruebaBosque = document.getElementById("btnProbarPruebaBosque");
 const btnProbarMuralSantuario = document.getElementById("btnProbarMuralSantuario");
 const modalMuralSantuario = document.getElementById("modalMuralSantuario");
 const tableroMuralSantuario = document.getElementById("tableroMuralSantuario");
@@ -205,6 +206,19 @@ const estadoMuralSantuario = document.getElementById("estadoMuralSantuario");
 const btnAyudaMuralSantuario = document.getElementById("btnAyudaMuralSantuario");
 const btnRetirarPiezaMural = document.getElementById("btnRetirarPiezaMural");
 const btnSalirMuralSantuario = document.getElementById("btnSalirMuralSantuario");
+const modalPruebaBosque = document.getElementById("modalPruebaBosque");
+const etiquetaPruebaBosque = document.getElementById("etiquetaPruebaBosque");
+const tituloPruebaBosque = document.getElementById("tituloPruebaBosque");
+const instruccionPruebaBosque = document.getElementById("instruccionPruebaBosque");
+const puzzleRamasDeslizante = document.getElementById("puzzleRamasDeslizante");
+const tableroRamasDeslizante = document.getElementById("tableroRamasDeslizante");
+const puzzleMemoriaLobos = document.getElementById("puzzleMemoriaLobos");
+const escenaMemoriaLobos = document.getElementById("escenaMemoriaLobos");
+const botonesMemoriaLobos = [...escenaMemoriaLobos.querySelectorAll(".lobo-memoria")];
+const progresoMemoriaLobos = document.getElementById("progresoMemoriaLobos");
+const estadoPruebaBosque = document.getElementById("estadoPruebaBosque");
+const btnRepetirPruebaBosque = document.getElementById("btnRepetirPruebaBosque");
+const btnSalirPruebaBosque = document.getElementById("btnSalirPruebaBosque");
 const modoPruebas = document.getElementById("modoPruebas");
 const panelModoPruebas = document.getElementById("panelModoPruebas");
 const herramientasPruebasJuego = document.getElementById(
@@ -722,6 +736,16 @@ let resolverRompecabezasMural = null;
 let temporizadorAyudaMural = null;
 let piezaSeleccionadaMural = null;
 let focoPrevioMural = null;
+let pruebaEspecialBosqueActiva = "";
+let estadoTableroRamas = [];
+let movimientosPuzzleRamas = 0;
+let secuenciaMemoriaLobos = [];
+let entradaMemoriaLobos = [];
+let rondaMemoriaLobos = 0;
+let memoriaLobosAceptandoEntrada = false;
+let secuenciaPruebaBosque = 0;
+let focoPrevioPruebaBosque = null;
+let pruebaBosqueEnModoDemo = false;
 let secuenciaAperturaPortal = 0;
 let cinematicaPortalActiva = false;
 let portalAbierto = false;
@@ -1057,6 +1081,9 @@ function renderizarPartidaOnline(partida) {
   demoVersus.tematicaParaRival = rival.theme;
   demoVersus.indiceJugador = propio.wordIndex;
   demoVersus.indiceRival = rival.wordIndex;
+  demoVersus.palabrasCompletadasJugador = propio.completedWords;
+  demoVersus.palabrasCompletadasRival = rival.completedWords;
+  demoVersus.ultimaPalabraFalladaJugador = propio.lastFailedWord || "";
   demoVersus.erroresJugador = propio.errors;
   demoVersus.erroresRival = rival.errors;
   demoVersus.vidasJugador = propio.lives;
@@ -1102,10 +1129,10 @@ function renderizarPartidaOnline(partida) {
 
   tituloProgresoUno.textContent = propio.finished
     ? "TU RECORRIDO TERMINÓ"
-    : `TU DESAFÍO · ${obtenerNombreTemaVersus(propio.theme).toUpperCase()} ${propio.wordIndex + 1}/${maximoPalabrasVersus}`;
+    : `TU DESAFÍO · ${obtenerNombreTemaVersus(propio.theme).toUpperCase()} ${VersusEngine.obtenerEtiquetaRonda(propio.wordIndex)}`;
   tituloProgresoDos.textContent = rival.finished
     ? "EL RIVAL TERMINÓ"
-    : `RIVAL · ${obtenerNombreTemaVersus(rival.theme).toUpperCase()} ${rival.wordIndex + 1}/${maximoPalabrasVersus}`;
+    : `RIVAL · ${obtenerNombreTemaVersus(rival.theme).toUpperCase()} ${VersusEngine.obtenerEtiquetaRonda(rival.wordIndex)}`;
   tituloVersus.textContent = `J1 ${propio.completedWords}/${maximoPalabrasVersus} · J2 ${rival.completedWords}/${maximoPalabrasVersus}`;
 
   const palabraPropia = document.getElementById("palabraVersusUno");
@@ -1224,8 +1251,11 @@ function finalizarPartidaOnline(partida) {
   const eventoPrevio = partida.lastEvent?.type === "match_finished"
     ? partida.lastEvent.previousEvent
     : partida.lastEvent;
-  const palabraPerdida = eventoPrevio?.type === "word_failed" || eventoPrevio?.wordFailed
+  const palabraEvento = eventoPrevio?.type === "word_failed" || eventoPrevio?.wordFailed
     ? eventoPrevio.word || ""
+    : "";
+  const palabraPerdida = ganador === "rival"
+    ? partida.me?.lastFailedWord || palabraEvento
     : "";
   reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida);
 }
@@ -1885,10 +1915,36 @@ btnProbarMuralSantuario.addEventListener("click", async () => {
   if (completado) await probarDespertarDragonSantuario();
 });
 
+btnProbarPruebaBosque.addEventListener("click", () => {
+  if (!modoPruebasActivo || pruebaEspecialBosqueActiva || escenarioActual !== 0) return;
+  const tipo = misionActual === 2 ? "ramas" : misionActual === 5 ? "lobos" : "";
+  if (!tipo) return;
+  pruebaBosqueEnModoDemo = true;
+  abrirPruebaEspecialBosque(tipo);
+});
+
 btnAyudaMuralSantuario.addEventListener("click", mostrarAyudaMuralSantuario);
 btnRetirarPiezaMural.addEventListener("click", retirarPiezaMuralSantuario);
 btnSalirMuralSantuario.addEventListener("click", () => {
   cerrarRompecabezasMuralSantuario(false);
+  detenerSonidos();
+  mostrarPantalla(pantallaMenu);
+});
+
+btnRepetirPruebaBosque.addEventListener("click", () => {
+  if (pruebaEspecialBosqueActiva === "ramas") {
+    iniciarPuzzleRamasDeslizante();
+  } else if (pruebaEspecialBosqueActiva === "lobos") {
+    void mostrarSecuenciaMemoriaLobos();
+  }
+});
+
+botonesMemoriaLobos.forEach((boton) => {
+  boton.addEventListener("click", () => elegirLoboMemoria(Number(boton.dataset.lobo)));
+});
+
+btnSalirPruebaBosque.addEventListener("click", () => {
+  cerrarPruebaEspecialBosque();
   detenerSonidos();
   mostrarPantalla(pantallaMenu);
 });
@@ -2961,6 +3017,10 @@ const demoVersus = {
   palabrasRival: [],
   indiceJugador: 0,
   indiceRival: 0,
+  palabrasCompletadasJugador: 0,
+  palabrasCompletadasRival: 0,
+  ultimaPalabraFalladaJugador: "",
+  ultimaPalabraFalladaRival: "",
   letrasJugador: new Set(),
   letrasRival: new Set(),
   erroresJugador: 0,
@@ -3891,6 +3951,18 @@ function mezclarPalabrasVersus(palabras) {
   return copia;
 }
 
+function agregarPalabraRecuperacionVersus(tipoJugador) {
+  const esJugador = tipoJugador === "jugador";
+  const tema = esJugador ? demoVersus.tematicaParaJugador : demoVersus.tematicaParaRival;
+  const propiedad = esJugador ? "palabrasJugador" : "palabrasRival";
+  const palabraExtra = VersusEngine.elegirPalabraRecuperacion(
+    bancosPalabrasVersus[tema] || [],
+    demoVersus[propiedad],
+  );
+  if (palabraExtra) demoVersus[propiedad].push(palabraExtra);
+  return palabraExtra;
+}
+
 function prepararDueloVersus({ comenzarRonda = true } = {}) {
   cancelarCinematicaFinalVersus();
   detenerRondaVersus();
@@ -3908,6 +3980,10 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
   demoVersus.palabrasRival = palabrasSecretasVersus.map(limpiarPalabraParaVersus);
   demoVersus.indiceJugador = 0;
   demoVersus.indiceRival = 0;
+  demoVersus.palabrasCompletadasJugador = 0;
+  demoVersus.palabrasCompletadasRival = 0;
+  demoVersus.ultimaPalabraFalladaJugador = "";
+  demoVersus.ultimaPalabraFalladaRival = "";
   demoVersus.letrasJugador.clear();
   demoVersus.letrasRival.clear();
   demoVersus.erroresJugador = 0;
@@ -4119,16 +4195,16 @@ function actualizarProgresosVersus() {
 
   tituloProgresoUno.textContent = demoVersus.finalizadoJugador
     ? "TU RECORRIDO TERMINÓ"
-    : `TU DESAFÍO · ${temaJugador.toUpperCase()} ${demoVersus.indiceJugador + 1}/${maximoPalabrasVersus}`;
+    : `TU DESAFÍO · ${temaJugador.toUpperCase()} ${VersusEngine.obtenerEtiquetaRonda(demoVersus.indiceJugador)}`;
   tituloProgresoDos.textContent = demoVersus.finalizadoRival
     ? "EL RIVAL TERMINÓ"
-    : `RIVAL · ${temaRival.toUpperCase()} ${demoVersus.indiceRival + 1}/${maximoPalabrasVersus}`;
-  tituloVersus.textContent = `J1 ${Math.min(demoVersus.indiceJugador, maximoPalabrasVersus)}/${maximoPalabrasVersus} · J2 ${Math.min(demoVersus.indiceRival, maximoPalabrasVersus)}/${maximoPalabrasVersus}`;
+    : `RIVAL · ${temaRival.toUpperCase()} ${VersusEngine.obtenerEtiquetaRonda(demoVersus.indiceRival)}`;
+  tituloVersus.textContent = `J1 ${demoVersus.palabrasCompletadasJugador}/${maximoPalabrasVersus} · J2 ${demoVersus.palabrasCompletadasRival}/${maximoPalabrasVersus}`;
 
   if (demoVersus.finalizadoJugador) {
     palabraJugador.textContent = demoVersus.motivoFinalJugador === "tiempo"
       ? "TIEMPO AGOTADO"
-      : `✓ ${maximoPalabrasVersus} PALABRAS`;
+      : `✓ ${demoVersus.palabrasCompletadasJugador} PALABRAS`;
   } else {
     palabraJugador.textContent = progresoJugador.join(" ");
   }
@@ -4137,7 +4213,7 @@ function actualizarProgresosVersus() {
   if (demoVersus.finalizadoRival) {
     palabraRival.textContent = demoVersus.motivoFinalRival === "tiempo"
       ? "TIEMPO AGOTADO"
-      : `✓ ${maximoPalabrasVersus} PALABRAS`;
+      : `✓ ${demoVersus.palabrasCompletadasRival} PALABRAS`;
   } else {
     palabraRival.textContent = progresoRival.join(" ");
   }
@@ -4235,6 +4311,7 @@ function avanzarPalabraJugadorVersus(acertada) {
   demoVersus.erroresJugador = 0;
 
   if (acertada) {
+    demoVersus.palabrasCompletadasJugador += 1;
     demoVersus.vidasRival -= 1;
     reproducirAtaqueJugadorVersus();
     mostrarAvisoAvanceVersus(
@@ -4243,6 +4320,7 @@ function avanzarPalabraJugadorVersus(acertada) {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 260 : 1550,
     );
   } else {
+    demoVersus.ultimaPalabraFalladaJugador = palabraPerdida;
     mostrarRevelacionPalabraVersus(
       revelacionPalabraVersusUno,
       palabraPerdida,
@@ -4250,6 +4328,7 @@ function avanzarPalabraJugadorVersus(acertada) {
       "temporizadorRevelacionJugador",
     );
     demoVersus.vidasJugador -= 1;
+    if (demoVersus.vidasJugador > 0) agregarPalabraRecuperacionVersus("jugador");
     reproducirAtaqueRivalVersus();
     mostrarAvisoAvanceVersus(
       `Sin energía en la palabra ${numeroPalabra}. Perdés un corazón.`,
@@ -4273,7 +4352,7 @@ function avanzarPalabraJugadorVersus(acertada) {
     return;
   }
 
-  if (demoVersus.indiceJugador >= maximoPalabrasVersus) {
+  if (demoVersus.palabrasCompletadasJugador >= maximoPalabrasVersus) {
     demoVersus.finalizadoJugador = true;
     demoVersus.motivoFinalJugador = "completo";
     bloquearTecladoDemoVersus();
@@ -4295,6 +4374,7 @@ function avanzarPalabraRivalVersus(acertada) {
   demoVersus.erroresRival = 0;
 
   if (acertada) {
+    demoVersus.palabrasCompletadasRival += 1;
     demoVersus.vidasJugador -= 1;
     reproducirAtaqueRivalVersus();
     mostrarAvisoAvanceVersus(
@@ -4303,6 +4383,7 @@ function avanzarPalabraRivalVersus(acertada) {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 260 : 1300,
     );
   } else {
+    demoVersus.ultimaPalabraFalladaRival = palabraPerdida;
     mostrarRevelacionPalabraVersus(
       revelacionPalabraVersusDos,
       palabraPerdida,
@@ -4310,6 +4391,7 @@ function avanzarPalabraRivalVersus(acertada) {
       "temporizadorRevelacionRival",
     );
     demoVersus.vidasRival -= 1;
+    if (demoVersus.vidasRival > 0) agregarPalabraRecuperacionVersus("rival");
     reproducirAtaqueJugadorVersus();
     mostrarAvisoAvanceVersus(
       `El rival agotó la energía de su palabra ${numeroPalabra} y perdió un corazón.`,
@@ -4333,7 +4415,7 @@ function avanzarPalabraRivalVersus(acertada) {
     return;
   }
 
-  if (demoVersus.indiceRival >= maximoPalabrasVersus) {
+  if (demoVersus.palabrasCompletadasRival >= maximoPalabrasVersus) {
     demoVersus.finalizadoRival = true;
     demoVersus.motivoFinalRival = "completo";
     mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), "Esperando resultado");
@@ -4382,7 +4464,10 @@ function finalizarPartidaVersus(ganador, detalle, palabraPerdida = "") {
   detenerRondaVersus();
   bloquearTecladoDemoVersus();
 
-  reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida);
+  const ultimaPalabra = palabraPerdida || (
+    ganador === "rival" ? demoVersus.ultimaPalabraFalladaJugador : ""
+  );
+  reproducirCierrePartidaVersus(ganador, detalle, ultimaPalabra);
 }
 
 function obtenerReproductorFinalVersus(personajeGanador, personajeVictima) {
@@ -5154,6 +5239,8 @@ function actualizarControlesDev() {
   btnMisionAnterior.disabled = misionActual === 0;
   btnMisionSiguiente.disabled =
     misionActual >= obtenerCantidadMisiones(escenarioActual) - 1;
+  btnProbarPruebaBosque.disabled =
+    escenarioActual !== 0 || ![2, 5].includes(misionActual);
   btnProbarMuralSantuario.disabled = escenarioActual !== 0 || misionActual !== 8;
 }
 
@@ -6386,11 +6473,12 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
 
   actualizarCabeceraMision();
 
-  const palabraSeleccionada = obtenerPalabraAleatoria();
+  const pruebaEspecial = obtenerPruebaEspecialBosquePendiente();
+  const palabraSeleccionada = pruebaEspecial ? null : obtenerPalabraAleatoria();
 
-  palabraSecreta = palabraSeleccionada.palabra;
+  palabraSecreta = palabraSeleccionada?.palabra || "";
 
-  pistaActual = palabraSeleccionada.pista;
+  pistaActual = palabraSeleccionada?.pista || "";
 
   letrasElegidas = [];
   intentos = 6;
@@ -6417,11 +6505,17 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   teclado.innerHTML = "";
   textoPista.classList.add("oculto");
   textoPista.textContent = "";
-  btnPista.disabled = false;
+  btnPista.disabled = Boolean(pruebaEspecial);
   btnSiguiente.classList.add("oculto");
 
-  mostrarPalabra();
-  crearTeclado();
+  palabraOculta.classList.toggle("oculto", Boolean(pruebaEspecial));
+  btnPista.classList.toggle("oculto", Boolean(pruebaEspecial));
+  teclado.classList.toggle("oculto", Boolean(pruebaEspecial));
+
+  if (!pruebaEspecial) {
+    mostrarPalabra();
+    crearTeclado();
+  }
   const portalFinalizado =
     escenarioActual === 0 && misionActual === 9 && portalAbierto;
   pantallaJuego.classList.toggle("portal-finalizado", portalFinalizado);
@@ -6434,6 +6528,12 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
 
   mostrarPantalla(pantallaJuego);
   programarPrecargaRecursosSecundarios();
+
+  if (pruebaEspecial) {
+    mensajePersonaje.textContent = "El bosque preparó una prueba especial para abrir el camino.";
+    abrirPruebaEspecialBosque(pruebaEspecial);
+    return Promise.resolve();
+  }
 
   if (portalFinalizado) {
     requestAnimationFrame(() => {
@@ -7509,6 +7609,269 @@ async function reanudarCinematicaFinalPortal() {
 
     finalizarSecuenciaNarrativa(secuenciaNarrativa);
   }
+}
+
+function obtenerPruebaEspecialBosquePendiente() {
+  if (escenarioActual !== 0 || desafiosCompletados !== 2) return "";
+  if (misionActual === 2) return "ramas";
+  if (misionActual === 5) return "lobos";
+  return "";
+}
+
+function abrirPruebaEspecialBosque(tipo) {
+  if (!tipo || pruebaEspecialBosqueActiva) return;
+
+  pruebaEspecialBosqueActiva = tipo;
+  focoPrevioPruebaBosque = document.activeElement;
+  modalPruebaBosque.classList.remove("oculto", "prueba-completada");
+  pantallaJuego.classList.add("prueba-bosque-activa");
+  puzzleRamasDeslizante.classList.toggle("oculto", tipo !== "ramas");
+  puzzleMemoriaLobos.classList.toggle("oculto", tipo !== "lobos");
+  btnRepetirPruebaBosque.disabled = false;
+  btnSalirPruebaBosque.disabled = false;
+
+  if (tipo === "ramas") {
+    etiquetaPruebaBosque.textContent = "PRUEBA DEL SENDERO";
+    tituloPruebaBosque.textContent = "Abrí un camino entre las ramas";
+    instruccionPruebaBosque.textContent =
+      "Armá las filas 1-2-3, 4-5-6 y 7-8-vacío. Tocá solamente una pieza iluminada para moverla al espacio que dice ACÁ.";
+    btnRepetirPruebaBosque.textContent = "↻ Reiniciar fácil";
+    iniciarPuzzleRamasDeslizante();
+    return;
+  }
+
+  etiquetaPruebaBosque.textContent = "PRUEBA DE LOS AULLIDOS";
+  tituloPruebaBosque.textContent = "Recordá el orden de las miradas";
+  instruccionPruebaBosque.textContent =
+    "Observá qué ojos brillan y después repetí la secuencia. Superá tres rondas para alejar a la manada.";
+  btnRepetirPruebaBosque.textContent = "👁 Volver a observar";
+  iniciarPuzzleMemoriaLobos();
+}
+
+function cerrarPruebaEspecialBosque() {
+  if (!pruebaEspecialBosqueActiva) return;
+
+  secuenciaPruebaBosque += 1;
+  memoriaLobosAceptandoEntrada = false;
+  botonesMemoriaLobos.forEach((boton) => {
+    boton.disabled = true;
+    boton.classList.remove("iluminado", "elegido", "error");
+  });
+  modalPruebaBosque.classList.add("oculto");
+  modalPruebaBosque.classList.remove("prueba-completada");
+  pantallaJuego.classList.remove("prueba-bosque-activa");
+  const focoAnterior = focoPrevioPruebaBosque;
+  focoPrevioPruebaBosque = null;
+  pruebaEspecialBosqueActiva = "";
+  pruebaBosqueEnModoDemo = false;
+  focoAnterior?.focus?.();
+}
+
+function iniciarPuzzleRamasDeslizante() {
+  if (pruebaEspecialBosqueActiva !== "ramas") return;
+
+  estadoTableroRamas = AdventurePuzzles.crearTableroMezclado(6);
+  movimientosPuzzleRamas = 0;
+  tableroRamasDeslizante.classList.remove("resuelto", "movimiento-invalido");
+  estadoPruebaBosque.textContent =
+    "Objetivo: 1-2-3 / 4-5-6 / 7-8-ACÁ. Las piezas iluminadas son las que podés tocar.";
+  renderizarPuzzleRamasDeslizante();
+  tableroRamasDeslizante.querySelector("button:not(:disabled)")?.focus();
+}
+
+function renderizarPuzzleRamasDeslizante() {
+  tableroRamasDeslizante.replaceChildren();
+  const movimientosValidos = AdventurePuzzles.obtenerMovimientosValidos(
+    estadoTableroRamas,
+  );
+
+  estadoTableroRamas.forEach((pieza, posicion) => {
+    if (pieza === null) {
+      const vacio = document.createElement("span");
+      vacio.className = "espacio-vacio-ramas";
+      vacio.setAttribute("role", "gridcell");
+      vacio.setAttribute("aria-label", "Espacio vacío");
+      tableroRamasDeslizante.appendChild(vacio);
+      return;
+    }
+
+    const boton = document.createElement("button");
+    const fila = Math.floor(pieza / 3);
+    const columna = pieza % 3;
+    boton.type = "button";
+    boton.className = "pieza-ramas-deslizante";
+    boton.dataset.numero = `${pieza + 1}`;
+    boton.style.backgroundPosition = `${columna * 50}% ${fila * 50}%`;
+    boton.disabled = !movimientosValidos.includes(posicion);
+    boton.setAttribute(
+      "aria-label",
+      `Pieza ${pieza + 1}${boton.disabled ? "" : ", se puede mover"}`,
+    );
+    boton.addEventListener("click", () => moverPiezaPuzzleRamas(posicion));
+    tableroRamasDeslizante.appendChild(boton);
+  });
+}
+
+function moverPiezaPuzzleRamas(posicion) {
+  if (pruebaEspecialBosqueActiva !== "ramas") return;
+
+  const resultado = AdventurePuzzles.moverPieza(estadoTableroRamas, posicion);
+  if (!resultado.movida) {
+    tableroRamasDeslizante.classList.remove("movimiento-invalido");
+    void tableroRamasDeslizante.offsetWidth;
+    tableroRamasDeslizante.classList.add("movimiento-invalido");
+    return;
+  }
+
+  estadoTableroRamas = resultado.estado;
+  movimientosPuzzleRamas += 1;
+  reproducirSonido("colocarPieza");
+  renderizarPuzzleRamasDeslizante();
+  estadoPruebaBosque.textContent = `${movimientosPuzzleRamas} ${
+    movimientosPuzzleRamas === 1 ? "movimiento" : "movimientos"
+  }. Tocá una pieza iluminada junto a ACÁ.`;
+
+  if (!AdventurePuzzles.estaOrdenado(estadoTableroRamas)) {
+    tableroRamasDeslizante.querySelector("button:not(:disabled)")?.focus();
+    return;
+  }
+
+  tableroRamasDeslizante.classList.add("resuelto");
+  estadoPruebaBosque.textContent = "¡El sendero está completo! Las ramas se están apartando.";
+  void completarPruebaEspecialBosque("ramas");
+}
+
+function iniciarPuzzleMemoriaLobos() {
+  if (pruebaEspecialBosqueActiva !== "lobos") return;
+
+  rondaMemoriaLobos = 0;
+  escenaMemoriaLobos.classList.remove("lobos-retirandose");
+  secuenciaMemoriaLobos = AdventurePuzzles.crearSecuenciaMemoria(3);
+  entradaMemoriaLobos = [];
+  estadoPruebaBosque.textContent = "Preparate: los ojos comenzarán a brillar en unos instantes.";
+  actualizarProgresoMemoriaLobos();
+  setTimeout(() => void mostrarSecuenciaMemoriaLobos(), 650);
+}
+
+function esperarPruebaBosque(duracion) {
+  return new Promise((resolve) => setTimeout(resolve, duracion));
+}
+
+async function mostrarSecuenciaMemoriaLobos() {
+  if (pruebaEspecialBosqueActiva !== "lobos") return;
+
+  const secuencia = ++secuenciaPruebaBosque;
+  memoriaLobosAceptandoEntrada = false;
+  entradaMemoriaLobos = [];
+  btnRepetirPruebaBosque.disabled = true;
+  botonesMemoriaLobos.forEach((boton) => {
+    boton.disabled = true;
+    boton.classList.remove("iluminado", "elegido", "error");
+  });
+  estadoPruebaBosque.textContent = `Ronda ${rondaMemoriaLobos + 1} de 3 · Observá con atención…`;
+
+  await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 250 : 500);
+  for (const indice of secuenciaMemoriaLobos) {
+    if (secuencia !== secuenciaPruebaBosque || pruebaEspecialBosqueActiva !== "lobos") return;
+    botonesMemoriaLobos[indice].classList.add("iluminado");
+    reproducirSonido("cristalCasilla");
+    await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 380 : 620);
+    botonesMemoriaLobos[indice].classList.remove("iluminado");
+    await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 130 : 250);
+  }
+
+  if (secuencia !== secuenciaPruebaBosque || pruebaEspecialBosqueActiva !== "lobos") return;
+  memoriaLobosAceptandoEntrada = true;
+  btnRepetirPruebaBosque.disabled = false;
+  botonesMemoriaLobos.forEach((boton) => (boton.disabled = false));
+  estadoPruebaBosque.textContent = "Ahora repetí la secuencia tocando los ojos.";
+  botonesMemoriaLobos[0]?.focus();
+}
+
+function elegirLoboMemoria(indice) {
+  if (pruebaEspecialBosqueActiva !== "lobos" || !memoriaLobosAceptandoEntrada) return;
+
+  const boton = botonesMemoriaLobos[indice];
+  boton.classList.add("elegido");
+  setTimeout(() => boton.classList.remove("elegido"), 280);
+  entradaMemoriaLobos.push(indice);
+  const posicion = entradaMemoriaLobos.length - 1;
+
+  if (secuenciaMemoriaLobos[posicion] !== indice) {
+    memoriaLobosAceptandoEntrada = false;
+    botonesMemoriaLobos.forEach((item) => {
+      item.disabled = true;
+      item.classList.add("error");
+    });
+    estadoPruebaBosque.textContent = "Casi. Los lobos se ocultaron; observá la misma secuencia otra vez.";
+    reproducirSonido("error");
+    setTimeout(() => void mostrarSecuenciaMemoriaLobos(), 950);
+    return;
+  }
+
+  reproducirSonido("acertar");
+  if (entradaMemoriaLobos.length < secuenciaMemoriaLobos.length) {
+    estadoPruebaBosque.textContent = `${entradaMemoriaLobos.length} de ${secuenciaMemoriaLobos.length} miradas recordadas.`;
+    return;
+  }
+
+  memoriaLobosAceptandoEntrada = false;
+  botonesMemoriaLobos.forEach((item) => (item.disabled = true));
+  rondaMemoriaLobos += 1;
+  actualizarProgresoMemoriaLobos();
+
+  if (rondaMemoriaLobos >= 3) {
+    estadoPruebaBosque.textContent = "¡Recordaste todas las miradas! La manada se aleja entre los árboles.";
+    escenaMemoriaLobos.classList.add("lobos-retirandose");
+    void completarPruebaEspecialBosque("lobos");
+    return;
+  }
+
+  let siguiente = AdventurePuzzles.crearSecuenciaMemoria(1)[0];
+  if (siguiente === secuenciaMemoriaLobos.at(-1)) siguiente = (siguiente + 1) % 4;
+  secuenciaMemoriaLobos.push(siguiente);
+  estadoPruebaBosque.textContent = `¡Ronda ${rondaMemoriaLobos} superada! La próxima secuencia será un poco más larga.`;
+  setTimeout(() => void mostrarSecuenciaMemoriaLobos(), 900);
+}
+
+function actualizarProgresoMemoriaLobos() {
+  [...progresoMemoriaLobos.children].forEach((marca, indice) => {
+    marca.classList.toggle("completada", indice < rondaMemoriaLobos);
+    marca.classList.toggle("actual", indice === rondaMemoriaLobos && rondaMemoriaLobos < 3);
+  });
+}
+
+async function completarPruebaEspecialBosque(tipo) {
+  if (pruebaEspecialBosqueActiva !== tipo) return;
+
+  pruebaEspecialBosqueActiva = "completando";
+  const secuencia = ++secuenciaPruebaBosque;
+  btnRepetirPruebaBosque.disabled = true;
+  btnSalirPruebaBosque.disabled = true;
+  tableroRamasDeslizante.querySelectorAll("button").forEach((boton) => (boton.disabled = true));
+  botonesMemoriaLobos.forEach((boton) => (boton.disabled = true));
+  modalPruebaBosque.classList.add("prueba-completada");
+  cambiarPersonaje("celebrando");
+  reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
+
+  await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 700 : 1500);
+  if (secuencia !== secuenciaPruebaBosque || pruebaEspecialBosqueActiva !== "completando") return;
+
+  if (pruebaBosqueEnModoDemo) {
+    cerrarPruebaEspecialBosque();
+    volverEstadoBaseExplorador();
+    return;
+  }
+
+  monedas += 10;
+  experiencia += 20;
+  actualizarJugador();
+  sonidoNarrativoPendiente = avanzarMision();
+  btnSiguiente.textContent = "➡️ Siguiente misión";
+  guardarProgreso();
+  cerrarPruebaEspecialBosque();
+  const mensajeCompleto = await mostrarMensajeDesafioSuperado();
+  if (mensajeCompleto) continuarAventura();
 }
 
 function mezclarPiezasMural(indices) {

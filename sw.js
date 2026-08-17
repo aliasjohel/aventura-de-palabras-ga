@@ -1,10 +1,11 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v95`;
+const CACHE_NAME = `${CACHE_PREFIX}v96`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
+  `${CACHE_PREFIX}v95`,
 ]);
-const LEGACY_REVISION = "legacy-v93-v94";
+const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
 const CORE_ASSETS = [
   "./",
@@ -18,6 +19,7 @@ const CORE_ASSETS = [
   "./js/versus-engine.js",
   "./js/versus-room.js",
   "./js/versus-room-supabase.js",
+  "./js/adventure-puzzles.js",
   "./js/app.js",
   "./js/pwa.js",
   "./assets/icons/icon-192.png",
@@ -28,6 +30,7 @@ const CORE_ASSETS = [
   "./assets/images/elementos/rama-frondosa-bosque-2.png",
   "./assets/images/elementos/rama-frondosa-bosque-3.png",
   "./assets/images/fondos/menu-inicio-aventura.png",
+  "./assets/images/fondos/bosque-6-lobos-v2.png",
   "./assets/icons/icon-maskable-512.png",
   "./assets/images/elements/cristal-sabiduria-esmeralda.png",
   "./assets/images/elements/mural-dragon-bosque.png",
@@ -144,10 +147,13 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260814-pwa-diferencial-1",
-  "./index.html": "20260814-pwa-diferencial-1",
-  "./css/styles.css": "20260814-mural-pantalla-completa-1",
-  "./js/app.js": "20260814-mural-pantalla-completa-1",
+  "./": "20260817-lobos-alineados-1",
+  "./index.html": "20260817-lobos-alineados-1",
+  "./css/styles.css": "20260817-lobos-alineados-1",
+  "./assets/images/fondos/bosque-6-lobos-v2.png": "20260817-lobos-alineados-1",
+  "./js/adventure-puzzles.js": "20260816-puzzles-bosque-1",
+  "./js/versus-engine.js": "20260817-versus-recuperacion-1",
+  "./js/app.js": "20260817-puzzle-ramas-facil-1",
   "./js/pwa.js": "20260814-pwa-diferencial-1",
 };
 

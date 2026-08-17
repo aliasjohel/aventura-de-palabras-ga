@@ -11237,3 +11237,45 @@ button:disabled {
   .cinematica-victima-portal-azrak.victima-final-dragon,.cinematica-victima-portal-azrak.victima-final-dragon_hielo{width:min(29vw,52vh);height:70%}
   .cinematica-azrak-victoria{width:min(32vw,62vh)}
 }
+
+/* Pruebas especiales de las misiones 3 y 6. */
+.modal-prueba-bosque{position:fixed;inset:0;z-index:2550;display:grid;place-items:center;padding:clamp(10px,2.4vw,26px);overflow:auto;background:radial-gradient(circle at 50% 40%,rgba(89,151,77,.24),transparent 43%),rgba(2,13,12,.95);backdrop-filter:blur(9px)}
+.modal-prueba-bosque.oculto,.puzzle-ramas-deslizante.oculto,.puzzle-memoria-lobos.oculto{display:none}
+.panel-prueba-bosque{width:min(820px,96vw);max-height:96vh;padding:clamp(14px,2.5vw,25px);overflow:auto;border:1px solid rgba(160,223,118,.52);border-radius:24px;color:#f0ffed;background:linear-gradient(145deg,rgba(18,54,35,.98),rgba(4,25,26,.99)),#071e19;box-shadow:0 0 0 4px rgba(57,104,57,.4),0 25px 80px rgba(0,0,0,.75),0 0 50px rgba(129,217,91,.13)}
+.cabecera-prueba-bosque{text-align:center}
+.etiqueta-prueba-bosque{color:#a8ed82;font-size:clamp(.65rem,1.5vw,.82rem);font-weight:900;letter-spacing:.18em}
+.cabecera-prueba-bosque h2{margin:4px 0;color:#f2d991;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.25rem,3.2vw,2rem);text-shadow:0 0 18px rgba(171,235,117,.2)}
+.cabecera-prueba-bosque p{max-width:680px;margin:0 auto 13px;color:#cfe5cf;font-size:clamp(.78rem,1.8vw,.98rem)}
+.tablero-ramas-deslizante{position:relative;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);width:min(100%,650px);aspect-ratio:3/2;margin-inline:auto;overflow:hidden;border:clamp(6px,1vw,10px) ridge #6c7443;border-radius:13px;background:#071f16;box-shadow:0 17px 38px rgba(0,0,0,.62),0 0 28px rgba(151,214,93,.15);isolation:isolate}
+.tablero-ramas-deslizante::after{content:"";position:absolute;inset:0;z-index:5;background:url("../assets/images/fondos/bosque-3-despejado.png") center/100% 100% no-repeat;opacity:0;pointer-events:none}
+.tablero-ramas-deslizante.resuelto::after{animation:revelarSenderoRamas 1.35s ease both}
+.pieza-ramas-deslizante{position:relative;min-width:0;min-height:0;padding:0;border:1px solid rgba(211,234,161,.28);border-radius:0;background-image:url("../assets/images/fondos/bosque-3.png");background-repeat:no-repeat;background-size:300% 300%;background-position:calc(var(--columna-pieza)*50%) calc(var(--fila-pieza)*50%);box-shadow:inset 0 0 14px rgba(0,0,0,.28);cursor:pointer;opacity:1;transition:filter 160ms ease,transform 160ms ease,box-shadow 160ms ease}
+.pieza-ramas-deslizante::after{content:attr(data-numero);position:absolute;top:7px;left:8px;display:grid;place-items:center;width:clamp(25px,4.3vw,38px);aspect-ratio:1;border:2px solid rgba(238,221,145,.78);border-radius:50%;color:#fff4bd;background:rgba(20,45,29,.78);font-family:Georgia,"Times New Roman",serif;font-size:clamp(.82rem,2vw,1.15rem);font-weight:900;text-shadow:0 1px 2px #000;box-shadow:0 2px 8px rgba(0,0,0,.55)}
+.pieza-ramas-deslizante:not(:disabled){z-index:2;outline:clamp(2px,.45vw,4px) solid #f4dc77;outline-offset:clamp(-5px,-.55vw,-3px);filter:brightness(1.14);box-shadow:inset 0 0 22px rgba(244,220,119,.38),0 0 14px rgba(244,220,119,.42)}
+.pieza-ramas-deslizante:not(:disabled):hover,.pieza-ramas-deslizante:not(:disabled):focus-visible{z-index:2;outline:3px solid #f4dc77;outline-offset:-4px;filter:brightness(1.22);transform:scale(.97);box-shadow:inset 0 0 20px rgba(244,220,119,.35),0 0 16px rgba(244,220,119,.55)}
+.pieza-ramas-deslizante:disabled{color:inherit;opacity:1;cursor:default;background-color:transparent;background-image:url("../assets/images/fondos/bosque-3.png")}
+.espacio-vacio-ramas{position:relative;background:radial-gradient(circle,rgba(200,231,118,.18),transparent 60%),repeating-linear-gradient(135deg,rgba(137,176,91,.08) 0 6px,transparent 6px 13px),#061712;box-shadow:inset 0 0 25px rgba(0,0,0,.78)}
+.espacio-vacio-ramas::after{content:"ACÁ";position:absolute;inset:0;display:grid;place-items:center;color:rgba(237,244,175,.72);font-size:clamp(.72rem,2.5vw,1.2rem);font-weight:900;letter-spacing:.08em;text-shadow:0 1px 3px #000}
+.escena-memoria-lobos{position:relative;width:min(100%,700px);aspect-ratio:3/2;margin-inline:auto;overflow:hidden;border:clamp(6px,1vw,10px) ridge #4e655a;border-radius:14px;background:url("../assets/images/fondos/bosque-6-lobos-v2.png") center/100% 100% no-repeat;box-shadow:0 17px 38px rgba(0,0,0,.68),0 0 30px rgba(122,179,224,.12)}
+.escena-memoria-lobos::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,7,13,.22) 100%)}
+.lobo-memoria{position:absolute;z-index:2;width:clamp(44px,7%,56px);aspect-ratio:2/1;padding:0;border:0;border-radius:50%;background:transparent;box-shadow:none;opacity:1;transform:translate(-50%,-50%);cursor:pointer}
+.lobo-memoria-1{left:23.65%;top:35.85%}.lobo-memoria-2{left:77.67%;top:36.2%}.lobo-memoria-3{left:38.3%;top:55.95%}.lobo-memoria-4{left:62.4%;top:56.35%}
+.lobo-memoria-3,.lobo-memoria-4{width:clamp(48px,8.5%,68px)}
+.lobo-memoria-3,.lobo-memoria-4{width:clamp(48px,8.5%,68px)}
+.lobo-memoria span::before,.lobo-memoria span::after{content:"";position:absolute;top:38%;width:14%;aspect-ratio:1.8/1;border-radius:50%;background:#ffd76b;opacity:0;box-shadow:none;transition:opacity 150ms ease,filter 150ms ease,box-shadow 150ms ease}
+.lobo-memoria span::before{left:25%;transform:rotate(5deg)}.lobo-memoria span::after{right:25%;transform:rotate(-5deg)}
+.lobo-memoria.iluminado span::before,.lobo-memoria.iluminado span::after,.lobo-memoria.elegido span::before,.lobo-memoria.elegido span::after{opacity:1;filter:brightness(1.8);box-shadow:0 0 6px #fff5a6,0 0 15px #ffc12c,0 0 30px rgba(255,151,24,.9)}
+.lobo-memoria:not(:disabled):focus-visible{outline:3px solid #f7e391;outline-offset:2px;background:rgba(245,222,122,.12)}
+.lobo-memoria:disabled{opacity:1;cursor:default;background:transparent}.lobo-memoria.error{animation:errorMiradaLobos 430ms ease both}.escena-memoria-lobos.lobos-retirandose .lobo-memoria{animation:retirarMiradasLobos 1.25s ease both}
+.progreso-memoria-lobos{display:flex;justify-content:center;gap:9px;margin-top:11px}.progreso-memoria-lobos span{width:clamp(34px,7vw,52px);height:8px;border-radius:999px;background:rgba(180,208,192,.18);box-shadow:inset 0 0 0 1px rgba(201,230,210,.2)}
+.progreso-memoria-lobos span.actual{background:#d5b85d;box-shadow:0 0 10px rgba(224,192,91,.55)}.progreso-memoria-lobos span.completada{background:#71d886;box-shadow:0 0 12px rgba(85,227,119,.7)}
+.estado-prueba-bosque{min-height:1.4em;margin:12px 0 8px;color:#e3f7dd;font-weight:750;text-align:center}.acciones-prueba-bosque{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.acciones-prueba-bosque button{min-width:165px;padding:9px 15px}
+#pantallaJuego.prueba-bosque-activa>:not(.modal-prueba-bosque){pointer-events:none}.modal-prueba-bosque.prueba-completada .panel-prueba-bosque{animation:pulsoPruebaBosque 1.4s ease both}.tablero-ramas-deslizante.movimiento-invalido{animation:errorTableroRamas 260ms ease}
+@keyframes revelarSenderoRamas{0%{opacity:0;filter:brightness(1.8);transform:scale(1.04)}42%,100%{opacity:1;filter:brightness(1);transform:scale(1)}}
+@keyframes errorTableroRamas{25%{transform:translateX(-5px)}70%{transform:translateX(5px)}}
+@keyframes errorMiradaLobos{30%{filter:saturate(0) brightness(2);transform:translate(-50%,-50%) scale(1.12)}}
+@keyframes retirarMiradasLobos{0%{opacity:1}100%{opacity:0;filter:blur(5px);transform:translate(-50%,-50%) scale(.55)}}
+@keyframes pulsoPruebaBosque{45%{box-shadow:0 0 0 5px rgba(174,239,111,.42),0 25px 80px rgba(0,0,0,.75),0 0 65px rgba(118,236,103,.45)}}
+@media (orientation:portrait) and (max-width:760px){.modal-prueba-bosque{place-items:stretch;padding:0;overflow:hidden}.panel-prueba-bosque{width:100%;min-height:100vh;min-height:100dvh;max-height:none;padding:max(12px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));border:0;border-radius:0;display:flex;flex-direction:column;justify-content:center}.tablero-ramas-deslizante,.escena-memoria-lobos{width:100%}}
+@media (orientation:landscape) and (max-height:760px){.modal-prueba-bosque{padding:5px}.panel-prueba-bosque{padding:8px 14px}.cabecera-prueba-bosque p{margin-bottom:6px}.tablero-ramas-deslizante,.escena-memoria-lobos{width:min(70vw,78vh,610px);max-height:none}.estado-prueba-bosque{margin-block:5px;font-size:.86rem}.acciones-prueba-bosque button{padding-block:6px}}
+@media (prefers-reduced-motion:reduce){.pieza-ramas-deslizante,.lobo-memoria span::before,.lobo-memoria span::after{transition:none}.tablero-ramas-deslizante.resuelto::after,.lobo-memoria.error,.escena-memoria-lobos.lobos-retirandose .lobo-memoria,.modal-prueba-bosque.prueba-completada .panel-prueba-bosque{animation-duration:1ms}}

@@ -23,7 +23,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260814-mural-pantalla-completa-1">
+    <link rel="stylesheet" href="css/styles.css?v=20260817-lobos-alineados-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -187,6 +187,7 @@
                 aria-label="Navegación temporal de misiones">
                 <button id="btnMisionAnterior" type="button">◀ Misión anterior</button>
                 <button id="btnMisionSiguiente" type="button">▶ Misión siguiente</button>
+                <button id="btnProbarPruebaBosque" type="button">🧩 Probar puzzle</button>
                 <button id="btnProbarMuralSantuario" type="button">🧩 Probar mural</button>
             </div>
 
@@ -212,6 +213,41 @@
                         <button id="btnAyudaMuralSantuario" type="button">✨ Mostrar guía</button>
                         <button id="btnRetirarPiezaMural" type="button" disabled>↩ Retirar pieza</button>
                         <button id="btnSalirMuralSantuario" class="secundario" type="button">Volver al menú</button>
+                    </div>
+                </section>
+            </div>
+
+            <div id="modalPruebaBosque" class="modal-prueba-bosque oculto" role="dialog" aria-modal="true"
+                aria-labelledby="tituloPruebaBosque" aria-describedby="instruccionPruebaBosque">
+                <section class="panel-prueba-bosque">
+                    <header class="cabecera-prueba-bosque">
+                        <span id="etiquetaPruebaBosque" class="etiqueta-prueba-bosque">PRUEBA DEL SENDERO</span>
+                        <h2 id="tituloPruebaBosque">Abrí un camino entre las ramas</h2>
+                        <p id="instruccionPruebaBosque">Armá las filas 1-2-3, 4-5-6 y 7-8-vacío. Tocá una pieza iluminada para moverla al espacio que dice ACÁ.</p>
+                    </header>
+
+                    <div id="puzzleRamasDeslizante" class="puzzle-ramas-deslizante">
+                        <div id="tableroRamasDeslizante" class="tablero-ramas-deslizante" role="grid"
+                            aria-label="Rompecabezas deslizante del sendero, con ocho piezas"></div>
+                    </div>
+
+                    <div id="puzzleMemoriaLobos" class="puzzle-memoria-lobos oculto">
+                        <div id="escenaMemoriaLobos" class="escena-memoria-lobos"
+                            aria-label="Cuatro lobos observando desde el bosque">
+                            <button type="button" class="lobo-memoria lobo-memoria-1" data-lobo="0" aria-label="Lobos de la izquierda"><span></span></button>
+                            <button type="button" class="lobo-memoria lobo-memoria-2" data-lobo="1" aria-label="Lobos de la derecha"><span></span></button>
+                            <button type="button" class="lobo-memoria lobo-memoria-3" data-lobo="2" aria-label="Lobos del centro, a la izquierda"><span></span></button>
+                            <button type="button" class="lobo-memoria lobo-memoria-4" data-lobo="3" aria-label="Lobos del centro, a la derecha"><span></span></button>
+                        </div>
+                        <div id="progresoMemoriaLobos" class="progreso-memoria-lobos" aria-label="Tres rondas de memoria">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+
+                    <p id="estadoPruebaBosque" class="estado-prueba-bosque" role="status" aria-live="polite"></p>
+                    <div class="acciones-prueba-bosque">
+                        <button id="btnRepetirPruebaBosque" type="button">↻ Mezclar de nuevo</button>
+                        <button id="btnSalirPruebaBosque" class="secundario" type="button">Volver al menú</button>
                     </div>
                 </section>
             </div>
@@ -1050,10 +1086,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="js/supabase-config.js?v=20260805-supabase-1"></script>
     <script src="js/supabase-client.js?v=20260805-supabase-1"></script>
-    <script src="js/versus-engine.js?v=20260808-habilidades-versus-2"></script>
+    <script src="js/versus-engine.js?v=20260817-versus-recuperacion-1"></script>
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
     <script src="js/versus-room-supabase.js?v=20260808-hombre-lobo-2"></script>
-    <script src="js/app.js?v=20260814-mural-pantalla-completa-1"></script>
+    <script src="js/adventure-puzzles.js?v=20260816-puzzles-bosque-1"></script>
+    <script src="js/app.js?v=20260817-puzzle-ramas-facil-1"></script>
     <script src="js/pwa.js?v=20260814-cache-diferencial-1"></script>
 </body>
 
