@@ -71,6 +71,7 @@
                     🆕 Nueva aventura
                 </button>
                 <button id="btnVersus" class="btn-versus-menu">⚔️ Multijugador</button>
+                <button id="btnTutorialVersus" class="btn-tutorial-versus-menu" type="button">❔ Cómo jugar multijugador</button>
                 <button disabled>Estadísticas</button>
                 <button id="btnConfiguracion" type="button">Configuración</button>
 
@@ -103,6 +104,67 @@
                     </label>
                     <p id="estadoVibracion" class="estado-vibracion" aria-live="polite"></p>
                     <button id="btnCerrarConfiguracion" type="button">Listo</button>
+                </div>
+            </div>
+
+            <div id="modalTutorialVersus" class="modal-tutorial-versus oculto" role="dialog" aria-modal="true"
+                aria-labelledby="tituloTutorialVersus">
+                <div class="panel-tutorial-versus">
+                    <header class="cabecera-tutorial-versus">
+                        <span id="progresoTutorialVersus">GUÍA DE COMBATE</span>
+                        <button id="btnCerrarTutorialVersus" type="button" aria-label="Cerrar tutorial">×</button>
+                    </header>
+
+                    <section id="bienvenidaTutorialVersus" class="bienvenida-tutorial-versus">
+                        <div class="insignia-tutorial-versus" aria-hidden="true">⚔️</div>
+                        <h2 id="tituloTutorialVersus">¿Es tu primera batalla?</h2>
+                        <p>Te enseñamos el duelo, los corazones y las habilidades en menos de dos minutos.</p>
+                        <div class="acciones-bienvenida-tutorial-versus">
+                            <button id="btnComenzarTutorialVersus" type="button">Jugar tutorial</button>
+                            <button id="btnOmitirTutorialVersus" type="button">Omitir por ahora</button>
+                        </div>
+                    </section>
+
+                    <section id="pasoTutorialVersus" class="paso-tutorial-versus oculto">
+                        <div id="escenaTutorialVersus" class="escena-tutorial-versus" data-paso="0">
+                            <div class="tutorial-rival">
+                                <span>RIVAL</span>
+                                <div id="corazonesRivalTutorialVersus" class="corazones-tutorial-versus">♥ ♥ ♥</div>
+                            </div>
+                            <div class="tutorial-jugador">
+                                <span>VOS</span>
+                                <div id="corazonesJugadorTutorialVersus" class="corazones-tutorial-versus">♥ ♥ ♥</div>
+                            </div>
+                            <div class="palabra-tutorial-versus">
+                                <small id="temaTutorialVersus">ANIMALES · PALABRA 1/5</small>
+                                <strong id="palabraTutorialVersus">G _ T O</strong>
+                                <div id="intentosTutorialVersus" class="intentos-tutorial-versus">◆ ◆ ◆ ◆ ◆ ◆</div>
+                            </div>
+                            <div id="tecladoTutorialVersus" class="teclado-tutorial-versus">
+                                <button type="button" data-accion="acierto">A</button>
+                                <button type="button" data-accion="error">X</button>
+                                <button type="button" data-accion="agotar">Agotar intentos</button>
+                            </div>
+                            <button id="btnCargaTutorialVersus" class="carga-tutorial-versus" type="button">
+                                <span>✨ Acertar 8 letras</span><i><b id="barraCargaTutorialVersus"></b></i>
+                            </button>
+                            <button id="btnHabilidadTutorialVersus" class="habilidad-tutorial-versus" type="button" disabled>
+                                🌿 Usar Enredo de raíces
+                            </button>
+                            <div id="impactoTutorialVersus" class="impacto-tutorial-versus" aria-hidden="true">
+                                <small>PANTALLA DEL RIVAL</small>
+                                <div class="mini-teclado-tutorial-versus"><i>Q</i><i>W</i><i>E</i><i>R</i><i>T</i></div>
+                                <strong>Teclado bloqueado 5 s</strong>
+                            </div>
+                        </div>
+                        <div class="texto-paso-tutorial-versus">
+                            <small id="numeroPasoTutorialVersus">PASO 1 DE 5</small>
+                            <h2 id="tituloPasoTutorialVersus">Completá la palabra</h2>
+                            <p id="descripcionPasoTutorialVersus">Elegí la A para completar GATO. Cada palabra terminada le quita un corazón al rival.</p>
+                            <p id="accionPasoTutorialVersus" class="accion-paso-tutorial-versus">Tocá la letra A para continuar.</p>
+                            <button id="btnSiguienteTutorialVersus" type="button" disabled>Siguiente</button>
+                        </div>
+                    </section>
                 </div>
             </div>
         </section>
@@ -707,6 +769,16 @@
                     </div>
                     <div class="impacto-habilidad-versus"></div>
                 </div>
+
+                <aside id="vistaImpactoRivalVersus" class="vista-impacto-rival-versus" role="status"
+                    aria-live="polite" aria-hidden="true">
+                    <div class="vista-impacto-rival-cabecera">
+                        <span>IMPACTO EN EL RIVAL</span>
+                        <strong id="nombreImpactoRivalVersus">Habilidad activada</strong>
+                    </div>
+                    <div id="miniTecladoRivalVersus" class="mini-teclado-rival-versus" aria-hidden="true"></div>
+                    <p id="detalleImpactoRivalVersus">El rival recibi&oacute; tu ataque.</p>
+                </aside>
 
                 <div id="congelacionNivorVersus" class="congelacion-nivor-versus" aria-hidden="true">
                     <b></b>

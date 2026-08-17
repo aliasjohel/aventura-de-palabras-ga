@@ -102,6 +102,16 @@ assert.match(estilos, /vueloHalconEspiritualGuardianaRivalVersus/);
 assert.match(estilos, /tarjeta-personaje-versus\[data-personaje="mago"\]/);
 assert.match(app, /function completarPalabrasAleatoriasVersus\(\)/);
 assert.match(app, /function activarHabilidadVersus\(\)/);
+assert.match(html, /id="modalTutorialVersus"[\s\S]+id="btnComenzarTutorialVersus"[\s\S]+id="impactoTutorialVersus"/);
+assert.match(html, /id="btnTutorialVersus"/);
+assert.match(app, /const claveTutorialVersusVisto = "tutorialVersusVistoAventuraGA"/);
+assert.match(app, /function comenzarTutorialVersus\(\)/);
+assert.match(app, /function renderizarPasoTutorialVersus\(\)/);
+assert.match(app, /Cada palabra terminada le quita un corazón al rival/);
+assert.match(app, /palabra aleatoria de la misma temática/);
+assert.match(app, /if \(!modoPruebasActivo && !tutorialVersusYaVisto\(\)\)/);
+assert.match(estilos, /\.modal-tutorial-versus/);
+assert.match(estilos, /\.impacto-tutorial-versus\.visible/);
 assert.match(app, /efecto === "roots"/);
 assert.match(app, /efecto === "roar"/);
 assert.match(app, /efecto === "shuffle"/);
@@ -151,6 +161,11 @@ assert.match(estilos, /victima-fauces-dragon[^}]+--direccion-victima-fauces: -1/
 assert.match(html, /CACER|Cacer/);
 assert.match(html, /enredaderas-teclado-versus\.png/);
 assert.match(app, /function reproducirAnimacionHabilidadVersus\(/);
+assert.match(html, /id="vistaImpactoRivalVersus"[\s\S]+id="miniTecladoRivalVersus"/);
+assert.match(app, /function mostrarVistaImpactoRivalVersus\(personaje, letraForzada = ""\)/);
+assert.match(app, /mostrarVistaImpactoRivalVersus\([\s\S]+evento\.letter \|\| ""/);
+assert.match(estilos, /\.vista-impacto-rival-versus\.visible/);
+assert.match(estilos, /\.mini-teclado-rival-versus\.efecto-forced_miss \.tecla-forzada/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeJugadorVersus/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeRivalVersus/);
 for (const habilidad of ["explorador", "mago", "guardiana", "dragon", "hombre_lobo", "t_shadow", "guardian_alba", "dragon_hielo"]) {

@@ -848,6 +848,265 @@ button:disabled {
     box-shadow: 0 5px 0 #3d230b;
 }
 
+.btn-tutorial-versus-menu {
+    border: 1px solid rgba(137, 210, 228, .4);
+    background: linear-gradient(180deg, #244b59, #142c37);
+    color: #dff9ff;
+}
+
+.modal-tutorial-versus {
+    position: fixed;
+    z-index: 140;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: clamp(8px, 2vw, 24px);
+    overflow: auto;
+    background: radial-gradient(circle at 50% 35%, rgba(54, 127, 119, .23), transparent 42%), rgba(0, 7, 12, .92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.modal-tutorial-versus.oculto { display: none; }
+
+.panel-tutorial-versus {
+    width: min(96vw, 920px);
+    max-height: 96dvh;
+    overflow: auto;
+    border: 1px solid rgba(231, 195, 111, .58);
+    border-radius: 22px;
+    background: linear-gradient(155deg, rgba(8, 31, 38, .99), rgba(3, 13, 22, .99));
+    color: #effcff;
+    box-shadow: 0 28px 80px rgba(0, 0, 0, .68), inset 0 1px rgba(255, 255, 255, .1);
+}
+
+.cabecera-tutorial-versus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(231, 195, 111, .25);
+    color: #e8c970;
+    font-size: .7rem;
+    font-weight: 900;
+    letter-spacing: .16em;
+}
+
+#btnCerrarTutorialVersus {
+    display: grid;
+    width: 34px;
+    aspect-ratio: 1;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .08);
+    color: #fff;
+    font-size: 1.35rem;
+}
+
+.bienvenida-tutorial-versus {
+    display: grid;
+    justify-items: center;
+    padding: clamp(26px, 6vw, 58px);
+    text-align: center;
+}
+
+.bienvenida-tutorial-versus.oculto,
+.paso-tutorial-versus.oculto { display: none; }
+
+.insignia-tutorial-versus {
+    display: grid;
+    width: 88px;
+    aspect-ratio: 1;
+    place-items: center;
+    margin-bottom: 15px;
+    border: 2px solid #e8c970;
+    border-radius: 50%;
+    background: radial-gradient(circle, #4a3514, #101b21 68%);
+    font-size: 2.4rem;
+    box-shadow: 0 0 28px rgba(232, 201, 112, .25);
+}
+
+.bienvenida-tutorial-versus h2 { margin: 0 0 10px; font-size: clamp(1.4rem, 4vw, 2.3rem); }
+.bienvenida-tutorial-versus p { max-width: 560px; margin: 0; color: rgba(229, 247, 250, .78); line-height: 1.5; }
+
+.acciones-bienvenida-tutorial-versus {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 26px;
+}
+
+.acciones-bienvenida-tutorial-versus button,
+#btnSiguienteTutorialVersus {
+    padding: 11px 18px;
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 10px;
+    background: linear-gradient(180deg, #b47a25, #704315);
+    color: #fff7dd;
+    font-weight: 900;
+}
+
+#btnOmitirTutorialVersus { background: #172b34; color: #cce7ec; }
+
+.paso-tutorial-versus {
+    display: grid;
+    grid-template-columns: minmax(0, 1.18fr) minmax(245px, .82fr);
+    min-height: 455px;
+}
+
+.escena-tutorial-versus {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto auto;
+    gap: 10px;
+    align-content: center;
+    padding: clamp(16px, 3vw, 30px);
+    overflow: hidden;
+    border-right: 1px solid rgba(231, 195, 111, .2);
+    background: radial-gradient(circle at 50% 25%, rgba(175, 123, 39, .17), transparent 28%), linear-gradient(rgba(2, 15, 22, .42), rgba(2, 15, 22, .88)), url("../assets/images/fondos/bosque-1.png") center / cover;
+}
+
+.tutorial-rival,
+.tutorial-jugador {
+    display: grid;
+    gap: 2px;
+    color: #d8edf1;
+    font-size: .62rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+}
+
+.tutorial-rival { text-align: right; }
+.corazones-tutorial-versus { color: #ff4e61; font-size: clamp(1rem, 2.2vw, 1.4rem); letter-spacing: .04em; }
+.corazones-tutorial-versus i { opacity: .18; font-style: normal; animation: perderCorazonTutorialVersus .55s ease both; }
+
+.palabra-tutorial-versus {
+    grid-column: 1 / -1;
+    display: grid;
+    justify-items: center;
+    align-self: center;
+    gap: 8px;
+    padding: 18px;
+    border: 2px solid #6ca8b2;
+    border-radius: 12px;
+    background: rgba(239, 222, 177, .95);
+    color: #253441;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .38);
+}
+
+.palabra-tutorial-versus small { color: #806329; font-weight: 900; letter-spacing: .08em; }
+.palabra-tutorial-versus strong { font-size: clamp(1.25rem, 3.4vw, 2.2rem); letter-spacing: .16em; }
+.intentos-tutorial-versus { color: #3188a2; letter-spacing: .13em; }
+
+.teclado-tutorial-versus {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.teclado-tutorial-versus button,
+.carga-tutorial-versus,
+.habilidad-tutorial-versus {
+    display: none;
+    padding: 10px 18px;
+    border: 1px solid #7c96a5;
+    border-radius: 8px;
+    background: linear-gradient(#405664, #1c2b34);
+    color: #effcff;
+    font-weight: 900;
+}
+
+.escena-tutorial-versus[data-paso="0"] .teclado-tutorial-versus [data-accion="acierto"],
+.escena-tutorial-versus[data-paso="1"] .teclado-tutorial-versus [data-accion="error"],
+.escena-tutorial-versus[data-paso="2"] .teclado-tutorial-versus [data-accion="agotar"] { display: block; }
+
+.teclado-tutorial-versus button.correcta { border-color: #aef39b; background: #267646; }
+.teclado-tutorial-versus button.incorrecta { border-color: #ff9999; background: #8d2e32; }
+
+.carga-tutorial-versus,
+.habilidad-tutorial-versus {
+    grid-column: 1 / -1;
+    width: min(100%, 300px);
+    justify-self: center;
+}
+
+.escena-tutorial-versus[data-paso="3"] .carga-tutorial-versus,
+.escena-tutorial-versus[data-paso="4"] .habilidad-tutorial-versus { display: grid; }
+.carga-tutorial-versus { gap: 7px; }
+.carga-tutorial-versus i { height: 7px; overflow: hidden; border-radius: 99px; background: #081015; }
+.carga-tutorial-versus b { display: block; width: 0; height: 100%; background: linear-gradient(90deg, #3ca4d4, #ffe066); transition: width .7s ease; }
+.carga-tutorial-versus.completa { border-color: #ffe066; box-shadow: 0 0 17px rgba(255, 224, 102, .45); }
+.habilidad-tutorial-versus:not(:disabled) { border-color: #b8f393; background: linear-gradient(#437427, #1f4618); animation: pulsoHabilidadVersus 1s ease-in-out infinite alternate; }
+
+.impacto-tutorial-versus {
+    position: absolute;
+    right: 6%;
+    bottom: 8%;
+    display: grid;
+    width: min(70%, 310px);
+    gap: 6px;
+    padding: 12px;
+    border: 2px solid #ffe066;
+    border-radius: 12px;
+    background: rgba(9, 20, 27, .97);
+    color: #fff2b1;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(110%);
+}
+
+.impacto-tutorial-versus.visible { animation: entrarImpactoTutorialVersus .55s ease-out forwards; }
+.impacto-tutorial-versus small { color: #e9bd45; font-weight: 900; letter-spacing: .12em; }
+.mini-teclado-tutorial-versus { position: relative; display: flex; justify-content: center; gap: 4px; padding: 10px; overflow: hidden; }
+.mini-teclado-tutorial-versus::after { content: ""; position: absolute; inset: 0; background: url("../assets/images/elementos/enredaderas-teclado-versus.png") center / 100% 100% no-repeat; }
+.mini-teclado-tutorial-versus i { padding: 5px 7px; border-radius: 4px; background: #344a57; color: #fff; font-size: .65rem; font-style: normal; }
+.impacto-tutorial-versus strong { font-size: .75rem; text-align: center; }
+
+.texto-paso-tutorial-versus {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(20px, 4vw, 38px);
+}
+
+.texto-paso-tutorial-versus > small { color: #e8c970; font-weight: 900; letter-spacing: .13em; }
+.texto-paso-tutorial-versus h2 { margin: 8px 0 12px; font-size: clamp(1.25rem, 2.6vw, 1.85rem); }
+.texto-paso-tutorial-versus > p { margin: 0; color: rgba(228, 246, 249, .78); line-height: 1.5; }
+.accion-paso-tutorial-versus { margin-top: 18px !important; padding: 11px; border-left: 3px solid #56b8d3; background: rgba(65, 168, 198, .1); color: #bcf0ff !important; font-weight: 800; }
+.accion-paso-tutorial-versus.completada { border-color: #6ed98d; color: #bff6cc !important; }
+#btnSiguienteTutorialVersus { align-self: flex-start; margin-top: 22px; }
+#btnSiguienteTutorialVersus:disabled { opacity: .4; filter: grayscale(1); }
+
+@keyframes perderCorazonTutorialVersus { to { transform: translateY(12px) scale(.4); opacity: 0; } }
+@keyframes entrarImpactoTutorialVersus { to { opacity: 1; transform: translateX(0); } }
+
+@media (max-width: 700px), (orientation: landscape) and (max-height: 540px) {
+    .paso-tutorial-versus { grid-template-columns: 1.15fr .85fr; min-height: 0; }
+    .escena-tutorial-versus { padding: 10px; }
+    .palabra-tutorial-versus { padding: 10px; gap: 4px; }
+    .texto-paso-tutorial-versus { padding: 14px; }
+    .texto-paso-tutorial-versus h2 { margin-block: 5px 8px; }
+    .accion-paso-tutorial-versus { margin-top: 8px !important; padding: 7px; }
+    #btnSiguienteTutorialVersus { margin-top: 10px; padding-block: 8px; }
+}
+
+@media (orientation: portrait) and (max-width: 600px) {
+    .modal-tutorial-versus { padding: 0; }
+    .panel-tutorial-versus { width: 100%; min-height: 100dvh; max-height: none; border: 0; border-radius: 0; }
+    .paso-tutorial-versus { grid-template-columns: 1fr; }
+    .escena-tutorial-versus { min-height: 52dvh; border-right: 0; border-bottom: 1px solid rgba(231, 195, 111, .2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .impacto-tutorial-versus.visible { animation-duration: 1ms; }
+    .corazones-tutorial-versus i { animation-duration: 1ms; }
+}
+
 /* Preparación local del primer modo versus. */
 .sr-only {
     position: absolute;
@@ -2868,6 +3127,137 @@ button:disabled {
     display: grid;
     gap: 4px;
 }
+
+.vista-impacto-rival-versus {
+    position: absolute;
+    z-index: 24;
+    right: clamp(10px, 2vw, 28px);
+    bottom: clamp(72px, 17vh, 150px);
+    width: min(37vw, 390px);
+    padding: clamp(8px, 1.4vw, 14px);
+    overflow: hidden;
+    border: 2px solid rgba(255, 222, 103, 0.82);
+    border-radius: 13px;
+    background: linear-gradient(145deg, rgba(14, 25, 35, 0.97), rgba(38, 27, 17, 0.96));
+    color: #fff7d0;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.68), 0 0 22px rgba(255, 201, 67, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(115%) scale(0.94);
+}
+
+.vista-impacto-rival-versus.visible {
+    animation: mostrarVistaImpactoRivalVersus 3s cubic-bezier(.18, .78, .2, 1) both;
+}
+
+.vista-impacto-rival-cabecera {
+    display: grid;
+    gap: 1px;
+    margin-bottom: 7px;
+}
+
+.vista-impacto-rival-cabecera span {
+    color: #f4bd45;
+    font-size: clamp(.48rem, .8vw, .62rem);
+    font-weight: 900;
+    letter-spacing: .14em;
+}
+
+.vista-impacto-rival-cabecera strong {
+    font-size: clamp(.72rem, 1.25vw, 1rem);
+}
+
+.vista-impacto-rival-versus p {
+    margin: 7px 0 0;
+    color: #f7e7b6;
+    font-size: clamp(.58rem, .95vw, .75rem);
+    font-weight: 700;
+    text-align: center;
+}
+
+.mini-teclado-rival-versus {
+    position: relative;
+    display: grid;
+    gap: 3px;
+    padding: 7px;
+    border: 1px solid rgba(148, 178, 198, .25);
+    border-radius: 8px;
+    background: rgba(3, 8, 12, .72);
+    transition: transform 280ms ease;
+}
+
+.fila-mini-teclado-rival-versus {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+}
+
+.fila-mini-teclado-rival-versus i {
+    display: grid;
+    width: clamp(13px, 2.25vw, 25px);
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1px solid #596c79;
+    border-radius: 4px;
+    background: linear-gradient(#34434d, #172129);
+    color: #eaf6ff;
+    font-size: clamp(.42rem, .74vw, .6rem);
+    font-style: normal;
+    font-weight: 900;
+    box-shadow: 0 2px 0 #05080a;
+}
+
+.mini-teclado-rival-versus.efecto-roots::after {
+    content: "";
+    position: absolute;
+    inset: -8% -2% -14%;
+    background: url("../assets/images/elementos/enredaderas-teclado-versus.png") center bottom / 100% 100% no-repeat;
+    filter: drop-shadow(0 3px 4px #041b08);
+    animation: crecerRaicesHabilidadVersus 620ms ease-out both;
+}
+
+.mini-teclado-rival-versus.efecto-roar { animation: temblorMiniTecladoRivalVersus 180ms linear infinite; }
+.mini-teclado-rival-versus.efecto-shuffle i { animation: caosMiniTecladoRivalVersus 720ms ease-in-out infinite alternate; }
+.mini-teclado-rival-versus.efecto-shuffle i:nth-child(2n) { animation-direction: alternate-reverse; }
+.mini-teclado-rival-versus.efecto-invert { transform: rotate(180deg); }
+.mini-teclado-rival-versus.efecto-black_hole i { animation: absorberMiniTecladoRivalVersus 1.2s ease-in-out infinite alternate; }
+.mini-teclado-rival-versus.efecto-key_bounce i { animation: rebotarMiniTeclaRivalVersus .7s ease-in-out infinite alternate; }
+.mini-teclado-rival-versus.efecto-key_bounce i:nth-child(3n) { animation-delay: .18s; }
+.mini-teclado-rival-versus.efecto-ice_screen { box-shadow: inset 0 0 25px #9aeaff; }
+.mini-teclado-rival-versus.efecto-ice_screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(210, 249, 255, .76), rgba(73, 180, 226, .24));
+    clip-path: polygon(0 0, 44% 0, 58% 31%, 100% 18%, 100% 100%, 39% 100%, 25% 67%, 0 82%);
+    animation: congelarMiniTecladoRivalVersus .7s ease-out both;
+}
+
+.mini-teclado-rival-versus.efecto-forced_miss .tecla-forzada {
+    border-color: #ffb347;
+    background: radial-gradient(circle, #fff5a5 5%, #e63a0b 55%, #4d0803);
+    box-shadow: 0 0 15px #ff4a12;
+    animation: pulsoTeclaForzadaRivalVersus .36s ease-in-out infinite alternate;
+}
+
+@keyframes mostrarVistaImpactoRivalVersus {
+    0% { opacity: 0; transform: translateX(115%) scale(.94); }
+    12%, 82% { opacity: 1; transform: translateX(0) scale(1); }
+    100% { opacity: 0; transform: translateX(20%) scale(.96); }
+}
+
+@keyframes temblorMiniTecladoRivalVersus {
+    0%, 100% { transform: translate(0); }
+    25% { transform: translate(-4px, 2px) rotate(-1deg); }
+    75% { transform: translate(4px, -2px) rotate(1deg); }
+}
+
+@keyframes caosMiniTecladoRivalVersus { to { transform: translate(3px, -3px) rotate(8deg); filter: hue-rotate(80deg); } }
+@keyframes absorberMiniTecladoRivalVersus { to { opacity: .2; transform: translateY(-5px) scale(.55) rotate(25deg); } }
+@keyframes rebotarMiniTeclaRivalVersus { to { opacity: .42; transform: translateY(-11px) rotate(18deg); } }
+@keyframes congelarMiniTecladoRivalVersus { from { opacity: 0; transform: scale(.2); } to { opacity: 1; transform: scale(1); } }
+@keyframes pulsoTeclaForzadaRivalVersus { to { transform: scale(1.28); filter: brightness(1.45); } }
 
 .btn-habilidad-versus {
     position: relative;

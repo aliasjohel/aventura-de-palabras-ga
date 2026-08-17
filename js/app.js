@@ -26,6 +26,30 @@ const marcoVersus = document.getElementById("marcoVersus");
 
 const btnJugar = document.getElementById("btnJugar");
 const btnVersus = document.getElementById("btnVersus");
+const btnTutorialVersus = document.getElementById("btnTutorialVersus");
+const modalTutorialVersus = document.getElementById("modalTutorialVersus");
+const bienvenidaTutorialVersus = document.getElementById("bienvenidaTutorialVersus");
+const pasoTutorialVersus = document.getElementById("pasoTutorialVersus");
+const progresoTutorialVersus = document.getElementById("progresoTutorialVersus");
+const btnCerrarTutorialVersus = document.getElementById("btnCerrarTutorialVersus");
+const btnComenzarTutorialVersus = document.getElementById("btnComenzarTutorialVersus");
+const btnOmitirTutorialVersus = document.getElementById("btnOmitirTutorialVersus");
+const escenaTutorialVersus = document.getElementById("escenaTutorialVersus");
+const numeroPasoTutorialVersus = document.getElementById("numeroPasoTutorialVersus");
+const tituloPasoTutorialVersus = document.getElementById("tituloPasoTutorialVersus");
+const descripcionPasoTutorialVersus = document.getElementById("descripcionPasoTutorialVersus");
+const accionPasoTutorialVersus = document.getElementById("accionPasoTutorialVersus");
+const btnSiguienteTutorialVersus = document.getElementById("btnSiguienteTutorialVersus");
+const palabraTutorialVersus = document.getElementById("palabraTutorialVersus");
+const temaTutorialVersus = document.getElementById("temaTutorialVersus");
+const intentosTutorialVersus = document.getElementById("intentosTutorialVersus");
+const corazonesRivalTutorialVersus = document.getElementById("corazonesRivalTutorialVersus");
+const corazonesJugadorTutorialVersus = document.getElementById("corazonesJugadorTutorialVersus");
+const tecladoTutorialVersus = document.getElementById("tecladoTutorialVersus");
+const btnCargaTutorialVersus = document.getElementById("btnCargaTutorialVersus");
+const barraCargaTutorialVersus = document.getElementById("barraCargaTutorialVersus");
+const btnHabilidadTutorialVersus = document.getElementById("btnHabilidadTutorialVersus");
+const impactoTutorialVersus = document.getElementById("impactoTutorialVersus");
 const btnConfiguracion = document.getElementById("btnConfiguracion");
 const modalConfiguracion = document.getElementById("modalConfiguracion");
 const btnCerrarConfiguracion = document.getElementById("btnCerrarConfiguracion");
@@ -99,6 +123,10 @@ const nombreHabilidadVersus = document.getElementById("nombreHabilidadVersus");
 const cargaHabilidadVersus = document.getElementById("cargaHabilidadVersus");
 const progresoHabilidadVersus = document.getElementById("progresoHabilidadVersus");
 const animacionHabilidadVersus = document.getElementById("animacionHabilidadVersus");
+const vistaImpactoRivalVersus = document.getElementById("vistaImpactoRivalVersus");
+const nombreImpactoRivalVersus = document.getElementById("nombreImpactoRivalVersus");
+const miniTecladoRivalVersus = document.getElementById("miniTecladoRivalVersus");
+const detalleImpactoRivalVersus = document.getElementById("detalleImpactoRivalVersus");
 const tituloVersus = document.getElementById("tituloVersus");
 const tituloProgresoUno = document.getElementById("tituloProgresoUno");
 const tituloProgresoDos = document.getElementById("tituloProgresoDos");
@@ -785,6 +813,9 @@ let cancelarSuscripcionPartidaVersus = null;
 let partidaOnlineVersus = null;
 let partidaOnlineIniciada = false;
 let ultimoEventoPartidaVersus = -1;
+let temporizadorVistaImpactoRivalVersus = null;
+let pasoActualTutorialVersus = 0;
+let accionPosteriorTutorialVersus = null;
 let desfaseServidorVersus = 0;
 let jugadaOnlineEnCurso = false;
 let salidaSalaVersusEnCurso = false;
@@ -1206,6 +1237,11 @@ function procesarEventoPartidaOnline(partida) {
         alImpactar: () => {
           if (evento.character === "explorador") {
             actualizarPistaLupaVersus(partida.me?.abilityHint || "");
+          } else {
+            mostrarVistaImpactoRivalVersus(
+              evento.character || personajeJugadorVersus,
+              evento.letter || "",
+            );
           }
         },
       });
@@ -1404,7 +1440,117 @@ function abrirSeleccionPersonajeVersus() {
   actualizarSeleccionPersonajeRemota(adaptadorSalasVersus.obtenerSala());
 }
 
-btnVersus.addEventListener("click", () => {
+const claveTutorialVersusVisto = "tutorialVersusVistoAventuraGA";
+const pasosTutorialVersus = [
+  {
+    titulo: "Completá la palabra",
+    descripcion: "Elegí la A para completar GATO. Cada palabra terminada le quita un corazón al rival.",
+    accion: "Tocá la letra A para continuar.",
+  },
+  {
+    titulo: "Cuidá tus intentos",
+    descripcion: "Una letra incorrecta consume un intento. El corazón se conserva mientras todavía queden intentos.",
+    accion: "Probá la letra X.",
+  },
+  {
+    titulo: "Perder una ronda suma otra palabra",
+    descripcion: "Al agotar los seis intentos perdés un corazón. La aventura agrega una palabra aleatoria de la misma temática para que el duelo continúe.",
+    accion: "Simulá que agotaste los intentos.",
+  },
+  {
+    titulo: "Cargá tu habilidad",
+    descripcion: "Cada letra correcta llena la barra. Al llegar a ocho letras, la habilidad queda lista para usar.",
+    accion: "Completá la barra de habilidad.",
+  },
+  {
+    titulo: "Atacá y mirá el resultado",
+    descripcion: "Al usar una habilidad verás una ventana con lo que está ocurriendo en la pantalla y el teclado del rival.",
+    accion: "Usá Enredo de raíces.",
+  },
+];
+
+function tutorialVersusYaVisto() {
+  try {
+    return localStorage.getItem(claveTutorialVersusVisto) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function guardarTutorialVersusVisto() {
+  try {
+    localStorage.setItem(claveTutorialVersusVisto, "1");
+  } catch {
+    // El tutorial sigue funcionando aunque el navegador no permita persistencia.
+  }
+}
+
+function completarAccionPasoTutorialVersus() {
+  btnSiguienteTutorialVersus.disabled = false;
+  accionPasoTutorialVersus.textContent = pasoActualTutorialVersus === pasosTutorialVersus.length - 1
+    ? "¡Listo! Ya conocés lo esencial del duelo."
+    : "¡Bien hecho! Podés continuar.";
+  accionPasoTutorialVersus.classList.add("completada");
+}
+
+function renderizarPasoTutorialVersus() {
+  const paso = pasosTutorialVersus[pasoActualTutorialVersus];
+  escenaTutorialVersus.dataset.paso = `${pasoActualTutorialVersus}`;
+  progresoTutorialVersus.textContent = `TUTORIAL · ${pasoActualTutorialVersus + 1}/${pasosTutorialVersus.length}`;
+  numeroPasoTutorialVersus.textContent = `PASO ${pasoActualTutorialVersus + 1} DE ${pasosTutorialVersus.length}`;
+  tituloPasoTutorialVersus.textContent = paso.titulo;
+  descripcionPasoTutorialVersus.textContent = paso.descripcion;
+  accionPasoTutorialVersus.textContent = paso.accion;
+  accionPasoTutorialVersus.classList.remove("completada");
+  btnSiguienteTutorialVersus.disabled = true;
+  btnSiguienteTutorialVersus.textContent = pasoActualTutorialVersus === pasosTutorialVersus.length - 1
+    ? "Terminar tutorial"
+    : "Siguiente";
+  palabraTutorialVersus.textContent = pasoActualTutorialVersus === 0 ? "G _ T O" : "_ _ _ _";
+  temaTutorialVersus.textContent = pasoActualTutorialVersus === 2
+    ? "ANIMALES · PALABRA EXTRA"
+    : "ANIMALES · PALABRA 1/5";
+  intentosTutorialVersus.textContent = "◆ ◆ ◆ ◆ ◆ ◆";
+  corazonesRivalTutorialVersus.textContent = "♥ ♥ ♥";
+  corazonesJugadorTutorialVersus.textContent = "♥ ♥ ♥";
+  barraCargaTutorialVersus.style.width = pasoActualTutorialVersus === 4 ? "100%" : "0%";
+  btnCargaTutorialVersus.classList.remove("completa");
+  btnHabilidadTutorialVersus.disabled = pasoActualTutorialVersus !== 4;
+  impactoTutorialVersus.classList.remove("visible");
+  tecladoTutorialVersus.querySelectorAll("button").forEach((boton) => {
+    boton.disabled = false;
+    boton.classList.remove("correcta", "incorrecta");
+  });
+}
+
+function comenzarTutorialVersus() {
+  pasoActualTutorialVersus = 0;
+  bienvenidaTutorialVersus.classList.add("oculto");
+  pasoTutorialVersus.classList.remove("oculto");
+  renderizarPasoTutorialVersus();
+}
+
+function abrirTutorialVersus({ mostrarBienvenida = false, alCerrar = null } = {}) {
+  accionPosteriorTutorialVersus = alCerrar;
+  modalTutorialVersus.classList.remove("oculto");
+  bienvenidaTutorialVersus.classList.toggle("oculto", !mostrarBienvenida);
+  pasoTutorialVersus.classList.toggle("oculto", mostrarBienvenida);
+  progresoTutorialVersus.textContent = mostrarBienvenida ? "GUÍA DE COMBATE" : "TUTORIAL · 1/5";
+  if (!mostrarBienvenida) comenzarTutorialVersus();
+  (mostrarBienvenida ? btnComenzarTutorialVersus : tecladoTutorialVersus.querySelector("button"))?.focus();
+}
+
+function cerrarTutorialVersus({ recordar = false } = {}) {
+  if (recordar) guardarTutorialVersusVisto();
+  modalTutorialVersus.classList.add("oculto");
+  impactoTutorialVersus.classList.remove("visible");
+  const continuar = accionPosteriorTutorialVersus;
+  accionPosteriorTutorialVersus = null;
+  if (continuar) continuar();
+  else btnTutorialVersus.focus();
+}
+
+function entrarAlModoVersus() {
   reproducirSonidoComenzarAventura();
   cancelarSecuenciaNarrativaActual();
   detenerSonidos();
@@ -1413,6 +1559,66 @@ btnVersus.addEventListener("click", () => {
     return;
   }
   abrirSalaVersus();
+}
+
+btnVersus.addEventListener("click", () => {
+  if (!modoPruebasActivo && !tutorialVersusYaVisto()) {
+    abrirTutorialVersus({ mostrarBienvenida: true, alCerrar: entrarAlModoVersus });
+    return;
+  }
+  entrarAlModoVersus();
+});
+
+btnTutorialVersus.addEventListener("click", () => abrirTutorialVersus());
+btnComenzarTutorialVersus.addEventListener("click", comenzarTutorialVersus);
+btnOmitirTutorialVersus.addEventListener("click", () => cerrarTutorialVersus({ recordar: true }));
+btnCerrarTutorialVersus.addEventListener("click", () => cerrarTutorialVersus({ recordar: true }));
+
+tecladoTutorialVersus.addEventListener("click", (evento) => {
+  const boton = evento.target.closest("button");
+  if (!boton || boton.disabled) return;
+  if (pasoActualTutorialVersus === 0 && boton.dataset.accion === "acierto") {
+    boton.classList.add("correcta");
+    boton.disabled = true;
+    palabraTutorialVersus.textContent = "G A T O";
+    corazonesRivalTutorialVersus.innerHTML = "♥ ♥ <i>♥</i>";
+    completarAccionPasoTutorialVersus();
+  } else if (pasoActualTutorialVersus === 1 && boton.dataset.accion === "error") {
+    boton.classList.add("incorrecta");
+    boton.disabled = true;
+    intentosTutorialVersus.textContent = "◆ ◆ ◆ ◆ ◆ ◇";
+    completarAccionPasoTutorialVersus();
+  } else if (pasoActualTutorialVersus === 2 && boton.dataset.accion === "agotar") {
+    boton.disabled = true;
+    intentosTutorialVersus.textContent = "◇ ◇ ◇ ◇ ◇ ◇";
+    corazonesJugadorTutorialVersus.innerHTML = "♥ ♥ <i>♥</i>";
+    palabraTutorialVersus.textContent = "_ _ _ _ _";
+    completarAccionPasoTutorialVersus();
+  }
+});
+
+btnCargaTutorialVersus.addEventListener("click", () => {
+  if (pasoActualTutorialVersus !== 3) return;
+  barraCargaTutorialVersus.style.width = "100%";
+  btnCargaTutorialVersus.classList.add("completa");
+  completarAccionPasoTutorialVersus();
+});
+
+btnHabilidadTutorialVersus.addEventListener("click", () => {
+  if (pasoActualTutorialVersus !== 4) return;
+  btnHabilidadTutorialVersus.disabled = true;
+  impactoTutorialVersus.classList.add("visible");
+  completarAccionPasoTutorialVersus();
+});
+
+btnSiguienteTutorialVersus.addEventListener("click", () => {
+  if (btnSiguienteTutorialVersus.disabled) return;
+  if (pasoActualTutorialVersus >= pasosTutorialVersus.length - 1) {
+    cerrarTutorialVersus({ recordar: true });
+    return;
+  }
+  pasoActualTutorialVersus += 1;
+  renderizarPasoTutorialVersus();
 });
 
 function iniciarPruebaVersusLocal() {
@@ -2235,6 +2441,61 @@ function crearTecladoVersus() {
   tecladoVersus.appendChild(vorticeInterior);
 }
 
+function crearMiniTecladoRivalVersus() {
+  if (miniTecladoRivalVersus.children.length > 0) return;
+  filasTeclado.forEach((fila) => {
+    const filaMiniatura = document.createElement("div");
+    filaMiniatura.className = "fila-mini-teclado-rival-versus";
+    fila.forEach((letra) => {
+      const tecla = document.createElement("i");
+      tecla.textContent = letra;
+      tecla.dataset.letra = letra;
+      filaMiniatura.appendChild(tecla);
+    });
+    miniTecladoRivalVersus.appendChild(filaMiniatura);
+  });
+}
+
+function ocultarVistaImpactoRivalVersus() {
+  if (temporizadorVistaImpactoRivalVersus) clearTimeout(temporizadorVistaImpactoRivalVersus);
+  temporizadorVistaImpactoRivalVersus = null;
+  vistaImpactoRivalVersus.classList.remove("visible");
+  vistaImpactoRivalVersus.setAttribute("aria-hidden", "true");
+}
+
+function mostrarVistaImpactoRivalVersus(personaje, letraForzada = "") {
+  const habilidad = habilidadesVersus[personaje] || habilidadesVersus.explorador;
+  if (habilidad.efecto === "hint") return;
+  crearMiniTecladoRivalVersus();
+  ocultarVistaImpactoRivalVersus();
+
+  const detallesPorEfecto = {
+    roots: "Teclado bloqueado durante 5 segundos.",
+    roar: "El teclado rival tiembla durante 5 segundos.",
+    shuffle: "Las teclas cambian de lugar durante 5 segundos.",
+    invert: "La pantalla rival queda invertida durante 5 segundos.",
+    black_hole: "El teclado queda atrapado durante 5 segundos.",
+    key_bounce: "Las teclas salen despedidas durante 5 segundos.",
+    ice_screen: "La pantalla rival queda congelada durante 5 segundos.",
+    forced_miss: letraForzada
+      ? `La calavera pulsó la ${letraForzada}: error forzado.`
+      : "La calavera obligó al rival a cometer un error.",
+  };
+  nombreImpactoRivalVersus.textContent = `${habilidad.icono} ${habilidad.nombre}`;
+  detalleImpactoRivalVersus.textContent = detallesPorEfecto[habilidad.efecto]
+    || "El rival recibió tu ataque.";
+  miniTecladoRivalVersus.className = `mini-teclado-rival-versus efecto-${habilidad.efecto}`;
+  miniTecladoRivalVersus.querySelectorAll("i").forEach((tecla) => {
+    tecla.classList.toggle("tecla-forzada", Boolean(letraForzada) && tecla.dataset.letra === letraForzada);
+  });
+  vistaImpactoRivalVersus.classList.add("visible");
+  vistaImpactoRivalVersus.setAttribute("aria-hidden", "false");
+  temporizadorVistaImpactoRivalVersus = setTimeout(
+    ocultarVistaImpactoRivalVersus,
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1800 : 3000,
+  );
+}
+
 function animarCambioOrdenTecladoVersus(reordenar) {
   const botones = [...tecladoVersus.querySelectorAll("button")];
   const posicionesIniciales = new Map(
@@ -2589,7 +2850,7 @@ function animarTeclaCalaveraIgneaVersus(letra, recibida = false) {
 function aplicarFalloForzadoRivalLocalVersus() {
   const palabra = obtenerPalabraActualRivalVersus();
   const letra = obtenerLetraIncorrectaDisponibleVersus(palabra, demoVersus.letrasRival);
-  if (!letra) return;
+  if (!letra) return "";
   const turno = VersusEngine.evaluarLetra({
     palabra,
     letras: [...demoVersus.letrasRival],
@@ -2602,6 +2863,7 @@ function aplicarFalloForzadoRivalLocalVersus() {
   mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), `Azrak forzó la ${letra}`, "error");
   actualizarProgresosVersus();
   if (turno.sinIntentos) avanzarPalabraRivalVersus(false);
+  return letra;
 }
 
 function aplicarFalloForzadoJugadorLocalVersus() {
@@ -2662,7 +2924,8 @@ function activarHabilidadLocalVersus() {
   } else if (habilidad.efecto === "forced_miss") {
     reproducirAnimacionHabilidadVersus(personajeJugadorVersus, {
       alImpactar: () => {
-        aplicarFalloForzadoRivalLocalVersus();
+        const letraForzada = aplicarFalloForzadoRivalLocalVersus();
+        mostrarVistaImpactoRivalVersus(personajeJugadorVersus, letraForzada);
         mostrarAvisoAvanceVersus("¡Calavera Ígnea obligó al rival a fallar!", "acierto");
       },
     });
@@ -2671,6 +2934,7 @@ function activarHabilidadLocalVersus() {
       alImpactar: () => {
         demoVersus.efectoRival = habilidad.efecto;
         demoVersus.efectoRivalHasta = Date.now() + habilidad.duracion;
+        mostrarVistaImpactoRivalVersus(personajeJugadorVersus);
         mostrarAvisoAvanceVersus(`¡${habilidad.nombre} afectó al rival!`, "acierto");
       },
     });
@@ -5022,9 +5286,13 @@ function probarHabilidadEspecialVersus(personaje) {
         if (desdeRival) {
           animarTeclaCalaveraIgneaVersus(letra, true);
           vibrarImpactoVersus();
+        } else {
+          mostrarVistaImpactoRivalVersus(personaje, letra);
         }
       } else if (desdeRival) {
         aplicarEfectoVisualHabilidadVersus(habilidad.efecto, habilidad.duracion);
+      } else {
+        mostrarVistaImpactoRivalVersus(personaje);
       }
       mostrarAvisoAvanceVersus(
         `${habilidad.nombre} · ${desdeRival ? "vista del rival" : "vista del jugador"}`,
