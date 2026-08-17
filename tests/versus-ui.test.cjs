@@ -179,6 +179,9 @@ assert.match(html, /id="vistaImpactoRivalVersus"[\s\S]+id="miniTecladoRivalVersu
 assert.match(app, /function mostrarVistaImpactoRivalVersus\(personaje, letraForzada = ""\)/);
 assert.match(app, /mostrarVistaImpactoRivalVersus\([\s\S]+evento\.letter \|\| ""/);
 assert.match(estilos, /\.vista-impacto-rival-versus\.visible/);
+assert.match(estilos, /\.vista-impacto-rival-versus \{[\s\S]+top: clamp\(70px, 18vh, 150px\);[\s\S]+bottom: auto/);
+assert.match(estilos, /\.mini-teclado-rival-versus\.efecto-black_hole::before/);
+assert.match(estilos, /vivirAgujeroMiniRivalVersus/);
 assert.match(estilos, /\.mini-teclado-rival-versus\.efecto-forced_miss \.tecla-forzada/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeJugadorVersus/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeRivalVersus/);
@@ -319,6 +322,7 @@ assert.match(app, /`entrada-rival-\$\{personajeRivalVersus\}`/);
 assert.match(estilos, /@keyframes columnaInfernalAzrak/);
 assert.match(estilos, /@keyframes grietaInfernalAzrak/);
 assert.match(estilos, /entradaAzrakJugador[^}]+translateY\(72vh\)/);
+assert.match(estilos, /\.versus-personaje-dos\.personaje-azrak \{[\s\S]+right:5%/);
 assert.match(estilos, /entrada-infernal-azrak \{[^}]+height:30%/);
 assert.match(estilos, /entrada-infernal-azrak i \{[^}]+height:29%/);
 assert.match(app, /for \(let indice = 1; indice <= 12; indice\+\+\)/);

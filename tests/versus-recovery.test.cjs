@@ -11,7 +11,7 @@ const migracion = fs.readFileSync(
     raiz,
     "supabase",
     "migrations",
-    "20260817010000_versus_rematch_and_recovery_words.sql",
+    "20260817175049_versus_rematch_and_recovery_words.sql",
   ),
   "utf8",
 );

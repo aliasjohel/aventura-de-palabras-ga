@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v99`;
+const CACHE_NAME = `${CACHE_PREFIX}v100`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -7,6 +7,7 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v96`,
   `${CACHE_PREFIX}v97`,
   `${CACHE_PREFIX}v98`,
+  `${CACHE_PREFIX}v99`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -150,9 +151,9 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260817-amigos-cuentas-1",
-  "./index.html": "20260817-amigos-cuentas-1",
-  "./css/styles.css": "20260817-amigos-cuentas-1",
+  "./": "20260817-versus-revancha-1",
+  "./index.html": "20260817-versus-revancha-1",
+  "./css/styles.css": "20260817-versus-revancha-1",
   "./assets/images/fondos/bosque-6-lobos-v2.png": "20260817-lobos-alineados-1",
   "./js/adventure-puzzles.js": "20260816-puzzles-bosque-1",
   "./js/versus-engine.js": "20260817-versus-recuperacion-1",

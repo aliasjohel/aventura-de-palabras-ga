@@ -3371,7 +3371,8 @@ button:disabled {
     position: absolute;
     z-index: 24;
     right: clamp(10px, 2vw, 28px);
-    bottom: clamp(72px, 17vh, 150px);
+    top: clamp(70px, 18vh, 150px);
+    bottom: auto;
     width: min(37vw, 390px);
     padding: clamp(8px, 1.4vw, 14px);
     overflow: hidden;
@@ -3419,6 +3420,7 @@ button:disabled {
     display: grid;
     gap: 3px;
     padding: 7px;
+    overflow: hidden;
     border: 1px solid rgba(148, 178, 198, .25);
     border-radius: 8px;
     background: rgba(3, 8, 12, .72);
@@ -3459,7 +3461,26 @@ button:disabled {
 .mini-teclado-rival-versus.efecto-shuffle i { animation: caosMiniTecladoRivalVersus 720ms ease-in-out infinite alternate; }
 .mini-teclado-rival-versus.efecto-shuffle i:nth-child(2n) { animation-direction: alternate-reverse; }
 .mini-teclado-rival-versus.efecto-invert { transform: rotate(180deg); }
-.mini-teclado-rival-versus.efecto-black_hole i { animation: absorberMiniTecladoRivalVersus 1.2s ease-in-out infinite alternate; }
+.mini-teclado-rival-versus.efecto-black_hole::before {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    top: 50%;
+    width: clamp(45px, 8vw, 92px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, #000 0 27%, #180227 31%, #7421b7 42%, #d18aff 48%, transparent 64%),
+        repeating-conic-gradient(from 20deg, rgba(226, 175, 255, .88) 0 7deg, transparent 8deg 24deg);
+    box-shadow: 0 0 15px #8b2bd2, 0 0 34px rgba(98, 22, 161, .9);
+    animation: vivirAgujeroMiniRivalVersus 1.2s ease-in-out infinite alternate;
+}
+.mini-teclado-rival-versus.efecto-black_hole i {
+    position: relative;
+    z-index: 4;
+    animation: absorberMiniTecladoRivalVersus 1.2s ease-in-out infinite alternate;
+}
 .mini-teclado-rival-versus.efecto-key_bounce i { animation: rebotarMiniTeclaRivalVersus .7s ease-in-out infinite alternate; }
 .mini-teclado-rival-versus.efecto-key_bounce i:nth-child(3n) { animation-delay: .18s; }
 .mini-teclado-rival-versus.efecto-ice_screen { box-shadow: inset 0 0 25px #9aeaff; }
@@ -3480,6 +3501,20 @@ button:disabled {
     animation: pulsoTeclaForzadaRivalVersus .36s ease-in-out infinite alternate;
 }
 
+.mini-teclado-rival-versus.efecto-forced_miss::before {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    top: 50%;
+    width: clamp(48px, 8vw, 86px);
+    aspect-ratio: 1;
+    background: url("../assets/images/personajes/versus/calavera-ignea-azrak.png") center / contain no-repeat;
+    filter: drop-shadow(0 0 9px #ff4a12);
+    transform: translate(-50%, -50%);
+    animation: calaveraMiniRivalVersus .78s ease-out both;
+}
+
 @keyframes mostrarVistaImpactoRivalVersus {
     0% { opacity: 0; transform: translateX(115%) scale(.94); }
     12%, 82% { opacity: 1; transform: translateX(0) scale(1); }
@@ -3494,9 +3529,31 @@ button:disabled {
 
 @keyframes caosMiniTecladoRivalVersus { to { transform: translate(3px, -3px) rotate(8deg); filter: hue-rotate(80deg); } }
 @keyframes absorberMiniTecladoRivalVersus { to { opacity: .2; transform: translateY(-5px) scale(.55) rotate(25deg); } }
+@keyframes vivirAgujeroMiniRivalVersus {
+    from { transform: translate(-50%, -50%) scale(.35) rotate(0); opacity: .7; }
+    to { transform: translate(-50%, -50%) scale(1.08) rotate(180deg); opacity: 1; }
+}
+@keyframes calaveraMiniRivalVersus {
+    0% { opacity: 0; transform: translate(-120%, -85%) scale(.2) rotate(-22deg); }
+    55%, 82% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(25%, 5%) scale(1.35) rotate(12deg); }
+}
 @keyframes rebotarMiniTeclaRivalVersus { to { opacity: .42; transform: translateY(-11px) rotate(18deg); } }
 @keyframes congelarMiniTecladoRivalVersus { from { opacity: 0; transform: scale(.2); } to { opacity: 1; transform: scale(1); } }
 @keyframes pulsoTeclaForzadaRivalVersus { to { transform: scale(1.28); filter: brightness(1.45); } }
+
+@media (orientation: landscape) and (max-height: 600px) {
+    .vista-impacto-rival-versus {
+        top: clamp(48px, 15vh, 82px);
+        width: min(35vw, 310px);
+        padding: 7px 9px;
+    }
+
+    .vista-impacto-rival-cabecera { margin-bottom: 4px; }
+    .vista-impacto-rival-versus p { margin-top: 4px; font-size: .57rem; }
+    .mini-teclado-rival-versus { gap: 2px; padding: 5px; }
+    .fila-mini-teclado-rival-versus { gap: 2px; }
+}
 
 .btn-habilidad-versus {
     position: relative;
@@ -11760,7 +11817,11 @@ button:disabled {
   width:min(24vw,315px);
   filter:drop-shadow(0 0 16px rgba(255,68,13,.66));
 }
-.versus-personaje-dos.personaje-azrak { transform:scaleX(-1);animation-name:respirarPersonajeDosInvertidoVersus; }
+.versus-personaje-dos.personaje-azrak {
+  right:5%;
+  transform:scaleX(-1);
+  animation-name:respirarPersonajeDosInvertidoVersus;
+}
 .versus-personaje-uno.entrando-duelo.entrada-azrak { animation:entradaAzrakJugador 2.25s cubic-bezier(.14,.82,.2,1) both; }
 .versus-personaje-dos.entrando-duelo.entrada-azrak-rival { animation:entradaAzrakRival 2.25s cubic-bezier(.14,.82,.2,1) both; }
 @keyframes entradaAzrakJugador {
@@ -11858,6 +11919,7 @@ button:disabled {
 
 @media (orientation:landscape) and (max-height:600px) {
   .versus-personaje-uno.personaje-azrak,.versus-personaje-dos.personaje-azrak{width:min(23vw,45vh);bottom:17%}
+  .versus-personaje-dos.personaje-azrak{right:7%}
   .corte-infernal-versus{top:29%;width:min(17vw,30vh)}
   .habilidad-azrak-versus img{top:18%;width:min(22vw,38vh)}
   .cinematica-azrak-invocacion{width:min(37vw,70vh)}
