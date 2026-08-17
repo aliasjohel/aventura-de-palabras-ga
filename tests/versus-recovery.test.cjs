@@ -22,7 +22,8 @@ assert.match(app, /if \(demoVersus\.vidasJugador > 0\) agregarPalabraRecuperacio
 assert.match(app, /if \(demoVersus\.vidasRival > 0\) agregarPalabraRecuperacionVersus\("rival"\)/);
 assert.match(app, /demoVersus\.palabrasCompletadasJugador >= maximoPalabrasVersus/);
 assert.match(app, /demoVersus\.palabrasCompletadasRival >= maximoPalabrasVersus/);
-assert.match(app, /partida\.me\?\.lastFailedWord \|\| palabraEvento/);
+assert.match(app, /const palabraPerdida = ganador === "rival" \? palabraEvento : ""/);
+assert.doesNotMatch(app, /partida\.me\?\.lastFailedWord \|\| palabraEvento/);
 assert.match(app, /VersusEngine\.obtenerEtiquetaRonda\(propio\.wordIndex\)/);
 assert.match(html, /js\/versus-engine\.js\?v=20260817-versus-recuperacion-1/);
 assert.match(serviceWorker, /"\.\/js\/versus-engine\.js": "20260817-versus-recuperacion-1"/);

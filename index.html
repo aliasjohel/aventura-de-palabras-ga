@@ -71,6 +71,7 @@
                     🆕 Nueva aventura
                 </button>
                 <button id="btnVersus" class="btn-versus-menu">⚔️ Multijugador</button>
+                <button id="btnArcade" class="btn-arcade-menu" type="button">🏰 Modo Arcade</button>
                 <button id="btnTutorialVersus" class="btn-tutorial-versus-menu" type="button">❔ Cómo jugar multijugador</button>
                 <button disabled>Estadísticas</button>
                 <button id="btnConfiguracion" type="button">Configuración</button>
@@ -166,6 +167,44 @@
                         </div>
                     </section>
                 </div>
+            </div>
+        </section>
+
+        <section id="pantallaArcade" class="pantalla pantalla-arcade" aria-labelledby="tituloArcade">
+            <div class="arcade-marco">
+                <button id="btnSalirArcade" class="versus-volver" type="button">← Volver al menú</button>
+
+                <header class="arcade-cabecera">
+                    <p>TORRE DE LOS CAMPEONES</p>
+                    <h2 id="tituloArcade">Modo Arcade</h2>
+                    <span id="estadoArcade">Venc&eacute; a todos los rivales y alcanzá la cima.</span>
+                </header>
+
+                <div class="arcade-contenido">
+                    <ol id="pisosArcade" class="pisos-arcade" aria-label="Pisos de la torre"></ol>
+
+                    <article class="rival-actual-arcade">
+                        <span id="etiquetaPisoArcade">PISO 1 DE 8</span>
+                        <div class="retrato-rival-arcade">
+                            <img id="imagenRivalArcade" src="assets/images/personajes/versus/mago-base.png"
+                                alt="Rival del primer piso">
+                        </div>
+                        <h3 id="nombreRivalArcade">Mago</h3>
+                        <p id="habilidadRivalArcade">Habilidad: Caos arcano</p>
+                        <div class="dificultad-arcade">
+                            <small>DIFICULTAD</small>
+                            <strong id="dificultadArcade">APRENDIZ</strong>
+                        </div>
+                        <button id="btnCombatirArcade" type="button">Entrar al combate</button>
+                    </article>
+                </div>
+            </div>
+
+            <div class="versus-aviso-orientacion" role="status">
+                <span>↻</span>
+                <strong>Girá el celular</strong>
+                <p>El modo arcade se juega en horizontal.</p>
+                <button id="btnSalirArcadeVertical" type="button">Volver al menú</button>
             </div>
         </section>
 
@@ -417,9 +456,9 @@
                 <button id="btnSalirSeleccionPersonajeVersus" class="versus-volver" type="button">&larr; Volver</button>
 
                 <header class="seleccion-personaje-cabecera">
-                    <p>ELIGE A TU CAMPE&Oacute;N</p>
+                    <p id="etiquetaSeleccionPersonajeVersus">ELIGE A TU CAMPE&Oacute;N</p>
                     <h2 id="tituloSeleccionPersonajeVersus">Selecci&oacute;n de personaje</h2>
-                    <span>Todos est&aacute;n disponibles durante el desarrollo.</span>
+                    <span id="detalleSeleccionPersonajeVersus">Todos est&aacute;n disponibles durante el desarrollo.</span>
                 </header>
 
                 <div class="lista-personajes-versus" role="radiogroup" aria-label="Personajes disponibles">

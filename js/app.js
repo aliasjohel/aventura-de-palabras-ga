@@ -22,10 +22,22 @@ const pantallaPreparacionVersus = document.getElementById(
   "pantallaPreparacionVersus",
 );
 const pantallaVersus = document.getElementById("pantallaVersus");
+const pantallaArcade = document.getElementById("pantallaArcade");
 const marcoVersus = document.getElementById("marcoVersus");
 
 const btnJugar = document.getElementById("btnJugar");
 const btnVersus = document.getElementById("btnVersus");
+const btnArcade = document.getElementById("btnArcade");
+const btnSalirArcade = document.getElementById("btnSalirArcade");
+const btnSalirArcadeVertical = document.getElementById("btnSalirArcadeVertical");
+const pisosArcade = document.getElementById("pisosArcade");
+const estadoArcade = document.getElementById("estadoArcade");
+const etiquetaPisoArcade = document.getElementById("etiquetaPisoArcade");
+const imagenRivalArcade = document.getElementById("imagenRivalArcade");
+const nombreRivalArcade = document.getElementById("nombreRivalArcade");
+const habilidadRivalArcade = document.getElementById("habilidadRivalArcade");
+const dificultadArcade = document.getElementById("dificultadArcade");
+const btnCombatirArcade = document.getElementById("btnCombatirArcade");
 const btnTutorialVersus = document.getElementById("btnTutorialVersus");
 const modalTutorialVersus = document.getElementById("modalTutorialVersus");
 const bienvenidaTutorialVersus = document.getElementById("bienvenidaTutorialVersus");
@@ -80,6 +92,9 @@ const btnSalirSeleccionPersonajeVersusVertical = document.getElementById(
 const btnConfirmarPersonajeVersus = document.getElementById(
   "btnConfirmarPersonajeVersus",
 );
+const etiquetaSeleccionPersonajeVersus = document.getElementById("etiquetaSeleccionPersonajeVersus");
+const tituloSeleccionPersonajeVersus = document.getElementById("tituloSeleccionPersonajeVersus");
+const detalleSeleccionPersonajeVersus = document.getElementById("detalleSeleccionPersonajeVersus");
 const estadoPersonajePropioVersus = document.getElementById("estadoPersonajePropioVersus");
 const estadoPersonajeRivalVersus = document.getElementById("estadoPersonajeRivalVersus");
 const tarjetasPersonajesVersus = [
@@ -816,6 +831,12 @@ let ultimoEventoPartidaVersus = -1;
 let temporizadorVistaImpactoRivalVersus = null;
 let pasoActualTutorialVersus = 0;
 let accionPosteriorTutorialVersus = null;
+let modoArcadeActivo = false;
+let rivalesTorreArcade = [];
+let pisoActualArcade = 0;
+let pisoCombateArcade = 0;
+let pisosDesbloqueadosArcade = 0;
+let ultimoResultadoArcade = "";
 let desfaseServidorVersus = 0;
 let jugadaOnlineEnCurso = false;
 let salidaSalaVersusEnCurso = false;
@@ -1290,9 +1311,7 @@ function finalizarPartidaOnline(partida) {
   const palabraEvento = eventoPrevio?.type === "word_failed" || eventoPrevio?.wordFailed
     ? eventoPrevio.word || ""
     : "";
-  const palabraPerdida = ganador === "rival"
-    ? partida.me?.lastFailedWord || palabraEvento
-    : "";
+  const palabraPerdida = ganador === "rival" ? palabraEvento : "";
   reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida);
 }
 
@@ -1436,8 +1455,138 @@ function seleccionarPersonajeVersus(personaje) {
 
 function abrirSeleccionPersonajeVersus() {
   seleccionarPersonajeVersus(personajeJugadorVersus);
+  etiquetaSeleccionPersonajeVersus.textContent = modoArcadeActivo
+    ? "ELEGÍ A TU CAMPEÓN PARA LA TORRE"
+    : "ELIGE A TU CAMPEÓN";
+  tituloSeleccionPersonajeVersus.textContent = modoArcadeActivo
+    ? "Selección del modo Arcade"
+    : "Selección de personaje";
+  detalleSeleccionPersonajeVersus.textContent = modoArcadeActivo
+    ? "Tu personaje se enfrentará a ocho rivales controlados por la máquina."
+    : "Todos están disponibles durante el desarrollo.";
   mostrarPantalla(pantallaSeleccionPersonajeVersus);
-  actualizarSeleccionPersonajeRemota(adaptadorSalasVersus.obtenerSala());
+  if (modoArcadeActivo) {
+    btnConfirmarPersonajeVersus.disabled = false;
+    tarjetasPersonajesVersus.forEach((tarjeta) => { tarjeta.disabled = false; });
+    estadoPersonajePropioVersus.className = "";
+    estadoPersonajePropioVersus.textContent = "Elegí con quién subirás la torre.";
+    estadoPersonajeRivalVersus.className = "listo";
+    estadoPersonajeRivalVersus.textContent = "La máquina ya preparó a tus rivales.";
+  } else {
+    actualizarSeleccionPersonajeRemota(adaptadorSalasVersus.obtenerSala());
+  }
+}
+
+function obtenerClaveProgresoArcade() {
+  return `progresoArcadeAventuraGA:${personajeJugadorVersus}`;
+}
+
+function leerProgresoArcade() {
+  try {
+    return Math.max(0, Number.parseInt(localStorage.getItem(obtenerClaveProgresoArcade()), 10) || 0);
+  } catch {
+    return 0;
+  }
+}
+
+function guardarProgresoArcade(pisosSuperados) {
+  pisosDesbloqueadosArcade = Math.max(pisosDesbloqueadosArcade, pisosSuperados);
+  try {
+    localStorage.setItem(obtenerClaveProgresoArcade(), `${pisosDesbloqueadosArcade}`);
+  } catch {
+    // La torre continúa en esta sesión aunque no haya almacenamiento local.
+  }
+}
+
+function crearOrdenRivalesArcade() {
+  const ordenBase = [
+    "explorador", "mago", "guardiana", "dragon", "hombre_lobo",
+    "guardian_alba", "dragon_hielo", "t_shadow", "azrak",
+  ].filter((personaje) => personaje !== personajeJugadorVersus);
+  const jefe = ordenBase.includes("azrak") ? "azrak" : "t_shadow";
+  return [...ordenBase.filter((personaje) => personaje !== jefe), jefe];
+}
+
+function obtenerDificultadArcade(indice) {
+  if (indice >= rivalesTorreArcade.length - 1) return "JEFE FINAL";
+  if (indice >= 5) return "ÉLITE";
+  if (indice >= 2) return "GUERRERO";
+  return "APRENDIZ";
+}
+
+function renderizarTorreArcade() {
+  const total = rivalesTorreArcade.length;
+  const torreCompletada = pisosDesbloqueadosArcade >= total;
+  pisosArcade.replaceChildren();
+  [...rivalesTorreArcade].reverse().forEach((personaje, indiceInvertido) => {
+    const indice = total - 1 - indiceInvertido;
+    const rival = personajesVersus[personaje];
+    const piso = document.createElement("li");
+    piso.className = indice < pisosDesbloqueadosArcade
+      ? "superado"
+      : indice === pisoActualArcade ? "actual" : "bloqueado";
+    if (torreCompletada && indice === total - 1) piso.className = "actual superado";
+    piso.innerHTML = `
+      <span>${indice + 1}</span>
+      <img src="${rival.base}" alt="">
+      <strong>${rival.nombre}</strong>
+      <small>${indice < pisosDesbloqueadosArcade ? "SUPERADO" : obtenerDificultadArcade(indice)}</small>
+    `;
+    pisosArcade.appendChild(piso);
+  });
+
+  const personajeRival = rivalesTorreArcade[pisoActualArcade];
+  const rival = personajesVersus[personajeRival];
+  const habilidad = habilidadesVersus[personajeRival];
+  etiquetaPisoArcade.textContent = `PISO ${pisoActualArcade + 1} DE ${total}`;
+  imagenRivalArcade.src = rival.base;
+  imagenRivalArcade.alt = `${rival.nombre}, rival del piso ${pisoActualArcade + 1}`;
+  nombreRivalArcade.textContent = rival.nombre;
+  habilidadRivalArcade.textContent = `Habilidad: ${habilidad.nombre}`;
+  dificultadArcade.textContent = obtenerDificultadArcade(pisoActualArcade);
+  estadoArcade.textContent = torreCompletada
+    ? "¡Torre completada! Podés volver a desafiar al jefe final."
+    : `Progreso: ${pisosDesbloqueadosArcade} de ${total} rivales superados.`;
+  btnCombatirArcade.textContent = torreCompletada && pisoActualArcade === total - 1
+    ? "Desafiar otra vez al jefe"
+    : "Entrar al combate";
+}
+
+function abrirTorreArcade() {
+  detenerRondaVersus();
+  cancelarCinematicaFinalVersus();
+  resultadoRondaVersus.classList.add("oculto");
+  renderizarTorreArcade();
+  mostrarPantalla(pantallaArcade);
+}
+
+function iniciarModoArcade() {
+  reproducirSonidoComenzarAventura();
+  cancelarSecuenciaNarrativaActual();
+  detenerSonidos();
+  modoArcadeActivo = true;
+  cancelarSuscripcionPartidaVersus?.();
+  cancelarSuscripcionPartidaVersus = null;
+  adaptadorSalasVersus = adaptadorLocalSalasVersus;
+  partidaOnlineVersus = null;
+  partidaOnlineIniciada = false;
+  abrirSeleccionPersonajeVersus();
+}
+
+function prepararRecorridoArcade() {
+  rivalesTorreArcade = crearOrdenRivalesArcade();
+  pisosDesbloqueadosArcade = Math.min(leerProgresoArcade(), rivalesTorreArcade.length);
+  pisoActualArcade = Math.min(pisosDesbloqueadosArcade, rivalesTorreArcade.length - 1);
+  ultimoResultadoArcade = "";
+  abrirTorreArcade();
+}
+
+function salirModoArcade() {
+  detenerRondaVersus();
+  cancelarCinematicaFinalVersus();
+  modoArcadeActivo = false;
+  ultimoResultadoArcade = "";
+  mostrarPantalla(pantallaMenu);
 }
 
 const claveTutorialVersusVisto = "tutorialVersusVistoAventuraGA";
@@ -1551,6 +1700,8 @@ function cerrarTutorialVersus({ recordar = false } = {}) {
 }
 
 function entrarAlModoVersus() {
+  document.querySelector(".versus-jugador-uno .versus-etiqueta").textContent = "JUGADOR 1";
+  document.querySelector(".versus-jugador-dos .versus-etiqueta").textContent = "JUGADOR 2";
   reproducirSonidoComenzarAventura();
   cancelarSecuenciaNarrativaActual();
   detenerSonidos();
@@ -1562,12 +1713,17 @@ function entrarAlModoVersus() {
 }
 
 btnVersus.addEventListener("click", () => {
+  modoArcadeActivo = false;
   if (!modoPruebasActivo && !tutorialVersusYaVisto()) {
     abrirTutorialVersus({ mostrarBienvenida: true, alCerrar: entrarAlModoVersus });
     return;
   }
   entrarAlModoVersus();
 });
+
+btnArcade.addEventListener("click", iniciarModoArcade);
+btnSalirArcade.addEventListener("click", salirModoArcade);
+btnSalirArcadeVertical.addEventListener("click", salirModoArcade);
 
 btnTutorialVersus.addEventListener("click", () => abrirTutorialVersus());
 btnComenzarTutorialVersus.addEventListener("click", comenzarTutorialVersus);
@@ -1678,6 +1834,10 @@ tarjetasPersonajesVersus.forEach((tarjeta) => {
 
 btnConfirmarPersonajeVersus.addEventListener("click", async () => {
   reproducirSonidoComenzarAventura();
+  if (modoArcadeActivo) {
+    prepararRecorridoArcade();
+    return;
+  }
   if (adaptadorSalasVersus.proveedor !== "supabase") {
     abrirPreparacionVersus();
     return;
@@ -1702,6 +1862,10 @@ btnConfirmarPersonajeVersus.addEventListener("click", async () => {
 });
 
 async function volverASalaDesdeSeleccionVersus() {
+  if (modoArcadeActivo) {
+    salirModoArcade();
+    return;
+  }
   const sala = adaptadorSalasVersus.obtenerSala();
   const usuarioId = adaptadorSalasVersus.obtenerUsuarioId?.();
   const jugadorPropio = sala?.jugadores.find((jugador) => jugador.id === usuarioId);
@@ -1897,6 +2061,10 @@ btnCompletarPalabrasPruebasVersus.addEventListener("click", () => {
 });
 
 async function volverAlMenuDesdeVersus() {
+  if (modoArcadeActivo) {
+    salirModoArcade();
+    return;
+  }
   cancelarCinematicaFinalVersus();
   detenerRondaVersus();
   salidaSalaVersusEnCurso = true;
@@ -1912,8 +2080,14 @@ async function volverAlMenuDesdeVersus() {
   mostrarPantalla(pantallaMenu);
 }
 
-btnSalirVersus.addEventListener("click", volverAlMenuDesdeVersus);
-btnSalirVersusVertical.addEventListener("click", volverAlMenuDesdeVersus);
+btnSalirVersus.addEventListener("click", () => {
+  if (modoArcadeActivo) abrirTorreArcade();
+  else void volverAlMenuDesdeVersus();
+});
+btnSalirVersusVertical.addEventListener("click", () => {
+  if (modoArcadeActivo) abrirTorreArcade();
+  else void volverAlMenuDesdeVersus();
+});
 btnMenuResultadoVersus.addEventListener("click", volverAlMenuDesdeVersus);
 
 btnSaltarNarrativa.addEventListener("click", solicitarSaltoNarrativo);
@@ -2388,6 +2562,7 @@ function actualizarOrientacionPantalla(pantallaSeleccionada) {
     || pantallaSeleccionada === pantallaSeleccionPersonajeVersus
     || pantallaSeleccionada === pantallaPreparacionVersus
     || pantallaSeleccionada === pantallaVersus
+    || pantallaSeleccionada === pantallaArcade
   ) {
     solicitarOrientacion("landscape");
     return;
@@ -3094,6 +3269,18 @@ const maximoErroresVersus = 6;
 const intervaloJugadaRivalVersus = 3000;
 const probabilidadAciertoRivalVersus = 0.56;
 const duracionEntradaDueloVersus = 3200;
+
+function obtenerIntervaloJugadaRivalVersus() {
+  if (!modoArcadeActivo) return modoPruebasActivo
+    ? intervaloJugadaRivalVersus * 4
+    : intervaloJugadaRivalVersus;
+  return Math.max(1550, 3550 - pisoCombateArcade * 270);
+}
+
+function obtenerProbabilidadAciertoRivalVersus() {
+  if (!modoArcadeActivo) return probabilidadAciertoRivalVersus;
+  return Math.min(.82, .43 + pisoCombateArcade * .055);
+}
 const srcExploradorBaseVersus = "assets/images/personajes/versus/explorador-base.png";
 const srcExploradorLupaVersus = "assets/images/personajes/versus/explorador-lupa.png";
 const srcExploradorPreparaBumeran = "assets/images/personajes/versus/explorador-bumeran-preparacion.png";
@@ -3517,7 +3704,7 @@ function comenzarRondaVersus() {
   demoVersus.intervaloTiempo = setInterval(actualizarRelojesVersus, 1000);
   demoVersus.intervaloRival = setInterval(
     jugarTurnoRivalVersus,
-    modoPruebasActivo ? intervaloJugadaRivalVersus * 4 : intervaloJugadaRivalVersus,
+    obtenerIntervaloJugadaRivalVersus(),
   );
 }
 
@@ -4233,6 +4420,10 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
   ocultarRevelacionesPalabrasVersus();
   limpiarAnimacionAtaqueVersus();
   configurarPersonajesCombateVersus();
+  if (!modoArcadeActivo) {
+    document.querySelector(".versus-jugador-uno .versus-etiqueta").textContent = "JUGADOR 1";
+    document.querySelector(".versus-jugador-dos .versus-etiqueta").textContent = "JUGADOR 2";
+  }
   const tematicasDisponibles = Object.keys(bancosPalabrasVersus);
   demoVersus.tematicaParaRival = tematicaVersus.value;
   demoVersus.tematicaParaJugador = tematicasDisponibles[
@@ -4286,6 +4477,27 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
     comenzarRondaVersus();
   }
 }
+
+function iniciarCombateArcade() {
+  if (!modoArcadeActivo || rivalesTorreArcade.length === 0) return;
+  pisoCombateArcade = pisoActualArcade;
+  personajeRivalVersus = rivalesTorreArcade[pisoCombateArcade];
+  const tematicasDisponibles = Object.keys(bancosPalabrasVersus);
+  const temaRival = tematicasDisponibles[pisoCombateArcade % tematicasDisponibles.length];
+  tematicaVersus.value = temaRival;
+  palabrasSecretasVersus = mezclarPalabrasVersus(bancosPalabrasVersus[temaRival])
+    .slice(0, maximoPalabrasVersus);
+  prepararDueloVersus({ comenzarRonda: false });
+  const arena = arenasVersus[pisoCombateArcade % arenasVersus.length];
+  fondoVersus.src = arena.src;
+  fondoVersus.alt = arena.alt;
+  document.querySelector(".versus-jugador-uno .versus-etiqueta").textContent = "VOS";
+  document.querySelector(".versus-jugador-dos .versus-etiqueta").textContent = `PISO ${pisoCombateArcade + 1}`;
+  mostrarPantalla(pantallaVersus);
+  requestAnimationFrame(iniciarEntradaDueloVersus);
+}
+
+btnCombatirArcade.addEventListener("click", iniciarCombateArcade);
 
 function detenerRondaVersus() {
   if (demoVersus.intervaloTiempo) clearInterval(demoVersus.intervaloTiempo);
@@ -4376,7 +4588,7 @@ function jugarTurnoRivalVersus() {
   );
   const probabilidadAcierto = efectoActivo === "roar" || efectoActivo === "shuffle"
     ? 0.25
-    : probabilidadAciertoRivalVersus;
+    : obtenerProbabilidadAciertoRivalVersus();
   const acierta = Boolean(demoVersus.pistaLupaRival)
     || Math.random() < probabilidadAcierto
     || letrasIncorrectas.length === 0;
@@ -4633,6 +4845,7 @@ function avanzarPalabraJugadorVersus(acertada) {
 function avanzarPalabraRivalVersus(acertada) {
   const numeroPalabra = demoVersus.indiceRival + 1;
   const palabraPerdida = obtenerPalabraActualRivalVersus();
+  const palabraActivaJugador = obtenerPalabraActualJugadorVersus();
   demoVersus.indiceRival += 1;
   demoVersus.letrasRival.clear();
   demoVersus.erroresRival = 0;
@@ -4666,7 +4879,11 @@ function avanzarPalabraRivalVersus(acertada) {
   actualizarVidasVersus();
 
   if (demoVersus.vidasJugador <= 0) {
-    finalizarPartidaVersus("rival", "El rival completó su ataque y te dejó sin corazones.");
+    finalizarPartidaVersus(
+      "rival",
+      "El rival completó su ataque y te dejó sin corazones.",
+      palabraActivaJugador,
+    );
     return;
   }
 
@@ -4715,9 +4932,14 @@ function agotarTiempoRivalVersus() {
 function verificarFinNaturalVersus() {
   if (!demoVersus.finalizadoJugador || !demoVersus.finalizadoRival) return;
   const diferencia = demoVersus.vidasJugador - demoVersus.vidasRival;
+  const ganador = diferencia > 0 ? "jugador" : diferencia < 0 ? "rival" : "empate";
+  const palabraActivaJugador = ganador === "rival" && demoVersus.motivoFinalJugador !== "completo"
+    ? obtenerPalabraActualJugadorVersus()
+    : "";
   finalizarPartidaVersus(
-    diferencia > 0 ? "jugador" : diferencia < 0 ? "rival" : "empate",
+    ganador,
     `Resultado final: ${demoVersus.vidasJugador} a ${demoVersus.vidasRival} corazones.`,
+    palabraActivaJugador,
   );
 }
 
@@ -4728,10 +4950,8 @@ function finalizarPartidaVersus(ganador, detalle, palabraPerdida = "") {
   detenerRondaVersus();
   bloquearTecladoDemoVersus();
 
-  const ultimaPalabra = palabraPerdida || (
-    ganador === "rival" ? demoVersus.ultimaPalabraFalladaJugador : ""
-  );
-  reproducirCierrePartidaVersus(ganador, detalle, ultimaPalabra);
+  const palabraFinal = ganador === "rival" ? palabraPerdida : "";
+  reproducirCierrePartidaVersus(ganador, detalle, palabraFinal);
 }
 
 function obtenerReproductorFinalVersus(personajeGanador, personajeVictima) {
@@ -4822,6 +5042,38 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
 
   reproducirSonidoVersus(ganador === "jugador" ? "victoria" : "derrota", 0.72);
 
+  if (modoArcadeActivo) {
+    const total = rivalesTorreArcade.length;
+    const rival = personajesVersus[rivalesTorreArcade[pisoCombateArcade]];
+    ultimoResultadoArcade = ganador;
+    iconoResultadoVersus.textContent = ganador === "jugador" ? "🏆" : "🏰";
+    etiquetaResultadoVersus.textContent = `PISO ${pisoCombateArcade + 1} DE ${total}`;
+    if (ganador === "jugador") {
+      guardarProgresoArcade(pisoCombateArcade + 1);
+      const completoLaTorre = pisoCombateArcade >= total - 1;
+      pisoActualArcade = completoLaTorre ? total - 1 : pisoCombateArcade + 1;
+      tituloResultadoVersus.textContent = completoLaTorre
+        ? "¡Campeón de la torre!"
+        : `¡Superaste a ${rival.nombre}!`;
+      detalleResultadoVersus.textContent = completoLaTorre
+        ? "Venciste a todos los rivales del modo Arcade. La cima es tuya."
+        : `${detalle} El siguiente piso ya está desbloqueado.`;
+      btnRevanchaVersus.textContent = completoLaTorre ? "Ver torre completada" : "Continuar la torre";
+    } else {
+      pisoActualArcade = pisoCombateArcade;
+      tituloResultadoVersus.textContent = ganador === "empate"
+        ? "El piso terminó empatado"
+        : `${rival.nombre} defendió la torre`;
+      detalleResultadoVersus.textContent = `${detalle} Podés volver a intentar este piso.`;
+      btnRevanchaVersus.textContent = "Reintentar piso";
+    }
+    btnRevanchaVersus.classList.remove("oculto");
+    btnRevanchaVersus.disabled = false;
+    btnMenuResultadoVersus.textContent = "Abandonar torre";
+    resultadoRondaVersus.classList.remove("oculto");
+    return;
+  }
+
   iconoResultadoVersus.textContent = ganador === "jugador" ? "🏆" : ganador === "rival" ? "🛡️" : "⚔️";
   etiquetaResultadoVersus.textContent = ganador === "empate" ? "DUELO EMPATADO" : "DUELO FINALIZADO";
   const esOnline = adaptadorSalasVersus.proveedor === "supabase";
@@ -4834,6 +5086,7 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
   btnRevanchaVersus.classList.remove("oculto");
   btnRevanchaVersus.disabled = false;
   btnRevanchaVersus.textContent = esOnline ? "Pedir revancha" : "Jugar de nuevo";
+  btnMenuResultadoVersus.textContent = "Volver al menú";
   resultadoRondaVersus.classList.remove("oculto");
   if (esOnline) actualizarEstadoRevanchaVersus(adaptadorSalasVersus.obtenerSala());
 }
@@ -5308,6 +5561,11 @@ botonesProbarHabilidadVersus.forEach((boton) => {
 
 btnSaltarEntradaVersus.addEventListener("click", finalizarEntradaDueloVersus);
 btnRevanchaVersus.addEventListener("click", async () => {
+  if (modoArcadeActivo) {
+    if (ultimoResultadoArcade === "jugador") abrirTorreArcade();
+    else iniciarCombateArcade();
+    return;
+  }
   if (adaptadorSalasVersus.proveedor !== "supabase") {
     prepararDueloVersus();
     return;

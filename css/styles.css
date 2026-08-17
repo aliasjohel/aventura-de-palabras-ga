@@ -848,6 +848,131 @@ button:disabled {
     box-shadow: 0 5px 0 #3d230b;
 }
 
+.btn-arcade-menu {
+    border: 1px solid #d2a64d;
+    background: linear-gradient(180deg, #704927, #3f2719);
+    color: #fff0c2;
+    box-shadow: 0 4px 0 #21130a;
+}
+
+.pantalla-arcade {
+    position: relative;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    padding: 0;
+    border-radius: 0;
+    background: linear-gradient(100deg, rgba(2, 10, 17, .97), rgba(19, 27, 34, .78), rgba(24, 10, 7, .94)), url("../assets/images/fondos/desierto-1.png") center / cover;
+    box-shadow: none;
+}
+
+.pantalla-arcade.activa { display: grid; place-items: center; }
+
+.arcade-marco {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    width: min(1180px, 96vw);
+    height: min(680px, 94dvh);
+    padding: clamp(12px, 2vw, 24px);
+    border: 1px solid rgba(224, 176, 77, .55);
+    border-radius: 20px;
+    background: radial-gradient(circle at 28% 45%, rgba(207, 139, 42, .11), transparent 35%), rgba(3, 14, 21, .9);
+    color: #eefcff;
+    box-shadow: 0 26px 80px rgba(0, 0, 0, .7), inset 0 1px rgba(255, 255, 255, .08);
+}
+
+.arcade-cabecera { text-align: center; }
+.arcade-cabecera p { margin: 0; color: #e3b44f; font-size: clamp(.62rem, 1.1vw, .78rem); font-weight: 900; letter-spacing: .22em; }
+.arcade-cabecera h2 { margin: 4px 0 2px; font-size: clamp(1.35rem, 3vw, 2.2rem); }
+.arcade-cabecera span { color: rgba(222, 244, 248, .72); font-size: clamp(.68rem, 1.15vw, .85rem); }
+
+.arcade-contenido {
+    display: grid;
+    grid-template-columns: minmax(420px, 1.25fr) minmax(260px, .75fr);
+    gap: clamp(18px, 4vw, 48px);
+    min-height: 0;
+    padding: 15px clamp(10px, 3vw, 34px) 0;
+}
+
+.pisos-arcade {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pisos-arcade li {
+    display: grid;
+    grid-template-columns: 34px 46px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 4px 13px 4px 6px;
+    border: 1px solid rgba(121, 157, 168, .24);
+    border-radius: 10px;
+    background: linear-gradient(90deg, rgba(22, 47, 58, .88), rgba(10, 23, 31, .78));
+    color: rgba(224, 242, 246, .68);
+    transform: translateX(calc((var(--escalon, 0)) * 9px));
+}
+
+.pisos-arcade li:nth-child(2n) { margin-left: 22px; }
+.pisos-arcade li.actual {
+    border-color: #f0c45d;
+    background: linear-gradient(90deg, rgba(112, 72, 20, .92), rgba(42, 32, 18, .9));
+    color: #fff1bd;
+    box-shadow: 0 0 20px rgba(238, 186, 69, .24);
+    animation: pulsoPisoActualArcade 1.2s ease-in-out infinite alternate;
+}
+.pisos-arcade li.superado { border-color: rgba(91, 215, 137, .55); color: #c4f4d4; }
+.pisos-arcade li.bloqueado { filter: grayscale(.8); opacity: .52; }
+.pisos-arcade li > span { display: grid; aspect-ratio: 1; place-items: center; border-radius: 50%; background: rgba(255, 255, 255, .08); font-weight: 900; }
+.pisos-arcade li img { width: 46px; height: 42px; object-fit: contain; filter: drop-shadow(0 3px 4px rgba(0, 0, 0, .6)); }
+.pisos-arcade li strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pisos-arcade li small { color: inherit; font-size: .55rem; font-weight: 900; letter-spacing: .1em; }
+
+.rival-actual-arcade {
+    align-self: center;
+    display: grid;
+    justify-items: center;
+    padding: clamp(15px, 2.5vw, 27px);
+    border: 1px solid rgba(228, 181, 83, .45);
+    border-radius: 18px;
+    background: radial-gradient(circle at 50% 34%, rgba(224, 155, 52, .15), transparent 34%), linear-gradient(160deg, rgba(19, 43, 52, .96), rgba(7, 19, 27, .98));
+    text-align: center;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, .48);
+}
+
+.rival-actual-arcade > span { color: #e9bc56; font-size: .68rem; font-weight: 900; letter-spacing: .16em; }
+.retrato-rival-arcade { display: grid; width: min(190px, 20vw, 28vh); aspect-ratio: 1; place-items: end center; margin: 5px 0; overflow: hidden; border-radius: 50%; background: radial-gradient(circle, rgba(238, 179, 70, .22), transparent 64%); }
+.retrato-rival-arcade img { width: 92%; height: 92%; object-fit: contain; filter: drop-shadow(0 9px 8px rgba(0, 0, 0, .7)); }
+.rival-actual-arcade h3 { margin: 0; font-size: clamp(1.2rem, 2.4vw, 1.8rem); }
+.rival-actual-arcade > p { margin: 4px 0 10px; color: rgba(218, 240, 244, .72); font-size: .78rem; }
+.dificultad-arcade { display: grid; gap: 2px; margin-bottom: 12px; }
+.dificultad-arcade small { color: rgba(216, 235, 239, .55); font-size: .5rem; font-weight: 900; letter-spacing: .15em; }
+.dificultad-arcade strong { color: #f0c45d; font-size: .78rem; }
+#btnCombatirArcade { padding: 10px 22px; border: 1px solid #ffd878; border-radius: 10px; background: linear-gradient(#b47a25, #704315); color: #fff4d0; font-weight: 900; box-shadow: 0 4px 0 #382008; }
+
+@keyframes pulsoPisoActualArcade { to { filter: brightness(1.18); transform: translateX(4px); } }
+
+@media (orientation: landscape) and (max-height: 600px) {
+    .arcade-marco { width: 100%; height: 100dvh; border-radius: 0; }
+    .arcade-contenido { padding-top: 5px; }
+    .pisos-arcade { gap: 2px; }
+    .pisos-arcade li { min-height: 38px; grid-template-columns: 28px 38px minmax(0, 1fr) auto; }
+    .pisos-arcade li img { width: 38px; height: 33px; }
+    .rival-actual-arcade { padding: 10px; }
+    .retrato-rival-arcade { width: min(155px, 28vh); }
+}
+
+@media (orientation: portrait) {
+    .pantalla-arcade.activa .arcade-marco { display: none; }
+}
+
 .btn-tutorial-versus-menu {
     border: 1px solid rgba(137, 210, 228, .4);
     background: linear-gradient(180deg, #244b59, #142c37);
