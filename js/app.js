@@ -2831,6 +2831,49 @@ function crearMiniTecladoRivalVersus() {
     });
     miniTecladoRivalVersus.appendChild(filaMiniatura);
   });
+  for (let capa = 1; capa <= 3; capa += 1) {
+    const hielo = document.createElement("span");
+    hielo.className = `mini-hielo-nivor mini-hielo-nivor-${capa}`;
+    miniTecladoRivalVersus.appendChild(hielo);
+  }
+}
+
+function prepararMiniaturaHabilidadRival(efecto) {
+  const teclas = [...miniTecladoRivalVersus.querySelectorAll("i")];
+  teclas.forEach((tecla) => {
+    for (const propiedad of [
+      "--mini-caos-x",
+      "--mini-caos-y",
+      "--mini-caos-giro",
+      "--mini-rebote-x",
+      "--mini-rebote-y",
+      "--mini-rebote-giro",
+      "--mini-demora",
+    ]) tecla.style.removeProperty(propiedad);
+  });
+
+  if (efecto === "shuffle") {
+    const posiciones = teclas.map((tecla) => tecla.getBoundingClientRect());
+    const salto = 7;
+    teclas.forEach((tecla, indice) => {
+      const origen = posiciones[indice];
+      const destino = posiciones[(indice + salto) % posiciones.length];
+      tecla.style.setProperty("--mini-caos-x", `${destino.left - origen.left}px`);
+      tecla.style.setProperty("--mini-caos-y", `${destino.top - origen.top}px`);
+      tecla.style.setProperty("--mini-caos-giro", `${indice % 2 ? -14 : 14}deg`);
+      tecla.style.setProperty("--mini-demora", `${-(indice % 6) * 90}ms`);
+    });
+  }
+
+  if (efecto === "key_bounce") {
+    teclas.forEach((tecla, indice) => {
+      const direccion = (indice % 7) - 3;
+      tecla.style.setProperty("--mini-rebote-x", `${direccion * 3}px`);
+      tecla.style.setProperty("--mini-rebote-y", `${-(9 + (indice % 5) * 2)}px`);
+      tecla.style.setProperty("--mini-rebote-giro", `${direccion * 7}deg`);
+      tecla.style.setProperty("--mini-demora", `${-(indice % 8) * 105}ms`);
+    });
+  }
 }
 
 function ocultarVistaImpactoRivalVersus() {
@@ -2862,6 +2905,7 @@ function mostrarVistaImpactoRivalVersus(personaje, letraForzada = "") {
   detalleImpactoRivalVersus.textContent = detallesPorEfecto[habilidad.efecto]
     || "El rival recibió tu ataque.";
   miniTecladoRivalVersus.className = `mini-teclado-rival-versus efecto-${habilidad.efecto}`;
+  prepararMiniaturaHabilidadRival(habilidad.efecto);
   miniTecladoRivalVersus.querySelectorAll("i").forEach((tecla) => {
     tecla.classList.toggle("tecla-forzada", Boolean(letraForzada) && tecla.dataset.letra === letraForzada);
   });

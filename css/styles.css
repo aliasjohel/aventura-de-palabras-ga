@@ -3457,8 +3457,15 @@ button:disabled {
     animation: crecerRaicesHabilidadVersus 620ms ease-out both;
 }
 
-.mini-teclado-rival-versus.efecto-roar { animation: temblorMiniTecladoRivalVersus 180ms linear infinite; }
-.mini-teclado-rival-versus.efecto-shuffle i { animation: caosMiniTecladoRivalVersus 720ms ease-in-out infinite alternate; }
+.mini-teclado-rival-versus.efecto-roar {
+    animation: temblorMiniTecladoRivalVersus 135ms linear infinite;
+    box-shadow: inset 0 0 18px rgba(255, 154, 44, .34), 0 0 12px rgba(255, 92, 24, .22);
+}
+.mini-teclado-rival-versus.efecto-shuffle i {
+    position: relative;
+    z-index: 2;
+    animation: caosMiniTecladoRivalVersus 820ms cubic-bezier(.2, .78, .18, 1) var(--mini-demora, 0ms) infinite alternate;
+}
 .mini-teclado-rival-versus.efecto-shuffle i:nth-child(2n) { animation-direction: alternate-reverse; }
 .mini-teclado-rival-versus.efecto-invert { transform: rotate(180deg); }
 .mini-teclado-rival-versus.efecto-black_hole::before {
@@ -3481,17 +3488,47 @@ button:disabled {
     z-index: 4;
     animation: absorberMiniTecladoRivalVersus 1.2s ease-in-out infinite alternate;
 }
-.mini-teclado-rival-versus.efecto-key_bounce i { animation: rebotarMiniTeclaRivalVersus .7s ease-in-out infinite alternate; }
-.mini-teclado-rival-versus.efecto-key_bounce i:nth-child(3n) { animation-delay: .18s; }
+.mini-teclado-rival-versus.efecto-key_bounce i {
+    position: relative;
+    z-index: 2;
+    animation: rebotarMiniTeclaRivalVersus .92s cubic-bezier(.22, .75, .24, 1) var(--mini-demora, 0ms) infinite;
+}
 .mini-teclado-rival-versus.efecto-ice_screen { box-shadow: inset 0 0 25px #9aeaff; }
+.mini-hielo-nivor {
+    display: none;
+    position: absolute;
+    z-index: 5;
+    inset: -3%;
+    pointer-events: none;
+    border-radius: inherit;
+    background-position: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    opacity: 0;
+    filter: saturate(1.25) brightness(1.15) drop-shadow(0 0 5px #b8f5ff);
+}
+.mini-teclado-rival-versus.efecto-ice_screen .mini-hielo-nivor { display: block; }
+.mini-hielo-nivor-1 {
+    background-image: url("../assets/images/elementos/hielo-pantalla-nivor-1.png");
+    animation: avanzarHieloMiniNivor .48s ease-out .08s both;
+}
+.mini-hielo-nivor-2 {
+    background-image: url("../assets/images/elementos/hielo-pantalla-nivor-2.png");
+    animation: avanzarHieloMiniNivor .52s ease-out .42s both;
+}
+.mini-hielo-nivor-3 {
+    background-image: url("../assets/images/elementos/hielo-pantalla-nivor-3.png");
+    animation: cubrirHieloMiniNivor .72s ease-out .78s both;
+}
 .mini-teclado-rival-versus.efecto-ice_screen::after {
     content: "";
     position: absolute;
+    z-index: 6;
     inset: 0;
     border-radius: inherit;
-    background: linear-gradient(135deg, rgba(210, 249, 255, .76), rgba(73, 180, 226, .24));
-    clip-path: polygon(0 0, 44% 0, 58% 31%, 100% 18%, 100% 100%, 39% 100%, 25% 67%, 0 82%);
-    animation: congelarMiniTecladoRivalVersus .7s ease-out both;
+    background: linear-gradient(135deg, rgba(225, 252, 255, .08), rgba(97, 208, 255, .42));
+    box-shadow: inset 0 0 18px #d5fbff;
+    animation: escarchaMiniNivor 1.15s ease-out .55s both;
 }
 
 .mini-teclado-rival-versus.efecto-forced_miss .tecla-forzada {
@@ -3522,12 +3559,20 @@ button:disabled {
 }
 
 @keyframes temblorMiniTecladoRivalVersus {
-    0%, 100% { transform: translate(0); }
-    25% { transform: translate(-4px, 2px) rotate(-1deg); }
-    75% { transform: translate(4px, -2px) rotate(1deg); }
+    0%, 100% { transform: translate(0) rotate(0) scale(1); }
+    20% { transform: translate(-7px, 3px) rotate(-2deg) scale(1.025); }
+    42% { transform: translate(6px, -4px) rotate(1.6deg) scale(.985); }
+    66% { transform: translate(-5px, -2px) rotate(-1.4deg) scale(1.02); }
+    84% { transform: translate(7px, 3px) rotate(2deg) scale(.99); }
 }
 
-@keyframes caosMiniTecladoRivalVersus { to { transform: translate(3px, -3px) rotate(8deg); filter: hue-rotate(80deg); } }
+@keyframes caosMiniTecladoRivalVersus {
+    0%, 12% { transform: translate(0, 0) rotate(0); filter: hue-rotate(0); }
+    78%, 100% {
+        transform: translate(var(--mini-caos-x, 0), var(--mini-caos-y, 0)) rotate(var(--mini-caos-giro, 12deg));
+        filter: hue-rotate(85deg) brightness(1.2);
+    }
+}
 @keyframes absorberMiniTecladoRivalVersus { to { opacity: .2; transform: translateY(-5px) scale(.55) rotate(25deg); } }
 @keyframes vivirAgujeroMiniRivalVersus {
     from { transform: translate(-50%, -50%) scale(.35) rotate(0); opacity: .7; }
@@ -3538,8 +3583,24 @@ button:disabled {
     55%, 82% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
     100% { opacity: 0; transform: translate(25%, 5%) scale(1.35) rotate(12deg); }
 }
-@keyframes rebotarMiniTeclaRivalVersus { to { opacity: .42; transform: translateY(-11px) rotate(18deg); } }
-@keyframes congelarMiniTecladoRivalVersus { from { opacity: 0; transform: scale(.2); } to { opacity: 1; transform: scale(1); } }
+@keyframes rebotarMiniTeclaRivalVersus {
+    0%, 100% { opacity: 1; transform: translate(0, 0) rotate(0); }
+    30% { opacity: .78; transform: translate(var(--mini-rebote-x, 0), var(--mini-rebote-y, -12px)) rotate(var(--mini-rebote-giro, 12deg)); }
+    54% { opacity: 1; transform: translate(0, 3px) rotate(0); }
+    72% { transform: translate(-2px, -5px) rotate(-4deg); }
+}
+@keyframes avanzarHieloMiniNivor {
+    from { opacity: 0; transform: translate(-32%, 28%) scale(.55); }
+    to { opacity: .92; transform: translate(0, 0) scale(1); }
+}
+@keyframes cubrirHieloMiniNivor {
+    from { opacity: 0; transform: scale(.35) rotate(-8deg); clip-path: circle(12% at 48% 54%); }
+    to { opacity: .96; transform: scale(1.04) rotate(0); clip-path: circle(78% at 50% 50%); }
+}
+@keyframes escarchaMiniNivor {
+    from { opacity: 0; backdrop-filter: blur(0); }
+    to { opacity: 1; backdrop-filter: blur(1.4px) saturate(.72); }
+}
 @keyframes pulsoTeclaForzadaRivalVersus { to { transform: scale(1.28); filter: brightness(1.45); } }
 
 @media (orientation: landscape) and (max-height: 600px) {

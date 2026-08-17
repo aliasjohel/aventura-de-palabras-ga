@@ -182,6 +182,17 @@ assert.match(estilos, /\.vista-impacto-rival-versus\.visible/);
 assert.match(estilos, /\.vista-impacto-rival-versus \{[\s\S]+top: clamp\(70px, 18vh, 150px\);[\s\S]+bottom: auto/);
 assert.match(estilos, /\.mini-teclado-rival-versus\.efecto-black_hole::before/);
 assert.match(estilos, /vivirAgujeroMiniRivalVersus/);
+assert.match(app, /function prepararMiniaturaHabilidadRival\(efecto\)/);
+assert.match(app, /destino = posiciones\[\(indice \+ salto\) % posiciones\.length\]/);
+assert.match(estilos, /translate\(var\(--mini-caos-x/);
+assert.match(estilos, /@keyframes rebotarMiniTeclaRivalVersus[\s\S]+--mini-rebote-y/);
+assert.match(app, /mini-hielo-nivor-\$\{capa\}/);
+for (const capa of [1, 2, 3]) {
+  assert.match(estilos, new RegExp(`hielo-pantalla-nivor-${capa}\\.png`));
+}
+assert.match(estilos, /@keyframes cubrirHieloMiniNivor/);
+assert.match(estilos, /temblorMiniTecladoRivalVersus 135ms/);
+assert.match(estilos, /translate\(-7px, 3px\) rotate\(-2deg\)/);
 assert.match(estilos, /\.mini-teclado-rival-versus\.efecto-forced_miss \.tecla-forzada/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeJugadorVersus/);
 assert.match(app, /reproducirAnimacionHabilidadVersus\(personajeRivalVersus/);

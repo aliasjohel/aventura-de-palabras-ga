@@ -49,7 +49,7 @@ assert.match(styles, /\.cinematica-despertar-dragon\s*\{[\s\S]+position: fixed;[
 assert.match(app, /ejecutarDespertarDragonSantuario[\s\S]+pantallaJuego\.appendChild\(capa\)/);
 assert.match(styles, /@keyframes encajarPiezaMural/);
 assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
-assert.match(serviceWorker, /CACHE_NAME = `\$\{CACHE_PREFIX\}v101`/);
+assert.match(serviceWorker, /CACHE_NAME = `\$\{CACHE_PREFIX\}v102`/);
 assert.match(serviceWorker, /assets\/sounds\/colocar-piezas\.mp3/);
 assert.match(serviceWorker, /mural-dragon-bosque\.png/);
 assert.equal(fs.existsSync(mural), true, "Falta el arte del mural del dragón");
