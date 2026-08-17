@@ -11771,12 +11771,14 @@ button:disabled {
 .pieza-ramas-deslizante:disabled{color:inherit;opacity:1;cursor:default;background-color:transparent;background-image:url("../assets/images/fondos/bosque-3.png")}
 .espacio-vacio-ramas{position:relative;background:radial-gradient(circle,rgba(200,231,118,.18),transparent 60%),repeating-linear-gradient(135deg,rgba(137,176,91,.08) 0 6px,transparent 6px 13px),#061712;box-shadow:inset 0 0 25px rgba(0,0,0,.78)}
 .espacio-vacio-ramas::after{content:"ACÁ";position:absolute;inset:0;display:grid;place-items:center;color:rgba(237,244,175,.72);font-size:clamp(.72rem,2.5vw,1.2rem);font-weight:900;letter-spacing:.08em;text-shadow:0 1px 3px #000}
-.escena-memoria-lobos{position:relative;width:min(100%,700px);aspect-ratio:3/2;margin-inline:auto;overflow:hidden;border:clamp(6px,1vw,10px) ridge #4e655a;border-radius:14px;background:url("../assets/images/fondos/bosque-6-lobos-v2.png") center/100% 100% no-repeat;box-shadow:0 17px 38px rgba(0,0,0,.68),0 0 30px rgba(122,179,224,.12)}
+.escena-memoria-lobos{position:relative;width:min(100%,700px);aspect-ratio:3/2;margin-inline:auto;overflow:hidden;border:clamp(6px,1vw,10px) ridge #4e655a;border-radius:14px;background:url("../assets/images/fondos/bosque-6-lobos-v2.png") center/100% 100% no-repeat;box-shadow:0 17px 38px rgba(0,0,0,.68),0 0 30px rgba(122,179,224,.12);container-type:inline-size}
 .escena-memoria-lobos::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,7,13,.22) 100%)}
 .lobo-memoria{position:absolute;z-index:2;width:clamp(44px,7%,56px);aspect-ratio:2/1;padding:0;border:0;border-radius:50%;background:transparent;box-shadow:none;opacity:1;transform:translate(-50%,-50%);cursor:pointer}
 .lobo-memoria-1{left:23.65%;top:35.85%}.lobo-memoria-2{left:77.67%;top:36.2%}.lobo-memoria-3{left:38.3%;top:55.95%}.lobo-memoria-4{left:62.4%;top:56.35%}
 .lobo-memoria-3,.lobo-memoria-4{width:clamp(48px,8.5%,68px)}
-.lobo-memoria-3,.lobo-memoria-4{width:clamp(48px,8.5%,68px)}
+.lobo-memoria:hover,.lobo-memoria:active{transform:translate(-50%,-50%)}
+.lobo-memoria span{position:absolute;left:50%;top:50%;width:7cqw;aspect-ratio:2/1;transform:translate(-50%,-50%);pointer-events:none}
+.lobo-memoria-3 span,.lobo-memoria-4 span{width:8.5cqw}
 .lobo-memoria span::before,.lobo-memoria span::after{content:"";position:absolute;top:38%;width:14%;aspect-ratio:1.8/1;border-radius:50%;background:#ffd76b;opacity:0;box-shadow:none;transition:opacity 150ms ease,filter 150ms ease,box-shadow 150ms ease}
 .lobo-memoria span::before{left:25%;transform:rotate(5deg)}.lobo-memoria span::after{right:25%;transform:rotate(-5deg)}
 .lobo-memoria.iluminado span::before,.lobo-memoria.iluminado span::after,.lobo-memoria.elegido span::before,.lobo-memoria.elegido span::after{opacity:1;filter:brightness(1.8);box-shadow:0 0 6px #fff5a6,0 0 15px #ffc12c,0 0 30px rgba(255,151,24,.9)}
