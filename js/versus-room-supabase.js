@@ -14,7 +14,9 @@
 
     let usuarioId = null;
     let usuarioActual = null;
+    let sesionActual = null;
     let estadoSocial = null;
+    let errorEstadoSocial = null;
     let salaActual = null;
     let partidaActual = null;
     let canalSala = null;
@@ -24,6 +26,7 @@
     let intervaloVerificacionSala = null;
     let recargaEnCurso = null;
     let recargaSolicitada = false;
+    let temporizadorSincronizacionAuth = null;
     const suscriptores = new Set();
     const suscriptoresPartida = new Set();
     const suscriptoresSocial = new Set();
@@ -52,11 +55,30 @@
       suscriptoresPartida.forEach((suscriptor) => suscriptor(partida))
     );
     const emitirSocial = () => suscriptoresSocial.forEach((suscriptor) => (
-      suscriptor(estadoSocial, usuarioActual)
+      suscriptor(estadoSocial, usuarioActual, errorEstadoSocial, esCuentaPermanente())
     ));
 
+    function sesionTieneCuentaPermanente(sesion) {
+      if (!sesion?.user || sesion.user.is_anonymous !== false) return false;
+      try {
+        const segmento = sesion.access_token.split(".")[1];
+        const base64 = segmento.replace(/-/g, "+").replace(/_/g, "/")
+          .padEnd(Math.ceil(segmento.length / 4) * 4, "=");
+        const claims = JSON.parse(raiz.atob(base64));
+        return claims.is_anonymous === false;
+      } catch (_error) {
+        return false;
+      }
+    }
+
+    function actualizarSesion(sesion) {
+      sesionActual = sesion || null;
+      usuarioActual = sesionActual?.user || null;
+      usuarioId = usuarioActual?.id || null;
+    }
+
     function esCuentaPermanente() {
-      return Boolean(usuarioActual && usuarioActual.is_anonymous === false);
+      return sesionTieneCuentaPermanente(sesionActual);
     }
 
     function urlRetornoAutenticacion() {
@@ -73,14 +95,40 @@
     async function cargarEstadoSocial() {
       if (!esCuentaPermanente()) {
         estadoSocial = null;
+        errorEstadoSocial = null;
         emitirSocial();
         return null;
       }
       const { data, error } = await cliente.rpc("get_versus_social_state");
-      if (error) throw traducirError(error, "No pudimos cargar Amigos.");
+      if (error) {
+        errorEstadoSocial = traducirError(error, "No pudimos cargar Amigos.");
+        estadoSocial = null;
+        emitirSocial();
+        throw errorEstadoSocial;
+      }
       estadoSocial = data;
+      errorEstadoSocial = null;
       emitirSocial();
       return estadoSocial;
+    }
+
+    function programarSincronizacionAuth() {
+      if (temporizadorSincronizacionAuth) {
+        raiz.clearTimeout(temporizadorSincronizacionAuth);
+      }
+      temporizadorSincronizacionAuth = raiz.setTimeout(() => {
+        temporizadorSincronizacionAuth = null;
+        void (async () => {
+          try {
+            await escucharSocial();
+            if (esCuentaPermanente()) {
+              await cargarEstadoSocial();
+            }
+          } catch (error) {
+            console.warn("No pudimos sincronizar Amigos después de actualizar la sesión.", error);
+          }
+        })();
+      }, 0);
     }
 
     async function abrirSalaInvitada(roomId) {
@@ -134,26 +182,38 @@
         const { data, error } = await cliente.auth.signInAnonymously();
         if (error) throw traducirError(error, "No pudimos iniciar la sesión anónima.");
         sesion = data.session;
+      } else {
+        // La confirmación puede abrirse en otro navegador mientras la PWA conserva
+        // el JWT anónimo anterior. Renovarlo trae inmediatamente el estado real.
+        const { data, error } = await cliente.auth.refreshSession(sesion);
+        if (error) throw traducirError(
+          error,
+          "La sesión guardada venció. Volvé a entrar con tu correo.",
+        );
+        sesion = data.session || sesion;
       }
 
       if (!sesion?.user?.id) throw new Error("Supabase no devolvió una identidad de jugador.");
-      usuarioActual = sesion.user;
-      usuarioId = sesion.user.id;
+      actualizarSesion(sesion);
       if (!suscripcionAuth) {
         const { data } = cliente.auth.onAuthStateChange((_evento, nuevaSesion) => {
-          usuarioActual = nuevaSesion?.user || null;
-          usuarioId = usuarioActual?.id || null;
+          actualizarSesion(nuevaSesion);
           estadoSocial = null;
+          errorEstadoSocial = null;
           emitirSocial();
-          queueMicrotask(() => {
-            void escucharSocial();
-            if (esCuentaPermanente()) void cargarEstadoSocial();
-          });
+          // Las llamadas a Supabase se difieren hasta que Auth libera su bloqueo.
+          programarSincronizacionAuth();
         });
         suscripcionAuth = data.subscription;
       }
       await escucharSocial();
-      if (esCuentaPermanente()) await cargarEstadoSocial();
+      if (esCuentaPermanente()) {
+        try {
+          await cargarEstadoSocial();
+        } catch (error) {
+          console.warn("La cuenta está conectada, pero Amigos todavía no respondió.", error);
+        }
+      }
       const roomId = obtenerSalaRecordada();
       if (roomId && /^[0-9a-f-]{36}$/i.test(roomId)) {
         await cargarSala(roomId);
@@ -360,7 +420,7 @@
 
     function suscribirSocial(suscriptor) {
       suscriptoresSocial.add(suscriptor);
-      suscriptor(estadoSocial, usuarioActual);
+      suscriptor(estadoSocial, usuarioActual, errorEstadoSocial, esCuentaPermanente());
       return () => suscriptoresSocial.delete(suscriptor);
     }
 

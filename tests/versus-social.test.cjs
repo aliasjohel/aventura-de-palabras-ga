@@ -29,6 +29,10 @@ for (const id of [
 
 assert.match(client, /detectSessionInUrl: true/);
 assert.match(adapter, /auth\.updateUser\(/);
+assert.match(adapter, /auth\.refreshSession\(sesion\)/);
+assert.match(adapter, /claims\.is_anonymous === false/);
+assert.match(adapter, /programarSincronizacionAuth\(\)/);
+assert.doesNotMatch(adapter, /queueMicrotask\(/);
 assert.match(adapter, /auth\.linkIdentity\(/);
 assert.match(adapter, /send_versus_friend_request/);
 assert.match(adapter, /respond_versus_invite/);
@@ -57,7 +61,7 @@ assert.match(migration, /insert into public\.versus_rooms[\s\S]+values \(v_code,
 assert.match(migration, /insert into public\.versus_players[\s\S]+v_invite\.challenger_id[\s\S]+v_user_id/);
 assert.match(hardening, /create index versus_invites_room_idx/);
 assert.match(hardening, /select public\.is_permanent_versus_user\(\)/);
-assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v100`/);
-assert.match(sw, /"\.\/js\/versus-room-supabase\.js": "20260817-amigos-cuentas-1"/);
+assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v101`/);
+assert.match(sw, /"\.\/js\/versus-room-supabase\.js": "20260817-auth-cuentas-2"/);
 
 console.log("versus-social: comprobaciones correctas");

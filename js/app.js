@@ -916,6 +916,7 @@ function mostrarErrorSalaVersus(mensaje = "") {
 }
 
 function mostrarMensajeAmigosVersus(mensaje = "", esError = false) {
+  delete mensajeAmigosVersus.dataset.errorConexion;
   mensajeAmigosVersus.textContent = mensaje;
   mensajeAmigosVersus.classList.toggle("error", esError);
 }
@@ -942,14 +943,31 @@ function crearFilaSocialVersus({ nombre, detalle, acciones = [] }) {
   return fila;
 }
 
-function actualizarPanelAmigosVersus(estado, usuario) {
-  const permanente = usuario?.is_anonymous === false;
+function actualizarPanelAmigosVersus(
+  estado,
+  usuario,
+  errorSocial = null,
+  cuentaPermanente = false,
+) {
+  const permanente = Boolean(usuario && cuentaPermanente);
   registroCuentaVersus.classList.toggle("oculto", permanente);
   crearPerfilVersus.classList.toggle("oculto", !permanente || Boolean(estado?.profile));
   contenidoAmigosVersus.classList.toggle("oculto", !estado?.profile);
-  estadoCuentaVersus.textContent = permanente
-    ? (estado?.profile ? estado.profile.alias : "Cuenta guardada")
+  estadoCuentaVersus.textContent = errorSocial
+    ? "Conexión pendiente"
+    : permanente
+      ? (estado?.profile ? estado.profile.alias : "Cuenta guardada")
     : "Modo invitado";
+
+  if (errorSocial) {
+    mensajeAmigosVersus.dataset.errorConexion = "true";
+    mensajeAmigosVersus.textContent = `${errorSocial.message} Volvé a abrir Multijugador para reintentar.`;
+    mensajeAmigosVersus.classList.add("error");
+  } else if (mensajeAmigosVersus.dataset.errorConexion) {
+    delete mensajeAmigosVersus.dataset.errorConexion;
+    mensajeAmigosVersus.textContent = "";
+    mensajeAmigosVersus.classList.remove("error");
+  }
 
   if (!permanente || !estado?.profile) return;
   aliasSalaVersus.value = estado.profile.alias;
@@ -1515,6 +1533,7 @@ async function abrirSalaVersus() {
     await asegurarConexionSalasVersus();
     actualizarSalaVersus(adaptadorSalasVersus.obtenerSala());
   } catch (error) {
+    estadoCuentaVersus.textContent = "Sin conexión";
     mostrarErrorSalaVersus(error.message || "No pudimos conectarnos con Supabase.");
   } finally {
     btnCrearSalaVersus.disabled = false;
