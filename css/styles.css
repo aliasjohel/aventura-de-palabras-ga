@@ -721,7 +721,7 @@
     position: absolute;
     z-index: 1;
     left: -6%;
-    bottom: -10%;
+    bottom: -2%;
     width: 112%;
     height: 124%;
     border-radius: 44% 56% 0 0 / 7% 10% 0 0;
@@ -1172,10 +1172,10 @@
 .charco-bestia-tintero-kalamo {
     position: absolute;
     z-index: 1;
-    left: -5%;
-    bottom: -1%;
-    width: 34%;
-    height: 21%;
+    left: -37%;
+    bottom: -2%;
+    width: 42%;
+    height: 19%;
     border-radius: 50%;
     background:
         radial-gradient(ellipse, rgba(31, 112, 133, .72) 0 8%, #11164a 34%, #05061e 68%, transparent 72%);
@@ -1186,7 +1186,7 @@
     position: absolute;
     z-index: 4;
     left: 0;
-    bottom: -5%;
+    bottom: -8%;
     display: block;
     width: 52%;
     height: auto;
@@ -1199,7 +1199,7 @@
     position: absolute;
     z-index: 5;
     left: 0;
-    bottom: 4%;
+    bottom: 0;
     width: 17%;
     height: 54%;
     border-right: 4px solid rgba(89, 210, 224, .72);
@@ -5976,7 +5976,7 @@ button:disabled {
 
 .cinematica-guardiana-victoria {
     left: 0;
-    bottom: -10%;
+    bottom: -2%;
 }
 
 .cinematica-victima-fauces {

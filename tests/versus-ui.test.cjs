@@ -341,6 +341,7 @@ assert.match(estilos, /@keyframes formarKalamoTintaTres/);
 assert.match(estilos, /@keyframes proyectilPalabrasKalamoJugador/);
 assert.match(html, /chorro-tinta-codigo-kalamo/);
 assert.match(app, /embestida-bestia-tintero-kalamo/);
+assert.match(app, /esPantallaCelularHorizontal/);
 assert.doesNotMatch(app, /tinta-vortice-teclado-kalamo\.png/);
 assert.doesNotMatch(html, /tinta-vortice-teclado-kalamo\.png/);
 assert.doesNotMatch(app, /crearZonaTinta\(/);

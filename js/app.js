@@ -3183,11 +3183,13 @@ function prepararHurtoTeclasKalamoVersus() {
   const anchoTeclado = derechaTeclas - izquierdaTeclas;
   const altoTeclado = fondoTeclas - techoTeclas;
   const altoEscena = Math.max(96, altoTeclado * 1.9);
+  const esPantallaCelularHorizontal = window.matchMedia("(orientation: landscape) and (max-height: 600px)").matches;
+  const elevacionEscena = esPantallaCelularHorizontal ? 0.5 : 0.56;
   const escena = document.createElement("div");
   escena.className = "embestida-bestia-tintero-kalamo";
   escena.setAttribute("aria-hidden", "true");
   escena.style.left = `${izquierdaTeclas - marco.left}px`;
-  escena.style.top = `${techoTeclas - marco.top - altoEscena * 0.6}px`;
+  escena.style.top = `${techoTeclas - marco.top - altoEscena * elevacionEscena}px`;
   escena.style.width = `${anchoTeclado}px`;
   escena.style.height = `${altoEscena}px`;
 
