@@ -269,9 +269,9 @@
 
 /* Kálamo v2: chorro de entrada, tinta viva y dibujos arrancados del libro. */
 .entrada-tinta-kalamo {
-    bottom: 0;
+    bottom: 18%;
     width: 42%;
-    height: 88%;
+    height: 70%;
 }
 .entrada-tinta-uno { left: -2%; }
 .entrada-tinta-dos { right: -2%; }
@@ -540,17 +540,17 @@
     82%, 100% { opacity: 0; transform: translateY(-16%) scale(.92); }
 }
 @keyframes formarKalamoTintaUno {
-    0%, 19% { opacity: 0; transform: translateY(18%) scale(.72); }
-    25%, 36% { opacity: 1; transform: translateY(4%) scale(.94); }
+    0%, 19% { opacity: 0; transform: translateY(7%) scale(.72); }
+    25%, 36% { opacity: 1; transform: translateY(1%) scale(.94); }
     43%, 100% { opacity: 0; transform: translateY(-2%) scale(1.02); }
 }
 @keyframes formarKalamoTintaDos {
-    0%, 34% { opacity: 0; transform: translateY(10%) scale(.82); }
-    41%, 53% { opacity: 1; transform: translateY(1%) scale(.98); }
+    0%, 34% { opacity: 0; transform: translateY(5%) scale(.82); }
+    41%, 53% { opacity: 1; transform: translateY(0) scale(.98); }
     61%, 100% { opacity: 0; transform: translateY(-1%) scale(1.02); }
 }
 @keyframes formarKalamoTintaTres {
-    0%, 51% { opacity: 0; transform: translateY(6%) scale(.9); }
+    0%, 51% { opacity: 0; transform: translateY(3%) scale(.9); }
     59%, 72% { opacity: 1; transform: none; }
     80%, 100% { opacity: 0; transform: scale(1.02); }
 }
@@ -1173,7 +1173,7 @@
     position: absolute;
     z-index: 1;
     left: -5%;
-    bottom: 3%;
+    bottom: -1%;
     width: 34%;
     height: 21%;
     border-radius: 50%;
@@ -1186,7 +1186,7 @@
     position: absolute;
     z-index: 4;
     left: 0;
-    bottom: -3%;
+    bottom: -5%;
     display: block;
     width: 52%;
     height: auto;
@@ -1199,7 +1199,7 @@
     position: absolute;
     z-index: 5;
     left: 0;
-    bottom: 8%;
+    bottom: 4%;
     width: 17%;
     height: 54%;
     border-right: 4px solid rgba(89, 210, 224, .72);
@@ -1296,6 +1296,50 @@
     0%, 26% { opacity: 0; transform: none; }
     35% { opacity: 1; }
     100% { opacity: 0; transform: translate(27px, -32px) rotate(118deg) scale(.18); }
+}
+
+.versus-palabra-uno.efecto-tinta-bestia-desafio {
+    isolation: isolate;
+    overflow: hidden;
+}
+.versus-palabra-uno.efecto-tinta-bestia-desafio::before,
+.versus-palabra-uno.efecto-tinta-bestia-desafio::after {
+    content: "";
+    position: absolute;
+    z-index: 8;
+    pointer-events: none;
+}
+.versus-palabra-uno.efecto-tinta-bestia-desafio::before {
+    inset: -18% -7%;
+    background:
+        radial-gradient(ellipse at 13% 44%, #07102d 0 9%, transparent 10%),
+        radial-gradient(ellipse at 28% 68%, #17124b 0 16%, transparent 17%),
+        radial-gradient(ellipse at 48% 38%, #07122f 0 23%, transparent 24%),
+        radial-gradient(ellipse at 70% 61%, #151047 0 22%, transparent 23%),
+        radial-gradient(ellipse at 91% 36%, #06102c 0 17%, transparent 18%),
+        linear-gradient(104deg, #05091f 8%, #10113e 46%, #07102d 82%);
+    filter: drop-shadow(0 0 8px rgba(32, 190, 194, .5));
+    clip-path: polygon(0 18%, 7% 10%, 13% 17%, 21% 5%, 31% 13%, 42% 3%, 53% 12%, 65% 5%, 77% 16%, 88% 7%, 100% 18%, 97% 83%, 88% 91%, 78% 84%, 67% 96%, 56% 87%, 45% 97%, 34% 86%, 21% 94%, 10% 84%, 2% 91%);
+    animation: cubrirPalabraTintaBestiaKalamo 5s cubic-bezier(.18, .72, .2, 1) both;
+}
+.versus-palabra-uno.efecto-tinta-bestia-desafio::after {
+    inset: 7% 4%;
+    border-radius: 44% 57% 39% 61%;
+    background:
+        radial-gradient(circle at 18% 28%, rgba(71, 225, 218, .52) 0 2%, transparent 3%),
+        radial-gradient(circle at 83% 76%, rgba(90, 61, 190, .7) 0 3%, transparent 4%),
+        linear-gradient(168deg, transparent 9%, rgba(43, 152, 168, .22) 22%, transparent 38% 64%, rgba(89, 50, 178, .28) 77%, transparent 90%);
+    animation: brilloManchaBestiaKalamo 5s ease both;
+}
+@keyframes cubrirPalabraTintaBestiaKalamo {
+    0%, 16% { opacity: 0; transform: translateX(-54%) scale(.08, .34) rotate(-4deg); }
+    24% { opacity: .95; transform: translateX(-22%) scale(.62, .82) rotate(1deg); }
+    34%, 88% { opacity: 1; transform: none; }
+    96%, 100% { opacity: 0; transform: scale(1.07, .84); filter: blur(2px); }
+}
+@keyframes brilloManchaBestiaKalamo {
+    0%, 23%, 96%, 100% { opacity: 0; }
+    31%, 89% { opacity: .85; }
 }
 
 .kalamo-final-golpea {

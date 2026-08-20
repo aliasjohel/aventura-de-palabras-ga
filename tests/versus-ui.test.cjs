@@ -345,6 +345,8 @@ assert.doesNotMatch(app, /tinta-vortice-teclado-kalamo\.png/);
 assert.doesNotMatch(html, /tinta-vortice-teclado-kalamo\.png/);
 assert.doesNotMatch(app, /crearZonaTinta\(/);
 assert.match(app, /fragmento-tecla-bestia-kalamo/);
+assert.match(app, /efecto-tinta-bestia-desafio/);
+assert.match(estilos, /cubrirPalabraTintaBestiaKalamo/);
 assert.match(estilos, /@keyframes faseAlcanzaLibroKalamo/);
 assert.match(estilos, /@keyframes faseExtraeArmasKalamo/);
 assert.match(estilos, /@keyframes faseGolpeaArmasKalamo/);

@@ -3126,6 +3126,7 @@ function limpiarEfectoVisualHabilidadVersus() {
     "efecto-caos-desafio",
     "efecto-agujero-negro-desafio",
     "efecto-ruptura-desafio",
+    "efecto-tinta-bestia-desafio",
   );
   desafioJugadorVersus.style.removeProperty("--duracion-agujero-negro");
   marcoVersus.classList.remove("efecto-inversion-lunar");
@@ -3186,7 +3187,7 @@ function prepararHurtoTeclasKalamoVersus() {
   escena.className = "embestida-bestia-tintero-kalamo";
   escena.setAttribute("aria-hidden", "true");
   escena.style.left = `${izquierdaTeclas - marco.left}px`;
-  escena.style.top = `${techoTeclas - marco.top - altoEscena * 0.68}px`;
+  escena.style.top = `${techoTeclas - marco.top - altoEscena * 0.6}px`;
   escena.style.width = `${anchoTeclado}px`;
   escena.style.height = `${altoEscena}px`;
 
@@ -3363,6 +3364,7 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
   if (efecto === "key_theft") {
     prepararHurtoTeclasKalamoVersus();
     tecladoVersus.classList.add("efecto-hurto-teclas");
+    desafioJugadorVersus.classList.add("efecto-tinta-bestia-desafio");
   }
   if (["roots", "black_hole", "key_bounce", "ice_screen", "key_theft"].includes(efecto)) tecladoVersus.querySelectorAll("button").forEach((boton) => { boton.disabled = true; });
 
@@ -3378,6 +3380,7 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
       "efecto-caos-desafio",
       "efecto-agujero-negro-desafio",
       "efecto-ruptura-desafio",
+      "efecto-tinta-bestia-desafio",
     );
     desafioJugadorVersus.style.removeProperty("--duracion-agujero-negro");
     teclasRotasVersus.classList.remove("activa");
