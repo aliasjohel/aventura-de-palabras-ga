@@ -47,6 +47,10 @@ const azrak = fs.readFileSync(
   path.join(migrations, "20260812230407_add_azrak_forced_miss.sql"),
   "utf8",
 );
+const kalamo = fs.readFileSync(
+  path.join(migrations, "20260818194315_add_kalamo_key_theft.sql"),
+  "utf8",
+);
 const dictionary = fs.readFileSync(
   path.join(migrations, "20260809015253_versus_thematic_dictionary.sql"),
   "utf8",
@@ -96,6 +100,13 @@ assert.match(azrak, /not exists \([\s\S]+versus_letter_key\(character\) = candid
 assert.match(azrak, /v_opponent\.errors \+ 1 >= 6/);
 assert.match(azrak, /'letter', v_forced_letter/);
 assert.match(azrak, /revoke execute on function public\.activate_versus_ability\(uuid\) from public, anon/);
+assert.match(kalamo, /'kalamo'/);
+assert.match(kalamo, /when 'kalamo' then 'key_theft'/);
+assert.match(kalamo, /active_effect in \('roots', 'roar', 'shuffle', 'invert', 'black_hole', 'key_bounce', 'ice_screen', 'key_theft'\)/);
+assert.match(kalamo, /v_expires_at := now\(\) \+ interval '5 seconds'/);
+assert.match(kalamo, /v_character = 'azrak'[\s\S]+v_effect := 'forced_miss'/);
+assert.match(kalamo, /revoke execute on function public\.set_versus_character\(uuid, text, boolean\) from public, anon/);
+assert.match(kalamo, /revoke execute on function public\.activate_versus_ability\(uuid\) from public, anon/);
 assert.match(dictionary, /create schema if not exists private/);
 assert.match(dictionary, /alter table private\.versus_word_dictionary enable row level security/);
 assert.match(dictionary, /revoke all on table private\.versus_word_dictionary from public, anon, authenticated/);

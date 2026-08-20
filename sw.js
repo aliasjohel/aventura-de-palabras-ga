@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v102`;
+const CACHE_NAME = `${CACHE_PREFIX}v109`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -10,6 +10,13 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v99`,
   `${CACHE_PREFIX}v100`,
   `${CACHE_PREFIX}v101`,
+  `${CACHE_PREFIX}v102`,
+  `${CACHE_PREFIX}v103`,
+  `${CACHE_PREFIX}v104`,
+  `${CACHE_PREFIX}v105`,
+  `${CACHE_PREFIX}v106`,
+  `${CACHE_PREFIX}v107`,
+  `${CACHE_PREFIX}v108`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -145,6 +152,24 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/carnivora-devorando-guardian-alba.png",
   "./assets/images/personajes/versus/carnivora-devorando-dragon-hielo.png",
   "./assets/images/personajes/versus/carnivora-devorando-azrak.png",
+  "./assets/images/personajes/versus/kalamo-base.png",
+  "./assets/images/personajes/versus/kalamo-ataque.png",
+  "./assets/images/personajes/versus/kalamo-habilidad.png",
+  "./assets/images/personajes/versus/kalamo-impacto.png",
+  "./assets/images/personajes/versus/kalamo-victoria.png",
+  "./assets/images/personajes/versus/carnivora-devorando-kalamo.png",
+  "./assets/images/personajes/versus/mano-abismo-atrapa-kalamo.png",
+  "./assets/images/personajes/versus/proyectil-palabras-kalamo.png",
+  "./assets/images/personajes/versus/entrada-chorro-tinta-kalamo.png",
+  "./assets/images/personajes/versus/libro-sello-kalamo.png",
+  "./assets/images/personajes/versus/kalamo-final-golpe-impulso.png",
+  "./assets/images/personajes/versus/kalamo-entrada-formacion-1.png",
+  "./assets/images/personajes/versus/kalamo-entrada-formacion-2.png",
+  "./assets/images/personajes/versus/kalamo-entrada-formacion-3.png",
+  "./assets/images/personajes/versus/tinta-vortice-teclado-kalamo.png",
+  "./assets/images/personajes/versus/kalamo-final-alcanza-libro.png",
+  "./assets/images/personajes/versus/kalamo-final-extrae-armas.png",
+  "./assets/images/personajes/versus/bestia-tintero-kalamo.png",
 ];
 
 /*
@@ -153,15 +178,18 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260817-mini-impactos-3",
-  "./index.html": "20260817-mini-impactos-3",
-  "./css/styles.css": "20260817-mini-impactos-3",
+  "./": "20260820-kalamo-bestia-11",
+  "./index.html": "20260820-kalamo-bestia-11",
+  "./css/styles.css": "20260820-kalamo-bestia-11",
+  "./js/app.js": "20260820-kalamo-bestia-11",
+  "./assets/images/personajes/versus/bestia-tintero-kalamo.png": "20260820-kalamo-bestia-11",
+  "./assets/images/personajes/versus/libro-sello-kalamo.png": "20260820-kalamo-tinta-centro-2",
+  "./assets/images/personajes/versus/kalamo-final-golpe-impulso.png": "20260820-kalamo-tinta-centro-2",
   "./assets/images/fondos/bosque-6-lobos-v2.png": "20260817-lobos-alineados-1",
   "./js/adventure-puzzles.js": "20260816-puzzles-bosque-1",
   "./js/versus-engine.js": "20260817-versus-recuperacion-1",
   "./js/supabase-client.js": "20260817-amigos-cuentas-1",
   "./js/versus-room-supabase.js": "20260817-auth-cuentas-2",
-  "./js/app.js": "20260817-mini-impactos-3",
   "./assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png": "20260817-alume-sin-rayo-1",
   "./js/pwa.js": "20260814-pwa-diferencial-1",
 };

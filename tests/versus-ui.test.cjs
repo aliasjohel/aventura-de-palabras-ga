@@ -47,6 +47,7 @@ assert.doesNotMatch(cierreOnline, /mostrarResultadoPartidaVersus\(ganador, detal
 for (const ataque of ["bumeran", "raices", "rugido-dragon", "zarpazo-feral", "corte-sombrio", "corte-solar"]) {
   assert.match(app, new RegExp(`ataque === "${ataque}"`));
 }
+assert.match(app, /ataque === "latigazo-tinta"/);
 for (const final of [
   "prision-esmeralda",
   "eclipse-violeta",
@@ -305,6 +306,56 @@ assert.match(app, /function obtenerLetraIncorrectaDisponibleVersus\(/);
 assert.match(app, /function aplicarFalloForzadoJugadorLocalVersus\(/);
 assert.match(app, /function reproducirAtaqueAzrakVersus\(/);
 assert.match(app, /function reproducirEclipseInfernalVersus\(/);
+assert.match(html, /data-personaje="kalamo"/);
+assert.match(app, /kalamo: \{[\s\S]+ataque: "latigazo-tinta"[\s\S]+final: "libro-palabras-perdidas"/);
+assert.match(app, /kalamo: \{ nombre: "Bestia del Tintero"[\s\S]+efecto: "key_theft"[\s\S]+duracion: 5000/);
+assert.match(app, /function elegirTeclasRobadasKalamo\(\)[\s\S]+return filasTeclado\.flat\(\)/);
+assert.match(app, /teclas\.forEach\(\(tecla\) => tecla\.classList\.add\("tecla-mini-robada-kalamo"\)\)/);
+assert.match(app, /function reproducirAtaqueKalamoVersus\(/);
+assert.match(app, /function reproducirLibroPalabrasPerdidasVersus\(/);
+assert.match(app, /carnivora-devorando-kalamo\.png/);
+assert.match(app, /mano-abismo-atrapa-\$\{victimaFinal\.replaceAll\("_", "-"\)\}\.png/);
+assert.match(html, /libro-sello-kalamo\.png/);
+assert.match(html, /mano-abismo-atrapa-kalamo\.png|value="kalamo"/);
+assert.match(estilos, /@keyframes emergerCharcoKalamoJugador/);
+assert.match(estilos, /@keyframes desaparecerTodoTecladoKalamo/);
+assert.match(estilos, /@keyframes libroAbsorbeYCierraKalamo/);
+for (const recurso of [
+  "kalamo-base", "kalamo-ataque", "kalamo-habilidad", "kalamo-impacto", "kalamo-victoria",
+  "carnivora-devorando-kalamo", "mano-abismo-atrapa-kalamo",
+]) {
+  assert.match(serviceWorker, new RegExp(`${recurso}\\.png`));
+}
+for (const recurso of [
+  "proyectil-palabras-kalamo", "entrada-chorro-tinta-kalamo", "libro-sello-kalamo",
+  "kalamo-entrada-formacion-1", "kalamo-entrada-formacion-2", "kalamo-entrada-formacion-3",
+  "kalamo-final-alcanza-libro",
+  "kalamo-final-extrae-armas", "kalamo-final-golpe-impulso",
+]) {
+  assert.match(html, new RegExp(`${recurso}\\.png`));
+  assert.match(serviceWorker, new RegExp(`${recurso}\\.png`));
+}
+assert.match(estilos, /@keyframes formarKalamoTintaUno/);
+assert.match(estilos, /@keyframes formarKalamoTintaDos/);
+assert.match(estilos, /@keyframes formarKalamoTintaTres/);
+assert.match(estilos, /@keyframes proyectilPalabrasKalamoJugador/);
+assert.match(html, /chorro-tinta-codigo-kalamo/);
+assert.match(app, /embestida-bestia-tintero-kalamo/);
+assert.doesNotMatch(app, /tinta-vortice-teclado-kalamo\.png/);
+assert.doesNotMatch(html, /tinta-vortice-teclado-kalamo\.png/);
+assert.doesNotMatch(app, /crearZonaTinta\(/);
+assert.match(app, /fragmento-tecla-bestia-kalamo/);
+assert.match(estilos, /@keyframes faseAlcanzaLibroKalamo/);
+assert.match(estilos, /@keyframes faseExtraeArmasKalamo/);
+assert.match(estilos, /@keyframes faseGolpeaArmasKalamo/);
+assert.match(estilos, /@keyframes faseGolpeaConImpulsoKalamo/);
+assert.match(estilos, /@keyframes victimaImpulsadaDentroLibroKalamo/);
+assert.match(app, /function prepararTrayectoriaTintaKalamo\(/);
+assert.match(app, /bestia-tintero-kalamo\.png/);
+assert.match(estilos, /@keyframes embestirBestiaTinteroKalamo/);
+assert.match(estilos, /@keyframes teclaEmbistidaBestiaKalamo/);
+assert.match(serviceWorker, /bestia-tintero-kalamo\.png/);
+assert.match(estilos, /@keyframes victimaFinalSecuencialKalamo/);
 assert.match(html, /corte-infernal-azrak\.png/);
 assert.match(html, /calavera-ignea-azrak\.png/);
 assert.match(html, /azrak-invocacion-portal\.png/);

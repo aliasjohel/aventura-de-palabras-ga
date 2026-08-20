@@ -14,16 +14,26 @@
     <title>Aventura de Palabras - GA Games</title>
     <style>
         /* Evita que el menú llegue a verse antes de cargar los estilos de la introducción. */
-        html { background: #000; }
-        body.intro-pendiente { margin: 0; background: #000; overflow: hidden; }
-        body.intro-pendiente > .app { visibility: hidden; }
+        html {
+            background: #000;
+        }
+
+        body.intro-pendiente {
+            margin: 0;
+            background: #000;
+            overflow: hidden;
+        }
+
+        body.intro-pendiente>.app {
+            visibility: hidden;
+        }
     </style>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260817-mini-impactos-3">
+    <link rel="stylesheet" href="css/styles.css?v=20260820-kalamo-bestia-11">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -72,7 +82,8 @@
                 </button>
                 <button id="btnVersus" class="btn-versus-menu">⚔️ Multijugador</button>
                 <button id="btnArcade" class="btn-arcade-menu" type="button">🏰 Modo Arcade</button>
-                <button id="btnTutorialVersus" class="btn-tutorial-versus-menu" type="button">❔ Cómo jugar multijugador</button>
+                <button id="btnTutorialVersus" class="btn-tutorial-versus-menu" type="button">❔ Cómo jugar
+                    multijugador</button>
                 <button disabled>Estadísticas</button>
                 <button id="btnConfiguracion" type="button">Configuración</button>
 
@@ -149,7 +160,8 @@
                             <button id="btnCargaTutorialVersus" class="carga-tutorial-versus" type="button">
                                 <span>✨ Acertar 8 letras</span><i><b id="barraCargaTutorialVersus"></b></i>
                             </button>
-                            <button id="btnHabilidadTutorialVersus" class="habilidad-tutorial-versus" type="button" disabled>
+                            <button id="btnHabilidadTutorialVersus" class="habilidad-tutorial-versus" type="button"
+                                disabled>
                                 🌿 Usar Enredo de raíces
                             </button>
                             <div id="impactoTutorialVersus" class="impacto-tutorial-versus" aria-hidden="true">
@@ -161,8 +173,10 @@
                         <div class="texto-paso-tutorial-versus">
                             <small id="numeroPasoTutorialVersus">PASO 1 DE 5</small>
                             <h2 id="tituloPasoTutorialVersus">Completá la palabra</h2>
-                            <p id="descripcionPasoTutorialVersus">Elegí la A para completar GATO. Cada palabra terminada le quita un corazón al rival.</p>
-                            <p id="accionPasoTutorialVersus" class="accion-paso-tutorial-versus">Tocá la letra A para continuar.</p>
+                            <p id="descripcionPasoTutorialVersus">Elegí la A para completar GATO. Cada palabra terminada
+                                le quita un corazón al rival.</p>
+                            <p id="accionPasoTutorialVersus" class="accion-paso-tutorial-versus">Tocá la letra A para
+                                continuar.</p>
                             <button id="btnSiguienteTutorialVersus" type="button" disabled>Siguiente</button>
                         </div>
                     </section>
@@ -284,8 +298,7 @@
 
             <button id="btnSalirJuego" class="secundario">Menú</button>
 
-            <div id="herramientasPruebasJuego" class="dev-tools oculto"
-                aria-label="Navegación temporal de misiones">
+            <div id="herramientasPruebasJuego" class="dev-tools oculto" aria-label="Navegación temporal de misiones">
                 <button id="btnMisionAnterior" type="button">◀ Misión anterior</button>
                 <button id="btnMisionSiguiente" type="button">▶ Misión siguiente</button>
                 <button id="btnProbarPruebaBosque" type="button">🧩 Probar puzzle</button>
@@ -298,7 +311,8 @@
                     <header class="cabecera-mural-santuario">
                         <span class="etiqueta-mural-santuario">PRUEBA DEL GUARDIÁN</span>
                         <h2 id="tituloMuralSantuario">Reconstruí el mural del dragón</h2>
-                        <p id="instruccionMuralSantuario">Reconstruí la imagen a tu manera: podés colocar cualquier fragmento, moverlo, intercambiarlo o retirarlo hasta descubrir la forma verdadera.</p>
+                        <p id="instruccionMuralSantuario">Reconstruí la imagen a tu manera: podés colocar cualquier
+                            fragmento, moverlo, intercambiarlo o retirarlo hasta descubrir la forma verdadera.</p>
                     </header>
                     <div class="zona-rompecabezas-mural">
                         <div id="tableroMuralSantuario" class="tablero-mural-santuario" role="grid"
@@ -309,7 +323,8 @@
                                 aria-label="Piezas disponibles"></div>
                         </div>
                     </div>
-                    <p id="estadoMuralSantuario" class="estado-mural-santuario" role="status" aria-live="polite">0 de 9 espacios ocupados</p>
+                    <p id="estadoMuralSantuario" class="estado-mural-santuario" role="status" aria-live="polite">0 de 9
+                        espacios ocupados</p>
                     <div class="acciones-mural-santuario">
                         <button id="btnAyudaMuralSantuario" type="button">✨ Mostrar guía</button>
                         <button id="btnRetirarPiezaMural" type="button" disabled>↩ Retirar pieza</button>
@@ -324,7 +339,8 @@
                     <header class="cabecera-prueba-bosque">
                         <span id="etiquetaPruebaBosque" class="etiqueta-prueba-bosque">PRUEBA DEL SENDERO</span>
                         <h2 id="tituloPruebaBosque">Abrí un camino entre las ramas</h2>
-                        <p id="instruccionPruebaBosque">Armá las filas 1-2-3, 4-5-6 y 7-8-vacío. Tocá una pieza iluminada para moverla al espacio que dice ACÁ.</p>
+                        <p id="instruccionPruebaBosque">Armá las filas 1-2-3, 4-5-6 y 7-8-vacío. Tocá una pieza
+                            iluminada para moverla al espacio que dice ACÁ.</p>
                     </header>
 
                     <div id="puzzleRamasDeslizante" class="puzzle-ramas-deslizante">
@@ -335,12 +351,17 @@
                     <div id="puzzleMemoriaLobos" class="puzzle-memoria-lobos oculto">
                         <div id="escenaMemoriaLobos" class="escena-memoria-lobos"
                             aria-label="Cuatro lobos observando desde el bosque">
-                            <button type="button" class="lobo-memoria lobo-memoria-1" data-lobo="0" aria-label="Lobos de la izquierda"><span></span></button>
-                            <button type="button" class="lobo-memoria lobo-memoria-2" data-lobo="1" aria-label="Lobos de la derecha"><span></span></button>
-                            <button type="button" class="lobo-memoria lobo-memoria-3" data-lobo="2" aria-label="Lobos del centro, a la izquierda"><span></span></button>
-                            <button type="button" class="lobo-memoria lobo-memoria-4" data-lobo="3" aria-label="Lobos del centro, a la derecha"><span></span></button>
+                            <button type="button" class="lobo-memoria lobo-memoria-1" data-lobo="0"
+                                aria-label="Lobos de la izquierda"><span></span></button>
+                            <button type="button" class="lobo-memoria lobo-memoria-2" data-lobo="1"
+                                aria-label="Lobos de la derecha"><span></span></button>
+                            <button type="button" class="lobo-memoria lobo-memoria-3" data-lobo="2"
+                                aria-label="Lobos del centro, a la izquierda"><span></span></button>
+                            <button type="button" class="lobo-memoria lobo-memoria-4" data-lobo="3"
+                                aria-label="Lobos del centro, a la derecha"><span></span></button>
                         </div>
-                        <div id="progresoMemoriaLobos" class="progreso-memoria-lobos" aria-label="Tres rondas de memoria">
+                        <div id="progresoMemoriaLobos" class="progreso-memoria-lobos"
+                            aria-label="Tres rondas de memoria">
                             <span></span><span></span><span></span>
                         </div>
                     </div>
@@ -402,7 +423,8 @@
                         </div>
 
                         <div id="registroCuentaVersus" class="registro-cuenta-versus oculto">
-                            <p>Guard&aacute; tu jugador para tener amigos y recibir desaf&iacute;os en cualquier dispositivo.</p>
+                            <p>Guard&aacute; tu jugador para tener amigos y recibir desaf&iacute;os en cualquier
+                                dispositivo.</p>
                             <label for="correoCuentaVersus">
                                 <span>Tu correo</span>
                                 <input id="correoCuentaVersus" type="email" autocomplete="email"
@@ -410,8 +432,10 @@
                             </label>
                             <div class="acciones-cuenta-versus">
                                 <button id="btnGuardarCuentaVersus" type="button">Guardar mi jugador</button>
-                                <button id="btnEntrarCuentaVersus" class="secundario" type="button">Ya tengo cuenta</button>
-                                <button id="btnGoogleCuentaVersus" class="secundario" type="button">Continuar con Google</button>
+                                <button id="btnEntrarCuentaVersus" class="secundario" type="button">Ya tengo
+                                    cuenta</button>
+                                <button id="btnGoogleCuentaVersus" class="secundario" type="button">Continuar con
+                                    Google</button>
                             </div>
                             <small>Pod&eacute;s seguir jugando como invitado si no quer&eacute;s registrarte.</small>
                         </div>
@@ -436,8 +460,8 @@
                             </div>
                             <form id="formAgregarAmigoVersus" class="agregar-amigo-versus">
                                 <label for="codigoNuevoAmigoVersus" class="sr-only">C&oacute;digo de amigo</label>
-                                <input id="codigoNuevoAmigoVersus" type="text" maxlength="8"
-                                    autocomplete="off" autocapitalize="characters" placeholder="C&Oacute;DIGO DE AMIGO">
+                                <input id="codigoNuevoAmigoVersus" type="text" maxlength="8" autocomplete="off"
+                                    autocapitalize="characters" placeholder="C&Oacute;DIGO DE AMIGO">
                                 <button type="submit">Agregar</button>
                             </form>
                             <div id="solicitudesAmigosVersus" class="lista-social-versus"></div>
@@ -453,32 +477,32 @@
 
                     <label class="campo-sala-versus campo-alias-versus" for="aliasSalaVersus">
                         <span>Tu nombre</span>
-                        <input id="aliasSalaVersus" type="text" minlength="2" maxlength="16"
-                            autocomplete="nickname" placeholder="Ej: Gabi">
+                        <input id="aliasSalaVersus" type="text" minlength="2" maxlength="16" autocomplete="nickname"
+                            placeholder="Ej: Gabi">
                     </label>
 
                     <details class="salas-manuales-versus" open>
                         <summary>Jugar con c&oacute;digo de sala</summary>
-                    <div class="acciones-sala-versus">
-                        <article class="opcion-sala-versus">
-                            <span class="icono-opcion-sala" aria-hidden="true">&#10022;</span>
-                            <h3>Crear sala</h3>
-                            <p>Gener&aacute; un c&oacute;digo para compartir con tu rival.</p>
-                            <button id="btnCrearSalaVersus" type="button">Crear partida</button>
-                        </article>
+                        <div class="acciones-sala-versus">
+                            <article class="opcion-sala-versus">
+                                <span class="icono-opcion-sala" aria-hidden="true">&#10022;</span>
+                                <h3>Crear sala</h3>
+                                <p>Gener&aacute; un c&oacute;digo para compartir con tu rival.</p>
+                                <button id="btnCrearSalaVersus" type="button">Crear partida</button>
+                            </article>
 
-                        <article class="opcion-sala-versus">
-                            <span class="icono-opcion-sala" aria-hidden="true">&#9876;</span>
-                            <h3>Unirse</h3>
-                            <p>Ingres&aacute; el c&oacute;digo de seis caracteres.</p>
-                            <label class="campo-codigo-versus" for="codigoSalaVersus">
-                                <span class="sr-only">C&oacute;digo de sala</span>
-                                <input id="codigoSalaVersus" type="text" maxlength="6" inputmode="text"
-                                    autocomplete="off" autocapitalize="characters" placeholder="ABC123">
-                            </label>
-                            <button id="btnUnirseSalaVersus" type="button">Ingresar a sala</button>
-                        </article>
-                    </div>
+                            <article class="opcion-sala-versus">
+                                <span class="icono-opcion-sala" aria-hidden="true">&#9876;</span>
+                                <h3>Unirse</h3>
+                                <p>Ingres&aacute; el c&oacute;digo de seis caracteres.</p>
+                                <label class="campo-codigo-versus" for="codigoSalaVersus">
+                                    <span class="sr-only">C&oacute;digo de sala</span>
+                                    <input id="codigoSalaVersus" type="text" maxlength="6" inputmode="text"
+                                        autocomplete="off" autocapitalize="characters" placeholder="ABC123">
+                                </label>
+                                <button id="btnUnirseSalaVersus" type="button">Ingresar a sala</button>
+                            </article>
+                        </div>
                     </details>
                     <p id="errorSalaVersus" class="error-sala-versus" role="alert" aria-live="polite"></p>
                 </div>
@@ -487,7 +511,8 @@
                     <div class="codigo-creado-versus">
                         <span>C&Oacute;DIGO DE SALA</span>
                         <strong id="codigoCreadoVersus">------</strong>
-                        <button id="btnCopiarCodigoVersus" class="btn-copiar-codigo-versus" type="button">Copiar</button>
+                        <button id="btnCopiarCodigoVersus" class="btn-copiar-codigo-versus"
+                            type="button">Copiar</button>
                     </div>
 
                     <div id="jugadoresSalaVersus" class="jugadores-sala-versus"></div>
@@ -500,7 +525,8 @@
                     <button id="btnContinuarSalaVersus" class="btn-continuar-sala-versus" type="button" disabled>
                         Elegir personaje
                     </button>
-                    <small class="nota-adaptador-versus">Vista local de desarrollo. La conexi&oacute;n entre celulares se activar&aacute; con Supabase.</small>
+                    <small class="nota-adaptador-versus">Vista local de desarrollo. La conexi&oacute;n entre celulares
+                        se activar&aacute; con Supabase.</small>
                 </div>
             </div>
 
@@ -520,72 +546,84 @@
                 <header class="seleccion-personaje-cabecera">
                     <p id="etiquetaSeleccionPersonajeVersus">ELIGE A TU CAMPE&Oacute;N</p>
                     <h2 id="tituloSeleccionPersonajeVersus">Selecci&oacute;n de personaje</h2>
-                    <span id="detalleSeleccionPersonajeVersus">Todos est&aacute;n disponibles durante el desarrollo.</span>
+                    <span id="detalleSeleccionPersonajeVersus">Todos est&aacute;n disponibles durante el
+                        desarrollo.</span>
                 </header>
 
                 <div class="lista-personajes-versus" role="radiogroup" aria-label="Personajes disponibles">
-                    <button class="tarjeta-personaje-versus seleccionada" type="button" role="radio"
-                        aria-checked="true" data-personaje="explorador">
+                    <button class="tarjeta-personaje-versus seleccionada" type="button" role="radio" aria-checked="true"
+                        data-personaje="explorador">
                         <span class="estado-personaje-versus">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/explorador-base.png" alt="Explorador">
                         <strong>Explorador</strong>
                         <small>Bumer&aacute;n &middot; Trampa Selv&aacute;tica</small>
                     </button>
-                    <button class="tarjeta-personaje-versus" type="button" role="radio"
-                        aria-checked="false" data-personaje="mago">
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="mago">
                         <span class="estado-personaje-versus">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/mago-base.png" alt="Mago">
                         <strong>Mago</strong>
                         <small>Fuego arcano &middot; Eclipse Violeta</small>
                     </button>
-                    <button class="tarjeta-personaje-versus" type="button" role="radio"
-                        aria-checked="false" data-personaje="guardiana">
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="guardiana">
                         <span class="estado-personaje-versus">DISPONIBLE</span>
-                        <img src="assets/images/personajes/coleccion/guardiana-bosque-base.png" alt="Guardiana del Bosque">
+                        <img src="assets/images/personajes/coleccion/guardiana-bosque-base.png"
+                            alt="Guardiana del Bosque">
                         <strong>Guardiana</strong>
                         <small>Halc&oacute;n esmeralda &middot; Fauces Esmeralda</small>
                     </button>
-                    <button class="tarjeta-personaje-versus" type="button" role="radio"
-                        aria-checked="false" data-personaje="dragon">
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="dragon">
                         <span class="estado-personaje-versus">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/dragon-base.png" alt="Drag&oacute;n joven">
                         <strong>Drag&oacute;n</strong>
                         <small>Rugido drac&oacute;nico &middot; Llamado de la Matriarca</small>
                     </button>
-                    <button class="tarjeta-personaje-versus" type="button" role="radio"
-                        aria-checked="false" data-personaje="hombre_lobo">
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="hombre_lobo">
                         <span class="estado-personaje-versus">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/hombre-lobo-base.png" alt="Hombre lobo">
                         <strong>Hombre Lobo</strong>
                         <small>Zarpazo Feral &middot; Cacer&iacute;a de Luna Llena</small>
                     </button>
-                    <button class="tarjeta-personaje-versus" type="button" role="radio"
-                        aria-checked="false" data-personaje="t_shadow">
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="t_shadow">
                         <span class="estado-personaje-versus">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/t-shadow-base.png" alt="T. Shadow">
                         <strong>T. Shadow</strong>
                         <small>Corte sombr&iacute;o &middot; Legi&oacute;n Umbr&iacute;a</small>
                     </button>
-                    <button class="tarjeta-personaje-versus" type="button" role="radio"
-                        aria-checked="false" data-personaje="guardian_alba">
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="guardian_alba">
                         <span class="estado-personaje-versus">DISPONIBLE</span>
-                        <img src="assets/images/personajes/versus/guardian-alba-base.png" alt="Guardi&aacute;n del Alba">
+                        <img src="assets/images/personajes/versus/guardian-alba-base.png"
+                            alt="Guardi&aacute;n del Alba">
                         <strong>A. Lumen</strong>
                         <small>Corte solar &middot; Juicio del Amanecer</small>
                     </button>
-                    <button class="tarjeta-personaje-versus" type="button" role="radio"
-                        aria-checked="false" data-personaje="dragon_hielo">
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="dragon_hielo">
                         <span class="estado-personaje-versus">DISPONIBLE</span>
-                        <img src="assets/images/personajes/versus/dragon-hielo-base.png" alt="Nivor, drag&oacute;n boreal">
+                        <img src="assets/images/personajes/versus/dragon-hielo-base.png"
+                            alt="Nivor, drag&oacute;n boreal">
                         <strong>Nivor</strong>
                         <small>Aliento glacial &middot; Cero Absoluto</small>
                     </button>
-                    <button class="tarjeta-personaje-versus" type="button" role="radio"
-                        aria-checked="false" data-personaje="azrak">
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="azrak">
                         <span class="estado-personaje-versus">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/azrak-base.png" alt="Azrak, guerrero infernal">
                         <strong>Azrak</strong>
                         <small>Corte Infernal &middot; Eclipse Infernal</small>
+                    </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="kalamo">
+                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <img src="assets/images/personajes/versus/kalamo-base.png"
+                            alt="K&aacute;lamo, ladr&oacute;n de letras">
+                        <strong>K&aacute;lamo</strong>
+                        <small>Latigazo de tinta &middot; Libro de las Palabras Perdidas</small>
                     </button>
                 </div>
 
@@ -641,59 +679,54 @@
 
                             <label class="campo-palabra-secreta" for="palabraSecretaVersus1">
                                 <b>1</b>
-                                <input id="palabraSecretaVersus1" class="input-palabra-versus" type="text"
-                                    minlength="3" maxlength="12" autocomplete="off" spellcheck="false"
-                                    placeholder="Primera palabra">
+                                <input id="palabraSecretaVersus1" class="input-palabra-versus" type="text" minlength="3"
+                                    maxlength="12" autocomplete="off" spellcheck="false" placeholder="Primera palabra">
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </label>
 
                             <label class="campo-palabra-secreta" for="palabraSecretaVersus2">
                                 <b>2</b>
-                                <input id="palabraSecretaVersus2" class="input-palabra-versus" type="text"
-                                    minlength="3" maxlength="12" autocomplete="off" spellcheck="false"
-                                    placeholder="Segunda palabra">
+                                <input id="palabraSecretaVersus2" class="input-palabra-versus" type="text" minlength="3"
+                                    maxlength="12" autocomplete="off" spellcheck="false" placeholder="Segunda palabra">
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </label>
 
                             <label class="campo-palabra-secreta" for="palabraSecretaVersus3">
                                 <b>3</b>
-                                <input id="palabraSecretaVersus3" class="input-palabra-versus" type="text"
-                                    minlength="3" maxlength="12" autocomplete="off" spellcheck="false"
-                                    placeholder="Tercera palabra">
+                                <input id="palabraSecretaVersus3" class="input-palabra-versus" type="text" minlength="3"
+                                    maxlength="12" autocomplete="off" spellcheck="false" placeholder="Tercera palabra">
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </label>
 
                             <label class="campo-palabra-secreta" for="palabraSecretaVersus4">
                                 <b>4</b>
-                                <input id="palabraSecretaVersus4" class="input-palabra-versus" type="text"
-                                    minlength="3" maxlength="12" autocomplete="off" spellcheck="false"
-                                    placeholder="Cuarta palabra">
+                                <input id="palabraSecretaVersus4" class="input-palabra-versus" type="text" minlength="3"
+                                    maxlength="12" autocomplete="off" spellcheck="false" placeholder="Cuarta palabra">
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </label>
 
                             <label class="campo-palabra-secreta" for="palabraSecretaVersus5">
                                 <b>5</b>
-                                <input id="palabraSecretaVersus5" class="input-palabra-versus" type="text"
-                                    minlength="3" maxlength="12" autocomplete="off" spellcheck="false"
-                                    placeholder="Quinta palabra">
+                                <input id="palabraSecretaVersus5" class="input-palabra-versus" type="text" minlength="3"
+                                    maxlength="12" autocomplete="off" spellcheck="false" placeholder="Quinta palabra">
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </label>
                         </fieldset>
 
-                        <button id="btnPalabrasAleatoriasVersus" class="btn-palabras-aleatorias-versus"
-                            type="button">✨ Elegir palabras por m&iacute;</button>
+                        <button id="btnPalabrasAleatoriasVersus" class="btn-palabras-aleatorias-versus" type="button">✨
+                            Elegir palabras por m&iacute;</button>
 
                         <button id="btnConfirmarPalabrasVersus" class="btn-confirmar-palabras-versus" type="submit"
                             disabled>Confirmar palabras</button>
-                        <p id="estadoPreparacionRivalVersus" class="estado-preparacion-rival-versus"
-                            aria-live="polite">Tu rival est&aacute; preparando su desaf&iacute;o&hellip;</p>
-                        <button id="btnCompletarPalabrasPruebasVersus"
-                            class="btn-prueba-preparacion-versus oculto" type="button">
+                        <p id="estadoPreparacionRivalVersus" class="estado-preparacion-rival-versus" aria-live="polite">
+                            Tu rival est&aacute; preparando su desaf&iacute;o&hellip;</p>
+                        <button id="btnCompletarPalabrasPruebasVersus" class="btn-prueba-preparacion-versus oculto"
+                            type="button">
                             ⚡ Completar palabras de prueba
                         </button>
                     </form>
@@ -713,8 +746,7 @@
                             <li>Agotar los 6 intentos quita un coraz&oacute;n.</li>
                         </ul>
 
-                        <div id="esperaRivalVersus" class="espera-rival-versus oculto" role="status"
-                            aria-live="polite">
+                        <div id="esperaRivalVersus" class="espera-rival-versus oculto" role="status" aria-live="polite">
                             <span aria-hidden="true">⌛</span>
                             <strong>Palabras listas</strong>
                             <p>Esperando al rival...</p>
@@ -736,8 +768,10 @@
                 <header class="versus-cabecera">
                     <div class="versus-jugador versus-jugador-uno">
                         <span class="versus-etiqueta">JUGADOR 1</span>
-                        <div id="vidasVersusUno" class="versus-corazones" aria-label="Jugador 1: cinco vidas">♥ ♥ ♥ ♥ ♥</div>
-                        <div id="tiempoVersusUno" class="versus-tiempo-personal" aria-label="Tiempo del jugador 1: 4 minutos">
+                        <div id="vidasVersusUno" class="versus-corazones" aria-label="Jugador 1: cinco vidas">♥ ♥ ♥ ♥ ♥
+                        </div>
+                        <div id="tiempoVersusUno" class="versus-tiempo-personal"
+                            aria-label="Tiempo del jugador 1: 4 minutos">
                             <span>TIEMPO</span><strong id="textoTiempoVersusUno">04:00</strong>
                         </div>
                     </div>
@@ -749,8 +783,10 @@
 
                     <div class="versus-jugador versus-jugador-dos">
                         <span class="versus-etiqueta">JUGADOR 2</span>
-                        <div id="vidasVersusDos" class="versus-corazones" aria-label="Jugador 2: cinco vidas">♥ ♥ ♥ ♥ ♥</div>
-                        <div id="tiempoVersusDos" class="versus-tiempo-personal" aria-label="Tiempo del jugador 2: 4 minutos">
+                        <div id="vidasVersusDos" class="versus-corazones" aria-label="Jugador 2: cinco vidas">♥ ♥ ♥ ♥ ♥
+                        </div>
+                        <div id="tiempoVersusDos" class="versus-tiempo-personal"
+                            aria-label="Tiempo del jugador 2: 4 minutos">
                             <span>TIEMPO</span><strong id="textoTiempoVersusDos">04:00</strong>
                         </div>
                     </div>
@@ -765,8 +801,8 @@
                         src="assets/images/personajes/versus/explorador-base.png" alt="Explorador del jugador 1">
                     <img id="personajeVersusDos" class="versus-personaje versus-personaje-dos"
                         src="assets/images/personajes/versus/mago-base.png" alt="Mago del jugador 2">
-                    <img id="bumeranVersus" class="bumeran-versus" src="assets/images/personajes/versus/bumeran-explorador.png"
-                        alt="" aria-hidden="true">
+                    <img id="bumeranVersus" class="bumeran-versus"
+                        src="assets/images/personajes/versus/bumeran-explorador.png" alt="" aria-hidden="true">
                     <img id="proyectilMagoVersus" class="proyectil-mago-versus"
                         src="assets/images/personajes/versus/bola-fuego-mago.png" alt="" aria-hidden="true">
                     <img id="proyectilMagoJugadorVersus" class="proyectil-mago-versus desde-jugador"
@@ -789,6 +825,8 @@
                         src="assets/images/personajes/versus/orbe-hielo-nivor.png" alt="" aria-hidden="true">
                     <img id="corteInfernalVersus" class="corte-infernal-versus"
                         src="assets/images/personajes/versus/corte-infernal-azrak.png" alt="" aria-hidden="true">
+                    <img id="latigazoTintaKalamoVersus" class="latigazo-tinta-kalamo-versus"
+                        src="assets/images/personajes/versus/proyectil-palabras-kalamo.png" alt="" aria-hidden="true">
 
                     <div id="entradaDueloVersus" class="entrada-duelo-versus oculto" aria-live="polite">
                         <div class="entrada-efecto entrada-efecto-uno" aria-hidden="true">
@@ -803,9 +841,29 @@
                         <div class="entrada-infernal-azrak entrada-infernal-dos" aria-hidden="true">
                             <i></i><i></i><i></i><i></i><i></i><b></b>
                         </div>
+                        <div class="entrada-tinta-kalamo entrada-tinta-uno" aria-hidden="true">
+                            <img class="entrada-chorro-kalamo"
+                                src="assets/images/personajes/versus/entrada-chorro-tinta-kalamo.png" alt="">
+                            <img class="entrada-formacion-kalamo entrada-formacion-kalamo-1"
+                                src="assets/images/personajes/versus/kalamo-entrada-formacion-1.png" alt="">
+                            <img class="entrada-formacion-kalamo entrada-formacion-kalamo-2"
+                                src="assets/images/personajes/versus/kalamo-entrada-formacion-2.png" alt="">
+                            <img class="entrada-formacion-kalamo entrada-formacion-kalamo-3"
+                                src="assets/images/personajes/versus/kalamo-entrada-formacion-3.png" alt="">
+                        </div>
+                        <div class="entrada-tinta-kalamo entrada-tinta-dos" aria-hidden="true">
+                            <img class="entrada-chorro-kalamo"
+                                src="assets/images/personajes/versus/entrada-chorro-tinta-kalamo.png" alt="">
+                            <img class="entrada-formacion-kalamo entrada-formacion-kalamo-1"
+                                src="assets/images/personajes/versus/kalamo-entrada-formacion-1.png" alt="">
+                            <img class="entrada-formacion-kalamo entrada-formacion-kalamo-2"
+                                src="assets/images/personajes/versus/kalamo-entrada-formacion-2.png" alt="">
+                            <img class="entrada-formacion-kalamo entrada-formacion-kalamo-3"
+                                src="assets/images/personajes/versus/kalamo-entrada-formacion-3.png" alt="">
+                        </div>
                         <img class="entrada-ave-guardiana"
-                            src="assets/images/personajes/versus/halcon-espiritual-guardiana.png"
-                            alt="" aria-hidden="true">
+                            src="assets/images/personajes/versus/halcon-espiritual-guardiana.png" alt=""
+                            aria-hidden="true">
                         <div class="entrada-anuncio-versus">
                             <small>PREP&Aacute;RATE</small>
                             <strong>&iexcl;DUELO!</strong>
@@ -840,8 +898,10 @@
                             </div>
                             <p id="revelacionPalabraVersusDos" class="versus-palabra-revelada" role="status"
                                 aria-live="polite" hidden></p>
-                            <strong id="palabraVersusDos" aria-label="El rival no descubri&oacute; ninguna letra">_ _ _ _ _ _ _ _</strong>
-                            <div id="intentosVersusDos" class="versus-intentos" aria-label="El rival tiene seis intentos">
+                            <strong id="palabraVersusDos" aria-label="El rival no descubri&oacute; ninguna letra">_ _ _
+                                _ _ _ _ _</strong>
+                            <div id="intentosVersusDos" class="versus-intentos"
+                                aria-label="El rival tiene seis intentos">
                                 <i aria-hidden="true">◆</i><i aria-hidden="true">◆</i><i aria-hidden="true">◆</i>
                                 <i aria-hidden="true">◆</i><i aria-hidden="true">◆</i><i aria-hidden="true">◆</i>
                             </div>
@@ -860,19 +920,27 @@
                     <div class="habilidad-agujero-negro-versus"><i></i><b></b><span></span></div>
                     <div class="habilidad-rayo-lumen-versus"><i></i><b></b><span></span></div>
                     <div class="habilidad-nivor-versus">
-                        <img class="nivor-vuelo-medio" src="assets/images/personajes/versus/dragon-hielo-vuelo.png" alt="">
-                        <img class="nivor-vuelo-alto" src="assets/images/personajes/versus/dragon-hielo-aleteo-alto.png" alt="">
-                        <img class="nivor-vuelo-bajo" src="assets/images/personajes/versus/dragon-hielo-aleteo-bajo.png" alt="">
+                        <img class="nivor-vuelo-medio" src="assets/images/personajes/versus/dragon-hielo-vuelo.png"
+                            alt="">
+                        <img class="nivor-vuelo-alto" src="assets/images/personajes/versus/dragon-hielo-aleteo-alto.png"
+                            alt="">
+                        <img class="nivor-vuelo-bajo" src="assets/images/personajes/versus/dragon-hielo-aleteo-bajo.png"
+                            alt="">
                         <i></i><i></i><i></i>
                     </div>
                     <div class="habilidad-azrak-versus">
                         <img src="assets/images/personajes/versus/calavera-ignea-azrak.png" alt="">
                     </div>
+                    <div class="habilidad-kalamo-versus">
+                        <div class="chorro-tinta-codigo-kalamo" aria-hidden="true">
+                            <i></i><i></i><i></i><b></b><b></b><b></b><span></span>
+                        </div>
+                    </div>
                     <div class="impacto-habilidad-versus"></div>
                 </div>
 
-                <aside id="vistaImpactoRivalVersus" class="vista-impacto-rival-versus" role="status"
-                    aria-live="polite" aria-hidden="true">
+                <aside id="vistaImpactoRivalVersus" class="vista-impacto-rival-versus" role="status" aria-live="polite"
+                    aria-hidden="true">
                     <div class="vista-impacto-rival-cabecera">
                         <span>IMPACTO EN EL RIVAL</span>
                         <strong id="nombreImpactoRivalVersus">Habilidad activada</strong>
@@ -886,6 +954,7 @@
                 </div>
 
                 <div id="teclasRotasVersus" class="teclas-rotas-versus" aria-hidden="true"></div>
+                <div id="hurtoTeclasKalamoVersus" class="hurto-teclas-kalamo-versus" aria-hidden="true"></div>
 
                 <div class="versus-controles">
                     <div class="versus-panel-accion">
@@ -899,7 +968,8 @@
                                 <strong id="nombreHabilidadVersus">Lupa</strong>
                                 <small id="cargaHabilidadVersus">0/8 letras</small>
                             </span>
-                            <i class="barra-habilidad-versus" aria-hidden="true"><b id="progresoHabilidadVersus"></b></i>
+                            <i class="barra-habilidad-versus" aria-hidden="true"><b
+                                    id="progresoHabilidadVersus"></b></i>
                         </button>
                     </div>
                     <div id="tecladoVersus" class="teclado-versus" aria-label="Teclado de combate"></div>
@@ -925,6 +995,7 @@
                             <option value="guardian_alba">A. Lumen</option>
                             <option value="dragon_hielo">Nivor</option>
                             <option value="azrak">Azrak</option>
+                            <option value="kalamo">K&aacute;lamo</option>
                         </select>
                     </label>
                     <button id="btnProbarCinematicaGuardiana" type="button">🌱 Probar guardiana</button>
@@ -934,11 +1005,11 @@
                     <button id="btnProbarCinematicaGuardianAlba" type="button">&#9728; Probar A. Lumen</button>
                     <button id="btnProbarCinematicaDragonHielo" type="button">&#10052; Probar Nivor</button>
                     <button id="btnProbarCinematicaAzrak" type="button">&#128293; Probar Azrak</button>
+                    <button id="btnProbarCinematicaKalamo" type="button">&#128394; Probar K&aacute;lamo</button>
                     <button id="btnProbarAtaqueElegido" type="button">⚡ Probar ataque elegido</button>
                 </div>
 
-                <div id="herramientasHabilidadesPruebasVersus"
-                    class="herramientas-habilidades-pruebas-versus oculto"
+                <div id="herramientasHabilidadesPruebasVersus" class="herramientas-habilidades-pruebas-versus oculto"
                     aria-label="Pruebas de habilidades especiales">
                     <span>HABILIDADES</span>
                     <label for="origenHabilidadPruebaVersus">
@@ -948,15 +1019,24 @@
                             <option value="rival">Desde el rival</option>
                         </select>
                     </label>
-                    <button class="btn-probar-habilidad-versus" data-habilidad="explorador" type="button">🔍 Lupa</button>
-                    <button class="btn-probar-habilidad-versus" data-habilidad="guardiana" type="button">🌿 Raíces</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="explorador" type="button">🔍
+                        Lupa</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="guardiana" type="button">🌿
+                        Raíces</button>
                     <button class="btn-probar-habilidad-versus" data-habilidad="dragon" type="button">🐉 Rugido</button>
                     <button class="btn-probar-habilidad-versus" data-habilidad="mago" type="button">🔮 Caos</button>
-                    <button class="btn-probar-habilidad-versus" data-habilidad="hombre_lobo" type="button">🌕 Inversi&oacute;n</button>
-                    <button class="btn-probar-habilidad-versus" data-habilidad="t_shadow" type="button">&#127761; Vac&iacute;o</button>
-                    <button class="btn-probar-habilidad-versus" data-habilidad="guardian_alba" type="button">&#9728; Ruptura</button>
-                    <button class="btn-probar-habilidad-versus" data-habilidad="dragon_hielo" type="button">&#10052; Invierno</button>
-                    <button class="btn-probar-habilidad-versus" data-habilidad="azrak" type="button">&#128128; Calavera</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="hombre_lobo" type="button">🌕
+                        Inversi&oacute;n</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="t_shadow" type="button">&#127761;
+                        Vac&iacute;o</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="guardian_alba" type="button">&#9728;
+                        Ruptura</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="dragon_hielo" type="button">&#10052;
+                        Invierno</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="azrak" type="button">&#128128;
+                        Calavera</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="kalamo" type="button">&#129423; Bestia del
+                        Tintero</button>
                 </div>
 
                 <div id="avisoAvanceVersus" class="aviso-avance-versus oculto" role="status" aria-live="polite"></div>
@@ -969,8 +1049,8 @@
                     </div>
                 </div>
 
-                <div id="cinematicaFinalVersus" class="cinematica-final-versus oculto" role="dialog"
-                    aria-modal="true" aria-labelledby="tituloCinematicaVersus">
+                <div id="cinematicaFinalVersus" class="cinematica-final-versus oculto" role="dialog" aria-modal="true"
+                    aria-labelledby="tituloCinematicaVersus">
                     <img id="fondoCinematicaVersus" class="cinematica-final-fondo"
                         src="assets/images/fondos/desierto-1.png" alt="">
                     <div class="eclipse-resplandor" aria-hidden="true"></div>
@@ -992,78 +1072,59 @@
                         <img src="assets/images/personajes/versus/remolino-arcano-mago.png" alt="">
                     </div>
                     <img id="victimaEclipseVersus" class="cinematica-explorador-atrapado victima-final-explorador"
-                        src="assets/images/personajes/versus/explorador-atrapado-eclipse.png"
-                        alt="" aria-hidden="true">
+                        src="assets/images/personajes/versus/explorador-atrapado-eclipse.png" alt="" aria-hidden="true">
                     <div class="cinematica-remolino-arcano remolino-arcano-frente" aria-hidden="true">
                         <img src="assets/images/personajes/versus/remolino-arcano-mago.png" alt="">
                     </div>
                     <div class="remolino-lineas-viento" aria-hidden="true">
                         <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
                     </div>
-                    <img class="cinematica-mago-eclipse"
-                        src="assets/images/personajes/versus/mago-eclipse-violeta.png"
+                    <img class="cinematica-mago-eclipse" src="assets/images/personajes/versus/mago-eclipse-violeta.png"
                         alt="" aria-hidden="true">
                     <img class="cinematica-explorador-trampa"
-                        src="assets/images/personajes/versus/explorador-trampa-ancestral.png"
-                        alt="" aria-hidden="true">
+                        src="assets/images/personajes/versus/explorador-trampa-ancestral.png" alt="" aria-hidden="true">
                     <img id="victimaTrampaVersus" class="cinematica-mago-atrapado victima-final-mago"
-                        src="assets/images/personajes/versus/mago-atrapado-trampa.png"
-                        alt="" aria-hidden="true">
+                        src="assets/images/personajes/versus/mago-atrapado-trampa.png" alt="" aria-hidden="true">
                     <img class="cinematica-tronco-trampa"
-                        src="assets/images/personajes/versus/tronco-trampa-selvatica.png"
-                        alt="" aria-hidden="true">
+                        src="assets/images/personajes/versus/tronco-trampa-selvatica.png" alt="" aria-hidden="true">
                     <img class="cinematica-guardiana-prision cinematica-guardiana-ataque"
-                        src="assets/images/personajes/coleccion/guardiana-bosque-ataque-raices.png"
-                        alt="" aria-hidden="true">
+                        src="assets/images/personajes/coleccion/guardiana-bosque-ataque-raices.png" alt=""
+                        aria-hidden="true">
                     <img class="cinematica-guardiana-prision cinematica-guardiana-victoria"
-                        src="assets/images/personajes/coleccion/guardiana-bosque-victoria.png"
-                        alt="" aria-hidden="true">
+                        src="assets/images/personajes/coleccion/guardiana-bosque-victoria.png" alt=""
+                        aria-hidden="true">
                     <img id="victimaFaucesVersus" class="cinematica-victima-fauces victima-fauces-mago"
-                        src="assets/images/personajes/versus/mago-base.png"
-                        alt="" aria-hidden="true">
+                        src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
                     <img class="cinematica-carnivora cinematica-carnivora-brote"
-                        src="assets/images/personajes/versus/carnivora-brote.png"
-                        alt="" aria-hidden="true">
+                        src="assets/images/personajes/versus/carnivora-brote.png" alt="" aria-hidden="true">
                     <img class="cinematica-carnivora cinematica-carnivora-abierta"
-                        src="assets/images/personajes/versus/carnivora-abierta.png"
-                        alt="" aria-hidden="true">
-                    <img id="carnivoraDevorandoVersus"
-                        class="cinematica-carnivora cinematica-carnivora-devorando"
-                        src="assets/images/personajes/versus/carnivora-devorando.png"
-                        alt="" aria-hidden="true">
+                        src="assets/images/personajes/versus/carnivora-abierta.png" alt="" aria-hidden="true">
+                    <img id="carnivoraDevorandoVersus" class="cinematica-carnivora cinematica-carnivora-devorando"
+                        src="assets/images/personajes/versus/carnivora-devorando.png" alt="" aria-hidden="true">
                     <img class="cinematica-carnivora cinematica-carnivora-cerrada"
-                        src="assets/images/personajes/versus/carnivora-cerrada.png"
-                        alt="" aria-hidden="true">
+                        src="assets/images/personajes/versus/carnivora-cerrada.png" alt="" aria-hidden="true">
                     <div class="matriarca-cielo" aria-hidden="true">
                         <i></i><i></i>
                     </div>
-                    <img class="cinematica-dragon-llamando"
-                        src="assets/images/personajes/versus/dragon-llamando.png"
+                    <img class="cinematica-dragon-llamando" src="assets/images/personajes/versus/dragon-llamando.png"
                         alt="" aria-hidden="true">
-                    <img class="cinematica-rival-matriarca"
-                        src="assets/images/personajes/versus/mago-base.png"
-                        alt="" aria-hidden="true">
-                    <img class="cinematica-pata-matriarca"
-                        src="assets/images/personajes/versus/mama-dragon-pata.png"
+                    <img class="cinematica-rival-matriarca" src="assets/images/personajes/versus/mago-base.png" alt=""
+                        aria-hidden="true">
+                    <img class="cinematica-pata-matriarca" src="assets/images/personajes/versus/mama-dragon-pata.png"
                         alt="" aria-hidden="true">
                     <div class="matriarca-impacto" aria-hidden="true"></div>
                     <div class="matriarca-polvo" aria-hidden="true"></div>
-                    <img class="cinematica-dragon-victoria"
-                        src="assets/images/personajes/versus/dragon-victoria.png"
+                    <img class="cinematica-dragon-victoria" src="assets/images/personajes/versus/dragon-victoria.png"
                         alt="" aria-hidden="true">
                     <div class="matriarca-llamado" aria-hidden="true">&iexcl;Mam&aacute;&aacute;&aacute;!</div>
                     <div class="luna-llena-lobo" aria-hidden="true"></div>
-                    <img class="lobos-espectrales-final"
-                        src="assets/images/personajes/versus/lobos-espectrales.png"
+                    <img class="lobos-espectrales-final" src="assets/images/personajes/versus/lobos-espectrales.png"
                         alt="" aria-hidden="true">
                     <img id="victimaCaceriaVersus" class="cinematica-victima-caceria victima-final-mago"
-                        src="assets/images/personajes/versus/mago-base.png"
+                        src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
+                    <img class="cinematica-lobo-salto" src="assets/images/personajes/versus/hombre-lobo-salto-lunar.png"
                         alt="" aria-hidden="true">
-                    <img class="cinematica-lobo-salto"
-                        src="assets/images/personajes/versus/hombre-lobo-salto-lunar.png"
-                        alt="" aria-hidden="true">
-                    <img class="garra-pantalla-caceria"
-                        src="assets/images/personajes/versus/garra-pantalla-rota.png"
+                    <img class="garra-pantalla-caceria" src="assets/images/personajes/versus/garra-pantalla-rota.png"
                         alt="" aria-hidden="true">
                     <div class="oscuridad-caceria-final" aria-hidden="true"></div>
                     <div class="shadow-final-vortice" aria-hidden="true"></div>
@@ -1089,16 +1150,17 @@
                         src="assets/images/personajes/versus/t-shadow-ataque.png" alt="" aria-hidden="true">
                     <div class="shadow-final-cortes" aria-hidden="true"><i></i><i></i><i></i></div>
                     <div class="shadow-final-fusion" aria-hidden="true"></div>
-                    <img class="shadow-final-ojos"
-                        src="assets/images/personajes/versus/t-shadow-ojos.png" alt="" aria-hidden="true">
-                    <img class="cinematica-shadow-victoria"
-                        src="assets/images/personajes/versus/t-shadow-victoria.png" alt="" aria-hidden="true">
+                    <img class="shadow-final-ojos" src="assets/images/personajes/versus/t-shadow-ojos.png" alt=""
+                        aria-hidden="true">
+                    <img class="cinematica-shadow-victoria" src="assets/images/personajes/versus/t-shadow-victoria.png"
+                        alt="" aria-hidden="true">
                     <div class="alba-final-cielo" aria-hidden="true"><i></i><i></i><i></i></div>
                     <div class="alba-final-sello" aria-hidden="true"></div>
                     <img id="victimaGuardianAlbaVersus" class="cinematica-victima-alba victima-final-mago"
                         src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
                     <img class="cinematica-alba-ataque"
-                        src="assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png" alt="" aria-hidden="true">
+                        src="assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png" alt=""
+                        aria-hidden="true">
                     <div class="alba-final-rayo-carga" aria-hidden="true"><i></i><b></b></div>
                     <img class="alba-final-esfera-solar"
                         src="assets/images/personajes/versus/guardian-alba-esfera-solar.png" alt="" aria-hidden="true">
@@ -1111,8 +1173,8 @@
                     </div>
                     <img id="victimaNivorVersus" class="cinematica-victima-nivor victima-final-mago"
                         src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
-                    <img class="nivor-final-prision" src="assets/images/elementos/prision-hielo-nivor.png"
-                        alt="" aria-hidden="true">
+                    <img class="nivor-final-prision" src="assets/images/elementos/prision-hielo-nivor.png" alt=""
+                        aria-hidden="true">
                     <img class="cinematica-nivor-ataque-final"
                         src="assets/images/personajes/versus/dragon-hielo-ataque-v2.png" alt="" aria-hidden="true">
                     <div class="nivor-final-astro" aria-hidden="true">
@@ -1127,11 +1189,11 @@
                     <img class="cinematica-azrak-invocacion"
                         src="assets/images/personajes/versus/azrak-invocacion-portal.png" alt="" aria-hidden="true">
                     <img class="azrak-mano-emergiendo"
-                        src="assets/images/personajes/versus/mano-abismo-emergiendo-azrak.png" alt="" aria-hidden="true">
-                    <img class="azrak-mano-abierta"
-                        src="assets/images/personajes/versus/mano-abismo-abierta-azrak.png" alt="" aria-hidden="true">
-                    <img id="victimaPortalAzrakVersus"
-                        class="cinematica-victima-portal-azrak victima-final-mago"
+                        src="assets/images/personajes/versus/mano-abismo-emergiendo-azrak.png" alt=""
+                        aria-hidden="true">
+                    <img class="azrak-mano-abierta" src="assets/images/personajes/versus/mano-abismo-abierta-azrak.png"
+                        alt="" aria-hidden="true">
+                    <img id="victimaPortalAzrakVersus" class="cinematica-victima-portal-azrak victima-final-mago"
                         src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
                     <img id="manoVictimaAzrakVersus" class="azrak-mano-victima"
                         src="assets/images/personajes/versus/mano-abismo-atrapa-mago.png" alt="" aria-hidden="true">
@@ -1139,8 +1201,23 @@
                         <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
                     </div>
                     <div class="azrak-final-explosion" aria-hidden="true"></div>
-                    <img class="cinematica-azrak-victoria"
-                        src="assets/images/personajes/versus/azrak-victoria.png" alt="" aria-hidden="true">
+                    <img class="cinematica-azrak-victoria" src="assets/images/personajes/versus/azrak-victoria.png"
+                        alt="" aria-hidden="true">
+                    <div class="kalamo-final-resplandor" aria-hidden="true"></div>
+                    <img id="victimaLibroKalamoVersus" class="cinematica-victima-libro-kalamo victima-final-mago"
+                        src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
+                    <img class="kalamo-final-libro" src="assets/images/personajes/versus/libro-sello-kalamo.png" alt=""
+                        aria-hidden="true">
+                    <img class="kalamo-final-fase kalamo-final-alcanza"
+                        src="assets/images/personajes/versus/kalamo-final-alcanza-libro.png" alt="" aria-hidden="true">
+                    <img class="kalamo-final-fase kalamo-final-extrae"
+                        src="assets/images/personajes/versus/kalamo-final-extrae-armas.png" alt="" aria-hidden="true">
+                    <img class="kalamo-final-fase kalamo-final-golpea"
+                        src="assets/images/personajes/versus/kalamo-final-golpe-impulso.png" alt="" aria-hidden="true">
+                    <div class="kalamo-final-impactos" aria-hidden="true"><i></i><b></b></div>
+                    <div class="kalamo-final-cierre" aria-hidden="true"></div>
+                    <img class="cinematica-kalamo-victoria" src="assets/images/personajes/versus/kalamo-victoria.png"
+                        alt="" aria-hidden="true">
                     <div class="eclipse-destello" aria-hidden="true"></div>
                     <div class="cinematica-final-titulos">
                         <span id="etiquetaCinematicaVersus">GOLPE LEGENDARIO</span>
@@ -1151,8 +1228,8 @@
                     </button>
                 </div>
 
-                <div id="resultadoRondaVersus" class="resultado-ronda-versus oculto" role="dialog"
-                    aria-modal="true" aria-labelledby="tituloResultadoVersus">
+                <div id="resultadoRondaVersus" class="resultado-ronda-versus oculto" role="dialog" aria-modal="true"
+                    aria-labelledby="tituloResultadoVersus">
                     <div class="tarjeta-resultado-versus">
                         <span id="iconoResultadoVersus" class="icono-resultado-versus" aria-hidden="true">⚔️</span>
                         <p id="etiquetaResultadoVersus">RONDA 1</p>
@@ -1231,8 +1308,8 @@
 
     </main>
 
-    <aside id="avisoActualizacionPwa" class="aviso-actualizacion-pwa" role="status"
-        aria-live="polite" aria-labelledby="tituloActualizacionPwa" hidden>
+    <aside id="avisoActualizacionPwa" class="aviso-actualizacion-pwa" role="status" aria-live="polite"
+        aria-labelledby="tituloActualizacionPwa" hidden>
         <div id="iconoActualizacionPwa" class="aviso-actualizacion-icono" aria-hidden="true">&#8635;</div>
         <div class="aviso-actualizacion-texto">
             <strong id="tituloActualizacionPwa">Actualizaci&oacute;n disponible</strong>
@@ -1263,7 +1340,7 @@
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
     <script src="js/versus-room-supabase.js?v=20260817-auth-cuentas-2"></script>
     <script src="js/adventure-puzzles.js?v=20260816-puzzles-bosque-1"></script>
-    <script src="js/app.js?v=20260817-mini-impactos-3"></script>
+    <script src="js/app.js?v=20260820-kalamo-bestia-11"></script>
     <script src="js/pwa.js?v=20260814-cache-diferencial-1"></script>
 </body>
 

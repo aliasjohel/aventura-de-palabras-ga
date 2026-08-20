@@ -183,8 +183,10 @@ const corteShadowVersus = document.getElementById("corteShadowVersus");
 const corteLumenVersus = document.getElementById("corteLumenVersus");
 const alientoHieloVersus = document.getElementById("alientoHieloVersus");
 const corteInfernalVersus = document.getElementById("corteInfernalVersus");
+const latigazoTintaKalamoVersus = document.getElementById("latigazoTintaKalamoVersus");
 const congelacionNivorVersus = document.getElementById("congelacionNivorVersus");
 const teclasRotasVersus = document.getElementById("teclasRotasVersus");
+const hurtoTeclasKalamoVersus = document.getElementById("hurtoTeclasKalamoVersus");
 const entradaDueloVersus = document.getElementById("entradaDueloVersus");
 const btnSaltarEntradaVersus = document.getElementById(
   "btnSaltarEntradaVersus",
@@ -234,6 +236,7 @@ const btnProbarCinematicaDragonHielo = document.getElementById(
   "btnProbarCinematicaDragonHielo",
 );
 const btnProbarCinematicaAzrak = document.getElementById("btnProbarCinematicaAzrak");
+const btnProbarCinematicaKalamo = document.getElementById("btnProbarCinematicaKalamo");
 const victimaEclipseVersus = document.getElementById("victimaEclipseVersus");
 const victimaTrampaVersus = document.getElementById("victimaTrampaVersus");
 const rivalCinematicaMatriarca = document.querySelector(
@@ -245,6 +248,7 @@ const victimaGuardianAlbaVersus = document.getElementById("victimaGuardianAlbaVe
 const victimaNivorVersus = document.getElementById("victimaNivorVersus");
 const victimaPortalAzrakVersus = document.getElementById("victimaPortalAzrakVersus");
 const manoVictimaAzrakVersus = document.getElementById("manoVictimaAzrakVersus");
+const victimaLibroKalamoVersus = document.getElementById("victimaLibroKalamoVersus");
 const victimaPruebaFaucesVersus = document.getElementById(
   "victimaPruebaFaucesVersus",
 );
@@ -1267,7 +1271,9 @@ function actualizarRelojPartidaOnline() {
 function actualizarTecladoPartidaOnline(partida) {
   const comenzo = Date.now() + desfaseServidorVersus >= Date.parse(partida.startedAt);
   const usadas = new Set(partida.me?.usedLetters || []);
-  const efectoBloqueoActivo = ["roots", "black_hole", "key_bounce", "ice_screen"].includes(partida.me?.activeEffect)
+  const efectoBloqueoActivo = ["roots", "black_hole", "key_bounce", "ice_screen", "key_theft"].includes(partida.me?.activeEffect)
+    && Date.now() + desfaseServidorVersus < Date.parse(partida.me?.effectExpiresAt || 0);
+  const hurtoActivo = partida.me?.activeEffect === "key_theft"
     && Date.now() + desfaseServidorVersus < Date.parse(partida.me?.effectExpiresAt || 0);
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = jugadaOnlineEnCurso
@@ -1275,6 +1281,7 @@ function actualizarTecladoPartidaOnline(partida) {
       || partida.status !== "playing"
       || !comenzo
       || partida.me?.finished
+      || (hurtoActivo && demoVersus.teclasRobadasJugador.has(boton.textContent))
       || usadas.has(boton.textContent);
   });
 }
@@ -1657,7 +1664,7 @@ function guardarProgresoArcade(pisosSuperados) {
 function crearOrdenRivalesArcade() {
   const ordenBase = [
     "explorador", "mago", "guardiana", "dragon", "hombre_lobo",
-    "guardian_alba", "dragon_hielo", "t_shadow", "azrak",
+    "guardian_alba", "dragon_hielo", "kalamo", "t_shadow", "azrak",
   ].filter((personaje) => personaje !== personajeJugadorVersus);
   const jefe = ordenBase.includes("azrak") ? "azrak" : "t_shadow";
   return [...ordenBase.filter((personaje) => personaje !== jefe), jefe];
@@ -2841,6 +2848,7 @@ function crearMiniTecladoRivalVersus() {
 function prepararMiniaturaHabilidadRival(efecto) {
   const teclas = [...miniTecladoRivalVersus.querySelectorAll("i")];
   teclas.forEach((tecla) => {
+    tecla.classList.remove("tecla-mini-robada-kalamo");
     for (const propiedad of [
       "--mini-caos-x",
       "--mini-caos-y",
@@ -2874,6 +2882,9 @@ function prepararMiniaturaHabilidadRival(efecto) {
       tecla.style.setProperty("--mini-demora", `${-(indice % 8) * 105}ms`);
     });
   }
+  if (efecto === "key_theft") {
+    teclas.forEach((tecla) => tecla.classList.add("tecla-mini-robada-kalamo"));
+  }
 }
 
 function ocultarVistaImpactoRivalVersus() {
@@ -2897,6 +2908,7 @@ function mostrarVistaImpactoRivalVersus(personaje, letraForzada = "") {
     black_hole: "El teclado queda atrapado durante 5 segundos.",
     key_bounce: "Las teclas salen despedidas durante 5 segundos.",
     ice_screen: "La pantalla rival queda congelada durante 5 segundos.",
+      key_theft: "La Bestia del Tintero embiste y destruye el teclado durante 5 segundos.",
     forced_miss: letraForzada
       ? `La calavera pulsó la ${letraForzada}: error forzado.`
       : "La calavera obligó al rival a cometer un error.",
@@ -3012,6 +3024,40 @@ function programarPasoHabilidadVersus(accion, demora) {
   demoVersus.temporizadoresHabilidad.push(temporizador);
 }
 
+function prepararTrayectoriaTintaKalamo(atacante) {
+  const chorro = animacionHabilidadVersus.querySelector(".chorro-tinta-codigo-kalamo");
+  if (!chorro || !atacante) return;
+  const lienzo = animacionHabilidadVersus.getBoundingClientRect();
+  const origen = atacante.getBoundingClientRect();
+  const limitesTeclas = [...tecladoVersus.querySelectorAll("button")]
+    .map((boton) => boton.getBoundingClientRect());
+  const teclado = limitesTeclas.length
+    ? {
+        left: Math.min(...limitesTeclas.map((limite) => limite.left)),
+        right: Math.max(...limitesTeclas.map((limite) => limite.right)),
+        top: Math.min(...limitesTeclas.map((limite) => limite.top)),
+        bottom: Math.max(...limitesTeclas.map((limite) => limite.bottom)),
+      }
+    : tecladoVersus.getBoundingClientRect();
+  teclado.width = teclado.right - teclado.left;
+  teclado.height = teclado.bottom - teclado.top;
+  const desdeRival = animacionHabilidadVersus.classList.contains("desde-rival");
+  const inicioX = origen.left - lienzo.left + origen.width * (desdeRival ? 0.34 : 0.68);
+  const inicioY = origen.top - lienzo.top + origen.height * 0.48;
+  const destinoX = teclado.left - lienzo.left + teclado.width * 0.08;
+  const destinoY = teclado.top - lienzo.top + teclado.height * 0.55;
+  const recorridoX = destinoX - inicioX;
+  const recorridoY = destinoY - inicioY;
+  chorro.style.setProperty("--tinta-inicio-x", `${inicioX}px`);
+  chorro.style.setProperty("--tinta-inicio-y", `${inicioY}px`);
+  chorro.style.setProperty("--tinta-recorrido-x", `${recorridoX}px`);
+  chorro.style.setProperty("--tinta-recorrido-y", `${recorridoY}px`);
+  chorro.style.setProperty("--tinta-mitad-x", `${recorridoX * 0.53}px`);
+  chorro.style.setProperty("--tinta-mitad-y", `${recorridoY * 0.36 - Math.min(54, lienzo.height * 0.07)}px`);
+  chorro.style.setProperty("--tinta-impacto-x", `${destinoX}px`);
+  chorro.style.setProperty("--tinta-impacto-y", `${destinoY}px`);
+}
+
 function reproducirAnimacionHabilidadVersus(
   personaje,
   { desdeRival = false, alImpactar = () => {} } = {},
@@ -3030,6 +3076,7 @@ function reproducirAnimacionHabilidadVersus(
     guardian_alba: srcGuardianAlbaHabilidadVersus,
     dragon_hielo: srcDragonHieloVueloVersus,
     azrak: srcAzrakAtaqueVersus,
+    kalamo: srcKalamoHabilidadVersus,
   }[personaje];
   if (pose) atacante.src = pose;
   atacante.classList.add("usando-habilidad");
@@ -3042,12 +3089,13 @@ function reproducirAnimacionHabilidadVersus(
     `habilidad-${personaje}`,
     desdeRival ? "desde-rival" : "desde-jugador",
   ].join(" ");
+  if (personaje === "kalamo") prepararTrayectoriaTintaKalamo(atacante);
   void animacionHabilidadVersus.offsetWidth;
   animacionHabilidadVersus.classList.add("activa");
   reproducirSonidoVersus(desdeRival ? "versusAtaqueDos" : "versusAtaqueUno", 0.5);
 
-  const demoraImpacto = personaje === "dragon_hielo" ? 140 : personaje === "azrak" ? 620 : 560;
-  const demoraLimpieza = personaje === "dragon_hielo" ? 1900 : personaje === "azrak" ? 1380 : 1120;
+  const demoraImpacto = personaje === "dragon_hielo" ? 140 : personaje === "azrak" ? 620 : personaje === "kalamo" ? 720 : 560;
+  const demoraLimpieza = personaje === "dragon_hielo" ? 1900 : personaje === "azrak" ? 1380 : personaje === "kalamo" ? 1480 : 1120;
   programarPasoHabilidadVersus(alImpactar, movimientoReducido ? 80 : demoraImpacto);
   programarPasoHabilidadVersus(limpiarAnimacionHabilidadVersus, movimientoReducido ? 180 : demoraLimpieza);
 }
@@ -3060,7 +3108,9 @@ function sincronizarTecladoDemoVersus() {
     || tecladoVersus.classList.contains("efecto-teclas-rotas")
     || tecladoVersus.classList.contains("efecto-congelado");
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
-    boton.disabled = bloqueado || demoVersus.letrasJugador.has(boton.textContent);
+    boton.disabled = bloqueado
+      || demoVersus.teclasRobadasJugador.has(boton.textContent)
+      || demoVersus.letrasJugador.has(boton.textContent);
   });
 }
 
@@ -3068,7 +3118,7 @@ function limpiarEfectoVisualHabilidadVersus() {
   if (demoVersus.temporizadorEfectoHabilidad) clearTimeout(demoVersus.temporizadorEfectoHabilidad);
   demoVersus.temporizadorEfectoHabilidad = null;
   detenerCaosContinuoTecladoVersus();
-  tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos", "efecto-agujero-negro", "efecto-teclas-rotas", "efecto-congelado");
+  tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos", "efecto-agujero-negro", "efecto-teclas-rotas", "efecto-congelado", "efecto-hurto-teclas");
   tecladoVersus.style.removeProperty("--duracion-agujero-negro");
   desafioJugadorVersus.classList.remove(
     "efecto-raices-desafio",
@@ -3084,7 +3134,106 @@ function limpiarEfectoVisualHabilidadVersus() {
   congelacionNivorVersus.classList.remove("activa", "desde-rival");
   teclasRotasVersus.classList.remove("activa");
   teclasRotasVersus.replaceChildren();
+  hurtoTeclasKalamoVersus.classList.remove("activa", "desde-rival");
+  hurtoTeclasKalamoVersus.replaceChildren();
+  demoVersus.teclasRobadasJugador.clear();
+  tecladoVersus.querySelectorAll("button").forEach((boton) => {
+    const regresaba = boton.classList.contains("tecla-robada-kalamo");
+    boton.classList.remove("tecla-robada-kalamo");
+    boton.style.removeProperty("--succion-x");
+    boton.style.removeProperty("--succion-y");
+    boton.style.removeProperty("--tinta-demora");
+    boton.style.removeProperty("--bestia-vuelo-x");
+    boton.style.removeProperty("--bestia-vuelo-y");
+    boton.style.removeProperty("--bestia-giro");
+    if (regresaba) {
+      boton.classList.add("tecla-regresando-kalamo");
+      setTimeout(() => boton.classList.remove("tecla-regresando-kalamo"), 520);
+    }
+  });
   restaurarOrdenTecladoVersus();
+}
+
+function elegirTeclasRobadasKalamo() {
+  return filasTeclado.flat();
+}
+
+function prepararHurtoTeclasKalamoVersus() {
+  hurtoTeclasKalamoVersus.replaceChildren();
+  demoVersus.teclasRobadasJugador = new Set(elegirTeclasRobadasKalamo());
+  const marco = marcoVersus.getBoundingClientRect();
+  const teclado = tecladoVersus.getBoundingClientRect();
+  const limitesTeclas = [...tecladoVersus.querySelectorAll("button")]
+    .map((boton) => boton.getBoundingClientRect());
+  const izquierdaTeclas = limitesTeclas.length
+    ? Math.min(...limitesTeclas.map((limite) => limite.left))
+    : teclado.left;
+  const derechaTeclas = limitesTeclas.length
+    ? Math.max(...limitesTeclas.map((limite) => limite.right))
+    : teclado.right;
+  const fondoTeclas = limitesTeclas.length
+    ? Math.max(...limitesTeclas.map((limite) => limite.bottom))
+    : teclado.bottom;
+  const techoTeclas = limitesTeclas.length
+    ? Math.min(...limitesTeclas.map((limite) => limite.top))
+    : teclado.top;
+  const desdeRival = animacionHabilidadVersus.classList.contains("desde-rival");
+  hurtoTeclasKalamoVersus.classList.toggle("desde-rival", desdeRival);
+  const anchoTeclado = derechaTeclas - izquierdaTeclas;
+  const altoTeclado = fondoTeclas - techoTeclas;
+  const altoEscena = Math.max(96, altoTeclado * 1.9);
+  const escena = document.createElement("div");
+  escena.className = "embestida-bestia-tintero-kalamo";
+  escena.setAttribute("aria-hidden", "true");
+  escena.style.left = `${izquierdaTeclas - marco.left}px`;
+  escena.style.top = `${techoTeclas - marco.top - altoEscena * 0.68}px`;
+  escena.style.width = `${anchoTeclado}px`;
+  escena.style.height = `${altoEscena}px`;
+
+  const charco = document.createElement("i");
+  charco.className = "charco-bestia-tintero-kalamo";
+  const bestia = document.createElement("img");
+  bestia.className = "bestia-tintero-kalamo";
+  bestia.src = "assets/images/personajes/versus/bestia-tintero-kalamo.png";
+  bestia.alt = "";
+  bestia.setAttribute("aria-hidden", "true");
+  const impacto = document.createElement("b");
+  impacto.className = "impacto-bestia-tintero-kalamo";
+  escena.append(charco, bestia, impacto);
+  hurtoTeclasKalamoVersus.appendChild(escena);
+
+  tecladoVersus.querySelectorAll("button").forEach((boton, indice) => {
+    const robada = demoVersus.teclasRobadasJugador.has(boton.textContent);
+    boton.classList.toggle("tecla-robada-kalamo", robada);
+    if (!robada) return;
+    const origen = boton.getBoundingClientRect();
+    const avanceHorizontal = Math.min(1, Math.max(0,
+      (origen.left + origen.width / 2 - izquierdaTeclas) / Math.max(1, anchoTeclado),
+    ));
+    const demoraChoque = Math.round(1200 + avanceHorizontal * 900 + (indice % 3) * 28);
+    const vueloX = 58 + (indice % 6) * 13;
+    const vueloY = (indice % 2 === 0 ? -1 : 1) * (42 + (indice % 5) * 12);
+    const giro = (indice % 2 === 0 ? -1 : 1) * (38 + (indice % 7) * 17);
+    boton.style.setProperty("--tinta-demora", `${demoraChoque}ms`);
+    boton.style.setProperty("--bestia-vuelo-x", `${vueloX}px`);
+    boton.style.setProperty("--bestia-vuelo-y", `${vueloY}px`);
+    boton.style.setProperty("--bestia-giro", `${giro}deg`);
+
+    const fragmento = document.createElement("div");
+    fragmento.className = "fragmento-tecla-bestia-kalamo";
+    fragmento.textContent = boton.textContent;
+    fragmento.setAttribute("aria-hidden", "true");
+    fragmento.style.left = `${origen.left - marco.left}px`;
+    fragmento.style.top = `${origen.top - marco.top}px`;
+    fragmento.style.width = `${origen.width}px`;
+    fragmento.style.height = `${origen.height}px`;
+    fragmento.style.setProperty("--tinta-demora", `${demoraChoque}ms`);
+    fragmento.style.setProperty("--bestia-vuelo-x", `${vueloX}px`);
+    fragmento.style.setProperty("--bestia-vuelo-y", `${vueloY}px`);
+    fragmento.style.setProperty("--bestia-giro", `${giro}deg`);
+    hurtoTeclasKalamoVersus.appendChild(fragmento);
+  });
+  hurtoTeclasKalamoVersus.classList.add("activa");
 }
 
 function prepararAgujeroNegroTecladoVersus() {
@@ -3211,13 +3360,17 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
     tecladoVersus.classList.add("efecto-congelado");
     congelacionNivorVersus.classList.add("activa");
   }
-  if (["roots", "black_hole", "key_bounce", "ice_screen"].includes(efecto)) tecladoVersus.querySelectorAll("button").forEach((boton) => { boton.disabled = true; });
+  if (efecto === "key_theft") {
+    prepararHurtoTeclasKalamoVersus();
+    tecladoVersus.classList.add("efecto-hurto-teclas");
+  }
+  if (["roots", "black_hole", "key_bounce", "ice_screen", "key_theft"].includes(efecto)) tecladoVersus.querySelectorAll("button").forEach((boton) => { boton.disabled = true; });
 
   demoVersus.temporizadorEfectoHabilidad = setTimeout(() => {
     demoVersus.temporizadorEfectoHabilidad = null;
     const restaurarConAnimacion = tecladoVersus.classList.contains("efecto-caos");
     detenerCaosContinuoTecladoVersus();
-    tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos", "efecto-agujero-negro", "efecto-teclas-rotas", "efecto-congelado");
+    tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos", "efecto-agujero-negro", "efecto-teclas-rotas", "efecto-congelado", "efecto-hurto-teclas");
     tecladoVersus.style.removeProperty("--duracion-agujero-negro");
     desafioJugadorVersus.classList.remove(
       "efecto-raices-desafio",
@@ -3229,6 +3382,21 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
     desafioJugadorVersus.style.removeProperty("--duracion-agujero-negro");
     teclasRotasVersus.classList.remove("activa");
     teclasRotasVersus.replaceChildren();
+    hurtoTeclasKalamoVersus.classList.remove("activa", "desde-rival");
+    hurtoTeclasKalamoVersus.replaceChildren();
+    demoVersus.teclasRobadasJugador.clear();
+    tecladoVersus.querySelectorAll("button").forEach((boton) => {
+      if (!boton.classList.contains("tecla-robada-kalamo")) return;
+      boton.classList.remove("tecla-robada-kalamo");
+      boton.style.removeProperty("--succion-x");
+      boton.style.removeProperty("--succion-y");
+      boton.style.removeProperty("--tinta-demora");
+      boton.style.removeProperty("--bestia-vuelo-x");
+      boton.style.removeProperty("--bestia-vuelo-y");
+      boton.style.removeProperty("--bestia-giro");
+      boton.classList.add("tecla-regresando-kalamo");
+      setTimeout(() => boton.classList.remove("tecla-regresando-kalamo"), 520);
+    });
     marcoVersus.classList.remove("efecto-inversion-lunar");
     marcoVersus.style.removeProperty("--duracion-inversion-lunar");
     marcoVersus.classList.remove("efecto-invierno-absoluto");
@@ -3355,6 +3523,9 @@ function activarHabilidadLocalVersus() {
       alImpactar: () => {
         demoVersus.efectoRival = habilidad.efecto;
         demoVersus.efectoRivalHasta = Date.now() + habilidad.duracion;
+        if (habilidad.efecto === "key_theft") {
+          demoVersus.teclasRobadasRival = new Set(elegirTeclasRobadasKalamo());
+        }
         mostrarVistaImpactoRivalVersus(personajeJugadorVersus);
         mostrarAvisoAvanceVersus(`¡${habilidad.nombre} afectó al rival!`, "acierto");
       },
@@ -3562,6 +3733,10 @@ const srcDragonHieloImpactoVersus = "assets/images/personajes/versus/dragon-hiel
 const srcAzrakBaseVersus = "assets/images/personajes/versus/azrak-base.png";
 const srcAzrakAtaqueVersus = "assets/images/personajes/versus/azrak-ataque.png";
 const srcAzrakImpactoVersus = "assets/images/personajes/versus/azrak-impacto.png";
+const srcKalamoBaseVersus = "assets/images/personajes/versus/kalamo-base.png";
+const srcKalamoAtaqueVersus = "assets/images/personajes/versus/kalamo-ataque.png";
+const srcKalamoHabilidadVersus = "assets/images/personajes/versus/kalamo-habilidad.png";
+const srcKalamoImpactoVersus = "assets/images/personajes/versus/kalamo-impacto.png";
 const personajesVersus = {
   explorador: {
     nombre: "Explorador",
@@ -3617,6 +3792,12 @@ const personajesVersus = {
     ataque: "corte-infernal",
     final: "eclipse-infernal",
   },
+  kalamo: {
+    nombre: "Kálamo",
+    base: srcKalamoBaseVersus,
+    ataque: "latigazo-tinta",
+    final: "libro-palabras-perdidas",
+  },
 };
 const habilidadesVersus = Object.freeze({
   explorador: { nombre: "Lupa", icono: "🔍", efecto: "hint", duracion: 0 },
@@ -3628,6 +3809,7 @@ const habilidadesVersus = Object.freeze({
   guardian_alba: { nombre: "Ruptura celeste", icono: "☀️", efecto: "key_bounce", duracion: 5000 },
   dragon_hielo: { nombre: "Invierno absoluto", icono: "❄️", efecto: "ice_screen", duracion: 5000 },
   azrak: { nombre: "Calavera Ígnea", icono: "💀", efecto: "forced_miss", duracion: 0 },
+  kalamo: { nombre: "Bestia del Tintero", icono: "🦏", efecto: "key_theft", duracion: 5000 },
 });
 const letrasParaHabilidadVersus = VersusEngine.CONFIG.letrasParaHabilidad;
 let personajeJugadorVersus = "explorador";
@@ -3679,6 +3861,11 @@ const victimasFaucesVersus = {
     imagen: srcAzrakBaseVersus,
     imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-azrak.png",
   },
+  kalamo: {
+    nombre: "Kálamo",
+    imagen: srcKalamoBaseVersus,
+    imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-kalamo.png",
+  },
 };
 
 const posesDanoPersonajeVersus = {
@@ -3687,6 +3874,7 @@ const posesDanoPersonajeVersus = {
   guardian_alba: srcGuardianAlbaImpactoVersus,
   dragon_hielo: srcDragonHieloImpactoVersus,
   azrak: srcAzrakImpactoVersus,
+  kalamo: srcKalamoImpactoVersus,
 };
 
 function observarPoseDanoPersonajeVersus(elemento, obtenerPersonaje) {
@@ -3720,6 +3908,8 @@ const demoVersus = {
   ultimaPalabraFalladaRival: "",
   letrasJugador: new Set(),
   letrasRival: new Set(),
+  teclasRobadasJugador: new Set(),
+  teclasRobadasRival: new Set(),
   erroresJugador: 0,
   erroresRival: 0,
   vidasJugador: vidasInicialesVersus,
@@ -3791,6 +3981,7 @@ function limpiarAnimacionAtaqueJugadorVersus() {
     "lanzando-lumen",
     "lanzando-hielo",
     "cortando-infernal",
+    "lanzando-tinta",
   );
   personajeVersusDos.classList.remove("recibiendo-dano");
   vidasVersusDos.classList.remove("recibiendo-dano");
@@ -3803,6 +3994,7 @@ function limpiarAnimacionAtaqueJugadorVersus() {
   corteLumenVersus.classList.remove("volando", "desde-rival");
   alientoHieloVersus.classList.remove("volando", "desde-rival");
   corteInfernalVersus.classList.remove("volando", "desde-rival");
+  latigazoTintaKalamoVersus.classList.remove("volando", "desde-rival");
   herramientasPruebasVersus.classList.remove("ataque-en-curso");
 }
 
@@ -3823,6 +4015,7 @@ function limpiarAnimacionAtaqueRivalVersus() {
     "lanzando-lumen",
     "lanzando-hielo",
     "cortando-infernal",
+    "lanzando-tinta",
   );
   personajeVersusUno.classList.remove("recibiendo-dano-magico");
   vidasVersusUno.classList.remove("recibiendo-dano");
@@ -3835,6 +4028,7 @@ function limpiarAnimacionAtaqueRivalVersus() {
   corteLumenVersus.classList.remove("volando", "desde-rival");
   alientoHieloVersus.classList.remove("volando", "desde-rival");
   corteInfernalVersus.classList.remove("volando", "desde-rival");
+  latigazoTintaKalamoVersus.classList.remove("volando", "desde-rival");
 }
 
 function limpiarAnimacionAtaqueVersus() {
@@ -3856,6 +4050,7 @@ function configurarPersonajesCombateVersus() {
     "personaje-guardian_alba",
     "personaje-dragon_hielo",
     "personaje-azrak",
+    "personaje-kalamo",
   );
   personajeVersusUno.classList.add(`personaje-${personajeJugadorVersus}`);
   const personajeRival = personajesVersus[personajeRivalVersus] || personajesVersus.mago;
@@ -3871,6 +4066,7 @@ function configurarPersonajesCombateVersus() {
     "personaje-guardian_alba",
     "personaje-dragon_hielo",
     "personaje-azrak",
+    "personaje-kalamo",
   );
   personajeVersusDos.classList.add(`personaje-${personajeRivalVersus}`);
   actualizarPanelHabilidadVersus(
@@ -3918,6 +4114,7 @@ function limpiarEntradaDueloVersus() {
     "entrada-guardian_alba",
     "entrada-dragon_hielo",
     "entrada-azrak",
+    "entrada-kalamo",
   );
   personajeVersusDos.classList.remove(
     "entrando-duelo",
@@ -3930,6 +4127,7 @@ function limpiarEntradaDueloVersus() {
     "entrada-guardian_alba-rival",
     "entrada-dragon_hielo-rival",
     "entrada-azrak-rival",
+    "entrada-kalamo-rival",
   );
   bumeranVersus.classList.remove("mostrando-entrada");
 }
@@ -4269,6 +4467,28 @@ function reproducirAtaqueAzrakVersus() {
   programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1320, "jugador");
 }
 
+function reproducirAtaqueKalamoVersus() {
+  limpiarAnimacionAtaqueJugadorVersus();
+  herramientasPruebasVersus.classList.add("ataque-en-curso");
+  personajeVersusUno.src = srcKalamoAtaqueVersus;
+  personajeVersusUno.classList.add("lanzando-tinta");
+  latigazoTintaKalamoVersus.classList.remove("desde-rival");
+  void latigazoTintaKalamoVersus.offsetWidth;
+  latigazoTintaKalamoVersus.classList.add("volando");
+  reproducirSonidoVersus("versusAtaqueUno", 0.76);
+  programarPasoAtaqueVersus(() => {
+    mostrarPoseDanoPersonajeVersus(personajeVersusDos, personajeRivalVersus);
+    personajeVersusDos.classList.add("recibiendo-dano-magico");
+    vidasVersusDos.classList.add("recibiendo-dano");
+    reproducirSonidoVersus("versusAtaqueDos", 0.82);
+  }, 610, "jugador");
+  programarPasoAtaqueVersus(() => {
+    personajeVersusDos.classList.remove("recibiendo-dano-magico");
+    vidasVersusDos.classList.remove("recibiendo-dano");
+  }, 980, "jugador");
+  programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1360, "jugador");
+}
+
 function reproducirAtaqueShadowVersus() {
   limpiarAnimacionAtaqueJugadorVersus();
   herramientasPruebasVersus.classList.add("ataque-en-curso");
@@ -4343,6 +4563,10 @@ function reproducirAtaqueJugadorVersus() {
   }
   if (ataque === "corte-infernal") {
     reproducirAtaqueAzrakVersus();
+    return;
+  }
+  if (ataque === "latigazo-tinta") {
+    reproducirAtaqueKalamoVersus();
     return;
   }
   reproducirAtaqueBumeranVersus();
@@ -4485,6 +4709,17 @@ function reproducirAtaqueAzrakRivalVersus() {
   programarImpactoRivalVersus(570, 1320);
 }
 
+function reproducirAtaqueKalamoRivalVersus() {
+  limpiarAnimacionAtaqueRivalVersus();
+  personajeVersusDos.src = srcKalamoAtaqueVersus;
+  personajeVersusDos.classList.add("lanzando-tinta");
+  latigazoTintaKalamoVersus.classList.add("desde-rival");
+  void latigazoTintaKalamoVersus.offsetWidth;
+  latigazoTintaKalamoVersus.classList.add("volando");
+  reproducirSonidoVersus("versusAtaqueUno", 0.76);
+  programarImpactoRivalVersus(610, 1360);
+}
+
 function reproducirAtaqueShadowRivalVersus() {
   limpiarAnimacionAtaqueRivalVersus();
   personajeVersusDos.src = srcShadowAtaqueVersus;
@@ -4564,6 +4799,10 @@ function reproducirAtaqueRivalVersus() {
   }
   if (ataque === "corte-infernal") {
     reproducirAtaqueAzrakRivalVersus();
+    return;
+  }
+  if (ataque === "latigazo-tinta") {
+    reproducirAtaqueKalamoRivalVersus();
     return;
   }
   reproducirAtaqueMagoVersus();
@@ -4687,6 +4926,8 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
   demoVersus.ultimaPalabraFalladaRival = "";
   demoVersus.letrasJugador.clear();
   demoVersus.letrasRival.clear();
+  demoVersus.teclasRobadasJugador.clear();
+  demoVersus.teclasRobadasRival.clear();
   demoVersus.erroresJugador = 0;
   demoVersus.erroresRival = 0;
   demoVersus.cargaHabilidadJugador = 0;
@@ -4828,9 +5069,12 @@ function jugarTurnoRivalVersus() {
     [...demoVersus.letrasRival],
   );
   const letrasPendientes = [...new Set(palabraRivalClave)]
-    .filter((letra) => !demoVersus.letrasRival.has(letra));
+    .filter((letra) => !demoVersus.letrasRival.has(letra))
+    .filter((letra) => efectoActivo !== "key_theft" || !demoVersus.teclasRobadasRival.has(letra));
   const letrasIncorrectas = alfabeto.filter(
-    (letra) => !palabraRivalClave.includes(letra) && !demoVersus.letrasRival.has(letra),
+    (letra) => !palabraRivalClave.includes(letra)
+      && !demoVersus.letrasRival.has(letra)
+      && (efectoActivo !== "key_theft" || !demoVersus.teclasRobadasRival.has(letra)),
   );
   const probabilidadAcierto = efectoActivo === "roar" || efectoActivo === "shuffle"
     ? 0.25
@@ -5226,6 +5470,9 @@ function obtenerReproductorFinalVersus(personajeGanador, personajeVictima) {
   if (finalElegido === "eclipse-infernal") {
     return () => reproducirEclipseInfernalVersus(personajeVictima);
   }
+  if (finalElegido === "libro-palabras-perdidas") {
+    return () => reproducirLibroPalabrasPerdidasVersus(personajeVictima);
+  }
   return () => reproducirTrampaSelvaticaVersus(personajeVictima);
 }
 
@@ -5358,6 +5605,7 @@ const posesReaccionVictimaVersus = {
   guardian_alba: srcGuardianAlbaImpactoVersus,
   dragon_hielo: srcDragonHieloImpactoVersus,
   azrak: srcAzrakImpactoVersus,
+  kalamo: srcKalamoImpactoVersus,
 };
 
 function configurarVictimaFinalVersus(elemento, personaje) {
@@ -5376,6 +5624,7 @@ function configurarVictimaFinalVersus(elemento, personaje) {
     "victima-final-guardian_alba",
     "victima-final-dragon_hielo",
     "victima-final-azrak",
+    "victima-final-kalamo",
   );
   elemento.classList.add(`victima-final-${clave}`);
   return clave;
@@ -5453,6 +5702,7 @@ function configurarVictimaFaucesVersus(personaje = personajeRivalVersus) {
     "victima-fauces-guardian_alba",
     "victima-fauces-dragon_hielo",
     "victima-fauces-azrak",
+    "victima-fauces-kalamo",
   );
   victimaFaucesVersus.classList.add(`victima-fauces-${personaje in victimasFaucesVersus ? personaje : "mago"}`);
 }
@@ -5625,6 +5875,26 @@ function reproducirEclipseInfernalVersus(victima = personajeRivalVersus) {
   });
 }
 
+function reproducirLibroPalabrasPerdidasVersus(victima = personajeRivalVersus) {
+  cancelarCinematicaFinalVersus();
+  fondoCinematicaVersus.src = fondoVersus.src;
+  crearParticulasEclipseVersus();
+  programarReaccionVictimaFinalVersus(victimaLibroKalamoVersus, victima, 5000);
+  etiquetaCinematicaVersus.textContent = "GRAN CALIGRAFÍA";
+  tituloCinematicaVersus.textContent = "EL LIBRO DE LAS PALABRAS PERDIDAS";
+  cinematicaFinalVersus.classList.add("libro-palabras-perdidas");
+  cinematicaFinalVersus.classList.remove("oculto");
+  void cinematicaFinalVersus.offsetWidth;
+  cinematicaFinalVersus.classList.add("activa");
+  btnSaltarCinematicaVersus.focus();
+  reproducirSonidoVersus("versusFinish", 0.9);
+
+  return new Promise((resolve) => {
+    demoVersus.resolverCinematica = resolve;
+    demoVersus.temporizadorCinematica = setTimeout(completarCinematicaFinalVersus, 9600);
+  });
+}
+
 function completarCinematicaFinalVersus() {
   if (demoVersus.temporizadorReaccionCinematica) {
     clearTimeout(demoVersus.temporizadorReaccionCinematica);
@@ -5647,6 +5917,7 @@ function completarCinematicaFinalVersus() {
     "juicio-amanecer",
     "cero-absoluto",
     "eclipse-infernal",
+    "libro-palabras-perdidas",
   );
   particulasEclipseVersus.replaceChildren();
   const resolver = demoVersus.resolverCinematica;
@@ -5677,6 +5948,7 @@ function cancelarCinematicaFinalVersus() {
     "juicio-amanecer",
     "cero-absoluto",
     "eclipse-infernal",
+    "libro-palabras-perdidas",
   );
   particulasEclipseVersus.replaceChildren();
   demoVersus.resolverCinematica = null;
@@ -5712,6 +5984,10 @@ function probarCinematicaVersus(personaje) {
   }
   if (personaje === "azrak") {
     void reproducirEclipseInfernalVersus(victimaPruebaFaucesVersus.value);
+    return;
+  }
+  if (personaje === "kalamo") {
+    void reproducirLibroPalabrasPerdidasVersus(victimaPruebaFaucesVersus.value);
     return;
   }
 
@@ -5755,6 +6031,10 @@ btnProbarCinematicaDragonHielo.addEventListener("click", () => {
 
 btnProbarCinematicaAzrak.addEventListener("click", () => {
   probarCinematicaVersus("azrak");
+});
+
+btnProbarCinematicaKalamo.addEventListener("click", () => {
+  probarCinematicaVersus("kalamo");
 });
 
 btnProbarAtaqueElegido.addEventListener("click", () => {
