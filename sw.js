@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v113`;
+const CACHE_NAME = `${CACHE_PREFIX}v115`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -21,6 +21,8 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v110`,
   `${CACHE_PREFIX}v111`,
   `${CACHE_PREFIX}v112`,
+  `${CACHE_PREFIX}v113`,
+  `${CACHE_PREFIX}v114`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -182,11 +184,11 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260820-kalamo-bestia-15",
-  "./index.html": "20260820-kalamo-bestia-15",
-  "./css/styles.css": "20260820-kalamo-bestia-15",
-  "./js/app.js": "20260820-kalamo-bestia-15",
-  "./assets/images/personajes/versus/bestia-tintero-kalamo.png": "20260820-kalamo-bestia-15",
+  "./": "20260820-versus-escalas-17",
+  "./index.html": "20260820-versus-escalas-17",
+  "./css/styles.css": "20260820-versus-escalas-17",
+  "./js/app.js": "20260820-versus-escalas-17",
+  "./assets/images/personajes/versus/bestia-tintero-kalamo.png": "20260820-versus-escalas-17",
   "./assets/images/personajes/versus/libro-sello-kalamo.png": "20260820-kalamo-tinta-centro-2",
   "./assets/images/personajes/versus/kalamo-final-golpe-impulso.png": "20260820-kalamo-tinta-centro-2",
   "./assets/images/fondos/bosque-6-lobos-v2.png": "20260817-lobos-alineados-1",

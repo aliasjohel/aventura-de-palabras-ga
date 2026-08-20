@@ -13363,6 +13363,33 @@ button:disabled {
   .cinematica-azrak-victoria{width:min(32vw,62vh)}
 }
 
+/* Versus v16: iguala la masa visual de A. Lumen, T. Shadow y las víctimas verticales. */
+.versus-personaje-uno.personaje-guardian_alba,
+.versus-personaje-dos.personaje-guardian_alba,
+.versus-personaje-uno.personaje-t_shadow,
+.versus-personaje-dos.personaje-t_shadow {
+    bottom: 6%;
+    height: 86%;
+}
+
+.cinematica-victima-alba.victima-final-explorador,
+.cinematica-victima-alba.victima-final-guardiana,
+.cinematica-victima-shadow.victima-final-explorador,
+.cinematica-victima-shadow.victima-final-guardiana {
+    width: min(14vw, 165px);
+    height: 58%;
+    object-fit: contain;
+    object-position: center bottom;
+}
+
+.cinematica-explorador-atrapado.victima-final-explorador,
+.cinematica-explorador-atrapado.victima-final-guardiana {
+    width: min(16vw, 190px);
+    height: 60%;
+    object-fit: contain;
+    object-position: center bottom;
+}
+
 /* Pruebas especiales de las misiones 3 y 6. */
 .modal-prueba-bosque{position:fixed;inset:0;z-index:2550;display:grid;place-items:center;padding:clamp(10px,2.4vw,26px);overflow:auto;background:radial-gradient(circle at 50% 40%,rgba(89,151,77,.24),transparent 43%),rgba(2,13,12,.95);backdrop-filter:blur(9px)}
 .modal-prueba-bosque.oculto,.puzzle-ramas-deslizante.oculto,.puzzle-memoria-lobos.oculto{display:none}
