@@ -336,11 +336,26 @@ for (const recurso of [
   "kalamo-entrada-formacion-1", "kalamo-entrada-formacion-2", "kalamo-entrada-formacion-3",
   "kalamo-final-alcanza-libro",
   "kalamo-final-extrae-armas", "kalamo-final-golpe-impulso",
+  "kalamo-final-prepara-golpe-v1", "kalamo-final-lanza-explorador-v1",
+  "explorador-pantalla-rota-kalamo-v1",
 ]) {
   assert.match(html, new RegExp(`${recurso}\\.png`));
   assert.match(serviceWorker, new RegExp(`${recurso}\\.png`));
 }
 assert.match(estilos, /@keyframes formarKalamoTintaUno/);
+assert.match(estilos, /@keyframes exploradorEstampadoPantallaKalamo/);
+assert.match(app, /setTimeout\(completarCinematicaFinalVersus, 12200\)/);
+assert.match(app, /pantallasRotasKalamoVersus/);
+for (const recurso of [
+  "mago-pantalla-rota-kalamo-v1", "guardiana-pantalla-rota-kalamo-v1",
+  "dragon-pantalla-rota-kalamo-v1", "hombre-lobo-pantalla-rota-kalamo-v1",
+  "t-shadow-pantalla-rota-kalamo-v1", "guardian-alba-pantalla-rota-kalamo-v1",
+  "dragon-hielo-pantalla-rota-kalamo-v1", "azrak-pantalla-rota-kalamo-v1",
+  "kalamo-pantalla-rota-kalamo-v1",
+]) {
+  assert.match(app, new RegExp(`${recurso}\\.png`));
+  assert.match(serviceWorker, new RegExp(`${recurso}\\.png`));
+}
 assert.match(estilos, /@keyframes formarKalamoTintaDos/);
 assert.match(estilos, /@keyframes formarKalamoTintaTres/);
 assert.match(estilos, /@keyframes proyectilPalabrasKalamoJugador/);

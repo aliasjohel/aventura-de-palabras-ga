@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v123`;
+const CACHE_NAME = `${CACHE_PREFIX}v126`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -31,6 +31,9 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v120`,
   `${CACHE_PREFIX}v121`,
   `${CACHE_PREFIX}v122`,
+  `${CACHE_PREFIX}v123`,
+  `${CACHE_PREFIX}v124`,
+  `${CACHE_PREFIX}v125`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -178,6 +181,18 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/entrada-chorro-tinta-kalamo.png",
   "./assets/images/personajes/versus/libro-sello-kalamo.png",
   "./assets/images/personajes/versus/kalamo-final-golpe-impulso.png",
+  "./assets/images/personajes/versus/kalamo-final-prepara-golpe-v1.png",
+  "./assets/images/personajes/versus/kalamo-final-lanza-explorador-v1.png",
+  "./assets/images/personajes/versus/explorador-pantalla-rota-kalamo-v1.png",
+  "./assets/images/personajes/versus/mago-pantalla-rota-kalamo-v1.png",
+  "./assets/images/personajes/versus/guardiana-pantalla-rota-kalamo-v1.png",
+  "./assets/images/personajes/versus/dragon-pantalla-rota-kalamo-v1.png",
+  "./assets/images/personajes/versus/hombre-lobo-pantalla-rota-kalamo-v1.png",
+  "./assets/images/personajes/versus/t-shadow-pantalla-rota-kalamo-v1.png",
+  "./assets/images/personajes/versus/guardian-alba-pantalla-rota-kalamo-v1.png",
+  "./assets/images/personajes/versus/dragon-hielo-pantalla-rota-kalamo-v1.png",
+  "./assets/images/personajes/versus/azrak-pantalla-rota-kalamo-v1.png",
+  "./assets/images/personajes/versus/kalamo-pantalla-rota-kalamo-v1.png",
   "./assets/images/personajes/versus/kalamo-entrada-formacion-1.png",
   "./assets/images/personajes/versus/kalamo-entrada-formacion-2.png",
   "./assets/images/personajes/versus/kalamo-entrada-formacion-3.png",
@@ -194,9 +209,21 @@ const CORE_ASSETS = [
  */
 const ASSET_REVISIONS = {
   "./": "20260820-personajes-mundo1-25",
-  "./index.html": "20260820-personajes-mundo1-25",
-  "./css/styles.css": "20260820-personajes-mundo1-25",
-  "./js/app.js": "20260820-personajes-mundo1-25",
+  "./index.html": "20260821-kalamo-pantalla-todos-3",
+  "./css/styles.css": "20260821-kalamo-pantalla-todos-3",
+  "./js/app.js": "20260821-kalamo-pantalla-todos-3",
+  "./assets/images/personajes/versus/kalamo-final-prepara-golpe-v1.png": "20260821-kalamo-pantalla-explorador-1",
+  "./assets/images/personajes/versus/kalamo-final-lanza-explorador-v1.png": "20260821-kalamo-pantalla-explorador-1",
+  "./assets/images/personajes/versus/explorador-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
+  "./assets/images/personajes/versus/mago-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
+  "./assets/images/personajes/versus/guardiana-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
+  "./assets/images/personajes/versus/dragon-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
+  "./assets/images/personajes/versus/hombre-lobo-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
+  "./assets/images/personajes/versus/t-shadow-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
+  "./assets/images/personajes/versus/guardian-alba-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
+  "./assets/images/personajes/versus/dragon-hielo-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
+  "./assets/images/personajes/versus/azrak-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
+  "./assets/images/personajes/versus/kalamo-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
   "./assets/images/personajes/coleccion/guardiana-bosque-base.png": "20260820-personajes-mundo1-25",
   "./assets/images/personajes/versus/hombre-lobo-humano.png": "20260820-lobo-transformacion-22",
   "./assets/images/personajes/versus/hombre-lobo-transformacion.png": "20260820-lobo-transformacion-22",

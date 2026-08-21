@@ -249,6 +249,7 @@ const victimaNivorVersus = document.getElementById("victimaNivorVersus");
 const victimaPortalAzrakVersus = document.getElementById("victimaPortalAzrakVersus");
 const manoVictimaAzrakVersus = document.getElementById("manoVictimaAzrakVersus");
 const victimaLibroKalamoVersus = document.getElementById("victimaLibroKalamoVersus");
+const pantallaRotaKalamoVersus = document.getElementById("pantallaRotaKalamoVersus");
 const victimaPruebaFaucesVersus = document.getElementById(
   "victimaPruebaFaucesVersus",
 );
@@ -5705,6 +5706,19 @@ const posesReaccionVictimaVersus = {
   kalamo: srcKalamoImpactoVersus,
 };
 
+const pantallasRotasKalamoVersus = {
+  explorador: "assets/images/personajes/versus/explorador-pantalla-rota-kalamo-v1.png",
+  mago: "assets/images/personajes/versus/mago-pantalla-rota-kalamo-v1.png",
+  guardiana: "assets/images/personajes/versus/guardiana-pantalla-rota-kalamo-v1.png",
+  dragon: "assets/images/personajes/versus/dragon-pantalla-rota-kalamo-v1.png",
+  hombre_lobo: "assets/images/personajes/versus/hombre-lobo-pantalla-rota-kalamo-v1.png",
+  t_shadow: "assets/images/personajes/versus/t-shadow-pantalla-rota-kalamo-v1.png",
+  guardian_alba: "assets/images/personajes/versus/guardian-alba-pantalla-rota-kalamo-v1.png",
+  dragon_hielo: "assets/images/personajes/versus/dragon-hielo-pantalla-rota-kalamo-v1.png",
+  azrak: "assets/images/personajes/versus/azrak-pantalla-rota-kalamo-v1.png",
+  kalamo: "assets/images/personajes/versus/kalamo-pantalla-rota-kalamo-v1.png",
+};
+
 function configurarVictimaFinalVersus(elemento, personaje) {
   const clave = personaje in personajesVersus ? personaje : "mago";
   const victima = personajesVersus[clave];
@@ -5976,10 +5990,15 @@ function reproducirLibroPalabrasPerdidasVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   fondoCinematicaVersus.src = fondoVersus.src;
   crearParticulasEclipseVersus();
-  programarReaccionVictimaFinalVersus(victimaLibroKalamoVersus, victima, 5000);
+  const victimaFinal = victima in personajesVersus ? victima : "mago";
+  programarReaccionVictimaFinalVersus(victimaLibroKalamoVersus, victimaFinal, 5000);
+  pantallaRotaKalamoVersus.src = pantallasRotasKalamoVersus[victimaFinal];
+  pantallaRotaKalamoVersus.alt = `${personajesVersus[victimaFinal].nombre}, estampado contra la pantalla por Kalamo`;
   etiquetaCinematicaVersus.textContent = "GRAN CALIGRAFÍA";
   tituloCinematicaVersus.textContent = "EL LIBRO DE LAS PALABRAS PERDIDAS";
   cinematicaFinalVersus.classList.add("libro-palabras-perdidas");
+  cinematicaFinalVersus.classList.add("kalamo-final-remate-pantalla");
+  cinematicaFinalVersus.classList.toggle("kalamo-victima-explorador", victimaFinal === "explorador");
   cinematicaFinalVersus.classList.remove("oculto");
   void cinematicaFinalVersus.offsetWidth;
   cinematicaFinalVersus.classList.add("activa");
@@ -5988,7 +6007,7 @@ function reproducirLibroPalabrasPerdidasVersus(victima = personajeRivalVersus) {
 
   return new Promise((resolve) => {
     demoVersus.resolverCinematica = resolve;
-    demoVersus.temporizadorCinematica = setTimeout(completarCinematicaFinalVersus, 9600);
+    demoVersus.temporizadorCinematica = setTimeout(completarCinematicaFinalVersus, 12200);
   });
 }
 
@@ -6015,6 +6034,8 @@ function completarCinematicaFinalVersus() {
     "cero-absoluto",
     "eclipse-infernal",
     "libro-palabras-perdidas",
+    "kalamo-final-remate-pantalla",
+    "kalamo-victima-explorador",
   );
   particulasEclipseVersus.replaceChildren();
   const resolver = demoVersus.resolverCinematica;
@@ -6046,6 +6067,8 @@ function cancelarCinematicaFinalVersus() {
     "cero-absoluto",
     "eclipse-infernal",
     "libro-palabras-perdidas",
+    "kalamo-final-remate-pantalla",
+    "kalamo-victima-explorador",
   );
   particulasEclipseVersus.replaceChildren();
   demoVersus.resolverCinematica = null;
