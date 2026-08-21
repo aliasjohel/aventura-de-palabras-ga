@@ -3714,6 +3714,9 @@ const srcGuardianaAtaqueVersus = "assets/images/personajes/coleccion/guardiana-b
 const srcDragonBaseVersus = "assets/images/personajes/versus/dragon-base.png";
 const srcDragonAtaqueVersus = "assets/images/personajes/versus/dragon-ataque.png";
 const srcHombreLoboBaseVersus = "assets/images/personajes/versus/hombre-lobo-base.png";
+const srcHombreLoboHumanoVersus = "assets/images/personajes/versus/hombre-lobo-humano.png";
+const srcHombreLoboTransformacionVersus = "assets/images/personajes/versus/hombre-lobo-transformacion.png";
+const srcHombreLoboAullidoVersus = "assets/images/personajes/versus/hombre-lobo-aullido.png";
 const srcHombreLoboZarpazoVersus = "assets/images/personajes/versus/hombre-lobo-zarpazo.png";
 const srcHombreLoboSaltoVersus = "assets/images/personajes/versus/hombre-lobo-salto-lunar.png";
 const srcHombreLoboImpactoVersus = "assets/images/personajes/versus/hombre-lobo-impacto-v2.png";
@@ -4102,6 +4105,24 @@ function programarAleteoEntradaNivor(elemento) {
   }
 }
 
+function programarTransformacionEntradaHombreLobo(elemento) {
+  elemento.src = srcHombreLoboHumanoVersus;
+
+  programarPasoEntradaVersus(() => {
+    elemento.src = srcHombreLoboTransformacionVersus;
+    reproducirSonidoVersus("versusAtaqueUno", 0.52);
+  }, 760);
+
+  programarPasoEntradaVersus(() => {
+    elemento.src = srcHombreLoboAullidoVersus;
+    reproducirSonidoVersus("lobos", 0.72);
+  }, 1510);
+
+  programarPasoEntradaVersus(() => {
+    elemento.src = srcHombreLoboBaseVersus;
+  }, 2520);
+}
+
 function limpiarEntradaDueloVersus() {
   demoVersus.temporizadoresEntrada.forEach(clearTimeout);
   demoVersus.temporizadoresEntrada = [];
@@ -4232,6 +4253,12 @@ function iniciarEntradaDueloVersus() {
   if (!movimientoReducido && personajeRivalVersus === "dragon_hielo") {
     programarAleteoEntradaNivor(personajeVersusDos);
     programarPasoEntradaVersus(() => { personajeVersusDos.src = srcDragonHieloBaseVersus; }, 3180);
+  }
+  if (!movimientoReducido && personajeJugadorVersus === "hombre_lobo") {
+    programarTransformacionEntradaHombreLobo(personajeVersusUno);
+  }
+  if (!movimientoReducido && personajeRivalVersus === "hombre_lobo") {
+    programarTransformacionEntradaHombreLobo(personajeVersusDos);
   }
 
   programarPasoEntradaVersus(() => {

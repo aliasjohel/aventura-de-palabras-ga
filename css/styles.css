@@ -3657,6 +3657,15 @@ button:disabled {
     pointer-events: none;
 }
 
+/* En pruebas, libera la arena durante la entrada y restaura las herramientas al terminar. */
+.versus-marco.duelo-en-introduccion .herramientas-pruebas-versus,
+.versus-marco.duelo-en-introduccion .herramientas-habilidades-pruebas-versus {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-115%);
+    transition: opacity 180ms ease, transform 260ms ease;
+}
+
 .duelo-en-introduccion .versus-progresos,
 .duelo-en-introduccion .versus-insignia {
     opacity: 0.18;
@@ -11521,24 +11530,82 @@ button:disabled {
     animation-name: respirarPersonajeDosInvertidoVersus;
 }
 
+.entrada-jugador-hombre_lobo .entrada-efecto-uno,
+.entrada-rival-hombre_lobo .entrada-efecto-dos {
+    bottom: 5%;
+    width: 38%;
+    height: 76%;
+    opacity: 1;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at var(--luna-entrada-x) 18%, rgba(238, 246, 255, 0.76) 0 7%, rgba(116, 176, 235, 0.3) 8% 13%, transparent 14%),
+        radial-gradient(ellipse at 50% 72%, rgba(76, 135, 204, 0.48), transparent 62%);
+    filter: drop-shadow(0 0 20px rgba(104, 172, 255, 0.78));
+    animation: auraTransformacionHombreLoboVersus 3.05s ease-out both;
+}
+
+.entrada-jugador-hombre_lobo .entrada-efecto-uno {
+    --luna-entrada-x: 18%;
+    left: 3%;
+}
+
+.entrada-rival-hombre_lobo .entrada-efecto-dos {
+    --luna-entrada-x: 82%;
+    right: 3%;
+}
+
+.entrada-jugador-hombre_lobo .entrada-efecto-uno i,
+.entrada-rival-hombre_lobo .entrada-efecto-dos i {
+    bottom: 8%;
+    width: 8%;
+    height: 24%;
+    border-radius: 70% 20% 70% 20%;
+    background: linear-gradient(0deg, transparent, #83bfff 58%, #edf8ff);
+    filter: blur(2px) drop-shadow(0 0 8px #72aefe);
+    opacity: 0.46;
+    animation: energiaTransformacionLoboVersus 520ms ease-in-out infinite alternate;
+}
+
 .versus-personaje-uno.entrando-duelo.entrada-hombre_lobo {
-    animation: entradaHombreLoboJugadorVersus 2.25s cubic-bezier(0.18, 0.72, 0.2, 1) both;
+    animation: entradaHombreLoboJugadorVersus 3.05s cubic-bezier(0.18, 0.72, 0.2, 1) both;
 }
 
 .versus-personaje-dos.entrando-duelo.entrada-hombre_lobo-rival {
-    animation: entradaHombreLoboRivalVersus 2.25s cubic-bezier(0.18, 0.72, 0.2, 1) both;
+    animation: entradaHombreLoboRivalVersus 3.05s cubic-bezier(0.18, 0.72, 0.2, 1) both;
 }
 
 @keyframes entradaHombreLoboJugadorVersus {
-    0% { opacity: 0; transform: translate(-42%, -11%) scale(1.14); filter: brightness(0.35) blur(2px); }
-    54% { opacity: 1; transform: translate(3%, 0) scale(1.03); filter: brightness(1.35) drop-shadow(0 0 24px #83bfff); }
-    100% { opacity: 1; transform: translate(0, 0) scale(1); }
+    0% { opacity: 0; transform: translate(-42%, 2%) scale(0.9); filter: brightness(0.35) blur(2px); }
+    18% { opacity: 1; transform: translate(0, 0) scale(0.94); filter: brightness(0.82); }
+    30% { transform: translate(-2%, 3%) scale(0.9); filter: brightness(0.65) drop-shadow(0 0 10px #528dcf); }
+    48% { transform: translate(1%, -1%) scale(1.04); filter: brightness(1.4) drop-shadow(0 0 30px #9ecfff); }
+    57% { transform: translate(-1.5%, 0) scale(1.075); }
+    64% { transform: translate(1.5%, -1%) scale(1.06); }
+    78% { transform: translate(0, -2%) scale(1.07); filter: brightness(1.18) drop-shadow(0 0 22px #83bfff); }
+    100% { opacity: 1; transform: translate(0, 0) scale(1); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.66)); }
 }
 
 @keyframes entradaHombreLoboRivalVersus {
-    0% { opacity: 0; transform: translate(42%, -11%) scale(1.14) scaleX(-1); filter: brightness(0.35) blur(2px); }
-    54% { opacity: 1; transform: translate(-3%, 0) scale(1.03) scaleX(-1); filter: brightness(1.35) drop-shadow(0 0 24px #83bfff); }
-    100% { opacity: 1; transform: translate(0, 0) scale(1) scaleX(-1); }
+    0% { opacity: 0; transform: translate(42%, 2%) scale(0.9) scaleX(-1); filter: brightness(0.35) blur(2px); }
+    18% { opacity: 1; transform: translate(0, 0) scale(0.94) scaleX(-1); filter: brightness(0.82); }
+    30% { transform: translate(2%, 3%) scale(0.9) scaleX(-1); filter: brightness(0.65) drop-shadow(0 0 10px #528dcf); }
+    48% { transform: translate(-1%, -1%) scale(1.04) scaleX(-1); filter: brightness(1.4) drop-shadow(0 0 30px #9ecfff); }
+    57% { transform: translate(1.5%, 0) scale(1.075) scaleX(-1); }
+    64% { transform: translate(-1.5%, -1%) scale(1.06) scaleX(-1); }
+    78% { transform: translate(0, -2%) scale(1.07) scaleX(-1); filter: brightness(1.18) drop-shadow(0 0 22px #83bfff); }
+    100% { opacity: 1; transform: translate(0, 0) scale(1) scaleX(-1); filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.66)); }
+}
+
+@keyframes auraTransformacionHombreLoboVersus {
+    0%, 8% { opacity: 0; transform: scale(0.45); }
+    22% { opacity: 0.58; transform: scale(0.82); }
+    46%, 70% { opacity: 0.95; transform: scale(1.06); }
+    84% { opacity: 0.5; transform: scale(1.12); }
+    100% { opacity: 0; transform: scale(1.2); }
+}
+
+@keyframes energiaTransformacionLoboVersus {
+    to { height: 35%; opacity: 0.35; transform: translateY(-10%) rotate(12deg); }
 }
 
 .versus-personaje-uno.personaje-hombre_lobo.zarpando-lobo {
