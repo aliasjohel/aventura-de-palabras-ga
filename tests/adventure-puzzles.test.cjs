@@ -47,6 +47,9 @@ assert.match(html, /id="btnProbarPruebaBosque"/);
 assert.match(app, /desafiosCompletados !== 2[\s\S]+misionActual === 2/);
 assert.match(app, /misionActual === 5/);
 assert.match(app, /function iniciarPuzzleRamasDeslizante\(/);
+assert.match(app, /function activarBloqueoTronco\(/);
+assert.match(app, /tronco-antiguo-caido-bosque\.png/);
+assert.doesNotMatch(app, /rama-frondosa-bosque-/);
 assert.match(app, /crearTableroMezclado\(6\)/);
 assert.match(app, /Objetivo: 1-2-3 \/ 4-5-6 \/ 7-8-ACÁ/);
 assert.match(app, /Las piezas iluminadas son las que podés tocar/);
@@ -54,6 +57,8 @@ assert.match(app, /function iniciarPuzzleMemoriaLobos\(/);
 assert.match(app, /function completarPruebaEspecialBosque\(/);
 assert.match(styles, /\.tablero-ramas-deslizante/);
 assert.match(styles, /\.pieza-ramas-deslizante:not\(:disabled\)/);
+assert.match(styles, /@keyframes caerArbolSobreSendero/);
+assert.match(styles, /\.hoja-impacto-tronco/);
 assert.match(styles, /content:"ACÁ"/);
 assert.match(styles, /\.escena-memoria-lobos/);
 assert.match(styles, /bosque-6-lobos-v2\.png/);
@@ -64,6 +69,11 @@ assert.match(styles, /\.lobo-memoria span\{[^}]+width:7cqw/);
 assert.match(styles, /\.lobo-memoria-3 span,\.lobo-memoria-4 span\{width:8\.5cqw\}/);
 assert.match(styles, /width:min\(70vw,78vh,610px\);max-height:none/);
 assert.match(serviceWorker, /assets\/images\/fondos\/bosque-6-lobos-v2\.png/);
+assert.match(serviceWorker, /assets\/images\/elementos\/tronco-antiguo-caido-bosque\.png/);
 assert.match(serviceWorker, /js\/adventure-puzzles\.js/);
+assert.equal(
+  fs.existsSync(path.join(root, "assets", "images", "elementos", "tronco-antiguo-caido-bosque.png")),
+  true,
+);
 
 console.log("adventure-puzzles: comprobaciones correctas");

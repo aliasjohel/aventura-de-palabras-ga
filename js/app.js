@@ -593,7 +593,7 @@ const escenasPorEscenario = [
     },
     {
       fondos: ["bosque-3-despejado.png"],
-      texto: "🌿 Resuelve la palabra para encontrar un paso entre las ramas.",
+      texto: "🌳 Resuelve la palabra para abrir un paso junto al árbol caído.",
     },
     {
       fondos: ["bosque-4.png"],
@@ -706,9 +706,9 @@ const historiaBosque = [
   },
   {
     capitulo: "Misión 3",
-    titulo: "Entre las Ramas",
+    titulo: "El Árbol Caído",
     texto:
-      "Mientras rodea la roca, descubre que el sendero está cubierto por grandes ramas caídas. Avanza lentamente, apartando cada obstáculo para seguir adelante.",
+      "Mientras rodea la roca, un crujido sacude el bosque. Un árbol antiguo se desploma frente al explorador y atraviesa todo el sendero. Es demasiado grande para saltarlo o rodearlo: tendrá que encontrar la forma de abrirse paso.",
   },
   {
     capitulo: "Misión 4",
@@ -758,7 +758,7 @@ const estadosExploradorPorEscenario = {
   0: [
     "feliz", // El Bosque Encantado
     "nervioso", // La Piedra del Sendero
-    "feliz", // Entre las Ramas
+    "feliz", // El Árbol Caído
     "preocupado", // La Tormenta
     "nervioso", // La Niebla Misteriosa
     "preocupado", // Los Aullidos
@@ -2361,7 +2361,7 @@ btnContinuarHistoria.addEventListener("click", async () => {
       }
 
       if (sonidoNarrativoPendiente === "ramas") {
-        activarBloqueoRamas();
+        activarBloqueoTronco();
       }
 
       reproducirSonido(sonidoNarrativoPendiente);
@@ -6939,7 +6939,7 @@ function detenerSonidos() {
   detenerAmbienteCristal();
   detenerPortalMision();
   detenerAmbienteHojas();
-  detenerBloqueoRamas();
+  detenerBloqueoTronco();
   detenerTormenta();
   detenerNiebla();
   detenerMiradasLobos();
@@ -6982,34 +6982,61 @@ function detenerAmbienteHojas() {
     .forEach((capa) => capa.remove());
 }
 
-function detenerBloqueoRamas() {
+function detenerBloqueoTronco() {
   contenedorEscenario
-    .querySelectorAll(".capa-ramas-bloqueo")
+    .querySelectorAll(".capa-tronco-bloqueo")
     .forEach((capa) => capa.remove());
 }
 
-function actualizarBloqueoRamasMision() {
-  detenerBloqueoRamas();
+function actualizarBloqueoTroncoMision() {
+  detenerBloqueoTronco();
 
   if (escenarioActual !== 0 || misionActual !== 2) return;
 
   const capa = document.createElement("div");
-  capa.className = "capa-ramas-bloqueo";
+  capa.className = "capa-tronco-bloqueo";
   capa.setAttribute("aria-hidden", "true");
 
-  for (let indice = 1; indice <= 12; indice++) {
-    const rama = document.createElement("img");
-    rama.className = `rama-bloqueo rama-bloqueo-${indice}`;
-    const variante = ((indice - 1) % 3) + 1;
-    rama.src = `assets/images/elementos/rama-frondosa-bosque-${variante}.png`;
-    rama.alt = "";
-    capa.appendChild(rama);
-  }
+  const sombra = document.createElement("span");
+  sombra.className = "sombra-tronco-bloqueo";
+
+  const tronco = document.createElement("img");
+  tronco.className = "tronco-bloqueo";
+  tronco.src = "assets/images/elementos/tronco-antiguo-caido-bosque.png";
+  tronco.alt = "";
+
+  const hojasImpacto = [
+    ["-190px", "-82px", "-125deg", "0ms", 0],
+    ["-132px", "-118px", "82deg", "45ms", 1],
+    ["-74px", "-96px", "-70deg", "90ms", 0],
+    ["-18px", "-132px", "145deg", "25ms", 1],
+    ["52px", "-105px", "-110deg", "110ms", 0],
+    ["116px", "-120px", "95deg", "60ms", 1],
+    ["172px", "-78px", "160deg", "130ms", 0],
+    ["224px", "-102px", "-85deg", "80ms", 1],
+  ];
+
+  capa.append(sombra, tronco);
+  hojasImpacto.forEach(([x, y, rotacion, retraso, variante], indice) => {
+    const hoja = document.createElement("img");
+    hoja.className = "hoja-impacto-tronco";
+    hoja.src = `assets/images/elementos/hoja-${variante + 1}.png`;
+    hoja.alt = "";
+    hoja.style.setProperty("--impacto-x", x);
+    hoja.style.setProperty("--impacto-y", y);
+    hoja.style.setProperty("--impacto-rotacion", rotacion);
+    hoja.style.setProperty("--impacto-retraso", retraso);
+    hoja.style.setProperty(
+      "--impacto-escala",
+      indice % 3 === 0 ? "0.78" : "0.58",
+    );
+    capa.appendChild(hoja);
+  });
 
   contenedorEscenario.insertBefore(capa, personajeImagen);
 
   if (desafiosCompletados > 0 || prefiereReducirMovimiento.matches) {
-    capa.classList.add("ramas-colocadas");
+    capa.classList.add("tronco-colocado");
     return;
   }
 
@@ -7017,21 +7044,26 @@ function actualizarBloqueoRamasMision() {
     historiaMisionPendiente && sonidoNarrativoPendiente === "ramas";
 
   if (!esperaSonidoNarrativo) {
-    requestAnimationFrame(() => activarBloqueoRamas());
+    requestAnimationFrame(() => activarBloqueoTronco());
   }
 }
 
-function activarBloqueoRamas() {
-  const capa = contenedorEscenario.querySelector(".capa-ramas-bloqueo");
-  if (!capa || capa.classList.contains("ramas-activas")) return;
+function activarBloqueoTronco() {
+  const capa = contenedorEscenario.querySelector(".capa-tronco-bloqueo");
+  if (!capa || capa.classList.contains("tronco-activo")) return;
 
-  capa.classList.remove("ramas-colocadas");
+  capa.classList.remove("tronco-colocado");
   void capa.offsetWidth;
-  capa.classList.add("ramas-activas");
+  capa.classList.add("tronco-activo");
 
-  contenedorEscenario.classList.remove("temblor");
-  void contenedorEscenario.offsetWidth;
-  contenedorEscenario.classList.add("temblor");
+  setTimeout(() => {
+    if (!capa.isConnected || !capa.classList.contains("tronco-activo")) return;
+
+    contenedorEscenario.classList.remove("temblor");
+    void contenedorEscenario.offsetWidth;
+    contenedorEscenario.classList.add("temblor");
+    animarPolvoImpacto();
+  }, 720);
 }
 
 function detenerVientoArena() {
@@ -7855,7 +7887,7 @@ function actualizarEscenaPorMision() {
     escenarioActual === 1,
   );
   fondoEscenario.src = `assets/images/fondos/${nombreFondo}`;
-  actualizarBloqueoRamasMision();
+  actualizarBloqueoTroncoMision();
   actualizarVientoArenaMision();
   volverEstadoBaseExplorador();
 }
@@ -8689,7 +8721,7 @@ function abrirPruebaEspecialBosque(tipo) {
 
   if (tipo === "ramas") {
     etiquetaPruebaBosque.textContent = "PRUEBA DEL SENDERO";
-    tituloPruebaBosque.textContent = "Abrí un camino entre las ramas";
+    tituloPruebaBosque.textContent = "Abrí un paso junto al árbol caído";
     instruccionPruebaBosque.textContent =
       "Armá las filas 1-2-3, 4-5-6 y 7-8-vacío. Tocá solamente una pieza iluminada para moverla al espacio que dice ACÁ.";
     btnRepetirPruebaBosque.textContent = "↻ Reiniciar fácil";
@@ -8794,7 +8826,7 @@ function moverPiezaPuzzleRamas(posicion) {
   }
 
   tableroRamasDeslizante.classList.add("resuelto");
-  estadoPruebaBosque.textContent = "¡El sendero está completo! Las ramas se están apartando.";
+  estadoPruebaBosque.textContent = "¡El sendero está completo! Ya encontraste cómo superar el árbol.";
   void completarPruebaEspecialBosque("ramas");
 }
 
@@ -10382,7 +10414,7 @@ function precargarRecursosCriticosMision(
   return Promise.all([
     precargarImagen(`assets/images/fondos/${nombreFondo}`),
     escenario === 0 && mision === 2
-      ? precargarImagen("assets/images/elementos/rama-bloqueo-bosque.png")
+      ? precargarImagen("assets/images/elementos/tronco-antiguo-caido-bosque.png")
       : Promise.resolve(),
     cargarImagenExplorador(estadoExplorador),
   ]);

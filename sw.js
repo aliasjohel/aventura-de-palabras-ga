@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v115`;
+const CACHE_NAME = `${CACHE_PREFIX}v117`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -23,6 +23,8 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v112`,
   `${CACHE_PREFIX}v113`,
   `${CACHE_PREFIX}v114`,
+  `${CACHE_PREFIX}v115`,
+  `${CACHE_PREFIX}v116`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -45,9 +47,7 @@ const CORE_ASSETS = [
   "./assets/icons/icon-512.png",
   "./assets/images/intro/libro-intro-sin-cristal.png",
   "./assets/images/intro/cristal-icono.png",
-  "./assets/images/elementos/rama-frondosa-bosque-1.png",
-  "./assets/images/elementos/rama-frondosa-bosque-2.png",
-  "./assets/images/elementos/rama-frondosa-bosque-3.png",
+  "./assets/images/elementos/tronco-antiguo-caido-bosque.png",
   "./assets/images/fondos/menu-inicio-aventura.png",
   "./assets/images/fondos/bosque-6-lobos-v2.png",
   "./assets/icons/icon-maskable-512.png",
@@ -184,10 +184,11 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260820-versus-escalas-17",
-  "./index.html": "20260820-versus-escalas-17",
-  "./css/styles.css": "20260820-versus-escalas-17",
-  "./js/app.js": "20260820-versus-escalas-17",
+  "./": "20260820-aventura-tronco-19",
+  "./index.html": "20260820-aventura-tronco-19",
+  "./css/styles.css": "20260820-aventura-tronco-19",
+  "./js/app.js": "20260820-aventura-tronco-19",
+  "./assets/images/elementos/tronco-antiguo-caido-bosque.png": "20260820-aventura-tronco-19",
   "./assets/images/personajes/versus/bestia-tintero-kalamo.png": "20260820-versus-escalas-17",
   "./assets/images/personajes/versus/libro-sello-kalamo.png": "20260820-kalamo-tinta-centro-2",
   "./assets/images/personajes/versus/kalamo-final-golpe-impulso.png": "20260820-kalamo-tinta-centro-2",
