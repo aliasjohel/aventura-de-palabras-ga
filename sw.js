@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v120`;
+const CACHE_NAME = `${CACHE_PREFIX}v123`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -28,6 +28,9 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v117`,
   `${CACHE_PREFIX}v118`,
   `${CACHE_PREFIX}v119`,
+  `${CACHE_PREFIX}v120`,
+  `${CACHE_PREFIX}v121`,
+  `${CACHE_PREFIX}v122`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -96,6 +99,7 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/explorador-lupa.png",
   "./assets/images/elementos/enredaderas-teclado-versus.png",
   "./assets/images/personajes/versus/guardiana-susto-impacto.png",
+  "./assets/images/personajes/coleccion/guardiana-bosque-base.png",
   "./assets/images/personajes/versus/dragon-susto-impacto.png",
   "./assets/images/personajes/versus/mama-dragon-pata.png",
   "./assets/images/personajes/versus/hombre-lobo-base.png",
@@ -189,10 +193,11 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260820-lobo-transformacion-22",
-  "./index.html": "20260820-lobo-transformacion-22",
-  "./css/styles.css": "20260820-lobo-transformacion-22",
-  "./js/app.js": "20260820-lobo-transformacion-22",
+  "./": "20260820-personajes-mundo1-25",
+  "./index.html": "20260820-personajes-mundo1-25",
+  "./css/styles.css": "20260820-personajes-mundo1-25",
+  "./js/app.js": "20260820-personajes-mundo1-25",
+  "./assets/images/personajes/coleccion/guardiana-bosque-base.png": "20260820-personajes-mundo1-25",
   "./assets/images/personajes/versus/hombre-lobo-humano.png": "20260820-lobo-transformacion-22",
   "./assets/images/personajes/versus/hombre-lobo-transformacion.png": "20260820-lobo-transformacion-22",
   "./assets/images/elementos/tronco-antiguo-caido-bosque.png": "20260820-aventura-tronco-19",

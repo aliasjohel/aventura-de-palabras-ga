@@ -263,6 +263,7 @@ const btnSalirJuego = document.getElementById("btnSalirJuego");
 const btnMisionAnterior = document.getElementById("btnMisionAnterior");
 const btnMisionSiguiente = document.getElementById("btnMisionSiguiente");
 const btnProbarPruebaBosque = document.getElementById("btnProbarPruebaBosque");
+const btnProbarEscenaPersonaje = document.getElementById("btnProbarEscenaPersonaje");
 const btnProbarMuralSantuario = document.getElementById("btnProbarMuralSantuario");
 const modalMuralSantuario = document.getElementById("modalMuralSantuario");
 const tableroMuralSantuario = document.getElementById("tableroMuralSantuario");
@@ -724,9 +725,9 @@ const historiaBosque = [
   },
   {
     capitulo: "Misión 6",
-    titulo: "Los Aullidos",
+    titulo: "El Guardián de la Luna",
     texto:
-      "Desde la oscuridad se escuchan los aullidos de varios lobos. Aunque el miedo comienza a aparecer, el explorador decide continuar.",
+      "Desde la oscuridad se escuchan los aullidos de varios lobos. Entre los árboles aparece un viajero solitario y le advierte al explorador que la manada sólo dejará pasar a quien comprenda el orden de sus miradas. Hay algo extraño y salvaje oculto en aquel desconocido.",
   },
   {
     capitulo: "Misión 7",
@@ -750,7 +751,7 @@ const historiaBosque = [
     capitulo: "Misión 10",
     titulo: "El Portal de los Mundos",
     texto:
-      "El explorador toma el Primer Cristal. El bosque recupera su luz y un antiguo portal vuelve a abrirse. El siguiente destino será el Desierto Perdido, donde lo espera un nuevo desafío.",
+      "El explorador toma el Primer Cristal. El bosque recupera su luz y un antiguo portal vuelve a abrirse. Antes de partir, una presencia esmeralda se acerca para reconocer su hazaña. El siguiente destino será el Desierto Perdido.",
   },
 ];
 
@@ -842,6 +843,8 @@ let secuenciaPrologoActiva = null;
 let secuenciaIntroduccionMundoActiva = null;
 let modoPruebasActivo = false;
 let maximoEscenarioDesbloqueado = 0;
+const clavePersonajesDesbloqueados = "personajesDesbloqueadosAventuraGA";
+let guardianaDesbloqueada = false;
 const desafiosPorMision = 3;
 const adaptadorLocalSalasVersus = VersusRoom.crearAdaptadorLocal();
 let adaptadorSalasVersus = adaptadorLocalSalasVersus;
@@ -1095,7 +1098,7 @@ function actualizarSeleccionPersonajeRemota(sala) {
 
   const propioListo = Boolean(jugadorPropio?.listo);
   const rivalListo = Boolean(jugadorRival?.listo);
-  tarjetasPersonajesVersus.forEach((tarjeta) => { tarjeta.disabled = propioListo; });
+  actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada: propioListo });
   btnConfirmarPersonajeVersus.disabled = propioListo;
 
   estadoPersonajePropioVersus.className = propioListo ? "listo" : "";
@@ -1606,7 +1609,7 @@ function continuarAventura() {
 btnSiguiente.addEventListener("click", continuarAventura);
 
 function seleccionarPersonajeVersus(personaje) {
-  if (!personajesVersus[personaje]) return;
+  if (!personajesVersus[personaje] || !personajeDisponibleVersus(personaje)) return;
   personajeJugadorVersus = personaje;
   tarjetasPersonajesVersus.forEach((tarjeta) => {
     const seleccionada = tarjeta.dataset.personaje === personaje;
@@ -1616,7 +1619,60 @@ function seleccionarPersonajeVersus(personaje) {
   btnConfirmarPersonajeVersus.textContent = `Luchar con ${personajesVersus[personaje].nombre}`;
 }
 
+function cargarPersonajesDesbloqueados() {
+  try {
+    const personajes = JSON.parse(
+      localStorage.getItem(clavePersonajesDesbloqueados) || "[]",
+    );
+    guardianaDesbloqueada = Array.isArray(personajes) && personajes.includes("guardiana");
+  } catch {
+    guardianaDesbloqueada = false;
+  }
+}
+
+function personajeDisponibleVersus(personaje) {
+  if (modoPruebasActivo) return true;
+  if (personaje === "guardiana") return guardianaDesbloqueada;
+  return true;
+}
+
+function guardarDesbloqueoGuardiana() {
+  guardianaDesbloqueada = true;
+  if (modoPruebasActivo) return;
+  try {
+    const personajes = JSON.parse(
+      localStorage.getItem(clavePersonajesDesbloqueados) || "[]",
+    );
+    const desbloqueados = new Set(Array.isArray(personajes) ? personajes : []);
+    desbloqueados.add("guardiana");
+    localStorage.setItem(
+      clavePersonajesDesbloqueados,
+      JSON.stringify([...desbloqueados]),
+    );
+  } catch {
+    // El personaje permanece desbloqueado durante la sesión actual.
+  }
+}
+
+function actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada = false } = {}) {
+  tarjetasPersonajesVersus.forEach((tarjeta) => {
+    const disponible = personajeDisponibleVersus(tarjeta.dataset.personaje);
+    const estado = tarjeta.querySelector(".estado-personaje-versus");
+    tarjeta.classList.toggle("bloqueada", !disponible);
+    tarjeta.disabled = seleccionBloqueada || !disponible;
+    tarjeta.setAttribute("aria-disabled", `${seleccionBloqueada || !disponible}`);
+    if (estado) {
+      estado.textContent = disponible ? "DISPONIBLE" : "COMPLETÁ EL MUNDO 1";
+    }
+  });
+
+  if (!personajeDisponibleVersus(personajeJugadorVersus)) {
+    personajeJugadorVersus = "explorador";
+  }
+}
+
 function abrirSeleccionPersonajeVersus() {
+  actualizarDisponibilidadPersonajesVersus();
   seleccionarPersonajeVersus(personajeJugadorVersus);
   etiquetaSeleccionPersonajeVersus.textContent = modoArcadeActivo
     ? "ELEGÍ A TU CAMPEÓN PARA LA TORRE"
@@ -1624,13 +1680,15 @@ function abrirSeleccionPersonajeVersus() {
   tituloSeleccionPersonajeVersus.textContent = modoArcadeActivo
     ? "Selección del modo Arcade"
     : "Selección de personaje";
-  detalleSeleccionPersonajeVersus.textContent = modoArcadeActivo
-    ? "Tu personaje se enfrentará a ocho rivales controlados por la máquina."
-    : "Todos están disponibles durante el desarrollo.";
+  detalleSeleccionPersonajeVersus.textContent = modoPruebasActivo
+    ? "Modo Pruebas: todos los personajes están disponibles."
+    : modoArcadeActivo
+      ? "Tu personaje se enfrentará a ocho rivales controlados por la máquina."
+      : "La Guardiana se desbloquea al completar el Mundo 1.";
   mostrarPantalla(pantallaSeleccionPersonajeVersus);
   if (modoArcadeActivo) {
     btnConfirmarPersonajeVersus.disabled = false;
-    tarjetasPersonajesVersus.forEach((tarjeta) => { tarjeta.disabled = false; });
+    actualizarDisponibilidadPersonajesVersus();
     estadoPersonajePropioVersus.className = "";
     estadoPersonajePropioVersus.textContent = "Elegí con quién subirás la torre.";
     estadoPersonajeRivalVersus.className = "listo";
@@ -2042,6 +2100,7 @@ tarjetasPersonajesVersus.forEach((tarjeta) => {
 });
 
 btnConfirmarPersonajeVersus.addEventListener("click", async () => {
+  if (!personajeDisponibleVersus(personajeJugadorVersus)) return;
   reproducirSonidoComenzarAventura();
   if (modoArcadeActivo) {
     prepararRecorridoArcade();
@@ -2066,7 +2125,7 @@ btnConfirmarPersonajeVersus.addEventListener("click", async () => {
     estadoPersonajePropioVersus.className = "error";
     estadoPersonajePropioVersus.textContent = error.message || "No pudimos guardar tu personaje.";
     btnConfirmarPersonajeVersus.disabled = false;
-    tarjetasPersonajesVersus.forEach((tarjeta) => { tarjeta.disabled = false; });
+    actualizarDisponibilidadPersonajesVersus();
   }
 });
 
@@ -2510,6 +2569,12 @@ btnProbarPruebaBosque.addEventListener("click", () => {
   if (!tipo) return;
   pruebaBosqueEnModoDemo = true;
   abrirPruebaEspecialBosque(tipo);
+});
+
+btnProbarEscenaPersonaje.addEventListener("click", () => {
+  if (!modoPruebasActivo || escenarioActual !== 0) return;
+  if (misionActual === 5) void ejecutarEncuentroHombreLoboMision();
+  if (misionActual === 9) void presentarDesbloqueoGuardianaBosque();
 });
 
 btnAyudaMuralSantuario.addEventListener("click", mostrarAyudaMuralSantuario);
@@ -6326,6 +6391,8 @@ function actualizarControlesDev() {
   btnProbarPruebaBosque.disabled =
     escenarioActual !== 0 || ![2, 5].includes(misionActual);
   btnProbarMuralSantuario.disabled = escenarioActual !== 0 || misionActual !== 8;
+  btnProbarEscenaPersonaje.disabled =
+    escenarioActual !== 0 || ![5, 9].includes(misionActual);
 }
 
 function actualizarModoPruebas(activar, { restaurarProgreso = true } = {}) {
@@ -6343,10 +6410,12 @@ function actualizarModoPruebas(activar, { restaurarProgreso = true } = {}) {
   if (modoPruebasActivo) {
     actualizarSelectoresPruebas();
   } else if (restaurarProgreso) {
+    cargarPersonajesDesbloqueados();
     restaurarPartidaTrasPruebas();
   }
 
   actualizarControlesDev();
+  actualizarDisponibilidadPersonajesVersus();
 }
 
 function actualizarSelectoresPruebas() {
@@ -7810,6 +7879,12 @@ function cargarProgreso() {
     aventura.length - 1,
   );
 
+  // Migra partidas anteriores que ya habían llegado al Mundo 2 antes de que
+  // existiera el sistema de personajes desbloqueables.
+  if (escenarioActual >= 1 || maximoEscenarioDesbloqueado >= 1) {
+    guardarDesbloqueoGuardiana();
+  }
+
   actualizarJugador();
   actualizarMenuPrincipal();
 }
@@ -7850,6 +7925,7 @@ function obtenerPalabraAleatoria() {
   return palabraSeleccionada;
 }
 
+cargarPersonajesDesbloqueados();
 cargarProgreso();
 actualizarModoPruebas(
   localStorage.getItem("modoPruebasAventuraGA") === "activo",
@@ -8477,7 +8553,59 @@ async function completarAperturaPortal() {
   }
 }
 
+async function presentarDesbloqueoGuardianaBosque() {
+  if (escenarioActual !== 0 || misionActual !== 9) return;
+
+  const yaEstabaDesbloqueada = guardianaDesbloqueada;
+  const capa = document.createElement("div");
+  const aura = document.createElement("span");
+  const guardiana = document.createElement("img");
+  const mensaje = document.createElement("div");
+  const titulo = document.createElement("strong");
+  const texto = document.createElement("p");
+
+  capa.className = "encuentro-guardiana-bosque";
+  capa.setAttribute("aria-live", "polite");
+  aura.className = "aura-encuentro-guardiana";
+  guardiana.className = "figura-encuentro-guardiana";
+  guardiana.src = srcGuardianaBaseVersus;
+  guardiana.alt = "Guardiana del Bosque";
+  mensaje.className = "mensaje-encuentro-guardiana";
+  titulo.textContent = yaEstabaDesbloqueada
+    ? "La Guardiana del Bosque"
+    : "¡Nueva heroína desbloqueada!";
+  texto.textContent = yaEstabaDesbloqueada
+    ? "El bosque vuelve a confiarte el paso hacia los otros mundos."
+    : "La Guardiana reconoce tu valor y se une a tus campeones del modo versus.";
+  mensaje.append(titulo, texto);
+  capa.append(aura, guardiana, mensaje);
+  contenedorEscenario.appendChild(capa);
+
+  try {
+    requestAnimationFrame(() => capa.classList.add("visible"));
+    await esperarMovimiento(prefiereReducirMovimiento.matches ? 180 : 850);
+    guardarDesbloqueoGuardiana();
+    actualizarDisponibilidadPersonajesVersus();
+    capa.classList.add("revelada");
+    await esperarMovimiento(prefiereReducirMovimiento.matches ? 500 : 2300);
+    capa.classList.add("saliendo");
+    await esperarMovimiento(prefiereReducirMovimiento.matches ? 120 : 650);
+  } finally {
+    capa.remove();
+  }
+}
+
 async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
+  if (
+    secuencia !== secuenciaAperturaPortal ||
+    !capaPortal?.isConnected ||
+    escenarioActual !== 0 ||
+    misionActual !== 9
+  ) {
+    return;
+  }
+
+  await presentarDesbloqueoGuardianaBosque();
   if (
     secuencia !== secuenciaAperturaPortal ||
     !capaPortal?.isConnected ||
@@ -8957,6 +9085,51 @@ function actualizarProgresoMemoriaLobos() {
   });
 }
 
+async function ejecutarEncuentroHombreLoboMision() {
+  if (escenarioActual !== 0 || misionActual !== 5) return;
+
+  const capa = document.createElement("div");
+  const luna = document.createElement("span");
+  const figura = document.createElement("img");
+  const relato = document.createElement("p");
+  const esperaCorta = prefiereReducirMovimiento.matches ? 180 : 760;
+  const esperaTransformacion = prefiereReducirMovimiento.matches ? 240 : 950;
+
+  capa.className = "encuentro-hombre-lobo-mision";
+  capa.setAttribute("aria-live", "polite");
+  luna.className = "luna-encuentro-lobo";
+  figura.className = "figura-encuentro-lobo";
+  figura.src = srcHombreLoboHumanoVersus;
+  figura.alt = "El viajero misterioso frente al explorador";
+  relato.className = "relato-encuentro-lobo";
+  relato.textContent = "El desconocido reconoce el valor del explorador…";
+  capa.append(luna, figura, relato);
+  contenedorEscenario.appendChild(capa);
+
+  try {
+    requestAnimationFrame(() => capa.classList.add("visible"));
+    await esperarPruebaBosque(esperaCorta);
+
+    figura.src = srcHombreLoboTransformacionVersus;
+    figura.alt = "El viajero transformándose bajo la luz de la luna";
+    capa.classList.add("transformando");
+    relato.textContent = "La luz de la luna revela su verdadera naturaleza.";
+    reproducirSonido("lobos");
+    await esperarPruebaBosque(esperaTransformacion);
+
+    figura.src = srcHombreLoboBaseVersus;
+    figura.alt = "El Guardián de la Luna convertido en hombre lobo";
+    capa.classList.add("transformado");
+    relato.textContent = "Con un poderoso aullido, el Guardián de la Luna ahuyenta a la manada y abre el sendero.";
+    await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 420 : 1750);
+
+    capa.classList.add("saliendo");
+    await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 120 : 520);
+  } finally {
+    capa.remove();
+  }
+}
+
 async function completarPruebaEspecialBosque(tipo) {
   if (pruebaEspecialBosqueActiva !== tipo) return;
 
@@ -8979,13 +9152,18 @@ async function completarPruebaEspecialBosque(tipo) {
     return;
   }
 
+  if (tipo === "lobos") {
+    cerrarPruebaEspecialBosque();
+    await ejecutarEncuentroHombreLoboMision();
+  }
+
   monedas += 10;
   experiencia += 20;
   actualizarJugador();
   sonidoNarrativoPendiente = avanzarMision();
   btnSiguiente.textContent = "➡️ Siguiente misión";
   guardarProgreso();
-  cerrarPruebaEspecialBosque();
+  if (tipo !== "lobos") cerrarPruebaEspecialBosque();
   const mensajeCompleto = await mostrarMensajeDesafioSuperado();
   if (mensajeCompleto) continuarAventura();
 }

@@ -3033,6 +3033,33 @@ button:disabled {
     box-shadow: inset 0 0 25px rgba(76, 208, 94, 0.18), 0 0 18px rgba(72, 202, 97, 0.34);
 }
 
+.tarjeta-personaje-versus.bloqueada {
+    cursor: not-allowed;
+    border-color: rgba(116, 126, 132, 0.48);
+    background:
+        radial-gradient(circle at 50% 38%, rgba(75, 88, 91, 0.18), transparent 50%),
+        linear-gradient(180deg, rgba(22, 29, 31, 0.96), rgba(12, 15, 17, 0.98));
+    filter: saturate(0.22);
+}
+
+.tarjeta-personaje-versus.bloqueada:hover,
+.tarjeta-personaje-versus.bloqueada:focus-visible {
+    transform: none;
+    border-color: rgba(116, 126, 132, 0.48);
+}
+
+.tarjeta-personaje-versus.bloqueada img {
+    opacity: 0.48;
+    filter: grayscale(0.65) brightness(0.62) drop-shadow(0 8px 7px rgba(0, 0, 0, 0.66));
+}
+
+.tarjeta-personaje-versus.bloqueada .estado-personaje-versus {
+    border-color: rgba(210, 182, 111, 0.5);
+    background: rgba(48, 38, 19, 0.9);
+    color: #e4c47f;
+    font-size: clamp(0.38rem, 0.64vw, 0.52rem);
+}
+
 .tarjeta-personaje-versus img {
     width: 100%;
     min-height: 0;
@@ -8895,6 +8922,208 @@ button:disabled {
 
 .capa-niebla.sendero-despejado .niebla::after {
     opacity: 0.04 !important;
+}
+
+/* Encuentro narrativo de la misión 6: el viajero revela al Guardián de la Luna. */
+.encuentro-hombre-lobo-mision,
+.encuentro-guardiana-bosque {
+    position: absolute;
+    inset: 0;
+    z-index: 16;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(90deg, rgba(3, 9, 12, 0.76), rgba(7, 17, 17, 0.18) 48%, rgba(3, 8, 10, 0.56));
+    transition: opacity 420ms ease;
+}
+
+.encuentro-hombre-lobo-mision.visible,
+.encuentro-guardiana-bosque.visible {
+    opacity: 1;
+}
+
+.encuentro-hombre-lobo-mision.saliendo,
+.encuentro-guardiana-bosque.saliendo {
+    opacity: 0;
+}
+
+.luna-encuentro-lobo {
+    position: absolute;
+    top: 7%;
+    right: 13%;
+    width: clamp(54px, 11vw, 105px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 35%, #ffffff 0 9%, #d9efff 32%, #8fc4ef 68%, rgba(88, 149, 205, 0.08) 72%);
+    box-shadow: 0 0 22px rgba(163, 217, 255, 0.82), 0 0 60px rgba(81, 156, 220, 0.52);
+    opacity: 0.78;
+    transform: scale(0.72);
+    transition: transform 900ms ease, filter 900ms ease;
+}
+
+.figura-encuentro-lobo {
+    position: absolute;
+    right: 10%;
+    bottom: -7%;
+    width: clamp(150px, 30vw, 310px);
+    height: 92%;
+    object-fit: contain;
+    object-position: center bottom;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.72));
+    opacity: 0;
+    transform: translate3d(34px, 0, 0) scale(0.92);
+    transition: opacity 460ms ease, transform 620ms cubic-bezier(0.2, 0.75, 0.25, 1), filter 450ms ease;
+}
+
+.encuentro-hombre-lobo-mision.visible .figura-encuentro-lobo {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+.encuentro-hombre-lobo-mision.transformando .figura-encuentro-lobo {
+    filter: brightness(1.45) drop-shadow(0 0 18px rgba(126, 201, 255, 0.88));
+    animation: sacudidaTransformacionLoboMision 180ms ease-in-out 5 alternate;
+}
+
+.encuentro-hombre-lobo-mision.transformando .luna-encuentro-lobo {
+    filter: brightness(1.55);
+    transform: scale(1);
+}
+
+.encuentro-hombre-lobo-mision.transformado .figura-encuentro-lobo {
+    animation: aullidoGuardianLunaMision 900ms ease-out both;
+}
+
+.relato-encuentro-lobo,
+.mensaje-encuentro-guardiana {
+    position: absolute;
+    left: 5%;
+    bottom: 8%;
+    width: min(54%, 520px);
+    margin: 0;
+    padding: clamp(9px, 2vw, 16px) clamp(12px, 2.4vw, 22px);
+    border: 1px solid rgba(173, 218, 245, 0.58);
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(9, 24, 34, 0.94), rgba(15, 42, 48, 0.9));
+    color: #edf8ff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.52), inset 0 0 18px rgba(107, 184, 228, 0.12);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(0.74rem, 2vw, 1.05rem);
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: center;
+}
+
+/* Aparición de la Guardiana al completar el Bosque Encantado. */
+.encuentro-guardiana-bosque {
+    background:
+        radial-gradient(circle at 72% 48%, rgba(71, 221, 131, 0.3), transparent 35%),
+        linear-gradient(90deg, rgba(3, 15, 12, 0.76), rgba(5, 20, 13, 0.18) 48%, rgba(3, 13, 9, 0.62));
+}
+
+.aura-encuentro-guardiana {
+    position: absolute;
+    right: 6%;
+    bottom: -28%;
+    width: 48%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(107, 255, 168, 0.55), rgba(39, 167, 102, 0.2) 42%, transparent 70%);
+    filter: blur(3px);
+    transform: scale(0.55);
+    transition: transform 900ms ease;
+}
+
+.figura-encuentro-guardiana {
+    position: absolute;
+    right: 9%;
+    bottom: -8%;
+    width: clamp(160px, 31vw, 320px);
+    height: 96%;
+    object-fit: contain;
+    object-position: center bottom;
+    opacity: 0;
+    filter: brightness(1.25) drop-shadow(0 0 18px rgba(83, 239, 146, 0.65));
+    transform: translate3d(45px, 18px, 0) scale(0.9);
+    transition: opacity 650ms ease, transform 850ms cubic-bezier(0.2, 0.76, 0.22, 1), filter 650ms ease;
+}
+
+.encuentro-guardiana-bosque.visible .figura-encuentro-guardiana {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+.encuentro-guardiana-bosque.revelada .figura-encuentro-guardiana {
+    filter: brightness(1) drop-shadow(0 10px 16px rgba(0, 0, 0, 0.68)) drop-shadow(0 0 12px rgba(83, 239, 146, 0.35));
+}
+
+.encuentro-guardiana-bosque.revelada .aura-encuentro-guardiana {
+    transform: scale(1);
+    animation: respirarAuraGuardianaMundo 1.7s ease-in-out infinite alternate;
+}
+
+.mensaje-encuentro-guardiana {
+    border-color: rgba(125, 240, 166, 0.58);
+    background: linear-gradient(135deg, rgba(8, 38, 27, 0.95), rgba(17, 69, 43, 0.9));
+    color: #eaffef;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 450ms ease, transform 450ms ease;
+}
+
+.encuentro-guardiana-bosque.revelada .mensaje-encuentro-guardiana {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mensaje-encuentro-guardiana strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #a9ffc5;
+    font-size: clamp(0.9rem, 2.5vw, 1.28rem);
+}
+
+.mensaje-encuentro-guardiana p {
+    margin: 0;
+}
+
+@keyframes sacudidaTransformacionLoboMision {
+    from { transform: translate3d(-3px, 0, 0) scale(1.01); }
+    to { transform: translate3d(3px, -2px, 0) scale(1.035); }
+}
+
+@keyframes aullidoGuardianLunaMision {
+    0% { transform: translate3d(0, 0, 0) scale(0.96); }
+    45% { transform: translate3d(-5px, -7px, 0) scale(1.055); filter: brightness(1.35) drop-shadow(0 0 20px rgba(126, 201, 255, 0.82)); }
+    100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes respirarAuraGuardianaMundo {
+    from { opacity: 0.58; transform: scale(0.92); }
+    to { opacity: 0.92; transform: scale(1.05); }
+}
+
+@media (max-width: 620px) {
+    .figura-encuentro-lobo,
+    .figura-encuentro-guardiana {
+        right: 2%;
+        width: 49%;
+        height: 88%;
+    }
+
+    .relato-encuentro-lobo,
+    .mensaje-encuentro-guardiana {
+        left: 3%;
+        bottom: 5%;
+        width: 58%;
+        padding: 7px 9px;
+        font-size: clamp(0.62rem, 2.8vw, 0.82rem);
+    }
+
+    .luna-encuentro-lobo {
+        top: 5%;
+        right: 6%;
+    }
 }
 
 /* Ojos superpuestos sobre los lobos del fondo, exclusivos de la mision 6. */
