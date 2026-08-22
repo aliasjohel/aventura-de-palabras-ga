@@ -283,6 +283,14 @@ const puzzleMemoriaLobos = document.getElementById("puzzleMemoriaLobos");
 const escenaMemoriaLobos = document.getElementById("escenaMemoriaLobos");
 const botonesMemoriaLobos = [...escenaMemoriaLobos.querySelectorAll(".lobo-memoria")];
 const progresoMemoriaLobos = document.getElementById("progresoMemoriaLobos");
+const puzzleVientosDesierto = document.getElementById("puzzleVientosDesierto");
+let botonesVientosDesierto = [];
+const puzzleOasisDesierto = document.getElementById("puzzleOasisDesierto");
+const botonesOasisDesierto = [...document.querySelectorAll(".oasis-opcion")];
+const pistaOasisDesierto = document.getElementById("pistaOasisDesierto");
+const puzzleEspejosDesierto = document.getElementById("puzzleEspejosDesierto");
+const rutaLuzEspejos = document.getElementById("rutaLuzEspejos");
+const botonesEspejosDesierto = [...document.querySelectorAll(".espejo-solar")];
 const estadoPruebaBosque = document.getElementById("estadoPruebaBosque");
 const btnRepetirPruebaBosque = document.getElementById("btnRepetirPruebaBosque");
 const btnSalirPruebaBosque = document.getElementById("btnSalirPruebaBosque");
@@ -313,7 +321,10 @@ const contenedorEscenario = document.querySelector(".escenario");
 const mensajeDesafioSuperado = document.getElementById(
   "mensajeDesafioSuperado",
 );
+const ranuraCristalDesierto = document.getElementById("ranuraCristalDesierto");
+const cristalPanelDesierto = document.getElementById("cristalPanelDesierto");
 const modalHistoria = document.getElementById("modalHistoria");
+const imagenSoporteMision = document.getElementById("imagenSoporteMision");
 const numeroCapitulo = document.getElementById("numeroCapitulo");
 const tituloCapitulo = document.getElementById("tituloCapitulo");
 const textoCapitulo = document.getElementById("textoCapitulo");
@@ -577,6 +588,7 @@ const imagenesPrecargadas = new Map();
 const intervaloSpriteCaminata = 150;
 const spritesCaminataPorEscenario = {
   0: crearRutasSpritesCaminata("bosque"),
+  1: crearRutasSpritesCaminata("bosque"),
 };
 const spritesPortalPorEscenario = {
   0: crearRutasSpritesCaminata("portal-bosque", "explorador-portal"),
@@ -637,6 +649,42 @@ const escenasPorEscenario = [
       fondos: ["desierto-1.png"],
       texto:
         "🌵 Descubre la palabra secreta para comenzar tu expedición por el Desierto Perdido.",
+    },
+    {
+      fondos: ["desierto-2.png"],
+      texto: "🌪️ Encuentra la palabra para orientarte dentro de la tormenta de arena.",
+    },
+    {
+      fondos: ["desierto-3.png"],
+      texto: "🧭 Resuelve la palabra y despierta las Ruinas de los Cuatro Vientos.",
+    },
+    {
+      fondos: ["desierto-4.png"],
+      texto: "〰️ Descubre la palabra antes de que la sombra bajo las dunas se acerque.",
+    },
+    {
+      fondos: ["desierto-5.png"],
+      texto: "💧 Solo la palabra correcta permitirá distinguir el oasis verdadero.",
+    },
+    {
+      fondos: ["desierto-6.png"],
+      texto: "🪄 Resuelve la palabra para descifrar el secreto que conoce el Maguito.",
+    },
+    {
+      fondos: ["desierto-7.png"],
+      texto: "🏃 Encuentra la palabra y escapa del Devoradunas a través del cañón.",
+    },
+    {
+      fondos: ["desierto-8.png"],
+      texto: "☀️ La palabra secreta revelará la entrada del templo enterrado.",
+    },
+    {
+      fondos: ["desierto-9.png"],
+      texto: "🏛️ Resuelve la palabra para romper la corrupción de la Cámara del Sol.",
+    },
+    {
+      fondos: ["desierto-10.png"],
+      texto: "💛 La última palabra liberará el Cristal Dorado del Desierto.",
     },
   ],
 ];
@@ -756,6 +804,69 @@ const historiaBosque = [
   },
 ];
 
+const historiaDesierto = [
+  {
+    capitulo: "Misión 1",
+    titulo: "Más allá del portal",
+    texto:
+      "El Explorador atraviesa el portal y una ráfaga ardiente lo recibe en el Desierto Perdido. El paso mágico se cierra detrás de él mientras el viento borra sus primeras huellas. Sin posibilidad de regresar, distingue unas ruinas lejanas y comienza la búsqueda del Cristal Dorado.",
+  },
+  {
+    capitulo: "Misión 2",
+    titulo: "La tormenta sin camino",
+    texto:
+      "Una muralla de arena cubre el horizonte y borra el sendero. El Explorador protege el mapa mientras avanza entre antiguas piedras señaladoras. Cuando el viento abre un claro, descubre que las ruinas lejanas pertenecen a un observatorio olvidado.",
+  },
+  {
+    capitulo: "Misión 3",
+    titulo: "Las ruinas de los cuatro vientos",
+    texto:
+      "Cuatro obeliscos rodean una plataforma cubierta de arena. Entre ellos aparece una red de canales de piedra capaz de transportar energía solar. Si el Explorador gira las losas y conduce la luz hasta el núcleo central, el observatorio revelará la ruta hacia el Cristal Dorado.",
+  },
+  {
+    capitulo: "Misión 4",
+    titulo: "La sombra bajo las dunas",
+    texto:
+      "La arena comienza a elevarse como una ola. Una criatura gigantesca viaja bajo las dunas y se dirige hacia el Explorador. El Devoradunas emerge con un rugido, cubierto por antiguas marcas que brillan con una energía extraña.",
+  },
+  {
+    capitulo: "Misión 5",
+    titulo: "El oasis imposible",
+    texto:
+      "Cuatro oasis aparecen al mismo tiempo, aunque el mapa no señala ninguno. Dentro de uno de los espejismos, un joven Maguito pide ayuda. Para liberarlo, el Explorador deberá descifrar las inscripciones y descubrir qué agua pertenece al mundo real.",
+  },
+  {
+    capitulo: "Misión 6",
+    titulo: "El secreto del Maguito",
+    texto:
+      "Ya libre de la ilusión, el Maguito explica que la energía corrupta del templo despertó al Devoradunas. En una caravana enterrada encuentran provisiones y la última señal del camino. Desde ahora continuarán la expedición juntos.",
+  },
+  {
+    capitulo: "Misión 7",
+    titulo: "El Devoradunas",
+    texto:
+      "Las paredes del cañón tiemblan. El gusano los encontró y cada nueva embestida derrumba parte del camino. El Explorador y el Maguito corren hacia la silueta del templo mientras la criatura se aproxima detrás de ellos.",
+  },
+  {
+    capitulo: "Misión 8",
+    titulo: "El templo enterrado",
+    texto:
+      "Una última tormenta retira la arena de la montaña y deja al descubierto una puerta monumental. Cinco espejos solares vinculados rodean el sello. Solo un rayo de luz correctamente dirigido podrá abrir la entrada.",
+  },
+  {
+    capitulo: "Misión 9",
+    titulo: "La cámara del sol",
+    texto:
+      "En el corazón del templo, raíces oscuras envuelven la cámara del cristal. El Devoradunas irrumpe a través del muro, pero el Maguito reconoce las mismas marcas corruptas sobre su armadura. La criatura también es prisionera de esa fuerza.",
+  },
+  {
+    capitulo: "Misión 10",
+    titulo: "El Cristal Dorado",
+    texto:
+      "Al romperse la corrupción, el Devoradunas recupera la calma y el santuario vuelve a llenarse de luz y agua. El Explorador toma el Cristal Dorado mientras el Maguito celebra a su lado. En la distancia comienza a formarse el camino hacia el tercer mundo.",
+  },
+];
+
 const estadosExploradorPorEscenario = {
   0: [
     "feliz", // El Bosque Encantado
@@ -769,6 +880,18 @@ const estadosExploradorPorEscenario = {
     "feliz", // El Santuario del Cristal
     "feliz", // El Portal de los Mundos
   ],
+  1: [
+    "nervioso",
+    "preocupado",
+    "pensando",
+    "preocupado",
+    "pensando",
+    "feliz",
+    "preocupado",
+    "pensando",
+    "preocupado",
+    "feliz",
+  ],
 };
 
 let palabraSecreta = "";
@@ -781,6 +904,7 @@ let misionActual = 0;
 let monedas = 0;
 let experiencia = 0;
 let cristalesObtenidos = 0;
+let mundoDosCompletado = false;
 let desafioActual = 1;
 let desafiosCompletados = 0;
 let sonidoNarrativoPendiente = "";
@@ -813,6 +937,15 @@ let memoriaLobosAceptandoEntrada = false;
 let secuenciaPruebaBosque = 0;
 let focoPrevioPruebaBosque = null;
 let pruebaBosqueEnModoDemo = false;
+let orientacionesVientosDesierto = [];
+let tiposCanalesVientoDesierto = [];
+let movimientosVientosDesierto = 0;
+let oasisVerdaderoDesierto = 0;
+let rondaOasisDesierto = 0;
+let aciertosOasisDesierto = 0;
+let objetivoOasisDesiertoActual = null;
+let orientacionesEspejosDesierto = [];
+let movimientosEspejosDesierto = 0;
 let secuenciaAperturaPortal = 0;
 let cinematicaPortalActiva = false;
 let portalAbierto = false;
@@ -837,6 +970,7 @@ let srcReposoCaminata = "";
 let secuenciaPresentacionMision = 0;
 let presentacionMisionYaCargada = false;
 let transicionIntroduccionMundo2Activa = false;
+let secuenciaLlegadaDesierto = 0;
 let resolverIntroduccionMundo2 = null;
 let secuenciaNarrativaActual = null;
 let secuenciaHistoriaActiva = null;
@@ -1598,6 +1732,13 @@ btnPista.addEventListener("click", () => {
 function continuarAventura() {
   btnSiguiente.classList.add("oculto");
   limpiarCinematicaSantuario();
+
+  if (mundoDosCompletado) {
+    detenerSonidos();
+    mostrarPantalla(pantallaMenu);
+    actualizarMenuPrincipal();
+    return;
+  }
 
   if (historiaMisionPendiente) {
     mostrarHistoriaMision();
@@ -2380,8 +2521,16 @@ btnContinuarHistoria.addEventListener("click", async () => {
     protegerTransicionTrasCartel(secuenciaNarrativa);
 
     if (presentacionMisionYaCargada) {
+      const debeMostrarLlegadaDesierto =
+        escenarioActual === 1 &&
+        misionActual === 0 &&
+        desafiosCompletados === 0;
       presentacionMisionYaCargada = false;
       historiaMisionPendiente = false;
+      if (debeMostrarLlegadaDesierto) {
+        requestAnimationFrame(activarLlegadaDesiertoMision);
+      }
+      activarEmergenciaDevoradunas();
       return;
     }
 
@@ -2412,6 +2561,7 @@ btnContinuarHistoria.addEventListener("click", async () => {
     await cambiarEscenarioConTransicion();
 
     personajeImagen.classList.remove("oculto-transicion");
+    activarEmergenciaDevoradunas();
 
     historiaMisionPendiente = false;
 
@@ -2426,6 +2576,14 @@ btnContinuarHistoria.addEventListener("click", async () => {
 
       reproducirSonido(sonidoNarrativoPendiente);
       sonidoNarrativoPendiente = "";
+    }
+
+    if (
+      escenarioActual === 1 &&
+      misionActual === 0 &&
+      desafiosCompletados === 0
+    ) {
+      activarLlegadaDesiertoMision();
     }
 
     await esperarFadeEscenarioEntrada();
@@ -2565,8 +2723,8 @@ btnProbarMuralSantuario.addEventListener("click", async () => {
 });
 
 btnProbarPruebaBosque.addEventListener("click", () => {
-  if (!modoPruebasActivo || pruebaEspecialBosqueActiva || escenarioActual !== 0) return;
-  const tipo = misionActual === 2 ? "ramas" : misionActual === 5 ? "lobos" : "";
+  if (!modoPruebasActivo || pruebaEspecialBosqueActiva) return;
+  const tipo = obtenerTipoPruebaEspecial(escenarioActual, misionActual);
   if (!tipo) return;
   pruebaBosqueEnModoDemo = true;
   abrirPruebaEspecialBosque(tipo);
@@ -2591,11 +2749,29 @@ btnRepetirPruebaBosque.addEventListener("click", () => {
     iniciarPuzzleRamasDeslizante();
   } else if (pruebaEspecialBosqueActiva === "lobos") {
     void mostrarSecuenciaMemoriaLobos();
+  } else if (pruebaEspecialBosqueActiva === "vientos") {
+    iniciarPuzzleVientosDesierto();
+  } else if (pruebaEspecialBosqueActiva === "oasis") {
+    iniciarPuzzleOasisDesierto();
+  } else if (pruebaEspecialBosqueActiva === "espejos") {
+    iniciarPuzzleEspejosDesierto();
   }
 });
 
 botonesMemoriaLobos.forEach((boton) => {
   boton.addEventListener("click", () => elegirLoboMemoria(Number(boton.dataset.lobo)));
+});
+
+botonesOasisDesierto.forEach((boton) => {
+  boton.addEventListener("click", () =>
+    elegirOasisDesierto(Number(boton.dataset.oasis)),
+  );
+});
+
+botonesEspejosDesierto.forEach((boton) => {
+  boton.addEventListener("click", () =>
+    girarEspejoDesierto(Number(boton.dataset.espejo)),
+  );
 });
 
 btnSalirPruebaBosque.addEventListener("click", () => {
@@ -2763,6 +2939,34 @@ function verificarEstado() {
           mensajePersonaje.classList.remove("oculto");
           void completarAperturaPortal();
         }
+      });
+      return;
+    }
+
+    const completaMundoDos =
+      escenarioActual === 1 &&
+      misionActual === 9 &&
+      desafiosCompletados === desafiosPorMision - 1;
+
+    if (completaMundoDos) {
+      desafiosCompletados = desafiosPorMision;
+      cristalesObtenidos = Math.max(cristalesObtenidos, 2);
+      mundoDosCompletado = true;
+      historiaMisionPendiente = false;
+      actualizarJugador();
+      reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
+      bloquearTeclado();
+      btnPista.disabled = true;
+      btnSiguiente.textContent = "🏆 Aventura completada";
+      btnSiguiente.classList.add("oculto");
+      contenedorEscenario.classList.add("final-desierto-activo");
+      guardarProgreso();
+      void mensajeSuperadoTerminado.then((mensajeCompleto) => {
+        if (!mensajeCompleto) return;
+        mensajePersonaje.classList.remove("oculto");
+        mensajePersonaje.textContent =
+          "✨ ¡Recuperaste el Cristal Dorado! El camino al tercer mundo comienza a revelarse.";
+        btnSiguiente.classList.remove("oculto");
       });
       return;
     }
@@ -6349,8 +6553,13 @@ function esperarAnimacionNarrativa(animacion) {
 function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
   const historia = obtenerHistoriaMision();
   const secuenciaActual = ++secuenciaPresentacionMision;
+  const esHistoriaDesierto = escenarioActual === 1;
 
   presentacionMisionYaCargada = misionYaCargada;
+  modalHistoria.classList.toggle("historia-desierto", esHistoriaDesierto);
+  imagenSoporteMision.src = esHistoriaDesierto
+    ? "assets/images/ui/presentacion-mision-piedra-desierto-v1.png"
+    : "assets/images/ui/presentacion-mision-tronco.png";
   numeroCapitulo.textContent = historia.capitulo;
   tituloCapitulo.textContent = historia.titulo;
   textoCapitulo.textContent = historia.texto;
@@ -6399,7 +6608,8 @@ function navegarMisionDev(direccion) {
 
   detenerSonidos();
   misionActual = nuevaMision;
-  sonidoNarrativoPendiente = sonidosNarrativosPorMision[misionActual] || "";
+  sonidoNarrativoPendiente =
+    escenarioActual === 0 ? sonidosNarrativosPorMision[misionActual] || "" : "";
   historiaMisionPendiente = true;
   navegacionDevPendiente = true;
   actualizarControlesDev();
@@ -6411,8 +6621,10 @@ function actualizarControlesDev() {
   btnMisionAnterior.disabled = misionActual === 0;
   btnMisionSiguiente.disabled =
     misionActual >= obtenerCantidadMisiones(escenarioActual) - 1;
-  btnProbarPruebaBosque.disabled =
-    escenarioActual !== 0 || ![2, 5].includes(misionActual);
+  btnProbarPruebaBosque.disabled = !obtenerTipoPruebaEspecial(
+    escenarioActual,
+    misionActual,
+  );
   btnProbarMuralSantuario.disabled = escenarioActual !== 0 || misionActual !== 8;
   btnProbarEscenaPersonaje.disabled =
     escenarioActual !== 0 || ![5, 9].includes(misionActual);
@@ -6476,7 +6688,12 @@ function actualizarSelectorMisionesPruebas() {
 
   for (let indice = 0; indice < cantidadMisiones; indice++) {
     const opcion = document.createElement("option");
-    const historia = mundo === 0 ? historiaBosque[indice] : null;
+    const historia =
+      mundo === 0
+        ? historiaBosque[indice]
+        : mundo === 1
+          ? historiaDesierto[indice]
+          : null;
     opcion.value = `${indice}`;
     opcion.textContent = historia
       ? `Misión ${indice + 1} · ${historia.titulo}`
@@ -6497,7 +6714,7 @@ function actualizarSelectorMisionesPruebas() {
 
 function obtenerCantidadMisiones(escenario) {
   if (escenario === 0) return historiaBosque.length;
-  if (escenario === 1) return 1;
+  if (escenario === 1) return historiaDesierto.length;
   return aventura[escenario]?.palabras.length || 1;
 }
 
@@ -6528,13 +6745,16 @@ function iniciarMisionSeleccionadaPruebas() {
   sonidoNarrativoPendiente = "";
   historiaMisionPendiente = false;
   portalAbierto = false;
+  mundoDosCompletado = false;
 
   if (escenarioActual === 0 && misionActual >= 9) {
     cristalesObtenidos = Math.max(cristalesObtenidos, 1);
   }
 
   actualizarJugador();
-  void iniciarMisionAventura();
+  void iniciarMisionAventura().then(() => {
+    mostrarHistoriaMision({ misionYaCargada: true });
+  });
 }
 
 function restaurarPartidaTrasPruebas() {
@@ -6586,6 +6806,22 @@ function actualizarVistaMisionDev() {
     btnPista.disabled = true;
     btnSiguiente.classList.add("oculto");
     mensajePersonaje.textContent = "El Portal de los Mundos está abierto.";
+  }
+
+  const finalDesiertoCompletado =
+    mundoDosCompletado && escenarioActual === 1 && misionActual === 9;
+  contenedorEscenario.classList.toggle(
+    "final-desierto-activo",
+    finalDesiertoCompletado,
+  );
+
+  if (finalDesiertoCompletado) {
+    bloquearTeclado();
+    btnPista.disabled = true;
+    btnSiguiente.textContent = "🏆 Aventura completada";
+    btnSiguiente.classList.remove("oculto");
+    mensajePersonaje.textContent =
+      "✨ El Cristal Dorado está a salvo. El camino al tercer mundo te espera.";
   }
 
   actualizarControlesDev();
@@ -6640,6 +6876,7 @@ function reiniciarEstadoAventura() {
   monedas = 0;
   experiencia = 0;
   cristalesObtenidos = 0;
+  mundoDosCompletado = false;
   maximoEscenarioDesbloqueado = 0;
   portalAbierto = false;
   muralSantuarioCompletado = false;
@@ -6660,6 +6897,7 @@ function reiniciarEstadoAventura() {
   contenedorEscenario.classList.remove(
     "cambiando-escena",
     "apareciendo-escena",
+    "final-desierto-activo",
   );
   personajeImagen.classList.remove("caminando", "oculto-transicion");
 
@@ -6675,6 +6913,17 @@ function obtenerHistoriaMision() {
         titulo: "Más Profundo en el Bosque",
         texto:
           "El explorador continúa su camino mientras el bosque guarda nuevos secretos.",
+      }
+    );
+  }
+
+  if (escenarioActual === 1) {
+    return (
+      historiaDesierto[misionActual] || {
+        capitulo: `Misión ${misionActual + 1}`,
+        titulo: "El Desierto Perdido",
+        texto:
+          "El Explorador avanza entre dunas mientras el viento oculta los secretos del Cristal Dorado.",
       }
     );
   }
@@ -7065,6 +7314,8 @@ function detenerSonidos() {
   detenerPresenciaBosque();
   detenerAranaBosque();
   detenerVientoArena();
+  detenerLlegadaDesiertoMision();
+  detenerPersonajesNarrativosDesierto();
   detenerSonidosVersus();
   detenerEfectos();
   detenerAmbiente();
@@ -7191,14 +7442,181 @@ function detenerVientoArena() {
     .forEach((capa) => capa.remove());
 }
 
+function detenerLlegadaDesiertoMision() {
+  secuenciaLlegadaDesierto += 1;
+  contenedorEscenario
+    .querySelectorAll(".capa-llegada-desierto")
+    .forEach((capa) => capa.remove());
+  contenedorEscenario.classList.remove(
+    "llegada-desierto-preparada",
+    "llegada-desierto-activa",
+  );
+}
+
+function actualizarLlegadaDesiertoMision() {
+  detenerLlegadaDesiertoMision();
+
+  const esLlegadaInicial =
+    escenarioActual === 1 &&
+    misionActual === 0 &&
+    desafiosCompletados === 0;
+
+  if (!esLlegadaInicial) return;
+
+  const capa = document.createElement("div");
+  const portal = document.createElement("span");
+  const huellas = document.createElement("div");
+
+  capa.className = "capa-llegada-desierto";
+  capa.setAttribute("aria-hidden", "true");
+  portal.className = "portal-llegada-desierto";
+  huellas.className = "huellas-llegada-desierto";
+
+  for (let indice = 0; indice < 7; indice++) {
+    const huella = document.createElement("span");
+    huella.style.setProperty("--indice-huella", indice);
+    huella.style.setProperty(
+      "--giro-huella",
+      indice % 2 === 0 ? "-24deg" : "18deg",
+    );
+    huellas.appendChild(huella);
+  }
+
+  capa.append(portal, huellas);
+  contenedorEscenario.insertBefore(capa, personajeImagen);
+  contenedorEscenario.classList.add("llegada-desierto-preparada");
+}
+
+function activarLlegadaDesiertoMision() {
+  const capa = contenedorEscenario.querySelector(".capa-llegada-desierto");
+  if (!capa || !contenedorEscenario.classList.contains("llegada-desierto-preparada")) {
+    return;
+  }
+
+  const secuencia = ++secuenciaLlegadaDesierto;
+  contenedorEscenario.classList.remove("llegada-desierto-preparada");
+  void contenedorEscenario.offsetWidth;
+  contenedorEscenario.classList.add("llegada-desierto-activa");
+
+  window.setTimeout(() => {
+    if (secuencia !== secuenciaLlegadaDesierto) return;
+    capa.remove();
+    contenedorEscenario.classList.remove("llegada-desierto-activa");
+  }, prefiereReducirMovimiento.matches ? 50 : 7600);
+}
+
+function detenerPersonajesNarrativosDesierto() {
+  contenedorEscenario
+    .querySelectorAll(".personaje-narrativo-desierto")
+    .forEach((elemento) => elemento.remove());
+}
+
+function crearImagenNarrativaDesierto(src, clase, alt) {
+  const imagen = document.createElement("img");
+  imagen.className = `personaje-narrativo-desierto ${clase}`;
+  imagen.src = src;
+  imagen.alt = alt;
+  imagen.decoding = "async";
+  return imagen;
+}
+
+const misionesEmergenciaDevoradunas = new Set([3, 6, 8, 9]);
+
+function activarEmergenciaDevoradunas() {
+  if (
+    escenarioActual !== 1 ||
+    !misionesEmergenciaDevoradunas.has(misionActual)
+  ) return;
+
+  contenedorEscenario
+    .querySelectorAll(
+      ".devoradunas-entrada-arena, .arena-emergencia-devoradunas",
+    )
+    .forEach((elemento) => {
+      elemento.classList.remove("emergencia-activa");
+      void elemento.getBoundingClientRect();
+      elemento.classList.add("emergencia-activa");
+    });
+}
+
+function actualizarPersonajesNarrativosDesierto() {
+  detenerPersonajesNarrativosDesierto();
+  if (escenarioActual !== 1) return;
+
+  if (misionActual >= 4) {
+    const maguito = crearImagenNarrativaDesierto(
+      "assets/images/personajes/versus/mago-base.png",
+      misionActual === 4
+        ? "maguito-desierto maguito-espejismo"
+        : misionActual === 6
+          ? "maguito-desierto maguito-corriendo"
+          : "maguito-desierto",
+      misionActual === 4
+        ? "Maguito atrapado dentro del espejismo"
+        : "Maguito acompañando al Explorador",
+    );
+    contenedorEscenario.appendChild(maguito);
+  }
+
+  const estadoEmergenciaDevoradunas =
+    desafiosCompletados > 0
+      ? "emergencia-finalizada"
+      : "esperando-emergencia";
+
+  const configuracionDevoradunas = {
+    3: {
+      src: "assets/images/personajes/aventura/devoradunas-emerge-v1.png",
+      clase: `devoradunas-desierto devoradunas-emerge devoradunas-entrada-arena ${estadoEmergenciaDevoradunas}`,
+      alt: "El Devoradunas emergiendo de la arena",
+    },
+    6: {
+      src: "assets/images/personajes/aventura/devoradunas-persigue-v1.png",
+      clase: `devoradunas-desierto devoradunas-persigue devoradunas-entrada-arena ${estadoEmergenciaDevoradunas}`,
+      alt: "El Devoradunas persiguiendo a los viajeros",
+    },
+    8: {
+      src: "assets/images/personajes/aventura/devoradunas-persigue-v1.png",
+      clase: `devoradunas-desierto devoradunas-irrumpe devoradunas-entrada-arena ${estadoEmergenciaDevoradunas}`,
+      alt: "El Devoradunas irrumpiendo en la Cámara del Sol",
+    },
+    9: {
+      src: "assets/images/personajes/aventura/devoradunas-pacifico-v1.png",
+      clase: `devoradunas-desierto devoradunas-pacifico devoradunas-entrada-arena ${estadoEmergenciaDevoradunas}`,
+      alt: "El Devoradunas descansando en paz",
+    },
+  }[misionActual];
+
+  if (configuracionDevoradunas) {
+    const devoradunas = crearImagenNarrativaDesierto(
+      configuracionDevoradunas.src,
+      configuracionDevoradunas.clase,
+      configuracionDevoradunas.alt,
+    );
+    const arenaEmergencia = document.createElement("span");
+    arenaEmergencia.className =
+      `personaje-narrativo-desierto arena-emergencia-devoradunas arena-emergencia-mision-${misionActual + 1}`;
+    arenaEmergencia.setAttribute("aria-hidden", "true");
+    contenedorEscenario.insertBefore(arenaEmergencia, personajeImagen);
+    contenedorEscenario.insertBefore(devoradunas, personajeImagen);
+  }
+
+  if (misionActual === 9) {
+    const cristal = document.createElement("img");
+    cristal.className = "personaje-narrativo-desierto cristal-dorado-desierto";
+    cristal.src = "assets/images/elements/cristal-sabiduria-dorado-v2.png";
+    cristal.alt = "Cristal Dorado del Desierto";
+    contenedorEscenario.appendChild(cristal);
+  }
+}
+
 function actualizarVientoArenaMision() {
-  const esPrimeraMisionDesierto =
-    escenarioActual === 1 && misionActual === 0;
+  const tieneVientoDesierto =
+    escenarioActual === 1 && [0, 1, 3, 6, 7].includes(misionActual);
   const capaExistente = contenedorEscenario.querySelector(
     ".capa-viento-arena",
   );
 
-  if (!esPrimeraMisionDesierto || prefiereReducirMovimiento.matches) {
+  if (!tieneVientoDesierto || prefiereReducirMovimiento.matches) {
     capaExistente?.remove();
     return;
   }
@@ -7210,7 +7628,7 @@ function actualizarVientoArenaMision() {
     ? 10
     : 16;
 
-  capa.className = "capa-viento-arena";
+  capa.className = `capa-viento-arena viento-desierto-mision-${misionActual + 1}`;
   capa.setAttribute("aria-hidden", "true");
 
   for (let indice = 0; indice < cantidadParticulas; indice++) {
@@ -7738,7 +8156,10 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   programarPrecargaRecursosSecundarios();
 
   if (pruebaEspecial) {
-    mensajePersonaje.textContent = "El bosque preparó una prueba especial para abrir el camino.";
+    mensajePersonaje.textContent =
+      escenarioActual === 1
+        ? "El desierto preparó una prueba especial para revelar el camino."
+        : "El bosque preparó una prueba especial para abrir el camino.";
     abrirPruebaEspecialBosque(pruebaEspecial);
     return Promise.resolve();
   }
@@ -7780,7 +8201,8 @@ function avanzarMision() {
 
   misionActual++;
   mensajePersonaje.textContent = "🏆 ¡Misión completada!";
-  let sonidoNarrativo = sonidosNarrativosPorMision[misionActual] || "";
+  let sonidoNarrativo =
+    escenarioActual === 0 ? sonidosNarrativosPorMision[misionActual] || "" : "";
 
   if (misionActual >= obtenerCantidadMisiones(escenarioActual)) {
     misionActual = 0;
@@ -7820,6 +8242,7 @@ function actualizarJugador() {
 
 function actualizarPanelCristales() {
   const cristalBosqueObtenido = cristalesObtenidos > 0;
+  const cristalDesiertoObtenido = cristalesObtenidos > 1;
 
   cristalPanelBosque.classList.toggle("oculto", !cristalBosqueObtenido);
   ranuraCristalBosque.classList.toggle("obtenida", cristalBosqueObtenido);
@@ -7828,6 +8251,15 @@ function actualizarPanelCristales() {
     cristalBosqueObtenido
       ? "Cristal del Bosque Encantado obtenido"
       : "Espacio del Cristal del Bosque Encantado vacío",
+  );
+  cristalPanelDesierto.classList.toggle("oculto", !cristalDesiertoObtenido);
+  ranuraCristalDesierto.classList.toggle("obtenida", cristalDesiertoObtenido);
+  ranuraCristalDesierto.classList.toggle("bloqueada", !cristalDesiertoObtenido);
+  ranuraCristalDesierto.setAttribute(
+    "aria-label",
+    cristalDesiertoObtenido
+      ? "Cristal Dorado del Desierto obtenido"
+      : "Cristal Dorado del Desierto bloqueado",
   );
 }
 
@@ -7844,6 +8276,7 @@ function guardarProgreso() {
     cristalesObtenidos,
     muralSantuarioCompletado,
     portalAbierto,
+    mundoDosCompletado,
     maximoEscenarioDesbloqueado,
   };
 
@@ -7893,6 +8326,8 @@ function cargarProgreso() {
   muralSantuarioCompletado =
     progreso.muralSantuarioCompletado === true || cristalesObtenidos > 0;
   portalAbierto = progreso.portalAbierto === true;
+  mundoDosCompletado =
+    progreso.mundoDosCompletado === true || cristalesObtenidos > 1;
   maximoEscenarioDesbloqueado = Math.min(
     Math.max(
       progreso.maximoEscenarioDesbloqueado ?? escenarioActual,
@@ -8008,13 +8443,23 @@ function actualizarEscenaPorMision() {
     escena,
   );
 
+  contenedorEscenario.classList.remove("final-desierto-activo");
   contenedorEscenario.classList.toggle(
     "escenario-desierto",
     escenarioActual === 1,
   );
+  if (escenarioActual === 1) {
+    contenedorEscenario.dataset.misionDesierto = `${misionActual + 1}`;
+  } else {
+    delete contenedorEscenario.dataset.misionDesierto;
+  }
   fondoEscenario.src = `assets/images/fondos/${nombreFondo}`;
+  fondoEscenario.alt =
+    escenarioActual === 1 ? "Desierto Perdido" : "Bosque Encantado";
   actualizarBloqueoTroncoMision();
   actualizarVientoArenaMision();
+  actualizarLlegadaDesiertoMision();
+  actualizarPersonajesNarrativosDesierto();
   volverEstadoBaseExplorador();
 }
 
@@ -8878,11 +9323,18 @@ async function reanudarCinematicaFinalPortal() {
   }
 }
 
-function obtenerPruebaEspecialBosquePendiente() {
-  if (escenarioActual !== 0 || desafiosCompletados !== 2) return "";
-  if (misionActual === 2) return "ramas";
-  if (misionActual === 5) return "lobos";
+function obtenerTipoPruebaEspecial(escenario, mision) {
+  if (escenario === 0 && mision === 2) return "ramas";
+  if (escenario === 0 && mision === 5) return "lobos";
+  if (escenario === 1 && mision === 2) return "vientos";
+  if (escenario === 1 && mision === 4) return "oasis";
+  if (escenario === 1 && mision === 7) return "espejos";
   return "";
+}
+
+function obtenerPruebaEspecialBosquePendiente() {
+  if (desafiosCompletados !== 2) return "";
+  return obtenerTipoPruebaEspecial(escenarioActual, misionActual);
 }
 
 function abrirPruebaEspecialBosque(tipo) {
@@ -8891,9 +9343,16 @@ function abrirPruebaEspecialBosque(tipo) {
   pruebaEspecialBosqueActiva = tipo;
   focoPrevioPruebaBosque = document.activeElement;
   modalPruebaBosque.classList.remove("oculto", "prueba-completada");
+  modalPruebaBosque.classList.toggle(
+    "prueba-desierto",
+    ["vientos", "oasis", "espejos"].includes(tipo),
+  );
   pantallaJuego.classList.add("prueba-bosque-activa");
   puzzleRamasDeslizante.classList.toggle("oculto", tipo !== "ramas");
   puzzleMemoriaLobos.classList.toggle("oculto", tipo !== "lobos");
+  puzzleVientosDesierto.classList.toggle("oculto", tipo !== "vientos");
+  puzzleOasisDesierto.classList.toggle("oculto", tipo !== "oasis");
+  puzzleEspejosDesierto.classList.toggle("oculto", tipo !== "espejos");
   btnRepetirPruebaBosque.disabled = false;
   btnSalirPruebaBosque.disabled = false;
 
@@ -8904,6 +9363,36 @@ function abrirPruebaEspecialBosque(tipo) {
       "Armá las filas 1-2-3, 4-5-6 y 7-8-vacío. Tocá solamente una pieza iluminada para moverla al espacio que dice ACÁ.";
     btnRepetirPruebaBosque.textContent = "↻ Reiniciar fácil";
     iniciarPuzzleRamasDeslizante();
+    return;
+  }
+
+  if (tipo === "vientos") {
+    etiquetaPruebaBosque.textContent = "PRUEBA DEL CIRCUITO SOLAR";
+    tituloPruebaBosque.textContent = "Llevá la energía al núcleo";
+    instruccionPruebaBosque.textContent =
+      "Girá los canales de piedra. La luz avanza solo por las uniones correctas y debe alcanzar el núcleo del centro.";
+    btnRepetirPruebaBosque.textContent = "↻ Desordenar canales";
+    iniciarPuzzleVientosDesierto();
+    return;
+  }
+
+  if (tipo === "oasis") {
+    etiquetaPruebaBosque.textContent = "PRUEBA DEL ESPEJISMO";
+    tituloPruebaBosque.textContent = "Encontrá el oasis verdadero";
+    instruccionPruebaBosque.textContent =
+      "Superá tres rondas. En cada una compará ondas, cantidad de palmeras y color del destello entre cuatro oasis.";
+    btnRepetirPruebaBosque.textContent = "↻ Cambiar los espejismos";
+    iniciarPuzzleOasisDesierto();
+    return;
+  }
+
+  if (tipo === "espejos") {
+    etiquetaPruebaBosque.textContent = "PRUEBA DEL TEMPLO SOLAR";
+    tituloPruebaBosque.textContent = "Conducí el rayo hasta la puerta";
+    instruccionPruebaBosque.textContent =
+      "Alineá cinco espejos vinculados. Al girar uno también cambia el siguiente, así que deberás pensar la secuencia.";
+    btnRepetirPruebaBosque.textContent = "↻ Desordenar espejos";
+    iniciarPuzzleEspejosDesierto();
     return;
   }
 
@@ -8924,8 +9413,11 @@ function cerrarPruebaEspecialBosque() {
     boton.disabled = true;
     boton.classList.remove("iluminado", "elegido", "error");
   });
+  botonesVientosDesierto.forEach((boton) => (boton.disabled = true));
+  botonesOasisDesierto.forEach((boton) => (boton.disabled = true));
+  botonesEspejosDesierto.forEach((boton) => (boton.disabled = true));
   modalPruebaBosque.classList.add("oculto");
-  modalPruebaBosque.classList.remove("prueba-completada");
+  modalPruebaBosque.classList.remove("prueba-completada", "prueba-desierto");
   pantallaJuego.classList.remove("prueba-bosque-activa");
   const focoAnterior = focoPrevioPruebaBosque;
   focoPrevioPruebaBosque = null;
@@ -9006,6 +9498,440 @@ function moverPiezaPuzzleRamas(posicion) {
   tableroRamasDeslizante.classList.add("resuelto");
   estadoPruebaBosque.textContent = "¡El sendero está completo! Ya encontraste cómo superar el árbol.";
   void completarPruebaEspecialBosque("ramas");
+}
+
+const caminoEnergiaVientoDesierto = [
+  20, 21, 22, 23, 24,
+  19, 18, 17, 16, 15,
+  10, 5, 0, 1, 2, 3, 4, 9, 14, 13, 12,
+];
+
+function iniciarPuzzleVientosDesierto() {
+  if (pruebaEspecialBosqueActiva !== "vientos") return;
+
+  tiposCanalesVientoDesierto = Array.from({ length: 25 }, () => ({
+    tipo: "bloqueado",
+    objetivo: 0,
+  }));
+
+  caminoEnergiaVientoDesierto.forEach((casilla, posicion) => {
+    if (casilla === 12) {
+      tiposCanalesVientoDesierto[casilla] = { tipo: "nucleo", objetivo: 0 };
+      return;
+    }
+
+    const anterior = posicion === 0
+      ? "S"
+      : direccionEntreCasillas(casilla, caminoEnergiaVientoDesierto[posicion - 1]);
+    const siguiente = direccionEntreCasillas(
+      casilla,
+      caminoEnergiaVientoDesierto[posicion + 1],
+    );
+    tiposCanalesVientoDesierto[casilla] = crearCanalParaDirecciones(
+      anterior,
+      siguiente,
+    );
+  });
+
+  orientacionesVientosDesierto = tiposCanalesVientoDesierto.map(
+    ({ tipo, objetivo }) => {
+      if (tipo === "nucleo" || tipo === "bloqueado") return 0;
+      const desplazamientos = tipo === "recto" ? [1, 3] : [1, 2, 3];
+      return (
+        objetivo +
+        desplazamientos[Math.floor(Math.random() * desplazamientos.length)]
+      ) % 4;
+    },
+  );
+  movimientosVientosDesierto = 0;
+  estadoPruebaBosque.textContent =
+    "Hay una sola entrada solar en la esquina inferior izquierda. Conectá sus 21 tramos hasta el núcleo central.";
+  renderizarPuzzleVientosDesierto();
+  botonesVientosDesierto[0]?.focus();
+}
+
+function direccionEntreCasillas(origen, destino) {
+  const diferencia = destino - origen;
+  if (diferencia === -5) return "N";
+  if (diferencia === 1) return "E";
+  if (diferencia === 5) return "S";
+  return "O";
+}
+
+function crearCanalParaDirecciones(primera, segunda) {
+  const direcciones = new Set([primera, segunda]);
+  if (direcciones.has("N") && direcciones.has("S")) {
+    return { tipo: "recto", objetivo: 0 };
+  }
+  if (direcciones.has("E") && direcciones.has("O")) {
+    return { tipo: "recto", objetivo: 1 };
+  }
+  if (direcciones.has("N") && direcciones.has("E")) {
+    return { tipo: "curva", objetivo: 0 };
+  }
+  if (direcciones.has("E") && direcciones.has("S")) {
+    return { tipo: "curva", objetivo: 1 };
+  }
+  if (direcciones.has("S") && direcciones.has("O")) {
+    return { tipo: "curva", objetivo: 2 };
+  }
+  return { tipo: "curva", objetivo: 3 };
+}
+
+function obtenerAberturasCanal(indice) {
+  const canal = tiposCanalesVientoDesierto[indice];
+  if (canal.tipo === "bloqueado") return [];
+  if (canal.tipo === "nucleo") return ["E"];
+  const bases = canal.tipo === "recto" ? [0, 2] : [0, 1];
+  const nombres = ["N", "E", "S", "O"];
+  return bases.map(
+    (direccion) => nombres[(direccion + orientacionesVientosDesierto[indice]) % 4],
+  );
+}
+
+function obtenerCanalesEnergizados() {
+  const energizados = new Set();
+  if (!obtenerAberturasCanal(20).includes("S")) return energizados;
+
+  const pendientes = [20];
+  energizados.add(20);
+  const desplazamientos = { N: -5, E: 1, S: 5, O: -1 };
+  const opuestas = { N: "S", E: "O", S: "N", O: "E" };
+
+  while (pendientes.length) {
+    const actual = pendientes.shift();
+    const fila = Math.floor(actual / 5);
+    const columna = actual % 5;
+    obtenerAberturasCanal(actual).forEach((direccion) => {
+      if (direccion === "N" && fila === 0) return;
+      if (direccion === "S" && fila === 4) return;
+      if (direccion === "E" && columna === 4) return;
+      if (direccion === "O" && columna === 0) return;
+      const vecina = actual + desplazamientos[direccion];
+      if (
+        energizados.has(vecina) ||
+        !obtenerAberturasCanal(vecina).includes(opuestas[direccion])
+      ) {
+        return;
+      }
+      energizados.add(vecina);
+      pendientes.push(vecina);
+    });
+  }
+
+  return energizados;
+}
+
+function renderizarPuzzleVientosDesierto() {
+  const energizados = obtenerCanalesEnergizados();
+  tableroVientosDesierto.replaceChildren();
+
+  tiposCanalesVientoDesierto.forEach((canal, indice) => {
+    if (canal.tipo === "bloqueado") {
+      const muro = document.createElement("span");
+      muro.className = "canal-viento canal-bloqueado";
+      muro.setAttribute("role", "gridcell");
+      muro.setAttribute("aria-label", "Bloque de piedra sin canal");
+      muro.innerHTML = "<span></span>";
+      tableroVientosDesierto.appendChild(muro);
+      return;
+    }
+
+    if (canal.tipo === "nucleo") {
+      const nucleo = document.createElement("span");
+      nucleo.className = `canal-viento nucleo-viento${energizados.has(indice) ? " energizado" : ""}`;
+      nucleo.setAttribute("role", "gridcell");
+      nucleo.setAttribute(
+        "aria-label",
+        energizados.has(indice) ? "Núcleo central activado" : "Núcleo central sin energía",
+      );
+      nucleo.innerHTML = "<span>✦</span>";
+      tableroVientosDesierto.appendChild(nucleo);
+      return;
+    }
+
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = `canal-viento canal-${canal.tipo}${energizados.has(indice) ? " energizado" : ""}${indice === 20 ? " canal-origen" : ""}`;
+    boton.dataset.viento = `${indice}`;
+    boton.style.setProperty(
+      "--giro-canal",
+      `${orientacionesVientosDesierto[indice] * 90}deg`,
+    );
+    boton.setAttribute("role", "gridcell");
+    boton.setAttribute(
+      "aria-label",
+      `Canal ${indice + 1}, ${energizados.has(indice) ? "con energía" : "sin energía"}`,
+    );
+    boton.innerHTML = "<span></span>";
+    boton.addEventListener("click", () => girarObeliscoViento(indice));
+    tableroVientosDesierto.appendChild(boton);
+  });
+
+  botonesVientosDesierto = [
+    ...tableroVientosDesierto.querySelectorAll("button.canal-viento"),
+  ];
+  return energizados;
+}
+
+function girarObeliscoViento(indice) {
+  if (pruebaEspecialBosqueActiva !== "vientos") return;
+
+  orientacionesVientosDesierto[indice] =
+    (orientacionesVientosDesierto[indice] + 1) % 4;
+  movimientosVientosDesierto += 1;
+  reproducirSonido("colocarPieza");
+  const energizados = renderizarPuzzleVientosDesierto();
+  const tramosEnergizados = caminoEnergiaVientoDesierto.filter((casilla) =>
+    energizados.has(casilla),
+  ).length;
+  const recorridoCompleto = caminoEnergiaVientoDesierto.every((casilla) =>
+    energizados.has(casilla),
+  );
+
+  if (!recorridoCompleto) {
+    estadoPruebaBosque.textContent = `${movimientosVientosDesierto} ${
+      movimientosVientosDesierto === 1 ? "movimiento" : "movimientos"
+    }. La luz recorrió ${tramosEnergizados} de los 21 tramos obligatorios.`;
+    tableroVientosDesierto.querySelector(`[data-viento="${indice}"]`)?.focus();
+    return;
+  }
+
+  estadoPruebaBosque.textContent =
+    "¡La energía llegó al núcleo! El observatorio revela el camino.";
+  void completarPruebaEspecialBosque("vientos");
+}
+
+function iniciarPuzzleOasisDesierto() {
+  if (pruebaEspecialBosqueActiva !== "oasis") return;
+
+  secuenciaPruebaBosque += 1;
+  rondaOasisDesierto = 0;
+  aciertosOasisDesierto = 0;
+  prepararRondaOasisDesierto();
+  botonesOasisDesierto[0]?.focus();
+}
+
+const cantidadRondasOasisDesierto = 3;
+const coloresBrilloOasis = ["ninguno", "azul", "dorado"];
+
+function mezclarLista(lista) {
+  const copia = [...lista];
+  for (let indice = copia.length - 1; indice > 0; indice -= 1) {
+    const destino = Math.floor(Math.random() * (indice + 1));
+    [copia[indice], copia[destino]] = [copia[destino], copia[indice]];
+  }
+  return copia;
+}
+
+function describirRasgosOasis(rasgos) {
+  const agua = rasgos.ondas ? "agua con ondas" : "agua quieta";
+  const palmeras = `${rasgos.palmeras} ${rasgos.palmeras === 1 ? "palmera" : "palmeras"}`;
+  const brillo = rasgos.brillo === "ninguno" ? "sin destellos" : `destello ${rasgos.brillo}`;
+  return `${agua}, ${palmeras} y ${brillo}`;
+}
+
+function crearClaveRasgosOasis(rasgos) {
+  return `${rasgos.ondas}-${rasgos.palmeras}-${rasgos.brillo}`;
+}
+
+function crearPistaEnigmaOasis(rasgos) {
+  const agua = rasgos.ondas
+    ? "El agua no permanece quieta"
+    : "La superficie no forma ondas";
+  const palmeras =
+    rasgos.palmeras === 1
+      ? "hay menos de dos palmeras"
+      : rasgos.palmeras === 2
+        ? "hay más de una palmera, pero menos de tres"
+        : "no hay una ni dos palmeras";
+  const brillo =
+    rasgos.brillo === "ninguno"
+      ? "ninguna luz de color flota sobre ella"
+      : rasgos.brillo === "azul"
+        ? "su destello es frío como la noche"
+        : "su destello tiene el color del sol";
+  return `${agua}; ${palmeras}; ${brillo}.`;
+}
+
+function crearObjetivoOasisAleatorio() {
+  const posibilidades = [];
+  for (const ondas of [true, false]) {
+    for (const palmeras of [1, 2, 3]) {
+      for (const brillo of coloresBrilloOasis) {
+        posibilidades.push({ ondas, palmeras, brillo });
+      }
+    }
+  }
+  const claveAnterior = objetivoOasisDesiertoActual
+    ? crearClaveRasgosOasis(objetivoOasisDesiertoActual)
+    : "";
+  return mezclarLista(posibilidades).find(
+    (opcion) => crearClaveRasgosOasis(opcion) !== claveAnterior,
+  );
+}
+
+function prepararRondaOasisDesierto() {
+  const objetivo = crearObjetivoOasisAleatorio();
+  objetivoOasisDesiertoActual = objetivo;
+  const indiceBrillo = coloresBrilloOasis.indexOf(objetivo.brillo);
+  const palmeraSiguiente = (objetivo.palmeras % 3) + 1;
+  const palmeraAnterior = ((objetivo.palmeras + 1) % 3) + 1;
+  const opciones = mezclarLista([
+    objetivo,
+    {
+      ondas: objetivo.ondas,
+      palmeras: palmeraSiguiente,
+      brillo: coloresBrilloOasis[(indiceBrillo + 1) % coloresBrilloOasis.length],
+    },
+    {
+      ondas: !objetivo.ondas,
+      palmeras: objetivo.palmeras,
+      brillo: coloresBrilloOasis[(indiceBrillo + 2) % coloresBrilloOasis.length],
+    },
+    {
+      ondas: !objetivo.ondas,
+      palmeras: palmeraAnterior,
+      brillo: objetivo.brillo,
+    },
+  ]);
+  oasisVerdaderoDesierto = opciones.indexOf(objetivo);
+  botonesOasisDesierto.forEach((boton, indice) => {
+    const rasgos = opciones[indice];
+    boton.disabled = false;
+    boton.classList.remove("error", "elegido");
+    boton.dataset.ondas = `${rasgos.ondas}`;
+    boton.dataset.palmeras = `${rasgos.palmeras}`;
+    boton.dataset.brillo = rasgos.brillo;
+    boton.setAttribute(
+      "aria-label",
+      `${boton.querySelector("strong").textContent}: ${describirRasgosOasis(rasgos)}`,
+    );
+  });
+  pistaOasisDesierto.textContent = `Ronda ${rondaOasisDesierto + 1} de ${cantidadRondasOasisDesierto} · ${crearPistaEnigmaOasis(objetivo)}`;
+  estadoPruebaBosque.textContent =
+    "Cada rasgo aparece en más de una imagen. Combiná las tres pistas para encontrar el oasis.";
+}
+
+function elegirOasisDesierto(indice) {
+  if (pruebaEspecialBosqueActiva !== "oasis") return;
+
+  const boton = botonesOasisDesierto[indice];
+  if (indice !== oasisVerdaderoDesierto) {
+    boton.classList.add("error");
+    botonesOasisDesierto.forEach((opcion) => (opcion.disabled = true));
+    estadoPruebaBosque.textContent =
+      "Era un espejismo. La ilusión cambia de lugar y aparece una inscripción nueva…";
+    reproducirSonido("error");
+    const secuencia = secuenciaPruebaBosque;
+    setTimeout(() => {
+      if (
+        pruebaEspecialBosqueActiva === "oasis" &&
+        secuencia === secuenciaPruebaBosque
+      ) {
+        prepararRondaOasisDesierto();
+        botonesOasisDesierto[0]?.focus();
+      }
+    }, 620);
+    return;
+  }
+
+  boton.classList.add("elegido");
+  botonesOasisDesierto.forEach((opcion) => (opcion.disabled = true));
+  reproducirSonido("acertar");
+  aciertosOasisDesierto += 1;
+  rondaOasisDesierto += 1;
+
+  if (aciertosOasisDesierto >= cantidadRondasOasisDesierto) {
+    estadoPruebaBosque.textContent =
+      "¡Descifraste los tres oasis! El espejismo se rompe y el Maguito queda libre.";
+    void completarPruebaEspecialBosque("oasis");
+    return;
+  }
+
+  estadoPruebaBosque.textContent = `¡Correcto! Se abre la inscripción de la ronda ${rondaOasisDesierto + 1}.`;
+  const secuencia = secuenciaPruebaBosque;
+  setTimeout(() => {
+    if (
+      pruebaEspecialBosqueActiva === "oasis" &&
+      secuencia === secuenciaPruebaBosque
+    ) {
+      prepararRondaOasisDesierto();
+    }
+  }, 720);
+}
+
+function iniciarPuzzleEspejosDesierto() {
+  if (pruebaEspecialBosqueActiva !== "espejos") return;
+
+  const objetivos = [1, 3, 1, 3, 1];
+  orientacionesEspejosDesierto = [...objetivos];
+  movimientosEspejosDesierto = 0;
+  const cantidadGiros = 9 + Math.floor(Math.random() * 5);
+  for (let paso = 0; paso < cantidadGiros; paso += 1) {
+    aplicarGiroEspejosVinculados(Math.floor(Math.random() * objetivos.length));
+  }
+  if (
+    orientacionesEspejosDesierto.every(
+      (orientacion, posicion) => orientacion === objetivos[posicion],
+    )
+  ) {
+    aplicarGiroEspejosVinculados(Math.floor(Math.random() * objetivos.length));
+  }
+  rutaLuzEspejos.classList.remove("resuelta");
+  estadoPruebaBosque.textContent =
+    "Los cinco espejos están conectados: cada toque gira el elegido y el siguiente.";
+  renderizarPuzzleEspejosDesierto();
+  botonesEspejosDesierto[0]?.focus();
+}
+
+function aplicarGiroEspejosVinculados(indice) {
+  const siguiente = (indice + 1) % orientacionesEspejosDesierto.length;
+  orientacionesEspejosDesierto[indice] =
+    (orientacionesEspejosDesierto[indice] + 1) % 4;
+  orientacionesEspejosDesierto[siguiente] =
+    (orientacionesEspejosDesierto[siguiente] + 1) % 4;
+}
+
+function renderizarPuzzleEspejosDesierto() {
+  const objetivos = [1, 3, 1, 3, 1];
+  botonesEspejosDesierto.forEach((boton, indice) => {
+    boton.disabled = false;
+    boton.classList.toggle(
+      "correcto",
+      orientacionesEspejosDesierto[indice] === objetivos[indice],
+    );
+    boton.style.setProperty(
+      "--giro-espejo",
+      `${orientacionesEspejosDesierto[indice] * 45}deg`,
+    );
+  });
+}
+
+function girarEspejoDesierto(indice) {
+  if (pruebaEspecialBosqueActiva !== "espejos") return;
+
+  const objetivos = [1, 3, 1, 3, 1];
+  aplicarGiroEspejosVinculados(indice);
+  movimientosEspejosDesierto += 1;
+  reproducirSonido("cristalCasilla");
+  renderizarPuzzleEspejosDesierto();
+
+  const resuelto = orientacionesEspejosDesierto.every(
+    (orientacion, posicion) => orientacion === objetivos[posicion],
+  );
+  if (!resuelto) {
+    estadoPruebaBosque.textContent = `${movimientosEspejosDesierto} ${
+      movimientosEspejosDesierto === 1 ? "movimiento" : "movimientos"
+    }. Cada espejo arrastra al siguiente; seguí buscando la cadena completa.`;
+    return;
+  }
+
+  rutaLuzEspejos.classList.add("resuelta");
+  botonesEspejosDesierto.forEach((boton) => (boton.disabled = true));
+  estadoPruebaBosque.textContent =
+    "¡El rayo alcanzó el sello! La puerta del templo comienza a abrirse.";
+  void completarPruebaEspecialBosque("espejos");
 }
 
 function iniciarPuzzleMemoriaLobos() {
@@ -9162,6 +10088,9 @@ async function completarPruebaEspecialBosque(tipo) {
   btnSalirPruebaBosque.disabled = true;
   tableroRamasDeslizante.querySelectorAll("button").forEach((boton) => (boton.disabled = true));
   botonesMemoriaLobos.forEach((boton) => (boton.disabled = true));
+  botonesVientosDesierto.forEach((boton) => (boton.disabled = true));
+  botonesOasisDesierto.forEach((boton) => (boton.disabled = true));
+  botonesEspejosDesierto.forEach((boton) => (boton.disabled = true));
   modalPruebaBosque.classList.add("prueba-completada");
   cambiarPersonaje("celebrando");
   reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);

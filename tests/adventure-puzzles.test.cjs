@@ -44,8 +44,12 @@ assert.equal(secuencia.every((valor, indice) => indice === 0 || valor !== secuen
 assert.match(html, /id="modalPruebaBosque"[\s\S]+id="tableroRamasDeslizante"/);
 assert.match(html, /id="escenaMemoriaLobos"[\s\S]+data-lobo="3"/);
 assert.match(html, /id="btnProbarPruebaBosque"/);
-assert.match(app, /desafiosCompletados !== 2[\s\S]+misionActual === 2/);
-assert.match(app, /misionActual === 5/);
+assert.match(app, /function obtenerPruebaEspecialBosquePendiente\(\)[\s\S]+desafiosCompletados !== 2/);
+assert.match(app, /escenario === 0 && mision === 2[\s\S]+return "ramas"/);
+assert.match(app, /escenario === 0 && mision === 5[\s\S]+return "lobos"/);
+assert.match(app, /escenario === 1 && mision === 2[\s\S]+return "vientos"/);
+assert.match(app, /escenario === 1 && mision === 4[\s\S]+return "oasis"/);
+assert.match(app, /escenario === 1 && mision === 7[\s\S]+return "espejos"/);
 assert.match(app, /function iniciarPuzzleRamasDeslizante\(/);
 assert.match(app, /function activarBloqueoTronco\(/);
 assert.match(app, /tronco-antiguo-caido-bosque\.png/);

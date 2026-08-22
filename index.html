@@ -33,7 +33,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260820-personajes-mundo1-25">
+    <link rel="stylesheet" href="css/styles.css?v=20260821-desierto-puzzles-8">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -245,7 +245,12 @@
                         src="assets/images/elements/cristal-sabiduria-esmeralda.png" alt="Cristal del Bosque Encantado">
                     <span class="marca-ranura" aria-hidden="true">1</span>
                 </span>
-                <span class="ranura-cristal bloqueada" title="Próximo mundo" aria-label="Cristal bloqueado">◆</span>
+                <span id="ranuraCristalDesierto" class="ranura-cristal ranura-desierto bloqueada"
+                    title="Desierto Perdido" aria-label="Cristal del Desierto bloqueado">
+                    <img id="cristalPanelDesierto" class="cristal-panel cristal-panel-dorado oculto"
+                        src="assets/images/elements/cristal-sabiduria-dorado-v2.png" alt="Cristal Dorado del Desierto">
+                    <span class="marca-ranura" aria-hidden="true">2</span>
+                </span>
                 <span class="ranura-cristal bloqueada" title="Próximo mundo" aria-label="Cristal bloqueado">◆</span>
                 <span class="ranura-cristal bloqueada" title="Próximo mundo" aria-label="Cristal bloqueado">◆</span>
                 <span class="ranura-cristal bloqueada" title="Próximo mundo" aria-label="Cristal bloqueado">◆</span>
@@ -367,6 +372,35 @@
                         </div>
                     </div>
 
+                    <div id="puzzleVientosDesierto" class="puzzle-vientos-desierto oculto">
+                        <div id="tableroVientosDesierto" class="tablero-vientos-desierto"
+                            role="grid" aria-label="Laberinto de canales de energía hacia el núcleo central">
+                        </div>
+                    </div>
+
+                    <div id="puzzleOasisDesierto" class="puzzle-oasis-desierto oculto">
+                        <div id="opcionesOasisDesierto" class="opciones-oasis-desierto"
+                            aria-label="Cuatro oasis posibles">
+                            <button type="button" class="oasis-opcion" data-oasis="0"><span></span><strong>Oasis A</strong></button>
+                            <button type="button" class="oasis-opcion" data-oasis="1"><span></span><strong>Oasis B</strong></button>
+                            <button type="button" class="oasis-opcion" data-oasis="2"><span></span><strong>Oasis C</strong></button>
+                            <button type="button" class="oasis-opcion" data-oasis="3"><span></span><strong>Oasis D</strong></button>
+                        </div>
+                        <p id="pistaOasisDesierto" class="pista-oasis-desierto"></p>
+                    </div>
+
+                    <div id="puzzleEspejosDesierto" class="puzzle-espejos-desierto oculto">
+                        <div id="rutaLuzEspejos" class="ruta-luz-espejos" aria-hidden="true"><span></span></div>
+                        <div id="controlesEspejosDesierto" class="controles-espejos-desierto"
+                            aria-label="Cinco espejos solares vinculados">
+                            <button type="button" class="espejo-solar" data-espejo="0" aria-label="Primer espejo solar"><span></span></button>
+                            <button type="button" class="espejo-solar" data-espejo="1" aria-label="Segundo espejo solar"><span></span></button>
+                            <button type="button" class="espejo-solar" data-espejo="2" aria-label="Tercer espejo solar"><span></span></button>
+                            <button type="button" class="espejo-solar" data-espejo="3" aria-label="Cuarto espejo solar"><span></span></button>
+                            <button type="button" class="espejo-solar" data-espejo="4" aria-label="Quinto espejo solar"><span></span></button>
+                        </div>
+                    </div>
+
                     <p id="estadoPruebaBosque" class="estado-prueba-bosque" role="status" aria-live="polite"></p>
                     <div class="acciones-prueba-bosque">
                         <button id="btnRepetirPruebaBosque" type="button">↻ Mezclar de nuevo</button>
@@ -379,7 +413,7 @@
                 aria-labelledby="numeroCapitulo" aria-describedby="textoCapitulo">
                 <div class="presentacion-historia">
                     <div class="soporte-mision" aria-hidden="true">
-                        <img src="assets/images/ui/presentacion-mision-tronco.png" alt="">
+                        <img id="imagenSoporteMision" src="assets/images/ui/presentacion-mision-tronco.png" alt="">
                     </div>
 
                     <article class="pergamino-mision">
@@ -1350,7 +1384,7 @@
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
     <script src="js/versus-room-supabase.js?v=20260817-auth-cuentas-2"></script>
     <script src="js/adventure-puzzles.js?v=20260816-puzzles-bosque-1"></script>
-    <script src="js/app.js?v=20260820-personajes-mundo1-25"></script>
+    <script src="js/app.js?v=20260821-desierto-puzzles-8"></script>
     <script src="js/pwa.js?v=20260814-cache-diferencial-1"></script>
 </body>
 

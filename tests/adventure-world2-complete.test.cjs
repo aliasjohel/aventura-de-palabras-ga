@@ -1,0 +1,112 @@
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+
+const raiz = path.join(__dirname, "..");
+const app = fs.readFileSync(path.join(raiz, "js", "app.js"), "utf8");
+const estilos = fs.readFileSync(path.join(raiz, "css", "styles.css"), "utf8");
+const html = fs.readFileSync(path.join(raiz, "index.html"), "utf8");
+const sw = fs.readFileSync(path.join(raiz, "sw.js"), "utf8");
+
+for (let mision = 1; mision <= 10; mision += 1) {
+  const nombre = `desierto-${mision}.png`;
+  const fondo = path.join(raiz, "assets", "images", "fondos", nombre);
+  assert.ok(fs.existsSync(fondo), `Falta el fondo ${nombre}`);
+  assert.ok(fs.statSync(fondo).size > 500_000, `${nombre} parece incompleto`);
+  assert.match(app, new RegExp(nombre.replace(".", "\\.")));
+}
+
+for (const titulo of [
+  "Más allá del portal",
+  "La tormenta sin camino",
+  "Las ruinas de los cuatro vientos",
+  "La sombra bajo las dunas",
+  "El oasis imposible",
+  "El secreto del Maguito",
+  "El Devoradunas",
+  "El templo enterrado",
+  "La cámara del sol",
+  "El Cristal Dorado",
+]) {
+  assert.match(app, new RegExp(titulo));
+}
+
+for (const tipo of ["vientos", "oasis", "espejos"]) {
+  assert.match(app, new RegExp(`return "${tipo}"`));
+}
+
+for (const id of [
+  "puzzleVientosDesierto",
+  "puzzleOasisDesierto",
+  "puzzleEspejosDesierto",
+]) {
+  assert.match(html, new RegExp(`id="${id}"`));
+}
+
+for (const criatura of ["emerge", "persigue", "pacifico"]) {
+  const nombre = `devoradunas-${criatura}-v1.png`;
+  const archivo = path.join(
+    raiz,
+    "assets",
+    "images",
+    "personajes",
+    "aventura",
+    nombre,
+  );
+  assert.ok(fs.existsSync(archivo), `Falta ${nombre}`);
+  assert.match(app, new RegExp(nombre.replace(".", "\\.")));
+  assert.match(sw, new RegExp(nombre.replace(".", "\\.")));
+}
+
+assert.match(app, /mago-base\.png/);
+assert.match(app, /mundoDosCompletado = true/);
+assert.match(app, /cristalesObtenidos = Math\.max\(cristalesObtenidos, 2\)/);
+assert.match(app, /1: crearRutasSpritesCaminata\("bosque"\)/);
+assert.match(app, /escenarioActual === 0 \? sonidosNarrativosPorMision\[misionActual\]/);
+assert.match(app, /const caminoEnergiaVientoDesierto = \[[\s\S]*20, 21, 22, 23, 24,[\s\S]*14, 13, 12/);
+assert.match(app, /function obtenerCanalesEnergizados\(/);
+assert.match(app, /caminoEnergiaVientoDesierto\.every\(/);
+assert.match(app, /tipo: "bloqueado"/);
+assert.match(app, /function activarEmergenciaDevoradunas\(/);
+assert.match(app, /activarEmergenciaDevoradunas\(\);/);
+assert.match(app, /new Set\(\[3, 6, 8, 9\]\)/);
+assert.match(app, /function prepararRondaOasisDesierto\(/);
+assert.match(app, /function crearPistaEnigmaOasis\(/);
+assert.match(app, /La ilusión cambia de lugar y aparece una inscripción nueva/);
+assert.match(app, /function aplicarGiroEspejosVinculados\(/);
+assert.match(app, /orientacionesEspejosDesierto\[indice\] === objetivos\[indice\]/);
+assert.match(estilos, /\.canal-viento\.energizado/);
+assert.match(estilos, /\.canal-bloqueado/);
+assert.match(estilos, /@keyframes emergerDevoradunasDesdeArena/);
+assert.match(estilos, /\.devoradunas-entrada-arena\.emergencia-activa/);
+assert.match(estilos, /\.oasis-opcion/);
+assert.match(estilos, /\.espejo-solar/);
+assert.match(estilos, /@keyframes perseguirDevoradunas/);
+assert.match(estilos, /@keyframes aparecerDevoradunasFijo/);
+assert.doesNotMatch(
+  estilos,
+  /\.devoradunas-(?:emerge|persigue|irrumpe)[^{]*\{[^}]*animation:[^;}]*infinite/,
+);
+assert.match(html, /id="ranuraCristalDesierto"/);
+assert.match(html, /data-oasis="3"/);
+assert.match(html, /data-espejo="4"/);
+
+const cristalDorado = path.join(
+  raiz,
+  "assets",
+  "images",
+  "elements",
+  "cristal-sabiduria-dorado-v2.png",
+);
+assert.ok(fs.existsSync(cristalDorado), "Falta la imagen del Cristal Dorado");
+assert.ok(fs.statSync(cristalDorado).size > 500_000, "El Cristal Dorado parece incompleto");
+assert.equal(
+  fs.readFileSync(cristalDorado)[25],
+  6,
+  "El Cristal Dorado debe conservar transparencia RGBA",
+);
+for (const contenido of [app, html, sw]) {
+  assert.match(contenido, /cristal-sabiduria-dorado-v2\.png/);
+}
+
+console.log("adventure-world2-complete: comprobaciones correctas");
