@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v138`;
+const CACHE_NAME = `${CACHE_PREFIX}v145`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -46,6 +46,13 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v135`,
   `${CACHE_PREFIX}v136`,
   `${CACHE_PREFIX}v137`,
+  `${CACHE_PREFIX}v138`,
+  `${CACHE_PREFIX}v139`,
+  `${CACHE_PREFIX}v140`,
+  `${CACHE_PREFIX}v141`,
+  `${CACHE_PREFIX}v142`,
+  `${CACHE_PREFIX}v143`,
+  `${CACHE_PREFIX}v144`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -227,6 +234,12 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/kalamo-final-alcanza-libro.png",
   "./assets/images/personajes/versus/kalamo-final-extrae-armas.png",
   "./assets/images/personajes/versus/bestia-tintero-kalamo.png",
+  "./assets/images/personajes/versus/kairos-seleccion-v2.png",
+  "./assets/images/personajes/versus/kairos-combate-v1.png",
+  "./assets/images/personajes/versus/kairos-ataque-v1.png",
+  "./assets/images/personajes/versus/explorador-envejecido-kairos-v2.png",
+  "./assets/images/personajes/versus/explorador-anciano-kairos-v2.png",
+  "./assets/images/personajes/versus/kairos-final-explorador-concepto-v1.png",
 ];
 
 /*
@@ -236,9 +249,15 @@ const CORE_ASSETS = [
  */
 const ASSET_REVISIONS = {
   "./": "20260820-personajes-mundo1-25",
-  "./index.html": "20260821-desierto-puzzles-8",
-  "./css/styles.css": "20260821-desierto-puzzles-8",
-  "./js/app.js": "20260821-desierto-puzzles-8",
+  "./index.html": "20260823-kairos-6",
+  "./css/styles.css": "20260823-kairos-7",
+  "./js/app.js": "20260823-kairos-6",
+  "./assets/images/personajes/versus/kairos-seleccion-v2.png": "20260823-kairos-5",
+  "./assets/images/personajes/versus/kairos-combate-v1.png": "20260823-kairos-5",
+  "./assets/images/personajes/versus/kairos-ataque-v1.png": "20260823-kairos-5",
+  "./assets/images/personajes/versus/explorador-envejecido-kairos-v2.png": "20260823-kairos-5",
+  "./assets/images/personajes/versus/explorador-anciano-kairos-v2.png": "20260823-kairos-5",
+  "./assets/images/personajes/versus/kairos-final-explorador-concepto-v1.png": "20260823-kairos-5",
   "./assets/images/elements/cristal-sabiduria-dorado-v2.png": "20260821-desierto-correcciones-1",
   "./assets/images/fondos/desierto-2.png": "20260821-desierto-completo-1",
   "./assets/images/fondos/desierto-3.png": "20260821-desierto-completo-1",

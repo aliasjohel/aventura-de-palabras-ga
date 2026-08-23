@@ -660,6 +660,14 @@
                         <strong>K&aacute;lamo</strong>
                         <small>Latigazo de tinta &middot; Libro de las Palabras Perdidas</small>
                     </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="kairos">
+                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <img src="assets/images/personajes/versus/kairos-seleccion-v2.png"
+                            alt="Kair&oacute;s, ladr&oacute;n de instantes">
+                        <strong>Kair&oacute;s</strong>
+                        <small>Aguja fugaz &middot; Siglos en un Segundo</small>
+                    </button>
                 </div>
 
                 <div class="estado-personajes-remotos" aria-live="polite">
@@ -862,6 +870,9 @@
                         src="assets/images/personajes/versus/corte-infernal-azrak.png" alt="" aria-hidden="true">
                     <img id="latigazoTintaKalamoVersus" class="latigazo-tinta-kalamo-versus"
                         src="assets/images/personajes/versus/proyectil-palabras-kalamo.png" alt="" aria-hidden="true">
+                    <div id="agujaTiempoKairosVersus" class="aguja-tiempo-kairos-versus" aria-hidden="true">
+                        <i></i><b></b>
+                    </div>
 
                     <div id="entradaDueloVersus" class="entrada-duelo-versus oculto" aria-live="polite">
                         <div class="entrada-efecto entrada-efecto-uno" aria-hidden="true">
@@ -971,6 +982,11 @@
                             <i></i><i></i><i></i><b></b><b></b><b></b><span></span>
                         </div>
                     </div>
+                    <div class="habilidad-kairos-versus" aria-hidden="true">
+                        <i class="kairos-habilidad-reloj"></i>
+                        <b class="kairos-habilidad-arena"></b>
+                        <strong>-20 s</strong>
+                    </div>
                     <div class="impacto-habilidad-versus"></div>
                 </div>
 
@@ -1031,6 +1047,7 @@
                             <option value="dragon_hielo">Nivor</option>
                             <option value="azrak">Azrak</option>
                             <option value="kalamo">K&aacute;lamo</option>
+                            <option value="kairos">Kair&oacute;s</option>
                         </select>
                     </label>
                     <button id="btnProbarCinematicaGuardiana" type="button">🌱 Probar guardiana</button>
@@ -1041,6 +1058,7 @@
                     <button id="btnProbarCinematicaDragonHielo" type="button">&#10052; Probar Nivor</button>
                     <button id="btnProbarCinematicaAzrak" type="button">&#128293; Probar Azrak</button>
                     <button id="btnProbarCinematicaKalamo" type="button">&#128394; Probar K&aacute;lamo</button>
+                    <button id="btnProbarCinematicaKairos" type="button">&#9203; Probar Kair&oacute;s</button>
                     <button id="btnProbarAtaqueElegido" type="button">⚡ Probar ataque elegido</button>
                 </div>
 
@@ -1072,6 +1090,8 @@
                         Calavera</button>
                     <button class="btn-probar-habilidad-versus" data-habilidad="kalamo" type="button">&#129423; Bestia del
                         Tintero</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="kairos" type="button">&#9203;
+                        Robo de instantes</button>
                 </div>
 
                 <div id="avisoAvanceVersus" class="aviso-avance-versus oculto" role="status" aria-live="polite"></div>
@@ -1262,6 +1282,27 @@
                     <div class="kalamo-final-cierre" aria-hidden="true"></div>
                     <img class="cinematica-kalamo-victoria" src="assets/images/personajes/versus/kalamo-victoria.png"
                         alt="" aria-hidden="true">
+                    <div class="kairos-final-resplandor" aria-hidden="true"></div>
+                    <div class="kairos-final-reloj" aria-hidden="true">
+                        <i></i><b></b><span></span>
+                    </div>
+                    <img id="kairosFinalInvocadorVersus" class="kairos-final-invocador"
+                        src="assets/images/personajes/versus/kairos-combate-v1.png" alt="" aria-hidden="true">
+                    <img id="kairosFinalConceptoVersus" class="kairos-final-concepto"
+                        src="assets/images/personajes/versus/kairos-final-explorador-concepto-v1.png" alt=""
+                        aria-hidden="true">
+                    <img class="kairos-final-victoria"
+                        src="assets/images/personajes/versus/kairos-seleccion-v2.png"
+                        alt="Kairós en su pose final de victoria" aria-hidden="true">
+                    <img id="victimaKairosVersus" class="kairos-final-victima victima-final-explorador"
+                        src="assets/images/personajes/versus/explorador-base.png" alt="" aria-hidden="true">
+                    <img id="victimaKairosEnvejecidaVersus" class="kairos-final-victima kairos-edad-intermedia"
+                        src="assets/images/personajes/versus/explorador-envejecido-kairos-v2.png" alt=""
+                        aria-hidden="true">
+                    <img id="victimaKairosAncianaVersus" class="kairos-final-victima kairos-edad-final"
+                        src="assets/images/personajes/versus/explorador-anciano-kairos-v2.png" alt=""
+                        aria-hidden="true">
+                    <div class="kairos-final-00" aria-hidden="true">00:00</div>
                     <div class="eclipse-destello" aria-hidden="true"></div>
                     <div class="cinematica-final-titulos">
                         <span id="etiquetaCinematicaVersus">GOLPE LEGENDARIO</span>

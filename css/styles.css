@@ -14703,3 +14703,500 @@ button:disabled {
     }
     .arena-emergencia-devoradunas { display: none; }
 }
+/* ================================================================
+   KAIRÓS · Ladrón de Instantes
+   ================================================================ */
+
+.tarjeta-personaje-versus[data-personaje="kairos"] {
+  --acento-personaje: #efc66a;
+  background: linear-gradient(145deg, rgba(12, 24, 47, 0.96), rgba(58, 31, 78, 0.94));
+  border-color: rgba(239, 198, 106, 0.58);
+}
+
+.tarjeta-personaje-versus[data-personaje="kairos"] img,
+.versus-personaje.personaje-kairos {
+  filter: drop-shadow(0 0 14px rgba(239, 198, 106, 0.48));
+}
+
+.tarjeta-personaje-versus[data-personaje="kairos"] img {
+  transform: scale(1.14);
+  transform-origin: 50% 82%;
+}
+
+.versus-personaje.personaje-kairos {
+  bottom: 7%;
+  width: clamp(215px, 39vw, 455px);
+  height: 82%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.versus-personaje-uno.personaje-kairos { left: 2%; }
+
+.versus-personaje-dos.personaje-kairos {
+  right: 2%;
+  transform: scaleX(-1);
+  animation-name: respirarPersonajeDosInvertidoVersus;
+}
+
+.versus-personaje-uno.entrando-duelo.entrada-kairos {
+  animation: entradaKairosJugador 2.65s cubic-bezier(.16,.82,.22,1) both;
+}
+
+.versus-personaje-dos.entrando-duelo.entrada-kairos-rival {
+  animation: entradaKairosRival 2.65s cubic-bezier(.16,.82,.22,1) both;
+}
+
+.entrada-jugador-kairos .entrada-efecto-uno,
+.entrada-rival-kairos .entrada-efecto-dos {
+  bottom: 8%;
+  width: min(34vw, 390px);
+  aspect-ratio: 1;
+  height: auto;
+  opacity: .94;
+  border: 5px double rgba(250, 218, 119, .9);
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(from 0deg, #ffeaa3 0 1deg, transparent 1deg 15deg),
+    radial-gradient(circle, transparent 0 54%, rgba(92, 51, 137, .58) 55% 65%, transparent 66%);
+  filter: drop-shadow(0 0 15px #f3cc68) drop-shadow(0 0 34px #7044a2);
+  animation: portalEntradaKairos 2.55s ease both;
+}
+
+.entrada-jugador-kairos .entrada-efecto-uno { left: 5%; }
+.entrada-rival-kairos .entrada-efecto-dos { right: 5%; }
+
+.entrada-jugador-kairos .entrada-efecto-uno i,
+.entrada-rival-kairos .entrada-efecto-dos i {
+  bottom: 50%;
+  left: 50%;
+  width: 4px;
+  height: 42%;
+  border-radius: 99px;
+  background: linear-gradient(#fff4b0, #d8a03b);
+  filter: drop-shadow(0 0 8px #fff0a0);
+  transform-origin: 50% 100%;
+  animation: agujasEntradaKairos .62s linear infinite;
+}
+
+.entrada-jugador-kairos .entrada-efecto-uno i:nth-child(2),
+.entrada-rival-kairos .entrada-efecto-dos i:nth-child(2) { animation-duration: .31s; }
+
+.versus-personaje-uno.personaje-kairos.lanzando-tiempo {
+  left: -2%;
+  width: clamp(360px, 58vw, 680px);
+  animation: ataqueKairosJugador 1.36s cubic-bezier(.2,.78,.2,1) both;
+}
+
+.versus-personaje-dos.personaje-kairos.lanzando-tiempo {
+  right: -2%;
+  width: clamp(360px, 58vw, 680px);
+  animation: ataqueKairosRival 1.36s cubic-bezier(.2,.78,.2,1) both;
+}
+
+.versus-personaje.personaje-kairos.usando-habilidad {
+  width: clamp(340px, 55vw, 650px);
+}
+
+@keyframes entradaKairosJugador {
+  0% { opacity: 0; transform: translateX(-75%) scale(.48) rotate(-10deg); filter: blur(8px) brightness(1.8); }
+  34% { opacity: 1; transform: translateX(0) scale(1.08) rotate(1deg); filter: blur(0) brightness(1.3) drop-shadow(0 0 25px #e9c35f); }
+  58% { transform: translateX(18px) scale(1.04) rotate(-1deg); }
+  100% { opacity: 1; transform: translateX(0) scale(1); filter: drop-shadow(0 12px 9px rgba(0,0,0,.62)); }
+}
+
+@keyframes entradaKairosRival {
+  0% { opacity: 0; transform: translateX(75%) scaleX(-1) scale(.48) rotate(-10deg); filter: blur(8px) brightness(1.8); }
+  34% { opacity: 1; transform: translateX(0) scaleX(-1) scale(1.08) rotate(1deg); filter: blur(0) brightness(1.3) drop-shadow(0 0 25px #e9c35f); }
+  58% { transform: translateX(-18px) scaleX(-1) scale(1.04) rotate(-1deg); }
+  100% { opacity: 1; transform: translateX(0) scaleX(-1) scale(1); filter: drop-shadow(0 12px 9px rgba(0,0,0,.62)); }
+}
+
+@keyframes portalEntradaKairos {
+  0% { opacity: 0; scale: .15; rotate: -70deg; }
+  30%,72% { opacity: .94; scale: 1; }
+  100% { opacity: 0; scale: 1.35; rotate: 540deg; }
+}
+
+@keyframes agujasEntradaKairos { to { transform: rotate(360deg); } }
+
+@keyframes ataqueKairosJugador {
+  0% { transform: translateX(-12px) scale(.96); filter: brightness(.85); }
+  28% { transform: translateX(18px) scale(1.04) rotate(-2deg); filter: brightness(1.25) drop-shadow(0 0 18px #f1cd68); }
+  54% { transform: translateX(54px) scale(1.08) rotate(1deg); }
+  76%,100% { transform: translateX(0) scale(1); filter: drop-shadow(0 12px 9px rgba(0,0,0,.62)); }
+}
+
+@keyframes ataqueKairosRival {
+  0% { transform: translateX(12px) scaleX(-1) scale(.96); filter: brightness(.85); }
+  28% { transform: translateX(-18px) scaleX(-1) scale(1.04) rotate(-2deg); filter: brightness(1.25) drop-shadow(0 0 18px #f1cd68); }
+  54% { transform: translateX(-54px) scaleX(-1) scale(1.08) rotate(1deg); }
+  76%,100% { transform: translateX(0) scaleX(-1) scale(1); filter: drop-shadow(0 12px 9px rgba(0,0,0,.62)); }
+}
+
+.aguja-tiempo-kairos-versus {
+  position: absolute;
+  z-index: 23;
+  left: 26%;
+  top: 45%;
+  width: clamp(72px, 11vw, 150px);
+  height: clamp(18px, 2.6vw, 34px);
+  opacity: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 0 10px #f5d77e) drop-shadow(0 0 18px #8d5ae8);
+}
+
+.aguja-tiempo-kairos-versus i {
+  position: absolute;
+  inset: 42% 0 auto 0;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, #fff4b8 18%, #d79f39 78%, #6f3f96);
+}
+
+.aguja-tiempo-kairos-versus b {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 22px;
+  aspect-ratio: 1;
+  border: 4px solid #f6d774;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: inset 0 0 10px #6b3f9b, 0 0 12px #f5cf68;
+}
+
+.aguja-tiempo-kairos-versus.volando {
+  animation: kairos-aguja-jugador 1.05s cubic-bezier(.2,.75,.25,1) both;
+}
+
+.aguja-tiempo-kairos-versus.desde-rival {
+  left: auto;
+  right: 26%;
+  transform: scaleX(-1);
+}
+
+.aguja-tiempo-kairos-versus.desde-rival.volando {
+  animation-name: kairos-aguja-rival;
+}
+
+@keyframes kairos-aguja-jugador {
+  0% { opacity: 0; translate: -80px 18px; rotate: -12deg; }
+  18% { opacity: 1; }
+  64% { opacity: 1; translate: 36vw -8px; rotate: 720deg; }
+  75%, 100% { opacity: 0; translate: 39vw -8px; rotate: 780deg; }
+}
+
+@keyframes kairos-aguja-rival {
+  0% { opacity: 0; translate: 80px 18px; rotate: -12deg; }
+  18% { opacity: 1; }
+  64% { opacity: 1; translate: -36vw -8px; rotate: 720deg; }
+  75%, 100% { opacity: 0; translate: -39vw -8px; rotate: 780deg; }
+}
+
+.habilidad-kairos-versus {
+  position: absolute;
+  inset: 0;
+  display: none;
+  place-items: center;
+  pointer-events: none;
+}
+
+.animacion-habilidad-versus.habilidad-kairos.activa .habilidad-kairos-versus {
+  display: grid;
+}
+
+.kairos-habilidad-reloj {
+  width: clamp(130px, 22vw, 280px);
+  aspect-ratio: 1;
+  border: clamp(5px, .7vw, 10px) double #f4d77a;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(from -2deg, rgba(255,244,190,.9) 0 1deg, transparent 1deg 15deg),
+    radial-gradient(circle, rgba(64, 36, 97, .88) 0 57%, rgba(7, 17, 35, .96) 58%);
+  box-shadow: 0 0 25px #ebc158, 0 0 80px rgba(108, 58, 164, .9);
+  animation: kairos-reloj-irrumpe 1.45s ease-out both;
+}
+
+.kairos-habilidad-reloj::before,
+.kairos-habilidad-reloj::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 39%;
+  border-radius: 99px;
+  background: #fff0a6;
+  transform-origin: 50% 0;
+  box-shadow: 0 0 12px #fff0a6;
+}
+
+.kairos-habilidad-reloj::before { transform: rotate(35deg); }
+.kairos-habilidad-reloj::after { height: 30%; animation: kairos-aguja-acelera .7s linear 2; }
+
+.kairos-habilidad-arena {
+  position: absolute;
+  width: min(72vw, 780px);
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #fff1a5 0, #cf8f31 28%, transparent 72%);
+  filter: blur(3px);
+  animation: kairos-arena-pulso 1.45s ease both;
+}
+
+.habilidad-kairos-versus strong {
+  position: absolute;
+  z-index: 2;
+  color: #fff6cc;
+  font: 900 clamp(1.7rem, 6vw, 4.8rem)/1 var(--fuente-titulos, fantasy);
+  letter-spacing: .04em;
+  text-shadow: 0 3px 0 #5f316f, 0 0 20px #f8d777;
+  animation: kairos-menos-veinte 1.45s ease both;
+}
+
+@keyframes kairos-reloj-irrumpe {
+  0% { opacity: 0; scale: .15; rotate: -40deg; }
+  38% { opacity: 1; scale: 1.08; }
+  72% { scale: 1; rotate: 480deg; }
+  100% { opacity: 0; scale: 1.35; rotate: 720deg; }
+}
+
+@keyframes kairos-aguja-acelera { to { transform: rotate(720deg); } }
+@keyframes kairos-arena-pulso { 0%,100% { opacity: 0; scale: .2; } 45% { opacity: 1; scale: 1; } }
+@keyframes kairos-menos-veinte { 0%,30% { opacity: 0; scale: .2; } 55% { opacity: 1; scale: 1.25; } 100% { opacity: 0; translate: 0 -90px; } }
+
+.panel-jugador-versus.tiempo-robado-kairos,
+.panel-rival-versus.tiempo-robado-kairos {
+  animation: kairos-panel-tiempo .95s ease both;
+}
+
+.tiempo-robado-kairos::after {
+  content: var(--segundos-robados, "-20 s");
+  position: absolute;
+  z-index: 30;
+  left: 50%;
+  top: 16%;
+  translate: -50% 0;
+  color: #fff0a0;
+  font: 1000 clamp(1.4rem, 4vw, 3.2rem)/1 var(--fuente-titulos, fantasy);
+  text-shadow: 0 2px #592d6d, 0 0 18px #e8ba54;
+  animation: kairos-marca-tiempo 1.05s ease both;
+}
+
+@keyframes kairos-panel-tiempo { 35% { filter: sepia(1) hue-rotate(235deg) brightness(.72); } }
+@keyframes kairos-marca-tiempo { 0% { opacity: 0; scale: .4; } 35% { opacity: 1; scale: 1.18; } 100% { opacity: 0; translate: -50% -55px; } }
+
+.mini-teclado-rival-versus.efecto-time_steal > * { opacity: .12; }
+.mini-teclado-rival-versus.efecto-time_steal::before {
+  content: "−20 s";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  color: #ffe99c;
+  font-weight: 1000;
+  font-size: clamp(1.2rem, 3vw, 2.1rem);
+  text-shadow: 0 0 12px #7442a2;
+}
+
+/* Cinemática final: Siglos en un Segundo */
+.kairos-final-resplandor,
+.kairos-final-reloj,
+.kairos-final-invocador,
+.kairos-final-concepto,
+.kairos-final-victoria,
+.kairos-final-victima,
+.kairos-final-00 { display: none; }
+
+.cinematica-final-versus.siglos-en-un-segundo {
+  background: radial-gradient(circle at 50% 42%, #533477 0, #101a33 46%, #03060f 100%);
+}
+
+.cinematica-final-versus.siglos-en-un-segundo.activa,
+.cinematica-final-versus.siglos-en-un-segundo.activa .cinematica-final-fondo,
+.cinematica-final-versus.siglos-en-un-segundo.activa .cinematica-final-titulos span,
+.cinematica-final-versus.siglos-en-un-segundo.activa .cinematica-final-titulos h2 {
+  animation-duration: 9s;
+}
+
+.siglos-en-un-segundo .cinematica-final-fondo {
+  opacity: .2;
+  filter: saturate(.5) hue-rotate(35deg) brightness(.45);
+}
+
+.siglos-en-un-segundo .kairos-final-resplandor {
+  display: block;
+  position: absolute;
+  inset: -20%;
+  background: conic-gradient(from 0deg, transparent, rgba(247,216,115,.35), transparent 18%, transparent 50%, rgba(135,77,181,.44), transparent 70%);
+  animation: kairos-final-giro 2.2s linear infinite;
+}
+
+.siglos-en-un-segundo .kairos-final-reloj {
+  display: block;
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: 47%;
+  width: min(62vh, 62vw);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border: clamp(7px, 1vw, 14px) double #f4d477;
+  border-radius: 50%;
+  background: repeating-conic-gradient(rgba(255,238,164,.9) 0 1deg, transparent 1deg 15deg);
+  box-shadow: inset 0 0 60px #4d2b73, 0 0 35px #f4cf67, 0 0 130px #674096;
+  animation: kairos-final-reloj 9s ease both;
+}
+
+.siglos-en-un-segundo .kairos-final-reloj i,
+.siglos-en-un-segundo .kairos-final-reloj b {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 42%;
+  border-radius: 99px;
+  background: #fff2a8;
+  transform-origin: 50% 0;
+  box-shadow: 0 0 18px #fff2a8;
+  animation: kairos-final-aguja .72s linear infinite;
+}
+
+.siglos-en-un-segundo .kairos-final-reloj b { height: 31%; animation-duration: .34s; }
+
+.siglos-en-un-segundo .kairos-final-reloj span {
+  position: absolute;
+  inset: 48%;
+  border-radius: 50%;
+  background: #fff3b2;
+  box-shadow: 0 0 18px #fff3b2;
+}
+
+.siglos-en-un-segundo .kairos-final-invocador {
+  display: block;
+  position: absolute;
+  z-index: 7;
+  left: 3%;
+  bottom: -8%;
+  width: min(34vw, 410px);
+  max-height: 92%;
+  object-fit: contain;
+  clip-path: inset(2% 2% 0 2% round 42% 42% 12% 12%);
+  filter: drop-shadow(0 0 22px #e8c05c);
+  animation: kairos-final-invocador 9s ease both;
+}
+
+.siglos-en-un-segundo .kairos-final-victima {
+  position: absolute;
+  z-index: 6;
+  right: 10%;
+  bottom: 5%;
+  width: min(31vw, 360px);
+  max-height: 75%;
+  object-fit: contain;
+  transform-origin: 50% 100%;
+  transform: scaleX(-1);
+}
+
+.siglos-en-un-segundo .victima-final-explorador {
+  display: block;
+  animation: kairos-edad-base 9s ease both;
+}
+
+.siglos-en-un-segundo .kairos-edad-intermedia {
+  display: block;
+  opacity: 0;
+  filter: sepia(.22) saturate(.95) contrast(1.06) drop-shadow(0 0 18px #f2d879);
+  animation: kairos-edad-media 9s ease both;
+}
+
+.siglos-en-un-segundo .kairos-edad-final {
+  display: block;
+  opacity: 0;
+  filter: grayscale(.18) sepia(.28) saturate(.92) contrast(1.08) drop-shadow(0 0 18px #f2d879);
+  animation: kairos-edad-anciana 9s ease both;
+}
+
+.siglos-en-un-segundo.kairos-victima-explorador .kairos-final-concepto {
+  display: block;
+  position: absolute;
+  z-index: 9;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: kairos-concepto-cierre 9s ease both;
+}
+
+.siglos-en-un-segundo .kairos-final-victoria {
+  display: block;
+  position: absolute;
+  z-index: 12;
+  left: 50%;
+  bottom: -7%;
+  width: min(48vw, 540px);
+  height: 91%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: brightness(1.08) drop-shadow(0 0 22px #f0cf73) drop-shadow(0 16px 18px rgba(0,0,0,.72));
+  opacity: 0;
+  animation: kairos-victoria-frente 9s cubic-bezier(.18,.76,.24,1) both;
+}
+
+.siglos-en-un-segundo:not(.kairos-victima-explorador) .kairos-edad-intermedia {
+  filter: grayscale(.35) sepia(.55) brightness(.82) drop-shadow(0 0 18px #f2d879);
+}
+
+.siglos-en-un-segundo:not(.kairos-victima-explorador) .kairos-edad-final {
+  transform: scaleX(-1) scale(.84) skewX(4deg);
+  filter: grayscale(.8) sepia(.6) brightness(.68) drop-shadow(0 0 18px #f2d879);
+}
+
+.siglos-en-un-segundo .kairos-final-00 {
+  display: block;
+  position: absolute;
+  z-index: 13;
+  left: 50%;
+  top: 46%;
+  translate: -50% -50%;
+  color: #fff2a8;
+  font: 1000 clamp(3rem, 14vw, 10rem)/1 monospace;
+  letter-spacing: -.08em;
+  text-shadow: 0 0 14px #fff, 0 0 40px #e6b84f, 0 0 90px #7748a4;
+  animation: kairos-final-cero 9s ease both;
+}
+
+.siglos-en-un-segundo .cinematica-final-titulos { z-index: 15; }
+
+@keyframes kairos-final-giro { to { rotate: 360deg; } }
+@keyframes kairos-final-aguja { to { transform: rotate(360deg); } }
+@keyframes kairos-final-reloj {
+  0% { opacity: 0; scale: .08; rotate: -45deg; }
+  15% { opacity: 1; scale: 1; }
+  66% { opacity: 1; scale: 1.18; rotate: 720deg; }
+  78%,100% { opacity: 0; scale: 2; rotate: 1080deg; }
+}
+@keyframes kairos-final-invocador {
+  0% { opacity: 0; translate: -25% 8%; }
+  13%,72% { opacity: 1; translate: 0 0; }
+  82%,100% { opacity: 0; translate: -10% 0; }
+}
+@keyframes kairos-edad-base { 0%,24% { opacity: 0; } 28%,46% { opacity: 1; } 47%,100% { opacity: 0; } }
+@keyframes kairos-edad-media { 0%,46% { opacity: 0; } 47%,64% { opacity: 1; } 65%,100% { opacity: 0; } }
+@keyframes kairos-edad-anciana { 0%,64% { opacity: 0; } 65%,78% { opacity: 1; } 79%,100% { opacity: 0; } }
+@keyframes kairos-concepto-cierre { 0%,73% { opacity: 0; scale: 1.07; } 76%,81% { opacity: 1; scale: 1; } 83%,100% { opacity: 0; } }
+@keyframes kairos-victoria-frente {
+  0%,80% { opacity: 0; translate: 0 12%; scale: .78; filter: brightness(2) blur(6px); }
+  85%,96% { opacity: 1; translate: 0 0; scale: 1; filter: brightness(1.08) blur(0) drop-shadow(0 0 22px #f0cf73) drop-shadow(0 16px 18px rgba(0,0,0,.72)); }
+  100% { opacity: 0; translate: 0 -2%; scale: 1.04; }
+}
+@keyframes kairos-final-cero { 0%,78% { opacity: 0; scale: .4; } 86%,94% { opacity: 1; scale: 1; } 100% { opacity: 0; scale: 1.25; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .aguja-tiempo-kairos-versus.volando,
+  .habilidad-kairos-versus *,
+  .siglos-en-un-segundo * { animation-duration: .3s !important; animation-iteration-count: 1 !important; }
+}
