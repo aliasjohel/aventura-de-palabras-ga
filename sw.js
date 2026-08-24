@@ -250,7 +250,7 @@ const CORE_ASSETS = [
 const ASSET_REVISIONS = {
   "./": "20260820-personajes-mundo1-25",
   "./index.html": "20260823-kairos-6",
-  "./css/styles.css": "20260823-kairos-7",
+  "./css/styles.css": "20260824-kairos-8",
   "./js/app.js": "20260823-kairos-6",
   "./assets/images/personajes/versus/kairos-seleccion-v2.png": "20260823-kairos-5",
   "./assets/images/personajes/versus/kairos-combate-v1.png": "20260823-kairos-5",

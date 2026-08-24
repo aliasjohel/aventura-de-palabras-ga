@@ -14724,9 +14724,9 @@ button:disabled {
 }
 
 .versus-personaje.personaje-kairos {
-  bottom: 7%;
-  width: clamp(215px, 39vw, 455px);
-  height: 82%;
+  bottom: 9%;
+  width: clamp(190px, 36vw, 420px);
+  height: 78%;
   object-fit: contain;
   object-position: center bottom;
 }
@@ -14784,13 +14784,13 @@ button:disabled {
 
 .versus-personaje-uno.personaje-kairos.lanzando-tiempo {
   left: -2%;
-  width: clamp(360px, 58vw, 680px);
+  width: clamp(285px, 54vw, 630px);
   animation: ataqueKairosJugador 1.36s cubic-bezier(.2,.78,.2,1) both;
 }
 
 .versus-personaje-dos.personaje-kairos.lanzando-tiempo {
   right: -2%;
-  width: clamp(360px, 58vw, 680px);
+  width: clamp(285px, 54vw, 630px);
   animation: ataqueKairosRival 1.36s cubic-bezier(.2,.78,.2,1) both;
 }
 
@@ -14821,16 +14821,16 @@ button:disabled {
 @keyframes agujasEntradaKairos { to { transform: rotate(360deg); } }
 
 @keyframes ataqueKairosJugador {
-  0% { transform: translateX(-12px) scale(.96); filter: brightness(.85); }
-  28% { transform: translateX(18px) scale(1.04) rotate(-2deg); filter: brightness(1.25) drop-shadow(0 0 18px #f1cd68); }
-  54% { transform: translateX(54px) scale(1.08) rotate(1deg); }
+  0% { transform: translateX(-12px) scale(1); filter: brightness(.85); }
+  28% { transform: translateX(18px) scale(1) rotate(-2deg); filter: brightness(1.25) drop-shadow(0 0 18px #f1cd68); }
+  54% { transform: translateX(54px) scale(1) rotate(1deg); }
   76%,100% { transform: translateX(0) scale(1); filter: drop-shadow(0 12px 9px rgba(0,0,0,.62)); }
 }
 
 @keyframes ataqueKairosRival {
-  0% { transform: translateX(12px) scaleX(-1) scale(.96); filter: brightness(.85); }
-  28% { transform: translateX(-18px) scaleX(-1) scale(1.04) rotate(-2deg); filter: brightness(1.25) drop-shadow(0 0 18px #f1cd68); }
-  54% { transform: translateX(-54px) scaleX(-1) scale(1.08) rotate(1deg); }
+  0% { transform: translateX(12px) scaleX(-1) scale(1); filter: brightness(.85); }
+  28% { transform: translateX(-18px) scaleX(-1) scale(1) rotate(-2deg); filter: brightness(1.25) drop-shadow(0 0 18px #f1cd68); }
+  54% { transform: translateX(-54px) scaleX(-1) scale(1) rotate(1deg); }
   76%,100% { transform: translateX(0) scaleX(-1) scale(1); filter: drop-shadow(0 12px 9px rgba(0,0,0,.62)); }
 }
 

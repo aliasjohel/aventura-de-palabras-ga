@@ -46,6 +46,13 @@ assert.match(estilos, /@keyframes entradaKairosJugador/);
 assert.match(estilos, /@keyframes entradaKairosRival/);
 assert.match(estilos, /@keyframes ataqueKairosJugador/);
 assert.match(estilos, /@keyframes ataqueKairosRival/);
+assert.match(estilos, /personaje-kairos\s*\{[\s\S]+?width:\s*clamp\(190px,\s*36vw,\s*420px\)[\s\S]+?height:\s*78%/);
+assert.match(estilos, /personaje-kairos\.lanzando-tiempo\s*\{[\s\S]+?width:\s*clamp\(285px,\s*54vw,\s*630px\)/);
+const ataqueKairosCss = estilos.slice(
+  estilos.indexOf("@keyframes ataqueKairosJugador"),
+  estilos.indexOf(".aguja-tiempo-kairos-versus")
+);
+assert.doesNotMatch(ataqueKairosCss, /scale\((?!1\))/);
 assert.match(estilos, /@keyframes kairos-victoria-frente/);
 assert.match(estilos, /personaje-dos\.personaje-kairos[\s\S]+?scaleX\(-1\)/);
 assert.doesNotMatch(estilos, /kairos-final-victima[\s\S]{0,300}mix-blend-mode/);
