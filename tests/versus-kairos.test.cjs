@@ -9,6 +9,11 @@ const app = leer("js", "app.js");
 const estilos = leer("css", "styles.css");
 const sw = leer("sw.js");
 const migracion = leer("supabase", "migrations", "20260823010000_add_kairos_time_steal.sql");
+const migracionDerrotaPorTiempo = leer(
+  "supabase",
+  "migrations",
+  "20260825214904_finish_match_on_individual_timeout.sql",
+);
 
 assert.match(html, /data-personaje="kairos"/);
 assert.match(html, /Kair&oacute;s/);
@@ -83,6 +88,12 @@ assert.match(migracion, /make_interval\(secs => player\.time_penalty_seconds\)/)
 assert.match(migracion, /security definer[\s\S]+set search_path = ''/);
 assert.match(migracion, /revoke execute on function private\.expire_versus_player_times/);
 assert.match(migracion, /grant execute on function public\.activate_versus_ability\(uuid\) to authenticated/);
+assert.match(migracionDerrotaPorTiempo, /cardinality\(v_timed_out_ids\) = 0/);
+assert.match(migracionDerrotaPorTiempo, /perform public\.finish_versus_match\(p_match_id, 'time'\)/);
+assert.match(migracionDerrotaPorTiempo, /cardinality\(v_timed_out_ids\) = 1/);
+assert.match(migracionDerrotaPorTiempo, /user_id <> v_timed_out_ids\[1\]/);
+assert.match(migracionDerrotaPorTiempo, /'loserId', v_timed_out_ids\[1\]/);
+assert.doesNotMatch(migracionDerrotaPorTiempo, /bool_and\(finished\)/);
 
 for (const archivo of [
   "kairos-seleccion-v2.png",

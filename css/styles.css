@@ -2218,7 +2218,10 @@ body {
     width: 62%;
   }
 
-  .imagen-cinematica-final-desierto { object-position: center; }
+  .imagen-cinematica-final-desierto {
+    object-fit: contain;
+    object-position: center;
+  }
 
   .relato-cinematica-final-desierto {
     bottom: max(12px, env(safe-area-inset-bottom));

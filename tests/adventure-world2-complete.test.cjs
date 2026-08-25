@@ -141,5 +141,9 @@ for (const nombre of [
 
 assert.match(estilos, /\.cinematica-final-desierto/);
 assert.match(estilos, /\.encuentro-mago-desierto/);
+assert.match(
+  estilos,
+  /@media \(max-width: 620px\)[\s\S]+?\.imagen-cinematica-final-desierto\s*\{[\s\S]+?object-fit:\s*contain;/,
+);
 
 console.log("adventure-world2-complete: comprobaciones correctas");
