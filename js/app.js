@@ -4262,6 +4262,15 @@ async function presentarDueloAventura(tipo) {
     return;
   }
 
+  await esperarCierreHistoriaMision();
+  if (
+    dueloAventuraActivo
+    || escenarioActual !== configuracion.escenario
+    || misionActual !== configuracion.mision
+  ) {
+    return;
+  }
+
   if (tipo === "guardiana") await presentarDesafioGuardianaBosque();
   if (tipo === "mago_desierto") await presentarDesafioMagoDesierto();
   if (
@@ -7445,6 +7454,22 @@ function esperarTransicionHistoria() {
   return esperarMovimiento(duracionTransicionHistoria);
 }
 
+function esperarCierreHistoriaMision() {
+  if (modalHistoria.classList.contains("oculto")) return Promise.resolve();
+
+  return new Promise((resolve) => {
+    const observador = new MutationObserver(() => {
+      if (!modalHistoria.classList.contains("oculto")) return;
+      observador.disconnect();
+      resolve();
+    });
+    observador.observe(modalHistoria, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  });
+}
+
 function debeCruzarPuenteEnTransicion() {
   const fondoActual = fondoEscenario.currentSrc || fondoEscenario.src;
 
@@ -9589,34 +9614,87 @@ async function presentarDesbloqueoGuardianaBosque() {
   }
 }
 
+const escenasDesafioGuardianaBosque = Object.freeze([
+  {
+    imagen: "assets/images/cinematicas/bosque-mision-10/01-encuentro-guardiana-v1.png",
+    titulo: "Una voz entre las hojas",
+    texto:
+      "—¡Alto, viajero! Soy la Guardiana de este bosque. He observado cada prueba que superaste para llegar hasta el portal.",
+  },
+  {
+    imagen: "assets/images/cinematicas/bosque-mision-10/02-desafio-guardiana-v1.png",
+    titulo: "La prueba del portal",
+    texto:
+      "—El cristal respondió a tu valor, pero no dejaré que su poder cruce el portal sin una última prueba. Demostrá que podés vencerme en un duelo de palabras.",
+  },
+]);
+
 async function presentarDesafioGuardianaBosque() {
   if (escenarioActual !== 0 || misionActual !== 9 || portalAbierto) return;
 
   const capa = document.createElement("div");
-  const aura = document.createElement("span");
-  const guardiana = document.createElement("img");
-  const mensaje = document.createElement("div");
+  const imagen = document.createElement("img");
+  const relato = document.createElement("div");
   const titulo = document.createElement("strong");
   const texto = document.createElement("p");
+  const progreso = document.createElement("span");
+  const continuar = document.createElement("button");
+  const saltar = document.createElement("button");
+  let indice = 0;
+  let resolverCinematica;
+  const cinematicaTerminada = new Promise((resolve) => {
+    resolverCinematica = resolve;
+  });
 
-  capa.className = "encuentro-guardiana-bosque desafio-guardiana";
-  capa.setAttribute("aria-live", "polite");
-  aura.className = "aura-encuentro-guardiana";
-  guardiana.className = "figura-encuentro-guardiana";
-  guardiana.src = srcGuardianaBaseVersus;
-  guardiana.alt = "Guardiana del Bosque frente al portal apagado";
-  mensaje.className = "mensaje-encuentro-guardiana";
-  titulo.textContent = "La última prueba del bosque";
-  texto.textContent = "El cristal respondió a tu valor, pero sólo abriré el portal si podés vencerme en un duelo de palabras.";
-  mensaje.append(titulo, texto);
-  capa.append(aura, guardiana, mensaje);
-  contenedorEscenario.appendChild(capa);
+  capa.className = "cinematica-desafio-guardiana";
+  capa.setAttribute("role", "dialog");
+  capa.setAttribute("aria-modal", "true");
+  capa.setAttribute("aria-label", "Encuentro con la Guardiana del Bosque");
+  imagen.className = "imagen-cinematica-desafio-guardiana";
+  relato.className = "relato-cinematica-desafio-guardiana";
+  progreso.className = "progreso-cinematica-desafio-guardiana";
+  continuar.className = "continuar-cinematica-desafio-guardiana";
+  continuar.type = "button";
+  saltar.className = "saltar-cinematica-desafio-guardiana";
+  saltar.type = "button";
+  saltar.textContent = "Saltar cinemática";
+  relato.append(titulo, texto, progreso, continuar);
+  capa.append(imagen, relato, saltar);
+  document.body.appendChild(capa);
+
+  const terminar = () => resolverCinematica();
+  const mostrarPlano = async () => {
+    const escena = escenasDesafioGuardianaBosque[indice];
+    capa.classList.remove("plano-visible");
+    imagen.src = escena.imagen;
+    imagen.alt = `${escena.titulo}. ${escena.texto}`;
+    titulo.textContent = escena.titulo;
+    texto.textContent = escena.texto;
+    progreso.textContent = `${indice + 1} / ${escenasDesafioGuardianaBosque.length}`;
+    continuar.textContent = indice === escenasDesafioGuardianaBosque.length - 1
+      ? "Aceptar desafío"
+      : "Continuar";
+    await esperarCargaImagen(imagen);
+    requestAnimationFrame(() => capa.classList.add("plano-visible"));
+  };
+
+  continuar.addEventListener("click", () => {
+    if (indice >= escenasDesafioGuardianaBosque.length - 1) {
+      terminar();
+      return;
+    }
+    indice += 1;
+    void mostrarPlano();
+  });
+  saltar.addEventListener("click", terminar, { once: true });
 
   try {
+    void mostrarPlano();
     requestAnimationFrame(() => capa.classList.add("visible"));
-    await esperarMovimiento(prefiereReducirMovimiento.matches ? 450 : 2600);
+    continuar.focus();
+    await cinematicaTerminada;
     capa.classList.add("saliendo");
-    await esperarMovimiento(prefiereReducirMovimiento.matches ? 120 : 650);
+    await esperarMovimiento(prefiereReducirMovimiento.matches ? 100 : 450);
   } finally {
     capa.remove();
   }

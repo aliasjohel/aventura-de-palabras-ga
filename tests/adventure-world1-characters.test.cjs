@@ -35,6 +35,24 @@ assert.match(
 );
 assert.match(app, /function obtenerDueloAventuraPendiente\(\)[\s\S]+misionActual === 9[\s\S]+return "guardiana"/);
 assert.match(app, /async function presentarDesafioGuardianaBosque\(\)/);
+assert.match(app, /async function presentarDueloAventura\(tipo\)[\s\S]+await esperarCierreHistoriaMision\(\)[\s\S]+presentarDesafioGuardianaBosque/);
+assert.match(app, /function esperarCierreHistoriaMision\(\)[\s\S]+MutationObserver/);
+assert.match(app, /const escenasDesafioGuardianaBosque = Object\.freeze\(\[/);
+assert.match(app, /01-encuentro-guardiana-v1\.png/);
+assert.match(app, /02-desafio-guardiana-v1\.png/);
+assert.match(app, /Una voz entre las hojas/);
+assert.match(app, /Demostrá que podés vencerme en un duelo de palabras/);
+assert.match(app, /continuar\.textContent = indice === escenasDesafioGuardianaBosque\.length - 1[\s\S]+Aceptar desafío/);
+assert.match(estilos, /\.cinematica-desafio-guardiana/);
+assert.match(estilos, /\.imagen-cinematica-desafio-guardiana[\s\S]+object-fit: contain/);
+assert.equal(
+  fs.existsSync(path.join(raiz, "assets", "images", "cinematicas", "bosque-mision-10", "01-encuentro-guardiana-v1.png")),
+  true,
+);
+assert.equal(
+  fs.existsSync(path.join(raiz, "assets", "images", "cinematicas", "bosque-mision-10", "02-desafio-guardiana-v1.png")),
+  true,
+);
 assert.match(app, /guardiana:[\s\S]+bosque-10-apagado\.png/);
 assert.match(app, /if \(dueloAventuraActivo\)[\s\S]+await mostrarAnuncioFinVersus\(palabraPerdida\)[\s\S]+mostrarResultadoPartidaVersus/);
 assert.match(app, /portalAbierto = true;[\s\S]+guardarProgreso\(\);[\s\S]+await completarAperturaPortal\(\)/);

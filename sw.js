@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v152`;
+const CACHE_NAME = `${CACHE_PREFIX}v153`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -60,6 +60,7 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v149`,
   `${CACHE_PREFIX}v150`,
   `${CACHE_PREFIX}v151`,
+  `${CACHE_PREFIX}v152`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -141,6 +142,8 @@ const CORE_ASSETS = [
   "./assets/images/cinematicas/desierto-final/03-mago-purifica-cristal-v1.png",
   "./assets/images/cinematicas/desierto-final/04-mago-entrega-cristal-v1.png",
   "./assets/images/cinematicas/desierto-final/05-mago-abre-portal-cumbres-v1.png",
+  "./assets/images/cinematicas/bosque-mision-10/01-encuentro-guardiana-v1.png",
+  "./assets/images/cinematicas/bosque-mision-10/02-desafio-guardiana-v1.png",
   "./assets/images/personajes/versus/dragon-ataque.png",
   "./assets/images/personajes/versus/dragon-llamando.png",
   "./assets/images/personajes/versus/dragon-victoria.png",
