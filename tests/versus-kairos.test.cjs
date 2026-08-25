@@ -54,7 +54,9 @@ assert.match(estilos, /@keyframes entradaKairosJugador/);
 assert.match(estilos, /@keyframes entradaKairosRival/);
 assert.match(estilos, /@keyframes ataqueKairosJugador/);
 assert.match(estilos, /@keyframes ataqueKairosRival/);
-assert.match(estilos, /personaje-kairos\s*\{[\s\S]+?width:\s*clamp\(190px,\s*36vw,\s*420px\)[\s\S]+?height:\s*78%/);
+assert.match(estilos, /personaje-kairos\s*\{[\s\S]+?width:\s*clamp\(220px,\s*41vw,\s*480px\)[\s\S]+?height:\s*84%/);
+assert.match(estilos, /personaje-t_shadow\s*\{[\s\S]+?width:\s*clamp\(215px,\s*40vw,\s*470px\)[\s\S]+?height:\s*82%/);
+assert.match(estilos, /personaje-guardian_alba\s*\{[\s\S]+?width:\s*clamp\(215px,\s*39vw,\s*465px\)[\s\S]+?height:\s*82%/);
 assert.match(estilos, /personaje-kairos\.lanzando-tiempo\s*\{[\s\S]+?width:\s*clamp\(285px,\s*54vw,\s*630px\)/);
 const ataqueKairosCss = estilos.slice(
   estilos.indexOf("@keyframes ataqueKairosJugador"),

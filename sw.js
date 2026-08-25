@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v148`;
+const CACHE_NAME = `${CACHE_PREFIX}v149`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -56,6 +56,7 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v145`,
   `${CACHE_PREFIX}v146`,
   `${CACHE_PREFIX}v147`,
+  `${CACHE_PREFIX}v148`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -280,7 +281,7 @@ const CORE_ASSETS = [
 const ASSET_REVISIONS = {
   "./": "20260820-personajes-mundo1-25",
   "./index.html": "20260823-kairos-6",
-  "./css/styles.css": "20260824-kairos-finales-ilustrados-1",
+  "./css/styles.css": "20260824-versus-escalas-esbeltas-1",
   "./js/app.js": "20260824-kairos-finales-ilustrados-1",
   "./assets/images/personajes/versus/kairos-seleccion-v2.png": "20260823-kairos-5",
   "./assets/images/personajes/versus/kairos-combate-v1.png": "20260823-kairos-5",
