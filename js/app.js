@@ -695,7 +695,7 @@ const escenasPorEscenario = [
     },
     {
       fondos: ["desierto-10.png"],
-      texto: "💛 La última palabra liberará el Cristal Dorado del Desierto.",
+      texto: "🪄 El Mago te espera para la prueba final por el Cristal Dorado.",
     },
   ],
 ];
@@ -872,9 +872,9 @@ const historiaDesierto = [
   },
   {
     capitulo: "Misión 10",
-    titulo: "El Cristal Dorado",
+    titulo: "La prueba del Mago",
     texto:
-      "Al romperse la corrupción, el Devoradunas recupera la calma y el santuario vuelve a llenarse de luz y agua. El Explorador toma el Cristal Dorado mientras el Maguito celebra a su lado. En la distancia comienza a formarse el camino hacia el tercer mundo.",
+      "Al romperse la corrupción, el Devoradunas recupera la calma y revela el Cristal Dorado bajo la arena. Antes de entregarlo, el Maguito propone una última batalla de palabras: quiere comprobar que el Explorador está preparado para llevar el cristal al siguiente mundo.",
   },
 ];
 
@@ -991,6 +991,7 @@ let modoPruebasActivo = false;
 let maximoEscenarioDesbloqueado = 0;
 const clavePersonajesDesbloqueados = "personajesDesbloqueadosAventuraGA";
 let guardianaDesbloqueada = false;
+let magoDesbloqueado = false;
 let hombreLoboDescubierto = false;
 let dueloAventuraActivo = null;
 const desafiosPorMision = 3;
@@ -1799,26 +1800,28 @@ function cargarPersonajesDesbloqueados() {
       localStorage.getItem(clavePersonajesDesbloqueados) || "[]",
     );
     guardianaDesbloqueada = Array.isArray(personajes) && personajes.includes("guardiana");
+    magoDesbloqueado = Array.isArray(personajes) && personajes.includes("mago");
   } catch {
     guardianaDesbloqueada = false;
+    magoDesbloqueado = false;
   }
 }
 
 function personajeDisponibleVersus(personaje) {
   if (modoPruebasActivo) return true;
   if (personaje === "guardiana") return guardianaDesbloqueada;
+  if (personaje === "mago") return magoDesbloqueado;
   return true;
 }
 
-function guardarDesbloqueoGuardiana() {
-  guardianaDesbloqueada = true;
+function guardarPersonajeDesbloqueado(personaje) {
   if (modoPruebasActivo) return;
   try {
     const personajes = JSON.parse(
       localStorage.getItem(clavePersonajesDesbloqueados) || "[]",
     );
     const desbloqueados = new Set(Array.isArray(personajes) ? personajes : []);
-    desbloqueados.add("guardiana");
+    desbloqueados.add(personaje);
     localStorage.setItem(
       clavePersonajesDesbloqueados,
       JSON.stringify([...desbloqueados]),
@@ -1826,6 +1829,16 @@ function guardarDesbloqueoGuardiana() {
   } catch {
     // El personaje permanece desbloqueado durante la sesión actual.
   }
+}
+
+function guardarDesbloqueoGuardiana() {
+  guardianaDesbloqueada = true;
+  guardarPersonajeDesbloqueado("guardiana");
+}
+
+function guardarDesbloqueoMago() {
+  magoDesbloqueado = true;
+  guardarPersonajeDesbloqueado("mago");
 }
 
 function actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada = false } = {}) {
@@ -1836,7 +1849,10 @@ function actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada = false }
     tarjeta.disabled = seleccionBloqueada || !disponible;
     tarjeta.setAttribute("aria-disabled", `${seleccionBloqueada || !disponible}`);
     if (estado) {
-      estado.textContent = disponible ? "DISPONIBLE" : "COMPLETÁ EL MUNDO 1";
+      const mundoRequerido = tarjeta.dataset.personaje === "mago" ? 2 : 1;
+      estado.textContent = disponible
+        ? "DISPONIBLE"
+        : `COMPLETÁ EL MUNDO ${mundoRequerido}`;
     }
   });
 
@@ -4225,6 +4241,14 @@ const configuracionesDuelosAventura = Object.freeze({
     arena: "assets/images/fondos/bosque-10-apagado.png",
     altArena: "Portal dormido del Bosque Encantado",
   },
+  mago_desierto: {
+    escenario: 1,
+    mision: 9,
+    rival: "mago",
+    etiqueta: "PRUEBA FINAL DEL CRISTAL DORADO",
+    arena: "assets/images/fondos/desierto-10.png",
+    altArena: "Santuario del Cristal Dorado en el Desierto Perdido",
+  },
 });
 
 async function presentarDueloAventura(tipo) {
@@ -4239,6 +4263,7 @@ async function presentarDueloAventura(tipo) {
   }
 
   if (tipo === "guardiana") await presentarDesafioGuardianaBosque();
+  if (tipo === "mago_desierto") await presentarDesafioMagoDesierto();
   if (
     escenarioActual !== configuracion.escenario
     || misionActual !== configuracion.mision
@@ -4335,6 +4360,32 @@ async function completarDueloAventura() {
     guardarProgreso();
     const mensajeCompleto = await mostrarMensajeDesafioSuperado();
     if (mensajeCompleto) continuarAventura();
+    return;
+  }
+
+  if (duelo.tipo === "mago_desierto") {
+    desafiosCompletados = desafiosPorMision;
+    cristalesObtenidos = Math.max(cristalesObtenidos, 2);
+    mundoDosCompletado = true;
+    historiaMisionPendiente = false;
+    guardarDesbloqueoMago();
+    contenedorEscenario.classList.add("final-desierto-activo");
+    actualizarJugador();
+    actualizarDisponibilidadPersonajesVersus();
+    guardarProgreso();
+
+    await reproducirCinematicaFinalDesierto();
+    await presentarDesbloqueoMagoDesierto();
+
+    bloquearTeclado();
+    btnPista.disabled = true;
+    btnSiguiente.textContent = "☁️ Cumbres Celestes · Próximamente";
+    btnSiguiente.classList.remove("oculto");
+    mensajePersonaje.classList.remove("oculto");
+    mensajePersonaje.textContent =
+      "✨ El Cristal Dorado está a salvo. El Mago abrió el portal hacia las Cumbres Celestes.";
+    actualizarPersonajesNarrativosDesierto();
+    guardarProgreso();
     return;
   }
 
@@ -7236,10 +7287,10 @@ function actualizarVistaMisionDev() {
   if (finalDesiertoCompletado) {
     bloquearTeclado();
     btnPista.disabled = true;
-    btnSiguiente.textContent = "🏆 Aventura completada";
+    btnSiguiente.textContent = "☁️ Cumbres Celestes · Próximamente";
     btnSiguiente.classList.remove("oculto");
     mensajePersonaje.textContent =
-      "✨ El Cristal Dorado está a salvo. El camino al tercer mundo te espera.";
+      "✨ El Cristal Dorado está a salvo. El Mago abrió el portal hacia las Cumbres Celestes.";
   }
 
   actualizarControlesDev();
@@ -8020,7 +8071,7 @@ function actualizarPersonajesNarrativosDesierto() {
     contenedorEscenario.insertBefore(devoradunas, personajeImagen);
   }
 
-  if (misionActual === 9) {
+  if (misionActual === 9 && mundoDosCompletado) {
     const cristal = document.createElement("img");
     cristal.className = "personaje-narrativo-desierto cristal-dorado-desierto";
     cristal.src = "assets/images/elements/cristal-sabiduria-dorado-v2.png";
@@ -8589,7 +8640,9 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   if (dueloAventura) {
     mensajePersonaje.textContent = dueloAventura === "guardiana"
       ? "La Guardiana del Bosque espera frente al portal apagado."
-      : "El Guardián de la Luna te desafía a demostrar tu valor.";
+      : dueloAventura === "mago_desierto"
+        ? "El Mago te espera para la prueba final del Cristal Dorado."
+        : "El Guardián de la Luna te desafía a demostrar tu valor.";
     if (presentarMision) await presentarInicioMision();
     requestAnimationFrame(() => void presentarDueloAventura(dueloAventura));
     return Promise.resolve();
@@ -8776,6 +8829,9 @@ function cargarProgreso() {
   // existiera el sistema de personajes desbloqueables.
   if (escenarioActual >= 1 || maximoEscenarioDesbloqueado >= 1) {
     guardarDesbloqueoGuardiana();
+  }
+  if (mundoDosCompletado) {
+    guardarDesbloqueoMago();
   }
 
   actualizarJugador();
@@ -9531,6 +9587,154 @@ async function presentarDesafioGuardianaBosque() {
   }
 }
 
+async function presentarDesafioMagoDesierto() {
+  if (escenarioActual !== 1 || misionActual !== 9 || mundoDosCompletado) return;
+
+  const capa = document.createElement("div");
+  const mago = document.createElement("img");
+  const mensaje = document.createElement("div");
+  const titulo = document.createElement("strong");
+  const texto = document.createElement("p");
+
+  capa.className = "encuentro-mago-desierto desafio-mago-desierto";
+  capa.setAttribute("aria-live", "polite");
+  mago.className = "figura-encuentro-mago";
+  mago.src = srcMagoBaseVersus;
+  mago.alt = "Mago del Desierto frente al Cristal Dorado";
+  mensaje.className = "mensaje-encuentro-mago";
+  titulo.textContent = "La prueba final del desierto";
+  texto.textContent =
+    "Liberaste al Devoradunas, pero el cristal exige un guardián preparado. Venceme en un duelo de palabras y te ayudaré a llevarlo al siguiente mundo.";
+  mensaje.append(titulo, texto);
+  capa.append(mago, mensaje);
+  contenedorEscenario.appendChild(capa);
+
+  try {
+    requestAnimationFrame(() => capa.classList.add("visible"));
+    await esperarMovimiento(prefiereReducirMovimiento.matches ? 450 : 2800);
+    capa.classList.add("saliendo");
+    await esperarMovimiento(prefiereReducirMovimiento.matches ? 120 : 650);
+  } finally {
+    capa.remove();
+  }
+}
+
+const escenasCinematicaFinalDesierto = Object.freeze([
+  {
+    imagen: "assets/images/cinematicas/desierto-final/01-devoradunas-revela-cristal-v1.png",
+    titulo: "El secreto bajo la arena",
+    texto: "Ya libre de la corrupción, el Devoradunas revela el Cristal Dorado que custodiaba bajo su cuerpo.",
+  },
+  {
+    imagen: "assets/images/cinematicas/desierto-final/02-devoradunas-entrega-cristal-v1.png",
+    titulo: "Una entrega voluntaria",
+    texto: "La criatura empuja el cristal hacia el Explorador. La persecución terminó: ahora confía en él.",
+  },
+  {
+    imagen: "assets/images/cinematicas/desierto-final/03-mago-purifica-cristal-v1.png",
+    titulo: "La última sombra",
+    texto: "El Mago hace levitar el cristal y desprende con su magia los últimos restos de arena corrupta.",
+  },
+  {
+    imagen: "assets/images/cinematicas/desierto-final/04-mago-entrega-cristal-v1.png",
+    titulo: "El Cristal Dorado",
+    texto: "Limpio y luminoso, el segundo Cristal de la Sabiduría pasa por fin a manos del Explorador.",
+  },
+  {
+    imagen: "assets/images/cinematicas/desierto-final/05-mago-abre-portal-cumbres-v1.png",
+    titulo: "Rumbo a las Cumbres Celestes",
+    texto: "El Mago abre un portal entre las nubes. Detrás aguarda un mundo de montañas e islas flotantes.",
+  },
+]);
+
+async function reproducirCinematicaFinalDesierto() {
+  if (escenarioActual !== 1 || misionActual !== 9) return;
+
+  const capa = document.createElement("div");
+  const imagen = document.createElement("img");
+  const relato = document.createElement("div");
+  const titulo = document.createElement("strong");
+  const texto = document.createElement("p");
+  const progreso = document.createElement("span");
+  const saltar = document.createElement("button");
+  let omitida = false;
+  let resolverSalto;
+  const saltoSolicitado = new Promise((resolver) => {
+    resolverSalto = resolver;
+  });
+
+  capa.className = "cinematica-final-desierto";
+  capa.setAttribute("role", "dialog");
+  capa.setAttribute("aria-label", "Cinemática final del Desierto Perdido");
+  imagen.className = "imagen-cinematica-final-desierto";
+  relato.className = "relato-cinematica-final-desierto";
+  progreso.className = "progreso-cinematica-final-desierto";
+  saltar.className = "saltar-cinematica-final-desierto";
+  saltar.type = "button";
+  saltar.textContent = "Saltar cinemática";
+  saltar.addEventListener("click", () => {
+    omitida = true;
+    resolverSalto();
+  }, { once: true });
+  relato.append(titulo, texto, progreso);
+  capa.append(imagen, relato, saltar);
+  document.body.appendChild(capa);
+
+  try {
+    requestAnimationFrame(() => capa.classList.add("visible"));
+    for (let indice = 0; indice < escenasCinematicaFinalDesierto.length; indice += 1) {
+      const escena = escenasCinematicaFinalDesierto[indice];
+      capa.classList.remove("plano-visible");
+      imagen.src = escena.imagen;
+      imagen.alt = `${escena.titulo}. ${escena.texto}`;
+      titulo.textContent = escena.titulo;
+      texto.textContent = escena.texto;
+      progreso.textContent = `${indice + 1} / ${escenasCinematicaFinalDesierto.length}`;
+      await esperarCargaImagen(imagen);
+      requestAnimationFrame(() => capa.classList.add("plano-visible"));
+      await Promise.race([
+        esperarMovimiento(prefiereReducirMovimiento.matches ? 500 : 2800),
+        saltoSolicitado,
+      ]);
+      if (omitida) break;
+    }
+    capa.classList.add("saliendo");
+    await esperarMovimiento(prefiereReducirMovimiento.matches ? 100 : 500);
+  } finally {
+    capa.remove();
+  }
+}
+
+async function presentarDesbloqueoMagoDesierto() {
+  const capa = document.createElement("div");
+  const mago = document.createElement("img");
+  const mensaje = document.createElement("div");
+  const titulo = document.createElement("strong");
+  const texto = document.createElement("p");
+
+  capa.className = "encuentro-mago-desierto desbloqueo-mago-desierto";
+  capa.setAttribute("aria-live", "polite");
+  mago.className = "figura-encuentro-mago";
+  mago.src = srcMagoBaseVersus;
+  mago.alt = "Mago desbloqueado";
+  mensaje.className = "mensaje-encuentro-mago";
+  titulo.textContent = "¡Mago desbloqueado!";
+  texto.textContent =
+    "Superaste su prueba y recuperaste el Cristal Dorado. El Mago se une a tus campeones del modo versus.";
+  mensaje.append(titulo, texto);
+  capa.append(mago, mensaje);
+  contenedorEscenario.appendChild(capa);
+
+  try {
+    requestAnimationFrame(() => capa.classList.add("visible"));
+    await esperarMovimiento(prefiereReducirMovimiento.matches ? 500 : 2300);
+    capa.classList.add("saliendo");
+    await esperarMovimiento(prefiereReducirMovimiento.matches ? 120 : 650);
+  } finally {
+    capa.remove();
+  }
+}
+
 async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
   if (
     secuencia !== secuenciaAperturaPortal ||
@@ -9799,8 +10003,12 @@ function obtenerPruebaEspecialBosquePendiente() {
 }
 
 function obtenerDueloAventuraPendiente() {
-  if (escenarioActual !== 0 || portalAbierto) return "";
-  if (misionActual === 9) return "guardiana";
+  if (escenarioActual === 0 && misionActual === 9 && !portalAbierto) {
+    return "guardiana";
+  }
+  if (escenarioActual === 1 && misionActual === 9 && !mundoDosCompletado) {
+    return "mago_desierto";
+  }
   return "";
 }
 
