@@ -59,6 +59,15 @@ for (const criatura of ["emerge", "persigue", "pacifico"]) {
 }
 
 assert.match(app, /mago-base\.png/);
+assert.match(app, /mago_desierto:\s*{[\s\S]*escenario: 1,[\s\S]*mision: 9,[\s\S]*rival: "mago"/);
+assert.match(app, /function obtenerDueloAventuraPendiente\(\)[\s\S]*return "mago_desierto"/);
+assert.match(app, /async function presentarDesafioMagoDesierto\(\)/);
+assert.match(app, /async function reproducirCinematicaFinalDesierto\(\)/);
+assert.match(app, /async function presentarDesbloqueoMagoDesierto\(\)/);
+assert.match(app, /if \(personaje === "mago"\) return magoDesbloqueado/);
+assert.match(app, /guardarDesbloqueoMago\(\)/);
+assert.match(app, /El Mago te espera para la prueba final del Cristal Dorado/);
+assert.doesNotMatch(app, /La última palabra liberará el Cristal Dorado/);
 assert.match(app, /mundoDosCompletado = true/);
 assert.match(app, /cristalesObtenidos = Math\.max\(cristalesObtenidos, 2\)/);
 assert.match(app, /1: crearRutasSpritesCaminata\("bosque"\)/);
@@ -108,5 +117,29 @@ assert.equal(
 for (const contenido of [app, html, sw]) {
   assert.match(contenido, /cristal-sabiduria-dorado-v2\.png/);
 }
+
+for (const nombre of [
+  "01-devoradunas-revela-cristal-v1.png",
+  "02-devoradunas-entrega-cristal-v1.png",
+  "03-mago-purifica-cristal-v1.png",
+  "04-mago-entrega-cristal-v1.png",
+  "05-mago-abre-portal-cumbres-v1.png",
+]) {
+  const archivo = path.join(
+    raiz,
+    "assets",
+    "images",
+    "cinematicas",
+    "desierto-final",
+    nombre,
+  );
+  assert.ok(fs.existsSync(archivo), `Falta el plano cinemático ${nombre}`);
+  assert.ok(fs.statSync(archivo).size > 1_000_000, `${nombre} parece incompleto`);
+  assert.match(app, new RegExp(nombre.replace(".", "\\.")));
+  assert.match(sw, new RegExp(nombre.replace(".", "\\.")));
+}
+
+assert.match(estilos, /\.cinematica-final-desierto/);
+assert.match(estilos, /\.encuentro-mago-desierto/);
 
 console.log("adventure-world2-complete: comprobaciones correctas");

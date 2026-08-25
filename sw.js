@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v148`;
+const CACHE_NAME = `${CACHE_PREFIX}v150`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -56,6 +56,8 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v145`,
   `${CACHE_PREFIX}v146`,
   `${CACHE_PREFIX}v147`,
+  `${CACHE_PREFIX}v148`,
+  `${CACHE_PREFIX}v149`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -132,6 +134,11 @@ const CORE_ASSETS = [
   "./assets/images/personajes/aventura/devoradunas-emerge-v1.png",
   "./assets/images/personajes/aventura/devoradunas-persigue-v1.png",
   "./assets/images/personajes/aventura/devoradunas-pacifico-v1.png",
+  "./assets/images/cinematicas/desierto-final/01-devoradunas-revela-cristal-v1.png",
+  "./assets/images/cinematicas/desierto-final/02-devoradunas-entrega-cristal-v1.png",
+  "./assets/images/cinematicas/desierto-final/03-mago-purifica-cristal-v1.png",
+  "./assets/images/cinematicas/desierto-final/04-mago-entrega-cristal-v1.png",
+  "./assets/images/cinematicas/desierto-final/05-mago-abre-portal-cumbres-v1.png",
   "./assets/images/personajes/versus/dragon-ataque.png",
   "./assets/images/personajes/versus/dragon-llamando.png",
   "./assets/images/personajes/versus/dragon-victoria.png",
@@ -280,8 +287,8 @@ const CORE_ASSETS = [
 const ASSET_REVISIONS = {
   "./": "20260820-personajes-mundo1-25",
   "./index.html": "20260823-kairos-6",
-  "./css/styles.css": "20260824-kairos-finales-ilustrados-1",
-  "./js/app.js": "20260824-kairos-finales-ilustrados-1",
+  "./css/styles.css": "20260824-mundo2-duelo-mago-1",
+  "./js/app.js": "20260824-mundo2-duelo-mago-1",
   "./assets/images/personajes/versus/kairos-seleccion-v2.png": "20260823-kairos-5",
   "./assets/images/personajes/versus/kairos-combate-v1.png": "20260823-kairos-5",
   "./assets/images/personajes/versus/kairos-ataque-v2.png": "20260824-kairos-6",
@@ -328,6 +335,11 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/aventura/devoradunas-emerge-v1.png": "20260821-desierto-completo-1",
   "./assets/images/personajes/aventura/devoradunas-persigue-v1.png": "20260821-desierto-completo-1",
   "./assets/images/personajes/aventura/devoradunas-pacifico-v1.png": "20260821-desierto-completo-1",
+  "./assets/images/cinematicas/desierto-final/01-devoradunas-revela-cristal-v1.png": "20260824-mundo2-cinematica-1",
+  "./assets/images/cinematicas/desierto-final/02-devoradunas-entrega-cristal-v1.png": "20260824-mundo2-cinematica-1",
+  "./assets/images/cinematicas/desierto-final/03-mago-purifica-cristal-v1.png": "20260824-mundo2-cinematica-1",
+  "./assets/images/cinematicas/desierto-final/04-mago-entrega-cristal-v1.png": "20260824-mundo2-cinematica-1",
+  "./assets/images/cinematicas/desierto-final/05-mago-abre-portal-cumbres-v1.png": "20260824-mundo2-cinematica-1",
   "./assets/images/ui/presentacion-mision-piedra-desierto-v1.png": "20260821-desierto-mision1-1",
   "./assets/images/personajes/versus/kalamo-final-prepara-golpe-v1.png": "20260821-kalamo-pantalla-explorador-1",
   "./assets/images/personajes/versus/kalamo-final-lanza-explorador-v1.png": "20260821-kalamo-pantalla-explorador-1",
