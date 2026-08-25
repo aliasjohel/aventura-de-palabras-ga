@@ -14798,6 +14798,15 @@ button:disabled {
   width: clamp(340px, 55vw, 650px);
 }
 
+.pantalla-versus.duelo-aventura .herramientas-pruebas-versus,
+.pantalla-versus.duelo-aventura .herramientas-habilidades-pruebas-versus {
+  display: none !important;
+}
+
+.pantalla-versus.duelo-aventura .versus-prototipo {
+  color: #f5dc91;
+}
+
 @keyframes entradaKairosJugador {
   0% { opacity: 0; transform: translateX(-75%) scale(.48) rotate(-10deg); filter: blur(8px) brightness(1.8); }
   34% { opacity: 1; transform: translateX(0) scale(1.08) rotate(1deg); filter: blur(0) brightness(1.3) drop-shadow(0 0 25px #e9c35f); }
@@ -15006,6 +15015,7 @@ button:disabled {
 .kairos-final-reloj,
 .kairos-final-invocador,
 .kairos-final-concepto,
+.kairos-final-montaje,
 .kairos-final-victoria,
 .kairos-final-victima,
 .kairos-final-00 { display: none; }
@@ -15131,6 +15141,18 @@ button:disabled {
   animation: kairos-concepto-cierre 9s ease both;
 }
 
+.siglos-en-un-segundo:not(.kairos-victima-explorador):not(.kairos-victima-kairos) .kairos-final-montaje {
+  display: block;
+  position: absolute;
+  z-index: 9;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: kairos-montaje-cierre 9s ease both;
+}
+
 .siglos-en-un-segundo .kairos-final-victoria {
   display: block;
   position: absolute;
@@ -15146,13 +15168,44 @@ button:disabled {
   animation: kairos-victoria-frente 9s cubic-bezier(.18,.76,.24,1) both;
 }
 
-.siglos-en-un-segundo:not(.kairos-victima-explorador) .kairos-edad-intermedia {
-  filter: grayscale(.35) sepia(.55) brightness(.82) drop-shadow(0 0 18px #f2d879);
+.siglos-en-un-segundo.kairos-victima-dragon .kairos-edad-intermedia,
+.siglos-en-un-segundo.kairos-victima-dragon .kairos-edad-final {
+  right: 1%;
+  bottom: -8%;
+  width: min(58vw, 690px);
+  max-height: 94%;
 }
 
-.siglos-en-un-segundo:not(.kairos-victima-explorador) .kairos-edad-final {
-  transform: scaleX(-1) scale(.84) skewX(4deg);
-  filter: grayscale(.8) sepia(.6) brightness(.68) drop-shadow(0 0 18px #f2d879);
+.siglos-en-un-segundo.kairos-victima-mago .kairos-edad-intermedia,
+.siglos-en-un-segundo.kairos-victima-mago .kairos-edad-final {
+  right: 3%;
+  bottom: 1%;
+  width: min(45vw, 520px);
+  max-height: 76%;
+}
+
+.siglos-en-un-segundo.kairos-victima-hombre_lobo .kairos-edad-final,
+.siglos-en-un-segundo.kairos-victima-dragon_hielo .kairos-edad-final,
+.siglos-en-un-segundo.kairos-victima-azrak .kairos-edad-final,
+.siglos-en-un-segundo.kairos-victima-kalamo .kairos-edad-final {
+  right: 5%;
+  bottom: 0;
+  width: min(39vw, 470px);
+  max-height: 79%;
+}
+
+@media (max-width: 720px) {
+  .siglos-en-un-segundo.kairos-victima-dragon .kairos-edad-intermedia,
+  .siglos-en-un-segundo.kairos-victima-dragon .kairos-edad-final {
+    right: -8%;
+    width: min(82vw, 620px);
+  }
+
+  .siglos-en-un-segundo.kairos-victima-mago .kairos-edad-intermedia,
+  .siglos-en-un-segundo.kairos-victima-mago .kairos-edad-final {
+    right: -2%;
+    width: min(64vw, 470px);
+  }
 }
 
 .siglos-en-un-segundo .kairos-final-00 {
@@ -15188,6 +15241,7 @@ button:disabled {
 @keyframes kairos-edad-media { 0%,46% { opacity: 0; } 47%,64% { opacity: 1; } 65%,100% { opacity: 0; } }
 @keyframes kairos-edad-anciana { 0%,64% { opacity: 0; } 65%,78% { opacity: 1; } 79%,100% { opacity: 0; } }
 @keyframes kairos-concepto-cierre { 0%,73% { opacity: 0; scale: 1.07; } 76%,81% { opacity: 1; scale: 1; } 83%,100% { opacity: 0; } }
+@keyframes kairos-montaje-cierre { 0%,73% { opacity: 0; scale: 1.07; filter: blur(8px) brightness(1.7); } 76%,81% { opacity: 1; scale: 1; filter: blur(0) brightness(1); } 83%,100% { opacity: 0; scale: .98; filter: blur(2px) brightness(.8); } }
 @keyframes kairos-victoria-frente {
   0%,80% { opacity: 0; translate: 0 12%; scale: .78; filter: brightness(2) blur(6px); }
   85%,96% { opacity: 1; translate: 0 0; scale: 1; filter: brightness(1.08) blur(0) drop-shadow(0 0 22px #f0cf73) drop-shadow(0 16px 18px rgba(0,0,0,.72)); }

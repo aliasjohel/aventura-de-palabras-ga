@@ -35,6 +35,14 @@ const entradaKairos = app.slice(
 assert.match(entradaKairos, /elemento\.src = srcKairosBaseVersus/);
 assert.doesNotMatch(entradaKairos, /srcKairosAtaqueVersus/);
 assert.match(app, /function reproducirSiglosEnUnSegundoVersus\(/);
+assert.match(app, /const imagenesEdadKairosVersus = Object\.freeze\(/);
+assert.match(app, /dragon:\s*Object\.freeze\(\{\s*intermedia: "assets\/images\/personajes\/versus\/dragon-adulto-kairos-v1\.png",\s*anciana: "assets\/images\/personajes\/versus\/dragon-anciano-kairos-v1\.png"/);
+assert.match(app, /victimaKairosAncianaVersus\.src = imagenesEdad\.anciana/);
+assert.match(app, /kairosFinalMontajeVersus\.id = "kairosFinalMontajeVersus"/);
+assert.match(app, /const imagenesFinalKairosVersus = Object\.freeze\(/);
+assert.match(app, /dragon_hielo: "assets\/images\/personajes\/versus\/kairos-final-dragon-hielo-v1\.png"/);
+assert.match(app, /kairosFinalMontajeVersus\.src = imagenesFinalKairosVersus\[victimaFinal\]/);
+assert.match(app, /cinematicaFinalVersus\.classList\.add\(`kairos-victima-\$\{victimaFinal\}`\)/);
 assert.match(app, /finalElegido === "siglos-en-un-segundo"/);
 assert.match(app, /evento\.character === "kairos"/);
 
@@ -54,6 +62,10 @@ const ataqueKairosCss = estilos.slice(
 );
 assert.doesNotMatch(ataqueKairosCss, /scale\((?!1\))/);
 assert.match(estilos, /@keyframes kairos-victoria-frente/);
+assert.match(estilos, /\.siglos-en-un-segundo:not\(\.kairos-victima-explorador\):not\(\.kairos-victima-kairos\) \.kairos-final-montaje/);
+assert.match(estilos, /@keyframes kairos-montaje-cierre/);
+assert.match(estilos, /kairos-victima-dragon \.kairos-edad-intermedia[\s\S]+?width:\s*min\(58vw, 690px\)/);
+assert.match(estilos, /kairos-victima-azrak \.kairos-edad-final/);
 assert.match(estilos, /personaje-dos\.personaje-kairos[\s\S]+?scaleX\(-1\)/);
 assert.doesNotMatch(estilos, /kairos-final-victima[\s\S]{0,300}mix-blend-mode/);
 const victimaKairosCss = estilos.slice(
@@ -73,15 +85,42 @@ assert.match(migracion, /grant execute on function public\.activate_versus_abili
 for (const archivo of [
   "kairos-seleccion-v2.png",
   "kairos-combate-v1.png",
-  "kairos-ataque-v1.png",
+  "kairos-ataque-v2.png",
   "explorador-envejecido-kairos-v2.png",
   "explorador-anciano-kairos-v2.png",
+  "mago-envejecido-kairos-v1.png",
+  "mago-anciano-kairos-v1.png",
+  "guardiana-envejecida-kairos-v1.png",
+  "guardiana-anciana-kairos-v1.png",
+  "dragon-adulto-kairos-v1.png",
+  "dragon-anciano-kairos-v1.png",
+  "hombre-lobo-envejecido-kairos-v1.png",
+  "hombre-lobo-anciano-kairos-v1.png",
+  "t-shadow-envejecido-kairos-v1.png",
+  "t-shadow-anciano-kairos-v1.png",
+  "guardian-alba-envejecido-kairos-v1.png",
+  "guardian-alba-anciano-kairos-v1.png",
+  "dragon-hielo-envejecido-kairos-v1.png",
+  "dragon-hielo-anciano-kairos-v1.png",
+  "azrak-envejecido-kairos-v1.png",
+  "azrak-anciano-kairos-v1.png",
+  "kalamo-envejecido-kairos-v1.png",
+  "kalamo-anciano-kairos-v1.png",
+  "kairos-final-mago-v1.png",
+  "kairos-final-guardiana-v1.png",
+  "kairos-final-dragon-v1.png",
+  "kairos-final-hombre-lobo-v1.png",
+  "kairos-final-t-shadow-v1.png",
+  "kairos-final-guardian-alba-v1.png",
+  "kairos-final-dragon-hielo-v1.png",
+  "kairos-final-azrak-v1.png",
+  "kairos-final-kalamo-v1.png",
   "kairos-final-explorador-concepto-v1.png",
 ]) {
   const ruta = path.join(raiz, "assets", "images", "personajes", "versus", archivo);
   assert.ok(fs.existsSync(ruta), archivo);
   assert.match(sw, new RegExp(archivo.replaceAll(".", "\\.")));
-  if (!archivo.includes("concepto")) {
+  if (!archivo.startsWith("kairos-final-")) {
     const png = fs.readFileSync(ruta);
     assert.equal(png[25], 6, `${archivo} debe ser RGBA`);
   }
