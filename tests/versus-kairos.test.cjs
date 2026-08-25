@@ -29,6 +29,19 @@ assert.match(app, /kairos:\s*\{[\s\S]+?ataque: "aguja-tiempo"[\s\S]+?final: "sig
 assert.match(app, /efecto: "time_steal"[\s\S]+?segundos: 20/);
 assert.match(app, /function calcularTiempoOnlineVersus\(/);
 assert.match(app, /restanteGlobal - Number\(jugador\.timePenaltySeconds \|\| 0\)/);
+assert.match(app, /function aplicarRoboTiempoLocalVersus\([\s\S]+?agotarTiempoRivalVersus\(\)/);
+const agotamientoJugadorLocal = app.slice(
+  app.indexOf("function agotarTiempoJugadorVersus"),
+  app.indexOf("function agotarTiempoRivalVersus"),
+);
+const agotamientoRivalLocal = app.slice(
+  app.indexOf("function agotarTiempoRivalVersus"),
+  app.indexOf("function agotarTiemposSimultaneosVersus"),
+);
+assert.match(agotamientoJugadorLocal, /finalizarPartidaVersus\([\s\S]+?"rival"/);
+assert.match(agotamientoRivalLocal, /finalizarPartidaVersus\([\s\S]+?"jugador"/);
+assert.match(app, /function agotarTiemposSimultaneosVersus\(/);
+assert.match(app, /resultadoTiempo === "ambos"[\s\S]+?agotarTiemposSimultaneosVersus\(\)/);
 assert.match(app, /function reproducirAtaqueKairosVersus\(/);
 assert.match(app, /function reproducirAtaqueKairosRivalVersus\(/);
 assert.match(app, /srcKairosAtaqueVersus/);

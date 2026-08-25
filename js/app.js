@@ -5869,13 +5869,27 @@ function ajustarPalabraLargaVersus(elemento, cantidadLetras) {
 }
 
 function actualizarRelojesVersus() {
-  if (!demoVersus.finalizadoJugador) {
+  const jugadorActivo = !demoVersus.finalizadoJugador;
+  const rivalActivo = !demoVersus.finalizadoRival;
+  if (jugadorActivo) {
     demoVersus.tiempoJugador = Math.max(0, demoVersus.tiempoJugador - 1);
-    if (demoVersus.tiempoJugador === 0) agotarTiempoJugadorVersus();
   }
-  if (!demoVersus.finalizadoRival) {
+  if (rivalActivo) {
     demoVersus.tiempoRival = Math.max(0, demoVersus.tiempoRival - 1);
-    if (demoVersus.tiempoRival === 0) agotarTiempoRivalVersus();
+  }
+
+  const resultadoTiempo = VersusEngine.resolverAgotamientoTiempo({
+    tiempoJugador: demoVersus.tiempoJugador,
+    tiempoRival: demoVersus.tiempoRival,
+    jugadorActivo,
+    rivalActivo,
+  });
+  if (resultadoTiempo === "ambos") {
+    agotarTiemposSimultaneosVersus();
+  } else if (resultadoTiempo === "rival") {
+    agotarTiempoJugadorVersus();
+  } else if (resultadoTiempo === "jugador") {
+    agotarTiempoRivalVersus();
   }
   actualizarTiemposVersus();
 }
@@ -6073,9 +6087,13 @@ function agotarTiempoJugadorVersus() {
   demoVersus.motivoFinalJugador = "tiempo";
   bloquearTecladoDemoVersus();
   mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoUno"), "Tiempo agotado", "agotado");
-  mostrarAvisoAvanceVersus("Se agotó tu tiempo. El rival todavía puede continuar.", "error");
+  mostrarAvisoAvanceVersus("Se agotó tu tiempo. Perdiste el duelo.", "error");
   actualizarProgresosVersus();
-  verificarFinNaturalVersus();
+  finalizarPartidaVersus(
+    "rival",
+    "Se agotó tu tiempo antes que el del rival.",
+    obtenerPalabraActualJugadorVersus(),
+  );
 }
 
 function agotarTiempoRivalVersus() {
@@ -6083,7 +6101,24 @@ function agotarTiempoRivalVersus() {
   demoVersus.finalizadoRival = true;
   demoVersus.motivoFinalRival = "tiempo";
   mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), "Tiempo agotado", "agotado");
-  mostrarAvisoAvanceVersus("El rival agotó su tiempo.", "acierto");
+  mostrarAvisoAvanceVersus("El rival agotó su tiempo. ¡Ganaste el duelo!", "acierto");
+  actualizarProgresosVersus();
+  finalizarPartidaVersus(
+    "jugador",
+    "El rival agotó su tiempo antes que vos.",
+  );
+}
+
+function agotarTiemposSimultaneosVersus() {
+  if (demoVersus.partidaFinalizada) return;
+  demoVersus.finalizadoJugador = true;
+  demoVersus.finalizadoRival = true;
+  demoVersus.motivoFinalJugador = "tiempo";
+  demoVersus.motivoFinalRival = "tiempo";
+  bloquearTecladoDemoVersus();
+  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoUno"), "Tiempo agotado", "agotado");
+  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), "Tiempo agotado", "agotado");
+  mostrarAvisoAvanceVersus("Ambos tiempos se agotaron a la vez.");
   actualizarProgresosVersus();
   verificarFinNaturalVersus();
 }

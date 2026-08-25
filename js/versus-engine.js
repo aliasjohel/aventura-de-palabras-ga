@@ -106,6 +106,21 @@
     return Math.max(0, Number(tiempo || 0) - Math.max(0, segundos));
   }
 
+  function resolverAgotamientoTiempo({
+    tiempoJugador,
+    tiempoRival,
+    jugadorActivo = true,
+    rivalActivo = true,
+  }) {
+    const jugadorAgotado = jugadorActivo && Number(tiempoJugador) <= 0;
+    const rivalAgotado = rivalActivo && Number(tiempoRival) <= 0;
+
+    if (jugadorAgotado && rivalAgotado) return "ambos";
+    if (jugadorAgotado) return "rival";
+    if (rivalAgotado) return "jugador";
+    return "";
+  }
+
   function sumarCargaHabilidad(carga, letrasReveladas) {
     return Math.min(
       CONFIG.letrasParaHabilidad,
@@ -145,6 +160,7 @@
     obtenerEtiquetaRonda,
     sumarCargaHabilidad,
     reducirTiempo,
+    resolverAgotamientoTiempo,
     resolverGanador,
   });
 });

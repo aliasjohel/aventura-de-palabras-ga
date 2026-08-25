@@ -37,6 +37,26 @@ assert.equal(engine.obtenerEtiquetaRonda(5), "EXTRA 1");
 assert.equal(engine.reducirTiempo(1), 0);
 assert.equal(engine.reducirTiempo(0), 0);
 assert.equal(
+  engine.resolverAgotamientoTiempo({ tiempoJugador: 40, tiempoRival: 0 }),
+  "jugador",
+);
+assert.equal(
+  engine.resolverAgotamientoTiempo({ tiempoJugador: 0, tiempoRival: 40 }),
+  "rival",
+);
+assert.equal(
+  engine.resolverAgotamientoTiempo({ tiempoJugador: 0, tiempoRival: 0 }),
+  "ambos",
+);
+assert.equal(
+  engine.resolverAgotamientoTiempo({
+    tiempoJugador: 0,
+    tiempoRival: 40,
+    jugadorActivo: false,
+  }),
+  "",
+);
+assert.equal(
   engine.resolverGanador(
     { vidas: 2, palabras: 2, letras: 8, tiempo: 30 },
     { vidas: 2, palabras: 1, letras: 9, tiempo: 40 },
