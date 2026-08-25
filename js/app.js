@@ -253,6 +253,11 @@ const manoVictimaAzrakVersus = document.getElementById("manoVictimaAzrakVersus")
 const victimaLibroKalamoVersus = document.getElementById("victimaLibroKalamoVersus");
 const pantallaRotaKalamoVersus = document.getElementById("pantallaRotaKalamoVersus");
 const kairosFinalConceptoVersus = document.getElementById("kairosFinalConceptoVersus");
+const kairosFinalMontajeVersus = document.createElement("img");
+kairosFinalMontajeVersus.id = "kairosFinalMontajeVersus";
+kairosFinalMontajeVersus.className = "kairos-final-montaje";
+kairosFinalMontajeVersus.alt = "";
+kairosFinalConceptoVersus.after(kairosFinalMontajeVersus);
 const victimaKairosVersus = document.getElementById("victimaKairosVersus");
 const victimaKairosEnvejecidaVersus = document.getElementById("victimaKairosEnvejecidaVersus");
 const victimaKairosAncianaVersus = document.getElementById("victimaKairosAncianaVersus");
@@ -628,7 +633,7 @@ const escenasPorEscenario = [
     {
       fondos: ["bosque-6.png"],
       texto:
-        "🐺 Resuelve la palabra para escabullirte de los lobos y continuar el viaje.",
+        "🐺 Superá la prueba de las miradas y enfrentá al Guardián de la Luna.",
     },
     {
       fondos: ["bosque-7.png"],
@@ -647,7 +652,7 @@ const escenasPorEscenario = [
     },
     {
       fondos: ["bosque-10-apagado.png", "bosque-10.png"],
-      texto: "🌌 La última palabra abrirá el Portal de los Mundos.",
+      texto: "🌌 Demostrá tu valor ante la Guardiana para abrir el Portal de los Mundos.",
     },
   ],
   [
@@ -806,7 +811,7 @@ const historiaBosque = [
     capitulo: "Misión 10",
     titulo: "El Portal de los Mundos",
     texto:
-      "El explorador toma el Primer Cristal. El bosque recupera su luz y un antiguo portal vuelve a abrirse. Antes de partir, una presencia esmeralda se acerca para reconocer su hazaña. El siguiente destino será el Desierto Perdido.",
+      "El explorador lleva el Primer Cristal hasta el portal dormido, pero una presencia esmeralda bloquea el paso. La Guardiana del Bosque sólo permitirá que el cristal despierte el portal si demuestra que es digno de cruzar hacia otros mundos.",
   },
 ];
 
@@ -986,6 +991,8 @@ let modoPruebasActivo = false;
 let maximoEscenarioDesbloqueado = 0;
 const clavePersonajesDesbloqueados = "personajesDesbloqueadosAventuraGA";
 let guardianaDesbloqueada = false;
+let hombreLoboDescubierto = false;
+let dueloAventuraActivo = null;
 const desafiosPorMision = 3;
 const adaptadorLocalSalasVersus = VersusRoom.crearAdaptadorLocal();
 let adaptadorSalasVersus = adaptadorLocalSalasVersus;
@@ -2516,14 +2523,19 @@ async function volverAlMenuDesdeVersus() {
 }
 
 btnSalirVersus.addEventListener("click", () => {
-  if (modoArcadeActivo) abrirTorreArcade();
+  if (dueloAventuraActivo) abandonarDueloAventura();
+  else if (modoArcadeActivo) abrirTorreArcade();
   else void volverAlMenuDesdeVersus();
 });
 btnSalirVersusVertical.addEventListener("click", () => {
-  if (modoArcadeActivo) abrirTorreArcade();
+  if (dueloAventuraActivo) abandonarDueloAventura();
+  else if (modoArcadeActivo) abrirTorreArcade();
   else void volverAlMenuDesdeVersus();
 });
-btnMenuResultadoVersus.addEventListener("click", volverAlMenuDesdeVersus);
+btnMenuResultadoVersus.addEventListener("click", () => {
+  if (dueloAventuraActivo) abandonarDueloAventura();
+  else void volverAlMenuDesdeVersus();
+});
 
 btnSaltarNarrativa.addEventListener("click", solicitarSaltoNarrativo);
 
@@ -4025,6 +4037,7 @@ const probabilidadAciertoRivalVersus = 0.56;
 const duracionEntradaDueloVersus = 3200;
 
 function obtenerIntervaloJugadaRivalVersus() {
+  if (dueloAventuraActivo) return intervaloJugadaRivalVersus;
   if (!modoArcadeActivo) return modoPruebasActivo
     ? intervaloJugadaRivalVersus * 4
     : intervaloJugadaRivalVersus;
@@ -4032,6 +4045,7 @@ function obtenerIntervaloJugadaRivalVersus() {
 }
 
 function obtenerProbabilidadAciertoRivalVersus() {
+  if (dueloAventuraActivo) return probabilidadAciertoRivalVersus;
   if (!modoArcadeActivo) return probabilidadAciertoRivalVersus;
   return Math.min(.82, .43 + pisoCombateArcade * .055);
 }
@@ -4079,9 +4093,33 @@ const srcKalamoHabilidadVersus = "assets/images/personajes/versus/kalamo-habilid
 const srcKalamoImpactoVersus = "assets/images/personajes/versus/kalamo-impacto.png";
 const srcKairosSeleccionVersus = "assets/images/personajes/versus/kairos-seleccion-v2.png";
 const srcKairosBaseVersus = "assets/images/personajes/versus/kairos-combate-v1.png";
-const srcKairosAtaqueVersus = "assets/images/personajes/versus/kairos-ataque-v1.png";
+const srcKairosAtaqueVersus = "assets/images/personajes/versus/kairos-ataque-v2.png";
 const srcExploradorEnvejecidoKairosVersus = "assets/images/personajes/versus/explorador-envejecido-kairos-v2.png";
 const srcExploradorAncianoKairosVersus = "assets/images/personajes/versus/explorador-anciano-kairos-v2.png";
+const imagenesEdadKairosVersus = Object.freeze({
+  explorador: Object.freeze({ intermedia: srcExploradorEnvejecidoKairosVersus, anciana: srcExploradorAncianoKairosVersus }),
+  mago: Object.freeze({ intermedia: "assets/images/personajes/versus/mago-envejecido-kairos-v1.png", anciana: "assets/images/personajes/versus/mago-anciano-kairos-v1.png" }),
+  guardiana: Object.freeze({ intermedia: "assets/images/personajes/versus/guardiana-envejecida-kairos-v1.png", anciana: "assets/images/personajes/versus/guardiana-anciana-kairos-v1.png" }),
+  dragon: Object.freeze({ intermedia: "assets/images/personajes/versus/dragon-adulto-kairos-v1.png", anciana: "assets/images/personajes/versus/dragon-anciano-kairos-v1.png" }),
+  hombre_lobo: Object.freeze({ intermedia: "assets/images/personajes/versus/hombre-lobo-envejecido-kairos-v1.png", anciana: "assets/images/personajes/versus/hombre-lobo-anciano-kairos-v1.png" }),
+  t_shadow: Object.freeze({ intermedia: "assets/images/personajes/versus/t-shadow-envejecido-kairos-v1.png", anciana: "assets/images/personajes/versus/t-shadow-anciano-kairos-v1.png" }),
+  guardian_alba: Object.freeze({ intermedia: "assets/images/personajes/versus/guardian-alba-envejecido-kairos-v1.png", anciana: "assets/images/personajes/versus/guardian-alba-anciano-kairos-v1.png" }),
+  dragon_hielo: Object.freeze({ intermedia: "assets/images/personajes/versus/dragon-hielo-envejecido-kairos-v1.png", anciana: "assets/images/personajes/versus/dragon-hielo-anciano-kairos-v1.png" }),
+  azrak: Object.freeze({ intermedia: "assets/images/personajes/versus/azrak-envejecido-kairos-v1.png", anciana: "assets/images/personajes/versus/azrak-anciano-kairos-v1.png" }),
+  kalamo: Object.freeze({ intermedia: "assets/images/personajes/versus/kalamo-envejecido-kairos-v1.png", anciana: "assets/images/personajes/versus/kalamo-anciano-kairos-v1.png" }),
+});
+const imagenesFinalKairosVersus = Object.freeze({
+  explorador: "assets/images/personajes/versus/kairos-final-explorador-concepto-v1.png",
+  mago: "assets/images/personajes/versus/kairos-final-mago-v1.png",
+  guardiana: "assets/images/personajes/versus/kairos-final-guardiana-v1.png",
+  dragon: "assets/images/personajes/versus/kairos-final-dragon-v1.png",
+  hombre_lobo: "assets/images/personajes/versus/kairos-final-hombre-lobo-v1.png",
+  t_shadow: "assets/images/personajes/versus/kairos-final-t-shadow-v1.png",
+  guardian_alba: "assets/images/personajes/versus/kairos-final-guardian-alba-v1.png",
+  dragon_hielo: "assets/images/personajes/versus/kairos-final-dragon-hielo-v1.png",
+  azrak: "assets/images/personajes/versus/kairos-final-azrak-v1.png",
+  kalamo: "assets/images/personajes/versus/kairos-final-kalamo-v1.png",
+});
 const personajesVersus = {
   explorador: {
     nombre: "Explorador",
@@ -4150,6 +4188,9 @@ const personajesVersus = {
     final: "siglos-en-un-segundo",
   },
 };
+const clasesVictimasKairosVersus = Object.freeze(
+  Object.keys(personajesVersus).map((personaje) => `kairos-victima-${personaje}`),
+);
 const habilidadesVersus = Object.freeze({
   explorador: { nombre: "Lupa", icono: "🔍", efecto: "hint", duracion: 0 },
   guardiana: { nombre: "Enredo de raíces", icono: "🌿", efecto: "roots", duracion: 5000 },
@@ -4166,6 +4207,143 @@ const habilidadesVersus = Object.freeze({
 const letrasParaHabilidadVersus = VersusEngine.CONFIG.letrasParaHabilidad;
 let personajeJugadorVersus = "explorador";
 let personajeRivalVersus = "mago";
+
+const configuracionesDuelosAventura = Object.freeze({
+  hombre_lobo: {
+    escenario: 0,
+    mision: 5,
+    rival: "hombre_lobo",
+    etiqueta: "PRUEBA DEL GUARDIÁN DE LA LUNA",
+    arena: "assets/images/fondos/bosque-6.png",
+    altArena: "Claro lunar del Bosque Encantado",
+  },
+  guardiana: {
+    escenario: 0,
+    mision: 9,
+    rival: "guardiana",
+    etiqueta: "PRUEBA DE LA GUARDIANA",
+    arena: "assets/images/fondos/bosque-10-apagado.png",
+    altArena: "Portal dormido del Bosque Encantado",
+  },
+});
+
+async function presentarDueloAventura(tipo) {
+  const configuracion = configuracionesDuelosAventura[tipo];
+  if (
+    !configuracion
+    || dueloAventuraActivo
+    || escenarioActual !== configuracion.escenario
+    || misionActual !== configuracion.mision
+  ) {
+    return;
+  }
+
+  if (tipo === "guardiana") await presentarDesafioGuardianaBosque();
+  if (
+    escenarioActual !== configuracion.escenario
+    || misionActual !== configuracion.mision
+  ) {
+    return;
+  }
+
+  iniciarDueloAventura(tipo);
+}
+
+function iniciarDueloAventura(tipo) {
+  const configuracion = configuracionesDuelosAventura[tipo];
+  if (!configuracion) return;
+
+  cancelarCinematicaFinalVersus();
+  detenerRondaVersus();
+  modoArcadeActivo = false;
+  adaptadorSalasVersus = adaptadorLocalSalasVersus;
+  partidaOnlineVersus = null;
+  partidaOnlineIniciada = false;
+  personajeJugadorVersus = "explorador";
+  personajeRivalVersus = configuracion.rival;
+
+  const tematicasDisponibles = Object.keys(bancosPalabrasVersus);
+  const tematicaRival = tematicasDisponibles[
+    Math.floor(Math.random() * tematicasDisponibles.length)
+  ];
+  tematicaVersus.value = tematicaRival;
+  palabrasSecretasVersus = mezclarPalabrasVersus(
+    bancosPalabrasVersus[tematicaRival],
+  ).slice(0, maximoPalabrasVersus);
+  dueloAventuraActivo = {
+    ...configuracion,
+    tipo,
+    resultado: "",
+  };
+
+  prepararDueloVersus({ comenzarRonda: false });
+  fondoVersus.src = configuracion.arena;
+  fondoVersus.alt = configuracion.altArena;
+  document.querySelector(".versus-jugador-uno .versus-etiqueta").textContent = "EXPLORADOR";
+  document.querySelector(".versus-jugador-dos .versus-etiqueta").textContent =
+    personajesVersus[configuracion.rival].nombre.toUpperCase();
+  mensajeRondaVersus.textContent = configuracion.etiqueta;
+  pantallaVersus.classList.add("duelo-aventura");
+  btnSalirVersus.textContent = "← Abandonar prueba";
+  btnSalirVersusVertical.textContent = "Abandonar prueba";
+  mostrarPantalla(pantallaVersus);
+  requestAnimationFrame(iniciarEntradaDueloVersus);
+}
+
+function limpiarInterfazDueloAventura() {
+  pantallaVersus.classList.remove("duelo-aventura");
+  btnSalirVersus.textContent = "← Volver";
+  btnSalirVersusVertical.textContent = "Volver al menú";
+  resultadoRondaVersus.classList.add("oculto");
+  btnRevanchaVersus.classList.add("oculto");
+  mensajeRondaVersus.textContent = "Cada error gasta un intento";
+}
+
+function abandonarDueloAventura() {
+  cancelarCinematicaFinalVersus();
+  detenerRondaVersus();
+  dueloAventuraActivo = null;
+  limpiarInterfazDueloAventura();
+  mostrarPantalla(pantallaMenu);
+}
+
+function reintentarDueloAventura() {
+  const tipo = dueloAventuraActivo?.tipo;
+  if (!tipo) return;
+  dueloAventuraActivo = null;
+  limpiarInterfazDueloAventura();
+  iniciarDueloAventura(tipo);
+}
+
+async function completarDueloAventura() {
+  const duelo = dueloAventuraActivo;
+  if (!duelo || duelo.resultado !== "jugador") return;
+
+  dueloAventuraActivo = null;
+  limpiarInterfazDueloAventura();
+  mostrarPantalla(pantallaJuego);
+  monedas += 30;
+  experiencia += 60;
+  actualizarJugador();
+
+  if (duelo.tipo === "hombre_lobo") {
+    hombreLoboDescubierto = true;
+    await ejecutarEncuentroHombreLoboMision("victoria");
+    desafiosCompletados = desafiosPorMision - 1;
+    sonidoNarrativoPendiente = avanzarMision();
+    btnSiguiente.textContent = "➡️ Siguiente misión";
+    guardarProgreso();
+    const mensajeCompleto = await mostrarMensajeDesafioSuperado();
+    if (mensajeCompleto) continuarAventura();
+    return;
+  }
+
+  await presentarDesbloqueoGuardianaBosque();
+  desafiosCompletados = desafiosPorMision - 1;
+  portalAbierto = true;
+  guardarProgreso();
+  await completarAperturaPortal();
+}
 
 const victimasFaucesVersus = {
   explorador: {
@@ -5953,6 +6131,12 @@ function mostrarAnuncioFinVersus(palabraPerdida = "") {
 }
 
 async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = "") {
+  if (dueloAventuraActivo) {
+    await mostrarAnuncioFinVersus(palabraPerdida);
+    mostrarResultadoPartidaVersus(ganador, detalle);
+    return;
+  }
+
   if (ganador === "empate") {
     mostrarResultadoPartidaVersus(ganador, detalle);
     return;
@@ -5977,6 +6161,29 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
 function mostrarResultadoPartidaVersus(ganador, detalle) {
 
   reproducirSonidoVersus(ganador === "jugador" ? "victoria" : "derrota", 0.72);
+
+  if (dueloAventuraActivo) {
+    const rival = personajesVersus[dueloAventuraActivo.rival];
+    dueloAventuraActivo.resultado = ganador;
+    iconoResultadoVersus.textContent = ganador === "jugador" ? "🏆" : "🌲";
+    etiquetaResultadoVersus.textContent = dueloAventuraActivo.etiqueta;
+    tituloResultadoVersus.textContent = ganador === "jugador"
+      ? `¡Superaste a ${rival.nombre}!`
+      : ganador === "empate"
+        ? "La prueba terminó empatada"
+        : `${rival.nombre} ganó la prueba`;
+    detalleResultadoVersus.textContent = ganador === "jugador"
+      ? "Demostraste tu valor. La historia continuará desde este encuentro."
+      : `${detalle} Podés volver a intentarlo sin repetir los desafíos anteriores.`;
+    btnRevanchaVersus.classList.remove("oculto");
+    btnRevanchaVersus.disabled = false;
+    btnRevanchaVersus.textContent = ganador === "jugador"
+      ? "Continuar aventura"
+      : "Reintentar prueba";
+    btnMenuResultadoVersus.textContent = "Volver al menú";
+    resultadoRondaVersus.classList.remove("oculto");
+    return;
+  }
 
   if (modoArcadeActivo) {
     const total = rivalesTorreArcade.length;
@@ -6366,20 +6573,21 @@ function configurarVictimaKairosVersus(personaje = personajeRivalVersus) {
   const victimaFinal = personaje in personajesVersus ? personaje : "explorador";
   const nombre = personajesVersus[victimaFinal].nombre;
   const imagenBase = personajesVersus[victimaFinal].base;
+  const imagenesEdad = imagenesEdadKairosVersus[victimaFinal] || { intermedia: imagenBase, anciana: imagenBase };
   victimaKairosVersus.src = imagenBase;
   victimaKairosVersus.alt = `${nombre}, antes de que Kairós adelante su tiempo`;
-  victimaKairosEnvejecidaVersus.src = victimaFinal === "explorador"
-    ? srcExploradorEnvejecidoKairosVersus
-    : imagenBase;
+  victimaKairosEnvejecidaVersus.src = imagenesEdad.intermedia;
   victimaKairosEnvejecidaVersus.alt = `${nombre}, envejeciendo por el poder de Kairós`;
-  victimaKairosAncianaVersus.src = victimaFinal === "explorador"
-    ? srcExploradorAncianoKairosVersus
-    : imagenBase;
-  victimaKairosAncianaVersus.alt = `${nombre}, consumido por los años`;
+  victimaKairosAncianaVersus.src = imagenesEdad.anciana;
+  victimaKairosAncianaVersus.alt = `${nombre}, anciano, agotado y debilitado por los años`;
+  kairosFinalMontajeVersus.src = imagenesFinalKairosVersus[victimaFinal]
+    || imagenesFinalKairosVersus.explorador;
+  kairosFinalMontajeVersus.alt = `Las tres edades de ${nombre}: original, envejecido y anciano`;
   kairosFinalConceptoVersus.alt = victimaFinal === "explorador"
     ? "Kairós adelanta el tiempo del Explorador hasta volverlo anciano"
     : "";
-  cinematicaFinalVersus.classList.toggle("kairos-victima-explorador", victimaFinal === "explorador");
+  cinematicaFinalVersus.classList.remove(...clasesVictimasKairosVersus);
+  cinematicaFinalVersus.classList.add(`kairos-victima-${victimaFinal}`);
 }
 
 function reproducirSiglosEnUnSegundoVersus(victima = personajeRivalVersus) {
@@ -6427,7 +6635,7 @@ function completarCinematicaFinalVersus() {
     "kalamo-final-remate-pantalla",
     "kalamo-victima-explorador",
     "siglos-en-un-segundo",
-    "kairos-victima-explorador",
+    ...clasesVictimasKairosVersus,
   );
   particulasEclipseVersus.replaceChildren();
   const resolver = demoVersus.resolverCinematica;
@@ -6462,7 +6670,7 @@ function cancelarCinematicaFinalVersus() {
     "kalamo-final-remate-pantalla",
     "kalamo-victima-explorador",
     "siglos-en-un-segundo",
-    "kairos-victima-explorador",
+    ...clasesVictimasKairosVersus,
   );
   particulasEclipseVersus.replaceChildren();
   demoVersus.resolverCinematica = null;
@@ -6612,6 +6820,15 @@ botonesProbarHabilidadVersus.forEach((boton) => {
 
 btnSaltarEntradaVersus.addEventListener("click", finalizarEntradaDueloVersus);
 btnRevanchaVersus.addEventListener("click", async () => {
+  if (dueloAventuraActivo) {
+    if (dueloAventuraActivo.resultado === "jugador") {
+      btnRevanchaVersus.disabled = true;
+      await completarDueloAventura();
+    } else {
+      reintentarDueloAventura();
+    }
+    return;
+  }
   if (modoArcadeActivo) {
     if (ultimoResultadoArcade === "jugador") abrirTorreArcade();
     else iniciarCombateArcade();
@@ -7078,6 +7295,8 @@ function reiniciarEstadoAventura() {
   experiencia = 0;
   cristalesObtenidos = 0;
   mundoDosCompletado = false;
+  hombreLoboDescubierto = false;
+  dueloAventuraActivo = null;
   maximoEscenarioDesbloqueado = 0;
   portalAbierto = false;
   muralSantuarioCompletado = false;
@@ -8301,7 +8520,9 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   actualizarCabeceraMision();
 
   const pruebaEspecial = obtenerPruebaEspecialBosquePendiente();
-  const palabraSeleccionada = pruebaEspecial ? null : obtenerPalabraAleatoria();
+  const dueloAventura = obtenerDueloAventuraPendiente();
+  const sinPalabraNormal = Boolean(pruebaEspecial || dueloAventura);
+  const palabraSeleccionada = sinPalabraNormal ? null : obtenerPalabraAleatoria();
 
   palabraSecreta = palabraSeleccionada?.palabra || "";
 
@@ -8332,12 +8553,12 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   teclado.innerHTML = "";
   textoPista.classList.add("oculto");
   textoPista.textContent = "";
-  btnPista.disabled = Boolean(pruebaEspecial);
+  btnPista.disabled = sinPalabraNormal;
   btnSiguiente.classList.add("oculto");
 
-  palabraOculta.classList.toggle("oculto", Boolean(pruebaEspecial));
-  btnPista.classList.toggle("oculto", Boolean(pruebaEspecial));
-  teclado.classList.toggle("oculto", Boolean(pruebaEspecial));
+  palabraOculta.classList.toggle("oculto", sinPalabraNormal);
+  btnPista.classList.toggle("oculto", sinPalabraNormal);
+  teclado.classList.toggle("oculto", sinPalabraNormal);
 
   if (!pruebaEspecial) {
     mostrarPalabra();
@@ -8362,6 +8583,15 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
         ? "El desierto preparó una prueba especial para revelar el camino."
         : "El bosque preparó una prueba especial para abrir el camino.";
     abrirPruebaEspecialBosque(pruebaEspecial);
+    return Promise.resolve();
+  }
+
+  if (dueloAventura) {
+    mensajePersonaje.textContent = dueloAventura === "guardiana"
+      ? "La Guardiana del Bosque espera frente al portal apagado."
+      : "El Guardián de la Luna te desafía a demostrar tu valor.";
+    if (presentarMision) await presentarInicioMision();
+    requestAnimationFrame(() => void presentarDueloAventura(dueloAventura));
     return Promise.resolve();
   }
 
@@ -8478,6 +8708,7 @@ function guardarProgreso() {
     muralSantuarioCompletado,
     portalAbierto,
     mundoDosCompletado,
+    hombreLoboDescubierto,
     maximoEscenarioDesbloqueado,
   };
 
@@ -8529,6 +8760,9 @@ function cargarProgreso() {
   portalAbierto = progreso.portalAbierto === true;
   mundoDosCompletado =
     progreso.mundoDosCompletado === true || cristalesObtenidos > 1;
+  hombreLoboDescubierto = progreso.hombreLoboDescubierto === true
+    || escenarioActual > 0
+    || (escenarioActual === 0 && misionActual > 5);
   maximoEscenarioDesbloqueado = Math.min(
     Math.max(
       progreso.maximoEscenarioDesbloqueado ?? escenarioActual,
@@ -9242,10 +9476,10 @@ async function presentarDesbloqueoGuardianaBosque() {
   mensaje.className = "mensaje-encuentro-guardiana";
   titulo.textContent = yaEstabaDesbloqueada
     ? "La Guardiana del Bosque"
-    : "¡Nueva heroína desbloqueada!";
+    : "¡Guardiana desbloqueada!";
   texto.textContent = yaEstabaDesbloqueada
-    ? "El bosque vuelve a confiarte el paso hacia los otros mundos."
-    : "La Guardiana reconoce tu valor y se une a tus campeones del modo versus.";
+    ? "Volviste a demostrar que sos digno de atravesar el portal."
+    : "Superaste su prueba. La Guardiana autoriza tu paso y se une a tus campeones del modo versus.";
   mensaje.append(titulo, texto);
   capa.append(aura, guardiana, mensaje);
   contenedorEscenario.appendChild(capa);
@@ -9264,17 +9498,40 @@ async function presentarDesbloqueoGuardianaBosque() {
   }
 }
 
-async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
-  if (
-    secuencia !== secuenciaAperturaPortal ||
-    !capaPortal?.isConnected ||
-    escenarioActual !== 0 ||
-    misionActual !== 9
-  ) {
-    return;
-  }
+async function presentarDesafioGuardianaBosque() {
+  if (escenarioActual !== 0 || misionActual !== 9 || portalAbierto) return;
 
-  await presentarDesbloqueoGuardianaBosque();
+  const capa = document.createElement("div");
+  const aura = document.createElement("span");
+  const guardiana = document.createElement("img");
+  const mensaje = document.createElement("div");
+  const titulo = document.createElement("strong");
+  const texto = document.createElement("p");
+
+  capa.className = "encuentro-guardiana-bosque desafio-guardiana";
+  capa.setAttribute("aria-live", "polite");
+  aura.className = "aura-encuentro-guardiana";
+  guardiana.className = "figura-encuentro-guardiana";
+  guardiana.src = srcGuardianaBaseVersus;
+  guardiana.alt = "Guardiana del Bosque frente al portal apagado";
+  mensaje.className = "mensaje-encuentro-guardiana";
+  titulo.textContent = "La última prueba del bosque";
+  texto.textContent = "El cristal respondió a tu valor, pero sólo abriré el portal si podés vencerme en un duelo de palabras.";
+  mensaje.append(titulo, texto);
+  capa.append(aura, guardiana, mensaje);
+  contenedorEscenario.appendChild(capa);
+
+  try {
+    requestAnimationFrame(() => capa.classList.add("visible"));
+    await esperarMovimiento(prefiereReducirMovimiento.matches ? 450 : 2600);
+    capa.classList.add("saliendo");
+    await esperarMovimiento(prefiereReducirMovimiento.matches ? 120 : 650);
+  } finally {
+    capa.remove();
+  }
+}
+
+async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
   if (
     secuencia !== secuenciaAperturaPortal ||
     !capaPortal?.isConnected ||
@@ -9534,8 +9791,17 @@ function obtenerTipoPruebaEspecial(escenario, mision) {
 }
 
 function obtenerPruebaEspecialBosquePendiente() {
+  if (escenarioActual === 0 && misionActual === 5) {
+    return desafiosCompletados === 0 ? "lobos" : "";
+  }
   if (desafiosCompletados !== 2) return "";
   return obtenerTipoPruebaEspecial(escenarioActual, misionActual);
+}
+
+function obtenerDueloAventuraPendiente() {
+  if (escenarioActual !== 0 || portalAbierto) return "";
+  if (misionActual === 9) return "guardiana";
+  return "";
 }
 
 function abrirPruebaEspecialBosque(tipo) {
@@ -10235,7 +10501,7 @@ function actualizarProgresoMemoriaLobos() {
   });
 }
 
-async function ejecutarEncuentroHombreLoboMision() {
+async function ejecutarEncuentroHombreLoboMision(fase = "desafio") {
   if (escenarioActual !== 0 || misionActual !== 5) return;
 
   const capa = document.createElement("div");
@@ -10249,16 +10515,32 @@ async function ejecutarEncuentroHombreLoboMision() {
   capa.setAttribute("aria-live", "polite");
   luna.className = "luna-encuentro-lobo";
   figura.className = "figura-encuentro-lobo";
-  figura.src = srcHombreLoboHumanoVersus;
-  figura.alt = "El viajero misterioso frente al explorador";
+  figura.src = fase === "victoria"
+    ? srcHombreLoboAullidoVersus
+    : srcHombreLoboHumanoVersus;
+  figura.alt = fase === "victoria"
+    ? "El Guardián de la Luna aullando ante la manada"
+    : "El viajero misterioso frente al explorador";
   relato.className = "relato-encuentro-lobo";
-  relato.textContent = "El desconocido reconoce el valor del explorador…";
+  relato.textContent = fase === "victoria"
+    ? "El Guardián de la Luna acepta la derrota y alza la mirada hacia la luna."
+    : "El desconocido reconoce que aprendiste el lenguaje de la manada…";
   capa.append(luna, figura, relato);
   contenedorEscenario.appendChild(capa);
 
   try {
     requestAnimationFrame(() => capa.classList.add("visible"));
     await esperarPruebaBosque(esperaCorta);
+
+    if (fase === "victoria") {
+      capa.classList.add("transformado", "aullando-victoria");
+      relato.textContent = "Su aullido ordena a los lobos retirarse. El sendero queda abierto.";
+      reproducirSonido("lobos");
+      await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 420 : 1900);
+      capa.classList.add("saliendo");
+      await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 120 : 520);
+      return;
+    }
 
     figura.src = srcHombreLoboTransformacionVersus;
     figura.alt = "El viajero transformándose bajo la luz de la luna";
@@ -10270,7 +10552,7 @@ async function ejecutarEncuentroHombreLoboMision() {
     figura.src = srcHombreLoboBaseVersus;
     figura.alt = "El Guardián de la Luna convertido en hombre lobo";
     capa.classList.add("transformado");
-    relato.textContent = "Con un poderoso aullido, el Guardián de la Luna ahuyenta a la manada y abre el sendero.";
+    relato.textContent = "Superaste la prueba.";
     await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 420 : 1750);
 
     capa.classList.add("saliendo");
@@ -10307,7 +10589,9 @@ async function completarPruebaEspecialBosque(tipo) {
 
   if (tipo === "lobos") {
     cerrarPruebaEspecialBosque();
-    await ejecutarEncuentroHombreLoboMision();
+    await ejecutarEncuentroHombreLoboMision("desafio");
+    void iniciarDueloAventura("hombre_lobo");
+    return;
   }
 
   monedas += 10;

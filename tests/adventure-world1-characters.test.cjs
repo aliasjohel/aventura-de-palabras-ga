@@ -8,11 +8,17 @@ const estilos = fs.readFileSync(path.join(raiz, "css", "styles.css"), "utf8");
 const html = fs.readFileSync(path.join(raiz, "index.html"), "utf8");
 
 assert.match(app, /titulo: "El Guardián de la Luna"/);
-assert.match(app, /async function ejecutarEncuentroHombreLoboMision\(\)/);
-assert.match(app, /figura\.src = srcHombreLoboHumanoVersus/);
+assert.match(app, /async function ejecutarEncuentroHombreLoboMision\(fase = "desafio"\)/);
+assert.match(app, /figura\.src = fase === "victoria"[\s\S]+srcHombreLoboAullidoVersus[\s\S]+srcHombreLoboHumanoVersus/);
+assert.match(app, /relato\.textContent = "Superaste la prueba\."/);
+assert.doesNotMatch(app, /Superaste las miradas/);
 assert.match(app, /figura\.src = srcHombreLoboTransformacionVersus/);
 assert.match(app, /figura\.src = srcHombreLoboBaseVersus/);
 assert.match(app, /if \(tipo === "lobos"\)[\s\S]+ejecutarEncuentroHombreLoboMision/);
+assert.match(app, /obtenerPruebaEspecialBosquePendiente\(\)[\s\S]+misionActual === 5[\s\S]+desafiosCompletados === 0/);
+assert.match(app, /iniciarDueloAventura\("hombre_lobo"\)/);
+assert.match(app, /hombreLoboDescubierto = true/);
+assert.match(app, /hombreLoboDescubierto,/);
 assert.match(estilos, /\.encuentro-hombre-lobo-mision/);
 
 assert.match(app, /const clavePersonajesDesbloqueados = "personajesDesbloqueadosAventuraGA"/);
@@ -22,7 +28,22 @@ assert.match(app, /async function presentarDesbloqueoGuardianaBosque\(\)/);
 assert.match(app, /guardarDesbloqueoGuardiana\(\)/);
 assert.match(app, /if \(escenarioActual >= 1 \|\| maximoEscenarioDesbloqueado >= 1\)[\s\S]+guardarDesbloqueoGuardiana/);
 assert.match(app, /await presentarDesbloqueoGuardianaBosque\(\)/);
+assert.match(
+  app,
+  /await presentarDesbloqueoGuardianaBosque\(\);\s*desafiosCompletados = desafiosPorMision - 1;\s*portalAbierto = true;/,
+  "la victoria ante la Guardiana debe completar la misión antes de abrir el portal",
+);
+assert.match(app, /function obtenerDueloAventuraPendiente\(\)[\s\S]+misionActual === 9[\s\S]+return "guardiana"/);
+assert.match(app, /async function presentarDesafioGuardianaBosque\(\)/);
+assert.match(app, /guardiana:[\s\S]+bosque-10-apagado\.png/);
+assert.match(app, /if \(dueloAventuraActivo\)[\s\S]+await mostrarAnuncioFinVersus\(palabraPerdida\)[\s\S]+mostrarResultadoPartidaVersus/);
+assert.match(app, /portalAbierto = true;[\s\S]+guardarProgreso\(\);[\s\S]+await completarAperturaPortal\(\)/);
+assert.doesNotMatch(
+  app.slice(app.indexOf("async function ejecutarCinematicaFinalPortal"), app.indexOf("function limpiarEstadoExploradorPortal")),
+  /presentarDesbloqueoGuardianaBosque/,
+);
 assert.match(estilos, /\.encuentro-guardiana-bosque/);
+assert.match(estilos, /pantalla-versus\.duelo-aventura[\s\S]+herramientas-pruebas-versus/);
 assert.match(estilos, /\.tarjeta-personaje-versus\.bloqueada/);
 assert.match(html, /id="btnProbarEscenaPersonaje"/);
 assert.match(app, /btnProbarEscenaPersonaje\.addEventListener/);
