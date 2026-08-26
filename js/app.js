@@ -9926,6 +9926,9 @@ const escenasCinematicaFinalDesierto = Object.freeze([
   },
 ]);
 
+const duracionPlanoCinematicaFinalDesierto = 6000;
+const duracionDesbloqueoMagoDesierto = 4300;
+
 async function reproducirCinematicaFinalDesierto() {
   if (escenarioActual !== 1 || misionActual !== 9) return;
 
@@ -9977,7 +9980,7 @@ async function reproducirCinematicaFinalDesierto() {
       await esperarCargaImagen(imagen);
       requestAnimationFrame(() => capa.classList.add("plano-visible"));
       await Promise.race([
-        esperarMovimiento(prefiereReducirMovimiento.matches ? 500 : 4000),
+        esperarMovimiento(duracionPlanoCinematicaFinalDesierto),
         saltoSolicitado,
       ]);
       if (omitida) break;
@@ -10012,7 +10015,7 @@ async function presentarDesbloqueoMagoDesierto() {
 
   try {
     requestAnimationFrame(() => capa.classList.add("visible"));
-    await esperarMovimiento(prefiereReducirMovimiento.matches ? 500 : 2300);
+    await esperarMovimiento(duracionDesbloqueoMagoDesierto);
     capa.classList.add("saliendo");
     await esperarMovimiento(prefiereReducirMovimiento.matches ? 120 : 650);
   } finally {

@@ -64,7 +64,7 @@ assert.match(app, /function obtenerDueloAventuraPendiente\(\)[\s\S]*return "mago
 assert.match(app, /async function presentarDesafioMagoDesierto\(\)/);
 assert.match(app, /async function reproducirCinematicaFinalDesierto\(\)/);
 assert.match(app, /reproducirCinematicaFinalDesierto\(\)[\s\S]+reproducirMusicaCinematica\([\s\S]+musicaSegundoCristal/);
-assert.match(app, /esperarMovimiento\(prefiereReducirMovimiento\.matches \? 500 : 4000\)/);
+assert.match(app, /esperarMovimiento\(duracionPlanoCinematicaFinalDesierto\)/);
 assert.match(app, /reproducirCinematicaFinalDesierto\(\)[\s\S]+finally \{[\s\S]+detenerMusicaCinematica\(musicaSegundoCristal, 0\.52\)/);
 assert.match(app, /async function presentarDesbloqueoMagoDesierto\(\)/);
 assert.match(app, /if \(personaje === "mago"\) return magoDesbloqueado/);
@@ -124,7 +124,7 @@ assert.match(estilos, /\.escenario\.escenario-desierto\[data-mision-desierto/);
 assert.match(estilos, /\.trampa-espejismo-maguito/);
 assert.match(estilos, /\.aro-prision-espejismo/);
 assert.match(estilos, /@keyframes romperAroPrision/);
-assert.match(estilos, /data-mision-desierto="7"[^}]+data-mision-desierto="8"[^}]+bottom: -9%/);
+assert.doesNotMatch(estilos, /data-mision-desierto="(?:1|2|7|8|9)"[^{}]*\.personaje-imagen\s*\{\s*bottom:/);
 assert.match(estilos, /@keyframes romperPrisionEspejismo/);
 assert.match(estilos, /@keyframes descenderMaguitoLiberado/);
 assert.match(estilos, /@keyframes respirarCalorDesierto/);
@@ -177,6 +177,10 @@ for (const nombre of [
 
 assert.match(estilos, /\.cinematica-final-desierto/);
 assert.match(estilos, /\.encuentro-mago-desierto/);
+assert.match(app, /const duracionPlanoCinematicaFinalDesierto = 6000/);
+assert.match(app, /const duracionDesbloqueoMagoDesierto = 4300/);
+assert.match(app, /esperarMovimiento\(duracionPlanoCinematicaFinalDesierto\)/);
+assert.match(app, /esperarMovimiento\(duracionDesbloqueoMagoDesierto\)/);
 assert.match(
   estilos,
   /@media \(max-width: 620px\)[\s\S]+?\.imagen-cinematica-final-desierto\s*\{[\s\S]+?object-fit:\s*contain;/,

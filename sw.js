@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v160`;
+const CACHE_NAME = `${CACHE_PREFIX}v163`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -68,6 +68,9 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v157`,
   `${CACHE_PREFIX}v158`,
   `${CACHE_PREFIX}v159`,
+  `${CACHE_PREFIX}v160`,
+  `${CACHE_PREFIX}v161`,
+  `${CACHE_PREFIX}v162`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -307,8 +310,8 @@ const CORE_ASSETS = [
 const ASSET_REVISIONS = {
   "./": "20260820-personajes-mundo1-25",
   "./index.html": "20260826-fauna-desierto-1",
-  "./css/styles.css": "20260826-desierto-trampa-fauna-2",
-  "./js/app.js": "20260826-desierto-trampa-fauna-2",
+  "./css/styles.css": "20260826-posicion-explorador-desierto-2",
+  "./js/app.js": "20260826-cinematica-desierto-legible-1",
   "./assets/images/ambiente/desierto/alacran-camina-1.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/alacran-camina-2.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/halcon-alas-arriba.png": "20260826-fauna-desierto-1",

@@ -12324,11 +12324,6 @@ button:disabled {
     bottom: -2%;
 }
 
-.escenario.escenario-desierto[data-mision-desierto="7"] .personaje-imagen,
-.escenario.escenario-desierto[data-mision-desierto="8"] .personaje-imagen {
-    bottom: -9%;
-}
-
 .maguito-desierto {
     right: 4%;
     bottom: -5%;
@@ -15401,8 +15396,6 @@ button:disabled {
     .escenario.escenario-desierto .personaje-imagen { bottom: -10%; }
     .escenario.escenario-desierto[data-mision-desierto="3"] .personaje-imagen,
     .escenario.escenario-desierto[data-mision-desierto="4"] .personaje-imagen { bottom: -2%; }
-    .escenario.escenario-desierto[data-mision-desierto="7"] .personaje-imagen,
-    .escenario.escenario-desierto[data-mision-desierto="8"] .personaje-imagen { bottom: -14%; }
     .escenario.escenario-desierto[data-mision-desierto="7"] .personaje-imagen { left: 0; }
     .escenario.escenario-desierto[data-mision-desierto="8"] .personaje-imagen { left: 8%; }
     .escenario.escenario-desierto[data-mision-desierto="7"] .maguito-corriendo {
