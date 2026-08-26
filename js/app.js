@@ -7850,6 +7850,7 @@ function detenerSonidos() {
   detenerPresenciaBosque();
   detenerAranaBosque();
   detenerVientoArena();
+  detenerVidaDesierto();
   detenerLlegadaDesiertoMision();
   detenerPersonajesNarrativosDesierto();
   detenerSonidosVersus();
@@ -7975,6 +7976,12 @@ function activarBloqueoTronco() {
 function detenerVientoArena() {
   contenedorEscenario
     .querySelectorAll(".capa-viento-arena")
+    .forEach((capa) => capa.remove());
+}
+
+function detenerVidaDesierto() {
+  contenedorEscenario
+    .querySelectorAll(".capa-vida-desierto")
     .forEach((capa) => capa.remove());
 }
 
@@ -8194,6 +8201,54 @@ function actualizarVientoArenaMision() {
   }
 
   contenedorEscenario.appendChild(capa);
+}
+
+const misionesAvesDesierto = new Set([0, 2, 4, 5, 7]);
+const misionesEscorpionDesierto = new Set([0, 2, 5, 6]);
+const misionesCalorDesierto = new Set([0, 2, 3, 4, 5, 6, 7]);
+
+function actualizarVidaDesiertoMision() {
+  detenerVidaDesierto();
+
+  if (escenarioActual !== 1 || prefiereReducirMovimiento.matches) return;
+
+  const capa = document.createElement("div");
+  capa.className = "capa-vida-desierto";
+  capa.setAttribute("aria-hidden", "true");
+
+  if (misionesCalorDesierto.has(misionActual)) {
+    const calor = document.createElement("span");
+    calor.className = "espejismo-calor-desierto";
+    capa.appendChild(calor);
+  }
+
+  if (misionesAvesDesierto.has(misionActual)) {
+    const cantidadAves = window.matchMedia("(max-width: 600px)").matches ? 1 : 2;
+    for (let indice = 0; indice < cantidadAves; indice += 1) {
+      const ave = document.createElement("span");
+      const silueta = document.createElement("i");
+      ave.className = "ave-desierto-ambiente";
+      silueta.className = "silueta-ave-desierto";
+      ave.style.setProperty("--altura-ave", `${10 + indice * 9 + Math.random() * 8}%`);
+      ave.style.setProperty("--duracion-ave", `${20 + Math.random() * 8}s`);
+      ave.style.setProperty("--retraso-ave", `${-Math.random() * 24}s`);
+      ave.style.setProperty("--escala-ave", `${0.68 + Math.random() * 0.38}`);
+      ave.appendChild(silueta);
+      capa.appendChild(ave);
+    }
+  }
+
+  if (misionesEscorpionDesierto.has(misionActual)) {
+    const escorpion = document.createElement("span");
+    escorpion.className = "escorpion-desierto-ambiente";
+    escorpion.textContent = "🦂";
+    escorpion.style.setProperty("--retraso-escorpion", `${-Math.random() * 25}s`);
+    capa.appendChild(escorpion);
+  }
+
+  if (capa.childElementCount > 0) {
+    contenedorEscenario.insertBefore(capa, personajeImagen);
+  }
 }
 
 function detenerAmbientePuente() {
@@ -9014,6 +9069,7 @@ function actualizarEscenaPorMision() {
     escenarioActual === 1 ? "Desierto Perdido" : "Bosque Encantado";
   actualizarBloqueoTroncoMision();
   actualizarVientoArenaMision();
+  actualizarVidaDesiertoMision();
   actualizarLlegadaDesiertoMision();
   actualizarPersonajesNarrativosDesierto();
   volverEstadoBaseExplorador();

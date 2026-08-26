@@ -82,6 +82,12 @@ assert.match(app, /tipo: "bloqueado"/);
 assert.match(app, /function activarEmergenciaDevoradunas\(/);
 assert.match(app, /activarEmergenciaDevoradunas\(\);/);
 assert.match(app, /new Set\(\[3, 6, 8, 9\]\)/);
+assert.match(app, /const misionesAvesDesierto = new Set\(\[0, 2, 4, 5, 7\]\)/);
+assert.match(app, /const misionesEscorpionDesierto = new Set\(\[0, 2, 5, 6\]\)/);
+assert.match(app, /const misionesCalorDesierto = new Set\(\[0, 2, 3, 4, 5, 6, 7\]\)/);
+assert.match(app, /function actualizarVidaDesiertoMision\(\)/);
+assert.match(app, /escorpion\.textContent = "🦂"/);
+assert.match(app, /actualizarVientoArenaMision\(\);\s*actualizarVidaDesiertoMision\(\)/);
 assert.match(app, /function prepararRondaOasisDesierto\(/);
 assert.match(app, /function crearPistaEnigmaOasis\(/);
 assert.match(app, /La ilusión cambia de lugar y aparece una inscripción nueva/);
@@ -95,6 +101,10 @@ assert.match(estilos, /\.oasis-opcion/);
 assert.match(estilos, /\.espejo-solar/);
 assert.match(estilos, /@keyframes perseguirDevoradunas/);
 assert.match(estilos, /@keyframes aparecerDevoradunasFijo/);
+assert.match(estilos, /\.capa-vida-desierto/);
+assert.match(estilos, /@keyframes cruzarAveDesierto/);
+assert.match(estilos, /@keyframes cruzarEscorpionDesierto/);
+assert.match(estilos, /@keyframes respirarCalorDesierto/);
 assert.doesNotMatch(
   estilos,
   /\.devoradunas-(?:emerge|persigue|irrumpe)[^{]*\{[^}]*animation:[^;}]*infinite/,
