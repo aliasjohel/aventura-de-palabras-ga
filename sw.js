@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v154`;
+const CACHE_NAME = `${CACHE_PREFIX}v155`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -62,6 +62,7 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v151`,
   `${CACHE_PREFIX}v152`,
   `${CACHE_PREFIX}v153`,
+  `${CACHE_PREFIX}v154`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";

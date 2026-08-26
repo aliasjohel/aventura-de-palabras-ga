@@ -9611,7 +9611,7 @@ async function presentarDesbloqueoGuardianaBosque() {
     guardarDesbloqueoGuardiana();
     actualizarDisponibilidadPersonajesVersus();
     capa.classList.add("revelada");
-    await esperarMovimiento(prefiereReducirMovimiento.matches ? 500 : 2300);
+    await esperarMovimiento(prefiereReducirMovimiento.matches ? 500 : 3300);
     capa.classList.add("saliendo");
     await esperarMovimiento(prefiereReducirMovimiento.matches ? 120 : 650);
   } finally {
@@ -9816,7 +9816,7 @@ async function reproducirCinematicaFinalDesierto() {
       await esperarCargaImagen(imagen);
       requestAnimationFrame(() => capa.classList.add("plano-visible"));
       await Promise.race([
-        esperarMovimiento(prefiereReducirMovimiento.matches ? 500 : 3400),
+        esperarMovimiento(prefiereReducirMovimiento.matches ? 500 : 4000),
         saltoSolicitado,
       ]);
       if (omitida) break;

@@ -25,6 +25,7 @@ assert.match(app, /const clavePersonajesDesbloqueados = "personajesDesbloqueados
 assert.match(app, /function personajeDisponibleVersus\(personaje\)[\s\S]+if \(modoPruebasActivo\) return true/);
 assert.match(app, /if \(personaje === "guardiana"\) return guardianaDesbloqueada/);
 assert.match(app, /async function presentarDesbloqueoGuardianaBosque\(\)/);
+assert.match(app, /presentarDesbloqueoGuardianaBosque\(\)[\s\S]+esperarMovimiento\(prefiereReducirMovimiento\.matches \? 500 : 3300\)/);
 assert.match(app, /guardarDesbloqueoGuardiana\(\)/);
 assert.match(app, /if \(escenarioActual >= 1 \|\| maximoEscenarioDesbloqueado >= 1\)[\s\S]+guardarDesbloqueoGuardiana/);
 assert.match(app, /await presentarDesbloqueoGuardianaBosque\(\)/);
