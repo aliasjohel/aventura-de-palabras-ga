@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v153`;
+const CACHE_NAME = `${CACHE_PREFIX}v154`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -61,6 +61,7 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v150`,
   `${CACHE_PREFIX}v151`,
   `${CACHE_PREFIX}v152`,
+  `${CACHE_PREFIX}v153`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -133,6 +134,7 @@ const CORE_ASSETS = [
   "./assets/sounds/finish.mp3",
   "./assets/sounds/mural-dragon1.mp3",
   "./assets/sounds/camina-al-portal.mp3",
+  "./assets/sounds/recibe-2-diamante.mp3",
   "./assets/images/personajes/versus/dragon-base.png",
   "./assets/images/personajes/aventura/devoradunas-emerge-v1.png",
   "./assets/images/personajes/aventura/devoradunas-persigue-v1.png",

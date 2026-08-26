@@ -63,6 +63,9 @@ assert.match(app, /mago_desierto:\s*{[\s\S]*escenario: 1,[\s\S]*mision: 9,[\s\S]
 assert.match(app, /function obtenerDueloAventuraPendiente\(\)[\s\S]*return "mago_desierto"/);
 assert.match(app, /async function presentarDesafioMagoDesierto\(\)/);
 assert.match(app, /async function reproducirCinematicaFinalDesierto\(\)/);
+assert.match(app, /reproducirCinematicaFinalDesierto\(\)[\s\S]+reproducirMusicaCinematica\([\s\S]+musicaSegundoCristal/);
+assert.match(app, /esperarMovimiento\(prefiereReducirMovimiento\.matches \? 500 : 3400\)/);
+assert.match(app, /reproducirCinematicaFinalDesierto\(\)[\s\S]+finally \{[\s\S]+detenerMusicaCinematica\(musicaSegundoCristal, 0\.52\)/);
 assert.match(app, /async function presentarDesbloqueoMagoDesierto\(\)/);
 assert.match(app, /if \(personaje === "mago"\) return magoDesbloqueado/);
 assert.match(app, /guardarDesbloqueoMago\(\)/);

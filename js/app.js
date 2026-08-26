@@ -458,12 +458,16 @@ const sonidoSeleccionPersonaje = new Audio(
 );
 const musicaMuralDragon = new Audio("assets/sounds/mural-dragon1.mp3");
 const musicaCaminaPortal = new Audio("assets/sounds/camina-al-portal.mp3");
+const musicaSegundoCristal = new Audio("assets/sounds/recibe-2-diamante.mp3");
 musicaMuralDragon.loop = false;
 musicaMuralDragon.volume = 0.58;
 musicaMuralDragon.preload = "auto";
 musicaCaminaPortal.loop = false;
 musicaCaminaPortal.volume = 0.62;
 musicaCaminaPortal.preload = "auto";
+musicaSegundoCristal.loop = false;
+musicaSegundoCristal.volume = 0.52;
+musicaSegundoCristal.preload = "auto";
 Object.values(sonidos).forEach((sonido) => {
   sonido.preload = "none";
 });
@@ -7831,6 +7835,7 @@ function desvanecerMusicaPrologo(duracion) {
 function detenerSonidos() {
   detenerMusicaCinematica(musicaMuralDragon, 0.58);
   detenerMusicaCinematica(musicaCaminaPortal, 0.62);
+  detenerMusicaCinematica(musicaSegundoCristal, 0.52);
   detenerCicloCaminata();
   limpiarCinematicaSantuario();
   detenerPolvoImpacto();
@@ -9794,6 +9799,11 @@ async function reproducirCinematicaFinalDesierto() {
   document.body.appendChild(capa);
 
   try {
+    reproducirMusicaCinematica(
+      musicaSegundoCristal,
+      "Música del segundo cristal",
+      0.52,
+    );
     requestAnimationFrame(() => capa.classList.add("visible"));
     for (let indice = 0; indice < escenasCinematicaFinalDesierto.length; indice += 1) {
       const escena = escenasCinematicaFinalDesierto[indice];
@@ -9806,7 +9816,7 @@ async function reproducirCinematicaFinalDesierto() {
       await esperarCargaImagen(imagen);
       requestAnimationFrame(() => capa.classList.add("plano-visible"));
       await Promise.race([
-        esperarMovimiento(prefiereReducirMovimiento.matches ? 500 : 2800),
+        esperarMovimiento(prefiereReducirMovimiento.matches ? 500 : 3400),
         saltoSolicitado,
       ]);
       if (omitida) break;
@@ -9814,6 +9824,7 @@ async function reproducirCinematicaFinalDesierto() {
     capa.classList.add("saliendo");
     await esperarMovimiento(prefiereReducirMovimiento.matches ? 100 : 500);
   } finally {
+    detenerMusicaCinematica(musicaSegundoCristal, 0.52);
     capa.remove();
   }
 }
