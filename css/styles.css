@@ -9332,7 +9332,7 @@ button:disabled {
     position: absolute;
     left: -18%;
     bottom: 1.2%;
-    width: clamp(76px, 9.5vw, 132px);
+    width: clamp(34px, 4.3vw, 60px);
     aspect-ratio: 64 / 42;
     opacity: 0;
     filter: brightness(.76) saturate(.88) drop-shadow(0 3px 2px rgba(54, 25, 9, .42));
@@ -9361,8 +9361,11 @@ button:disabled {
 }
 
 .lagartija-desierto-ambiente .cuadro-fauna-desierto {
-    animation: bracearLagartijaDesierto .24s ease-in-out infinite alternate;
-    transform-origin: 58% 72%;
+    animation: alternarZancadaLagartija .3s steps(1, end) infinite;
+}
+
+.lagartija-desierto-ambiente .cuadro-fauna-2 {
+    animation-name: alternarZancadaLagartijaAlterna;
 }
 
 .pasto-seco-desierto-ambiente {
@@ -9430,9 +9433,14 @@ button:disabled {
     72%, 100% { opacity: 0; transform: translate3d(126vw, -2px, 0) scale(.68); }
 }
 
-@keyframes bracearLagartijaDesierto {
-    from { transform: translateY(1px) rotate(-1.2deg) scaleX(.985); }
-    to { transform: translateY(-1px) rotate(1.2deg) scaleX(1.015); }
+@keyframes alternarZancadaLagartija {
+    0%, 49.9% { opacity: 1; transform: translateY(1px) rotate(-.7deg); }
+    50%, 100% { opacity: 0; transform: translateY(-1px) rotate(.7deg); }
+}
+
+@keyframes alternarZancadaLagartijaAlterna {
+    0%, 49.9% { opacity: 0; transform: translateY(-1px) rotate(.7deg); }
+    50%, 100% { opacity: 1; transform: translateY(1px) rotate(-.7deg); }
 }
 
 @keyframes mecerPastoDesierto {
@@ -12303,6 +12311,24 @@ button:disabled {
     object-position: center bottom;
 }
 
+/* Los PNG horizontales del Explorador conservan aire bajo los pies. Se hunde
+   el contenedor lo necesario para que el dibujo apoye sobre la arena. */
+.escenario.escenario-desierto .personaje-imagen {
+    bottom: -6%;
+    z-index: 3;
+    filter: drop-shadow(0 5px 3px rgba(70, 35, 12, .45));
+}
+
+.escenario.escenario-desierto[data-mision-desierto="3"] .personaje-imagen,
+.escenario.escenario-desierto[data-mision-desierto="4"] .personaje-imagen {
+    bottom: -2%;
+}
+
+.escenario.escenario-desierto[data-mision-desierto="7"] .personaje-imagen,
+.escenario.escenario-desierto[data-mision-desierto="8"] .personaje-imagen {
+    bottom: -9%;
+}
+
 .maguito-desierto {
     right: 4%;
     bottom: -5%;
@@ -12313,14 +12339,135 @@ button:disabled {
     animation: flotarMaguitoDesierto 3.4s ease-in-out infinite alternate;
 }
 
+.maguito-desierto:not(.maguito-espejismo) {
+    bottom: -7%;
+}
+
+.trampa-espejismo-maguito {
+    right: 31%;
+    bottom: -1%;
+    z-index: 4;
+    width: 27%;
+    height: 76%;
+    isolation: isolate;
+    transform-origin: center bottom;
+    animation: respirarTrampaEspejismo 2.6s ease-in-out infinite alternate;
+}
+
+.trampa-espejismo-maguito::before {
+    content: "";
+    position: absolute;
+    inset: 2% 7% 9%;
+    z-index: 1;
+    border: clamp(2px, .45vw, 4px) solid rgba(160, 250, 255, .86);
+    border-radius: 48% 52% 46% 54% / 43% 47% 53% 57%;
+    background:
+        radial-gradient(circle at 32% 22%, rgba(255, 255, 255, .78) 0 3%, transparent 7%),
+        radial-gradient(ellipse at 55% 68%, rgba(129, 73, 236, .27), transparent 48%),
+        linear-gradient(112deg, rgba(105, 245, 255, .16), rgba(80, 114, 255, .28) 48%, rgba(219, 111, 255, .18));
+    box-shadow:
+        inset 10px 0 20px rgba(222, 255, 255, .34),
+        inset -12px -4px 22px rgba(83, 55, 215, .28),
+        0 0 15px rgba(97, 240, 255, .86),
+        0 0 34px rgba(119, 72, 239, .62);
+    backdrop-filter: blur(1.2px) saturate(1.25);
+    animation: ondularPrisionEspejismo 1.75s ease-in-out infinite alternate;
+}
+
+.trampa-espejismo-maguito::after {
+    content: "";
+    position: absolute;
+    left: 7%;
+    right: 7%;
+    bottom: 2%;
+    z-index: 3;
+    height: 16%;
+    border: 3px solid rgba(173, 253, 255, .82);
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(175, 248, 255, .48), rgba(95, 91, 226, .25) 43%, transparent 70%);
+    box-shadow: 0 0 13px #8df7ff, 0 0 27px rgba(135, 76, 235, .7);
+    transform: rotateX(62deg);
+    animation: pulsarSelloEspejismo 1.3s ease-in-out infinite alternate;
+}
+
+.onda-trampa-espejismo {
+    position: absolute;
+    inset: calc(8% + var(--indice-onda, 0) * 5%);
+    z-index: 3;
+    border: 1px solid rgba(211, 255, 255, .62);
+    border-radius: 50%;
+    opacity: .7;
+    animation: recorrerOndaEspejismo 2s ease-out infinite;
+}
+
+.onda-trampa-1 { --indice-onda: 0; animation-delay: 0s; }
+.onda-trampa-2 { --indice-onda: 1; animation-delay: -.66s; }
+.onda-trampa-3 { --indice-onda: 2; animation-delay: -1.32s; }
+
+.aro-prision-espejismo {
+    position: absolute;
+    left: 2%;
+    right: 2%;
+    z-index: 4;
+    height: 19%;
+    border: clamp(2px, .35vw, 3px) solid rgba(190, 252, 255, .82);
+    border-radius: 50%;
+    box-shadow: 0 0 8px #79f6ff, inset 0 0 9px rgba(116, 90, 247, .7);
+    mix-blend-mode: screen;
+}
+
+.aro-prision-1 {
+    top: 31%;
+    transform: rotate(-9deg);
+    animation: orbitarAroPrisionUno 1.45s ease-in-out infinite alternate;
+}
+
+.aro-prision-2 {
+    top: 53%;
+    transform: rotate(10deg);
+    animation: orbitarAroPrisionDos 1.65s ease-in-out -.7s infinite alternate;
+}
+
 .maguito-espejismo {
-    right: 34%;
+    right: 5%;
     bottom: 10%;
-    width: 20%;
-    height: 48%;
-    opacity: .68;
-    filter: drop-shadow(0 0 14px #5df6ff) saturate(.8) hue-rotate(28deg);
-    animation: parpadearMaguitoEspejismo 2.2s ease-in-out infinite;
+    z-index: 2;
+    width: 90%;
+    height: 78%;
+    opacity: .92;
+    filter: drop-shadow(0 0 10px #5df6ff) saturate(.9) hue-rotate(12deg);
+    animation: forcejearMaguitoEspejismo 1.6s ease-in-out infinite alternate;
+}
+
+.trampa-espejismo-maguito.liberandose {
+    animation: sacudirTrampaEspejismo .42s ease-in-out 3;
+}
+
+.trampa-espejismo-maguito.liberandose::before {
+    animation: romperPrisionEspejismo 1.7s ease-out forwards;
+}
+
+.trampa-espejismo-maguito.liberandose::after {
+    animation: disiparSelloEspejismo 1.55s ease-out forwards;
+}
+
+.trampa-espejismo-maguito.liberandose .onda-trampa-espejismo {
+    animation: liberarOndaEspejismo 1.35s ease-out forwards;
+}
+
+.trampa-espejismo-maguito.liberandose .aro-prision-espejismo {
+    animation: romperAroPrision 1.25s ease-out forwards;
+}
+
+.trampa-espejismo-maguito.liberandose .maguito-espejismo {
+    animation: descenderMaguitoLiberado 1.8s cubic-bezier(.2, .78, .23, 1) forwards;
+}
+
+.trampa-espejismo-maguito.liberada::before,
+.trampa-espejismo-maguito.liberada::after,
+.trampa-espejismo-maguito.liberada .onda-trampa-espejismo,
+.trampa-espejismo-maguito.liberada .aro-prision-espejismo {
+    opacity: 0;
 }
 
 .maguito-corriendo {
@@ -12447,6 +12594,74 @@ button:disabled {
     45% { opacity: .76; transform: scale(1.02) skewX(1deg); }
     56% { opacity: .18; }
     67% { opacity: .68; }
+}
+
+@keyframes respirarTrampaEspejismo {
+    from { transform: translateY(1px) scale(.985); }
+    to { transform: translateY(-4px) scale(1.015); }
+}
+
+@keyframes ondularPrisionEspejismo {
+    from { transform: rotate(-1deg) scale(.985, 1.01); filter: hue-rotate(-6deg); }
+    to { transform: rotate(1deg) scale(1.02, .985); filter: hue-rotate(8deg) brightness(1.12); }
+}
+
+@keyframes pulsarSelloEspejismo {
+    from { opacity: .55; transform: rotateX(62deg) scale(.9); }
+    to { opacity: 1; transform: rotateX(62deg) scale(1.08); }
+}
+
+@keyframes recorrerOndaEspejismo {
+    from { opacity: .72; transform: scale(.72); }
+    to { opacity: 0; transform: scale(1.18); }
+}
+
+@keyframes orbitarAroPrisionUno {
+    from { opacity: .58; transform: rotate(-10deg) scaleX(.9); }
+    to { opacity: 1; transform: rotate(7deg) scaleX(1.04); }
+}
+
+@keyframes orbitarAroPrisionDos {
+    from { opacity: .92; transform: rotate(11deg) scaleX(1.02); }
+    to { opacity: .5; transform: rotate(-7deg) scaleX(.88); }
+}
+
+@keyframes romperAroPrision {
+    0%, 35% { opacity: 1; filter: brightness(1); }
+    55% { opacity: 1; transform: scale(1.16); filter: brightness(2.4); }
+    100% { opacity: 0; transform: scale(1.65); filter: blur(4px) brightness(2.8); }
+}
+
+@keyframes forcejearMaguitoEspejismo {
+    from { transform: translate3d(-2px, 2px, 0) rotate(-2deg); }
+    to { transform: translate3d(3px, -3px, 0) rotate(2deg); }
+}
+
+@keyframes sacudirTrampaEspejismo {
+    25% { transform: translateX(-4px) rotate(-1deg); }
+    70% { transform: translateX(4px) rotate(1deg); }
+}
+
+@keyframes romperPrisionEspejismo {
+    0%, 42% { opacity: 1; transform: scale(1); filter: brightness(1); }
+    58% { opacity: 1; transform: scale(1.1, .92); filter: brightness(2.25); }
+    100% { opacity: 0; transform: scale(1.42, 1.2); filter: blur(5px) brightness(2.8); }
+}
+
+@keyframes disiparSelloEspejismo {
+    0%, 38% { opacity: 1; transform: rotateX(62deg) scale(1); }
+    100% { opacity: 0; transform: rotateX(62deg) scale(2.1); filter: blur(4px); }
+}
+
+@keyframes liberarOndaEspejismo {
+    from { opacity: .82; transform: scale(.75); }
+    to { opacity: 0; transform: scale(1.8); }
+}
+
+@keyframes descenderMaguitoLiberado {
+    0%, 34% { opacity: .92; transform: translateY(0) scale(.98); filter: saturate(.9) hue-rotate(12deg); }
+    52% { opacity: 1; transform: translateY(-12%) scale(1.08); filter: brightness(1.65) saturate(1.2); }
+    100% { opacity: 1; transform: translateY(24%) scale(1.04); filter: drop-shadow(0 6px 5px rgba(35, 14, 2, .55)); }
 }
 
 @keyframes correrMaguitoDesierto {
@@ -13272,13 +13487,13 @@ button:disabled {
     box-shadow:
         0 6px 15px rgba(0, 0, 0, 0.27),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(2px) saturate(1.12);
-    -webkit-backdrop-filter: blur(2px) saturate(1.12);
+    backdrop-filter: blur(1.5px) saturate(1.16);
+    -webkit-backdrop-filter: blur(1.5px) saturate(1.16);
 }
 
 #pantallaMenu #btnJugar {
     border-color: rgba(137, 225, 104, 0.72);
-    background: linear-gradient(180deg, rgba(24, 151, 83, 0.7), rgba(6, 72, 52, 0.42));
+    background: linear-gradient(180deg, rgba(24, 151, 83, 0.44), rgba(6, 72, 52, 0.2));
     box-shadow:
         0 4px 0 rgba(5, 59, 39, 0.72),
         0 8px 18px rgba(0, 0, 0, 0.3),
@@ -13287,22 +13502,44 @@ button:disabled {
 
 #pantallaMenu #btnNuevaAventura {
     border-color: rgba(94, 205, 247, 0.65);
-    background: linear-gradient(180deg, rgba(8, 79, 108, 0.52), rgba(4, 37, 58, 0.3));
+    background: linear-gradient(180deg, rgba(8, 79, 108, 0.36), rgba(4, 37, 58, 0.15));
     color: rgba(249, 253, 255, 0.96);
 }
 
 #pantallaMenu .btn-versus-menu {
     border-color: rgba(239, 181, 63, 0.72);
-    background: linear-gradient(180deg, rgba(158, 88, 12, 0.68), rgba(91, 45, 8, 0.34));
+    background: linear-gradient(180deg, rgba(158, 88, 12, 0.42), rgba(91, 45, 8, 0.18));
     box-shadow:
         0 4px 0 rgba(61, 35, 11, 0.68),
         0 8px 18px rgba(0, 0, 0, 0.28),
         inset 0 1px 0 rgba(255, 224, 154, 0.15);
 }
 
+#pantallaMenu .btn-arcade-menu {
+    border-color: rgba(210, 166, 77, 0.66);
+    background: linear-gradient(180deg, rgba(112, 73, 39, 0.4), rgba(63, 39, 25, 0.17));
+    color: rgba(255, 240, 194, 0.96);
+    box-shadow:
+        0 4px 0 rgba(33, 19, 10, 0.68),
+        0 8px 18px rgba(0, 0, 0, 0.26),
+        inset 0 1px 0 rgba(255, 230, 174, 0.13);
+}
+
+#pantallaMenu .btn-tutorial-versus-menu {
+    border-color: rgba(137, 210, 228, 0.52);
+    background: linear-gradient(180deg, rgba(36, 75, 89, 0.38), rgba(20, 44, 55, 0.16));
+    color: rgba(223, 249, 255, 0.96);
+}
+
+#pantallaMenu #btnConfiguracion {
+    border-color: rgba(159, 199, 169, 0.54);
+    background: linear-gradient(180deg, rgba(52, 91, 72, 0.34), rgba(19, 42, 35, 0.15));
+    color: rgba(245, 252, 239, 0.94);
+}
+
 #pantallaMenu .menu-contenido > button:disabled {
     border-color: rgba(130, 155, 190, 0.42);
-    background: linear-gradient(180deg, rgba(34, 42, 61, 0.52), rgba(13, 25, 39, 0.3));
+    background: linear-gradient(180deg, rgba(34, 42, 61, 0.32), rgba(13, 25, 39, 0.15));
     color: rgba(241, 245, 247, 0.78);
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
     box-shadow:
@@ -15159,8 +15396,31 @@ button:disabled {
     .oasis-opcion { padding-inline: 3px; font-size: .72rem; }
     .maguito-desierto { width: 34%; height: 62%; }
     .devoradunas-emerge { width: 50%; }
-    .devoradunas-persigue { right: 32%; width: 38%; }
+    .devoradunas-persigue { right: 18%; width: 34%; }
     .devoradunas-irrumpe { width: 53%; }
+    .escenario.escenario-desierto .personaje-imagen { bottom: -10%; }
+    .escenario.escenario-desierto[data-mision-desierto="3"] .personaje-imagen,
+    .escenario.escenario-desierto[data-mision-desierto="4"] .personaje-imagen { bottom: -2%; }
+    .escenario.escenario-desierto[data-mision-desierto="7"] .personaje-imagen,
+    .escenario.escenario-desierto[data-mision-desierto="8"] .personaje-imagen { bottom: -14%; }
+    .escenario.escenario-desierto[data-mision-desierto="7"] .personaje-imagen { left: 0; }
+    .escenario.escenario-desierto[data-mision-desierto="8"] .personaje-imagen { left: 8%; }
+    .escenario.escenario-desierto[data-mision-desierto="7"] .maguito-corriendo {
+        right: 0;
+        width: 31%;
+    }
+    .trampa-espejismo-maguito {
+        right: 30%;
+        bottom: -2%;
+        width: 34%;
+        height: 78%;
+    }
+    .trampa-espejismo-maguito .maguito-espejismo {
+        right: 5%;
+        bottom: 10%;
+        width: 90%;
+        height: 78%;
+    }
 }
 @media (orientation: landscape) and (max-height: 760px) {
     .tablero-vientos-desierto { width: min(100%, 52vh, 430px); }
@@ -15168,6 +15428,10 @@ button:disabled {
 @media (prefers-reduced-motion: reduce) {
     .personaje-narrativo-desierto,
     .cristal-dorado-desierto,
+    .trampa-espejismo-maguito::before,
+    .trampa-espejismo-maguito::after,
+    .onda-trampa-espejismo,
+    .aro-prision-espejismo,
     .oasis-opcion span::before,
     .oasis-opcion span::after { animation: none !important; }
     .canal-viento > span,
@@ -15178,6 +15442,11 @@ button:disabled {
         transform: none;
     }
     .arena-emergencia-devoradunas { display: none; }
+    .trampa-espejismo-maguito.liberada .maguito-espejismo {
+        opacity: 1;
+        transform: translateY(24%) scale(1.04);
+        filter: drop-shadow(0 6px 5px rgba(35, 14, 2, .55));
+    }
 }
 /* ================================================================
    KAIRÓS · Ladrón de Instantes

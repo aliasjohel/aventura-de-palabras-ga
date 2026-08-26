@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v157`;
+const CACHE_NAME = `${CACHE_PREFIX}v160`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -65,6 +65,9 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v154`,
   `${CACHE_PREFIX}v155`,
   `${CACHE_PREFIX}v156`,
+  `${CACHE_PREFIX}v157`,
+  `${CACHE_PREFIX}v158`,
+  `${CACHE_PREFIX}v159`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -105,6 +108,7 @@ const CORE_ASSETS = [
   "./assets/images/ambiente/desierto/halcon-alas-arriba.png",
   "./assets/images/ambiente/desierto/halcon-alas-abajo.png",
   "./assets/images/ambiente/desierto/lagartija-corriendo.png",
+  "./assets/images/ambiente/desierto/lagartija-corriendo-2.png",
   "./assets/images/ambiente/desierto/pasto-seco-viento.png",
   "./assets/images/fondos/bosque-6-lobos-v2.png",
   "./assets/icons/icon-maskable-512.png",
@@ -303,13 +307,14 @@ const CORE_ASSETS = [
 const ASSET_REVISIONS = {
   "./": "20260820-personajes-mundo1-25",
   "./index.html": "20260826-fauna-desierto-1",
-  "./css/styles.css": "20260826-fauna-desierto-1",
-  "./js/app.js": "20260826-fauna-desierto-1",
+  "./css/styles.css": "20260826-desierto-trampa-fauna-2",
+  "./js/app.js": "20260826-desierto-trampa-fauna-2",
   "./assets/images/ambiente/desierto/alacran-camina-1.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/alacran-camina-2.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/halcon-alas-arriba.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/halcon-alas-abajo.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/lagartija-corriendo.png": "20260826-fauna-desierto-1",
+  "./assets/images/ambiente/desierto/lagartija-corriendo-2.png": "20260826-fauna-desierto-2",
   "./assets/images/ambiente/desierto/pasto-seco-viento.png": "20260826-fauna-desierto-1",
   "./assets/images/personajes/versus/kairos-seleccion-v2.png": "20260823-kairos-5",
   "./assets/images/personajes/versus/kairos-combate-v1.png": "20260823-kairos-5",

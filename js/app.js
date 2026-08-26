@@ -8095,10 +8095,38 @@ function actualizarPersonajesNarrativosDesierto() {
           ? "maguito-desierto maguito-corriendo"
           : "maguito-desierto",
       misionActual === 4
-        ? "Maguito atrapado dentro del espejismo"
+        ? "Maguito atrapado dentro de una prisión de espejismo"
         : "Maguito acompañando al Explorador",
     );
-    contenedorEscenario.appendChild(maguito);
+
+    if (misionActual === 4) {
+      const trampa = document.createElement("div");
+      trampa.className = "personaje-narrativo-desierto trampa-espejismo-maguito";
+      trampa.setAttribute("role", "img");
+      trampa.setAttribute(
+        "aria-label",
+        "El Maguito está encerrado dentro de una prisión de agua ilusoria",
+      );
+
+      for (let indice = 0; indice < 3; indice += 1) {
+        const onda = document.createElement("span");
+        onda.className = `onda-trampa-espejismo onda-trampa-${indice + 1}`;
+        onda.setAttribute("aria-hidden", "true");
+        trampa.appendChild(onda);
+      }
+
+      for (let indice = 0; indice < 2; indice += 1) {
+        const aro = document.createElement("span");
+        aro.className = `aro-prision-espejismo aro-prision-${indice + 1}`;
+        aro.setAttribute("aria-hidden", "true");
+        trampa.appendChild(aro);
+      }
+
+      trampa.appendChild(maguito);
+      contenedorEscenario.appendChild(trampa);
+    } else {
+      contenedorEscenario.appendChild(maguito);
+    }
   }
 
   const estadoEmergenciaDevoradunas =
@@ -8279,7 +8307,10 @@ function actualizarVidaDesiertoMision() {
   if (misionesLagartijaDesierto.has(misionActual)) {
     const lagartija = crearAnimalAnimadoDesierto(
       "lagartija-desierto-ambiente",
-      ["assets/images/ambiente/desierto/lagartija-corriendo.png"],
+      [
+        "assets/images/ambiente/desierto/lagartija-corriendo.png",
+        "assets/images/ambiente/desierto/lagartija-corriendo-2.png",
+      ],
       "Lagartija corriendo entre las dunas",
     );
     lagartija.style.setProperty("--retraso-lagartija", `${-Math.random() * 18}s`);
@@ -8305,6 +8336,24 @@ function actualizarVidaDesiertoMision() {
   if (capa.childElementCount > 0) {
     contenedorEscenario.insertBefore(capa, personajeImagen);
   }
+}
+
+async function liberarMaguitoDeTrampaEspejismo() {
+  const trampa = contenedorEscenario.querySelector(
+    ".trampa-espejismo-maguito",
+  );
+  if (!trampa) return;
+
+  trampa.classList.add("liberandose");
+  trampa.setAttribute(
+    "aria-label",
+    "La prisión de espejismo se rompe y el Maguito queda libre",
+  );
+
+  await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 250 : 1850);
+  if (!trampa.isConnected) return;
+  trampa.classList.add("liberada");
+  await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 100 : 650);
 }
 
 function detenerAmbientePuente() {
@@ -11027,6 +11076,7 @@ async function completarPruebaEspecialBosque(tipo) {
 
   if (pruebaBosqueEnModoDemo) {
     cerrarPruebaEspecialBosque();
+    if (tipo === "oasis") await liberarMaguitoDeTrampaEspejismo();
     volverEstadoBaseExplorador();
     return;
   }
@@ -11036,6 +11086,11 @@ async function completarPruebaEspecialBosque(tipo) {
     await ejecutarEncuentroHombreLoboMision("desafio");
     void iniciarDueloAventura("hombre_lobo");
     return;
+  }
+
+  if (tipo === "oasis") {
+    cerrarPruebaEspecialBosque();
+    await liberarMaguitoDeTrampaEspejismo();
   }
 
   monedas += 10;
