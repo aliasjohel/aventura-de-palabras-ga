@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v156`;
+const CACHE_NAME = `${CACHE_PREFIX}v157`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -64,6 +64,7 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v153`,
   `${CACHE_PREFIX}v154`,
   `${CACHE_PREFIX}v155`,
+  `${CACHE_PREFIX}v156`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -99,6 +100,12 @@ const CORE_ASSETS = [
   "./assets/images/fondos/desierto-8.png",
   "./assets/images/fondos/desierto-9.png",
   "./assets/images/fondos/desierto-10.png",
+  "./assets/images/ambiente/desierto/alacran-camina-1.png",
+  "./assets/images/ambiente/desierto/alacran-camina-2.png",
+  "./assets/images/ambiente/desierto/halcon-alas-arriba.png",
+  "./assets/images/ambiente/desierto/halcon-alas-abajo.png",
+  "./assets/images/ambiente/desierto/lagartija-corriendo.png",
+  "./assets/images/ambiente/desierto/pasto-seco-viento.png",
   "./assets/images/fondos/bosque-6-lobos-v2.png",
   "./assets/icons/icon-maskable-512.png",
   "./assets/images/elements/cristal-sabiduria-esmeralda.png",
@@ -295,9 +302,15 @@ const CORE_ASSETS = [
  */
 const ASSET_REVISIONS = {
   "./": "20260820-personajes-mundo1-25",
-  "./index.html": "20260823-kairos-6",
-  "./css/styles.css": "20260824-mundo2-duelo-mago-1",
-  "./js/app.js": "20260824-mundo2-duelo-mago-1",
+  "./index.html": "20260826-fauna-desierto-1",
+  "./css/styles.css": "20260826-fauna-desierto-1",
+  "./js/app.js": "20260826-fauna-desierto-1",
+  "./assets/images/ambiente/desierto/alacran-camina-1.png": "20260826-fauna-desierto-1",
+  "./assets/images/ambiente/desierto/alacran-camina-2.png": "20260826-fauna-desierto-1",
+  "./assets/images/ambiente/desierto/halcon-alas-arriba.png": "20260826-fauna-desierto-1",
+  "./assets/images/ambiente/desierto/halcon-alas-abajo.png": "20260826-fauna-desierto-1",
+  "./assets/images/ambiente/desierto/lagartija-corriendo.png": "20260826-fauna-desierto-1",
+  "./assets/images/ambiente/desierto/pasto-seco-viento.png": "20260826-fauna-desierto-1",
   "./assets/images/personajes/versus/kairos-seleccion-v2.png": "20260823-kairos-5",
   "./assets/images/personajes/versus/kairos-combate-v1.png": "20260823-kairos-5",
   "./assets/images/personajes/versus/kairos-ataque-v2.png": "20260824-kairos-6",

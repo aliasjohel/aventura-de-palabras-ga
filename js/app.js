@@ -8205,7 +8205,28 @@ function actualizarVientoArenaMision() {
 
 const misionesAvesDesierto = new Set([0, 2, 4, 5, 7]);
 const misionesEscorpionDesierto = new Set([0, 2, 5, 6]);
+const misionesLagartijaDesierto = new Set([1, 4, 7]);
+const misionesPastoDesierto = new Set([0, 1, 3, 5, 6, 7]);
 const misionesCalorDesierto = new Set([0, 2, 3, 4, 5, 6, 7]);
+
+function crearAnimalAnimadoDesierto(clase, cuadros, alt) {
+  const animal = document.createElement("span");
+  animal.className = clase;
+  animal.setAttribute("role", "img");
+  animal.setAttribute("aria-label", alt);
+
+  cuadros.forEach((src, indice) => {
+    const imagen = document.createElement("img");
+    imagen.className = `cuadro-fauna-desierto cuadro-fauna-${indice + 1}`;
+    imagen.src = src;
+    imagen.alt = "";
+    imagen.decoding = "async";
+    imagen.draggable = false;
+    animal.appendChild(imagen);
+  });
+
+  return animal;
+}
 
 function actualizarVidaDesiertoMision() {
   detenerVidaDesierto();
@@ -8225,25 +8246,60 @@ function actualizarVidaDesiertoMision() {
   if (misionesAvesDesierto.has(misionActual)) {
     const cantidadAves = window.matchMedia("(max-width: 600px)").matches ? 1 : 2;
     for (let indice = 0; indice < cantidadAves; indice += 1) {
-      const ave = document.createElement("span");
-      const silueta = document.createElement("i");
-      ave.className = "ave-desierto-ambiente";
-      silueta.className = "silueta-ave-desierto";
+      const ave = crearAnimalAnimadoDesierto(
+        "ave-desierto-ambiente",
+        [
+          "assets/images/ambiente/desierto/halcon-alas-arriba.png",
+          "assets/images/ambiente/desierto/halcon-alas-abajo.png",
+        ],
+        "Halcón del desierto volando",
+      );
       ave.style.setProperty("--altura-ave", `${10 + indice * 9 + Math.random() * 8}%`);
       ave.style.setProperty("--duracion-ave", `${20 + Math.random() * 8}s`);
       ave.style.setProperty("--retraso-ave", `${-Math.random() * 24}s`);
       ave.style.setProperty("--escala-ave", `${0.68 + Math.random() * 0.38}`);
-      ave.appendChild(silueta);
+      ave.style.setProperty("--retraso-aleteo", `${-Math.random() * 0.7}s`);
       capa.appendChild(ave);
     }
   }
 
   if (misionesEscorpionDesierto.has(misionActual)) {
-    const escorpion = document.createElement("span");
-    escorpion.className = "escorpion-desierto-ambiente";
-    escorpion.textContent = "🦂";
+    const escorpion = crearAnimalAnimadoDesierto(
+      "escorpion-desierto-ambiente",
+      [
+        "assets/images/ambiente/desierto/alacran-camina-1.png",
+        "assets/images/ambiente/desierto/alacran-camina-2.png",
+      ],
+      "Alacrán caminando por la arena",
+    );
     escorpion.style.setProperty("--retraso-escorpion", `${-Math.random() * 25}s`);
     capa.appendChild(escorpion);
+  }
+
+  if (misionesLagartijaDesierto.has(misionActual)) {
+    const lagartija = crearAnimalAnimadoDesierto(
+      "lagartija-desierto-ambiente",
+      ["assets/images/ambiente/desierto/lagartija-corriendo.png"],
+      "Lagartija corriendo entre las dunas",
+    );
+    lagartija.style.setProperty("--retraso-lagartija", `${-Math.random() * 18}s`);
+    capa.appendChild(lagartija);
+  }
+
+  if (misionesPastoDesierto.has(misionActual)) {
+    const cantidadMatas = window.matchMedia("(max-width: 600px)").matches ? 1 : 2;
+    for (let indice = 0; indice < cantidadMatas; indice += 1) {
+      const pasto = document.createElement("img");
+      pasto.className = "pasto-seco-desierto-ambiente";
+      pasto.src = "assets/images/ambiente/desierto/pasto-seco-viento.png";
+      pasto.alt = "";
+      pasto.decoding = "async";
+      pasto.draggable = false;
+      pasto.style.setProperty("--posicion-pasto", `${indice === 0 ? 7 + Math.random() * 10 : 76 + Math.random() * 10}%`);
+      pasto.style.setProperty("--escala-pasto", `${0.72 + Math.random() * 0.34}`);
+      pasto.style.setProperty("--retraso-pasto", `${-Math.random() * 3}s`);
+      capa.appendChild(pasto);
+    }
   }
 
   if (capa.childElementCount > 0) {

@@ -84,9 +84,14 @@ assert.match(app, /activarEmergenciaDevoradunas\(\);/);
 assert.match(app, /new Set\(\[3, 6, 8, 9\]\)/);
 assert.match(app, /const misionesAvesDesierto = new Set\(\[0, 2, 4, 5, 7\]\)/);
 assert.match(app, /const misionesEscorpionDesierto = new Set\(\[0, 2, 5, 6\]\)/);
+assert.match(app, /const misionesLagartijaDesierto = new Set\(\[1, 4, 7\]\)/);
+assert.match(app, /const misionesPastoDesierto = new Set\(\[0, 1, 3, 5, 6, 7\]\)/);
 assert.match(app, /const misionesCalorDesierto = new Set\(\[0, 2, 3, 4, 5, 6, 7\]\)/);
 assert.match(app, /function actualizarVidaDesiertoMision\(\)/);
-assert.match(app, /escorpion\.textContent = "🦂"/);
+assert.match(app, /assets\/images\/ambiente\/desierto\/alacran-camina-1\.png/);
+assert.match(app, /assets\/images\/ambiente\/desierto\/halcon-alas-abajo\.png/);
+assert.match(app, /assets\/images\/ambiente\/desierto\/lagartija-corriendo\.png/);
+assert.match(app, /assets\/images\/ambiente\/desierto\/pasto-seco-viento\.png/);
 assert.match(app, /actualizarVientoArenaMision\(\);\s*actualizarVidaDesiertoMision\(\)/);
 assert.match(app, /function prepararRondaOasisDesierto\(/);
 assert.match(app, /function crearPistaEnigmaOasis\(/);
@@ -104,6 +109,10 @@ assert.match(estilos, /@keyframes aparecerDevoradunasFijo/);
 assert.match(estilos, /\.capa-vida-desierto/);
 assert.match(estilos, /@keyframes cruzarAveDesierto/);
 assert.match(estilos, /@keyframes cruzarEscorpionDesierto/);
+assert.match(estilos, /@keyframes aletearHalconDesierto/);
+assert.match(estilos, /@keyframes caminarAlacranDesierto/);
+assert.match(estilos, /@keyframes correrLagartijaDesierto/);
+assert.match(estilos, /@keyframes mecerPastoDesierto/);
 assert.match(estilos, /@keyframes respirarCalorDesierto/);
 assert.doesNotMatch(
   estilos,
