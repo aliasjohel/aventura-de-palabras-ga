@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v164`;
+const CACHE_NAME = `${CACHE_PREFIX}v165`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -72,6 +72,7 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v161`,
   `${CACHE_PREFIX}v162`,
   `${CACHE_PREFIX}v163`,
+  `${CACHE_PREFIX}v164`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -123,8 +124,10 @@ const CORE_ASSETS = [
   "./assets/images/ambiente/desierto/alacran-camina-2.png",
   "./assets/images/ambiente/desierto/halcon-alas-arriba.png",
   "./assets/images/ambiente/desierto/halcon-alas-abajo.png",
-  "./assets/images/ambiente/desierto/lagartija-corriendo.png",
-  "./assets/images/ambiente/desierto/lagartija-corriendo-2.png",
+  "./assets/images/ambiente/desierto/lagartija-camina-1.png",
+  "./assets/images/ambiente/desierto/lagartija-camina-2.png",
+  "./assets/images/ambiente/desierto/lagartija-camina-3.png",
+  "./assets/images/ambiente/desierto/lagartija-camina-4.png",
   "./assets/images/ambiente/desierto/pasto-seco-viento.png",
   "./assets/images/fondos/bosque-6-lobos-v2.png",
   "./assets/icons/icon-maskable-512.png",
@@ -341,8 +344,10 @@ const ASSET_REVISIONS = {
   "./assets/images/ambiente/desierto/alacran-camina-2.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/halcon-alas-arriba.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/halcon-alas-abajo.png": "20260826-fauna-desierto-1",
-  "./assets/images/ambiente/desierto/lagartija-corriendo.png": "20260826-fauna-desierto-1",
-  "./assets/images/ambiente/desierto/lagartija-corriendo-2.png": "20260826-fauna-desierto-2",
+  "./assets/images/ambiente/desierto/lagartija-camina-1.png": "20260827-lagartija-caminata-1",
+  "./assets/images/ambiente/desierto/lagartija-camina-2.png": "20260827-lagartija-caminata-1",
+  "./assets/images/ambiente/desierto/lagartija-camina-3.png": "20260827-lagartija-caminata-1",
+  "./assets/images/ambiente/desierto/lagartija-camina-4.png": "20260827-lagartija-caminata-1",
   "./assets/images/ambiente/desierto/pasto-seco-viento.png": "20260826-fauna-desierto-1",
   "./assets/images/personajes/versus/kairos-seleccion-v2.png": "20260823-kairos-5",
   "./assets/images/personajes/versus/kairos-combate-v1.png": "20260823-kairos-5",

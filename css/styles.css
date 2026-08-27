@@ -9525,12 +9525,14 @@ button:disabled {
 }
 
 .lagartija-desierto-ambiente .cuadro-fauna-desierto {
-    animation: alternarZancadaLagartija .3s steps(1, end) infinite;
+    opacity: 0;
+    animation: cicloCaminataLagartija .56s steps(1, end) infinite;
 }
 
-.lagartija-desierto-ambiente .cuadro-fauna-2 {
-    animation-name: alternarZancadaLagartijaAlterna;
-}
+.lagartija-desierto-ambiente .cuadro-fauna-1 { animation-delay: 0s; }
+.lagartija-desierto-ambiente .cuadro-fauna-2 { animation-delay: .14s; }
+.lagartija-desierto-ambiente .cuadro-fauna-3 { animation-delay: .28s; }
+.lagartija-desierto-ambiente .cuadro-fauna-4 { animation-delay: .42s; }
 
 .pasto-seco-desierto-ambiente {
     position: absolute;
@@ -9597,14 +9599,9 @@ button:disabled {
     72%, 100% { opacity: 0; transform: translate3d(126vw, -2px, 0) scale(.68); }
 }
 
-@keyframes alternarZancadaLagartija {
-    0%, 49.9% { opacity: 1; transform: translateY(1px) rotate(-.7deg); }
-    50%, 100% { opacity: 0; transform: translateY(-1px) rotate(.7deg); }
-}
-
-@keyframes alternarZancadaLagartijaAlterna {
-    0%, 49.9% { opacity: 0; transform: translateY(-1px) rotate(.7deg); }
-    50%, 100% { opacity: 1; transform: translateY(1px) rotate(-.7deg); }
+@keyframes cicloCaminataLagartija {
+    0%, 24.9% { opacity: 1; }
+    25%, 100% { opacity: 0; }
 }
 
 @keyframes mecerPastoDesierto {
@@ -12478,9 +12475,18 @@ button:disabled {
 /* Los PNG horizontales del Explorador conservan aire bajo los pies. Se hunde
    el contenedor lo necesario para que el dibujo apoye sobre la arena. */
 .escenario.escenario-desierto .personaje-imagen {
-    bottom: -6%;
+    bottom: var(--altura-explorador-desierto, -6%);
     z-index: 3;
     filter: drop-shadow(0 5px 3px rgba(70, 35, 12, .45));
+}
+
+/* En estos fondos la linea de arena queda mas alta y el recorte inferior
+   ocultaba parte de las piernas del Explorador. */
+.escenario.escenario-desierto[data-mision-desierto="1"],
+.escenario.escenario-desierto[data-mision-desierto="2"],
+.escenario.escenario-desierto[data-mision-desierto="8"],
+.escenario.escenario-desierto[data-mision-desierto="9"] {
+    --altura-explorador-desierto: -2%;
 }
 
 .escenario.escenario-desierto[data-mision-desierto="3"] .personaje-imagen,
@@ -15557,7 +15563,15 @@ button:disabled {
     .devoradunas-emerge { width: 50%; }
     .devoradunas-persigue { right: 18%; width: 34%; }
     .devoradunas-irrumpe { width: 53%; }
-    .escenario.escenario-desierto .personaje-imagen { bottom: -10%; }
+    .escenario.escenario-desierto .personaje-imagen {
+        --altura-explorador-desierto: -10%;
+    }
+    .escenario.escenario-desierto[data-mision-desierto="1"],
+    .escenario.escenario-desierto[data-mision-desierto="2"],
+    .escenario.escenario-desierto[data-mision-desierto="8"],
+    .escenario.escenario-desierto[data-mision-desierto="9"] {
+        --altura-explorador-desierto: -4%;
+    }
     .escenario.escenario-desierto[data-mision-desierto="3"] .personaje-imagen,
     .escenario.escenario-desierto[data-mision-desierto="4"] .personaje-imagen { bottom: -2%; }
     .escenario.escenario-desierto[data-mision-desierto="7"] .personaje-imagen { left: 0; }

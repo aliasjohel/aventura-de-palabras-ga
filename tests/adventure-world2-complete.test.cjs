@@ -94,8 +94,14 @@ assert.match(app, /if \(tipo === "oasis"\) await liberarMaguitoDeTrampaEspejismo
 assert.match(app, /assets\/images\/ambiente\/desierto\/alacran-camina-1\.png/);
 assert.match(estilos, /\.escorpion-desierto-ambiente \{[\s\S]+width: clamp\(34px, 4\.3vw, 60px\)/);
 assert.match(app, /assets\/images\/ambiente\/desierto\/halcon-alas-abajo\.png/);
-assert.match(app, /assets\/images\/ambiente\/desierto\/lagartija-corriendo\.png/);
-assert.match(app, /assets\/images\/ambiente\/desierto\/lagartija-corriendo-2\.png/);
+for (let cuadro = 1; cuadro <= 4; cuadro += 1) {
+  const nombre = `lagartija-camina-${cuadro}.png`;
+  const archivo = path.join(raiz, "assets", "images", "ambiente", "desierto", nombre);
+  assert.ok(fs.existsSync(archivo), `Falta el cuadro ${cuadro} de la lagartija`);
+  assert.equal(fs.readFileSync(archivo)[25], 6, `${nombre} debe conservar transparencia RGBA`);
+  assert.match(app, new RegExp(nombre.replace(".", "\\.")));
+  assert.match(sw, new RegExp(nombre.replace(".", "\\.")));
+}
 assert.match(app, /assets\/images\/ambiente\/desierto\/pasto-seco-viento\.png/);
 assert.match(app, /actualizarVientoArenaMision\(\);\s*actualizarVidaDesiertoMision\(\)/);
 assert.match(app, /function prepararRondaOasisDesierto\(/);
@@ -117,10 +123,19 @@ assert.match(estilos, /@keyframes cruzarEscorpionDesierto/);
 assert.match(estilos, /@keyframes aletearHalconDesierto/);
 assert.match(estilos, /@keyframes caminarAlacranDesierto/);
 assert.match(estilos, /@keyframes correrLagartijaDesierto/);
-assert.match(estilos, /@keyframes alternarZancadaLagartija/);
-assert.match(estilos, /@keyframes alternarZancadaLagartijaAlterna/);
+assert.match(estilos, /@keyframes cicloCaminataLagartija/);
+assert.match(estilos, /\.cuadro-fauna-4\s*\{\s*animation-delay:\s*\.42s/);
 assert.match(estilos, /@keyframes mecerPastoDesierto/);
 assert.match(estilos, /\.escenario\.escenario-desierto\[data-mision-desierto/);
+for (const mision of [1, 2, 8, 9]) {
+  assert.match(
+    estilos,
+    new RegExp(`data-mision-desierto="${mision}"`),
+    `Falta elevar al Explorador en la mision ${mision} del desierto`,
+  );
+}
+assert.match(estilos, /--altura-explorador-desierto:\s*-2%/);
+assert.match(estilos, /--altura-explorador-desierto:\s*-4%/);
 assert.match(estilos, /\.trampa-espejismo-maguito/);
 assert.match(estilos, /\.aro-prision-espejismo/);
 assert.match(estilos, /@keyframes romperAroPrision/);

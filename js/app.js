@@ -8523,8 +8523,10 @@ function actualizarVidaDesiertoMision() {
     const lagartija = crearAnimalAnimadoDesierto(
       "lagartija-desierto-ambiente",
       [
-        "assets/images/ambiente/desierto/lagartija-corriendo.png",
-        "assets/images/ambiente/desierto/lagartija-corriendo-2.png",
+        "assets/images/ambiente/desierto/lagartija-camina-1.png",
+        "assets/images/ambiente/desierto/lagartija-camina-2.png",
+        "assets/images/ambiente/desierto/lagartija-camina-3.png",
+        "assets/images/ambiente/desierto/lagartija-camina-4.png",
       ],
       "Lagartija corriendo entre las dunas",
     );
