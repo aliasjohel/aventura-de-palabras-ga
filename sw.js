@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v163`;
+const CACHE_NAME = `${CACHE_PREFIX}v164`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -71,6 +71,7 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v160`,
   `${CACHE_PREFIX}v161`,
   `${CACHE_PREFIX}v162`,
+  `${CACHE_PREFIX}v163`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -106,6 +107,18 @@ const CORE_ASSETS = [
   "./assets/images/fondos/desierto-8.png",
   "./assets/images/fondos/desierto-9.png",
   "./assets/images/fondos/desierto-10.png",
+  "./assets/images/fondos/cumbres-1.png",
+  "./assets/images/fondos/cumbres-2.png",
+  "./assets/images/fondos/cumbres-3.png",
+  "./assets/images/fondos/cumbres-4.png",
+  "./assets/images/fondos/cumbres-5.png",
+  "./assets/images/fondos/cumbres-6.png",
+  "./assets/images/fondos/cumbres-7.png",
+  "./assets/images/fondos/cumbres-8.png",
+  "./assets/images/fondos/cumbres-9.png",
+  "./assets/images/fondos/cumbres-10.png",
+  "./assets/images/personajes/aventura/aeralis-liberada-v1.png",
+  "./assets/images/elements/cristal-celeste-v1.png",
   "./assets/images/ambiente/desierto/alacran-camina-1.png",
   "./assets/images/ambiente/desierto/alacran-camina-2.png",
   "./assets/images/ambiente/desierto/halcon-alas-arriba.png",
@@ -309,9 +322,21 @@ const CORE_ASSETS = [
  */
 const ASSET_REVISIONS = {
   "./": "20260820-personajes-mundo1-25",
-  "./index.html": "20260826-fauna-desierto-1",
-  "./css/styles.css": "20260826-posicion-explorador-desierto-2",
-  "./js/app.js": "20260826-cinematica-desierto-legible-1",
+  "./index.html": "20260826-cumbres-1",
+  "./css/styles.css": "20260826-cumbres-1",
+  "./js/app.js": "20260826-cumbres-1",
+  "./assets/images/fondos/cumbres-1.png": "20260826-cumbres-1",
+  "./assets/images/fondos/cumbres-2.png": "20260826-cumbres-1",
+  "./assets/images/fondos/cumbres-3.png": "20260826-cumbres-1",
+  "./assets/images/fondos/cumbres-4.png": "20260826-cumbres-1",
+  "./assets/images/fondos/cumbres-5.png": "20260826-cumbres-1",
+  "./assets/images/fondos/cumbres-6.png": "20260826-cumbres-1",
+  "./assets/images/fondos/cumbres-7.png": "20260826-cumbres-1",
+  "./assets/images/fondos/cumbres-8.png": "20260826-cumbres-1",
+  "./assets/images/fondos/cumbres-9.png": "20260826-cumbres-1",
+  "./assets/images/fondos/cumbres-10.png": "20260826-cumbres-1",
+  "./assets/images/personajes/aventura/aeralis-liberada-v1.png": "20260826-cumbres-1",
+  "./assets/images/elements/cristal-celeste-v1.png": "20260826-cumbres-1",
   "./assets/images/ambiente/desierto/alacran-camina-1.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/alacran-camina-2.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/halcon-alas-arriba.png": "20260826-fauna-desierto-1",

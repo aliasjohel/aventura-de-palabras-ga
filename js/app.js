@@ -12,6 +12,8 @@ const textoCristales = document.getElementById("textoCristales");
 const panelCristales = document.getElementById("panelCristales");
 const ranuraCristalBosque = document.getElementById("ranuraCristalBosque");
 const cristalPanelBosque = document.getElementById("cristalPanelBosque");
+const ranuraCristalCumbres = document.getElementById("ranuraCristalCumbres");
+const cristalPanelCumbres = document.getElementById("cristalPanelCumbres");
 const pantallaMenu = document.getElementById("pantallaMenu");
 const pantallaJuego = document.getElementById("pantallaJuego");
 const pantallaSalaVersus = document.getElementById("pantallaSalaVersus");
@@ -302,6 +304,15 @@ const pistaOasisDesierto = document.getElementById("pistaOasisDesierto");
 const puzzleEspejosDesierto = document.getElementById("puzzleEspejosDesierto");
 const rutaLuzEspejos = document.getElementById("rutaLuzEspejos");
 const botonesEspejosDesierto = [...document.querySelectorAll(".espejo-solar")];
+const puzzleCumbres = document.createElement("div");
+puzzleCumbres.id = "puzzleCumbres";
+puzzleCumbres.className = "puzzle-cumbres oculto";
+puzzleCumbres.setAttribute("role", "grid");
+puzzleCumbres.setAttribute("aria-label", "Prueba de Cumbres Celestes");
+puzzleEspejosDesierto.insertAdjacentElement("afterend", puzzleCumbres);
+let botonesPuzzleCumbres = [];
+let estadoPuzzleCumbres = [];
+let entradaPuzzleCumbres = [];
 const estadoPruebaBosque = document.getElementById("estadoPruebaBosque");
 const btnRepetirPruebaBosque = document.getElementById("btnRepetirPruebaBosque");
 const btnSalirPruebaBosque = document.getElementById("btnSalirPruebaBosque");
@@ -604,6 +615,7 @@ const intervaloSpriteCaminata = 150;
 const spritesCaminataPorEscenario = {
   0: crearRutasSpritesCaminata("bosque"),
   1: crearRutasSpritesCaminata("bosque"),
+  2: crearRutasSpritesCaminata("bosque"),
 };
 const spritesPortalPorEscenario = {
   0: crearRutasSpritesCaminata("portal-bosque", "explorador-portal"),
@@ -702,6 +714,18 @@ const escenasPorEscenario = [
       texto: "🪄 El Mago te espera para la prueba final por el Cristal Dorado.",
     },
   ],
+  [
+    { fondos: ["cumbres-1.png"], texto: "☁️ Descubre la palabra para dar tus primeros pasos más allá de las nubes." },
+    { fondos: ["cumbres-2.png"], texto: "🌬️ Haz que el viento recuerde el camino y reconstruya el puente celeste." },
+    { fondos: ["cumbres-3.png"], texto: "🐉 Resuelve la palabra antes de que el pequeño guardián vuelva a atacar." },
+    { fondos: ["cumbres-4.png"], texto: "🔔 Repite la melodía correcta de las campanas del cielo." },
+    { fondos: ["cumbres-5.png"], texto: "🏝️ Ordena las islas a la deriva y encuentra una ruta segura." },
+    { fondos: ["cumbres-6.png"], texto: "🪺 La palabra secreta revelará a quién pertenece el nido vacío." },
+    { fondos: ["cumbres-7.png"], texto: "⚡ Activa los pararrayos para debilitar la tormenta encadenada." },
+    { fondos: ["cumbres-8.png"], texto: "🏛️ Los cuatro vientos abrirán el Santuario de la Matriarca." },
+    { fondos: ["cumbres-9.png"], texto: "⛓️ Rompe los cuatro sellos y libera a Aeralis de su prisión." },
+    { fondos: ["cumbres-10.png"], texto: "🐲 Nimbus te desafía a demostrar que protegerás el Cristal Celeste." },
+  ],
 ];
 
 document.addEventListener("touchstart", desbloquearAudio, { once: true });
@@ -752,6 +776,21 @@ const aventura = [
       { palabra: "SERPIENTE", pista: "Reptil que se arrastra." },
       { palabra: "CALOR", pista: "Sensación típica del desierto." },
       { palabra: "BRUJULA", pista: "Sirve para orientarse." },
+    ],
+  },
+  {
+    nombre: "☁️ Cumbres Celestes",
+    palabras: [
+      { palabra: "NUBE", pista: "Flota en el cielo y puede traer lluvia." },
+      { palabra: "VIENTO", pista: "Mueve las banderas y guía los puentes celestes." },
+      { palabra: "CIMA", pista: "Es la parte más alta de una montaña." },
+      { palabra: "AGUILA", pista: "Ave de gran vista que vuela entre las cumbres." },
+      { palabra: "RAYO", pista: "Descarga brillante que nace en una tormenta." },
+      { palabra: "ALTURA", pista: "Distancia que separa algo del suelo." },
+      { palabra: "TEMPLO", pista: "Edificio antiguo dedicado a un poder sagrado." },
+      { palabra: "ISLA", pista: "Tierra rodeada de agua... o de nubes." },
+      { palabra: "TORMENTA", pista: "Trae viento, nubes oscuras, lluvia y rayos." },
+      { palabra: "CRISTAL", pista: "Tesoro luminoso que equilibra cada mundo." },
     ],
   },
 ];
@@ -882,6 +921,19 @@ const historiaDesierto = [
   },
 ];
 
+const historiaCumbres = [
+  { capitulo: "Misión 1", titulo: "Más allá de las nubes", texto: "El portal deposita al Explorador sobre una isla suspendida en un océano de nubes. A lo lejos, una tormenta imposible rodea las ruinas de Cumbres Celestes y el camino de regreso se desvanece." },
+  { capitulo: "Misión 2", titulo: "El puente que olvidó el viento", texto: "Los fragmentos de un puente antiguo flotan fuera de lugar. Sus canales de aire aún conservan magia: si vuelven a orientarse, el viento podrá reconstruir el paso." },
+  { capitulo: "Misión 3", titulo: "El pequeño guardián", texto: "Un dragoncito azul desciende desde las alturas. Se llama Nimbus y, convencido de que el Explorador viene a robar el cristal de su familia, defiende el sendero con un rugido mucho más valiente que feroz." },
+  { capitulo: "Misión 4", titulo: "Las campanas del cielo", texto: "Nimbus desaparece entre las nubes. Para seguirlo, el Explorador debe despertar cuatro campanas de cristal y repetir la melodía que abre las corrientes del firmamento." },
+  { capitulo: "Misión 5", titulo: "Islas a la deriva", texto: "La tormenta desordena las islas y amenaza con hacerlas chocar. Sus sombras y corrientes revelan un orden seguro, pero habrá que actuar antes de que el camino vuelva a separarse." },
+  { capitulo: "Misión 6", titulo: "El nido vacío", texto: "En un refugio oculto aparece un nido pequeño, juguetes tallados y restos de un cascarón. El temible guardián no es más que una cría que intenta encontrar a su madre desaparecida." },
+  { capitulo: "Misión 7", titulo: "La tormenta encadenada", texto: "Nimbus regresa y acepta la ayuda del Explorador. Juntos descubren que la tormenta está sujeta por antiguas cadenas y que sus rayos alimentan la prisión. Los pararrayos pueden invertir esa energía." },
+  { capitulo: "Misión 8", titulo: "El santuario de la Matriarca", texto: "Tras cruzar la tormenta llegan al santuario de Aeralis, Matriarca del Firmamento. Cuatro puertas, una por cada viento, protegen la cámara donde fue sellada." },
+  { capitulo: "Misión 9", titulo: "La prisión del firmamento", texto: "Aeralis utilizó el Cristal Celeste para contener una tormenta corrupta, pero quedó atrapada dentro de ella. El Explorador y Nimbus deben romper los cuatro sellos sin liberar la oscuridad que contienen." },
+  { capitulo: "Misión 10", titulo: "El juramento del pequeño guardián", texto: "Con Aeralis libre, Nimbus comprende que el Explorador no es un ladrón. Aun así propone una última batalla de palabras: sólo entregará el cristal a quien jure protegerlo en los mundos que faltan." },
+];
+
 const estadosExploradorPorEscenario = {
   0: [
     "feliz", // El Bosque Encantado
@@ -907,6 +959,7 @@ const estadosExploradorPorEscenario = {
     "preocupado",
     "feliz",
   ],
+  2: ["feliz", "pensando", "preocupado", "pensando", "nervioso", "pensando", "preocupado", "feliz", "preocupado", "feliz"],
 };
 
 let palabraSecreta = "";
@@ -920,6 +973,7 @@ let monedas = 0;
 let experiencia = 0;
 let cristalesObtenidos = 0;
 let mundoDosCompletado = false;
+let mundoTresCompletado = false;
 let desafioActual = 1;
 let desafiosCompletados = 0;
 let sonidoNarrativoPendiente = "";
@@ -996,6 +1050,7 @@ let maximoEscenarioDesbloqueado = 0;
 const clavePersonajesDesbloqueados = "personajesDesbloqueadosAventuraGA";
 let guardianaDesbloqueada = false;
 let magoDesbloqueado = false;
+let dragonDesbloqueado = false;
 let hombreLoboDescubierto = false;
 let dueloAventuraActivo = null;
 const desafiosPorMision = 3;
@@ -1770,10 +1825,25 @@ function continuarAventura() {
   btnSiguiente.classList.add("oculto");
   limpiarCinematicaSantuario();
 
-  if (mundoDosCompletado) {
+  if (mundoTresCompletado) {
     detenerSonidos();
     mostrarPantalla(pantallaMenu);
     actualizarMenuPrincipal();
+    return;
+  }
+
+  if (mundoDosCompletado && escenarioActual === 1) {
+    escenarioActual = 2;
+    misionActual = 0;
+    desafioActual = 1;
+    desafiosCompletados = 0;
+    palabrasUsadasEnMision = [];
+    historiaMisionPendiente = false;
+    maximoEscenarioDesbloqueado = Math.max(maximoEscenarioDesbloqueado, 2);
+    guardarProgreso();
+    void iniciarMisionAventura().then(() => {
+      mostrarHistoriaMision({ misionYaCargada: true });
+    });
     return;
   }
 
@@ -1805,9 +1875,11 @@ function cargarPersonajesDesbloqueados() {
     );
     guardianaDesbloqueada = Array.isArray(personajes) && personajes.includes("guardiana");
     magoDesbloqueado = Array.isArray(personajes) && personajes.includes("mago");
+    dragonDesbloqueado = Array.isArray(personajes) && personajes.includes("dragon");
   } catch {
     guardianaDesbloqueada = false;
     magoDesbloqueado = false;
+    dragonDesbloqueado = false;
   }
 }
 
@@ -1815,6 +1887,7 @@ function personajeDisponibleVersus(personaje) {
   if (modoPruebasActivo) return true;
   if (personaje === "guardiana") return guardianaDesbloqueada;
   if (personaje === "mago") return magoDesbloqueado;
+  if (personaje === "dragon") return dragonDesbloqueado;
   return true;
 }
 
@@ -1853,7 +1926,11 @@ function actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada = false }
     tarjeta.disabled = seleccionBloqueada || !disponible;
     tarjeta.setAttribute("aria-disabled", `${seleccionBloqueada || !disponible}`);
     if (estado) {
-      const mundoRequerido = tarjeta.dataset.personaje === "mago" ? 2 : 1;
+      const mundoRequerido = tarjeta.dataset.personaje === "dragon"
+        ? 3
+        : tarjeta.dataset.personaje === "mago"
+          ? 2
+          : 1;
       estado.textContent = disponible
         ? "DISPONIBLE"
         : `COMPLETÁ EL MUNDO ${mundoRequerido}`;
@@ -2812,6 +2889,8 @@ btnRepetirPruebaBosque.addEventListener("click", () => {
     iniciarPuzzleOasisDesierto();
   } else if (pruebaEspecialBosqueActiva === "espejos") {
     iniciarPuzzleEspejosDesierto();
+  } else if (["puente-celeste", "campanas-celestes", "pararrayos-celestes", "sellos-aeralis"].includes(pruebaEspecialBosqueActiva)) {
+    iniciarPuzzleCumbres(pruebaEspecialBosqueActiva);
   }
 });
 
@@ -4160,7 +4239,7 @@ const personajesVersus = {
     final: "prision-esmeralda",
   },
   dragon: {
-    nombre: "Dragón",
+    nombre: "Nimbus",
     base: srcDragonBaseVersus,
     ataque: "rugido-dragon",
     final: "llamado-matriarca",
@@ -4252,6 +4331,14 @@ const configuracionesDuelosAventura = Object.freeze({
     etiqueta: "PRUEBA FINAL DEL CRISTAL DORADO",
     arena: "assets/images/fondos/desierto-10.png",
     altArena: "Santuario del Cristal Dorado en el Desierto Perdido",
+  },
+  nimbus_cumbres: {
+    escenario: 2,
+    mision: 9,
+    rival: "dragon",
+    etiqueta: "JURAMENTO DEL PEQUEÑO GUARDIÁN",
+    arena: "assets/images/fondos/cumbres-10.png",
+    altArena: "Arena celeste del juramento de Nimbus",
   },
 });
 
@@ -4392,7 +4479,7 @@ async function completarDueloAventura() {
 
     bloquearTeclado();
     btnPista.disabled = true;
-    btnSiguiente.textContent = "☁️ Cumbres Celestes · Próximamente";
+    btnSiguiente.textContent = "☁️ Entrar a Cumbres Celestes";
     btnSiguiente.classList.remove("oculto");
     mensajePersonaje.classList.remove("oculto");
     mensajePersonaje.textContent =
@@ -4402,11 +4489,120 @@ async function completarDueloAventura() {
     return;
   }
 
+  if (duelo.tipo === "nimbus_cumbres") {
+    desafiosCompletados = desafiosPorMision;
+    cristalesObtenidos = Math.max(cristalesObtenidos, 3);
+    mundoTresCompletado = true;
+    historiaMisionPendiente = false;
+    guardarDesbloqueoNimbus();
+    actualizarJugador();
+    actualizarDisponibilidadPersonajesVersus();
+    guardarProgreso();
+    actualizarPersonajesNarrativosCumbres();
+    await reproducirCinematicaFinalCumbres();
+    bloquearTeclado();
+    btnPista.disabled = true;
+    btnSiguiente.textContent = "❄️ Próximo destino: el mundo de Nivor";
+    btnSiguiente.classList.remove("oculto");
+    mensajePersonaje.classList.remove("oculto");
+    mensajePersonaje.textContent =
+      "💎 Aeralis te confió el Cristal Celeste. Nimbus ya está disponible en Versus.";
+    guardarProgreso();
+    return;
+  }
+
   await presentarDesbloqueoGuardianaBosque();
   desafiosCompletados = desafiosPorMision - 1;
   portalAbierto = true;
   guardarProgreso();
   await completarAperturaPortal();
+}
+
+async function reproducirCinematicaFinalCumbres() {
+  const escenas = [
+    {
+      fondo: "cumbres-10.png",
+      texto: "Nimbus baja la cabeza. La batalla no era por orgullo: quería saber si el Explorador protegería a su familia.",
+      nimbus: true,
+    },
+    {
+      fondo: "cumbres-9.png",
+      texto: "Su llamado atraviesa las nubes. Los últimos sellos se apagan y Aeralis, la Matriarca del Firmamento, extiende por fin sus alas.",
+      aeralis: true,
+    },
+    {
+      fondo: "cumbres-8.png",
+      texto: "Aeralis reconoce el Cristal Verde y el Cristal Dorado. El viajero no vino a robar: está restaurando el equilibrio de los cinco mundos.",
+      aeralis: true,
+      nimbus: true,
+    },
+    {
+      fondo: "cumbres-10.png",
+      texto: "La Matriarca libera el Cristal Celeste y lo confía al Explorador. Nimbus promete acompañar su juramento desde la arena Versus.",
+      aeralis: true,
+      nimbus: true,
+      cristal: true,
+    },
+    {
+      fondo: "cumbres-1.png",
+      texto: "Más allá del nuevo portal sopla un viento helado. Entre la nieve espera Nivor... y el cuarto cristal.",
+      cristal: true,
+    },
+  ];
+  const capa = document.createElement("div");
+  capa.className = "cinematica-final-cumbres";
+  capa.innerHTML = `
+    <img class="cinematica-cumbres-fondo" alt="">
+    <div class="cinematica-cumbres-personajes" aria-hidden="true"></div>
+    <p class="cinematica-cumbres-texto"></p>
+    <button type="button" class="cinematica-cumbres-saltar">Saltar</button>`;
+  document.body.appendChild(capa);
+  const fondo = capa.querySelector(".cinematica-cumbres-fondo");
+  const personajes = capa.querySelector(".cinematica-cumbres-personajes");
+  const texto = capa.querySelector(".cinematica-cumbres-texto");
+  let saltar = false;
+  capa.querySelector(".cinematica-cumbres-saltar").addEventListener("click", () => {
+    saltar = true;
+  });
+
+  try {
+    for (const escena of escenas) {
+      if (saltar) break;
+      capa.classList.remove("visible");
+      await esperarMovimiento(prefiereReducirMovimiento.matches ? 80 : 350);
+      fondo.src = `assets/images/fondos/${escena.fondo}`;
+      personajes.replaceChildren();
+      if (escena.aeralis) {
+        const imagen = document.createElement("img");
+        imagen.className = "cinematica-aeralis";
+        imagen.src = "assets/images/personajes/aventura/aeralis-liberada-v1.png";
+        personajes.appendChild(imagen);
+      }
+      if (escena.nimbus) {
+        const imagen = document.createElement("img");
+        imagen.className = "cinematica-nimbus";
+        imagen.src = "assets/images/personajes/versus/dragon-victoria.png";
+        personajes.appendChild(imagen);
+      }
+      if (escena.cristal) {
+        const imagen = document.createElement("img");
+        imagen.className = "cinematica-cristal-celeste";
+        imagen.src = "assets/images/elements/cristal-celeste-v1.png";
+        personajes.appendChild(imagen);
+      }
+      texto.textContent = escena.texto;
+      capa.classList.add("visible");
+      const duracion = prefiereReducirMovimiento.matches ? 1200 : 5200;
+      const paso = 200;
+      for (let transcurrido = 0; transcurrido < duracion && !saltar; transcurrido += paso) {
+        await esperarMovimiento(paso);
+      }
+    }
+  } finally {
+    capa.classList.remove("visible");
+    await esperarMovimiento(250);
+    capa.remove();
+  }
 }
 
 const victimasFaucesVersus = {
@@ -5907,6 +6103,11 @@ function actualizarRelojesVersus() {
   actualizarTiemposVersus();
 }
 
+function guardarDesbloqueoNimbus() {
+  dragonDesbloqueado = true;
+  guardarPersonajeDesbloqueado("dragon");
+}
+
 function actualizarTiemposVersus() {
   actualizarTiempoPersonalVersus(
     tiempoVersusUno,
@@ -7210,7 +7411,7 @@ function actualizarSelectorMisionesPruebas() {
         ? historiaBosque[indice]
         : mundo === 1
           ? historiaDesierto[indice]
-          : null;
+          : historiaCumbres[indice];
     opcion.value = `${indice}`;
     opcion.textContent = historia
       ? `Misión ${indice + 1} · ${historia.titulo}`
@@ -7232,6 +7433,7 @@ function actualizarSelectorMisionesPruebas() {
 function obtenerCantidadMisiones(escenario) {
   if (escenario === 0) return historiaBosque.length;
   if (escenario === 1) return historiaDesierto.length;
+  if (escenario === 2) return historiaCumbres.length;
   return aventura[escenario]?.palabras.length || 1;
 }
 
@@ -7262,10 +7464,14 @@ function iniciarMisionSeleccionadaPruebas() {
   sonidoNarrativoPendiente = "";
   historiaMisionPendiente = false;
   portalAbierto = false;
-  mundoDosCompletado = false;
+  mundoDosCompletado = escenarioActual >= 2;
+  mundoTresCompletado = false;
 
   if (escenarioActual === 0 && misionActual >= 9) {
     cristalesObtenidos = Math.max(cristalesObtenidos, 1);
+  }
+  if (escenarioActual === 2) {
+    cristalesObtenidos = Math.max(cristalesObtenidos, 2);
   }
 
   actualizarJugador();
@@ -7394,6 +7600,7 @@ function reiniciarEstadoAventura() {
   experiencia = 0;
   cristalesObtenidos = 0;
   mundoDosCompletado = false;
+  mundoTresCompletado = false;
   hombreLoboDescubierto = false;
   dueloAventuraActivo = null;
   maximoEscenarioDesbloqueado = 0;
@@ -7445,6 +7652,14 @@ function obtenerHistoriaMision() {
           "El Explorador avanza entre dunas mientras el viento oculta los secretos del Cristal Dorado.",
       }
     );
+  }
+
+  if (escenarioActual === 2) {
+    return historiaCumbres[misionActual] || {
+      capitulo: `Misión ${misionActual + 1}`,
+      titulo: "Cumbres Celestes",
+      texto: "El Explorador avanza entre islas flotantes mientras Nimbus busca a Aeralis.",
+    };
   }
 
   return {
@@ -8854,8 +9069,9 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   programarPrecargaRecursosSecundarios();
 
   if (pruebaEspecial) {
-    mensajePersonaje.textContent =
-      escenarioActual === 1
+    mensajePersonaje.textContent = escenarioActual === 2
+      ? "Las Cumbres prepararon una prueba especial para dominar el viento."
+      : escenarioActual === 1
         ? "El desierto preparó una prueba especial para revelar el camino."
         : "El bosque preparó una prueba especial para abrir el camino.";
     abrirPruebaEspecialBosque(pruebaEspecial);
@@ -8867,7 +9083,9 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
       ? "La Guardiana del Bosque espera frente al portal apagado."
       : dueloAventura === "mago_desierto"
         ? "El Mago te espera para la prueba final del Cristal Dorado."
-        : "El Guardián de la Luna te desafía a demostrar tu valor.";
+        : dueloAventura === "nimbus_cumbres"
+          ? "Nimbus te espera para el juramento final del Cristal Celeste."
+          : "El Guardián de la Luna te desafía a demostrar tu valor.";
     if (presentarMision) await presentarInicioMision();
     requestAnimationFrame(() => void presentarDueloAventura(dueloAventura));
     return Promise.resolve();
@@ -8952,6 +9170,7 @@ function actualizarJugador() {
 function actualizarPanelCristales() {
   const cristalBosqueObtenido = cristalesObtenidos > 0;
   const cristalDesiertoObtenido = cristalesObtenidos > 1;
+  const cristalCumbresObtenido = cristalesObtenidos > 2;
 
   cristalPanelBosque.classList.toggle("oculto", !cristalBosqueObtenido);
   ranuraCristalBosque.classList.toggle("obtenida", cristalBosqueObtenido);
@@ -8970,6 +9189,15 @@ function actualizarPanelCristales() {
       ? "Cristal Dorado del Desierto obtenido"
       : "Cristal Dorado del Desierto bloqueado",
   );
+  cristalPanelCumbres?.classList.toggle("oculto", !cristalCumbresObtenido);
+  ranuraCristalCumbres?.classList.toggle("obtenida", cristalCumbresObtenido);
+  ranuraCristalCumbres?.classList.toggle("bloqueada", !cristalCumbresObtenido);
+  ranuraCristalCumbres?.setAttribute(
+    "aria-label",
+    cristalCumbresObtenido
+      ? "Cristal Celeste de Cumbres Celestes obtenido"
+      : "Cristal Celeste de Cumbres Celestes bloqueado",
+  );
 }
 
 function guardarProgreso() {
@@ -8986,6 +9214,7 @@ function guardarProgreso() {
     muralSantuarioCompletado,
     portalAbierto,
     mundoDosCompletado,
+    mundoTresCompletado,
     hombreLoboDescubierto,
     maximoEscenarioDesbloqueado,
   };
@@ -9038,6 +9267,8 @@ function cargarProgreso() {
   portalAbierto = progreso.portalAbierto === true;
   mundoDosCompletado =
     progreso.mundoDosCompletado === true || cristalesObtenidos > 1;
+  mundoTresCompletado =
+    progreso.mundoTresCompletado === true || cristalesObtenidos > 2;
   hombreLoboDescubierto = progreso.hombreLoboDescubierto === true
     || escenarioActual > 0
     || (escenarioActual === 0 && misionActual > 5);
@@ -9057,6 +9288,9 @@ function cargarProgreso() {
   }
   if (mundoDosCompletado) {
     guardarDesbloqueoMago();
+  }
+  if (mundoTresCompletado) {
+    guardarDesbloqueoNimbus();
   }
 
   actualizarJugador();
@@ -9164,20 +9398,68 @@ function actualizarEscenaPorMision() {
     "escenario-desierto",
     escenarioActual === 1,
   );
+  contenedorEscenario.classList.toggle(
+    "escenario-cumbres",
+    escenarioActual === 2,
+  );
   if (escenarioActual === 1) {
     contenedorEscenario.dataset.misionDesierto = `${misionActual + 1}`;
   } else {
     delete contenedorEscenario.dataset.misionDesierto;
   }
+  if (escenarioActual === 2) {
+    contenedorEscenario.dataset.misionCumbres = `${misionActual + 1}`;
+  } else {
+    delete contenedorEscenario.dataset.misionCumbres;
+  }
   fondoEscenario.src = `assets/images/fondos/${nombreFondo}`;
-  fondoEscenario.alt =
-    escenarioActual === 1 ? "Desierto Perdido" : "Bosque Encantado";
+  fondoEscenario.alt = escenarioActual === 2
+    ? "Cumbres Celestes"
+    : escenarioActual === 1
+      ? "Desierto Perdido"
+      : "Bosque Encantado";
   actualizarBloqueoTroncoMision();
   actualizarVientoArenaMision();
   actualizarVidaDesiertoMision();
   actualizarLlegadaDesiertoMision();
   actualizarPersonajesNarrativosDesierto();
+  actualizarPersonajesNarrativosCumbres();
   volverEstadoBaseExplorador();
+}
+
+function actualizarPersonajesNarrativosCumbres() {
+  contenedorEscenario
+    .querySelectorAll(".personaje-narrativo-cumbres, .ambiente-cumbres")
+    .forEach((elemento) => elemento.remove());
+  if (escenarioActual !== 2) return;
+
+  const ambiente = document.createElement("div");
+  ambiente.className = "ambiente-cumbres";
+  ambiente.setAttribute("aria-hidden", "true");
+  ambiente.innerHTML = "<i></i><i></i><i></i>";
+  contenedorEscenario.appendChild(ambiente);
+
+  if (misionActual >= 2) {
+    const nimbus = document.createElement("img");
+    nimbus.className = "personaje-narrativo-cumbres nimbus-cumbres";
+    nimbus.src = misionActual === 9
+      ? "assets/images/personajes/versus/dragon-victoria.png"
+      : misionActual === 2
+        ? "assets/images/personajes/versus/dragon-ataque.png"
+        : "assets/images/personajes/versus/dragon-base.png";
+    nimbus.alt = "Nimbus, el pequeño dragón guardián";
+    contenedorEscenario.appendChild(nimbus);
+  }
+
+  if (misionActual === 9 && mundoTresCompletado) {
+    const aeralis = document.createElement("img");
+    aeralis.className = "personaje-narrativo-cumbres aeralis-cumbres";
+    aeralis.src = "assets/images/personajes/aventura/aeralis-liberada-v1.png";
+    aeralis.alt = mundoTresCompletado
+      ? "Aeralis liberada de la tormenta"
+      : "Aeralis atrapada por los sellos del firmamento";
+    contenedorEscenario.appendChild(aeralis);
+  }
 }
 
 async function presentarInicioMision() {
@@ -10279,6 +10561,10 @@ function obtenerTipoPruebaEspecial(escenario, mision) {
   if (escenario === 1 && mision === 2) return "vientos";
   if (escenario === 1 && mision === 4) return "oasis";
   if (escenario === 1 && mision === 7) return "espejos";
+  if (escenario === 2 && mision === 1) return "puente-celeste";
+  if (escenario === 2 && mision === 3) return "campanas-celestes";
+  if (escenario === 2 && mision === 6) return "pararrayos-celestes";
+  if (escenario === 2 && mision === 8) return "sellos-aeralis";
   return "";
 }
 
@@ -10297,6 +10583,9 @@ function obtenerDueloAventuraPendiente() {
   if (escenarioActual === 1 && misionActual === 9 && !mundoDosCompletado) {
     return "mago_desierto";
   }
+  if (escenarioActual === 2 && misionActual === 9 && !mundoTresCompletado) {
+    return "nimbus_cumbres";
+  }
   return "";
 }
 
@@ -10310,12 +10599,20 @@ function abrirPruebaEspecialBosque(tipo) {
     "prueba-desierto",
     ["vientos", "oasis", "espejos"].includes(tipo),
   );
+  const esPruebaCumbres = [
+    "puente-celeste",
+    "campanas-celestes",
+    "pararrayos-celestes",
+    "sellos-aeralis",
+  ].includes(tipo);
+  modalPruebaBosque.classList.toggle("prueba-cumbres", esPruebaCumbres);
   pantallaJuego.classList.add("prueba-bosque-activa");
   puzzleRamasDeslizante.classList.toggle("oculto", tipo !== "ramas");
   puzzleMemoriaLobos.classList.toggle("oculto", tipo !== "lobos");
   puzzleVientosDesierto.classList.toggle("oculto", tipo !== "vientos");
   puzzleOasisDesierto.classList.toggle("oculto", tipo !== "oasis");
   puzzleEspejosDesierto.classList.toggle("oculto", tipo !== "espejos");
+  puzzleCumbres.classList.toggle("oculto", !esPruebaCumbres);
   btnRepetirPruebaBosque.disabled = false;
   btnSalirPruebaBosque.disabled = false;
 
@@ -10359,6 +10656,11 @@ function abrirPruebaEspecialBosque(tipo) {
     return;
   }
 
+  if (esPruebaCumbres) {
+    iniciarPuzzleCumbres(tipo);
+    return;
+  }
+
   etiquetaPruebaBosque.textContent = "PRUEBA DE LOS AULLIDOS";
   tituloPruebaBosque.textContent = "Recordá el orden de las miradas";
   instruccionPruebaBosque.textContent =
@@ -10379,14 +10681,150 @@ function cerrarPruebaEspecialBosque() {
   botonesVientosDesierto.forEach((boton) => (boton.disabled = true));
   botonesOasisDesierto.forEach((boton) => (boton.disabled = true));
   botonesEspejosDesierto.forEach((boton) => (boton.disabled = true));
+  botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
   modalPruebaBosque.classList.add("oculto");
-  modalPruebaBosque.classList.remove("prueba-completada", "prueba-desierto");
+  modalPruebaBosque.classList.remove(
+    "prueba-completada",
+    "prueba-desierto",
+    "prueba-cumbres",
+  );
   pantallaJuego.classList.remove("prueba-bosque-activa");
   const focoAnterior = focoPrevioPruebaBosque;
   focoPrevioPruebaBosque = null;
   pruebaEspecialBosqueActiva = "";
   pruebaBosqueEnModoDemo = false;
   focoAnterior?.focus?.();
+}
+
+const configuracionPuzzlesCumbres = Object.freeze({
+  "puente-celeste": {
+    etiqueta: "PRUEBA DEL PUENTE CELESTE",
+    titulo: "Orientá los cuatro canales de viento",
+    instruccion: "Tocá cada runa hasta que las corrientes formen la secuencia norte, este, sur y oeste.",
+    iconos: ["↑", "→", "↓", "←"],
+    objetivo: [0, 1, 2, 3],
+  },
+  "campanas-celestes": {
+    etiqueta: "PRUEBA DE LAS CAMPANAS",
+    titulo: "Repetí la melodía del cielo",
+    instruccion: "Observá las cuatro campanas y repetí su orden cuando termine la melodía.",
+    iconos: ["🔔", "🔔", "🔔", "🔔"],
+    objetivo: [0, 2, 3, 1],
+  },
+  "pararrayos-celestes": {
+    etiqueta: "PRUEBA DE LA TORMENTA",
+    titulo: "Invertí la energía de los pararrayos",
+    instruccion: "Encendé el primero, el tercero y el cuarto. El segundo debe permanecer apagado.",
+    iconos: ["⚡", "⚡", "⚡", "⚡"],
+    objetivo: [1, 0, 1, 1],
+  },
+  "sellos-aeralis": {
+    etiqueta: "PRISIÓN DEL FIRMAMENTO",
+    titulo: "Rompé los cuatro sellos de Aeralis",
+    instruccion: "Liberá los sellos en el orden que marca el viento: este, oeste, norte y sur.",
+    iconos: ["N", "E", "S", "O"],
+    objetivo: [1, 3, 0, 2],
+  },
+});
+
+function iniciarPuzzleCumbres(tipo) {
+  const configuracion = configuracionPuzzlesCumbres[tipo];
+  if (!configuracion || pruebaEspecialBosqueActiva !== tipo) return;
+  etiquetaPruebaBosque.textContent = configuracion.etiqueta;
+  tituloPruebaBosque.textContent = configuracion.titulo;
+  instruccionPruebaBosque.textContent = configuracion.instruccion;
+  btnRepetirPruebaBosque.textContent = tipo === "campanas-celestes"
+    ? "🔔 Escuchar de nuevo"
+    : "↻ Reiniciar prueba";
+  entradaPuzzleCumbres = [];
+  estadoPuzzleCumbres = tipo === "puente-celeste"
+    ? [2, 3, 0, 1]
+    : [0, 0, 0, 0];
+  puzzleCumbres.replaceChildren();
+  botonesPuzzleCumbres = configuracion.iconos.map((icono, indice) => {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.textContent = tipo === "puente-celeste"
+      ? configuracion.iconos[estadoPuzzleCumbres[indice]]
+      : icono;
+    boton.setAttribute("aria-label", `${configuracion.titulo}, control ${indice + 1}`);
+    boton.addEventListener("click", () => accionarPuzzleCumbres(tipo, indice));
+    puzzleCumbres.appendChild(boton);
+    return boton;
+  });
+  estadoPruebaBosque.textContent = tipo === "campanas-celestes"
+    ? "Escuchá y observá la melodía..."
+    : "La corriente todavía no está alineada.";
+  if (tipo === "campanas-celestes") void mostrarSecuenciaPuzzleCumbres(configuracion.objetivo);
+  else botonesPuzzleCumbres[0]?.focus();
+}
+
+async function mostrarSecuenciaPuzzleCumbres(secuencia) {
+  const marca = ++secuenciaPruebaBosque;
+  botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
+  entradaPuzzleCumbres = [];
+  await esperarMovimiento(450);
+  for (const indice of secuencia) {
+    if (marca !== secuenciaPruebaBosque || pruebaEspecialBosqueActiva !== "campanas-celestes") return;
+    botonesPuzzleCumbres[indice].classList.add("activo");
+    reproducirSonido("colocarPieza");
+    await esperarMovimiento(520);
+    botonesPuzzleCumbres[indice].classList.remove("activo");
+    await esperarMovimiento(180);
+  }
+  botonesPuzzleCumbres.forEach((boton) => (boton.disabled = false));
+  estadoPruebaBosque.textContent = "Ahora repetí la melodía.";
+  botonesPuzzleCumbres[0]?.focus();
+}
+
+function accionarPuzzleCumbres(tipo, indice) {
+  const configuracion = configuracionPuzzlesCumbres[tipo];
+  if (!configuracion || pruebaEspecialBosqueActiva !== tipo) return;
+  reproducirSonido("colocarPieza");
+
+  if (tipo === "puente-celeste") {
+    estadoPuzzleCumbres[indice] = (estadoPuzzleCumbres[indice] + 1) % 4;
+    botonesPuzzleCumbres[indice].textContent = configuracion.iconos[estadoPuzzleCumbres[indice]];
+    botonesPuzzleCumbres[indice].classList.toggle(
+      "correcto",
+      estadoPuzzleCumbres[indice] === configuracion.objetivo[indice],
+    );
+    if (estadoPuzzleCumbres.every((valor, posicion) => valor === configuracion.objetivo[posicion])) {
+      estadoPruebaBosque.textContent = "¡El viento recordó el puente!";
+      void completarPruebaEspecialBosque(tipo);
+    }
+    return;
+  }
+
+  if (tipo === "pararrayos-celestes") {
+    estadoPuzzleCumbres[indice] = estadoPuzzleCumbres[indice] ? 0 : 1;
+    botonesPuzzleCumbres[indice].classList.toggle("activo", Boolean(estadoPuzzleCumbres[indice]));
+    if (estadoPuzzleCumbres.every((valor, posicion) => valor === configuracion.objetivo[posicion])) {
+      estadoPruebaBosque.textContent = "¡La energía de la tormenta fue invertida!";
+      void completarPruebaEspecialBosque(tipo);
+    }
+    return;
+  }
+
+  entradaPuzzleCumbres.push(indice);
+  const posicion = entradaPuzzleCumbres.length - 1;
+  botonesPuzzleCumbres[indice].classList.add("activo");
+  setTimeout(() => botonesPuzzleCumbres[indice]?.classList.remove("activo"), 240);
+  if (indice !== configuracion.objetivo[posicion]) {
+    entradaPuzzleCumbres = [];
+    botonesPuzzleCumbres[indice].classList.add("error");
+    setTimeout(() => botonesPuzzleCumbres[indice]?.classList.remove("error"), 420);
+    estadoPruebaBosque.textContent = tipo === "sellos-aeralis"
+      ? "El sello rechazó el orden. Empezá por el viento del este."
+      : "Esa nota no seguía la melodía. Probá otra vez.";
+    return;
+  }
+  if (entradaPuzzleCumbres.length === configuracion.objetivo.length) {
+    estadoPruebaBosque.textContent = tipo === "sellos-aeralis"
+      ? "¡Los cuatro sellos se rompieron! Aeralis es libre."
+      : "¡Las campanas abrieron la corriente celeste!";
+    void completarPruebaEspecialBosque(tipo);
+  }
 }
 
 function iniciarPuzzleRamasDeslizante() {
@@ -11070,6 +11508,7 @@ async function completarPruebaEspecialBosque(tipo) {
   botonesVientosDesierto.forEach((boton) => (boton.disabled = true));
   botonesOasisDesierto.forEach((boton) => (boton.disabled = true));
   botonesEspejosDesierto.forEach((boton) => (boton.disabled = true));
+  botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
   modalPruebaBosque.classList.add("prueba-completada");
   cambiarPersonaje("celebrando");
   reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);

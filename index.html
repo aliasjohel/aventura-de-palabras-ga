@@ -33,7 +33,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260821-desierto-puzzles-8">
+    <link rel="stylesheet" href="css/styles.css?v=20260826-cumbres-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -251,7 +251,12 @@
                         src="assets/images/elements/cristal-sabiduria-dorado-v2.png" alt="Cristal Dorado del Desierto">
                     <span class="marca-ranura" aria-hidden="true">2</span>
                 </span>
-                <span class="ranura-cristal bloqueada" title="Próximo mundo" aria-label="Cristal bloqueado">◆</span>
+                <span id="ranuraCristalCumbres" class="ranura-cristal ranura-cumbres bloqueada"
+                    title="Cumbres Celestes" aria-label="Cristal Celeste bloqueado">
+                    <img id="cristalPanelCumbres" class="cristal-panel cristal-panel-celeste oculto"
+                        src="assets/images/elements/cristal-celeste-v1.png" alt="Cristal Celeste">
+                    <span class="marca-ranura" aria-hidden="true">3</span>
+                </span>
                 <span class="ranura-cristal bloqueada" title="Próximo mundo" aria-label="Cristal bloqueado">◆</span>
                 <span class="ranura-cristal bloqueada" title="Próximo mundo" aria-label="Cristal bloqueado">◆</span>
             </div>
@@ -611,8 +616,8 @@
                     <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
                         data-personaje="dragon">
                         <span class="estado-personaje-versus">DISPONIBLE</span>
-                        <img src="assets/images/personajes/versus/dragon-base.png" alt="Drag&oacute;n joven">
-                        <strong>Drag&oacute;n</strong>
+                        <img src="assets/images/personajes/versus/dragon-base.png" alt="Nimbus, dragón joven">
+                        <strong>Nimbus</strong>
                         <small>Rugido drac&oacute;nico &middot; Llamado de la Matriarca</small>
                     </button>
                     <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
@@ -1040,7 +1045,7 @@
                             <option value="explorador">Explorador</option>
                             <option value="mago" selected>Mago</option>
                             <option value="guardiana">Guardiana</option>
-                            <option value="dragon">Drag&oacute;n</option>
+                            <option value="dragon">Nimbus</option>
                             <option value="hombre_lobo">Hombre Lobo</option>
                             <option value="t_shadow">T. Shadow</option>
                             <option value="guardian_alba">A. Lumen</option>
@@ -1425,7 +1430,7 @@
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
     <script src="js/versus-room-supabase.js?v=20260817-auth-cuentas-2"></script>
     <script src="js/adventure-puzzles.js?v=20260816-puzzles-bosque-1"></script>
-    <script src="js/app.js?v=20260821-desierto-puzzles-8"></script>
+    <script src="js/app.js?v=20260826-cumbres-1"></script>
     <script src="js/pwa.js?v=20260814-cache-diferencial-1"></script>
 </body>
 
