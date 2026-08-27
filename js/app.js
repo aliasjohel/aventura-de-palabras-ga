@@ -311,8 +311,16 @@ puzzleCumbres.setAttribute("role", "grid");
 puzzleCumbres.setAttribute("aria-label", "Prueba de Cumbres Celestes");
 puzzleEspejosDesierto.insertAdjacentElement("afterend", puzzleCumbres);
 let botonesPuzzleCumbres = [];
-let estadoPuzzleCumbres = [];
-let entradaPuzzleCumbres = [];
+let inicioSeleccionSopaCumbres = null;
+let trayectoSeleccionSopaCumbres = [];
+let palabrasEncontradasSopaCumbres = new Set();
+let colorActivoRedCumbres = "";
+let caminosRedCumbres = new Map();
+let trayectoActivoRedCumbres = [];
+let extremoInicialRedCumbres = null;
+let coloresCompletadosRedCumbres = new Set();
+let rondaSellosCumbres = 0;
+let indicesSellosCumbres = [];
 const estadoPruebaBosque = document.getElementById("estadoPruebaBosque");
 const btnRepetirPruebaBosque = document.getElementById("btnRepetirPruebaBosque");
 const btnSalirPruebaBosque = document.getElementById("btnSalirPruebaBosque");
@@ -718,7 +726,7 @@ const escenasPorEscenario = [
     { fondos: ["cumbres-1.png"], texto: "☁️ Descubre la palabra para dar tus primeros pasos más allá de las nubes." },
     { fondos: ["cumbres-2.png"], texto: "🌬️ Haz que el viento recuerde el camino y reconstruya el puente celeste." },
     { fondos: ["cumbres-3.png"], texto: "🐉 Resuelve la palabra antes de que el pequeño guardián vuelva a atacar." },
-    { fondos: ["cumbres-4.png"], texto: "🔔 Repite la melodía correcta de las campanas del cielo." },
+    { fondos: ["cumbres-4.png"], texto: "🔔 Las campanas del cielo despiertan y anuncian que Nimbus está cerca." },
     { fondos: ["cumbres-5.png"], texto: "🏝️ Ordena las islas a la deriva y encuentra una ruta segura." },
     { fondos: ["cumbres-6.png"], texto: "🪺 La palabra secreta revelará a quién pertenece el nido vacío." },
     { fondos: ["cumbres-7.png"], texto: "⚡ Activa los pararrayos para debilitar la tormenta encadenada." },
@@ -800,19 +808,19 @@ const historiaBosque = [
     capitulo: "Misión 1",
     titulo: "El Bosque Encantado",
     texto:
-      "El joven explorador entra al Bosque Encantado siguiendo un antiguo mapa. La leyenda dice que en lo más profundo del bosque se encuentra el Primer Cristal de la Sabiduría. El sendero parece tranquilo, pero la aventura recién comienza.",
+      "Aren, un joven explorador, entra al Bosque Encantado siguiendo un antiguo mapa. La leyenda dice que en lo más profundo del bosque se encuentra el Primer Cristal de la Sabiduría. El sendero parece tranquilo, pero la aventura recién comienza.",
   },
   {
     capitulo: "Misión 2",
     titulo: "La Piedra del Sendero",
     texto:
-      "Un fuerte estruendo rompe el silencio. Una enorme roca cae delante del explorador y bloquea el camino. Tendrá que encontrar una nueva forma de continuar su viaje.",
+      "Un fuerte estruendo rompe el silencio. Una enorme roca cae delante de Aren y bloquea el camino. Tendrá que encontrar una nueva forma de continuar su viaje.",
   },
   {
     capitulo: "Misión 3",
     titulo: "El Árbol Caído",
     texto:
-      "Mientras rodea la roca, un crujido sacude el bosque. Un árbol antiguo se desploma frente al explorador y atraviesa todo el sendero. Es demasiado grande para saltarlo o rodearlo: tendrá que encontrar la forma de abrirse paso.",
+      "Mientras rodea la roca, un crujido sacude el bosque. Un árbol antiguo se desploma frente a Aren y atraviesa todo el sendero. Es demasiado grande para saltarlo o rodearlo: tendrá que encontrar la forma de abrirse paso.",
   },
   {
     capitulo: "Misión 4",
@@ -830,13 +838,13 @@ const historiaBosque = [
     capitulo: "Misión 6",
     titulo: "El Guardián de la Luna",
     texto:
-      "Desde la oscuridad se escuchan los aullidos de varios lobos. Entre los árboles aparece un viajero solitario y le advierte al explorador que la manada sólo dejará pasar a quien comprenda el orden de sus miradas. Hay algo extraño y salvaje oculto en aquel desconocido.",
+      "Desde la oscuridad se escuchan los aullidos de varios lobos. Entre los árboles aparece un viajero solitario y le advierte a Aren que la manada sólo dejará pasar a quien comprenda el orden de sus miradas. Hay algo extraño y salvaje oculto en aquel desconocido.",
   },
   {
     capitulo: "Misión 7",
     titulo: "El Bosque Prohibido",
     texto:
-      "Los árboles son gigantes y el bosque permanece en un silencio absoluto. El explorador siente que está muy cerca de descubrir un antiguo secreto.",
+      "Los árboles son gigantes y el bosque permanece en un silencio absoluto. Aren siente que está muy cerca de descubrir un antiguo secreto.",
   },
   {
     capitulo: "Misión 8",
@@ -854,7 +862,7 @@ const historiaBosque = [
     capitulo: "Misión 10",
     titulo: "El Portal de los Mundos",
     texto:
-      "El explorador lleva el Primer Cristal hasta el portal dormido, pero una presencia esmeralda bloquea el paso. La Guardiana del Bosque sólo permitirá que el cristal despierte el portal si demuestra que es digno de cruzar hacia otros mundos.",
+      "Aren lleva el Primer Cristal hasta el portal dormido, pero una presencia esmeralda bloquea el paso. La Guardiana del Bosque sólo permitirá que el cristal despierte el portal si demuestra que es digno de cruzar hacia otros mundos.",
   },
 ];
 
@@ -863,31 +871,31 @@ const historiaDesierto = [
     capitulo: "Misión 1",
     titulo: "Más allá del portal",
     texto:
-      "El Explorador atraviesa el portal y una ráfaga ardiente lo recibe en el Desierto Perdido. El paso mágico se cierra detrás de él mientras el viento borra sus primeras huellas. Sin posibilidad de regresar, distingue unas ruinas lejanas y comienza la búsqueda del Cristal Dorado.",
+      "Aren atraviesa el portal y una ráfaga ardiente lo recibe en el Desierto Perdido. El paso mágico se cierra detrás de él mientras el viento borra sus primeras huellas. Sin posibilidad de regresar, distingue unas ruinas lejanas y comienza la búsqueda del Cristal Dorado.",
   },
   {
     capitulo: "Misión 2",
     titulo: "La tormenta sin camino",
     texto:
-      "Una muralla de arena cubre el horizonte y borra el sendero. El Explorador protege el mapa mientras avanza entre antiguas piedras señaladoras. Cuando el viento abre un claro, descubre que las ruinas lejanas pertenecen a un observatorio olvidado.",
+      "Una muralla de arena cubre el horizonte y borra el sendero. Aren protege el mapa mientras avanza entre antiguas piedras señaladoras. Cuando el viento abre un claro, descubre que las ruinas lejanas pertenecen a un observatorio olvidado.",
   },
   {
     capitulo: "Misión 3",
     titulo: "Las ruinas de los cuatro vientos",
     texto:
-      "Cuatro obeliscos rodean una plataforma cubierta de arena. Entre ellos aparece una red de canales de piedra capaz de transportar energía solar. Si el Explorador gira las losas y conduce la luz hasta el núcleo central, el observatorio revelará la ruta hacia el Cristal Dorado.",
+      "Cuatro obeliscos rodean una plataforma cubierta de arena. Entre ellos aparece una red de canales de piedra capaz de transportar energía solar. Si Aren gira las losas y conduce la luz hasta el núcleo central, el observatorio revelará la ruta hacia el Cristal Dorado.",
   },
   {
     capitulo: "Misión 4",
     titulo: "La sombra bajo las dunas",
     texto:
-      "La arena comienza a elevarse como una ola. Una criatura gigantesca viaja bajo las dunas y se dirige hacia el Explorador. El Devoradunas emerge con un rugido, cubierto por antiguas marcas que brillan con una energía extraña.",
+      "La arena comienza a elevarse como una ola. Una criatura gigantesca viaja bajo las dunas y se dirige hacia Aren. El Devoradunas emerge con un rugido, cubierto por antiguas marcas que brillan con una energía extraña.",
   },
   {
     capitulo: "Misión 5",
     titulo: "El oasis imposible",
     texto:
-      "Cuatro oasis aparecen al mismo tiempo, aunque el mapa no señala ninguno. Dentro de uno de los espejismos, un joven Maguito pide ayuda. Para liberarlo, el Explorador deberá descifrar las inscripciones y descubrir qué agua pertenece al mundo real.",
+      "Cuatro oasis aparecen al mismo tiempo, aunque el mapa no señala ninguno. Dentro de uno de los espejismos, un joven Maguito pide ayuda. Para liberarlo, Aren deberá descifrar las inscripciones y descubrir qué agua pertenece al mundo real.",
   },
   {
     capitulo: "Misión 6",
@@ -899,7 +907,7 @@ const historiaDesierto = [
     capitulo: "Misión 7",
     titulo: "El Devoradunas",
     texto:
-      "Las paredes del cañón tiemblan. El gusano los encontró y cada nueva embestida derrumba parte del camino. El Explorador y el Maguito corren hacia la silueta del templo mientras la criatura se aproxima detrás de ellos.",
+      "Las paredes del cañón tiemblan. El gusano los encontró y cada nueva embestida derrumba parte del camino. Aren y el Maguito corren hacia la silueta del templo mientras la criatura se aproxima detrás de ellos.",
   },
   {
     capitulo: "Misión 8",
@@ -917,21 +925,21 @@ const historiaDesierto = [
     capitulo: "Misión 10",
     titulo: "La prueba del Mago",
     texto:
-      "Al romperse la corrupción, el Devoradunas recupera la calma y revela el Cristal Dorado bajo la arena. Antes de entregarlo, el Maguito propone una última batalla de palabras: quiere comprobar que el Explorador está preparado para llevar el cristal al siguiente mundo.",
+      "Al romperse la corrupción, el Devoradunas recupera la calma y revela el Cristal Dorado bajo la arena. Antes de entregarlo, el Maguito propone una última batalla de palabras: quiere comprobar que Aren está preparado para llevar el cristal al siguiente mundo.",
   },
 ];
 
 const historiaCumbres = [
-  { capitulo: "Misión 1", titulo: "Más allá de las nubes", texto: "El portal deposita al Explorador sobre una isla suspendida en un océano de nubes. A lo lejos, una tormenta imposible rodea las ruinas de Cumbres Celestes y el camino de regreso se desvanece." },
+  { capitulo: "Misión 1", titulo: "Más allá de las nubes", texto: "El portal deposita a Aren sobre una isla suspendida en un océano de nubes. A lo lejos, una tormenta imposible rodea las ruinas de Cumbres Celestes y el camino de regreso se desvanece." },
   { capitulo: "Misión 2", titulo: "El puente que olvidó el viento", texto: "Los fragmentos de un puente antiguo flotan fuera de lugar. Sus canales de aire aún conservan magia: si vuelven a orientarse, el viento podrá reconstruir el paso." },
-  { capitulo: "Misión 3", titulo: "El pequeño guardián", texto: "Un dragoncito azul desciende desde las alturas. Se llama Nimbus y, convencido de que el Explorador viene a robar el cristal de su familia, defiende el sendero con un rugido mucho más valiente que feroz." },
-  { capitulo: "Misión 4", titulo: "Las campanas del cielo", texto: "Nimbus desaparece entre las nubes. Para seguirlo, el Explorador debe despertar cuatro campanas de cristal y repetir la melodía que abre las corrientes del firmamento." },
+  { capitulo: "Misión 3", titulo: "El pequeño guardián", texto: "Un dragoncito azul desciende desde las alturas. Se llama Nimbus y, convencido de que Aren viene a robar el cristal de su familia, defiende el sendero con un rugido mucho más valiente que feroz." },
+  { capitulo: "Misión 4", titulo: "Las campanas del cielo", texto: "Nimbus desaparece entre las nubes. Para seguirlo, Aren debe despertar cuatro campanas de cristal y repetir la melodía que abre las corrientes del firmamento." },
   { capitulo: "Misión 5", titulo: "Islas a la deriva", texto: "La tormenta desordena las islas y amenaza con hacerlas chocar. Sus sombras y corrientes revelan un orden seguro, pero habrá que actuar antes de que el camino vuelva a separarse." },
   { capitulo: "Misión 6", titulo: "El nido vacío", texto: "En un refugio oculto aparece un nido pequeño, juguetes tallados y restos de un cascarón. El temible guardián no es más que una cría que intenta encontrar a su madre desaparecida." },
-  { capitulo: "Misión 7", titulo: "La tormenta encadenada", texto: "Nimbus regresa y acepta la ayuda del Explorador. Juntos descubren que la tormenta está sujeta por antiguas cadenas y que sus rayos alimentan la prisión. Los pararrayos pueden invertir esa energía." },
+  { capitulo: "Misión 7", titulo: "La tormenta encadenada", texto: "Nimbus regresa y acepta la ayuda de Aren. Juntos descubren que la tormenta está sujeta por antiguas cadenas y que sus rayos alimentan la prisión. Los pararrayos pueden invertir esa energía." },
   { capitulo: "Misión 8", titulo: "El santuario de la Matriarca", texto: "Tras cruzar la tormenta llegan al santuario de Aeralis, Matriarca del Firmamento. Cuatro puertas, una por cada viento, protegen la cámara donde fue sellada." },
-  { capitulo: "Misión 9", titulo: "La prisión del firmamento", texto: "Aeralis utilizó el Cristal Celeste para contener una tormenta corrupta, pero quedó atrapada dentro de ella. El Explorador y Nimbus deben romper los cuatro sellos sin liberar la oscuridad que contienen." },
-  { capitulo: "Misión 10", titulo: "El juramento del pequeño guardián", texto: "Con Aeralis libre, Nimbus comprende que el Explorador no es un ladrón. Aun así propone una última batalla de palabras: sólo entregará el cristal a quien jure protegerlo en los mundos que faltan." },
+  { capitulo: "Misión 9", titulo: "La prisión del firmamento", texto: "Aeralis utilizó el Cristal Celeste para contener una tormenta corrupta, pero quedó atrapada dentro de ella. Aren y Nimbus deben romper los cuatro sellos sin liberar la oscuridad que contienen." },
+  { capitulo: "Misión 10", titulo: "El juramento del pequeño guardián", texto: "Con Aeralis libre, Nimbus comprende que Aren no es un ladrón. Aun así propone una última batalla de palabras: sólo entregará el cristal a quien jure protegerlo en los mundos que faltan." },
 ];
 
 const estadosExploradorPorEscenario = {
@@ -2865,9 +2873,10 @@ btnProbarPruebaBosque.addEventListener("click", () => {
 });
 
 btnProbarEscenaPersonaje.addEventListener("click", () => {
-  if (!modoPruebasActivo || escenarioActual !== 0) return;
-  if (misionActual === 5) void ejecutarEncuentroHombreLoboMision();
-  if (misionActual === 9) void presentarDesbloqueoGuardianaBosque();
+  if (!modoPruebasActivo) return;
+  if (escenarioActual === 0 && misionActual === 5) void ejecutarEncuentroHombreLoboMision();
+  if (escenarioActual === 0 && misionActual === 9) void presentarDesbloqueoGuardianaBosque();
+  if (escenarioActual === 2 && [8, 9].includes(misionActual)) void reproducirCinematicaFinalCumbres();
 });
 
 btnAyudaMuralSantuario.addEventListener("click", mostrarAyudaMuralSantuario);
@@ -2889,7 +2898,7 @@ btnRepetirPruebaBosque.addEventListener("click", () => {
     iniciarPuzzleOasisDesierto();
   } else if (pruebaEspecialBosqueActiva === "espejos") {
     iniciarPuzzleEspejosDesierto();
-  } else if (["puente-celeste", "campanas-celestes", "pararrayos-celestes", "sellos-aeralis"].includes(pruebaEspecialBosqueActiva)) {
+  } else if (["sopa-celeste", "red-pararrayos", "sellos-aeralis"].includes(pruebaEspecialBosqueActiva)) {
     iniciarPuzzleCumbres(pruebaEspecialBosqueActiva);
   }
 });
@@ -4221,7 +4230,7 @@ const imagenesFinalKairosVersus = Object.freeze({
 });
 const personajesVersus = {
   explorador: {
-    nombre: "Explorador",
+    nombre: "Aren",
     base: srcExploradorBaseVersus,
     ataque: "bumeran",
     final: "trampa-selvatica",
@@ -4502,11 +4511,11 @@ async function completarDueloAventura() {
     await reproducirCinematicaFinalCumbres();
     bloquearTeclado();
     btnPista.disabled = true;
-    btnSiguiente.textContent = "❄️ Próximo destino: el mundo de Nivor";
+    btnSiguiente.textContent = "❄️ Continuar pronto en el Mundo de Hielo";
     btnSiguiente.classList.remove("oculto");
     mensajePersonaje.classList.remove("oculto");
     mensajePersonaje.textContent =
-      "💎 Aeralis te confió el Cristal Celeste. Nimbus ya está disponible en Versus.";
+      "💎 Aeralis llevó a Aren al Mundo de Hielo. Nimbus ya está disponible en Versus.";
     guardarProgreso();
     return;
   }
@@ -4522,7 +4531,7 @@ async function reproducirCinematicaFinalCumbres() {
   const escenas = [
     {
       fondo: "cumbres-10.png",
-      texto: "Nimbus baja la cabeza. La batalla no era por orgullo: quería saber si el Explorador protegería a su familia.",
+      texto: "Nimbus baja la cabeza. La batalla no era por orgullo: quería saber si Aren protegería a su familia.",
       nimbus: true,
     },
     {
@@ -4532,21 +4541,36 @@ async function reproducirCinematicaFinalCumbres() {
     },
     {
       fondo: "cumbres-8.png",
-      texto: "Aeralis reconoce el Cristal Verde y el Cristal Dorado. El viajero no vino a robar: está restaurando el equilibrio de los cinco mundos.",
+      texto: "Aeralis reconoce el Cristal Verde y el Cristal Dorado. Aren no vino a robar: está restaurando el equilibrio de los cinco mundos.",
       aeralis: true,
       nimbus: true,
     },
     {
       fondo: "cumbres-10.png",
-      texto: "La Matriarca libera el Cristal Celeste y lo confía al Explorador. Nimbus promete acompañar su juramento desde la arena Versus.",
+      texto: "La Matriarca libera el Cristal Celeste y lo confía a Aren. Nimbus promete acompañar su juramento desde la arena Versus.",
       aeralis: true,
       nimbus: true,
       cristal: true,
     },
     {
-      fondo: "cumbres-1.png",
-      texto: "Más allá del nuevo portal sopla un viento helado. Entre la nieve espera Nivor... y el cuarto cristal.",
-      cristal: true,
+      imagen: "01-aeralis-invita-aren-v1.png",
+      alt: "Aeralis baja un ala ante Aren y le ofrece llevarlo al siguiente mundo",
+      texto: "No hará falta abrir otro portal. Aeralis baja una de sus enormes alas y ofrece llevar a Aren hasta el cuarto mundo.",
+    },
+    {
+      imagen: "02-aren-sube-aeralis-v1.png",
+      alt: "Aren sentado sobre la espalda de Aeralis antes de despegar",
+      texto: "Aren se acomoda entre las escamas de la Matriarca. Con un poderoso aleteo, las Cumbres Celestes quedan atrás.",
+    },
+    {
+      imagen: "03-vuelo-mundo-hielo-v1.png",
+      alt: "Aeralis vuela con Aren sobre las nubes rumbo al mundo helado",
+      texto: "Juntos atraviesan el mar de nubes. El aire se vuelve cada vez más frío y, bajo la aurora, aparece un reino de hielo.",
+    },
+    {
+      imagen: "04-llegada-mundo-hielo-v1.png",
+      alt: "Aren se despide de Aeralis en el Mundo de Hielo",
+      texto: "MUNDO 4 · Aeralis deja a Aren a salvo sobre la nieve y regresa con Nimbus. Desde aquí deberá continuar la exploración solo.",
     },
   ];
   const capa = document.createElement("div");
@@ -4566,11 +4590,19 @@ async function reproducirCinematicaFinalCumbres() {
   });
 
   try {
+    await Promise.all(
+      escenas
+        .filter((escena) => escena.imagen)
+        .map((escena) => precargarImagen(`assets/images/cinematicas/cumbres-final/${escena.imagen}`)),
+    );
     for (const escena of escenas) {
       if (saltar) break;
       capa.classList.remove("visible");
       await esperarMovimiento(prefiereReducirMovimiento.matches ? 80 : 350);
-      fondo.src = `assets/images/fondos/${escena.fondo}`;
+      fondo.src = escena.imagen
+        ? `assets/images/cinematicas/cumbres-final/${escena.imagen}`
+        : `assets/images/fondos/${escena.fondo}`;
+      fondo.alt = escena.alt || "";
       personajes.replaceChildren();
       if (escena.aeralis) {
         const imagen = document.createElement("img");
@@ -4607,7 +4639,7 @@ async function reproducirCinematicaFinalCumbres() {
 
 const victimasFaucesVersus = {
   explorador: {
-    nombre: "Explorador",
+    nombre: "Aren",
     imagen: srcExploradorBaseVersus,
     imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-explorador.png",
   },
@@ -6884,7 +6916,7 @@ function configurarVictimaKairosVersus(personaje = personajeRivalVersus) {
     || imagenesFinalKairosVersus.explorador;
   kairosFinalMontajeVersus.alt = `Las tres edades de ${nombre}: original, envejecido y anciano`;
   kairosFinalConceptoVersus.alt = victimaFinal === "explorador"
-    ? "Kairós adelanta el tiempo del Explorador hasta volverlo anciano"
+    ? "Kairós adelanta el tiempo de Aren hasta volverlo anciano"
     : "";
   cinematicaFinalVersus.classList.remove(...clasesVictimasKairosVersus);
   cinematicaFinalVersus.classList.add(`kairos-victima-${victimaFinal}`);
@@ -7344,8 +7376,10 @@ function actualizarControlesDev() {
     misionActual,
   );
   btnProbarMuralSantuario.disabled = escenarioActual !== 0 || misionActual !== 8;
-  btnProbarEscenaPersonaje.disabled =
-    escenarioActual !== 0 || ![5, 9].includes(misionActual);
+  btnProbarEscenaPersonaje.disabled = !(
+    (escenarioActual === 0 && [5, 9].includes(misionActual)) ||
+    (escenarioActual === 2 && [8, 9].includes(misionActual))
+  );
 }
 
 function actualizarModoPruebas(activar, { restaurarProgreso = true } = {}) {
@@ -7638,7 +7672,7 @@ function obtenerHistoriaMision() {
         capitulo: `Misión ${misionActual + 1}`,
         titulo: "Más Profundo en el Bosque",
         texto:
-          "El explorador continúa su camino mientras el bosque guarda nuevos secretos.",
+          "Aren continúa su camino mientras el bosque guarda nuevos secretos.",
       }
     );
   }
@@ -7649,7 +7683,7 @@ function obtenerHistoriaMision() {
         capitulo: `Misión ${misionActual + 1}`,
         titulo: "El Desierto Perdido",
         texto:
-          "El Explorador avanza entre dunas mientras el viento oculta los secretos del Cristal Dorado.",
+          "Aren avanza entre dunas mientras el viento oculta los secretos del Cristal Dorado.",
       }
     );
   }
@@ -7658,14 +7692,14 @@ function obtenerHistoriaMision() {
     return historiaCumbres[misionActual] || {
       capitulo: `Misión ${misionActual + 1}`,
       titulo: "Cumbres Celestes",
-      texto: "El Explorador avanza entre islas flotantes mientras Nimbus busca a Aeralis.",
+      texto: "Aren avanza entre islas flotantes mientras Nimbus busca a Aeralis.",
     };
   }
 
   return {
     capitulo: `Misión ${misionActual + 1}`,
     titulo: aventura[escenarioActual].nombre,
-    texto: "Una nueva región se abre ante el explorador.",
+    texto: "Una nueva región se abre ante Aren.",
   };
 }
 
@@ -8311,7 +8345,7 @@ function actualizarPersonajesNarrativosDesierto() {
           : "maguito-desierto",
       misionActual === 4
         ? "Maguito atrapado dentro de una prisión de espejismo"
-        : "Maguito acompañando al Explorador",
+        : "Maguito acompañando a Aren",
     );
 
     if (misionActual === 4) {
@@ -10191,7 +10225,7 @@ const escenasCinematicaFinalDesierto = Object.freeze([
   {
     imagen: "assets/images/cinematicas/desierto-final/02-devoradunas-entrega-cristal-v1.png",
     titulo: "Una entrega voluntaria",
-    texto: "La criatura empuja el cristal hacia el Explorador. La persecución terminó: ahora confía en él.",
+    texto: "La criatura empuja el cristal hacia Aren. La persecución terminó: ahora confía en él.",
   },
   {
     imagen: "assets/images/cinematicas/desierto-final/03-mago-purifica-cristal-v1.png",
@@ -10201,7 +10235,7 @@ const escenasCinematicaFinalDesierto = Object.freeze([
   {
     imagen: "assets/images/cinematicas/desierto-final/04-mago-entrega-cristal-v1.png",
     titulo: "El Cristal Dorado",
-    texto: "Limpio y luminoso, el segundo Cristal de la Sabiduría pasa por fin a manos del Explorador.",
+    texto: "Limpio y luminoso, el segundo Cristal de la Sabiduría pasa por fin a manos de Aren.",
   },
   {
     imagen: "assets/images/cinematicas/desierto-final/05-mago-abre-portal-cumbres-v1.png",
@@ -10563,9 +10597,8 @@ function obtenerTipoPruebaEspecial(escenario, mision) {
   if (escenario === 1 && mision === 2) return "vientos";
   if (escenario === 1 && mision === 4) return "oasis";
   if (escenario === 1 && mision === 7) return "espejos";
-  if (escenario === 2 && mision === 1) return "puente-celeste";
-  if (escenario === 2 && mision === 3) return "campanas-celestes";
-  if (escenario === 2 && mision === 6) return "pararrayos-celestes";
+  if (escenario === 2 && mision === 1) return "sopa-celeste";
+  if (escenario === 2 && mision === 6) return "red-pararrayos";
   if (escenario === 2 && mision === 8) return "sellos-aeralis";
   return "";
 }
@@ -10602,9 +10635,8 @@ function abrirPruebaEspecialBosque(tipo) {
     ["vientos", "oasis", "espejos"].includes(tipo),
   );
   const esPruebaCumbres = [
-    "puente-celeste",
-    "campanas-celestes",
-    "pararrayos-celestes",
+    "sopa-celeste",
+    "red-pararrayos",
     "sellos-aeralis",
   ].includes(tipo);
   modalPruebaBosque.classList.toggle("prueba-cumbres", esPruebaCumbres);
@@ -10675,6 +10707,8 @@ function cerrarPruebaEspecialBosque() {
   if (!pruebaEspecialBosqueActiva) return;
 
   secuenciaPruebaBosque += 1;
+  punteroSopaCumbresActivo = false;
+  punteroRedCumbresActivo = false;
   memoriaLobosAceptandoEntrada = false;
   botonesMemoriaLobos.forEach((boton) => {
     boton.disabled = true;
@@ -10698,135 +10732,505 @@ function cerrarPruebaEspecialBosque() {
   focoAnterior?.focus?.();
 }
 
-const configuracionPuzzlesCumbres = Object.freeze({
-  "puente-celeste": {
-    etiqueta: "PRUEBA DEL PUENTE CELESTE",
-    titulo: "Orientá los cuatro canales de viento",
-    instruccion: "Tocá cada runa hasta que las corrientes formen la secuencia norte, este, sur y oeste.",
-    iconos: ["↑", "→", "↓", "←"],
-    objetivo: [0, 1, 2, 3],
-  },
-  "campanas-celestes": {
-    etiqueta: "PRUEBA DE LAS CAMPANAS",
-    titulo: "Repetí la melodía del cielo",
-    instruccion: "Observá las cuatro campanas y repetí su orden cuando termine la melodía.",
-    iconos: ["🔔", "🔔", "🔔", "🔔"],
-    objetivo: [0, 2, 3, 1],
-  },
-  "pararrayos-celestes": {
-    etiqueta: "PRUEBA DE LA TORMENTA",
-    titulo: "Invertí la energía de los pararrayos",
-    instruccion: "Encendé el primero, el tercero y el cuarto. El segundo debe permanecer apagado.",
-    iconos: ["⚡", "⚡", "⚡", "⚡"],
-    objetivo: [1, 0, 1, 1],
-  },
-  "sellos-aeralis": {
-    etiqueta: "PRISIÓN DEL FIRMAMENTO",
-    titulo: "Rompé los cuatro sellos de Aeralis",
-    instruccion: "Liberá los sellos en el orden que marca el viento: este, oeste, norte y sur.",
-    iconos: ["N", "E", "S", "O"],
-    objetivo: [1, 3, 0, 2],
-  },
+const ladoSopaCumbres = 8;
+const letrasSopaCumbres = [
+  "ANUBEROS",
+  "PLUMATVC",
+  "CORRENIT",
+  "AIRESUEO",
+  "NUELEBNR",
+  "SOELOOTA",
+  "VOLAOOOS",
+  "CUMBRESX",
+].join("");
+const palabrasSopaCumbres = Object.freeze([
+  { palabra: "NUBE", indices: [1, 2, 3, 4] },
+  { palabra: "VIENTO", indices: [14, 22, 30, 38, 46, 54] },
+  { palabra: "CIELO", indices: [16, 25, 34, 43, 52] },
+]);
+
+const ladoRedCumbres = 6;
+const extremosRedCumbres = Object.freeze({
+  cian: [0, 17],
+  violeta: [5, 3],
+  dorado: [12, 35],
 });
+const relevosRedCumbres = Object.freeze({
+  cian: 14,
+  violeta: 10,
+  dorado: 21,
+});
+const tormentasRedCumbres = new Set([6, 7, 13, 19, 23, 27, 30, 31, 32, 33, 34]);
+
+const rondasSellosAeralis = Object.freeze([
+  {
+    palabra: "AIRE",
+    pista: "Lo que llena las Cumbres Celestes.",
+    opciones: [["E", "O", "A", "U", "I"], ["A", "E", "O", "I", "U"], ["N", "R", "L", "S", "T"], ["A", "O", "E", "U", "I"]],
+  },
+  {
+    palabra: "NUBE",
+    pista: "Flota alrededor de las islas.",
+    opciones: [["V", "C", "N", "M", "L"], ["A", "U", "O", "I", "E"], ["P", "D", "G", "B", "R"], ["O", "A", "E", "I", "U"]],
+  },
+  {
+    palabra: "LIBRE",
+    pista: "Así debe quedar Aeralis.",
+    opciones: [["I", "T", "L", "R", "A"], ["A", "I", "E", "O", "U"], ["P", "B", "D", "G", "R"], ["N", "S", "R", "L", "T"], ["A", "O", "U", "E", "I"]],
+  },
+]);
+
+let punteroSopaCumbresActivo = false;
+let punteroRedCumbresActivo = false;
 
 function iniciarPuzzleCumbres(tipo) {
-  const configuracion = configuracionPuzzlesCumbres[tipo];
-  if (!configuracion || pruebaEspecialBosqueActiva !== tipo) return;
-  etiquetaPruebaBosque.textContent = configuracion.etiqueta;
-  tituloPruebaBosque.textContent = configuracion.titulo;
-  instruccionPruebaBosque.textContent = configuracion.instruccion;
-  btnRepetirPruebaBosque.textContent = tipo === "campanas-celestes"
-    ? "🔔 Escuchar de nuevo"
-    : "↻ Reiniciar prueba";
-  entradaPuzzleCumbres = [];
-  estadoPuzzleCumbres = tipo === "puente-celeste"
-    ? [2, 3, 0, 1]
-    : [0, 0, 0, 0];
+  if (pruebaEspecialBosqueActiva !== tipo) return;
+  puzzleCumbres.className = `puzzle-cumbres puzzle-${tipo}`;
   puzzleCumbres.replaceChildren();
-  botonesPuzzleCumbres = configuracion.iconos.map((icono, indice) => {
-    const boton = document.createElement("button");
-    boton.type = "button";
-    boton.textContent = tipo === "puente-celeste"
-      ? configuracion.iconos[estadoPuzzleCumbres[indice]]
-      : icono;
-    boton.setAttribute("aria-label", `${configuracion.titulo}, control ${indice + 1}`);
-    boton.addEventListener("click", () => accionarPuzzleCumbres(tipo, indice));
-    puzzleCumbres.appendChild(boton);
-    return boton;
-  });
-  estadoPruebaBosque.textContent = tipo === "campanas-celestes"
-    ? "Escuchá y observá la melodía..."
-    : "La corriente todavía no está alineada.";
-  if (tipo === "campanas-celestes") void mostrarSecuenciaPuzzleCumbres(configuracion.objetivo);
-  else botonesPuzzleCumbres[0]?.focus();
+  botonesPuzzleCumbres = [];
+  btnRepetirPruebaBosque.textContent = "↻ Reiniciar prueba";
+
+  if (tipo === "sopa-celeste") {
+    iniciarSopaCeleste();
+  } else if (tipo === "red-pararrayos") {
+    iniciarRedPararrayos();
+  } else if (tipo === "sellos-aeralis") {
+    iniciarSellosAeralis();
+  }
 }
 
-async function mostrarSecuenciaPuzzleCumbres(secuencia) {
-  const marca = ++secuenciaPruebaBosque;
-  botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
-  entradaPuzzleCumbres = [];
-  await esperarMovimiento(450);
-  for (const indice of secuencia) {
-    if (marca !== secuenciaPruebaBosque || pruebaEspecialBosqueActiva !== "campanas-celestes") return;
-    botonesPuzzleCumbres[indice].classList.add("activo");
-    reproducirSonido("colocarPieza");
-    await esperarMovimiento(520);
-    botonesPuzzleCumbres[indice].classList.remove("activo");
-    await esperarMovimiento(180);
-  }
-  botonesPuzzleCumbres.forEach((boton) => (boton.disabled = false));
-  estadoPruebaBosque.textContent = "Ahora repetí la melodía.";
+function iniciarSopaCeleste() {
+  etiquetaPruebaBosque.textContent = "PRUEBA DEL PUENTE DE PALABRAS";
+  tituloPruebaBosque.textContent = "Encontrá las palabras ocultas";
+  instruccionPruebaBosque.textContent =
+    "Buscá NUBE, VIENTO y CIELO. Arrastrá sobre sus letras en línea recta o elegí la primera y la última con el teclado.";
+  inicioSeleccionSopaCumbres = null;
+  trayectoSeleccionSopaCumbres = [];
+  palabrasEncontradasSopaCumbres = new Set();
+
+  const progreso = document.createElement("div");
+  progreso.className = "progreso-puente-celeste";
+  progreso.setAttribute("aria-label", "Tres tramos del puente por completar");
+  progreso.innerHTML = "<i></i><i></i><i></i>";
+
+  const lista = document.createElement("div");
+  lista.className = "palabras-sopa-cumbres";
+  palabrasSopaCumbres.forEach(({ palabra }) => {
+    const objetivo = document.createElement("span");
+    objetivo.dataset.palabra = palabra;
+    objetivo.textContent = palabra;
+    lista.appendChild(objetivo);
+  });
+
+  const tablero = document.createElement("div");
+  tablero.className = "tablero-sopa-cumbres";
+  tablero.setAttribute("role", "grid");
+  tablero.setAttribute("aria-label", "Sopa de letras de ocho por ocho");
+  botonesPuzzleCumbres = [...letrasSopaCumbres].map((letra, indice) => {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "letra-sopa-cumbres";
+    boton.dataset.indice = `${indice}`;
+    boton.textContent = letra;
+    boton.setAttribute("role", "gridcell");
+    boton.setAttribute("aria-label", `Letra ${letra}, fila ${Math.floor(indice / ladoSopaCumbres) + 1}, columna ${(indice % ladoSopaCumbres) + 1}`);
+    boton.addEventListener("pointerdown", (evento) => {
+      evento.preventDefault();
+      tablero.setPointerCapture?.(evento.pointerId);
+      punteroSopaCumbresActivo = true;
+      comenzarSeleccionSopaCumbres(indice);
+    });
+    boton.addEventListener("keydown", (evento) => {
+      if (evento.key !== "Enter" && evento.key !== " ") return;
+      evento.preventDefault();
+      seleccionarSopaCumbresConTeclado(indice);
+    });
+    tablero.appendChild(boton);
+    return boton;
+  });
+  tablero.addEventListener("pointermove", actualizarArrastreSopaCumbres);
+  tablero.addEventListener("pointerup", finalizarArrastreSopaCumbres);
+  tablero.addEventListener("pointercancel", finalizarArrastreSopaCumbres);
+
+  puzzleCumbres.append(progreso, lista, tablero);
+  estadoPruebaBosque.textContent = "0 de 3 palabras · Cada hallazgo construye un tramo del puente.";
   botonesPuzzleCumbres[0]?.focus();
 }
 
-function accionarPuzzleCumbres(tipo, indice) {
-  const configuracion = configuracionPuzzlesCumbres[tipo];
-  if (!configuracion || pruebaEspecialBosqueActiva !== tipo) return;
-  reproducirSonido("colocarPieza");
-
-  if (tipo === "puente-celeste") {
-    estadoPuzzleCumbres[indice] = (estadoPuzzleCumbres[indice] + 1) % 4;
-    botonesPuzzleCumbres[indice].textContent = configuracion.iconos[estadoPuzzleCumbres[indice]];
-    botonesPuzzleCumbres[indice].classList.toggle(
-      "correcto",
-      estadoPuzzleCumbres[indice] === configuracion.objetivo[indice],
+function comenzarSeleccionSopaCumbres(indice) {
+  if (inicioSeleccionSopaCumbres === null) {
+    inicioSeleccionSopaCumbres = indice;
+    trayectoSeleccionSopaCumbres = [indice];
+  } else {
+    trayectoSeleccionSopaCumbres = AdventurePuzzles.obtenerTrayectoRecto(
+      inicioSeleccionSopaCumbres,
+      indice,
+      ladoSopaCumbres,
     );
-    if (estadoPuzzleCumbres.every((valor, posicion) => valor === configuracion.objetivo[posicion])) {
-      estadoPruebaBosque.textContent = "¡El viento recordó el puente!";
-      void completarPruebaEspecialBosque(tipo);
-    }
+  }
+  mostrarTrayectoSopaCumbres();
+}
+
+function actualizarArrastreSopaCumbres(evento) {
+  if (!punteroSopaCumbresActivo || inicioSeleccionSopaCumbres === null) return;
+  const elemento = document.elementFromPoint(evento.clientX, evento.clientY)?.closest(".letra-sopa-cumbres");
+  if (!elemento || !puzzleCumbres.contains(elemento)) return;
+  const indice = Number(elemento.dataset.indice);
+  const trayecto = AdventurePuzzles.obtenerTrayectoRecto(
+    inicioSeleccionSopaCumbres,
+    indice,
+    ladoSopaCumbres,
+  );
+  if (trayecto.length) {
+    trayectoSeleccionSopaCumbres = trayecto;
+    mostrarTrayectoSopaCumbres();
+  }
+}
+
+function finalizarArrastreSopaCumbres() {
+  punteroSopaCumbresActivo = false;
+  if (trayectoSeleccionSopaCumbres.length > 1) validarTrayectoSopaCumbres();
+}
+
+function seleccionarSopaCumbresConTeclado(indice) {
+  if (inicioSeleccionSopaCumbres === null) {
+    inicioSeleccionSopaCumbres = indice;
+    trayectoSeleccionSopaCumbres = [indice];
+    mostrarTrayectoSopaCumbres();
+    estadoPruebaBosque.textContent = "Ahora elegí la última letra de la palabra.";
+    return;
+  }
+  trayectoSeleccionSopaCumbres = AdventurePuzzles.obtenerTrayectoRecto(
+    inicioSeleccionSopaCumbres,
+    indice,
+    ladoSopaCumbres,
+  );
+  validarTrayectoSopaCumbres();
+}
+
+function mostrarTrayectoSopaCumbres() {
+  botonesPuzzleCumbres.forEach((boton) => boton.classList.remove("seleccionada"));
+  trayectoSeleccionSopaCumbres.forEach((indice) =>
+    botonesPuzzleCumbres[indice]?.classList.add("seleccionada"),
+  );
+}
+
+function validarTrayectoSopaCumbres() {
+  const trayecto = [...trayectoSeleccionSopaCumbres];
+  const texto = trayecto.map((indice) => letrasSopaCumbres[indice]).join("");
+  const palabra = palabrasSopaCumbres.find(
+    (objetivo) => objetivo.palabra === texto || objetivo.palabra === [...texto].reverse().join(""),
+  );
+  botonesPuzzleCumbres.forEach((boton) => boton.classList.remove("seleccionada"));
+  inicioSeleccionSopaCumbres = null;
+  trayectoSeleccionSopaCumbres = [];
+
+  if (!palabra || palabrasEncontradasSopaCumbres.has(palabra.palabra)) {
+    const tablero = puzzleCumbres.querySelector(".tablero-sopa-cumbres");
+    tablero?.classList.add("error");
+    setTimeout(() => tablero?.classList.remove("error"), 420);
+    estadoPruebaBosque.textContent = "Esa línea no forma una palabra pendiente. Probá en otra dirección.";
     return;
   }
 
-  if (tipo === "pararrayos-celestes") {
-    estadoPuzzleCumbres[indice] = estadoPuzzleCumbres[indice] ? 0 : 1;
-    botonesPuzzleCumbres[indice].classList.toggle("activo", Boolean(estadoPuzzleCumbres[indice]));
-    if (estadoPuzzleCumbres.every((valor, posicion) => valor === configuracion.objetivo[posicion])) {
-      estadoPruebaBosque.textContent = "¡La energía de la tormenta fue invertida!";
-      void completarPruebaEspecialBosque(tipo);
+  palabrasEncontradasSopaCumbres.add(palabra.palabra);
+  trayecto.forEach((indice) => botonesPuzzleCumbres[indice]?.classList.add("encontrada"));
+  puzzleCumbres.querySelector(`[data-palabra="${palabra.palabra}"]`)?.classList.add("encontrada");
+  const cantidad = palabrasEncontradasSopaCumbres.size;
+  puzzleCumbres.querySelectorAll(".progreso-puente-celeste i")[cantidad - 1]?.classList.add("construido");
+  reproducirSonido("cristalCasilla");
+
+  if (cantidad === palabrasSopaCumbres.length) {
+    estadoPruebaBosque.textContent = "¡Las tres palabras reconstruyeron el puente celeste!";
+    void completarPruebaEspecialBosque("sopa-celeste");
+  } else {
+    estadoPruebaBosque.textContent = `${cantidad} de 3 palabras · El puente ya tiene ${cantidad} tramo${cantidad === 1 ? "" : "s"}.`;
+  }
+}
+
+function iniciarRedPararrayos() {
+  etiquetaPruebaBosque.textContent = "PRUEBA DE LA TORMENTA ENCADENADA";
+  tituloPruebaBosque.textContent = "Desviá cada corriente hasta su pararrayos";
+  instruccionPruebaBosque.textContent =
+    "Uní cada color pasando por su torre ✦. Rodeá las tormentas: las corrientes avanzan a casillas vecinas y no pueden cruzarse.";
+  colorActivoRedCumbres = "";
+  caminosRedCumbres = new Map();
+  trayectoActivoRedCumbres = [];
+  extremoInicialRedCumbres = null;
+  coloresCompletadosRedCumbres = new Set();
+
+  const leyenda = document.createElement("div");
+  leyenda.className = "leyenda-red-cumbres";
+  leyenda.innerHTML = "<span class=\"cian\">☁ Nube</span><b>→</b><span class=\"cian\">⚡ Pararrayos</span>";
+  const tablero = document.createElement("div");
+  tablero.className = "tablero-red-cumbres";
+  tablero.setAttribute("role", "grid");
+  tablero.setAttribute("aria-label", "Red de seis por seis para desviar tres corrientes alrededor de la tormenta");
+
+  botonesPuzzleCumbres = Array.from({ length: ladoRedCumbres * ladoRedCumbres }, (_, indice) => {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "celda-red-cumbres";
+    boton.dataset.indice = `${indice}`;
+    const extremo = obtenerExtremoRedCumbres(indice);
+    const relevo = obtenerRelevoRedCumbres(indice);
+    if (tormentasRedCumbres.has(indice)) {
+      boton.classList.add("tormenta");
+      boton.textContent = "🌪";
+      boton.disabled = true;
+      boton.setAttribute("aria-label", `Tormenta bloqueando la fila ${Math.floor(indice / ladoRedCumbres) + 1}, columna ${(indice % ladoRedCumbres) + 1}`);
+    } else if (extremo) {
+      boton.classList.add("extremo", `energia-${extremo.color}`);
+      boton.textContent = extremo.posicion === 0 ? "☁" : "⚡";
+      boton.setAttribute("aria-label", `${extremo.posicion === 0 ? "Nube" : "Pararrayos"} ${extremo.color}`);
+    } else if (relevo) {
+      boton.classList.add("relevo", `energia-${relevo.color}`);
+      boton.textContent = "✦";
+      boton.setAttribute("aria-label", `Torre intermedia ${relevo.color}`);
+    } else {
+      boton.setAttribute("aria-label", `Casilla libre, fila ${Math.floor(indice / ladoRedCumbres) + 1}, columna ${(indice % ladoRedCumbres) + 1}`);
     }
+    boton.addEventListener("pointerdown", (evento) => {
+      evento.preventDefault();
+      tablero.setPointerCapture?.(evento.pointerId);
+      punteroRedCumbresActivo = true;
+      activarCeldaRedCumbres(indice);
+    });
+    boton.addEventListener("keydown", (evento) => {
+      if (evento.key !== "Enter" && evento.key !== " ") return;
+      evento.preventDefault();
+      activarCeldaRedCumbres(indice);
+    });
+    tablero.appendChild(boton);
+    return boton;
+  });
+  tablero.addEventListener("pointermove", actualizarArrastreRedCumbres);
+  tablero.addEventListener("pointerup", () => (punteroRedCumbresActivo = false));
+  tablero.addEventListener("pointercancel", () => (punteroRedCumbresActivo = false));
+  puzzleCumbres.append(leyenda, tablero);
+  estadoPruebaBosque.textContent = "0 de 3 corrientes conectadas · Cada camino debe atravesar su torre ✦.";
+  botonesPuzzleCumbres[0]?.focus();
+}
+
+function obtenerExtremoRedCumbres(indice) {
+  for (const [color, extremos] of Object.entries(extremosRedCumbres)) {
+    const posicion = extremos.indexOf(indice);
+    if (posicion !== -1) return { color, posicion };
+  }
+  return null;
+}
+
+function obtenerRelevoRedCumbres(indice) {
+  const entrada = Object.entries(relevosRedCumbres).find(([, posicion]) => posicion === indice);
+  return entrada ? { color: entrada[0] } : null;
+}
+
+function activarCeldaRedCumbres(indice) {
+  if (tormentasRedCumbres.has(indice)) return;
+  const extremo = obtenerExtremoRedCumbres(indice);
+  if (colorActivoRedCumbres && extremo) {
+    const ultimo = trayectoActivoRedCumbres.at(-1);
+    const esDestinoActivo =
+      extremo.color === colorActivoRedCumbres &&
+      indice !== extremoInicialRedCumbres &&
+      AdventurePuzzles.sonCeldasAdyacentes(ultimo, indice, ladoRedCumbres);
+    if (
+      esDestinoActivo &&
+      !trayectoActivoRedCumbres.includes(relevosRedCumbres[colorActivoRedCumbres])
+    ) {
+      estadoPruebaBosque.textContent = `La corriente ${colorActivoRedCumbres} todavía no pasó por su torre ✦.`;
+      return;
+    }
+    const puedeCerrar =
+      esDestinoActivo;
+    if (!puedeCerrar) {
+      caminosRedCumbres.delete(colorActivoRedCumbres);
+      colorActivoRedCumbres = "";
+      trayectoActivoRedCumbres = [];
+      extremoInicialRedCumbres = null;
+    }
+  }
+  if (!colorActivoRedCumbres) {
+    if (!extremo) {
+      estadoPruebaBosque.textContent = "Comenzá el camino desde una nube o un pararrayos.";
+      return;
+    }
+    colorActivoRedCumbres = extremo.color;
+    extremoInicialRedCumbres = indice;
+    trayectoActivoRedCumbres = [indice];
+    caminosRedCumbres.set(extremo.color, [...trayectoActivoRedCumbres]);
+    coloresCompletadosRedCumbres.delete(extremo.color);
+    renderizarRedCumbres();
+    estadoPruebaBosque.textContent = `Trazando la corriente ${extremo.color}.`;
+    return;
+  }
+  extenderCaminoRedCumbres(indice);
+}
+
+function actualizarArrastreRedCumbres(evento) {
+  if (!punteroRedCumbresActivo || !colorActivoRedCumbres) return;
+  const elemento = document.elementFromPoint(evento.clientX, evento.clientY)?.closest(".celda-red-cumbres");
+  if (!elemento || !puzzleCumbres.contains(elemento)) return;
+  extenderCaminoRedCumbres(Number(elemento.dataset.indice));
+}
+
+function extenderCaminoRedCumbres(indice) {
+  const ultimo = trayectoActivoRedCumbres.at(-1);
+  if (indice === ultimo || !AdventurePuzzles.sonCeldasAdyacentes(ultimo, indice, ladoRedCumbres)) return;
+  if (trayectoActivoRedCumbres.at(-2) === indice) {
+    trayectoActivoRedCumbres.pop();
+    caminosRedCumbres.set(colorActivoRedCumbres, [...trayectoActivoRedCumbres]);
+    renderizarRedCumbres();
+    return;
+  }
+  const ocupadoPorOtro = [...caminosRedCumbres.entries()].some(
+    ([color, camino]) => color !== colorActivoRedCumbres && camino.includes(indice),
+  );
+  const extremo = obtenerExtremoRedCumbres(indice);
+  const relevo = obtenerRelevoRedCumbres(indice);
+  if (
+    extremo?.color === colorActivoRedCumbres &&
+    indice !== extremoInicialRedCumbres &&
+    !trayectoActivoRedCumbres.includes(relevosRedCumbres[colorActivoRedCumbres])
+  ) {
+    estadoPruebaBosque.textContent = `La corriente ${colorActivoRedCumbres} todavía no pasó por su torre ✦.`;
+    return;
+  }
+  if (
+    tormentasRedCumbres.has(indice) ||
+    ocupadoPorOtro ||
+    trayectoActivoRedCumbres.includes(indice) ||
+    (extremo && extremo.color !== colorActivoRedCumbres) ||
+    (relevo && relevo.color !== colorActivoRedCumbres)
+  ) {
+    estadoPruebaBosque.textContent = "Las corrientes no pueden cruzarse, entrar en la tormenta ni atravesar otro extremo.";
     return;
   }
 
-  entradaPuzzleCumbres.push(indice);
-  const posicion = entradaPuzzleCumbres.length - 1;
-  botonesPuzzleCumbres[indice].classList.add("activo");
-  setTimeout(() => botonesPuzzleCumbres[indice]?.classList.remove("activo"), 240);
-  if (indice !== configuracion.objetivo[posicion]) {
-    entradaPuzzleCumbres = [];
-    botonesPuzzleCumbres[indice].classList.add("error");
-    setTimeout(() => botonesPuzzleCumbres[indice]?.classList.remove("error"), 420);
-    estadoPruebaBosque.textContent = tipo === "sellos-aeralis"
-      ? "El sello rechazó el orden. Empezá por el viento del este."
-      : "Esa nota no seguía la melodía. Probá otra vez.";
+  trayectoActivoRedCumbres.push(indice);
+  caminosRedCumbres.set(colorActivoRedCumbres, [...trayectoActivoRedCumbres]);
+  renderizarRedCumbres();
+  if (extremo && indice !== extremoInicialRedCumbres) {
+    const colorCompletado = colorActivoRedCumbres;
+    coloresCompletadosRedCumbres.add(colorCompletado);
+    colorActivoRedCumbres = "";
+    trayectoActivoRedCumbres = [];
+    extremoInicialRedCumbres = null;
+    reproducirSonido("cristalCasilla");
+    const cantidad = coloresCompletadosRedCumbres.size;
+    if (cantidad === Object.keys(extremosRedCumbres).length) {
+      estadoPruebaBosque.textContent = "¡Las tres corrientes descargaron la tormenta!";
+      void completarPruebaEspecialBosque("red-pararrayos");
+    } else {
+      estadoPruebaBosque.textContent = `${cantidad} de 3 corrientes conectadas · Elegí otro extremo.`;
+    }
+  }
+}
+
+function renderizarRedCumbres() {
+  botonesPuzzleCumbres.forEach((boton) => {
+    boton.classList.remove("camino-cian", "camino-violeta", "camino-dorado");
+  });
+  caminosRedCumbres.forEach((camino, color) => {
+    camino.forEach((indice) => botonesPuzzleCumbres[indice]?.classList.add(`camino-${color}`));
+  });
+}
+
+function iniciarSellosAeralis() {
+  etiquetaPruebaBosque.textContent = "PRISIÓN DEL FIRMAMENTO";
+  tituloPruebaBosque.textContent = "Descifrá los sellos de Aeralis";
+  instruccionPruebaBosque.textContent =
+    "Girá los anillos, deducí la palabra completa y probá el sello. Los anillos no revelan qué letras individuales están bien.";
+  rondaSellosCumbres = 0;
+  renderizarRondaSellosAeralis();
+}
+
+function renderizarRondaSellosAeralis() {
+  const ronda = rondasSellosAeralis[rondaSellosCumbres];
+  if (!ronda || pruebaEspecialBosqueActiva !== "sellos-aeralis") return;
+  puzzleCumbres.replaceChildren();
+  puzzleCumbres.classList.remove("sello-rompiendose");
+  indicesSellosCumbres = ronda.opciones.map(() => 0);
+
+  const cabecera = document.createElement("div");
+  cabecera.className = "cabecera-sellos-aeralis";
+  cabecera.innerHTML = `<span>Sello ${rondaSellosCumbres + 1} de ${rondasSellosAeralis.length}</span><strong>${ronda.pista}</strong>`;
+  const anillos = document.createElement("div");
+  anillos.className = "anillos-sellos-aeralis";
+  anillos.setAttribute("role", "group");
+  anillos.setAttribute("aria-label", `Combinación del sello ${rondaSellosCumbres + 1}`);
+
+  botonesPuzzleCumbres = ronda.opciones.map((opciones, posicion) => {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "anillo-sello-aeralis";
+    boton.dataset.posicion = `${posicion}`;
+    boton.style.setProperty("--giro-anillo", "0deg");
+    boton.innerHTML = `<span aria-hidden="true">✦</span><strong>${opciones[0]}</strong><small>GIRAR</small>`;
+    boton.setAttribute("aria-label", `Anillo ${posicion + 1}, letra ${opciones[0]}. Activar para girar.`);
+    boton.addEventListener("click", () => girarAnilloSelloAeralis(posicion));
+    anillos.appendChild(boton);
+    return boton;
+  });
+  const btnComprobar = document.createElement("button");
+  btnComprobar.type = "button";
+  btnComprobar.className = "btn-comprobar-sello-aeralis";
+  btnComprobar.textContent = "✦ Probar sello";
+  btnComprobar.addEventListener("click", comprobarSelloAeralis);
+  const grieta = document.createElement("div");
+  grieta.className = "grieta-sello-aeralis";
+  grieta.setAttribute("aria-hidden", "true");
+  puzzleCumbres.append(cabecera, anillos, btnComprobar, grieta);
+  estadoPruebaBosque.textContent = `Sello ${rondaSellosCumbres + 1} de 3 · Formá la palabra completa antes de probar.`;
+  botonesPuzzleCumbres[0]?.focus();
+}
+
+function girarAnilloSelloAeralis(posicion) {
+  const ronda = rondasSellosAeralis[rondaSellosCumbres];
+  const opciones = ronda?.opciones[posicion];
+  const boton = botonesPuzzleCumbres[posicion];
+  if (!ronda || !opciones || !boton || boton.disabled) return;
+  indicesSellosCumbres[posicion] = (indicesSellosCumbres[posicion] + 1) % opciones.length;
+  const letra = opciones[indicesSellosCumbres[posicion]];
+  boton.querySelector("strong").textContent = letra;
+  boton.style.setProperty("--giro-anillo", `${indicesSellosCumbres[posicion] * (360 / opciones.length)}deg`);
+  boton.setAttribute("aria-label", `Anillo ${posicion + 1}, letra ${letra}. Activar para girar.`);
+  reproducirSonido("colocarPieza");
+}
+
+function comprobarSelloAeralis() {
+  const ronda = rondasSellosAeralis[rondaSellosCumbres];
+  if (!ronda || pruebaEspecialBosqueActiva !== "sellos-aeralis") return;
+  const palabraActual = ronda.opciones
+    .map((letras, indice) => letras[indicesSellosCumbres[indice]])
+    .join("");
+  if (palabraActual !== ronda.palabra) {
+    puzzleCumbres.classList.remove("error");
+    void puzzleCumbres.offsetWidth;
+    puzzleCumbres.classList.add("error");
+    estadoPruebaBosque.textContent = `“${palabraActual}” no responde la pista. Revisá toda la combinación.`;
+    reproducirSonido("error");
     return;
   }
-  if (entradaPuzzleCumbres.length === configuracion.objetivo.length) {
-    estadoPruebaBosque.textContent = tipo === "sellos-aeralis"
-      ? "¡Los cuatro sellos se rompieron! Aeralis es libre."
-      : "¡Las campanas abrieron la corriente celeste!";
-    void completarPruebaEspecialBosque(tipo);
-  }
+  botonesPuzzleCumbres.forEach((control) => {
+    control.disabled = true;
+    control.classList.add("correcto");
+  });
+  puzzleCumbres.querySelector(".btn-comprobar-sello-aeralis").disabled = true;
+  puzzleCumbres.classList.remove("error");
+  puzzleCumbres.classList.add("sello-rompiendose");
+  reproducirSonido("cristalCasilla");
+  estadoPruebaBosque.textContent = `¡${ronda.palabra}! El sello se está quebrando.`;
+  setTimeout(() => {
+    if (pruebaEspecialBosqueActiva !== "sellos-aeralis") return;
+    rondaSellosCumbres += 1;
+    if (rondaSellosCumbres === rondasSellosAeralis.length) {
+      estadoPruebaBosque.textContent = "¡AIRE, NUBE y LIBRE rompieron la prisión de Aeralis!";
+      void completarPruebaEspecialBosque("sellos-aeralis");
+    } else {
+      renderizarRondaSellosAeralis();
+    }
+  }, prefiereReducirMovimiento.matches ? 180 : 760);
 }
 
 function iniciarPuzzleRamasDeslizante() {
@@ -11456,7 +11860,7 @@ async function ejecutarEncuentroHombreLoboMision(fase = "desafio") {
     : srcHombreLoboHumanoVersus;
   figura.alt = fase === "victoria"
     ? "El Guardián de la Luna aullando ante la manada"
-    : "El viajero misterioso frente al explorador";
+    : "El viajero misterioso frente a Aren";
   relato.className = "relato-encuentro-lobo";
   relato.textContent = fase === "victoria"
     ? "El Guardián de la Luna acepta la derrota y alza la mirada hacia la luna."

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v165`;
+const CACHE_NAME = `${CACHE_PREFIX}v168`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -73,6 +73,9 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v162`,
   `${CACHE_PREFIX}v163`,
   `${CACHE_PREFIX}v164`,
+  `${CACHE_PREFIX}v165`,
+  `${CACHE_PREFIX}v166`,
+  `${CACHE_PREFIX}v167`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -120,6 +123,10 @@ const CORE_ASSETS = [
   "./assets/images/fondos/cumbres-10.png",
   "./assets/images/personajes/aventura/aeralis-liberada-v1.png",
   "./assets/images/elements/cristal-celeste-v1.png",
+  "./assets/images/cinematicas/cumbres-final/01-aeralis-invita-aren-v1.png",
+  "./assets/images/cinematicas/cumbres-final/02-aren-sube-aeralis-v1.png",
+  "./assets/images/cinematicas/cumbres-final/03-vuelo-mundo-hielo-v1.png",
+  "./assets/images/cinematicas/cumbres-final/04-llegada-mundo-hielo-v1.png",
   "./assets/images/ambiente/desierto/alacran-camina-1.png",
   "./assets/images/ambiente/desierto/alacran-camina-2.png",
   "./assets/images/ambiente/desierto/halcon-alas-arriba.png",
@@ -324,10 +331,10 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260820-personajes-mundo1-25",
-  "./index.html": "20260826-cumbres-1",
-  "./css/styles.css": "20260826-cumbres-1",
-  "./js/app.js": "20260826-cumbres-1",
+  "./": "20260827-puzzles-viaje-hielo-1",
+  "./index.html": "20260827-puzzles-viaje-hielo-1",
+  "./css/styles.css": "20260827-puzzles-viaje-hielo-1",
+  "./js/app.js": "20260827-puzzles-viaje-hielo-1",
   "./assets/images/fondos/cumbres-1.png": "20260826-cumbres-1",
   "./assets/images/fondos/cumbres-2.png": "20260826-cumbres-1",
   "./assets/images/fondos/cumbres-3.png": "20260826-cumbres-1",
@@ -340,6 +347,10 @@ const ASSET_REVISIONS = {
   "./assets/images/fondos/cumbres-10.png": "20260826-cumbres-1",
   "./assets/images/personajes/aventura/aeralis-liberada-v1.png": "20260826-cumbres-1",
   "./assets/images/elements/cristal-celeste-v1.png": "20260826-cumbres-1",
+  "./assets/images/cinematicas/cumbres-final/01-aeralis-invita-aren-v1.png": "20260827-viaje-hielo-1",
+  "./assets/images/cinematicas/cumbres-final/02-aren-sube-aeralis-v1.png": "20260827-viaje-hielo-1",
+  "./assets/images/cinematicas/cumbres-final/03-vuelo-mundo-hielo-v1.png": "20260827-viaje-hielo-1",
+  "./assets/images/cinematicas/cumbres-final/04-llegada-mundo-hielo-v1.png": "20260827-viaje-hielo-1",
   "./assets/images/ambiente/desierto/alacran-camina-1.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/alacran-camina-2.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/halcon-alas-arriba.png": "20260826-fauna-desierto-1",
@@ -421,7 +432,7 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/versus/libro-sello-kalamo.png": "20260820-kalamo-tinta-centro-2",
   "./assets/images/personajes/versus/kalamo-final-golpe-impulso.png": "20260820-kalamo-tinta-centro-2",
   "./assets/images/fondos/bosque-6-lobos-v2.png": "20260817-lobos-alineados-1",
-  "./js/adventure-puzzles.js": "20260816-puzzles-bosque-1",
+  "./js/adventure-puzzles.js": "20260827-puzzles-cumbres-1",
   "./js/versus-engine.js": "20260817-versus-recuperacion-1",
   "./js/supabase-client.js": "20260817-amigos-cuentas-1",
   "./js/versus-room-supabase.js": "20260817-auth-cuentas-2",

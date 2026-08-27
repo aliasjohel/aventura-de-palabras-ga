@@ -41,6 +41,12 @@ assert.equal(secuencia.length, 8);
 assert.equal(secuencia.every((valor) => valor >= 0 && valor < 4), true);
 assert.equal(secuencia.every((valor, indice) => indice === 0 || valor !== secuencia[indice - 1]), true);
 
+assert.deepEqual(Puzzles.obtenerTrayectoRecto(1, 4, 8), [1, 2, 3, 4]);
+assert.deepEqual(Puzzles.obtenerTrayectoRecto(16, 52, 8), [16, 25, 34, 43, 52]);
+assert.deepEqual(Puzzles.obtenerTrayectoRecto(0, 11, 8), []);
+assert.equal(Puzzles.sonCeldasAdyacentes(6, 7, 5), true);
+assert.equal(Puzzles.sonCeldasAdyacentes(4, 5, 5), false);
+
 assert.match(html, /id="modalPruebaBosque"[\s\S]+id="tableroRamasDeslizante"/);
 assert.match(html, /id="escenaMemoriaLobos"[\s\S]+data-lobo="3"/);
 assert.match(html, /id="btnProbarPruebaBosque"/);

@@ -81,6 +81,51 @@
     return secuencia;
   }
 
+  function obtenerTrayectoRecto(inicio, fin, lado) {
+    if (
+      !Number.isInteger(inicio) ||
+      !Number.isInteger(fin) ||
+      !Number.isInteger(lado) ||
+      lado < 2 ||
+      inicio < 0 ||
+      fin < 0 ||
+      inicio >= lado * lado ||
+      fin >= lado * lado
+    ) {
+      return [];
+    }
+
+    const filaInicio = Math.floor(inicio / lado);
+    const columnaInicio = inicio % lado;
+    const filaFin = Math.floor(fin / lado);
+    const columnaFin = fin % lado;
+    const diferenciaFila = filaFin - filaInicio;
+    const diferenciaColumna = columnaFin - columnaInicio;
+    const esRecto =
+      diferenciaFila === 0 ||
+      diferenciaColumna === 0 ||
+      Math.abs(diferenciaFila) === Math.abs(diferenciaColumna);
+    if (!esRecto) return [];
+
+    const pasoFila = Math.sign(diferenciaFila);
+    const pasoColumna = Math.sign(diferenciaColumna);
+    const cantidad = Math.max(Math.abs(diferenciaFila), Math.abs(diferenciaColumna));
+    return Array.from({ length: cantidad + 1 }, (_, posicion) =>
+      (filaInicio + pasoFila * posicion) * lado + columnaInicio + pasoColumna * posicion,
+    );
+  }
+
+  function sonCeldasAdyacentes(inicio, fin, lado) {
+    if (!Number.isInteger(inicio) || !Number.isInteger(fin) || !Number.isInteger(lado)) {
+      return false;
+    }
+    const filaInicio = Math.floor(inicio / lado);
+    const columnaInicio = inicio % lado;
+    const filaFin = Math.floor(fin / lado);
+    const columnaFin = fin % lado;
+    return Math.abs(filaInicio - filaFin) + Math.abs(columnaInicio - columnaFin) === 1;
+  }
+
   return {
     crearEstadoOrdenado,
     obtenerMovimientosValidos,
@@ -88,5 +133,7 @@
     estaOrdenado,
     crearTableroMezclado,
     crearSecuenciaMemoria,
+    obtenerTrayectoRecto,
+    sonCeldasAdyacentes,
   };
 });

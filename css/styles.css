@@ -2179,6 +2179,9 @@ body {
     bottom: 1%;
     width: clamp(105px, 20%, 230px);
     max-height: 55%;
+    /* Nimbus ocupa el lado derecho de la escena: se refleja para mirar a Aren. */
+    scale: -1 1;
+    transform-origin: center bottom;
     animation: nimbusRespira 2.4s ease-in-out infinite;
 }
 
@@ -2230,33 +2233,247 @@ body {
 @keyframes aeralisPrision { 50% { opacity: .62; filter: saturate(.9) drop-shadow(0 0 30px #bff4ff); } }
 
 .puzzle-cumbres {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(62px, 1fr));
-    gap: 12px;
-    width: min(520px, 100%);
-    margin: 18px auto;
+    width: min(640px, 100%);
+    margin: 14px auto;
+    user-select: none;
 }
 
 .puzzle-cumbres.oculto { display: none; }
 
-.puzzle-cumbres button {
-    min-height: 82px;
-    border: 2px solid rgba(133, 234, 255, .72);
-    border-radius: 18px;
-    color: #eefdff;
-    background: linear-gradient(145deg, #224b83, #112a55);
-    box-shadow: inset 0 0 18px rgba(94, 218, 255, .25), 0 8px 18px rgba(3, 17, 45, .35);
-    font-size: clamp(1.5rem, 5vw, 2.25rem);
-    cursor: pointer;
-    transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+.progreso-puente-celeste {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 3px;
+    height: 34px;
+    margin-bottom: 5px;
 }
 
-.puzzle-cumbres button:hover,
-.puzzle-cumbres button:focus-visible { transform: translateY(-4px); }
-.puzzle-cumbres button.activo,
-.puzzle-cumbres button.correcto { background: linear-gradient(145deg, #20bfe4, #176bb2); box-shadow: 0 0 25px #72efff; }
-.puzzle-cumbres button.error { animation: sacudirPuzzleCumbres .35s ease; background: #702f5f; }
+.progreso-puente-celeste i {
+    width: clamp(55px, 14vw, 88px);
+    height: 11px;
+    border: 2px dashed rgba(191, 238, 255, .58);
+    border-radius: 999px 999px 4px 4px;
+    background: rgba(136, 191, 221, .24);
+    box-shadow: inset 0 0 8px rgba(188, 241, 255, .16);
+    transform: translateY(8px) rotate(var(--inclinacion-puente, 0deg));
+    transition: transform .45s ease, background .45s ease, box-shadow .45s ease;
+}
+
+.progreso-puente-celeste i:first-child { --inclinacion-puente: -4deg; }
+.progreso-puente-celeste i:last-child { --inclinacion-puente: 4deg; }
+.progreso-puente-celeste i.construido {
+    background: linear-gradient(90deg, #d8f8ff, #78d8f6 48%, #f2fdff);
+    box-shadow: 0 0 13px #8ce8ff, 0 8px 15px rgba(2, 22, 52, .45);
+    transform: translateY(0) rotate(var(--inclinacion-puente, 0deg));
+}
+
+.palabras-sopa-cumbres {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    margin-bottom: 8px;
+}
+
+.palabras-sopa-cumbres span {
+    padding: 4px 12px;
+    border: 1px solid rgba(186, 235, 255, .35);
+    border-radius: 999px;
+    color: #d7ebf7;
+    background: rgba(5, 27, 61, .5);
+    font-size: clamp(.7rem, 2vw, .9rem);
+    font-weight: 900;
+    letter-spacing: .12em;
+    transition: color .25s ease, background .25s ease, box-shadow .25s ease;
+}
+
+.palabras-sopa-cumbres span.encontrada {
+    color: #07243a;
+    background: #9df0ff;
+    box-shadow: 0 0 15px rgba(126, 233, 255, .85);
+    text-decoration: line-through;
+}
+
+.tablero-sopa-cumbres {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: clamp(3px, .7vw, 6px);
+    width: min(100%, 410px);
+    aspect-ratio: 1;
+    margin-inline: auto;
+    padding: clamp(7px, 1.4vw, 12px);
+    border: clamp(4px, .8vw, 7px) ridge #7dc8e3;
+    border-radius: 19px;
+    background: radial-gradient(circle at 50% 45%, rgba(142, 231, 255, .22), transparent 60%), rgba(5, 25, 61, .76);
+    box-shadow: inset 0 0 30px rgba(111, 216, 255, .18), 0 14px 30px rgba(1, 12, 35, .48);
+    touch-action: none;
+}
+
+.letra-sopa-cumbres {
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    border: 1px solid rgba(183, 234, 255, .32);
+    border-radius: clamp(6px, 1.3vw, 11px);
+    color: #f3fcff;
+    background: linear-gradient(145deg, rgba(66, 135, 190, .78), rgba(21, 58, 110, .9));
+    box-shadow: inset 0 0 9px rgba(177, 237, 255, .12);
+    font-size: clamp(.8rem, 3.5vw, 1.38rem);
+    font-weight: 950;
+    cursor: pointer;
+    transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
+}
+
+.letra-sopa-cumbres:hover,
+.letra-sopa-cumbres:focus-visible { z-index: 2; outline: 2px solid #d6f8ff; transform: scale(1.08); }
+.letra-sopa-cumbres.seleccionada { color: #09213b; background: #fff0a5; box-shadow: 0 0 14px #fff2a1; transform: scale(1.07); }
+.letra-sopa-cumbres.encontrada { color: #05283a; background: #81e8f6; box-shadow: 0 0 13px rgba(111, 237, 255, .78); }
+.tablero-sopa-cumbres.error { animation: sacudirPuzzleCumbres .35s ease; }
+
+.leyenda-red-cumbres {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: clamp(.72rem, 2.2vw, .95rem);
+}
+
+.leyenda-red-cumbres span { padding: 4px 10px; border-radius: 999px; background: rgba(6, 26, 61, .62); }
+.leyenda-red-cumbres .cian { color: #aaf5ff; box-shadow: inset 0 0 10px rgba(77, 227, 255, .18); }
+
+.tablero-red-cumbres {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: clamp(5px, 1.15vw, 9px);
+    width: min(100%, 455px);
+    aspect-ratio: 1;
+    margin-inline: auto;
+    padding: clamp(10px, 2vw, 17px);
+    border: clamp(5px, 1vw, 8px) ridge #537cae;
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at 22% 18%, rgba(92, 224, 255, .16), transparent 28%),
+        radial-gradient(circle at 78% 77%, rgba(186, 104, 255, .14), transparent 30%),
+        linear-gradient(145deg, #071a3c, #122d5b);
+    box-shadow: inset 0 0 38px rgba(92, 180, 255, .13), 0 16px 34px rgba(1, 10, 31, .56);
+    touch-action: none;
+}
+
+.celda-red-cumbres {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    border: 1px solid rgba(159, 213, 241, .2);
+    border-radius: 17px;
+    color: white;
+    background: rgba(26, 62, 108, .54);
+    box-shadow: inset 0 0 10px rgba(102, 193, 242, .08);
+    font-size: clamp(1rem, 5vw, 2rem);
+    cursor: pointer;
+    transition: transform .12s ease, background .16s ease, box-shadow .16s ease;
+}
+
+.celda-red-cumbres:hover,
+.celda-red-cumbres:focus-visible { z-index: 2; outline: 2px solid #d8f8ff; transform: scale(1.06); }
+.celda-red-cumbres.extremo { border-width: 2px; background: rgba(5, 20, 50, .82); }
+.celda-red-cumbres.relevo { border-style: double; border-width: 4px; font-size: clamp(.9rem, 4vw, 1.65rem); }
+.celda-red-cumbres.tormenta {
+    border-color: rgba(122, 142, 171, .34);
+    color: rgba(217, 229, 243, .72);
+    background: radial-gradient(circle, rgba(84, 101, 130, .66), rgba(17, 28, 53, .9));
+    box-shadow: inset 0 0 16px rgba(3, 9, 24, .78);
+    cursor: not-allowed;
+    filter: saturate(.5);
+}
+.celda-red-cumbres.energia-cian,
+.celda-red-cumbres.camino-cian { border-color: #74efff; background: #168fab; box-shadow: inset 0 0 13px #bff9ff, 0 0 17px rgba(60, 229, 255, .72); }
+.celda-red-cumbres.energia-violeta,
+.celda-red-cumbres.camino-violeta { border-color: #d799ff; background: #7542a8; box-shadow: inset 0 0 13px #eed5ff, 0 0 17px rgba(190, 104, 255, .68); }
+.celda-red-cumbres.energia-dorado,
+.celda-red-cumbres.camino-dorado { border-color: #ffe78b; background: #b87c1b; box-shadow: inset 0 0 13px #fff1b5, 0 0 17px rgba(255, 203, 74, .68); }
+
+.cabecera-sellos-aeralis {
+    display: grid;
+    gap: 4px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.cabecera-sellos-aeralis span { color: #9eeeff; font-size: .75rem; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
+.cabecera-sellos-aeralis strong { color: #eefcff; font-family: Georgia, "Times New Roman", serif; font-size: clamp(1rem, 3vw, 1.28rem); }
+.anillos-sellos-aeralis { display: flex; justify-content: center; gap: clamp(6px, 1.5vw, 12px); }
+.anillo-sello-aeralis {
+    --giro-anillo: 0deg;
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: clamp(58px, 12vw, 92px);
+    aspect-ratio: 1;
+    padding: 0;
+    overflow: hidden;
+    border: 3px double #8bdff5;
+    border-radius: 50%;
+    color: #f4fdff;
+    background: radial-gradient(circle, #1f5891 0 34%, #0b244f 36% 55%, #3c85ad 57% 61%, #091b40 63%);
+    box-shadow: inset 0 0 14px rgba(146, 235, 255, .45), 0 0 15px rgba(79, 203, 255, .28);
+    cursor: pointer;
+    isolation: isolate;
+}
+.anillo-sello-aeralis::before {
+    content: "✦  ·  ✧  ·  ✦  ·  ✧";
+    position: absolute;
+    inset: 5px;
+    z-index: -1;
+    display: grid;
+    place-items: center;
+    border: 1px dashed rgba(204, 246, 255, .7);
+    border-radius: 50%;
+    color: rgba(214, 250, 255, .82);
+    font-size: clamp(.48rem, 1.5vw, .68rem);
+    transition: transform .3s cubic-bezier(.2, .75, .25, 1.25);
+    transform: rotate(var(--giro-anillo));
+}
+.anillo-sello-aeralis > span { position: absolute; top: 3px; color: #d7f9ff; font-size: .66rem; }
+.anillo-sello-aeralis strong { font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.25rem, 4vw, 2rem); text-shadow: 0 0 9px #9deeff; }
+.anillo-sello-aeralis small { position: absolute; bottom: 5px; color: #a9dfea; font-size: clamp(.42rem, 1.2vw, .56rem); font-weight: 900; letter-spacing: .08em; }
+.anillo-sello-aeralis:hover,
+.anillo-sello-aeralis:focus-visible { outline: 3px solid #e1fbff; outline-offset: 2px; transform: translateY(-4px); }
+.anillo-sello-aeralis.correcto { border-color: #fff4a6; background: radial-gradient(circle, #24769b 0 34%, #12436c 36% 55%, #e1bd54 57% 61%, #102955 63%); box-shadow: inset 0 0 14px #fff0a2, 0 0 22px rgba(255, 230, 115, .68); }
+.btn-comprobar-sello-aeralis {
+    display: block;
+    margin: 18px auto 0;
+    padding: 10px 22px;
+    border: 2px solid #bcefff;
+    border-radius: 999px;
+    color: #f5fdff;
+    background: linear-gradient(145deg, #245a91, #16345f);
+    box-shadow: 0 8px 18px rgba(2, 16, 45, .4), inset 0 0 12px rgba(146, 237, 255, .2);
+    font-weight: 900;
+    letter-spacing: .04em;
+    cursor: pointer;
+}
+.btn-comprobar-sello-aeralis:hover,
+.btn-comprobar-sello-aeralis:focus-visible { outline: 3px solid #e1fbff; outline-offset: 2px; transform: translateY(-2px); }
+.btn-comprobar-sello-aeralis:disabled { cursor: default; opacity: .58; transform: none; }
+.grieta-sello-aeralis { width: 0; height: 5px; margin: 18px auto 0; border-radius: 999px; background: #f7fdff; box-shadow: 0 0 12px #83ebff, 0 0 28px #fff; opacity: 0; }
+.puzzle-sellos-aeralis.sello-rompiendose .grieta-sello-aeralis { animation: quebrarSelloAeralis .72s ease both; }
+.puzzle-sellos-aeralis.sello-rompiendose .anillos-sellos-aeralis { animation: vibrarSellosAeralis .5s ease both; }
+.puzzle-sellos-aeralis.error .anillos-sellos-aeralis { animation: sacudirPuzzleCumbres .35s ease; }
+
 @keyframes sacudirPuzzleCumbres { 33% { transform: translateX(-7px); } 66% { transform: translateX(7px); } }
+@keyframes quebrarSelloAeralis { 0% { width: 0; opacity: 0; } 45% { width: 72%; opacity: 1; } 100% { width: 100%; opacity: 0; filter: blur(3px); } }
+@keyframes vibrarSellosAeralis { 25% { transform: translateX(-5px); } 55% { transform: translateX(5px); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .progreso-puente-celeste i,
+    .letra-sopa-cumbres,
+    .celda-red-cumbres,
+    .anillo-sello-aeralis::before { transition: none; }
+    .tablero-sopa-cumbres.error,
+    .puzzle-sellos-aeralis.sello-rompiendose .grieta-sello-aeralis,
+    .puzzle-sellos-aeralis.sello-rompiendose .anillos-sellos-aeralis { animation-duration: 1ms; }
+}
 
 .modal-prueba-bosque.prueba-cumbres .panel-prueba-bosque {
     background: linear-gradient(155deg, rgba(17, 43, 88, .98), rgba(49, 108, 159, .97));
@@ -2306,8 +2523,9 @@ body {
     .escenario.escenario-cumbres .personaje-imagen { bottom: -7%; }
     .nimbus-cumbres { width: 26%; right: 2%; bottom: 0; }
     .aeralis-cumbres { width: 55%; right: -4%; }
-    .puzzle-cumbres { grid-template-columns: repeat(2, 1fr); gap: 9px; }
-    .puzzle-cumbres button { min-height: 66px; }
+    .tablero-sopa-cumbres,
+    .tablero-red-cumbres { width: min(92vw, 430px); }
+    .anillos-sellos-aeralis { gap: 5px; }
     .cinematica-aeralis { width: 78vw; right: -14vw; bottom: 16vh; }
     .cinematica-nimbus { width: 33vw; left: 2vw; bottom: 18vh; }
     .cinematica-cristal-celeste { width: 34vw; top: 20%; }
