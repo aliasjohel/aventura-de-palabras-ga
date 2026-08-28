@@ -13047,7 +13047,7 @@ button:disabled {
 .maguito-corriendo {
     right: 19%;
     bottom: -3%;
-    animation: correrMaguitoDesierto .62s ease-in-out infinite alternate;
+    animation: correrMaguitoDesierto 1.8s ease-in-out infinite alternate;
 }
 
 .devoradunas-desierto {
@@ -13239,8 +13239,8 @@ button:disabled {
 }
 
 @keyframes correrMaguitoDesierto {
-    from { transform: translate3d(-7px, 2px, 0) rotate(-2deg); }
-    to { transform: translate3d(7px, -7px, 0) rotate(3deg); }
+    from { transform: translate3d(-2px, 1px, 0) rotate(-.5deg); }
+    to { transform: translate3d(2px, -2px, 0) rotate(.6deg); }
 }
 
 @keyframes emergerDevoradunas {

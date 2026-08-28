@@ -8561,10 +8561,9 @@ const configuracionesVientoDesierto = Object.freeze({
 const configuracionesAvesDesierto = Object.freeze({
   0: { cantidad: 1, bandada: false },
   2: { cantidad: 4, bandada: true },
-  7: { cantidad: 3, bandada: true },
 });
 const cantidadesEscorpionesDesierto = Object.freeze({ 5: 2 });
-const misionesLagartijaDesierto = new Set([3]);
+const misionesLagartijaDesierto = new Set([7]);
 const misionesPastoDesierto = new Set([0, 5, 7]);
 const misionesCalorDesierto = new Set([0, 2, 3, 4, 5, 7]);
 

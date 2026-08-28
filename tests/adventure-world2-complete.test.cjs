@@ -85,9 +85,12 @@ assert.match(app, /new Set\(\[3, 6, 8, 9\]\)/);
 assert.match(app, /configuracionesVientoDesierto[\s\S]+1:\s*\{\s*tipo:\s*"ventisca"/);
 assert.match(app, /configuracionesVientoDesierto[\s\S]+3:\s*\{\s*tipo:\s*"remolino"/);
 assert.match(app, /configuracionesAvesDesierto[\s\S]+2:\s*\{\s*cantidad:\s*4,\s*bandada:\s*true/);
-assert.match(app, /configuracionesAvesDesierto[\s\S]+7:\s*\{\s*cantidad:\s*3,\s*bandada:\s*true/);
 assert.match(app, /cantidadesEscorpionesDesierto = Object\.freeze\(\{ 5: 2 \}\)/);
-assert.match(app, /const misionesLagartijaDesierto = new Set\(\[3\]\)/);
+assert.match(app, /const misionesLagartijaDesierto = new Set\(\[7\]\)/);
+const bloqueAvesDesierto = app.match(
+  /const configuracionesAvesDesierto = Object\.freeze\(\{([\s\S]+?)\n\}\);/,
+)?.[1] || "";
+assert.doesNotMatch(bloqueAvesDesierto, /^\s*(?:3|6|8|9):\s*\{/m);
 assert.match(app, /const misionesPastoDesierto = new Set\(\[0, 5, 7\]\)/);
 assert.match(app, /const misionesCalorDesierto = new Set\(\[0, 2, 3, 4, 5, 7\]\)/);
 assert.match(app, /function actualizarVidaDesiertoMision\(\)/);
@@ -133,6 +136,8 @@ assert.match(estilos, /@keyframes barrerVentiscaDesierto/);
 assert.match(estilos, /@keyframes cruzarRemolinoDesierto/);
 assert.match(estilos, /\.ave-bandada-desierto/);
 assert.match(estilos, /\.pareja-escorpiones-desierto/);
+assert.match(estilos, /\.maguito-corriendo\s*\{[\s\S]+?animation:\s*correrMaguitoDesierto 1\.8s/);
+assert.match(estilos, /@keyframes correrMaguitoDesierto\s*\{[\s\S]+?translate3d\(-2px, 1px[\s\S]+?translate3d\(2px, -2px/);
 assert.match(estilos, /\.escenario\.escenario-desierto\[data-mision-desierto/);
 for (const mision of [1, 2, 8, 9]) {
   assert.match(
