@@ -321,6 +321,7 @@ let extremoInicialRedCumbres = null;
 let coloresCompletadosRedCumbres = new Set();
 let rondaSellosCumbres = 0;
 let indicesSellosCumbres = [];
+let secuenciaPistaSellosCumbres = 0;
 const estadoPruebaBosque = document.getElementById("estadoPruebaBosque");
 const btnRepetirPruebaBosque = document.getElementById("btnRepetirPruebaBosque");
 const btnSalirPruebaBosque = document.getElementById("btnSalirPruebaBosque");
@@ -978,6 +979,64 @@ let intentos = 6;
 let escenarioActual = 0;
 let misionActual = 0;
 let monedas = 0;
+const claveRecompensasMonedasPendientes = "recompensasMonedasPendientesAventuraGA";
+
+function leerRecompensasMonedasPendientes() {
+  try {
+    const guardadas = JSON.parse(
+      localStorage.getItem(claveRecompensasMonedasPendientes) || "[]",
+    );
+    return Array.isArray(guardadas) ? guardadas : [];
+  } catch (_error) {
+    return [];
+  }
+}
+
+function guardarRecompensasMonedasPendientes(recompensas) {
+  try {
+    localStorage.setItem(
+      claveRecompensasMonedasPendientes,
+      JSON.stringify(recompensas),
+    );
+  } catch (error) {
+    console.warn("No se pudo guardar la cola de monedas offline.", error);
+  }
+}
+
+function crearIdRecompensaMonedas() {
+  return globalThis.crypto?.randomUUID?.()
+    || `monedas-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+function otorgarMonedas(cantidad, origen) {
+  const valor = Math.max(0, Math.trunc(Number(cantidad) || 0));
+  if (!valor) return;
+  monedas += valor;
+  if (modoPruebasActivo) return;
+
+  const recompensas = leerRecompensasMonedasPendientes();
+  recompensas.push({
+    id: crearIdRecompensaMonedas(),
+    cantidad: valor,
+    origen,
+    obtenidaEn: new Date().toISOString(),
+  });
+  guardarRecompensasMonedasPendientes(recompensas);
+}
+
+function confirmarRecompensasMonedasSincronizadas(idsConfirmados = []) {
+  const confirmados = new Set(idsConfirmados);
+  if (!confirmados.size) return;
+  guardarRecompensasMonedasPendientes(
+    leerRecompensasMonedasPendientes().filter(({ id }) => !confirmados.has(id)),
+  );
+}
+
+globalThis.AventuraMonedasOffline = Object.freeze({
+  obtenerPendientes: () => leerRecompensasMonedasPendientes().map((item) => ({ ...item })),
+  confirmarSincronizadas: confirmarRecompensasMonedasSincronizadas,
+});
+
 let experiencia = 0;
 let cristalesObtenidos = 0;
 let mundoDosCompletado = false;
@@ -1095,6 +1154,8 @@ async function asegurarConexionSalasVersus() {
   promesaConexionSalasVersus = (async () => {
     const configurado = globalThis.AventuraSupabase?.configuracionDisponible?.();
     if (!configurado) return adaptadorLocalSalasVersus;
+
+    await globalThis.AventuraOnline?.cargarSupabase?.();
 
     const cliente = globalThis.AventuraSupabase.obtenerCliente();
     if (!cliente || !globalThis.VersusRoomSupabase) {
@@ -3043,7 +3104,10 @@ function verificarEstado() {
     mensajePersonaje.textContent = "";
     mensajePersonaje.classList.add("oculto");
     const mensajeSuperadoTerminado = mostrarMensajeDesafioSuperado();
-    monedas += 10;
+    otorgarMonedas(
+      10,
+      `aventura:${escenarioActual}:${misionActual}:${desafiosCompletados + 1}:palabra`,
+    );
     experiencia += 20;
 
     actualizarJugador();
@@ -4456,7 +4520,7 @@ async function completarDueloAventura() {
   dueloAventuraActivo = null;
   limpiarInterfazDueloAventura();
   mostrarPantalla(pantallaJuego);
-  monedas += 30;
+  otorgarMonedas(30, `aventura:${duelo.tipo}:duelo`);
   experiencia += 60;
   actualizarJugador();
 
@@ -7304,12 +7368,16 @@ function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
   const historia = obtenerHistoriaMision();
   const secuenciaActual = ++secuenciaPresentacionMision;
   const esHistoriaDesierto = escenarioActual === 1;
+  const esHistoriaCumbres = escenarioActual === 2;
 
   presentacionMisionYaCargada = misionYaCargada;
   modalHistoria.classList.toggle("historia-desierto", esHistoriaDesierto);
+  modalHistoria.classList.toggle("historia-cumbres", esHistoriaCumbres);
   imagenSoporteMision.src = esHistoriaDesierto
     ? "assets/images/ui/presentacion-mision-piedra-desierto-v1.png"
-    : "assets/images/ui/presentacion-mision-tronco.png";
+    : esHistoriaCumbres
+      ? "assets/images/ui/presentacion-mision-cumbres-v1.png"
+      : "assets/images/ui/presentacion-mision-tronco.png";
   numeroCapitulo.textContent = historia.capitulo;
   tituloCapitulo.textContent = historia.titulo;
   textoCapitulo.textContent = historia.texto;
@@ -10749,18 +10817,12 @@ const palabrasSopaCumbres = Object.freeze([
   { palabra: "CIELO", indices: [16, 25, 34, 43, 52] },
 ]);
 
-const ladoRedCumbres = 6;
+const ladoRedCumbres = 8;
 const extremosRedCumbres = Object.freeze({
-  cian: [0, 17],
-  violeta: [5, 3],
-  dorado: [12, 35],
+  cian: [25, 30],
+  violeta: [2, 58],
+  dorado: [5, 61],
 });
-const relevosRedCumbres = Object.freeze({
-  cian: 14,
-  violeta: 10,
-  dorado: 21,
-});
-const tormentasRedCumbres = new Set([6, 7, 13, 19, 23, 27, 30, 31, 32, 33, 34]);
 
 const rondasSellosAeralis = Object.freeze([
   {
@@ -10950,9 +11012,9 @@ function validarTrayectoSopaCumbres() {
 
 function iniciarRedPararrayos() {
   etiquetaPruebaBosque.textContent = "PRUEBA DE LA TORMENTA ENCADENADA";
-  tituloPruebaBosque.textContent = "Desviá cada corriente hasta su pararrayos";
+  tituloPruebaBosque.textContent = "Entrelazá las corrientes sin cruzarlas";
   instruccionPruebaBosque.textContent =
-    "Uní cada color pasando por su torre ✦. Rodeá las tormentas: las corrientes avanzan a casillas vecinas y no pueden cruzarse.";
+    "Los caminos directos se chocan. Uní cada nube con su pararrayos del mismo color buscando desvíos para que ninguna corriente pase sobre otra.";
   colorActivoRedCumbres = "";
   caminosRedCumbres = new Map();
   trayectoActivoRedCumbres = [];
@@ -10961,11 +11023,14 @@ function iniciarRedPararrayos() {
 
   const leyenda = document.createElement("div");
   leyenda.className = "leyenda-red-cumbres";
-  leyenda.innerHTML = "<span class=\"cian\">☁ Nube</span><b>→</b><span class=\"cian\">⚡ Pararrayos</span>";
+  leyenda.innerHTML = `
+    <span class="cian">☁ ↔ ⚡ Celeste</span>
+    <span class="violeta">☁ ↔ ⚡ Morado</span>
+    <span class="dorado">☁ ↔ ⚡ Amarillo</span>`;
   const tablero = document.createElement("div");
   tablero.className = "tablero-red-cumbres";
   tablero.setAttribute("role", "grid");
-  tablero.setAttribute("aria-label", "Red de seis por seis para desviar tres corrientes alrededor de la tormenta");
+  tablero.setAttribute("aria-label", "Red de seis por seis con tres pares de corrientes entrelazadas");
 
   botonesPuzzleCumbres = Array.from({ length: ladoRedCumbres * ladoRedCumbres }, (_, indice) => {
     const boton = document.createElement("button");
@@ -10973,20 +11038,10 @@ function iniciarRedPararrayos() {
     boton.className = "celda-red-cumbres";
     boton.dataset.indice = `${indice}`;
     const extremo = obtenerExtremoRedCumbres(indice);
-    const relevo = obtenerRelevoRedCumbres(indice);
-    if (tormentasRedCumbres.has(indice)) {
-      boton.classList.add("tormenta");
-      boton.textContent = "🌪";
-      boton.disabled = true;
-      boton.setAttribute("aria-label", `Tormenta bloqueando la fila ${Math.floor(indice / ladoRedCumbres) + 1}, columna ${(indice % ladoRedCumbres) + 1}`);
-    } else if (extremo) {
+    if (extremo) {
       boton.classList.add("extremo", `energia-${extremo.color}`);
       boton.textContent = extremo.posicion === 0 ? "☁" : "⚡";
       boton.setAttribute("aria-label", `${extremo.posicion === 0 ? "Nube" : "Pararrayos"} ${extremo.color}`);
-    } else if (relevo) {
-      boton.classList.add("relevo", `energia-${relevo.color}`);
-      boton.textContent = "✦";
-      boton.setAttribute("aria-label", `Torre intermedia ${relevo.color}`);
     } else {
       boton.setAttribute("aria-label", `Casilla libre, fila ${Math.floor(indice / ladoRedCumbres) + 1}, columna ${(indice % ladoRedCumbres) + 1}`);
     }
@@ -11008,7 +11063,7 @@ function iniciarRedPararrayos() {
   tablero.addEventListener("pointerup", () => (punteroRedCumbresActivo = false));
   tablero.addEventListener("pointercancel", () => (punteroRedCumbresActivo = false));
   puzzleCumbres.append(leyenda, tablero);
-  estadoPruebaBosque.textContent = "0 de 3 corrientes conectadas · Cada camino debe atravesar su torre ✦.";
+  estadoPruebaBosque.textContent = "0 de 3 corrientes conectadas · Elegí qué color atraviesa el centro y cuáles lo rodean.";
   botonesPuzzleCumbres[0]?.focus();
 }
 
@@ -11020,13 +11075,7 @@ function obtenerExtremoRedCumbres(indice) {
   return null;
 }
 
-function obtenerRelevoRedCumbres(indice) {
-  const entrada = Object.entries(relevosRedCumbres).find(([, posicion]) => posicion === indice);
-  return entrada ? { color: entrada[0] } : null;
-}
-
 function activarCeldaRedCumbres(indice) {
-  if (tormentasRedCumbres.has(indice)) return;
   const extremo = obtenerExtremoRedCumbres(indice);
   if (colorActivoRedCumbres && extremo) {
     const ultimo = trayectoActivoRedCumbres.at(-1);
@@ -11034,13 +11083,6 @@ function activarCeldaRedCumbres(indice) {
       extremo.color === colorActivoRedCumbres &&
       indice !== extremoInicialRedCumbres &&
       AdventurePuzzles.sonCeldasAdyacentes(ultimo, indice, ladoRedCumbres);
-    if (
-      esDestinoActivo &&
-      !trayectoActivoRedCumbres.includes(relevosRedCumbres[colorActivoRedCumbres])
-    ) {
-      estadoPruebaBosque.textContent = `La corriente ${colorActivoRedCumbres} todavía no pasó por su torre ✦.`;
-      return;
-    }
     const puedeCerrar =
       esDestinoActivo;
     if (!puedeCerrar) {
@@ -11087,23 +11129,12 @@ function extenderCaminoRedCumbres(indice) {
     ([color, camino]) => color !== colorActivoRedCumbres && camino.includes(indice),
   );
   const extremo = obtenerExtremoRedCumbres(indice);
-  const relevo = obtenerRelevoRedCumbres(indice);
   if (
-    extremo?.color === colorActivoRedCumbres &&
-    indice !== extremoInicialRedCumbres &&
-    !trayectoActivoRedCumbres.includes(relevosRedCumbres[colorActivoRedCumbres])
-  ) {
-    estadoPruebaBosque.textContent = `La corriente ${colorActivoRedCumbres} todavía no pasó por su torre ✦.`;
-    return;
-  }
-  if (
-    tormentasRedCumbres.has(indice) ||
     ocupadoPorOtro ||
     trayectoActivoRedCumbres.includes(indice) ||
-    (extremo && extremo.color !== colorActivoRedCumbres) ||
-    (relevo && relevo.color !== colorActivoRedCumbres)
+    (extremo && extremo.color !== colorActivoRedCumbres)
   ) {
-    estadoPruebaBosque.textContent = "Las corrientes no pueden cruzarse, entrar en la tormenta ni atravesar otro extremo.";
+    estadoPruebaBosque.textContent = "Las corrientes no pueden cruzarse ni atravesar el extremo de otro color. Buscá otro desvío.";
     return;
   }
 
@@ -11140,7 +11171,7 @@ function iniciarSellosAeralis() {
   etiquetaPruebaBosque.textContent = "PRISIÓN DEL FIRMAMENTO";
   tituloPruebaBosque.textContent = "Descifrá los sellos de Aeralis";
   instruccionPruebaBosque.textContent =
-    "Girá los anillos, deducí la palabra completa y probá el sello. Los anillos no revelan qué letras individuales están bien.";
+    "Girá los anillos y probá el sello. Solo después de probar, las letras acertadas brillarán un instante para orientarte.";
   rondaSellosCumbres = 0;
   renderizarRondaSellosAeralis();
 }
@@ -11150,6 +11181,7 @@ function renderizarRondaSellosAeralis() {
   if (!ronda || pruebaEspecialBosqueActiva !== "sellos-aeralis") return;
   puzzleCumbres.replaceChildren();
   puzzleCumbres.classList.remove("sello-rompiendose");
+  secuenciaPistaSellosCumbres += 1;
   indicesSellosCumbres = ronda.opciones.map(() => 0);
 
   const cabecera = document.createElement("div");
@@ -11195,6 +11227,7 @@ function girarAnilloSelloAeralis(posicion) {
   boton.querySelector("strong").textContent = letra;
   boton.style.setProperty("--giro-anillo", `${indicesSellosCumbres[posicion] * (360 / opciones.length)}deg`);
   boton.setAttribute("aria-label", `Anillo ${posicion + 1}, letra ${letra}. Activar para girar.`);
+  boton.classList.remove("pista-correcta");
   reproducirSonido("colocarPieza");
 }
 
@@ -11205,14 +11238,28 @@ function comprobarSelloAeralis() {
     .map((letras, indice) => letras[indicesSellosCumbres[indice]])
     .join("");
   if (palabraActual !== ronda.palabra) {
+    const secuenciaPista = ++secuenciaPistaSellosCumbres;
+    const posicionesCorrectas = botonesPuzzleCumbres.filter((boton, posicion) =>
+      boton.querySelector("strong").textContent === ronda.palabra[posicion],
+    );
+    botonesPuzzleCumbres.forEach((boton) => boton.classList.remove("pista-correcta"));
+    posicionesCorrectas.forEach((boton) => boton.classList.add("pista-correcta"));
     puzzleCumbres.classList.remove("error");
     void puzzleCumbres.offsetWidth;
     puzzleCumbres.classList.add("error");
-    estadoPruebaBosque.textContent = `“${palabraActual}” no responde la pista. Revisá toda la combinación.`;
+    estadoPruebaBosque.textContent = posicionesCorrectas.length
+      ? `“${palabraActual}” no abre el sello · ${posicionesCorrectas.length} letra${posicionesCorrectas.length === 1 ? " brilló" : "s brillaron"} por estar bien ubicada${posicionesCorrectas.length === 1 ? "" : "s"}.`
+      : `“${palabraActual}” no abre el sello · Ninguna letra está bien ubicada todavía.`;
     reproducirSonido("error");
+    setTimeout(() => {
+      if (secuenciaPista !== secuenciaPistaSellosCumbres) return;
+      posicionesCorrectas.forEach((boton) => boton.classList.remove("pista-correcta"));
+    }, prefiereReducirMovimiento.matches ? 300 : 1150);
     return;
   }
+  secuenciaPistaSellosCumbres += 1;
   botonesPuzzleCumbres.forEach((control) => {
+    control.classList.remove("pista-correcta");
     control.disabled = true;
     control.classList.add("correcto");
   });
@@ -11941,7 +11988,7 @@ async function completarPruebaEspecialBosque(tipo) {
     await liberarMaguitoDeTrampaEspejismo();
   }
 
-  monedas += 10;
+  otorgarMonedas(10, `aventura:${escenarioActual}:${misionActual}:puzzle:${tipo}`);
   experiencia += 20;
   actualizarJugador();
   sonidoNarrativoPendiente = avanzarMision();

@@ -1,7 +1,14 @@
 const PWA_UPDATE_INTERVAL = 60 * 60 * 1000;
 
 async function registrarAplicacionInstalable() {
-  if (!("serviceWorker" in navigator)) return;
+  if (!("serviceWorker" in navigator)) {
+    const estadoOffline = document.getElementById("estadoOfflineJuego");
+    if (estadoOffline) {
+      estadoOffline.dataset.estado = "error";
+      estadoOffline.textContent = "Este navegador no permite instalar los modos sin conexión";
+    }
+    return;
+  }
 
   const avisoActualizacion = document.getElementById("avisoActualizacionPwa");
   const iconoActualizacion = document.getElementById("iconoActualizacionPwa");
@@ -12,6 +19,7 @@ async function registrarAplicacionInstalable() {
   const porcentajeActualizacion = document.getElementById("porcentajeActualizacionPwa");
   const barraActualizacion = document.getElementById("barraActualizacionPwa");
   const accionesActualizacion = document.getElementById("accionesActualizacionPwa");
+  const estadoOfflineJuego = document.getElementById("estadoOfflineJuego");
   const btnActualizar = document.getElementById("btnActualizarAplicacion");
   const btnPosponer = document.getElementById("btnPosponerActualizacion");
   const menuPrincipalPwa = document.getElementById("pantallaMenu");
@@ -19,6 +27,31 @@ async function registrarAplicacionInstalable() {
   let avisoPendiente = false;
   let recargandoPorActualizacion = false;
   let progresoInstalacion = null;
+
+  const mostrarEstadoOffline = (estado, texto) => {
+    if (!estadoOfflineJuego) return;
+    estadoOfflineJuego.dataset.estado = estado;
+    estadoOfflineJuego.textContent = texto;
+  };
+
+  const mostrarModosLocalesDisponibles = () => {
+    mostrarEstadoOffline(
+      navigator.onLine ? "listo" : "sin-red",
+      navigator.onLine
+        ? "Aventura, Pruebas y Torre disponibles sin conexión"
+        : "Sin conexión · Aventura, Pruebas y Torre disponibles",
+    );
+  };
+
+  const solicitarConservacionPaqueteLocal = async () => {
+    if (!navigator.storage?.persist) return;
+    try {
+      const yaPersistente = await navigator.storage.persisted?.();
+      if (!yaPersistente) await navigator.storage.persist();
+    } catch (_error) {
+      // La caché continúa disponible aunque el navegador no permita fijarla.
+    }
+  };
 
   const actualizarBarraDescarga = ({
     porcentaje,
@@ -37,6 +70,12 @@ async function registrarAplicacionInstalable() {
       reutilizados,
       estado,
     };
+    mostrarEstadoOffline(
+      estado === "completa" ? "listo" : "descargando",
+      estado === "completa"
+        ? "Aventura, Pruebas y Torre disponibles sin conexión"
+        : `Guardando modos locales para jugar sin conexión · ${valor}%`,
+    );
     barraActualizacion.value = valor;
     barraActualizacion.textContent = `${valor}%`;
     porcentajeActualizacion.textContent = `${valor}%`;
@@ -63,6 +102,10 @@ async function registrarAplicacionInstalable() {
     accionesActualizacion.hidden = true;
     avisoPendiente = !menuPrincipalPwa.classList.contains("activa");
     avisoActualizacion.hidden = avisoPendiente;
+    mostrarEstadoOffline(
+      "error",
+      "La descarga offline quedó incompleta · conectate para reintentar",
+    );
   };
 
   const presentarAvisoActualizacion = () => {
@@ -150,6 +193,7 @@ async function registrarAplicacionInstalable() {
   }).observe(menuPrincipalPwa, { attributes: true, attributeFilter: ["class"] });
 
   navigator.serviceWorker.addEventListener("controllerchange", () => {
+    mostrarModosLocalesDisponibles();
     if (!recargandoPorActualizacion) return;
     sessionStorage.setItem("actualizacionPwaAplicada", "si");
     window.location.reload();
@@ -175,6 +219,10 @@ async function registrarAplicacionInstalable() {
     });
 
     document.documentElement.dataset.pwa = "activa";
+    navigator.serviceWorker.ready.then(() => {
+      mostrarModosLocalesDisponibles();
+      void solicitarConservacionPaqueteLocal();
+    }).catch(() => {});
     mostrarActualizacionDisponible(registro.waiting);
     observarInstalacion(registro.installing);
     registro.addEventListener("updatefound", () => {
@@ -193,8 +241,25 @@ async function registrarAplicacionInstalable() {
     });
   } catch (error) {
     document.documentElement.dataset.pwa = "error";
+    mostrarEstadoOffline("error", "Este navegador no pudo activar el modo sin conexión");
     console.warn("No se pudo activar el modo instalable.", error);
   }
 }
+
+window.addEventListener("online", () => {
+  const estado = document.getElementById("estadoOfflineJuego");
+  if (estado?.dataset.estado === "sin-red") {
+    estado.dataset.estado = "listo";
+    estado.textContent = "Aventura, Pruebas y Torre disponibles sin conexión";
+  }
+});
+
+window.addEventListener("offline", () => {
+  const estado = document.getElementById("estadoOfflineJuego");
+  if (estado?.dataset.estado === "listo") {
+    estado.dataset.estado = "sin-red";
+    estado.textContent = "Sin conexión · Aventura, Pruebas y Torre disponibles";
+  }
+});
 
 window.addEventListener("load", registrarAplicacionInstalable);

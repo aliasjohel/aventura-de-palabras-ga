@@ -24,12 +24,23 @@ assert.match(app, /const palabrasSopaCumbres = Object\.freeze/);
 for (const palabra of ["NUBE", "VIENTO", "CIELO"]) assert.match(app, new RegExp(`palabra: "${palabra}"`));
 assert.match(app, /function validarTrayectoSopaCumbres\(/);
 assert.match(app, /function extenderCaminoRedCumbres\(/);
-assert.match(app, /const ladoRedCumbres = 6/);
-assert.match(app, /const relevosRedCumbres = Object\.freeze/);
-assert.match(app, /const tormentasRedCumbres = new Set/);
-assert.match(app, /cian:\s*\[0, 17\][\s\S]+violeta:\s*\[5, 3\][\s\S]+dorado:\s*\[12, 35\]/);
-assert.match(app, /cian:\s*14[\s\S]+violeta:\s*10[\s\S]+dorado:\s*21/);
-assert.match(app, /todavía no pasó por su torre/);
+assert.match(app, /const ladoRedCumbres = 8/);
+assert.match(app, /cian:\s*\[25, 30\][\s\S]+violeta:\s*\[2, 58\][\s\S]+dorado:\s*\[5, 61\]/);
+assert.doesNotMatch(app, /const relevosRedCumbres|const tormentasRedCumbres/);
+assert.match(app, /Los caminos directos se chocan/);
+const rutasEntrelazadas = [
+  [25, 26, 27, 28, 29, 30],
+  [2, 1, 0, 8, 16, 24, 32, 33, 41, 49, 57, 58],
+  [5, 6, 7, 15, 23, 31, 39, 38, 46, 54, 62, 61],
+];
+const celdasRutasEntrelazadas = rutasEntrelazadas.flat();
+assert.equal(new Set(celdasRutasEntrelazadas).size, celdasRutasEntrelazadas.length);
+for (const ruta of rutasEntrelazadas) {
+  for (let indice = 1; indice < ruta.length; indice += 1) {
+    const diferencia = Math.abs(ruta[indice] - ruta[indice - 1]);
+    assert.ok(diferencia === 8 || (diferencia === 1 && Math.floor(ruta[indice] / 8) === Math.floor(ruta[indice - 1] / 8)));
+  }
+}
 assert.match(app, /const rondasSellosAeralis = Object\.freeze/);
 for (const palabra of ["AIRE", "NUBE", "LIBRE"]) assert.match(app, new RegExp(`palabra: "${palabra}"`));
 assert.match(app, /function girarAnilloSelloAeralis\(/);
@@ -40,6 +51,9 @@ const giroSellos = app.slice(
   app.indexOf("function comprobarSelloAeralis"),
 );
 assert.doesNotMatch(giroSellos, /classList\.toggle\("correcto"/);
+assert.doesNotMatch(giroSellos, /classList\.add\("pista-correcta"/);
+assert.match(giroSellos, /classList\.remove\("pista-correcta"/);
+assert.match(app, /posicionesCorrectas[\s\S]+classList\.add\("pista-correcta"\)[\s\S]+classList\.remove\("pista-correcta"\)/);
 assert.match(app, /nimbus_cumbres: \{/);
 assert.match(app, /rival: "dragon"/);
 assert.match(app, /mundoTresCompletado = true/);
@@ -53,10 +67,12 @@ assert.match(css, /\.nimbus-cumbres\s*\{[\s\S]*?scale:\s*-1 1/);
 assert.match(css, /\.cinematica-final-cumbres/);
 assert.match(css, /\.tablero-sopa-cumbres/);
 assert.match(css, /\.tablero-red-cumbres/);
-assert.match(css, /grid-template-columns:\s*repeat\(6, 1fr\)/);
-assert.match(css, /\.celda-red-cumbres\.tormenta/);
+assert.match(css, /grid-template-columns:\s*repeat\(8, 1fr\)/);
+assert.doesNotMatch(css, /\.celda-red-cumbres\.(?:tormenta|relevo)/);
 assert.match(css, /\.anillo-sello-aeralis/);
 assert.match(css, /\.btn-comprobar-sello-aeralis/);
+assert.match(css, /\.anillo-sello-aeralis\.pista-correcta/);
+assert.match(css, /@keyframes destelloPistaSelloAeralis/);
 assert.match(css, /@keyframes quebrarSelloAeralis/);
 assert.match(app, /Aren, un joven explorador/);
 assert.match(app, /nombre: "Aren"/);
@@ -80,5 +96,11 @@ for (const imagen of [
 }
 assert.match(app, /No hará falta abrir otro portal/);
 assert.match(app, /MUNDO 4 · Aeralis deja a Aren/);
+assert.match(app, /classList\.toggle\("historia-cumbres", esHistoriaCumbres\)/);
+assert.match(css, /\.modal-historia\.historia-cumbres/);
+assert.match(css, /@keyframes aparecerPlacaCristalCumbres/);
+assert.match(app, /presentacion-mision-cumbres-v1\.png/);
+assert.match(sw, /presentacion-mision-cumbres-v1\.png/);
+assert.ok(fs.existsSync(path.join(root, "assets", "images", "ui", "presentacion-mision-cumbres-v1.png")));
 
 console.log("adventure-world3-complete: comprobaciones correctas");

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v168`;
+const CACHE_NAME = `${CACHE_PREFIX}v171`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -76,9 +76,75 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v165`,
   `${CACHE_PREFIX}v166`,
   `${CACHE_PREFIX}v167`,
+  `${CACHE_PREFIX}v168`,
+  `${CACHE_PREFIX}v169`,
+  `${CACHE_PREFIX}v170`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
+const RECURSOS_MODOS_LOCALES = [
+  "./assets/icons/apple-touch-icon.png",
+  "./assets/icons/favicon-32.png",
+  "./assets/images/ui/presentacion-mision-tronco.png",
+  "./assets/images/fondos/bosque-0.png",
+  "./assets/images/fondos/bosque-1.png",
+  "./assets/images/fondos/bosque-2.png",
+  "./assets/images/fondos/bosque-3-despejado.png",
+  "./assets/images/fondos/bosque-4.png",
+  "./assets/images/fondos/bosque-5.png",
+  "./assets/images/fondos/bosque-6.png",
+  "./assets/images/fondos/bosque-7.png",
+  "./assets/images/fondos/bosque-8-peligroso.png",
+  "./assets/images/fondos/bosque-8.png",
+  "./assets/images/fondos/bosque-9.png",
+  "./assets/images/fondos/bosque-10-apagado.png",
+  "./assets/images/fondos/bosque-10.png",
+  "./assets/images/personajes/explorador-feliz.png",
+  "./assets/images/personajes/explorador-pensando.png",
+  "./assets/images/personajes/explorador-acierto.png",
+  "./assets/images/personajes/explorador-desanimado.png",
+  "./assets/images/personajes/explorador-celebrando.png",
+  "./assets/images/personajes/explorador-nervioso.png",
+  "./assets/images/personajes/explorador-preocupado.png",
+  "./assets/images/personajes/explorador-triste.png",
+  "./assets/images/personajes/caminata/bosque/explorador-caminata-1.png",
+  "./assets/images/personajes/caminata/bosque/explorador-caminata-2.png",
+  "./assets/images/personajes/caminata/bosque/explorador-caminata-3.png",
+  "./assets/images/personajes/caminata/bosque/explorador-caminata-4.png",
+  "./assets/images/personajes/caminata/portal-bosque/explorador-portal-1.png",
+  "./assets/images/personajes/caminata/portal-bosque/explorador-portal-2.png",
+  "./assets/images/personajes/caminata/portal-bosque/explorador-portal-3.png",
+  "./assets/images/personajes/caminata/portal-bosque/explorador-portal-4.png",
+  "./assets/images/elementos/arana-bosque-prohibido.png",
+  "./assets/images/elementos/silueta-bosque-prohibido.png",
+  "./assets/images/elementos/hoja-1.png",
+  "./assets/images/elementos/hoja-2.png",
+  "./assets/images/elements/explorador-acercandose-cristal.png",
+  "./assets/images/elements/explorador-brazo-extendido.png",
+  "./assets/images/elements/explorador-sosteniendo-cristal.png",
+  "./assets/images/personajes/versus/explorador-base.png",
+  "./assets/images/personajes/versus/mago-base.png",
+  "./assets/images/personajes/versus/explorador-bumeran-preparacion.png",
+  "./assets/images/personajes/versus/explorador-bumeran-lanzamiento.png",
+  "./assets/images/personajes/versus/bumeran-explorador.png",
+  "./assets/images/personajes/versus/explorador-trampa-ancestral.png",
+  "./assets/images/personajes/versus/mago-ataque.png",
+  "./assets/images/personajes/versus/bola-fuego-mago.png",
+  "./assets/images/personajes/versus/mago-atrapado-trampa.png",
+  "./assets/images/personajes/versus/mago-eclipse-violeta.png",
+  "./assets/images/personajes/versus/tronco-trampa-selvatica.png",
+  "./assets/images/personajes/versus/halcon-espiritual-guardiana.png",
+  "./assets/images/personajes/versus/carnivora-brote.png",
+  "./assets/images/personajes/versus/carnivora-abierta.png",
+  "./assets/images/personajes/versus/carnivora-cerrada.png",
+  "./assets/images/personajes/versus/carnivora-devorando.png",
+  "./assets/images/personajes/versus/carnivora-devorando-explorador.png",
+  "./assets/images/personajes/versus/carnivora-devorando-guardiana.png",
+  "./assets/images/personajes/versus/explorador-atrapado-eclipse.png",
+  "./assets/images/personajes/coleccion/guardiana-bosque-ataque-raices.png",
+  "./assets/images/personajes/coleccion/guardiana-bosque-victoria.png",
+  "./assets/images/elementos/estela-escarcha-nivor.png",
+];
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -86,6 +152,7 @@ const CORE_ASSETS = [
   "./css/styles.css",
   "./css/intro.css",
   "./js/intro.js",
+  "./js/supabase-loader.js",
   "./js/supabase-config.js",
   "./js/supabase-client.js",
   "./js/versus-engine.js",
@@ -100,6 +167,7 @@ const CORE_ASSETS = [
   "./assets/images/intro/cristal-icono.png",
   "./assets/images/elementos/tronco-antiguo-caido-bosque.png",
   "./assets/images/ui/presentacion-mision-piedra-desierto-v1.png",
+  "./assets/images/ui/presentacion-mision-cumbres-v1.png",
   "./assets/images/fondos/menu-inicio-aventura.png",
   "./assets/images/fondos/desierto-1.png",
   "./assets/images/fondos/desierto-2.png",
@@ -323,6 +391,7 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/kairos-final-azrak-v1.png",
   "./assets/images/personajes/versus/kairos-final-kalamo-v1.png",
   "./assets/images/personajes/versus/kairos-final-explorador-concepto-v1.png",
+  ...RECURSOS_MODOS_LOCALES,
 ];
 
 /*
@@ -331,10 +400,13 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260827-puzzles-viaje-hielo-1",
-  "./index.html": "20260827-puzzles-viaje-hielo-1",
-  "./css/styles.css": "20260827-puzzles-viaje-hielo-1",
-  "./js/app.js": "20260827-puzzles-viaje-hielo-1",
+  "./": "20260827-modos-locales-offline-1",
+  "./index.html": "20260827-modos-locales-offline-1",
+  "./css/styles.css": "20260827-modos-locales-offline-1",
+  "./js/app.js": "20260827-modos-locales-offline-1",
+  "./js/pwa.js": "20260827-modos-locales-offline-1",
+  "./js/supabase-loader.js": "20260827-supabase-diferido-1",
+  "./assets/images/ui/presentacion-mision-cumbres-v1.png": "20260827-soporte-cumbres-1",
   "./assets/images/fondos/cumbres-1.png": "20260826-cumbres-1",
   "./assets/images/fondos/cumbres-2.png": "20260826-cumbres-1",
   "./assets/images/fondos/cumbres-3.png": "20260826-cumbres-1",
@@ -437,7 +509,6 @@ const ASSET_REVISIONS = {
   "./js/supabase-client.js": "20260817-amigos-cuentas-1",
   "./js/versus-room-supabase.js": "20260817-auth-cuentas-2",
   "./assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png": "20260817-alume-sin-rayo-1",
-  "./js/pwa.js": "20260814-pwa-diferencial-1",
 };
 
 const REVISIONES_ACTUALES = Object.fromEntries(
@@ -649,12 +720,10 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (["image", "audio", "font"].includes(request.destination)) {
-    event.respondWith(responderRecursoEstatico(event));
-    return;
-  }
-
-  event.respondWith(responderDesdeRed(request));
+  // Todos los archivos locales arrancan desde la copia instalada. La red se
+  // consulta en segundo plano para que una conexión lenta no bloquee Aventura,
+  // Modo Pruebas ni la Torre.
+  event.respondWith(responderRecursoEstatico(event));
 });
 
 self.addEventListener("message", (event) => {
