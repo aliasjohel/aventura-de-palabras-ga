@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v171`;
+const CACHE_NAME = `${CACHE_PREFIX}v172`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -79,6 +79,7 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v168`,
   `${CACHE_PREFIX}v169`,
   `${CACHE_PREFIX}v170`,
+  `${CACHE_PREFIX}v171`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -400,9 +401,9 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260827-modos-locales-offline-1",
-  "./index.html": "20260827-modos-locales-offline-1",
-  "./css/styles.css": "20260827-modos-locales-offline-1",
+  "./": "20260828-explorador-desierto-movil-1",
+  "./index.html": "20260828-explorador-desierto-movil-1",
+  "./css/styles.css": "20260828-explorador-desierto-movil-1",
   "./js/app.js": "20260827-modos-locales-offline-1",
   "./js/pwa.js": "20260827-modos-locales-offline-1",
   "./js/supabase-loader.js": "20260827-supabase-diferido-1",
