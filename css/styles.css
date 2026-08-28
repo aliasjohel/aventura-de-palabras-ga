@@ -2227,10 +2227,54 @@ body {
 .ambiente-cumbres i:nth-child(2) { --nube-y: 28%; animation-delay: -4s; animation-duration: 15s; transform: scale(.7); }
 .ambiente-cumbres i:nth-child(3) { --nube-y: 55%; animation-delay: -8s; animation-duration: 18s; transform: scale(.45); }
 
+.fauna-cumbres {
+    z-index: 3;
+    filter: drop-shadow(0 7px 8px rgba(9, 38, 72, .28));
+    mix-blend-mode: normal;
+    transform-origin: center bottom;
+    will-change: transform;
+}
+
+.nubelun-cumbres {
+    right: 4%;
+    bottom: 7%;
+    width: clamp(86px, 16%, 185px);
+    animation: nubelunObserva 4.8s ease-in-out infinite;
+}
+
+.velario-cumbres {
+    top: 7%;
+    right: 8%;
+    width: clamp(145px, 25%, 300px);
+    opacity: .88;
+    transform-origin: center;
+    animation: velarioPlanea 7.5s ease-in-out infinite;
+}
+
+.lumiri-cumbres {
+    left: 49%;
+    bottom: 8%;
+    width: clamp(105px, 17%, 205px);
+    animation: lumiriRespira 5.4s ease-in-out infinite;
+}
+
 @keyframes nubeCruzaCumbres { to { left: 115%; } }
 @keyframes nimbusRespira { 50% { transform: translateY(-5px) rotate(1deg); } }
 @keyframes nimbusDesafia { 50% { transform: translateY(-12px) rotate(-2deg) scale(1.03); } }
 @keyframes aeralisPrision { 50% { opacity: .62; filter: saturate(.9) drop-shadow(0 0 30px #bff4ff); } }
+@keyframes nubelunObserva {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    48% { transform: translateY(-4px) rotate(-1deg); }
+    58% { transform: translateY(-4px) rotate(1deg); }
+}
+@keyframes velarioPlanea {
+    0%, 100% { transform: translate(0, 0) rotate(-2deg); }
+    50% { transform: translate(-28px, 9px) rotate(2deg); }
+}
+@keyframes lumiriRespira {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-2px) scale(1.015, .985); }
+}
 
 .puzzle-cumbres {
     width: min(640px, 100%);
@@ -2473,7 +2517,8 @@ body {
     .anillo-sello-aeralis::before { transition: none; }
     .tablero-sopa-cumbres.error,
     .puzzle-sellos-aeralis.sello-rompiendose .grieta-sello-aeralis,
-    .puzzle-sellos-aeralis.sello-rompiendose .anillos-sellos-aeralis { animation-duration: 1ms; }
+    .puzzle-sellos-aeralis.sello-rompiendose .anillos-sellos-aeralis,
+    .fauna-cumbres { animation-duration: 1ms; }
 }
 
 .modal-prueba-bosque.prueba-cumbres .panel-prueba-bosque {
@@ -2524,6 +2569,9 @@ body {
     .escenario.escenario-cumbres .personaje-imagen { bottom: -7%; }
     .nimbus-cumbres { width: 26%; right: 2%; bottom: 0; }
     .aeralis-cumbres { width: 55%; right: -4%; }
+    .nubelun-cumbres { right: 1%; bottom: 9%; width: 22%; }
+    .velario-cumbres { top: 8%; right: 1%; width: 34%; }
+    .lumiri-cumbres { left: 48%; bottom: 10%; width: 23%; }
     .tablero-sopa-cumbres,
     .tablero-red-cumbres { width: min(92vw, 430px); }
     .anillos-sellos-aeralis { gap: 5px; }
@@ -10827,30 +10875,48 @@ button:disabled {
 }
 
 .historia-cumbres .pergamino-mision {
-    width: min(55%, 520px);
+    box-sizing: border-box;
+    width: min(52%, 500px);
     min-height: clamp(280px, 43vh, 370px);
-    padding: clamp(32px, 5vh, 48px) clamp(16px, 3vw, 34px);
-    border: 0;
-    color: #17365d;
-    background: transparent;
-    box-shadow: none;
-    clip-path: none;
+    padding: clamp(30px, 5vh, 46px) clamp(24px, 3.2vw, 38px);
+    border: 3px double rgba(73, 153, 184, .9);
+    border-radius: clamp(20px, 3vw, 34px) clamp(10px, 2vw, 22px);
+    color: #102f50;
+    background:
+        radial-gradient(circle at 14% 18%, rgba(92, 206, 226, .13) 0 3px, transparent 4px),
+        radial-gradient(circle at 86% 78%, rgba(216, 164, 48, .13) 0 3px, transparent 4px),
+        linear-gradient(145deg, rgba(255, 255, 250, .99), rgba(227, 249, 255, .99) 55%, rgba(255, 248, 219, .99));
+    box-shadow:
+        0 18px 32px rgba(4, 34, 72, .38),
+        inset 0 0 0 3px rgba(255, 255, 255, .74),
+        inset 0 0 30px rgba(59, 169, 199, .12);
+    clip-path: polygon(4% 0, 96% 0, 100% 7%, 100% 93%, 96% 100%, 4% 100%, 0 93%, 0 7%);
 }
 
-.historia-cumbres .pergamino-mision::before,
+.historia-cumbres .pergamino-mision::before {
+    display: block;
+    inset: 9px;
+    width: auto;
+    height: auto;
+    border: 1px solid rgba(191, 139, 37, .38);
+    border-radius: 15px 8px;
+    background: none;
+    opacity: 1;
+}
+
 .historia-cumbres .pergamino-mision::after { display: none; }
 
 .historia-cumbres .rollo-pergamino,
 .historia-cumbres .clavo-pergamino { display: none; }
 
 .historia-cumbres .numero-capitulo {
-    color: #226b9a;
-    text-shadow: 0 1px rgba(255, 255, 255, .85);
+    color: #15557c;
+    text-shadow: none;
 }
 
 .historia-cumbres .pergamino-mision h2 {
-    color: #17365d;
-    text-shadow: 0 1px rgba(255, 255, 255, .9);
+    color: #102f50;
+    text-shadow: none;
 }
 
 .historia-cumbres .separador-pergamino {
@@ -10859,8 +10925,9 @@ button:disabled {
 }
 
 .historia-cumbres #textoCapitulo {
-    color: #23476e;
-    text-shadow: 0 1px rgba(255, 255, 255, .8);
+    color: #173b5d;
+    font-weight: 600;
+    text-shadow: none;
 }
 
 .modal-historia.historia-cumbres.abriendo .soporte-mision { animation: entrarAlasCristalCumbres 850ms ease-out both; }
@@ -11104,14 +11171,14 @@ button:disabled {
     }
 
     .historia-cumbres .soporte-mision {
-        width: 150%;
+        width: 132%;
         transform: translate(-50%, -50%);
     }
 
     .historia-cumbres .pergamino-mision {
-        width: min(76%, 360px);
+        width: min(82%, 340px);
         min-height: clamp(260px, 43vh, 350px);
-        padding-inline: clamp(12px, 4vw, 24px);
+        padding: clamp(28px, 4.5vh, 38px) clamp(18px, 5vw, 28px);
     }
 
     .historia-desierto .soporte-mision {

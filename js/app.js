@@ -9581,6 +9581,32 @@ function actualizarPersonajesNarrativosCumbres() {
   ambiente.innerHTML = "<i></i><i></i><i></i>";
   contenedorEscenario.appendChild(ambiente);
 
+  const faunaPorMision = {
+    0: {
+      clase: "nubelun-cumbres",
+      src: "assets/images/ambiente/cumbres/nubelun-cumbres-v1.png",
+      alt: "Nubelún, una criatura de nubes que observa el camino",
+    },
+    1: {
+      clase: "velario-cumbres",
+      src: "assets/images/ambiente/cumbres/velario-cumbres-v1.png",
+      alt: "Velario, una criatura celeste que planea a lo lejos",
+    },
+    4: {
+      clase: "lumiri-cumbres",
+      src: "assets/images/ambiente/cumbres/lumiri-cumbres-v1.png",
+      alt: "Lúmiri, una criatura de constelaciones que descansa junto al sendero",
+    },
+  };
+  const faunaMision = faunaPorMision[misionActual];
+  if (faunaMision) {
+    const criatura = document.createElement("img");
+    criatura.className = `personaje-narrativo-cumbres fauna-cumbres ${faunaMision.clase}`;
+    criatura.src = faunaMision.src;
+    criatura.alt = faunaMision.alt;
+    contenedorEscenario.appendChild(criatura);
+  }
+
   if (misionActual >= 2) {
     const nimbus = document.createElement("img");
     nimbus.className = "personaje-narrativo-cumbres nimbus-cumbres";

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v174`;
+const CACHE_NAME = `${CACHE_PREFIX}v178`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -82,6 +82,10 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v171`,
   `${CACHE_PREFIX}v172`,
   `${CACHE_PREFIX}v173`,
+  `${CACHE_PREFIX}v174`,
+  `${CACHE_PREFIX}v175`,
+  `${CACHE_PREFIX}v176`,
+  `${CACHE_PREFIX}v177`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -192,6 +196,9 @@ const CORE_ASSETS = [
   "./assets/images/fondos/cumbres-8.png",
   "./assets/images/fondos/cumbres-9.png",
   "./assets/images/fondos/cumbres-10.png",
+  "./assets/images/ambiente/cumbres/nubelun-cumbres-v1.png",
+  "./assets/images/ambiente/cumbres/velario-cumbres-v1.png",
+  "./assets/images/ambiente/cumbres/lumiri-cumbres-v1.png",
   "./assets/images/personajes/aventura/aeralis-liberada-v1.png",
   "./assets/images/elements/cristal-celeste-v1.png",
   "./assets/images/cinematicas/cumbres-final/01-aeralis-invita-aren-v1.png",
@@ -403,10 +410,10 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260828-fauna-lejos-devoradunas-1",
-  "./index.html": "20260828-fauna-lejos-devoradunas-1",
-  "./css/styles.css": "20260828-fauna-lejos-devoradunas-1",
-  "./js/app.js": "20260828-fauna-lejos-devoradunas-1",
+  "./": "20260828-fauna-cumbres-cartel-4",
+  "./index.html": "20260828-fauna-cumbres-cartel-4",
+  "./css/styles.css": "20260828-fauna-cumbres-cartel-4",
+  "./js/app.js": "20260828-fauna-cumbres-cartel-4",
   "./js/pwa.js": "20260827-modos-locales-offline-1",
   "./js/supabase-loader.js": "20260827-supabase-diferido-1",
   "./assets/images/ui/presentacion-mision-cumbres-v1.png": "20260827-soporte-cumbres-1",
@@ -420,6 +427,9 @@ const ASSET_REVISIONS = {
   "./assets/images/fondos/cumbres-8.png": "20260826-cumbres-1",
   "./assets/images/fondos/cumbres-9.png": "20260826-cumbres-1",
   "./assets/images/fondos/cumbres-10.png": "20260826-cumbres-1",
+  "./assets/images/ambiente/cumbres/nubelun-cumbres-v1.png": "20260828-fauna-cumbres-2",
+  "./assets/images/ambiente/cumbres/velario-cumbres-v1.png": "20260828-fauna-cumbres-2",
+  "./assets/images/ambiente/cumbres/lumiri-cumbres-v1.png": "20260828-fauna-cumbres-2",
   "./assets/images/personajes/aventura/aeralis-liberada-v1.png": "20260826-cumbres-1",
   "./assets/images/elements/cristal-celeste-v1.png": "20260826-cumbres-1",
   "./assets/images/cinematicas/cumbres-final/01-aeralis-invita-aren-v1.png": "20260827-viaje-hielo-1",

@@ -103,4 +103,20 @@ assert.match(app, /presentacion-mision-cumbres-v1\.png/);
 assert.match(sw, /presentacion-mision-cumbres-v1\.png/);
 assert.ok(fs.existsSync(path.join(root, "assets", "images", "ui", "presentacion-mision-cumbres-v1.png")));
 
+for (const criatura of [
+  ["nubelun-cumbres-v1.png", "nubelun-cumbres", 0],
+  ["velario-cumbres-v1.png", "velario-cumbres", 1],
+  ["lumiri-cumbres-v1.png", "lumiri-cumbres", 4],
+]) {
+  const [imagen, clase, mision] = criatura;
+  assert.match(app, new RegExp(`${mision}: \\{[\\s\\S]*?${clase}[\\s\\S]*?${imagen.replace(".", "\\.")}`));
+  assert.match(css, new RegExp(`\\.${clase}\\s*\\{`));
+  assert.match(sw, new RegExp(imagen.replace(".", "\\.")));
+  assert.ok(fs.existsSync(path.join(root, "assets", "images", "ambiente", "cumbres", imagen)));
+}
+assert.match(css, /\.historia-cumbres \.pergamino-mision\s*\{[\s\S]*?background:[\s\S]*?rgba\(255, 255, 250, \.99\)/);
+assert.match(css, /@keyframes nubelunObserva/);
+assert.match(css, /@keyframes velarioPlanea/);
+assert.match(css, /@keyframes lumiriRespira/);
+
 console.log("adventure-world3-complete: comprobaciones correctas");
