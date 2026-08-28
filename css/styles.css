@@ -15918,10 +15918,14 @@ button:disabled {
     .escenario.escenario-desierto .personaje-imagen {
         --altura-explorador-desierto: -10%;
     }
-    .escenario.escenario-desierto[data-mision-desierto="1"],
-    .escenario.escenario-desierto[data-mision-desierto="2"],
-    .escenario.escenario-desierto[data-mision-desierto="8"],
-    .escenario.escenario-desierto[data-mision-desierto="9"] {
+    /* La variable debe redefinirse en la propia imagen: el valor movil
+       anterior del hijo prevalecia sobre el valor heredado del escenario. */
+    .escenario.escenario-desierto[data-mision-desierto="1"] .personaje-imagen,
+    .escenario.escenario-desierto[data-mision-desierto="2"] .personaje-imagen,
+    .escenario.escenario-desierto[data-mision-desierto="5"] .personaje-imagen,
+    .escenario.escenario-desierto[data-mision-desierto="7"] .personaje-imagen,
+    .escenario.escenario-desierto[data-mision-desierto="8"] .personaje-imagen,
+    .escenario.escenario-desierto[data-mision-desierto="9"] .personaje-imagen {
         --altura-explorador-desierto: -4%;
     }
     .escenario.escenario-desierto[data-mision-desierto="3"] .personaje-imagen,

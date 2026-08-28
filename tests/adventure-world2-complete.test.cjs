@@ -136,6 +136,13 @@ for (const mision of [1, 2, 8, 9]) {
 }
 assert.match(estilos, /--altura-explorador-desierto:\s*-2%/);
 assert.match(estilos, /--altura-explorador-desierto:\s*-4%/);
+for (const mision of [1, 2, 5, 7, 8, 9]) {
+  assert.match(
+    estilos,
+    new RegExp(`data-mision-desierto="${mision}"\\] \\.personaje-imagen`),
+    `La correccion movil debe aplicarse directamente al Explorador en la mision ${mision}`,
+  );
+}
 assert.match(estilos, /\.trampa-espejismo-maguito/);
 assert.match(estilos, /\.aro-prision-espejismo/);
 assert.match(estilos, /@keyframes romperAroPrision/);
