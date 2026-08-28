@@ -22,7 +22,7 @@ for (const titulo of [
   "Las ruinas de los cuatro vientos",
   "La sombra bajo las dunas",
   "El oasis imposible",
-  "El secreto del Maguito",
+  "El secreto de Zafir",
   "El Devoradunas",
   "El templo enterrado",
   "La cámara del sol",
@@ -69,7 +69,7 @@ assert.match(app, /reproducirCinematicaFinalDesierto\(\)[\s\S]+finally \{[\s\S]+
 assert.match(app, /async function presentarDesbloqueoMagoDesierto\(\)/);
 assert.match(app, /if \(personaje === "mago"\) return magoDesbloqueado/);
 assert.match(app, /guardarDesbloqueoMago\(\)/);
-assert.match(app, /El Mago te espera para la prueba final del Cristal Dorado/);
+assert.match(app, /Zafir te espera para la prueba final del Cristal Dorado/);
 assert.doesNotMatch(app, /La última palabra liberará el Cristal Dorado/);
 assert.match(app, /mundoDosCompletado = true/);
 assert.match(app, /cristalesObtenidos = Math\.max\(cristalesObtenidos, 2\)/);
@@ -82,11 +82,14 @@ assert.match(app, /tipo: "bloqueado"/);
 assert.match(app, /function activarEmergenciaDevoradunas\(/);
 assert.match(app, /activarEmergenciaDevoradunas\(\);/);
 assert.match(app, /new Set\(\[3, 6, 8, 9\]\)/);
-assert.match(app, /const misionesAvesDesierto = new Set\(\[0, 2, 4, 5, 7\]\)/);
-assert.match(app, /const misionesEscorpionDesierto = new Set\(\[0, 2, 5, 6\]\)/);
-assert.match(app, /const misionesLagartijaDesierto = new Set\(\[1, 4, 7\]\)/);
-assert.match(app, /const misionesPastoDesierto = new Set\(\[0, 1, 3, 5, 6, 7\]\)/);
-assert.match(app, /const misionesCalorDesierto = new Set\(\[0, 2, 3, 4, 5, 6, 7\]\)/);
+assert.match(app, /configuracionesVientoDesierto[\s\S]+1:\s*\{\s*tipo:\s*"ventisca"/);
+assert.match(app, /configuracionesVientoDesierto[\s\S]+3:\s*\{\s*tipo:\s*"remolino"/);
+assert.match(app, /configuracionesAvesDesierto[\s\S]+2:\s*\{\s*cantidad:\s*4,\s*bandada:\s*true/);
+assert.match(app, /configuracionesAvesDesierto[\s\S]+7:\s*\{\s*cantidad:\s*3,\s*bandada:\s*true/);
+assert.match(app, /cantidadesEscorpionesDesierto = Object\.freeze\(\{ 5: 2 \}\)/);
+assert.match(app, /const misionesLagartijaDesierto = new Set\(\[3\]\)/);
+assert.match(app, /const misionesPastoDesierto = new Set\(\[0, 5, 7\]\)/);
+assert.match(app, /const misionesCalorDesierto = new Set\(\[0, 2, 3, 4, 5, 7\]\)/);
 assert.match(app, /function actualizarVidaDesiertoMision\(\)/);
 assert.match(app, /trampa-espejismo-maguito/);
 assert.match(app, /function liberarMaguitoDeTrampaEspejismo\(\)/);
@@ -126,6 +129,10 @@ assert.match(estilos, /@keyframes correrLagartijaDesierto/);
 assert.match(estilos, /@keyframes cicloCaminataLagartija/);
 assert.match(estilos, /\.cuadro-fauna-4\s*\{\s*animation-delay:\s*\.42s/);
 assert.match(estilos, /@keyframes mecerPastoDesierto/);
+assert.match(estilos, /@keyframes barrerVentiscaDesierto/);
+assert.match(estilos, /@keyframes cruzarRemolinoDesierto/);
+assert.match(estilos, /\.ave-bandada-desierto/);
+assert.match(estilos, /\.pareja-escorpiones-desierto/);
 assert.match(estilos, /\.escenario\.escenario-desierto\[data-mision-desierto/);
 for (const mision of [1, 2, 8, 9]) {
   assert.match(
@@ -144,6 +151,9 @@ for (const mision of [1, 2, 5, 7, 8, 9]) {
   );
 }
 assert.match(estilos, /\.trampa-espejismo-maguito/);
+assert.match(estilos, /data-mision-desierto="5"\] \.trampa-espejismo-maguito\s*\{[\s\S]+?right:\s*3%[\s\S]+?width:\s*39%/);
+assert.match(estilos, /data-mision-desierto="5"\] \.maguito-espejismo\s*\{[\s\S]+?width:\s*94%[\s\S]+?height:\s*82%/);
+assert.match(app, /Zafir atrapado dentro de una prisión de espejismo/);
 assert.match(estilos, /\.aro-prision-espejismo/);
 assert.match(estilos, /@keyframes romperAroPrision/);
 assert.doesNotMatch(estilos, /data-mision-desierto="(?:1|2|7|8|9)"[^{}]*\.personaje-imagen\s*\{\s*bottom:/);

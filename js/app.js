@@ -704,7 +704,7 @@ const escenasPorEscenario = [
     },
     {
       fondos: ["desierto-6.png"],
-      texto: "🪄 Resuelve la palabra para descifrar el secreto que conoce el Maguito.",
+      texto: "🪄 Resuelve la palabra para descifrar el secreto que conoce Zafir.",
     },
     {
       fondos: ["desierto-7.png"],
@@ -720,7 +720,7 @@ const escenasPorEscenario = [
     },
     {
       fondos: ["desierto-10.png"],
-      texto: "🪄 El Mago te espera para la prueba final por el Cristal Dorado.",
+      texto: "🪄 Zafir te espera para la prueba final por el Cristal Dorado.",
     },
   ],
   [
@@ -896,19 +896,19 @@ const historiaDesierto = [
     capitulo: "Misión 5",
     titulo: "El oasis imposible",
     texto:
-      "Cuatro oasis aparecen al mismo tiempo, aunque el mapa no señala ninguno. Dentro de uno de los espejismos, un joven Maguito pide ayuda. Para liberarlo, Aren deberá descifrar las inscripciones y descubrir qué agua pertenece al mundo real.",
+      "Cuatro oasis aparecen al mismo tiempo, aunque el mapa no señala ninguno. Dentro de uno de los espejismos, un joven mago llamado Zafir pide ayuda. Para liberarlo, Aren deberá descifrar las inscripciones y descubrir qué agua pertenece al mundo real.",
   },
   {
     capitulo: "Misión 6",
-    titulo: "El secreto del Maguito",
+    titulo: "El secreto de Zafir",
     texto:
-      "Ya libre de la ilusión, el Maguito explica que la energía corrupta del templo despertó al Devoradunas. En una caravana enterrada encuentran provisiones y la última señal del camino. Desde ahora continuarán la expedición juntos.",
+      "Ya libre de la ilusión, Zafir explica que la energía corrupta del templo despertó al Devoradunas. En una caravana enterrada encuentran provisiones y la última señal del camino. Desde ahora continuarán la expedición juntos.",
   },
   {
     capitulo: "Misión 7",
     titulo: "El Devoradunas",
     texto:
-      "Las paredes del cañón tiemblan. El gusano los encontró y cada nueva embestida derrumba parte del camino. Aren y el Maguito corren hacia la silueta del templo mientras la criatura se aproxima detrás de ellos.",
+      "Las paredes del cañón tiemblan. El gusano los encontró y cada nueva embestida derrumba parte del camino. Aren y Zafir corren hacia la silueta del templo mientras la criatura se aproxima detrás de ellos.",
   },
   {
     capitulo: "Misión 8",
@@ -920,13 +920,13 @@ const historiaDesierto = [
     capitulo: "Misión 9",
     titulo: "La cámara del sol",
     texto:
-      "En el corazón del templo, raíces oscuras envuelven la cámara del cristal. El Devoradunas irrumpe a través del muro, pero el Maguito reconoce las mismas marcas corruptas sobre su armadura. La criatura también es prisionera de esa fuerza.",
+      "En el corazón del templo, raíces oscuras envuelven la cámara del cristal. El Devoradunas irrumpe a través del muro, pero Zafir reconoce las mismas marcas corruptas sobre su armadura. La criatura también es prisionera de esa fuerza.",
   },
   {
     capitulo: "Misión 10",
-    titulo: "La prueba del Mago",
+    titulo: "La prueba de Zafir",
     texto:
-      "Al romperse la corrupción, el Devoradunas recupera la calma y revela el Cristal Dorado bajo la arena. Antes de entregarlo, el Maguito propone una última batalla de palabras: quiere comprobar que Aren está preparado para llevar el cristal al siguiente mundo.",
+      "Al romperse la corrupción, el Devoradunas recupera la calma y revela el Cristal Dorado bajo la arena. Antes de entregarlo, Zafir propone una última batalla de palabras: quiere comprobar que Aren está preparado para llevar el cristal al siguiente mundo.",
   },
 ];
 
@@ -4300,7 +4300,7 @@ const personajesVersus = {
     final: "trampa-selvatica",
   },
   mago: {
-    nombre: "Mago",
+    nombre: "Zafir",
     base: srcMagoBaseVersus,
     ataque: "magia",
     final: "eclipse-violeta",
@@ -4556,7 +4556,7 @@ async function completarDueloAventura() {
     btnSiguiente.classList.remove("oculto");
     mensajePersonaje.classList.remove("oculto");
     mensajePersonaje.textContent =
-      "✨ El Cristal Dorado está a salvo. El Mago abrió el portal hacia las Cumbres Celestes.";
+      "✨ El Cristal Dorado está a salvo. Zafir abrió el portal hacia las Cumbres Celestes.";
     actualizarPersonajesNarrativosDesierto();
     guardarProgreso();
     return;
@@ -4708,7 +4708,7 @@ const victimasFaucesVersus = {
     imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-explorador.png",
   },
   mago: {
-    nombre: "Mago",
+    nombre: "Zafir",
     imagen: srcMagoBaseVersus,
     imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando.png",
   },
@@ -7646,7 +7646,7 @@ function actualizarVistaMisionDev() {
     btnSiguiente.textContent = "☁️ Cumbres Celestes · Próximamente";
     btnSiguiente.classList.remove("oculto");
     mensajePersonaje.textContent =
-      "✨ El Cristal Dorado está a salvo. El Mago abrió el portal hacia las Cumbres Celestes.";
+      "✨ El Cristal Dorado está a salvo. Zafir abrió el portal hacia las Cumbres Celestes.";
   }
 
   actualizarControlesDev();
@@ -8412,8 +8412,8 @@ function actualizarPersonajesNarrativosDesierto() {
           ? "maguito-desierto maguito-corriendo"
           : "maguito-desierto",
       misionActual === 4
-        ? "Maguito atrapado dentro de una prisión de espejismo"
-        : "Maguito acompañando a Aren",
+        ? "Zafir atrapado dentro de una prisión de espejismo"
+        : "Zafir acompañando a Aren",
     );
 
     if (misionActual === 4) {
@@ -8422,7 +8422,7 @@ function actualizarPersonajesNarrativosDesierto() {
       trampa.setAttribute("role", "img");
       trampa.setAttribute(
         "aria-label",
-        "El Maguito está encerrado dentro de una prisión de agua ilusoria",
+        "Zafir está encerrado dentro de una prisión de agua ilusoria",
       );
 
       for (let indice = 0; indice < 3; indice += 1) {
@@ -8498,13 +8498,14 @@ function actualizarPersonajesNarrativosDesierto() {
 }
 
 function actualizarVientoArenaMision() {
-  const tieneVientoDesierto =
-    escenarioActual === 1 && [0, 1, 3, 6, 7].includes(misionActual);
+  const configuracionViento = escenarioActual === 1
+    ? configuracionesVientoDesierto[misionActual]
+    : null;
   const capaExistente = contenedorEscenario.querySelector(
     ".capa-viento-arena",
   );
 
-  if (!tieneVientoDesierto || prefiereReducirMovimiento.matches) {
+  if (!configuracionViento || prefiereReducirMovimiento.matches) {
     capaExistente?.remove();
     return;
   }
@@ -8512,11 +8513,13 @@ function actualizarVientoArenaMision() {
   if (capaExistente) return;
 
   const capa = document.createElement("div");
-  const cantidadParticulas = window.matchMedia("(max-width: 600px)").matches
-    ? 10
-    : 16;
+  const esMovil = window.matchMedia("(max-width: 600px)").matches;
+  const cantidadParticulas = esMovil
+    ? configuracionViento.particulasMovil
+    : configuracionViento.particulasEscritorio;
 
-  capa.className = `capa-viento-arena viento-desierto-mision-${misionActual + 1}`;
+  capa.className =
+    `capa-viento-arena viento-desierto-mision-${misionActual + 1} viento-desierto-${configuracionViento.tipo}`;
   capa.setAttribute("aria-hidden", "true");
 
   for (let indice = 0; indice < cantidadParticulas; indice++) {
@@ -8527,7 +8530,7 @@ function actualizarVientoArenaMision() {
     particula.style.setProperty("--y-arena", `${12 + Math.random() * 76}%`);
     particula.style.setProperty(
       "--duracion-arena",
-      `${10 + Math.random() * 9}s`,
+      `${configuracionViento.duracionMinima + Math.random() * configuracionViento.variacionDuracion}s`,
     );
     particula.style.setProperty(
       "--retraso-arena",
@@ -8548,11 +8551,22 @@ function actualizarVientoArenaMision() {
   contenedorEscenario.appendChild(capa);
 }
 
-const misionesAvesDesierto = new Set([0, 2, 4, 5, 7]);
-const misionesEscorpionDesierto = new Set([0, 2, 5, 6]);
-const misionesLagartijaDesierto = new Set([1, 4, 7]);
-const misionesPastoDesierto = new Set([0, 1, 3, 5, 6, 7]);
-const misionesCalorDesierto = new Set([0, 2, 3, 4, 5, 6, 7]);
+const configuracionesVientoDesierto = Object.freeze({
+  0: { tipo: "brisa", particulasMovil: 7, particulasEscritorio: 12, duracionMinima: 12, variacionDuracion: 8 },
+  1: { tipo: "ventisca", particulasMovil: 18, particulasEscritorio: 28, duracionMinima: 4.2, variacionDuracion: 3.4 },
+  3: { tipo: "remolino", particulasMovil: 14, particulasEscritorio: 22, duracionMinima: 6, variacionDuracion: 4 },
+  6: { tipo: "ventisca", particulasMovil: 16, particulasEscritorio: 26, duracionMinima: 4.8, variacionDuracion: 3.8 },
+});
+
+const configuracionesAvesDesierto = Object.freeze({
+  0: { cantidad: 1, bandada: false },
+  2: { cantidad: 4, bandada: true },
+  7: { cantidad: 3, bandada: true },
+});
+const cantidadesEscorpionesDesierto = Object.freeze({ 5: 2 });
+const misionesLagartijaDesierto = new Set([3]);
+const misionesPastoDesierto = new Set([0, 5, 7]);
+const misionesCalorDesierto = new Set([0, 2, 3, 4, 5, 7]);
 
 function crearAnimalAnimadoDesierto(clase, cuadros, alt) {
   const animal = document.createElement("span");
@@ -8588,37 +8602,62 @@ function actualizarVidaDesiertoMision() {
     capa.appendChild(calor);
   }
 
-  if (misionesAvesDesierto.has(misionActual)) {
-    const cantidadAves = window.matchMedia("(max-width: 600px)").matches ? 1 : 2;
-    for (let indice = 0; indice < cantidadAves; indice += 1) {
+  const configuracionAves = configuracionesAvesDesierto[misionActual];
+  if (configuracionAves) {
+    const retrasoBandada = -Math.random() * 24;
+    const alturaBandada = 9 + Math.random() * 7;
+    const duracionBandada = 22 + Math.random() * 5;
+    for (let indice = 0; indice < configuracionAves.cantidad; indice += 1) {
       const ave = crearAnimalAnimadoDesierto(
-        "ave-desierto-ambiente",
+        `ave-desierto-ambiente${configuracionAves.bandada ? " ave-bandada-desierto" : ""}`,
         [
           "assets/images/ambiente/desierto/halcon-alas-arriba.png",
           "assets/images/ambiente/desierto/halcon-alas-abajo.png",
         ],
-        "Halcón del desierto volando",
+        configuracionAves.bandada
+          ? "Bandada de halcones cruzando a lo lejos"
+          : "Halcón del desierto volando",
       );
-      ave.style.setProperty("--altura-ave", `${10 + indice * 9 + Math.random() * 8}%`);
-      ave.style.setProperty("--duracion-ave", `${20 + Math.random() * 8}s`);
-      ave.style.setProperty("--retraso-ave", `${-Math.random() * 24}s`);
-      ave.style.setProperty("--escala-ave", `${0.68 + Math.random() * 0.38}`);
+      ave.style.setProperty(
+        "--altura-ave",
+        `${configuracionAves.bandada ? alturaBandada + indice * 2.2 : 12 + Math.random() * 8}%`,
+      );
+      ave.style.setProperty(
+        "--duracion-ave",
+        `${configuracionAves.bandada ? duracionBandada : 20 + Math.random() * 8}s`,
+      );
+      ave.style.setProperty(
+        "--retraso-ave",
+        `${configuracionAves.bandada ? retrasoBandada - indice * 0.65 : -Math.random() * 24}s`,
+      );
+      ave.style.setProperty(
+        "--escala-ave",
+        `${configuracionAves.bandada ? 0.38 + indice * 0.045 : 0.76 + Math.random() * 0.25}`,
+      );
       ave.style.setProperty("--retraso-aleteo", `${-Math.random() * 0.7}s`);
       capa.appendChild(ave);
     }
   }
 
-  if (misionesEscorpionDesierto.has(misionActual)) {
-    const escorpion = crearAnimalAnimadoDesierto(
-      "escorpion-desierto-ambiente",
-      [
-        "assets/images/ambiente/desierto/alacran-camina-1.png",
-        "assets/images/ambiente/desierto/alacran-camina-2.png",
-      ],
-      "Alacrán caminando por la arena",
-    );
-    escorpion.style.setProperty("--retraso-escorpion", `${-Math.random() * 25}s`);
-    capa.appendChild(escorpion);
+  const cantidadEscorpiones = cantidadesEscorpionesDesierto[misionActual] || 0;
+  if (cantidadEscorpiones > 0) {
+    const retrasoPareja = -Math.random() * 25;
+    for (let indice = 0; indice < cantidadEscorpiones; indice += 1) {
+      const escorpion = crearAnimalAnimadoDesierto(
+        `escorpion-desierto-ambiente${cantidadEscorpiones > 1 ? " pareja-escorpiones-desierto" : ""}`,
+        [
+          "assets/images/ambiente/desierto/alacran-camina-1.png",
+          "assets/images/ambiente/desierto/alacran-camina-2.png",
+        ],
+        cantidadEscorpiones > 1
+          ? "Pareja de alacranes caminando por la arena"
+          : "Alacrán caminando por la arena",
+      );
+      escorpion.style.setProperty("--retraso-escorpion", `${retrasoPareja - indice * 0.85}s`);
+      escorpion.style.setProperty("--altura-escorpion", `${1.2 + indice * 2.4}%`);
+      escorpion.style.setProperty("--escala-escorpion", `${0.72 - indice * 0.08}`);
+      capa.appendChild(escorpion);
+    }
   }
 
   if (misionesLagartijaDesierto.has(misionActual)) {
@@ -8666,7 +8705,7 @@ async function liberarMaguitoDeTrampaEspejismo() {
   trampa.classList.add("liberandose");
   trampa.setAttribute(
     "aria-label",
-    "La prisión de espejismo se rompe y el Maguito queda libre",
+    "La prisión de espejismo se rompe y Zafir queda libre",
   );
 
   await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 250 : 1850);
@@ -9186,7 +9225,7 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
     mensajePersonaje.textContent = dueloAventura === "guardiana"
       ? "La Guardiana del Bosque espera frente al portal apagado."
       : dueloAventura === "mago_desierto"
-        ? "El Mago te espera para la prueba final del Cristal Dorado."
+        ? "Zafir te espera para la prueba final del Cristal Dorado."
         : dueloAventura === "nimbus_cumbres"
           ? "Nimbus te espera para el juramento final del Cristal Celeste."
           : "El Guardián de la Luna te desafía a demostrar tu valor.";
@@ -10265,7 +10304,7 @@ async function presentarDesafioMagoDesierto() {
   capa.setAttribute("aria-live", "polite");
   mago.className = "figura-encuentro-mago";
   mago.src = srcMagoBaseVersus;
-  mago.alt = "Mago del Desierto frente al Cristal Dorado";
+  mago.alt = "Zafir frente al Cristal Dorado";
   mensaje.className = "mensaje-encuentro-mago";
   titulo.textContent = "La prueba final del desierto";
   texto.textContent =
@@ -10298,7 +10337,7 @@ const escenasCinematicaFinalDesierto = Object.freeze([
   {
     imagen: "assets/images/cinematicas/desierto-final/03-mago-purifica-cristal-v1.png",
     titulo: "La última sombra",
-    texto: "El Mago hace levitar el cristal y desprende con su magia los últimos restos de arena corrupta.",
+    texto: "Zafir hace levitar el cristal y desprende con su magia los últimos restos de arena corrupta.",
   },
   {
     imagen: "assets/images/cinematicas/desierto-final/04-mago-entrega-cristal-v1.png",
@@ -10308,7 +10347,7 @@ const escenasCinematicaFinalDesierto = Object.freeze([
   {
     imagen: "assets/images/cinematicas/desierto-final/05-mago-abre-portal-cumbres-v1.png",
     titulo: "Rumbo a las Cumbres Celestes",
-    texto: "El Mago abre un portal entre las nubes. Detrás aguarda un mundo de montañas e islas flotantes.",
+    texto: "Zafir abre un portal entre las nubes. Detrás aguarda un mundo de montañas e islas flotantes.",
   },
 ]);
 
@@ -10390,11 +10429,11 @@ async function presentarDesbloqueoMagoDesierto() {
   capa.setAttribute("aria-live", "polite");
   mago.className = "figura-encuentro-mago";
   mago.src = srcMagoBaseVersus;
-  mago.alt = "Mago desbloqueado";
+  mago.alt = "Zafir desbloqueado";
   mensaje.className = "mensaje-encuentro-mago";
-  titulo.textContent = "¡Mago desbloqueado!";
+  titulo.textContent = "¡Zafir desbloqueado!";
   texto.textContent =
-    "Superaste su prueba y recuperaste el Cristal Dorado. El Mago se une a tus campeones del modo versus.";
+    "Superaste su prueba y recuperaste el Cristal Dorado. Zafir se une a tus campeones del modo versus.";
   mensaje.append(titulo, texto);
   capa.append(mago, mensaje);
   contenedorEscenario.appendChild(capa);
@@ -11698,7 +11737,7 @@ function elegirOasisDesierto(indice) {
 
   if (aciertosOasisDesierto >= cantidadRondasOasisDesierto) {
     estadoPruebaBosque.textContent =
-      "¡Descifraste los tres oasis! El espejismo se rompe y el Maguito queda libre.";
+      "¡Descifraste los tres oasis! El espejismo se rompe y Zafir queda libre.";
     void completarPruebaEspecialBosque("oasis");
     return;
   }

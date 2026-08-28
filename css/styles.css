@@ -9658,6 +9658,37 @@ button:disabled {
     box-shadow: 3px 1px 0 rgba(202, 154, 83, 0.32);
 }
 
+.viento-desierto-ventisca::before {
+    content: "";
+    position: absolute;
+    inset: -28% -45%;
+    opacity: .34;
+    background: repeating-linear-gradient(101deg, transparent 0 18px, rgba(247, 211, 145, .2) 20px 23px, transparent 26px 44px);
+    filter: blur(2px);
+    animation: barrerVentiscaDesierto 2.7s linear infinite;
+    will-change: transform;
+}
+
+.viento-desierto-ventisca .particula-arena {
+    height: 5px;
+    filter: blur(.35px);
+}
+
+.viento-desierto-remolino::after {
+    content: "";
+    position: absolute;
+    top: 8%;
+    left: -26%;
+    width: 20%;
+    height: 86%;
+    border-radius: 48%;
+    opacity: 0;
+    background: repeating-radial-gradient(ellipse, transparent 0 9px, rgba(228, 184, 111, .2) 11px 14px, transparent 17px 25px);
+    filter: blur(1.2px);
+    animation: cruzarRemolinoDesierto 13s ease-in-out infinite;
+    will-change: transform, opacity;
+}
+
 .estado-offline-juego {
     display: flex;
     align-items: center;
@@ -9730,6 +9761,15 @@ button:disabled {
     will-change: transform, opacity;
 }
 
+.ave-bandada-desierto {
+    width: clamp(38px, 5vw, 64px);
+    filter: blur(.15px);
+}
+
+.ave-bandada-desierto .cuadro-fauna-desierto {
+    filter: sepia(.18) brightness(.68) opacity(.78) drop-shadow(0 1px 1px rgba(54, 25, 9, .26));
+}
+
 .cuadro-fauna-desierto {
     position: absolute;
     inset: 0;
@@ -9752,13 +9792,17 @@ button:disabled {
 .escorpion-desierto-ambiente {
     position: absolute;
     left: -18%;
-    bottom: 1.2%;
+    bottom: var(--altura-escorpion, 1.2%);
     width: clamp(34px, 4.3vw, 60px);
     aspect-ratio: 64 / 42;
     opacity: 0;
     filter: brightness(.76) saturate(.88) drop-shadow(0 3px 2px rgba(54, 25, 9, .42));
     animation: cruzarEscorpionDesierto 29s linear var(--retraso-escorpion) infinite;
     will-change: transform, opacity;
+}
+
+.pareja-escorpiones-desierto {
+    width: clamp(31px, 3.9vw, 54px);
 }
 
 .escorpion-desierto-ambiente .cuadro-fauna-desierto {
@@ -9809,6 +9853,19 @@ button:disabled {
     to { opacity: .3; transform: translate3d(1.2%, -3px, 0) scaleY(1.05); }
 }
 
+@keyframes barrerVentiscaDesierto {
+    from { transform: translate3d(-18%, 0, 0); }
+    to { transform: translate3d(18%, -5%, 0); }
+}
+
+@keyframes cruzarRemolinoDesierto {
+    0%, 12% { opacity: 0; transform: translate3d(-10vw, 6%, 0) scale(.58) rotate(-5deg); }
+    20% { opacity: .42; }
+    48% { opacity: .52; transform: translate3d(64vw, -4%, 0) scale(.9) rotate(4deg); }
+    76% { opacity: .36; }
+    84%, 100% { opacity: 0; transform: translate3d(132vw, 8%, 0) scale(.65) rotate(-3deg); }
+}
+
 @keyframes cruzarAveDesierto {
     0%, 8% { opacity: 0; transform: translate3d(-12vw, 2px, 0) scale(var(--escala-ave)); }
     14% { opacity: .76; }
@@ -9838,11 +9895,11 @@ button:disabled {
 }
 
 @keyframes cruzarEscorpionDesierto {
-    0%, 20% { opacity: 0; transform: translate3d(-12vw, 1px, 0) scale(.72); }
+    0%, 20% { opacity: 0; transform: translate3d(-12vw, 1px, 0) scale(var(--escala-escorpion, .72)); }
     24% { opacity: .88; }
-    42% { transform: translate3d(45vw, -1px, 0) scale(.78); }
-    61% { opacity: .82; transform: translate3d(105vw, 1px, 0) scale(.74); }
-    65%, 100% { opacity: 0; transform: translate3d(122vw, 1px, 0) scale(.74); }
+    42% { transform: translate3d(45vw, -1px, 0) scale(calc(var(--escala-escorpion, .72) + .06)); }
+    61% { opacity: .82; transform: translate3d(105vw, 1px, 0) scale(calc(var(--escala-escorpion, .72) + .02)); }
+    65%, 100% { opacity: 0; transform: translate3d(122vw, 1px, 0) scale(calc(var(--escala-escorpion, .72) + .02)); }
 }
 
 @keyframes correrLagartijaDesierto {
@@ -15947,6 +16004,17 @@ button:disabled {
         bottom: 10%;
         width: 90%;
         height: 78%;
+    }
+    .escenario.escenario-desierto[data-mision-desierto="5"] .trampa-espejismo-maguito {
+        right: 3%;
+        width: 39%;
+        height: 82%;
+    }
+    .escenario.escenario-desierto[data-mision-desierto="5"] .maguito-espejismo {
+        right: 3%;
+        bottom: 8%;
+        width: 94%;
+        height: 82%;
     }
 }
 @media (orientation: landscape) and (max-height: 760px) {
