@@ -65,6 +65,9 @@ assert.match(html, /<strong>Nimbus<\/strong>/);
 assert.match(css, /\.escenario\.escenario-cumbres/);
 assert.match(css, /\.nimbus-cumbres\s*\{[\s\S]*?scale:\s*-1 1/);
 assert.match(css, /\.cinematica-final-cumbres/);
+assert.match(app, /cinematica-cumbres-ambiente/);
+assert.match(app, /classList\.toggle\("plano-ilustrado", Boolean\(escena\.imagen\)\)/);
+assert.match(css, /plano-ilustrado \.cinematica-cumbres-fondo\s*\{[\s\S]*?object-fit:\s*contain/);
 assert.match(css, /\.tablero-sopa-cumbres/);
 assert.match(css, /\.tablero-red-cumbres/);
 assert.match(css, /grid-template-columns:\s*repeat\(8, 1fr\)/);
@@ -115,8 +118,13 @@ for (const criatura of [
   assert.ok(fs.existsSync(path.join(root, "assets", "images", "ambiente", "cumbres", imagen)));
 }
 assert.match(css, /\.historia-cumbres \.pergamino-mision\s*\{[\s\S]*?background:[\s\S]*?rgba\(255, 255, 250, \.99\)/);
-assert.match(css, /@keyframes nubelunObserva/);
-assert.match(css, /@keyframes velarioPlanea/);
+assert.match(css, /@keyframes nubelunCamina/);
+assert.match(css, /@keyframes velarioVuela/);
 assert.match(css, /@keyframes lumiriRespira/);
+for (const imagen of ["nubelun-cumbres-paso-v2.png", "velario-cumbres-aleteo-v2.png"]) {
+  assert.match(app, new RegExp(imagen.replace(".", "\\.")));
+  assert.match(sw, new RegExp(imagen.replace(".", "\\.")));
+  assert.ok(fs.existsSync(path.join(root, "assets", "images", "ambiente", "cumbres", imagen)));
+}
 
 console.log("adventure-world3-complete: comprobaciones correctas");

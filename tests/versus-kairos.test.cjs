@@ -14,6 +14,11 @@ const migracionDerrotaPorTiempo = leer(
   "migrations",
   "20260825214904_finish_match_on_individual_timeout.sql",
 );
+const migracionReparacionOnline = leer(
+  "supabase",
+  "migrations",
+  "20260829172605_repair_kairos_online_selection_and_time_steal.sql",
+);
 
 assert.match(html, /data-personaje="kairos"/);
 assert.match(html, /Kair&oacute;s/);
@@ -107,6 +112,9 @@ assert.match(migracionDerrotaPorTiempo, /cardinality\(v_timed_out_ids\) = 1/);
 assert.match(migracionDerrotaPorTiempo, /user_id <> v_timed_out_ids\[1\]/);
 assert.match(migracionDerrotaPorTiempo, /'loserId', v_timed_out_ids\[1\]/);
 assert.doesNotMatch(migracionDerrotaPorTiempo, /bool_and\(finished\)/);
+assert.match(migracionReparacionOnline, /time_penalty_seconds/);
+assert.match(migracionReparacionOnline, /'''kairos'''/);
+assert.match(migracionReparacionOnline, /activate_versus_ability_without_kairos\(uuid\)/);
 
 for (const archivo of [
   "kairos-seleccion-v2.png",

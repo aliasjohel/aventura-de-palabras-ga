@@ -4640,11 +4640,13 @@ async function reproducirCinematicaFinalCumbres() {
   const capa = document.createElement("div");
   capa.className = "cinematica-final-cumbres";
   capa.innerHTML = `
+    <img class="cinematica-cumbres-ambiente" alt="" aria-hidden="true">
     <img class="cinematica-cumbres-fondo" alt="">
     <div class="cinematica-cumbres-personajes" aria-hidden="true"></div>
     <p class="cinematica-cumbres-texto"></p>
     <button type="button" class="cinematica-cumbres-saltar">Saltar</button>`;
   document.body.appendChild(capa);
+  const ambiente = capa.querySelector(".cinematica-cumbres-ambiente");
   const fondo = capa.querySelector(".cinematica-cumbres-fondo");
   const personajes = capa.querySelector(".cinematica-cumbres-personajes");
   const texto = capa.querySelector(".cinematica-cumbres-texto");
@@ -4663,9 +4665,12 @@ async function reproducirCinematicaFinalCumbres() {
       if (saltar) break;
       capa.classList.remove("visible");
       await esperarMovimiento(prefiereReducirMovimiento.matches ? 80 : 350);
-      fondo.src = escena.imagen
+      const origenPlano = escena.imagen
         ? `assets/images/cinematicas/cumbres-final/${escena.imagen}`
         : `assets/images/fondos/${escena.fondo}`;
+      capa.classList.toggle("plano-ilustrado", Boolean(escena.imagen));
+      ambiente.src = origenPlano;
+      fondo.src = origenPlano;
       fondo.alt = escena.alt || "";
       personajes.replaceChildren();
       if (escena.aeralis) {
@@ -9585,11 +9590,19 @@ function actualizarPersonajesNarrativosCumbres() {
     0: {
       clase: "nubelun-cumbres",
       src: "assets/images/ambiente/cumbres/nubelun-cumbres-v1.png",
+      cuadros: [
+        "assets/images/ambiente/cumbres/nubelun-cumbres-v1.png",
+        "assets/images/ambiente/cumbres/nubelun-cumbres-paso-v2.png",
+      ],
       alt: "Nubelún, una criatura de nubes que observa el camino",
     },
     1: {
       clase: "velario-cumbres",
       src: "assets/images/ambiente/cumbres/velario-cumbres-v1.png",
+      cuadros: [
+        "assets/images/ambiente/cumbres/velario-cumbres-v1.png",
+        "assets/images/ambiente/cumbres/velario-cumbres-aleteo-v2.png",
+      ],
       alt: "Velario, una criatura celeste que planea a lo lejos",
     },
     4: {
@@ -9600,10 +9613,23 @@ function actualizarPersonajesNarrativosCumbres() {
   };
   const faunaMision = faunaPorMision[misionActual];
   if (faunaMision) {
-    const criatura = document.createElement("img");
+    const criatura = document.createElement(faunaMision.cuadros ? "span" : "img");
     criatura.className = `personaje-narrativo-cumbres fauna-cumbres ${faunaMision.clase}`;
-    criatura.src = faunaMision.src;
-    criatura.alt = faunaMision.alt;
+    if (faunaMision.cuadros) {
+      criatura.classList.add("fauna-cumbres-animada");
+      criatura.setAttribute("role", "img");
+      criatura.setAttribute("aria-label", faunaMision.alt);
+      faunaMision.cuadros.forEach((src, indice) => {
+        const cuadro = document.createElement("img");
+        cuadro.className = `fauna-cumbres-cuadro fauna-cumbres-cuadro-${indice + 1}`;
+        cuadro.src = src;
+        cuadro.alt = "";
+        criatura.appendChild(cuadro);
+      });
+    } else {
+      criatura.src = faunaMision.src;
+      criatura.alt = faunaMision.alt;
+    }
     contenedorEscenario.appendChild(criatura);
   }
 

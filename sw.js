@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v178`;
+const CACHE_NAME = `${CACHE_PREFIX}v179`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -86,6 +86,7 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v175`,
   `${CACHE_PREFIX}v176`,
   `${CACHE_PREFIX}v177`,
+  `${CACHE_PREFIX}v178`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -197,7 +198,9 @@ const CORE_ASSETS = [
   "./assets/images/fondos/cumbres-9.png",
   "./assets/images/fondos/cumbres-10.png",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-v1.png",
+  "./assets/images/ambiente/cumbres/nubelun-cumbres-paso-v2.png",
   "./assets/images/ambiente/cumbres/velario-cumbres-v1.png",
+  "./assets/images/ambiente/cumbres/velario-cumbres-aleteo-v2.png",
   "./assets/images/ambiente/cumbres/lumiri-cumbres-v1.png",
   "./assets/images/personajes/aventura/aeralis-liberada-v1.png",
   "./assets/images/elements/cristal-celeste-v1.png",
@@ -410,10 +413,10 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260828-fauna-cumbres-cartel-4",
-  "./index.html": "20260828-fauna-cumbres-cartel-4",
-  "./css/styles.css": "20260828-fauna-cumbres-cartel-4",
-  "./js/app.js": "20260828-fauna-cumbres-cartel-4",
+  "./": "20260829-cumbres-movil-fauna-1",
+  "./index.html": "20260829-cumbres-movil-fauna-1",
+  "./css/styles.css": "20260829-cumbres-movil-fauna-1",
+  "./js/app.js": "20260829-cumbres-movil-fauna-1",
   "./js/pwa.js": "20260827-modos-locales-offline-1",
   "./js/supabase-loader.js": "20260827-supabase-diferido-1",
   "./assets/images/ui/presentacion-mision-cumbres-v1.png": "20260827-soporte-cumbres-1",
@@ -428,7 +431,9 @@ const ASSET_REVISIONS = {
   "./assets/images/fondos/cumbres-9.png": "20260826-cumbres-1",
   "./assets/images/fondos/cumbres-10.png": "20260826-cumbres-1",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-v1.png": "20260828-fauna-cumbres-2",
+  "./assets/images/ambiente/cumbres/nubelun-cumbres-paso-v2.png": "20260829-fauna-cumbres-3",
   "./assets/images/ambiente/cumbres/velario-cumbres-v1.png": "20260828-fauna-cumbres-2",
+  "./assets/images/ambiente/cumbres/velario-cumbres-aleteo-v2.png": "20260829-fauna-cumbres-3",
   "./assets/images/ambiente/cumbres/lumiri-cumbres-v1.png": "20260828-fauna-cumbres-2",
   "./assets/images/personajes/aventura/aeralis-liberada-v1.png": "20260826-cumbres-1",
   "./assets/images/elements/cristal-celeste-v1.png": "20260826-cumbres-1",
