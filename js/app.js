@@ -479,6 +479,9 @@ const sonidoSeleccionPersonaje = new Audio(
 const musicaMuralDragon = new Audio("assets/sounds/mural-dragon1.mp3");
 const musicaCaminaPortal = new Audio("assets/sounds/camina-al-portal.mp3");
 const musicaSegundoCristal = new Audio("assets/sounds/recibe-2-diamante.mp3");
+const musicaCinematicaFinalMundo3 = new Audio(
+  "assets/sounds/cinematica-final-mundo3.mp3",
+);
 musicaMuralDragon.loop = false;
 musicaMuralDragon.volume = 0.58;
 musicaMuralDragon.preload = "auto";
@@ -488,6 +491,9 @@ musicaCaminaPortal.preload = "auto";
 musicaSegundoCristal.loop = false;
 musicaSegundoCristal.volume = 0.52;
 musicaSegundoCristal.preload = "auto";
+musicaCinematicaFinalMundo3.loop = false;
+musicaCinematicaFinalMundo3.volume = 0.58;
+musicaCinematicaFinalMundo3.preload = "auto";
 Object.values(sonidos).forEach((sonido) => {
   sonido.preload = "none";
 });
@@ -4656,6 +4662,11 @@ async function reproducirCinematicaFinalCumbres() {
   });
 
   try {
+    reproducirMusicaCinematica(
+      musicaCinematicaFinalMundo3,
+      "Música de la cinemática final del mundo 3",
+      0.58,
+    );
     await Promise.all(
       escenas
         .filter((escena) => escena.imagen)
@@ -4700,6 +4711,7 @@ async function reproducirCinematicaFinalCumbres() {
       }
     }
   } finally {
+    detenerMusicaCinematica(musicaCinematicaFinalMundo3, 0.58);
     capa.classList.remove("visible");
     await esperarMovimiento(250);
     capa.remove();

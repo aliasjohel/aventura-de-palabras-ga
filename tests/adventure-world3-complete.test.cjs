@@ -60,6 +60,10 @@ assert.match(app, /mundoTresCompletado = true/);
 assert.match(app, /cristalesObtenidos = Math\.max\(cristalesObtenidos, 3\)/);
 assert.match(app, /guardarDesbloqueoNimbus\(\)/);
 assert.match(app, /reproducirCinematicaFinalCumbres\(\)/);
+assert.match(app, /musicaCinematicaFinalMundo3[\s\S]*?cinematica-final-mundo3\.mp3/);
+assert.match(app, /reproducirCinematicaFinalCumbres\(\)[\s\S]*?reproducirMusicaCinematica\([\s\S]*?musicaCinematicaFinalMundo3/);
+assert.match(app, /reproducirCinematicaFinalCumbres\(\)[\s\S]*?finally \{[\s\S]*?detenerMusicaCinematica\(musicaCinematicaFinalMundo3, 0\.58\)/);
+assert.match(sw, /assets\/sounds\/cinematica-final-mundo3\.mp3/);
 assert.match(html, /id="ranuraCristalCumbres"/);
 assert.match(html, /<strong>Nimbus<\/strong>/);
 assert.match(css, /\.escenario\.escenario-cumbres/);
@@ -127,4 +131,15 @@ for (const imagen of ["nubelun-cumbres-paso-v2.png", "velario-cumbres-aleteo-v2.
   assert.ok(fs.existsSync(path.join(root, "assets", "images", "ambiente", "cumbres", imagen)));
 }
 
+for (const imagen of [
+  "nubelun-cumbres-v1.png",
+  "nubelun-cumbres-paso-v2.png",
+  "velario-cumbres-v1.png",
+  "velario-cumbres-aleteo-v2.png",
+]) {
+  const ruta = path.join(root, "assets", "images", "ambiente", "cumbres", imagen);
+  assert.equal(fs.readFileSync(ruta)[25], 6, `${imagen} debe tener transparencia RGBA`);
+}
+assert.match(css, /\.nubelun-cumbres\s*\{[\s\S]*?bottom:\s*17%/);
+assert.match(css, /@media \(max-width: 640px\) and \(orientation: portrait\)[\s\S]*?\.cinematica-final-cumbres\s*\{[\s\S]*?rotate\(90deg\)/);
 console.log("adventure-world3-complete: comprobaciones correctas");
