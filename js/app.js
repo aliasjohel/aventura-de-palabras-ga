@@ -4628,7 +4628,7 @@ async function reproducirCinematicaFinalCumbres() {
       texto: "No hará falta abrir otro portal. Aeralis baja una de sus enormes alas y ofrece llevar a Aren hasta el cuarto mundo.",
     },
     {
-      imagen: "02-aren-sube-aeralis-v1.png",
+      imagen: "02-aren-sube-aeralis-v2.png",
       alt: "Aren sentado sobre la espalda de Aeralis antes de despegar",
       texto: "Aren se acomoda entre las escamas de la Matriarca. Con un poderoso aleteo, las Cumbres Celestes quedan atrás.",
     },
@@ -4672,10 +4672,13 @@ async function reproducirCinematicaFinalCumbres() {
         .filter((escena) => escena.imagen)
         .map((escena) => precargarImagen(`assets/images/cinematicas/cumbres-final/${escena.imagen}`)),
     );
+    let primerPlano = true;
     for (const escena of escenas) {
       if (saltar) break;
-      capa.classList.remove("visible");
-      await esperarMovimiento(prefiereReducirMovimiento.matches ? 80 : 350);
+      if (!primerPlano) {
+        capa.classList.add("cambiando-plano");
+        await esperarMovimiento(prefiereReducirMovimiento.matches ? 0 : 260);
+      }
       const origenPlano = escena.imagen
         ? `assets/images/cinematicas/cumbres-final/${escena.imagen}`
         : `assets/images/fondos/${escena.fondo}`;
@@ -4703,7 +4706,13 @@ async function reproducirCinematicaFinalCumbres() {
         personajes.appendChild(imagen);
       }
       texto.textContent = escena.texto;
-      capa.classList.add("visible");
+      if (primerPlano) {
+        capa.classList.add("visible");
+        primerPlano = false;
+      } else {
+        await esperarMovimiento(prefiereReducirMovimiento.matches ? 0 : 30);
+        capa.classList.remove("cambiando-plano");
+      }
       const duracion = prefiereReducirMovimiento.matches ? 1200 : 5200;
       const paso = 200;
       for (let transcurrido = 0; transcurrido < duracion && !saltar; transcurrido += paso) {

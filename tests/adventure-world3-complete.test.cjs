@@ -71,6 +71,10 @@ assert.match(css, /\.nimbus-cumbres\s*\{[\s\S]*?scale:\s*-1 1/);
 assert.match(css, /\.cinematica-final-cumbres/);
 assert.match(app, /cinematica-cumbres-ambiente/);
 assert.match(app, /classList\.toggle\("plano-ilustrado", Boolean\(escena\.imagen\)\)/);
+assert.match(app, /02-aren-sube-aeralis-v2\.png/);
+assert.match(app, /classList\.add\("cambiando-plano"\)/);
+assert.match(app, /classList\.remove\("cambiando-plano"\)/);
+assert.match(css, /\.cinematica-final-cumbres\.cambiando-plano/);
 assert.match(css, /plano-ilustrado \.cinematica-cumbres-fondo\s*\{[\s\S]*?object-fit:\s*contain/);
 assert.match(css, /\.tablero-sopa-cumbres/);
 assert.match(css, /\.tablero-red-cumbres/);
@@ -93,7 +97,7 @@ assert.ok(fs.existsSync(path.join(root, "assets", "images", "personajes", "avent
 assert.ok(fs.existsSync(path.join(root, "assets", "images", "elements", "cristal-celeste-v1.png")));
 for (const imagen of [
   "01-aeralis-invita-aren-v1.png",
-  "02-aren-sube-aeralis-v1.png",
+  "02-aren-sube-aeralis-v2.png",
   "03-vuelo-mundo-hielo-v1.png",
   "04-llegada-mundo-hielo-v1.png",
 ]) {
@@ -140,6 +144,7 @@ for (const imagen of [
   const ruta = path.join(root, "assets", "images", "ambiente", "cumbres", imagen);
   assert.equal(fs.readFileSync(ruta)[25], 6, `${imagen} debe tener transparencia RGBA`);
 }
-assert.match(css, /\.nubelun-cumbres\s*\{[\s\S]*?bottom:\s*17%/);
+assert.match(css, /\.nubelun-cumbres\s*\{[\s\S]*?left:\s*50%[\s\S]*?bottom:\s*20%[\s\S]*?opacity:\s*1/);
+assert.match(css, /@media \(max-width: 640px\)[\s\S]*?\.nubelun-cumbres\s*\{\s*left:\s*45%;\s*bottom:\s*16%/);
 assert.match(css, /@media \(max-width: 640px\) and \(orientation: portrait\)[\s\S]*?\.cinematica-final-cumbres\s*\{[\s\S]*?rotate\(90deg\)/);
 console.log("adventure-world3-complete: comprobaciones correctas");

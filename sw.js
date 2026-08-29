@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v181`;
+const CACHE_NAME = `${CACHE_PREFIX}v182`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -89,6 +89,7 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v178`,
   `${CACHE_PREFIX}v179`,
   `${CACHE_PREFIX}v180`,
+  `${CACHE_PREFIX}v181`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -207,7 +208,7 @@ const CORE_ASSETS = [
   "./assets/images/personajes/aventura/aeralis-liberada-v1.png",
   "./assets/images/elements/cristal-celeste-v1.png",
   "./assets/images/cinematicas/cumbres-final/01-aeralis-invita-aren-v1.png",
-  "./assets/images/cinematicas/cumbres-final/02-aren-sube-aeralis-v1.png",
+  "./assets/images/cinematicas/cumbres-final/02-aren-sube-aeralis-v2.png",
   "./assets/images/cinematicas/cumbres-final/03-vuelo-mundo-hielo-v1.png",
   "./assets/images/cinematicas/cumbres-final/04-llegada-mundo-hielo-v1.png",
   "./assets/images/ambiente/desierto/alacran-camina-1.png",
@@ -416,10 +417,10 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260829-cumbres-movil-fauna-3",
-  "./index.html": "20260829-cumbres-movil-fauna-3",
-  "./css/styles.css": "20260829-cumbres-movil-fauna-3",
-  "./js/app.js": "20260829-cumbres-movil-fauna-3",
+  "./": "20260829-cumbres-movil-fauna-4",
+  "./index.html": "20260829-cumbres-movil-fauna-4",
+  "./css/styles.css": "20260829-cumbres-movil-fauna-4",
+  "./js/app.js": "20260829-cumbres-movil-fauna-4",
   "./js/pwa.js": "20260827-modos-locales-offline-1",
   "./js/supabase-loader.js": "20260827-supabase-diferido-1",
   "./assets/images/ui/presentacion-mision-cumbres-v1.png": "20260827-soporte-cumbres-1",
@@ -441,7 +442,7 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/aventura/aeralis-liberada-v1.png": "20260826-cumbres-1",
   "./assets/images/elements/cristal-celeste-v1.png": "20260826-cumbres-1",
   "./assets/images/cinematicas/cumbres-final/01-aeralis-invita-aren-v1.png": "20260827-viaje-hielo-1",
-  "./assets/images/cinematicas/cumbres-final/02-aren-sube-aeralis-v1.png": "20260827-viaje-hielo-1",
+  "./assets/images/cinematicas/cumbres-final/02-aren-sube-aeralis-v2.png": "20260829-aeralis-completa-2",
   "./assets/images/cinematicas/cumbres-final/03-vuelo-mundo-hielo-v1.png": "20260827-viaje-hielo-1",
   "./assets/images/cinematicas/cumbres-final/04-llegada-mundo-hielo-v1.png": "20260827-viaje-hielo-1",
   "./assets/sounds/cinematica-final-mundo3.mp3": "20260829-cinematica-mundo3-1",
