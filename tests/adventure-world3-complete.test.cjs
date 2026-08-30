@@ -144,7 +144,8 @@ for (const imagen of [
   const ruta = path.join(root, "assets", "images", "ambiente", "cumbres", imagen);
   assert.equal(fs.readFileSync(ruta)[25], 6, `${imagen} debe tener transparencia RGBA`);
 }
-assert.match(css, /\.nubelun-cumbres\s*\{[\s\S]*?left:\s*50%[\s\S]*?bottom:\s*20%[\s\S]*?opacity:\s*1/);
-assert.match(css, /@media \(max-width: 640px\)[\s\S]*?\.nubelun-cumbres\s*\{\s*left:\s*45%;\s*bottom:\s*16%/);
+assert.match(css, /\.nubelun-cumbres\s*\{[\s\S]*?left:\s*32%[\s\S]*?bottom:\s*29%[\s\S]*?opacity:\s*1/);
+assert.match(css, /@media \(max-width: 640px\)[\s\S]*?\.nubelun-cumbres\s*\{\s*left:\s*20%;\s*bottom:\s*31%/);
 assert.match(css, /@media \(max-width: 640px\) and \(orientation: portrait\)[\s\S]*?\.cinematica-final-cumbres\s*\{[\s\S]*?rotate\(90deg\)/);
+assert.match(css, /@media \(max-width: 640px\) and \(orientation: portrait\)[\s\S]*?\.cinematica-aeralis\s*\{[\s\S]*?height:\s*88%[\s\S]*?max-width:\s*42%/);
 console.log("adventure-world3-complete: comprobaciones correctas");
