@@ -10911,29 +10911,39 @@ function cerrarPruebaEspecialBosque() {
   focoAnterior?.focus?.();
 }
 
-const ladoSopaCumbres = 8;
+const ladoSopaCumbres = 10;
 const letrasSopaCumbres = [
-  "ANUBEROS",
-  "PLUMATVC",
-  "CORRENIT",
-  "AIRESUEO",
-  "NUELEBNR",
-  "SOELOOTA",
-  "VOLAOOOS",
-  "CUMBRESX",
+  "NIVECATOLS",
+  "UBRINMANNS",
+  "TRENCIEUNO",
+  "ALVIENBTOS",
+  "OAIREEONUB",
+  "NUBEVTARIO",
+  "CIEONUBELA",
+  "VISEOCIELO",
+  "NUINVIENTO",
+  "AVCIELOUNI",
 ].join("");
 const palabrasSopaCumbres = Object.freeze([
-  { palabra: "NUBE", indices: [1, 2, 3, 4] },
-  { palabra: "VIENTO", indices: [14, 22, 30, 38, 46, 54] },
-  { palabra: "CIELO", indices: [16, 25, 34, 43, 52] },
+  { palabra: "NUBE", indices: [18, 27, 36, 45] },
+  { palabra: "VIENTO", indices: [91, 82, 73, 64, 55, 46] },
+  { palabra: "CIELO", indices: [4, 13, 22, 31, 40] },
 ]);
 
 const ladoRedCumbres = 8;
-const extremosRedCumbres = Object.freeze({
-  cian: [25, 30],
-  violeta: [2, 58],
-  dorado: [5, 61],
-});
+const rondasRedCumbres = Object.freeze([
+  Object.freeze({
+    cian: Object.freeze([25, 30]),
+    violeta: Object.freeze([2, 58]),
+    dorado: Object.freeze([5, 61]),
+  }),
+  Object.freeze({
+    cian: Object.freeze([12, 52]),
+    violeta: Object.freeze([23, 16]),
+    dorado: Object.freeze([47, 40]),
+  }),
+]);
+let rondaRedCumbresActual = 0;
 
 const rondasSellosAeralis = Object.freeze([
   {
@@ -10998,7 +11008,7 @@ function iniciarSopaCeleste() {
   const tablero = document.createElement("div");
   tablero.className = "tablero-sopa-cumbres";
   tablero.setAttribute("role", "grid");
-  tablero.setAttribute("aria-label", "Sopa de letras de ocho por ocho");
+  tablero.setAttribute("aria-label", "Sopa de letras de diez por diez");
   botonesPuzzleCumbres = [...letrasSopaCumbres].map((letra, indice) => {
     const boton = document.createElement("button");
     boton.type = "button";
@@ -11123,14 +11133,24 @@ function validarTrayectoSopaCumbres() {
 
 function iniciarRedPararrayos() {
   etiquetaPruebaBosque.textContent = "PRUEBA DE LA TORMENTA ENCADENADA";
-  tituloPruebaBosque.textContent = "Entrelazá las corrientes sin cruzarlas";
+  tituloPruebaBosque.textContent = "Superá las dos redes de corrientes";
   instruccionPruebaBosque.textContent =
-    "Los caminos directos se chocan. Uní cada nube con su pararrayos del mismo color buscando desvíos para que ninguna corriente pase sobre otra.";
+    "Uní cada nube con su pararrayos del mismo color sin cruzar corrientes. Al completar la primera red, los extremos cambiarán de lugar para una segunda ronda.";
+  rondaRedCumbresActual = 0;
+  prepararRondaRedCumbres();
+}
+
+function obtenerExtremosRedCumbres() {
+  return rondasRedCumbres[rondaRedCumbresActual];
+}
+
+function prepararRondaRedCumbres() {
   colorActivoRedCumbres = "";
   caminosRedCumbres = new Map();
   trayectoActivoRedCumbres = [];
   extremoInicialRedCumbres = null;
   coloresCompletadosRedCumbres = new Set();
+  puzzleCumbres.replaceChildren();
 
   const leyenda = document.createElement("div");
   leyenda.className = "leyenda-red-cumbres";
@@ -11141,7 +11161,10 @@ function iniciarRedPararrayos() {
   const tablero = document.createElement("div");
   tablero.className = "tablero-red-cumbres";
   tablero.setAttribute("role", "grid");
-  tablero.setAttribute("aria-label", "Red de seis por seis con tres pares de corrientes entrelazadas");
+  tablero.setAttribute(
+    "aria-label",
+    `Red ${rondaRedCumbresActual + 1} de ${rondasRedCumbres.length}, de ocho por ocho, con tres pares de corrientes entrelazadas`,
+  );
 
   botonesPuzzleCumbres = Array.from({ length: ladoRedCumbres * ladoRedCumbres }, (_, indice) => {
     const boton = document.createElement("button");
@@ -11174,12 +11197,13 @@ function iniciarRedPararrayos() {
   tablero.addEventListener("pointerup", () => (punteroRedCumbresActivo = false));
   tablero.addEventListener("pointercancel", () => (punteroRedCumbresActivo = false));
   puzzleCumbres.append(leyenda, tablero);
-  estadoPruebaBosque.textContent = "0 de 3 corrientes conectadas · Elegí qué color atraviesa el centro y cuáles lo rodean.";
+  estadoPruebaBosque.textContent =
+    `Red ${rondaRedCumbresActual + 1} de ${rondasRedCumbres.length} · 0 de 3 corrientes conectadas.`;
   botonesPuzzleCumbres[0]?.focus();
 }
 
 function obtenerExtremoRedCumbres(indice) {
-  for (const [color, extremos] of Object.entries(extremosRedCumbres)) {
+  for (const [color, extremos] of Object.entries(obtenerExtremosRedCumbres())) {
     const posicion = extremos.indexOf(indice);
     if (posicion !== -1) return { color, posicion };
   }
@@ -11260,11 +11284,25 @@ function extenderCaminoRedCumbres(indice) {
     extremoInicialRedCumbres = null;
     reproducirSonido("cristalCasilla");
     const cantidad = coloresCompletadosRedCumbres.size;
-    if (cantidad === Object.keys(extremosRedCumbres).length) {
-      estadoPruebaBosque.textContent = "¡Las tres corrientes descargaron la tormenta!";
-      void completarPruebaEspecialBosque("red-pararrayos");
+    if (cantidad === Object.keys(obtenerExtremosRedCumbres()).length) {
+      const hayOtraRonda = rondaRedCumbresActual + 1 < rondasRedCumbres.length;
+      if (hayOtraRonda) {
+        estadoPruebaBosque.textContent =
+          "¡Primera red completada! La tormenta cambió los extremos de lugar…";
+        botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
+        setTimeout(() => {
+          if (pruebaEspecialBosqueActiva === "red-pararrayos") {
+            rondaRedCumbresActual += 1;
+            prepararRondaRedCumbres();
+          }
+        }, prefiereReducirMovimiento.matches ? 80 : 650);
+      } else {
+        estadoPruebaBosque.textContent = "¡Las dos redes descargaron por completo la tormenta!";
+        void completarPruebaEspecialBosque("red-pararrayos");
+      }
     } else {
-      estadoPruebaBosque.textContent = `${cantidad} de 3 corrientes conectadas · Elegí otro extremo.`;
+      estadoPruebaBosque.textContent =
+        `Red ${rondaRedCumbresActual + 1} de ${rondasRedCumbres.length} · ${cantidad} de 3 corrientes conectadas.`;
     }
   }
 }

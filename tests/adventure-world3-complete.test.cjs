@@ -25,9 +25,9 @@ for (const palabra of ["NUBE", "VIENTO", "CIELO"]) assert.match(app, new RegExp(
 assert.match(app, /function validarTrayectoSopaCumbres\(/);
 assert.match(app, /function extenderCaminoRedCumbres\(/);
 assert.match(app, /const ladoRedCumbres = 8/);
-assert.match(app, /cian:\s*\[25, 30\][\s\S]+violeta:\s*\[2, 58\][\s\S]+dorado:\s*\[5, 61\]/);
+assert.match(app, /cian:\s*Object\.freeze\(\[25, 30\]\)[\s\S]+violeta:\s*Object\.freeze\(\[2, 58\]\)[\s\S]+dorado:\s*Object\.freeze\(\[5, 61\]\)/);
 assert.doesNotMatch(app, /const relevosRedCumbres|const tormentasRedCumbres/);
-assert.match(app, /Los caminos directos se chocan/);
+assert.match(app, /Al completar la primera red, los extremos cambiarán de lugar/);
 const rutasEntrelazadas = [
   [25, 26, 27, 28, 29, 30],
   [2, 1, 0, 8, 16, 24, 32, 33, 41, 49, 57, 58],
@@ -41,6 +41,10 @@ for (const ruta of rutasEntrelazadas) {
     assert.ok(diferencia === 8 || (diferencia === 1 && Math.floor(ruta[indice] / 8) === Math.floor(ruta[indice - 1] / 8)));
   }
 }
+const rotarIndiceRed = (indice) => (indice % 8) * 8 + (7 - Math.floor(indice / 8));
+const rutasSegundaRed = rutasEntrelazadas.map((ruta) => ruta.map(rotarIndiceRed));
+assert.deepEqual(rutasSegundaRed.map((ruta) => [ruta[0], ruta.at(-1)]), [[12, 52], [23, 16], [47, 40]]);
+assert.equal(new Set(rutasSegundaRed.flat()).size, rutasSegundaRed.flat().length);
 assert.match(app, /const rondasSellosAeralis = Object\.freeze/);
 for (const palabra of ["AIRE", "NUBE", "LIBRE"]) assert.match(app, new RegExp(`palabra: "${palabra}"`));
 assert.match(app, /function girarAnilloSelloAeralis\(/);
@@ -78,8 +82,17 @@ assert.match(css, /\.cinematica-final-cumbres\.cambiando-plano/);
 assert.match(css, /plano-ilustrado \.cinematica-cumbres-fondo\s*\{[\s\S]*?object-fit:\s*contain/);
 assert.match(css, /\.tablero-sopa-cumbres/);
 assert.match(css, /\.tablero-red-cumbres/);
+assert.match(app, /const ladoSopaCumbres = 10/);
+assert.match(css, /\.tablero-sopa-cumbres\s*\{[\s\S]*?grid-template-columns:\s*repeat\(10, 1fr\)/);
 assert.match(css, /grid-template-columns:\s*repeat\(8, 1fr\)/);
 assert.doesNotMatch(css, /\.celda-red-cumbres\.(?:tormenta|relevo)/);
+assert.match(app, /const rondasRedCumbres = Object\.freeze\(\[/);
+assert.match(app, /cian:\s*Object\.freeze\(\[12, 52\]\)/);
+assert.match(app, /violeta:\s*Object\.freeze\(\[23, 16\]\)/);
+assert.match(app, /dorado:\s*Object\.freeze\(\[47, 40\]\)/);
+assert.match(app, /function prepararRondaRedCumbres\(\)/);
+assert.match(app, /botonesPuzzleCumbres\.forEach\(\(boton\) => \(boton\.disabled = true\)\)/);
+assert.match(app, /¡Las dos redes descargaron por completo la tormenta!/);
 assert.match(css, /\.anillo-sello-aeralis/);
 assert.match(css, /\.btn-comprobar-sello-aeralis/);
 assert.match(css, /\.anillo-sello-aeralis\.pista-correcta/);
@@ -95,6 +108,8 @@ for (let mission = 1; mission <= 10; mission += 1) {
 }
 assert.ok(fs.existsSync(path.join(root, "assets", "images", "personajes", "aventura", "aeralis-liberada-v1.png")));
 assert.ok(fs.existsSync(path.join(root, "assets", "images", "elements", "cristal-celeste-v1.png")));
+assert.match(css, /#cristalPanelCumbres\s*\{[\s\S]*?width:\s*34px[\s\S]*?height:\s*34px/);
+assert.match(css, /@media \(max-width: 640px\)[\s\S]*?#cristalPanelCumbres\s*\{\s*width:\s*29px;\s*height:\s*29px/);
 for (const imagen of [
   "01-aeralis-invita-aren-v1.png",
   "02-aren-sube-aeralis-v2.png",
@@ -145,7 +160,9 @@ for (const imagen of [
   assert.equal(fs.readFileSync(ruta)[25], 6, `${imagen} debe tener transparencia RGBA`);
 }
 assert.match(css, /\.nubelun-cumbres\s*\{[\s\S]*?left:\s*32%[\s\S]*?bottom:\s*29%[\s\S]*?opacity:\s*1/);
-assert.match(css, /@media \(max-width: 640px\)[\s\S]*?\.nubelun-cumbres\s*\{\s*left:\s*20%;\s*bottom:\s*31%/);
+assert.match(css, /\.nubelun-cumbres \.fauna-cumbres-cuadro-1\s*\{[\s\S]*?opacity:\s*1[\s\S]*?animation:\s*none/);
+assert.match(css, /\.nubelun-cumbres \.fauna-cumbres-cuadro-2\s*\{[\s\S]*?display:\s*none/);
+assert.match(css, /@media \(max-width: 640px\)[\s\S]*?\.nubelun-cumbres\s*\{\s*left:\s*20%;\s*bottom:\s*37%;\s*width:\s*14%/);
 assert.match(css, /@media \(max-width: 640px\) and \(orientation: portrait\)[\s\S]*?\.cinematica-final-cumbres\s*\{[\s\S]*?rotate\(90deg\)/);
 assert.match(css, /@media \(max-width: 640px\) and \(orientation: portrait\)[\s\S]*?\.cinematica-aeralis\s*\{[\s\S]*?height:\s*88%[\s\S]*?max-width:\s*42%/);
 console.log("adventure-world3-complete: comprobaciones correctas");
