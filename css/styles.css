@@ -2503,7 +2503,6 @@ body {
     border: 0;
     color: inherit;
     background: transparent;
-    mix-blend-mode: screen;
     cursor: pointer;
     transform: translateX(-50%) translateY(0);
     transition:
@@ -2531,7 +2530,6 @@ body {
     height: 106%;
     object-fit: contain;
     object-position: center bottom;
-    mix-blend-mode: screen;
     filter: drop-shadow(0 11px 11px rgba(1, 10, 30, .48));
     transform-origin: center bottom;
     transition: transform .38s cubic-bezier(.2, .8, .25, 1.2), filter .2s ease;
@@ -2545,7 +2543,6 @@ body {
     width: 48%;
     height: 48%;
     object-fit: contain;
-    mix-blend-mode: screen;
     opacity: 0;
     filter: drop-shadow(0 0 8px #7eeaff) drop-shadow(0 0 18px #fff);
     transform: translateX(-50%) scale(.42);

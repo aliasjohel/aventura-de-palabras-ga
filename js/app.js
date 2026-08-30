@@ -11798,9 +11798,9 @@ function prepararRondaCampanasCumbres() {
     boton.disabled = true;
     boton.innerHTML = `
       <img class="reliquia-campana-cumbres"
-        src="assets/images/puzzles/cumbres/chispa-celeste-v1.png?v=20260830-campanas-imagenes-3" alt="" aria-hidden="true">
+        src="assets/images/puzzles/cumbres/chispa-celeste-v2.png?v=20260830-campanas-imagenes-5" alt="" aria-hidden="true">
       <img class="figura-campana-cumbres"
-        src="assets/images/puzzles/cumbres/campana-celeste-v1.png?v=20260830-campanas-imagenes-3" alt="" aria-hidden="true">`;
+        src="assets/images/puzzles/cumbres/campana-celeste-v2.png?v=20260830-campanas-imagenes-5" alt="" aria-hidden="true">`;
     boton.addEventListener("click", () => elegirCampanaCumbres(identidad));
     tablero.appendChild(boton);
     return boton;
