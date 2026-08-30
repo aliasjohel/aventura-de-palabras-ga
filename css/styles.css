@@ -2435,62 +2435,149 @@ body {
 .letra-sopa-cumbres.encontrada { color: #05283a; background: #81e8f6; box-shadow: 0 0 13px rgba(111, 237, 255, .78); }
 .tablero-sopa-cumbres.error { animation: sacudirPuzzleCumbres .35s ease; }
 
-.leyenda-red-cumbres {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-    font-size: clamp(.72rem, 2.2vw, .95rem);
-}
-
-.leyenda-red-cumbres span { padding: 4px 10px; border-radius: 999px; background: rgba(6, 26, 61, .62); }
-.leyenda-red-cumbres .cian { color: #aaf5ff; box-shadow: inset 0 0 10px rgba(77, 227, 255, .18); }
-.leyenda-red-cumbres .violeta { color: #e6bdff; box-shadow: inset 0 0 10px rgba(190, 104, 255, .18); }
-.leyenda-red-cumbres .dorado { color: #ffe99a; box-shadow: inset 0 0 10px rgba(255, 203, 74, .18); }
-
-.tablero-red-cumbres {
+.cabecera-campanas-cumbres {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: clamp(3px, .8vw, 7px);
-    width: min(100%, 455px);
-    aspect-ratio: 1;
-    margin-inline: auto;
-    padding: clamp(10px, 2vw, 17px);
-    border: clamp(5px, 1vw, 8px) ridge #537cae;
-    border-radius: 22px;
-    background:
-        radial-gradient(circle at 22% 18%, rgba(92, 224, 255, .16), transparent 28%),
-        radial-gradient(circle at 78% 77%, rgba(186, 104, 255, .14), transparent 30%),
-        linear-gradient(145deg, #071a3c, #122d5b);
-    box-shadow: inset 0 0 38px rgba(92, 180, 255, .13), 0 16px 34px rgba(1, 10, 31, .56);
-    touch-action: none;
+    gap: 4px;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
-.celda-red-cumbres {
+.cabecera-campanas-cumbres strong {
+    color: #effdff;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.05rem, 3vw, 1.35rem);
+}
+
+.cabecera-campanas-cumbres span {
+    color: #aeeeff;
+    font-size: clamp(.72rem, 2vw, .9rem);
+    font-weight: 850;
+    letter-spacing: .04em;
+}
+
+.tablero-campanas-cumbres {
     position: relative;
-    min-width: 0;
-    min-height: 0;
-    padding: 0;
-    border: 1px solid rgba(159, 213, 241, .2);
-    border-radius: 12px;
-    color: white;
-    background: rgba(26, 62, 108, .54);
-    box-shadow: inset 0 0 10px rgba(102, 193, 242, .08);
-    font-size: clamp(.8rem, 4vw, 1.6rem);
-    cursor: pointer;
-    transition: transform .12s ease, background .16s ease, box-shadow .16s ease;
+    width: min(100%, 520px);
+    height: clamp(210px, 39vw, 300px);
+    margin-inline: auto;
+    overflow: hidden;
+    border: clamp(5px, 1vw, 8px) ridge #6b91bf;
+    border-radius: 24px;
+    background:
+        radial-gradient(circle at 50% 84%, rgba(112, 225, 255, .2), transparent 34%),
+        linear-gradient(180deg, rgba(34, 88, 145, .95), rgba(7, 25, 60, .98));
+    box-shadow: inset 0 0 42px rgba(126, 224, 255, .16), 0 16px 34px rgba(1, 10, 31, .52);
+    isolation: isolate;
 }
 
-.celda-red-cumbres:hover,
-.celda-red-cumbres:focus-visible { z-index: 2; outline: 2px solid #d8f8ff; transform: scale(1.06); }
-.celda-red-cumbres.extremo { border-width: 2px; background: rgba(5, 20, 50, .82); }
-.celda-red-cumbres.energia-cian,
-.celda-red-cumbres.camino-cian { border-color: #74efff; background: #168fab; box-shadow: inset 0 0 13px #bff9ff, 0 0 17px rgba(60, 229, 255, .72); }
-.celda-red-cumbres.energia-violeta,
-.celda-red-cumbres.camino-violeta { border-color: #d799ff; background: #7542a8; box-shadow: inset 0 0 13px #eed5ff, 0 0 17px rgba(190, 104, 255, .68); }
-.celda-red-cumbres.energia-dorado,
-.celda-red-cumbres.camino-dorado { border-color: #ffe78b; background: #b87c1b; box-shadow: inset 0 0 13px #fff1b5, 0 0 17px rgba(255, 203, 74, .68); }
+.tablero-campanas-cumbres::before {
+    content: "";
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    bottom: 16%;
+    height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, transparent, #9ce8fb 15% 85%, transparent);
+    box-shadow: 0 5px 18px rgba(105, 222, 255, .42);
+    opacity: .66;
+}
+
+.opcion-campana-cumbres {
+    --posicion-campana: 0;
+    --duracion-mezcla: 650ms;
+    position: absolute;
+    z-index: 2;
+    left: calc((var(--posicion-campana) * 33.333%) + 16.666%);
+    bottom: 17%;
+    width: 28%;
+    aspect-ratio: 1;
+    padding: 0;
+    border: 0;
+    color: inherit;
+    background: transparent;
+    cursor: pointer;
+    transform: translateX(-50%) translateY(0);
+    transition:
+        left var(--duracion-mezcla) cubic-bezier(.45, .03, .25, 1),
+        transform var(--duracion-mezcla) ease,
+        filter .2s ease;
+}
+
+.opcion-campana-cumbres:disabled { cursor: default; opacity: 1; }
+.opcion-campana-cumbres:not(:disabled):hover,
+.opcion-campana-cumbres:focus-visible {
+    outline: 3px solid #d9fbff;
+    outline-offset: 3px;
+    border-radius: 22px;
+    filter: brightness(1.13);
+}
+.opcion-campana-cumbres.cruzando-arriba { z-index: 4; transform: translateX(-50%) translateY(-18px) scale(1.04); }
+.opcion-campana-cumbres.cruzando-abajo { z-index: 3; transform: translateX(-50%) translateY(11px) scale(.96); }
+
+.figura-campana-cumbres {
+    position: absolute;
+    z-index: 2;
+    inset: 9% 10% 6%;
+    border: 3px solid #fff0a0;
+    border-radius: 48% 48% 18% 18% / 30% 30% 15% 15%;
+    background:
+        radial-gradient(circle at 34% 25%, #fffbd0 0 6%, transparent 7%),
+        linear-gradient(105deg, #8f5a12 0 12%, #f4c955 32%, #fff3a3 48%, #d79a29 70%, #77440c 100%);
+    box-shadow: inset -9px -8px 14px rgba(88, 45, 5, .38), inset 7px 5px 12px rgba(255, 255, 223, .38), 0 10px 17px rgba(1, 10, 30, .42);
+    transform-origin: center bottom;
+    transition: transform .38s cubic-bezier(.2, .8, .25, 1.2), filter .2s ease;
+}
+
+.figura-campana-cumbres::before {
+    content: "";
+    position: absolute;
+    left: 12%;
+    right: 12%;
+    bottom: -8%;
+    height: 17%;
+    border: 3px solid #ffe98c;
+    border-radius: 50%;
+    background: linear-gradient(#e8b23d, #87500e);
+}
+
+.figura-campana-cumbres::after {
+    content: "✧";
+    position: absolute;
+    inset: 27% 0 auto;
+    color: #fffbd6;
+    font-size: clamp(1rem, 5vw, 2rem);
+    text-shadow: 0 0 9px #fff4a1;
+}
+
+.figura-campana-cumbres i {
+    position: absolute;
+    left: 42%;
+    top: -15%;
+    width: 16%;
+    height: 18%;
+    border: 2px solid #ffe98e;
+    border-radius: 50% 50% 20% 20%;
+    background: #b77718;
+}
+
+.reliquia-campana-cumbres {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    bottom: 5%;
+    color: #bff9ff;
+    font-size: clamp(1.35rem, 6vw, 2.6rem);
+    opacity: 0;
+    filter: drop-shadow(0 0 8px #7eeaff) drop-shadow(0 0 18px #fff);
+    transform: translateX(-50%) scale(.55);
+    transition: opacity .2s ease, transform .3s ease;
+}
+
+.opcion-campana-cumbres.revelando .figura-campana-cumbres { transform: translateY(-45%) rotate(-5deg); }
+.opcion-campana-cumbres.revelando .reliquia-campana-cumbres { opacity: 1; transform: translateX(-50%) scale(1); }
+.opcion-campana-cumbres.acierto .figura-campana-cumbres { filter: drop-shadow(0 0 18px #fff49c); }
+.opcion-campana-cumbres.error { animation: sacudirPuzzleCumbres .35s ease; filter: saturate(.45) sepia(.4); }
 
 .cabecera-sellos-aeralis {
     display: grid;
@@ -2574,7 +2661,6 @@ body {
 @media (prefers-reduced-motion: reduce) {
     .progreso-puente-celeste i,
     .letra-sopa-cumbres,
-    .celda-red-cumbres,
     .anillo-sello-aeralis::before { transition: none; }
     .tablero-sopa-cumbres.error,
     .puzzle-sellos-aeralis.sello-rompiendose .grieta-sello-aeralis,
@@ -2661,7 +2747,7 @@ body {
     .velario-cumbres { top: 8%; left: 100%; width: 34%; }
     .lumiri-cumbres { left: 48%; bottom: 10%; width: 23%; }
     .tablero-sopa-cumbres,
-    .tablero-red-cumbres { width: min(92vw, 430px); }
+    .tablero-campanas-cumbres { width: min(92vw, 430px); }
     .anillos-sellos-aeralis { gap: 5px; }
     #cristalPanelCumbres { width: 29px; height: 29px; }
     .cinematica-aeralis { width: 78vw; right: -14vw; bottom: 16vh; }

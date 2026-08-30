@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v186`;
+const CACHE_NAME = `${CACHE_PREFIX}v187`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -94,6 +94,7 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v183`,
   `${CACHE_PREFIX}v184`,
   `${CACHE_PREFIX}v185`,
+  `${CACHE_PREFIX}v186`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -421,10 +422,10 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260830-nubelun-movil-estable-1",
-  "./index.html": "20260830-nubelun-movil-estable-1",
-  "./css/styles.css": "20260830-nubelun-movil-estable-1",
-  "./js/app.js": "20260830-nubelun-movil-estable-1",
+  "./": "20260830-campanas-celestes-1",
+  "./index.html": "20260830-campanas-celestes-1",
+  "./css/styles.css": "20260830-campanas-celestes-1",
+  "./js/app.js": "20260830-campanas-celestes-1",
   "./js/pwa.js": "20260827-modos-locales-offline-1",
   "./js/supabase-loader.js": "20260827-supabase-diferido-1",
   "./assets/images/ui/presentacion-mision-cumbres-v1.png": "20260827-soporte-cumbres-1",

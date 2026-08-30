@@ -314,11 +314,10 @@ let botonesPuzzleCumbres = [];
 let inicioSeleccionSopaCumbres = null;
 let trayectoSeleccionSopaCumbres = [];
 let palabrasEncontradasSopaCumbres = new Set();
-let colorActivoRedCumbres = "";
-let caminosRedCumbres = new Map();
-let trayectoActivoRedCumbres = [];
-let extremoInicialRedCumbres = null;
-let coloresCompletadosRedCumbres = new Set();
+let rondaCampanasCumbresActual = 0;
+let campanaReliquiaCumbres = 0;
+let campanasCumbresAceptando = false;
+let secuenciaCampanasCumbres = 0;
 let rondaSellosCumbres = 0;
 let indicesSellosCumbres = [];
 let secuenciaPistaSellosCumbres = 0;
@@ -736,7 +735,7 @@ const escenasPorEscenario = [
     { fondos: ["cumbres-4.png"], texto: "🔔 Las campanas del cielo despiertan y anuncian que Nimbus está cerca." },
     { fondos: ["cumbres-5.png"], texto: "🏝️ Ordena las islas a la deriva y encuentra una ruta segura." },
     { fondos: ["cumbres-6.png"], texto: "🪺 La palabra secreta revelará a quién pertenece el nido vacío." },
-    { fondos: ["cumbres-7.png"], texto: "⚡ Activa los pararrayos para debilitar la tormenta encadenada." },
+    { fondos: ["cumbres-7.png"], texto: "🔔 Sigue la chispa oculta bajo las campanas para debilitar la tormenta encadenada." },
     { fondos: ["cumbres-8.png"], texto: "🏛️ Los cuatro vientos abrirán el Santuario de la Matriarca." },
     { fondos: ["cumbres-9.png"], texto: "⛓️ Rompe los cuatro sellos y libera a Aeralis de su prisión." },
     { fondos: ["cumbres-10.png"], texto: "🐲 Nimbus te desafía a demostrar que protegerás el Cristal Celeste." },
@@ -943,7 +942,7 @@ const historiaCumbres = [
   { capitulo: "Misión 4", titulo: "Las campanas del cielo", texto: "Nimbus desaparece entre las nubes. Para seguirlo, Aren debe despertar cuatro campanas de cristal y repetir la melodía que abre las corrientes del firmamento." },
   { capitulo: "Misión 5", titulo: "Islas a la deriva", texto: "La tormenta desordena las islas y amenaza con hacerlas chocar. Sus sombras y corrientes revelan un orden seguro, pero habrá que actuar antes de que el camino vuelva a separarse." },
   { capitulo: "Misión 6", titulo: "El nido vacío", texto: "En un refugio oculto aparece un nido pequeño, juguetes tallados y restos de un cascarón. El temible guardián no es más que una cría que intenta encontrar a su madre desaparecida." },
-  { capitulo: "Misión 7", titulo: "La tormenta encadenada", texto: "Nimbus regresa y acepta la ayuda de Aren. Juntos descubren que la tormenta está sujeta por antiguas cadenas y que sus rayos alimentan la prisión. Los pararrayos pueden invertir esa energía." },
+  { capitulo: "Misión 7", titulo: "La tormenta encadenada", texto: "Nimbus regresa y acepta la ayuda de Aren. Una chispa celeste capaz de debilitar la tormenta se oculta bajo antiguas campanas, que cambian de lugar cada vez más rápido para protegerla." },
   { capitulo: "Misión 8", titulo: "El santuario de la Matriarca", texto: "Tras cruzar la tormenta llegan al santuario de Aeralis, Matriarca del Firmamento. Cuatro puertas, una por cada viento, protegen la cámara donde fue sellada." },
   { capitulo: "Misión 9", titulo: "La prisión del firmamento", texto: "Aeralis utilizó el Cristal Celeste para contener una tormenta corrupta, pero quedó atrapada dentro de ella. Aren y Nimbus deben romper los cuatro sellos sin liberar la oscuridad que contienen." },
   { capitulo: "Misión 10", titulo: "El juramento del pequeño guardián", texto: "Con Aeralis libre, Nimbus comprende que Aren no es un ladrón. Aun así propone una última batalla de palabras: sólo entregará el cristal a quien jure protegerlo en los mundos que faltan." },
@@ -2965,7 +2964,7 @@ btnRepetirPruebaBosque.addEventListener("click", () => {
     iniciarPuzzleOasisDesierto();
   } else if (pruebaEspecialBosqueActiva === "espejos") {
     iniciarPuzzleEspejosDesierto();
-  } else if (["sopa-celeste", "red-pararrayos", "sellos-aeralis"].includes(pruebaEspecialBosqueActiva)) {
+  } else if (["sopa-celeste", "campanas-celestes", "sellos-aeralis"].includes(pruebaEspecialBosqueActiva)) {
     iniciarPuzzleCumbres(pruebaEspecialBosqueActiva);
   }
 });
@@ -10802,7 +10801,7 @@ function obtenerTipoPruebaEspecial(escenario, mision) {
   if (escenario === 1 && mision === 4) return "oasis";
   if (escenario === 1 && mision === 7) return "espejos";
   if (escenario === 2 && mision === 1) return "sopa-celeste";
-  if (escenario === 2 && mision === 6) return "red-pararrayos";
+  if (escenario === 2 && mision === 6) return "campanas-celestes";
   if (escenario === 2 && mision === 8) return "sellos-aeralis";
   return "";
 }
@@ -10840,7 +10839,7 @@ function abrirPruebaEspecialBosque(tipo) {
   );
   const esPruebaCumbres = [
     "sopa-celeste",
-    "red-pararrayos",
+    "campanas-celestes",
     "sellos-aeralis",
   ].includes(tipo);
   modalPruebaBosque.classList.toggle("prueba-cumbres", esPruebaCumbres);
@@ -10911,8 +10910,8 @@ function cerrarPruebaEspecialBosque() {
   if (!pruebaEspecialBosqueActiva) return;
 
   secuenciaPruebaBosque += 1;
+  secuenciaCampanasCumbres += 1;
   punteroSopaCumbresActivo = false;
-  punteroRedCumbresActivo = false;
   memoriaLobosAceptandoEntrada = false;
   botonesMemoriaLobos.forEach((boton) => {
     boton.disabled = true;
@@ -10955,20 +10954,11 @@ const palabrasSopaCumbres = Object.freeze([
   { palabra: "CIELO", indices: [4, 13, 22, 31, 40] },
 ]);
 
-const ladoRedCumbres = 8;
-const rondasRedCumbres = Object.freeze([
-  Object.freeze({
-    cian: Object.freeze([25, 30]),
-    violeta: Object.freeze([2, 58]),
-    dorado: Object.freeze([5, 61]),
-  }),
-  Object.freeze({
-    cian: Object.freeze([12, 52]),
-    violeta: Object.freeze([23, 16]),
-    dorado: Object.freeze([47, 40]),
-  }),
+const rondasCampanasCumbres = Object.freeze([
+  Object.freeze({ intercambios: 5, duracionPaso: 650 }),
+  Object.freeze({ intercambios: 7, duracionPaso: 500 }),
+  Object.freeze({ intercambios: 9, duracionPaso: 380 }),
 ]);
-let rondaRedCumbresActual = 0;
 
 const rondasSellosAeralis = Object.freeze([
   {
@@ -10989,7 +10979,6 @@ const rondasSellosAeralis = Object.freeze([
 ]);
 
 let punteroSopaCumbresActivo = false;
-let punteroRedCumbresActivo = false;
 
 function iniciarPuzzleCumbres(tipo) {
   if (pruebaEspecialBosqueActiva !== tipo) return;
@@ -11000,8 +10989,8 @@ function iniciarPuzzleCumbres(tipo) {
 
   if (tipo === "sopa-celeste") {
     iniciarSopaCeleste();
-  } else if (tipo === "red-pararrayos") {
-    iniciarRedPararrayos();
+  } else if (tipo === "campanas-celestes") {
+    iniciarCampanasCelestes();
   } else if (tipo === "sellos-aeralis") {
     iniciarSellosAeralis();
   }
@@ -11156,189 +11145,142 @@ function validarTrayectoSopaCumbres() {
   }
 }
 
-function iniciarRedPararrayos() {
-  etiquetaPruebaBosque.textContent = "PRUEBA DE LA TORMENTA ENCADENADA";
-  tituloPruebaBosque.textContent = "Superá las dos redes de corrientes";
+function iniciarCampanasCelestes() {
+  etiquetaPruebaBosque.textContent = "PRUEBA DE LA CHISPA CELESTE";
+  tituloPruebaBosque.textContent = "Seguí la campana que oculta la chispa";
   instruccionPruebaBosque.textContent =
-    "Uní cada nube con su pararrayos del mismo color sin cruzar corrientes. Al completar la primera red, los extremos cambiarán de lugar para una segunda ronda.";
-  rondaRedCumbresActual = 0;
-  prepararRondaRedCumbres();
+    "Mirá dónde se esconde la chispa, seguí esa campana durante la mezcla y elegila. Son tres rondas y cada una se mueve un poco más rápido.";
+  btnRepetirPruebaBosque.textContent = "↻ Reiniciar campanas";
+  rondaCampanasCumbresActual = 0;
+  prepararRondaCampanasCumbres();
 }
 
-function obtenerExtremosRedCumbres() {
-  return rondasRedCumbres[rondaRedCumbresActual];
+function esperarCampanasCumbres(milisegundos) {
+  return new Promise((resolver) => window.setTimeout(resolver, milisegundos));
 }
 
-function prepararRondaRedCumbres() {
-  colorActivoRedCumbres = "";
-  caminosRedCumbres = new Map();
-  trayectoActivoRedCumbres = [];
-  extremoInicialRedCumbres = null;
-  coloresCompletadosRedCumbres = new Set();
+function nombrarPosicionCampanaCumbres(posicion) {
+  return ["izquierda", "centro", "derecha"][posicion] || "";
+}
+
+function actualizarPosicionesCampanasCumbres(posiciones, duracionPaso) {
+  botonesPuzzleCumbres.forEach((boton, identidad) => {
+    const posicion = posiciones[identidad];
+    boton.style.setProperty("--posicion-campana", `${posicion}`);
+    boton.style.setProperty("--duracion-mezcla", `${duracionPaso}ms`);
+    boton.setAttribute("aria-label", `Campana de la ${nombrarPosicionCampanaCumbres(posicion)}`);
+  });
+}
+
+function prepararRondaCampanasCumbres() {
+  if (pruebaEspecialBosqueActiva !== "campanas-celestes") return;
+  const configuracion = rondasCampanasCumbres[rondaCampanasCumbresActual];
+  const secuencia = ++secuenciaCampanasCumbres;
+  campanasCumbresAceptando = false;
+  campanaReliquiaCumbres = Math.floor(Math.random() * 3);
   puzzleCumbres.replaceChildren();
 
-  const leyenda = document.createElement("div");
-  leyenda.className = "leyenda-red-cumbres";
-  leyenda.innerHTML = `
-    <span class="cian">☁ ↔ ⚡ Celeste</span>
-    <span class="violeta">☁ ↔ ⚡ Morado</span>
-    <span class="dorado">☁ ↔ ⚡ Amarillo</span>`;
-  const tablero = document.createElement("div");
-  tablero.className = "tablero-red-cumbres";
-  tablero.setAttribute("role", "grid");
-  tablero.setAttribute(
-    "aria-label",
-    `Red ${rondaRedCumbresActual + 1} de ${rondasRedCumbres.length}, de ocho por ocho, con tres pares de corrientes entrelazadas`,
-  );
+  const cabecera = document.createElement("div");
+  cabecera.className = "cabecera-campanas-cumbres";
+  cabecera.innerHTML = `
+    <strong>Ronda ${rondaCampanasCumbresActual + 1} de ${rondasCampanasCumbres.length}</strong>
+    <span>${configuracion.intercambios} movimientos · velocidad ${rondaCampanasCumbresActual + 1}</span>`;
 
-  botonesPuzzleCumbres = Array.from({ length: ladoRedCumbres * ladoRedCumbres }, (_, indice) => {
+  const tablero = document.createElement("div");
+  tablero.className = "tablero-campanas-cumbres";
+  tablero.setAttribute("role", "group");
+  tablero.setAttribute("aria-label", `Tres campanas celestes, ronda ${rondaCampanasCumbresActual + 1}`);
+  const posiciones = [0, 1, 2];
+  botonesPuzzleCumbres = posiciones.map((_, identidad) => {
     const boton = document.createElement("button");
     boton.type = "button";
-    boton.className = "celda-red-cumbres";
-    boton.dataset.indice = `${indice}`;
-    const extremo = obtenerExtremoRedCumbres(indice);
-    if (extremo) {
-      boton.classList.add("extremo", `energia-${extremo.color}`);
-      boton.textContent = extremo.posicion === 0 ? "☁" : "⚡";
-      boton.setAttribute("aria-label", `${extremo.posicion === 0 ? "Nube" : "Pararrayos"} ${extremo.color}`);
-    } else {
-      boton.setAttribute("aria-label", `Casilla libre, fila ${Math.floor(indice / ladoRedCumbres) + 1}, columna ${(indice % ladoRedCumbres) + 1}`);
-    }
-    boton.addEventListener("pointerdown", (evento) => {
-      evento.preventDefault();
-      tablero.setPointerCapture?.(evento.pointerId);
-      punteroRedCumbresActivo = true;
-      activarCeldaRedCumbres(indice);
-    });
-    boton.addEventListener("keydown", (evento) => {
-      if (evento.key !== "Enter" && evento.key !== " ") return;
-      evento.preventDefault();
-      activarCeldaRedCumbres(indice);
-    });
+    boton.className = "opcion-campana-cumbres";
+    boton.disabled = true;
+    boton.innerHTML = `
+      <span class="reliquia-campana-cumbres" aria-hidden="true">✦</span>
+      <span class="figura-campana-cumbres" aria-hidden="true"><i></i></span>`;
+    boton.addEventListener("click", () => elegirCampanaCumbres(identidad));
     tablero.appendChild(boton);
     return boton;
   });
-  tablero.addEventListener("pointermove", actualizarArrastreRedCumbres);
-  tablero.addEventListener("pointerup", () => (punteroRedCumbresActivo = false));
-  tablero.addEventListener("pointercancel", () => (punteroRedCumbresActivo = false));
-  puzzleCumbres.append(leyenda, tablero);
+  actualizarPosicionesCampanasCumbres(posiciones, configuracion.duracionPaso);
+  puzzleCumbres.append(cabecera, tablero);
+  botonesPuzzleCumbres[campanaReliquiaCumbres].classList.add("revelando");
   estadoPruebaBosque.textContent =
-    `Red ${rondaRedCumbresActual + 1} de ${rondasRedCumbres.length} · 0 de 3 corrientes conectadas.`;
-  botonesPuzzleCumbres[0]?.focus();
+    `Ronda ${rondaCampanasCumbresActual + 1} de 3 · Mirá bien: esta campana guarda la chispa celeste.`;
+  void mezclarCampanasCumbres(posiciones, configuracion, secuencia);
 }
 
-function obtenerExtremoRedCumbres(indice) {
-  for (const [color, extremos] of Object.entries(obtenerExtremosRedCumbres())) {
-    const posicion = extremos.indexOf(indice);
-    if (posicion !== -1) return { color, posicion };
+async function mezclarCampanasCumbres(posiciones, configuracion, secuencia) {
+  await esperarCampanasCumbres(1350);
+  if (secuencia !== secuenciaCampanasCumbres || pruebaEspecialBosqueActiva !== "campanas-celestes") return;
+  botonesPuzzleCumbres[campanaReliquiaCumbres]?.classList.remove("revelando");
+  estadoPruebaBosque.textContent = "Seguí la campana…";
+  await esperarCampanasCumbres(420);
+
+  const pares = [[0, 1], [1, 2], [0, 2]];
+  const desfase = Math.floor(Math.random() * pares.length);
+  for (let paso = 0; paso < configuracion.intercambios; paso += 1) {
+    if (secuencia !== secuenciaCampanasCumbres || pruebaEspecialBosqueActiva !== "campanas-celestes") return;
+    const [primera, segunda] = pares[(paso + desfase) % pares.length];
+    [posiciones[primera], posiciones[segunda]] = [posiciones[segunda], posiciones[primera]];
+    botonesPuzzleCumbres[primera].classList.add("cruzando-arriba");
+    botonesPuzzleCumbres[segunda].classList.add("cruzando-abajo");
+    actualizarPosicionesCampanasCumbres(posiciones, configuracion.duracionPaso);
+    await esperarCampanasCumbres(configuracion.duracionPaso + 90);
+    botonesPuzzleCumbres[primera].classList.remove("cruzando-arriba");
+    botonesPuzzleCumbres[segunda].classList.remove("cruzando-abajo");
   }
-  return null;
+
+  if (secuencia !== secuenciaCampanasCumbres || pruebaEspecialBosqueActiva !== "campanas-celestes") return;
+  campanasCumbresAceptando = true;
+  botonesPuzzleCumbres.forEach((boton) => (boton.disabled = false));
+  estadoPruebaBosque.textContent =
+    `Ronda ${rondaCampanasCumbresActual + 1} de 3 · ¿Bajo qué campana está la chispa?`;
+  const botonIzquierdo = botonesPuzzleCumbres.find((_, identidad) => posiciones[identidad] === 0);
+  botonIzquierdo?.focus();
 }
 
-function activarCeldaRedCumbres(indice) {
-  const extremo = obtenerExtremoRedCumbres(indice);
-  if (colorActivoRedCumbres && extremo) {
-    const ultimo = trayectoActivoRedCumbres.at(-1);
-    const esDestinoActivo =
-      extremo.color === colorActivoRedCumbres &&
-      indice !== extremoInicialRedCumbres &&
-      AdventurePuzzles.sonCeldasAdyacentes(ultimo, indice, ladoRedCumbres);
-    const puedeCerrar =
-      esDestinoActivo;
-    if (!puedeCerrar) {
-      caminosRedCumbres.delete(colorActivoRedCumbres);
-      colorActivoRedCumbres = "";
-      trayectoActivoRedCumbres = [];
-      extremoInicialRedCumbres = null;
-    }
-  }
-  if (!colorActivoRedCumbres) {
-    if (!extremo) {
-      estadoPruebaBosque.textContent = "Comenzá el camino desde una nube o un pararrayos.";
-      return;
-    }
-    colorActivoRedCumbres = extremo.color;
-    extremoInicialRedCumbres = indice;
-    trayectoActivoRedCumbres = [indice];
-    caminosRedCumbres.set(extremo.color, [...trayectoActivoRedCumbres]);
-    coloresCompletadosRedCumbres.delete(extremo.color);
-    renderizarRedCumbres();
-    estadoPruebaBosque.textContent = `Trazando la corriente ${extremo.color}.`;
-    return;
-  }
-  extenderCaminoRedCumbres(indice);
-}
+function elegirCampanaCumbres(identidad) {
+  if (!campanasCumbresAceptando || pruebaEspecialBosqueActiva !== "campanas-celestes") return;
+  campanasCumbresAceptando = false;
+  botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
+  const secuencia = ++secuenciaCampanasCumbres;
+  const botonElegido = botonesPuzzleCumbres[identidad];
+  const botonCorrecto = botonesPuzzleCumbres[campanaReliquiaCumbres];
+  botonCorrecto?.classList.add("revelando");
 
-function actualizarArrastreRedCumbres(evento) {
-  if (!punteroRedCumbresActivo || !colorActivoRedCumbres) return;
-  const elemento = document.elementFromPoint(evento.clientX, evento.clientY)?.closest(".celda-red-cumbres");
-  if (!elemento || !puzzleCumbres.contains(elemento)) return;
-  extenderCaminoRedCumbres(Number(elemento.dataset.indice));
-}
-
-function extenderCaminoRedCumbres(indice) {
-  const ultimo = trayectoActivoRedCumbres.at(-1);
-  if (indice === ultimo || !AdventurePuzzles.sonCeldasAdyacentes(ultimo, indice, ladoRedCumbres)) return;
-  if (trayectoActivoRedCumbres.at(-2) === indice) {
-    trayectoActivoRedCumbres.pop();
-    caminosRedCumbres.set(colorActivoRedCumbres, [...trayectoActivoRedCumbres]);
-    renderizarRedCumbres();
-    return;
-  }
-  const ocupadoPorOtro = [...caminosRedCumbres.entries()].some(
-    ([color, camino]) => color !== colorActivoRedCumbres && camino.includes(indice),
-  );
-  const extremo = obtenerExtremoRedCumbres(indice);
-  if (
-    ocupadoPorOtro ||
-    trayectoActivoRedCumbres.includes(indice) ||
-    (extremo && extremo.color !== colorActivoRedCumbres)
-  ) {
-    estadoPruebaBosque.textContent = "Las corrientes no pueden cruzarse ni atravesar el extremo de otro color. Buscá otro desvío.";
-    return;
-  }
-
-  trayectoActivoRedCumbres.push(indice);
-  caminosRedCumbres.set(colorActivoRedCumbres, [...trayectoActivoRedCumbres]);
-  renderizarRedCumbres();
-  if (extremo && indice !== extremoInicialRedCumbres) {
-    const colorCompletado = colorActivoRedCumbres;
-    coloresCompletadosRedCumbres.add(colorCompletado);
-    colorActivoRedCumbres = "";
-    trayectoActivoRedCumbres = [];
-    extremoInicialRedCumbres = null;
-    reproducirSonido("cristalCasilla");
-    const cantidad = coloresCompletadosRedCumbres.size;
-    if (cantidad === Object.keys(obtenerExtremosRedCumbres()).length) {
-      const hayOtraRonda = rondaRedCumbresActual + 1 < rondasRedCumbres.length;
-      if (hayOtraRonda) {
-        estadoPruebaBosque.textContent =
-          "¡Primera red completada! La tormenta cambió los extremos de lugar…";
-        botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
-        setTimeout(() => {
-          if (pruebaEspecialBosqueActiva === "red-pararrayos") {
-            rondaRedCumbresActual += 1;
-            prepararRondaRedCumbres();
-          }
-        }, prefiereReducirMovimiento.matches ? 80 : 650);
-      } else {
-        estadoPruebaBosque.textContent = "¡Las dos redes descargaron por completo la tormenta!";
-        void completarPruebaEspecialBosque("red-pararrayos");
+  if (identidad !== campanaReliquiaCumbres) {
+    botonElegido?.classList.add("error");
+    estadoPruebaBosque.textContent = "La chispa estaba bajo otra campana. Mirala otra vez y repetí esta ronda.";
+    window.setTimeout(() => {
+      if (secuencia === secuenciaCampanasCumbres && pruebaEspecialBosqueActiva === "campanas-celestes") {
+        prepararRondaCampanasCumbres();
       }
-    } else {
-      estadoPruebaBosque.textContent =
-        `Red ${rondaRedCumbresActual + 1} de ${rondasRedCumbres.length} · ${cantidad} de 3 corrientes conectadas.`;
-    }
+    }, 1550);
+    return;
   }
-}
 
-function renderizarRedCumbres() {
-  botonesPuzzleCumbres.forEach((boton) => {
-    boton.classList.remove("camino-cian", "camino-violeta", "camino-dorado");
-  });
-  caminosRedCumbres.forEach((camino, color) => {
-    camino.forEach((indice) => botonesPuzzleCumbres[indice]?.classList.add(`camino-${color}`));
-  });
+  botonCorrecto?.classList.add("acierto");
+  reproducirSonido("cristalCasilla");
+  rondaCampanasCumbresActual += 1;
+  if (rondaCampanasCumbresActual === rondasCampanasCumbres.length) {
+    estadoPruebaBosque.textContent = "¡Encontraste la chispa en las tres rondas y debilitaste la tormenta!";
+    window.setTimeout(() => {
+      if (secuencia === secuenciaCampanasCumbres && pruebaEspecialBosqueActiva === "campanas-celestes") {
+        void completarPruebaEspecialBosque("campanas-celestes");
+      }
+    }, 1100);
+    return;
+  }
+
+  estadoPruebaBosque.textContent =
+    `¡Correcto! Preparando la ronda ${rondaCampanasCumbresActual + 1}, un poco más rápida…`;
+  window.setTimeout(() => {
+    if (secuencia === secuenciaCampanasCumbres && pruebaEspecialBosqueActiva === "campanas-celestes") {
+      prepararRondaCampanasCumbres();
+    }
+  }, 1200);
 }
 
 function iniciarSellosAeralis() {

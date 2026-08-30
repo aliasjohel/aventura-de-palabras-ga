@@ -12,39 +12,26 @@ assert.match(app, /nombre: "☁️ Cumbres Celestes"/);
 assert.match(app, /const historiaCumbres = \[/);
 assert.equal((app.match(/fondos: \["cumbres-\d+\.png"\]/g) || []).length, 10);
 assert.match(app, /"sopa-celeste"/);
-assert.match(app, /"red-pararrayos"/);
+assert.match(app, /"campanas-celestes"/);
 assert.match(app, /"sellos-aeralis"/);
-assert.doesNotMatch(app, /"campanas-celestes"/);
+assert.doesNotMatch(app, /"red-pararrayos"/);
 const selectorPuzzles = app.match(/function obtenerTipoPruebaEspecial\(escenario, mision\) \{[\s\S]+?\n\}/)?.[0] || "";
 assert.equal((selectorPuzzles.match(/escenario === 2 && mision ===/g) || []).length, 3);
 assert.match(selectorPuzzles, /mision === 1\) return "sopa-celeste"/);
-assert.match(selectorPuzzles, /mision === 6\) return "red-pararrayos"/);
+assert.match(selectorPuzzles, /mision === 6\) return "campanas-celestes"/);
 assert.match(selectorPuzzles, /mision === 8\) return "sellos-aeralis"/);
 assert.match(app, /const palabrasSopaCumbres = Object\.freeze/);
 for (const palabra of ["NUBE", "VIENTO", "CIELO"]) assert.match(app, new RegExp(`palabra: "${palabra}"`));
 assert.match(app, /function validarTrayectoSopaCumbres\(/);
-assert.match(app, /function extenderCaminoRedCumbres\(/);
-assert.match(app, /const ladoRedCumbres = 8/);
-assert.match(app, /cian:\s*Object\.freeze\(\[25, 30\]\)[\s\S]+violeta:\s*Object\.freeze\(\[2, 58\]\)[\s\S]+dorado:\s*Object\.freeze\(\[5, 61\]\)/);
-assert.doesNotMatch(app, /const relevosRedCumbres|const tormentasRedCumbres/);
-assert.match(app, /Al completar la primera red, los extremos cambiarán de lugar/);
-const rutasEntrelazadas = [
-  [25, 26, 27, 28, 29, 30],
-  [2, 1, 0, 8, 16, 24, 32, 33, 41, 49, 57, 58],
-  [5, 6, 7, 15, 23, 31, 39, 38, 46, 54, 62, 61],
-];
-const celdasRutasEntrelazadas = rutasEntrelazadas.flat();
-assert.equal(new Set(celdasRutasEntrelazadas).size, celdasRutasEntrelazadas.length);
-for (const ruta of rutasEntrelazadas) {
-  for (let indice = 1; indice < ruta.length; indice += 1) {
-    const diferencia = Math.abs(ruta[indice] - ruta[indice - 1]);
-    assert.ok(diferencia === 8 || (diferencia === 1 && Math.floor(ruta[indice] / 8) === Math.floor(ruta[indice - 1] / 8)));
-  }
-}
-const rotarIndiceRed = (indice) => (indice % 8) * 8 + (7 - Math.floor(indice / 8));
-const rutasSegundaRed = rutasEntrelazadas.map((ruta) => ruta.map(rotarIndiceRed));
-assert.deepEqual(rutasSegundaRed.map((ruta) => [ruta[0], ruta.at(-1)]), [[12, 52], [23, 16], [47, 40]]);
-assert.equal(new Set(rutasSegundaRed.flat()).size, rutasSegundaRed.flat().length);
+assert.match(app, /const rondasCampanasCumbres = Object\.freeze\(\[/);
+assert.match(app, /intercambios: 5, duracionPaso: 650/);
+assert.match(app, /intercambios: 7, duracionPaso: 500/);
+assert.match(app, /intercambios: 9, duracionPaso: 380/);
+assert.match(app, /function prepararRondaCampanasCumbres\(/);
+assert.match(app, /async function mezclarCampanasCumbres\(/);
+assert.match(app, /function elegirCampanaCumbres\(/);
+assert.match(app, /campanaReliquiaCumbres = Math\.floor\(Math\.random\(\) \* 3\)/);
+assert.match(app, /completarPruebaEspecialBosque\("campanas-celestes"\)/);
 assert.match(app, /const rondasSellosAeralis = Object\.freeze/);
 for (const palabra of ["AIRE", "NUBE", "LIBRE"]) assert.match(app, new RegExp(`palabra: "${palabra}"`));
 assert.match(app, /function girarAnilloSelloAeralis\(/);
@@ -85,7 +72,10 @@ assert.match(app, /classList\.remove\("cambiando-plano"\)/);
 assert.match(css, /\.cinematica-final-cumbres\.cambiando-plano/);
 assert.match(css, /plano-ilustrado \.cinematica-cumbres-fondo\s*\{[\s\S]*?object-fit:\s*contain/);
 assert.match(css, /\.tablero-sopa-cumbres/);
-assert.match(css, /\.tablero-red-cumbres/);
+assert.match(css, /\.tablero-campanas-cumbres/);
+assert.match(css, /\.opcion-campana-cumbres/);
+assert.match(css, /\.figura-campana-cumbres/);
+assert.match(css, /\.reliquia-campana-cumbres/);
 assert.match(app, /const ladoSopaCumbres = 10/);
 const bloqueLetrasSopa = app.match(/const letrasSopaCumbres = \[([\s\S]*?)\]\.join\(""\)/)?.[1] || "";
 const letrasSopaUnica = [...bloqueLetrasSopa.matchAll(/"([A-ZÑ]+)"/g)]
@@ -116,15 +106,12 @@ for (const palabra of ["NUBE", "VIENTO", "CIELO"]) {
   assert.equal(contarPalabraSopa(palabra), 1, `${palabra} debe aparecer una sola vez en la sopa`);
 }
 assert.match(css, /\.tablero-sopa-cumbres\s*\{[\s\S]*?grid-template-columns:\s*repeat\(10, 1fr\)/);
-assert.match(css, /grid-template-columns:\s*repeat\(8, 1fr\)/);
-assert.doesNotMatch(css, /\.celda-red-cumbres\.(?:tormenta|relevo)/);
-assert.match(app, /const rondasRedCumbres = Object\.freeze\(\[/);
-assert.match(app, /cian:\s*Object\.freeze\(\[12, 52\]\)/);
-assert.match(app, /violeta:\s*Object\.freeze\(\[23, 16\]\)/);
-assert.match(app, /dorado:\s*Object\.freeze\(\[47, 40\]\)/);
-assert.match(app, /function prepararRondaRedCumbres\(\)/);
+assert.doesNotMatch(css, /\.tablero-red-cumbres|\.celda-red-cumbres/);
+assert.match(css, /left:\s*calc\(\(var\(--posicion-campana\) \* 33\.333%\) \+ 16\.666%\)/);
+assert.match(css, /left var\(--duracion-mezcla\)/);
+assert.match(css, /\.opcion-campana-cumbres\.revelando \.figura-campana-cumbres/);
 assert.match(app, /botonesPuzzleCumbres\.forEach\(\(boton\) => \(boton\.disabled = true\)\)/);
-assert.match(app, /¡Las dos redes descargaron por completo la tormenta!/);
+assert.match(app, /¡Encontraste la chispa en las tres rondas y debilitaste la tormenta!/);
 assert.match(css, /\.anillo-sello-aeralis/);
 assert.match(css, /\.btn-comprobar-sello-aeralis/);
 assert.match(css, /\.anillo-sello-aeralis\.pista-correcta/);
