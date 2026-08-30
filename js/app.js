@@ -9613,6 +9613,7 @@ function actualizarPersonajesNarrativosCumbres() {
     0: {
       clase: "nubelun-cumbres",
       src: "assets/images/ambiente/cumbres/nubelun-cumbres-v1.png",
+      srcMovil: "assets/images/ambiente/cumbres/nubelun-cumbres-movil-v2.png",
       cuadros: [
         "assets/images/ambiente/cumbres/nubelun-cumbres-v1.png",
         "assets/images/ambiente/cumbres/nubelun-cumbres-paso-v2.png",
@@ -9647,7 +9648,9 @@ function actualizarPersonajesNarrativosCumbres() {
       criatura.classList.toggle("fauna-cumbres-un-cuadro", nubelunEnMovil);
       criatura.setAttribute("role", "img");
       criatura.setAttribute("aria-label", faunaMision.alt);
-      const cuadrosVisibles = nubelunEnMovil ? [faunaMision.src] : faunaMision.cuadros;
+      const cuadrosVisibles = nubelunEnMovil
+        ? [faunaMision.srcMovil || faunaMision.src]
+        : faunaMision.cuadros;
       cuadrosVisibles.forEach((src, indice) => {
         const cuadro = document.createElement("img");
         cuadro.className = `fauna-cumbres-cuadro fauna-cumbres-cuadro-${indice + 1}`;
