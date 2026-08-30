@@ -4598,6 +4598,10 @@ async function completarDueloAventura() {
 }
 
 async function reproducirCinematicaFinalCumbres() {
+  const duracionLecturaEscena = 7600;
+  const esperarLectura = (milisegundos) => new Promise((resolver) => {
+    window.setTimeout(resolver, milisegundos);
+  });
   const escenas = [
     {
       fondo: "cumbres-10.png",
@@ -4713,10 +4717,9 @@ async function reproducirCinematicaFinalCumbres() {
         await esperarMovimiento(prefiereReducirMovimiento.matches ? 0 : 30);
         capa.classList.remove("cambiando-plano");
       }
-      const duracion = prefiereReducirMovimiento.matches ? 1200 : 5200;
       const paso = 200;
-      for (let transcurrido = 0; transcurrido < duracion && !saltar; transcurrido += paso) {
-        await esperarMovimiento(paso);
+      for (let transcurrido = 0; transcurrido < duracionLecturaEscena && !saltar; transcurrido += paso) {
+        await esperarLectura(paso);
       }
     }
   } finally {
@@ -9634,9 +9637,12 @@ function actualizarPersonajesNarrativosCumbres() {
   };
   const faunaMision = faunaPorMision[misionActual];
   if (faunaMision) {
-    const criatura = document.createElement(faunaMision.cuadros ? "span" : "img");
+    const nubelunEnMovil = faunaMision.clase === "nubelun-cumbres"
+      && window.matchMedia("(max-width: 640px)").matches;
+    const usarCuadrosAnimados = Boolean(faunaMision.cuadros) && !nubelunEnMovil;
+    const criatura = document.createElement(usarCuadrosAnimados ? "span" : "img");
     criatura.className = `personaje-narrativo-cumbres fauna-cumbres ${faunaMision.clase}`;
-    if (faunaMision.cuadros) {
+    if (usarCuadrosAnimados) {
       criatura.classList.add("fauna-cumbres-animada");
       criatura.setAttribute("role", "img");
       criatura.setAttribute("aria-label", faunaMision.alt);
@@ -9650,6 +9656,25 @@ function actualizarPersonajesNarrativosCumbres() {
     } else {
       criatura.src = faunaMision.src;
       criatura.alt = faunaMision.alt;
+      if (nubelunEnMovil && faunaMision.cuadros) {
+        const cuadrosPrecargados = faunaMision.cuadros.map((src) => {
+          const imagen = new Image();
+          imagen.src = src;
+          return imagen;
+        });
+        Promise.all(cuadrosPrecargados.map((imagen) => imagen.decode().catch(() => {})))
+          .then(() => {
+            let indiceCuadro = 0;
+            const intervaloPaso = window.setInterval(() => {
+              if (!criatura.isConnected) {
+                window.clearInterval(intervaloPaso);
+                return;
+              }
+              indiceCuadro = (indiceCuadro + 1) % faunaMision.cuadros.length;
+              criatura.src = faunaMision.cuadros[indiceCuadro];
+            }, 360);
+          });
+      }
     }
     contenedorEscenario.appendChild(criatura);
   }
@@ -10913,16 +10938,16 @@ function cerrarPruebaEspecialBosque() {
 
 const ladoSopaCumbres = 10;
 const letrasSopaCumbres = [
-  "NIVECATOLS",
-  "UBRINMANNS",
-  "TRENCIEUNO",
-  "ALVIENBTOS",
-  "OAIREEONUB",
-  "NUBEVTARIO",
-  "CIEONUBELA",
-  "VISEOCIELO",
-  "NUINVIENTO",
-  "AVCIELOUNI",
+  "JGQSCSNMFG",
+  "PCUITENENR",
+  "BDEOFUBUÑV",
+  "SLBORABBPJ",
+  "OINROEOOTV",
+  "BCHUWTADAI",
+  "JXACNCSZXA",
+  "SUZEIZJUGQ",
+  "SMIVXEEDFY",
+  "EVIJWJMVFH",
 ].join("");
 const palabrasSopaCumbres = Object.freeze([
   { palabra: "NUBE", indices: [18, 27, 36, 45] },

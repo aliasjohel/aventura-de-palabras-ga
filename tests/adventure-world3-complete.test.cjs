@@ -64,6 +64,10 @@ assert.match(app, /mundoTresCompletado = true/);
 assert.match(app, /cristalesObtenidos = Math\.max\(cristalesObtenidos, 3\)/);
 assert.match(app, /guardarDesbloqueoNimbus\(\)/);
 assert.match(app, /reproducirCinematicaFinalCumbres\(\)/);
+assert.match(app, /reproducirCinematicaFinalCumbres\(\)[\s\S]*?const duracionLecturaEscena = 7600/);
+assert.match(app, /const esperarLectura = \(milisegundos\) => new Promise[\s\S]*?window\.setTimeout\(resolver, milisegundos\)/);
+assert.match(app, /transcurrido < duracionLecturaEscena && !saltar/);
+assert.match(app, /transcurrido < duracionLecturaEscena[\s\S]*?await esperarLectura\(paso\)/);
 assert.match(app, /musicaCinematicaFinalMundo3[\s\S]*?cinematica-final-mundo3\.mp3/);
 assert.match(app, /reproducirCinematicaFinalCumbres\(\)[\s\S]*?reproducirMusicaCinematica\([\s\S]*?musicaCinematicaFinalMundo3/);
 assert.match(app, /reproducirCinematicaFinalCumbres\(\)[\s\S]*?finally \{[\s\S]*?detenerMusicaCinematica\(musicaCinematicaFinalMundo3, 0\.58\)/);
@@ -83,6 +87,34 @@ assert.match(css, /plano-ilustrado \.cinematica-cumbres-fondo\s*\{[\s\S]*?object
 assert.match(css, /\.tablero-sopa-cumbres/);
 assert.match(css, /\.tablero-red-cumbres/);
 assert.match(app, /const ladoSopaCumbres = 10/);
+const bloqueLetrasSopa = app.match(/const letrasSopaCumbres = \[([\s\S]*?)\]\.join\(""\)/)?.[1] || "";
+const letrasSopaUnica = [...bloqueLetrasSopa.matchAll(/"([A-ZÑ]+)"/g)]
+  .map((coincidencia) => coincidencia[1])
+  .join("");
+assert.equal(letrasSopaUnica.length, 100, "la sopa celeste debe conservar sus 100 letras");
+function contarPalabraSopa(palabra) {
+  let apariciones = 0;
+  for (let indice = 0; indice < letrasSopaUnica.length; indice += 1) {
+    const fila = Math.floor(indice / 10);
+    const columna = indice % 10;
+    for (const deltaFila of [-1, 0, 1]) {
+      for (const deltaColumna of [-1, 0, 1]) {
+        if (deltaFila === 0 && deltaColumna === 0) continue;
+        const texto = [...palabra].map((_, paso) => {
+          const nuevaFila = fila + deltaFila * paso;
+          const nuevaColumna = columna + deltaColumna * paso;
+          if (nuevaFila < 0 || nuevaFila >= 10 || nuevaColumna < 0 || nuevaColumna >= 10) return "";
+          return letrasSopaUnica[nuevaFila * 10 + nuevaColumna];
+        }).join("");
+        if (texto === palabra) apariciones += 1;
+      }
+    }
+  }
+  return apariciones;
+}
+for (const palabra of ["NUBE", "VIENTO", "CIELO"]) {
+  assert.equal(contarPalabraSopa(palabra), 1, `${palabra} debe aparecer una sola vez en la sopa`);
+}
 assert.match(css, /\.tablero-sopa-cumbres\s*\{[\s\S]*?grid-template-columns:\s*repeat\(10, 1fr\)/);
 assert.match(css, /grid-template-columns:\s*repeat\(8, 1fr\)/);
 assert.doesNotMatch(css, /\.celda-red-cumbres\.(?:tormenta|relevo)/);
@@ -160,9 +192,13 @@ for (const imagen of [
   assert.equal(fs.readFileSync(ruta)[25], 6, `${imagen} debe tener transparencia RGBA`);
 }
 assert.match(css, /\.nubelun-cumbres\s*\{[\s\S]*?left:\s*32%[\s\S]*?bottom:\s*29%[\s\S]*?opacity:\s*1/);
-assert.match(css, /\.nubelun-cumbres \.fauna-cumbres-cuadro-1\s*\{[\s\S]*?opacity:\s*1[\s\S]*?animation:\s*none/);
-assert.match(css, /\.nubelun-cumbres \.fauna-cumbres-cuadro-2\s*\{[\s\S]*?display:\s*none/);
-assert.match(css, /@media \(max-width: 640px\)[\s\S]*?\.nubelun-cumbres\s*\{\s*left:\s*20%;\s*bottom:\s*37%;\s*width:\s*14%/);
+assert.match(app, /const nubelunEnMovil = faunaMision\.clase === "nubelun-cumbres"[\s\S]*?matchMedia\("\(max-width: 640px\)"\)\.matches/);
+assert.match(app, /const usarCuadrosAnimados = Boolean\(faunaMision\.cuadros\) && !nubelunEnMovil/);
+assert.match(app, /document\.createElement\(usarCuadrosAnimados \? "span" : "img"\)/);
+assert.match(app, /if \(nubelunEnMovil && faunaMision\.cuadros\)[\s\S]*?imagen\.decode\(\)\.catch[\s\S]*?setInterval[\s\S]*?criatura\.src = faunaMision\.cuadros\[indiceCuadro\][\s\S]*?, 360\)/);
+assert.match(css, /\.nubelun-cumbres:not\(\.fauna-cumbres-animada\),\s*\.nubelun-cumbres \.fauna-cumbres-cuadro\s*\{[\s\S]*?saturate\(1\.48\)/);
+assert.match(css, /@media \(max-width: 640px\)[\s\S]*?\.nubelun-cumbres\s*\{\s*left:\s*20%;\s*bottom:\s*42%;\s*width:\s*7%/);
+assert.match(css, /@media \(max-width: 640px\)[\s\S]*?\.nubelun-cumbres\.fauna-cumbres-animada \.fauna-cumbres-cuadro-2\s*\{[\s\S]*?display:\s*none/);
 assert.match(css, /@media \(max-width: 640px\) and \(orientation: portrait\)[\s\S]*?\.cinematica-final-cumbres\s*\{[\s\S]*?rotate\(90deg\)/);
 assert.match(css, /@media \(max-width: 640px\) and \(orientation: portrait\)[\s\S]*?\.cinematica-aeralis\s*\{[\s\S]*?height:\s*88%[\s\S]*?max-width:\s*42%/);
 console.log("adventure-world3-complete: comprobaciones correctas");
