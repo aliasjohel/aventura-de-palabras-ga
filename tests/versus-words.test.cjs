@@ -65,3 +65,7 @@ assert.match(app, /const clavesAnteriores = ultimasPalabrasAleatoriasVersus/);
 assert.match(app, /btnsFijarPalabrasVersus\[indice\].*aria-pressed/);
 const html = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
 assert.match(html, /btn-fijar-palabra-versus/);
+for (const campo of html.matchAll(/<div class="campo-palabra-secreta">([\s\S]*?)<\/div>/g)) {
+  assert.doesNotMatch(campo[1], /<label/, "el fijador no debe quedar anidado dentro de un label táctil");
+}
+assert.match(app, /evento\.preventDefault\(\)[\s\S]*?evento\.stopPropagation\(\)[\s\S]*?fijarPalabraVersus/);

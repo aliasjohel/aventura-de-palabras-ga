@@ -2503,6 +2503,7 @@ body {
     border: 0;
     color: inherit;
     background: transparent;
+    mix-blend-mode: screen;
     cursor: pointer;
     transform: translateX(-50%) translateY(0);
     transition:
@@ -2525,66 +2526,45 @@ body {
 .figura-campana-cumbres {
     position: absolute;
     z-index: 2;
-    inset: 9% 10% 6%;
-    border: 3px solid #fff0a0;
-    border-radius: 48% 48% 18% 18% / 30% 30% 15% 15%;
-    background:
-        radial-gradient(circle at 34% 25%, #fffbd0 0 6%, transparent 7%),
-        linear-gradient(105deg, #8f5a12 0 12%, #f4c955 32%, #fff3a3 48%, #d79a29 70%, #77440c 100%);
-    box-shadow: inset -9px -8px 14px rgba(88, 45, 5, .38), inset 7px 5px 12px rgba(255, 255, 223, .38), 0 10px 17px rgba(1, 10, 30, .42);
+    inset: -2% 0 -4%;
+    width: 100%;
+    height: 106%;
+    object-fit: contain;
+    object-position: center bottom;
+    mix-blend-mode: screen;
+    filter: drop-shadow(0 11px 11px rgba(1, 10, 30, .48));
     transform-origin: center bottom;
     transition: transform .38s cubic-bezier(.2, .8, .25, 1.2), filter .2s ease;
-}
-
-.figura-campana-cumbres::before {
-    content: "";
-    position: absolute;
-    left: 12%;
-    right: 12%;
-    bottom: -8%;
-    height: 17%;
-    border: 3px solid #ffe98c;
-    border-radius: 50%;
-    background: linear-gradient(#e8b23d, #87500e);
-}
-
-.figura-campana-cumbres::after {
-    content: "✧";
-    position: absolute;
-    inset: 27% 0 auto;
-    color: #fffbd6;
-    font-size: clamp(1rem, 5vw, 2rem);
-    text-shadow: 0 0 9px #fff4a1;
-}
-
-.figura-campana-cumbres i {
-    position: absolute;
-    left: 42%;
-    top: -15%;
-    width: 16%;
-    height: 18%;
-    border: 2px solid #ffe98e;
-    border-radius: 50% 50% 20% 20%;
-    background: #b77718;
 }
 
 .reliquia-campana-cumbres {
     position: absolute;
     z-index: 1;
     left: 50%;
-    bottom: 5%;
-    color: #bff9ff;
-    font-size: clamp(1.35rem, 6vw, 2.6rem);
+    bottom: 2%;
+    width: 48%;
+    height: 48%;
+    object-fit: contain;
+    mix-blend-mode: screen;
     opacity: 0;
     filter: drop-shadow(0 0 8px #7eeaff) drop-shadow(0 0 18px #fff);
-    transform: translateX(-50%) scale(.55);
+    transform: translateX(-50%) scale(.42);
     transition: opacity .2s ease, transform .3s ease;
 }
 
-.opcion-campana-cumbres.revelando .figura-campana-cumbres { transform: translateY(-45%) rotate(-5deg); }
-.opcion-campana-cumbres.revelando .reliquia-campana-cumbres { opacity: 1; transform: translateX(-50%) scale(1); }
+.opcion-campana-cumbres.revelando .figura-campana-cumbres { transform: translateY(-43%) rotate(-5deg) scale(.96); }
+.opcion-campana-cumbres.revelando .reliquia-campana-cumbres {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+    animation: pulsarChispaCampana .72s ease-in-out infinite alternate;
+}
 .opcion-campana-cumbres.acierto .figura-campana-cumbres { filter: drop-shadow(0 0 18px #fff49c); }
 .opcion-campana-cumbres.error { animation: sacudirPuzzleCumbres .35s ease; filter: saturate(.45) sepia(.4); }
+
+@keyframes pulsarChispaCampana {
+    from { filter: brightness(1) drop-shadow(0 0 8px #7eeaff) drop-shadow(0 0 16px rgba(255, 255, 255, .84)); }
+    to { filter: brightness(1.35) drop-shadow(0 0 14px #7eeaff) drop-shadow(0 0 27px #fff); }
+}
 
 .cabecera-sellos-aeralis {
     display: grid;

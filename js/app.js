@@ -940,10 +940,10 @@ const historiaCumbres = [
   { capitulo: "Misión 1", titulo: "Más allá de las nubes", texto: "El portal deposita a Aren sobre una isla suspendida en un océano de nubes. A lo lejos, una tormenta imposible rodea las ruinas de Cumbres Celestes y el camino de regreso se desvanece." },
   { capitulo: "Misión 2", titulo: "El puente que olvidó el viento", texto: "Los fragmentos de un puente antiguo flotan fuera de lugar. Sus canales de aire aún conservan magia: si vuelven a orientarse, el viento podrá reconstruir el paso." },
   { capitulo: "Misión 3", titulo: "El pequeño guardián", texto: "Un dragoncito azul desciende desde las alturas. Se llama Nimbus y, convencido de que Aren viene a robar el cristal de su familia, defiende el sendero con un rugido mucho más valiente que feroz." },
-  { capitulo: "Misión 4", titulo: "Las campanas del cielo", texto: "Nimbus desaparece entre las nubes. Para seguirlo, Aren debe despertar cuatro campanas de cristal y repetir la melodía que abre las corrientes del firmamento." },
+  { capitulo: "Misión 4", titulo: "Las campanas del cielo", texto: "Nimbus desaparece entre las nubes. Para seguirlo, Aren debe hallar la chispa celeste que abre las corrientes del firmamento. Tres campanas de cristal cambian de lugar para protegerla." },
   { capitulo: "Misión 5", titulo: "Islas a la deriva", texto: "La tormenta desordena las islas y amenaza con hacerlas chocar. Sus sombras y corrientes revelan un orden seguro, pero habrá que actuar antes de que el camino vuelva a separarse." },
   { capitulo: "Misión 6", titulo: "El nido vacío", texto: "En un refugio oculto aparece un nido pequeño, juguetes tallados y restos de un cascarón. El temible guardián no es más que una cría que intenta encontrar a su madre desaparecida." },
-  { capitulo: "Misión 7", titulo: "La tormenta encadenada", texto: "Nimbus regresa y acepta la ayuda de Aren. Una chispa celeste capaz de debilitar la tormenta se oculta bajo antiguas campanas, que cambian de lugar cada vez más rápido para protegerla." },
+  { capitulo: "Misión 7", titulo: "La tormenta encadenada", texto: "Nimbus regresa y acepta la ayuda de Aren. Juntos atraviesan los rayos que encadenan la tormenta y buscan el camino seguro hacia el santuario de la Matriarca." },
   { capitulo: "Misión 8", titulo: "El santuario de la Matriarca", texto: "Tras cruzar la tormenta llegan al santuario de Aeralis, Matriarca del Firmamento. Cuatro puertas, una por cada viento, protegen la cámara donde fue sellada." },
   { capitulo: "Misión 9", titulo: "La prisión del firmamento", texto: "Aeralis utilizó el Cristal Celeste para contener una tormenta corrupta, pero quedó atrapada dentro de ella. Aren y Nimbus deben romper los cuatro sellos sin liberar la oscuridad que contienen." },
   { capitulo: "Misión 10", titulo: "El juramento del pequeño guardián", texto: "Con Aeralis libre, Nimbus comprende que Aren no es un ladrón. Aun así propone una última batalla de palabras: sólo entregará el cristal a quien jure protegerlo en los mundos que faltan." },
@@ -2637,7 +2637,9 @@ inputsPalabrasVersus.forEach((input) => {
 });
 
 btnsFijarPalabrasVersus.forEach((boton, indice) => {
-  boton.addEventListener("click", () => {
+  boton.addEventListener("click", (evento) => {
+    evento.preventDefault();
+    evento.stopPropagation();
     fijarPalabraVersus(indice, boton.getAttribute("aria-pressed") !== "true");
   });
 });
@@ -11399,7 +11401,7 @@ function obtenerTipoPruebaEspecial(escenario, mision) {
   if (escenario === 1 && mision === 4) return "oasis";
   if (escenario === 1 && mision === 7) return "espejos";
   if (escenario === 2 && mision === 1) return "sopa-celeste";
-  if (escenario === 2 && mision === 6) return "campanas-celestes";
+  if (escenario === 2 && mision === 3) return "campanas-celestes";
   if (escenario === 2 && mision === 8) return "sellos-aeralis";
   return "";
 }
@@ -11795,8 +11797,10 @@ function prepararRondaCampanasCumbres() {
     boton.className = "opcion-campana-cumbres";
     boton.disabled = true;
     boton.innerHTML = `
-      <span class="reliquia-campana-cumbres" aria-hidden="true">✦</span>
-      <span class="figura-campana-cumbres" aria-hidden="true"><i></i></span>`;
+      <img class="reliquia-campana-cumbres"
+        src="assets/images/puzzles/cumbres/chispa-celeste-v1.png?v=20260830-campanas-imagenes-3" alt="" aria-hidden="true">
+      <img class="figura-campana-cumbres"
+        src="assets/images/puzzles/cumbres/campana-celeste-v1.png?v=20260830-campanas-imagenes-3" alt="" aria-hidden="true">`;
     boton.addEventListener("click", () => elegirCampanaCumbres(identidad));
     tablero.appendChild(boton);
     return boton;
@@ -11863,7 +11867,7 @@ function elegirCampanaCumbres(identidad) {
   reproducirSonido("cristalCasilla");
   rondaCampanasCumbresActual += 1;
   if (rondaCampanasCumbresActual === rondasCampanasCumbres.length) {
-    estadoPruebaBosque.textContent = "¡Encontraste la chispa en las tres rondas y debilitaste la tormenta!";
+    estadoPruebaBosque.textContent = "¡Encontraste la chispa y abriste las corrientes del firmamento!";
     window.setTimeout(() => {
       if (secuencia === secuenciaCampanasCumbres && pruebaEspecialBosqueActiva === "campanas-celestes") {
         void completarPruebaEspecialBosque("campanas-celestes");

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v191`;
+const CACHE_NAME = `${CACHE_PREFIX}v194`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -99,6 +99,8 @@ const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v188`,
   `${CACHE_PREFIX}v189`,
   `${CACHE_PREFIX}v190`,
+  `${CACHE_PREFIX}v191`,
+  `${CACHE_PREFIX}v192`,
 ]);
 const LEGACY_REVISION = "legacy-v93-v95";
 const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
@@ -218,6 +220,8 @@ const CORE_ASSETS = [
   "./assets/images/ambiente/cumbres/lumiri-cumbres-v1.png",
   "./assets/images/personajes/aventura/aeralis-liberada-v1.png",
   "./assets/images/elements/cristal-celeste-v1.png",
+  "./assets/images/puzzles/cumbres/campana-celeste-v1.png",
+  "./assets/images/puzzles/cumbres/chispa-celeste-v1.png",
   "./assets/images/cinematicas/cumbres-final/01-aeralis-invita-aren-v1.png",
   "./assets/images/cinematicas/cumbres-final/02-aren-sube-aeralis-v2.png",
   "./assets/images/cinematicas/cumbres-final/03-vuelo-mundo-hielo-v1.png",
@@ -428,10 +432,10 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260830-versus-palabras-fijas-1",
-  "./index.html": "20260830-versus-palabras-fijas-1",
-  "./css/styles.css": "20260830-versus-palabras-fijas-1",
-  "./js/app.js": "20260830-versus-palabras-fijas-1",
+  "./": "20260830-campanas-imagenes-3",
+  "./index.html": "20260830-campanas-imagenes-3",
+  "./css/styles.css": "20260830-campanas-imagenes-3",
+  "./js/app.js": "20260830-campanas-imagenes-3",
   "./js/pwa.js": "20260827-modos-locales-offline-1",
   "./js/supabase-loader.js": "20260827-supabase-diferido-1",
   "./assets/images/ui/presentacion-mision-cumbres-v1.png": "20260827-soporte-cumbres-1",
@@ -454,6 +458,8 @@ const ASSET_REVISIONS = {
   "./assets/images/ambiente/cumbres/lumiri-cumbres-v1.png": "20260828-fauna-cumbres-2",
   "./assets/images/personajes/aventura/aeralis-liberada-v1.png": "20260826-cumbres-1",
   "./assets/images/elements/cristal-celeste-v1.png": "20260826-cumbres-1",
+  "./assets/images/puzzles/cumbres/campana-celeste-v1.png": "20260830-campanas-imagenes-3",
+  "./assets/images/puzzles/cumbres/chispa-celeste-v1.png": "20260830-campanas-imagenes-3",
   "./assets/images/cinematicas/cumbres-final/01-aeralis-invita-aren-v1.png": "20260827-viaje-hielo-1",
   "./assets/images/cinematicas/cumbres-final/02-aren-sube-aeralis-v2.png": "20260829-aeralis-completa-2",
   "./assets/images/cinematicas/cumbres-final/03-vuelo-mundo-hielo-v1.png": "20260827-viaje-hielo-1",
