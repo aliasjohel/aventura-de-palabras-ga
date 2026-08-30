@@ -2325,6 +2325,10 @@ body {
     98% { transform: translate(0, 0) scaleX(-1); }
     100% { transform: translate(0, 0) scaleX(1); }
 }
+@keyframes nubelunPasoMovil {
+    0% { transform: translateY(0) rotate(-1deg) scale(1, 1); }
+    100% { transform: translateY(-2px) rotate(1deg) scale(1.015, .985); }
+}
 @keyframes velarioVuela {
     0% { transform: translate(8vw, 1vh) rotate(-2deg); }
     25% { transform: translate(-34vw, 8vh) rotate(1deg); }
@@ -2735,7 +2739,7 @@ body {
     .escenario.escenario-cumbres .personaje-imagen { bottom: -7%; }
     .nimbus-cumbres { width: 26%; right: 2%; bottom: 0; }
     .aeralis-cumbres { width: 55%; right: -4%; }
-    .nubelun-cumbres { left: 20%; bottom: 42%; width: 7%; }
+    .nubelun-cumbres { left: 80%; bottom: 49%; width: 7%; }
     .nubelun-cumbres.fauna-cumbres-animada .fauna-cumbres-cuadro-1 {
         opacity: 1;
         animation: none;
@@ -2743,6 +2747,10 @@ body {
     .nubelun-cumbres.fauna-cumbres-animada .fauna-cumbres-cuadro-2 {
         display: none;
         animation: none;
+    }
+    .nubelun-cumbres.fauna-cumbres-un-cuadro .fauna-cumbres-cuadro-1 {
+        transform-origin: center bottom;
+        animation: nubelunPasoMovil .42s ease-in-out infinite alternate;
     }
     .velario-cumbres { top: 8%; left: 100%; width: 34%; }
     .lumiri-cumbres { left: 48%; bottom: 10%; width: 23%; }

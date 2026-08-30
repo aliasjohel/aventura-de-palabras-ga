@@ -9639,13 +9639,16 @@ function actualizarPersonajesNarrativosCumbres() {
     const nubelunEnMovil = faunaMision.clase === "nubelun-cumbres"
       && window.matchMedia("(max-width: 640px)").matches;
     const usarCuadrosAnimados = Boolean(faunaMision.cuadros) && !nubelunEnMovil;
-    const criatura = document.createElement(usarCuadrosAnimados ? "span" : "img");
+    const usarContenedorFauna = usarCuadrosAnimados || nubelunEnMovil;
+    const criatura = document.createElement(usarContenedorFauna ? "span" : "img");
     criatura.className = `personaje-narrativo-cumbres fauna-cumbres ${faunaMision.clase}`;
-    if (usarCuadrosAnimados) {
+    if (usarContenedorFauna) {
       criatura.classList.add("fauna-cumbres-animada");
+      criatura.classList.toggle("fauna-cumbres-un-cuadro", nubelunEnMovil);
       criatura.setAttribute("role", "img");
       criatura.setAttribute("aria-label", faunaMision.alt);
-      faunaMision.cuadros.forEach((src, indice) => {
+      const cuadrosVisibles = nubelunEnMovil ? [faunaMision.src] : faunaMision.cuadros;
+      cuadrosVisibles.forEach((src, indice) => {
         const cuadro = document.createElement("img");
         cuadro.className = `fauna-cumbres-cuadro fauna-cumbres-cuadro-${indice + 1}`;
         cuadro.src = src;
@@ -9655,25 +9658,6 @@ function actualizarPersonajesNarrativosCumbres() {
     } else {
       criatura.src = faunaMision.src;
       criatura.alt = faunaMision.alt;
-      if (nubelunEnMovil && faunaMision.cuadros) {
-        const cuadrosPrecargados = faunaMision.cuadros.map((src) => {
-          const imagen = new Image();
-          imagen.src = src;
-          return imagen;
-        });
-        Promise.all(cuadrosPrecargados.map((imagen) => imagen.decode().catch(() => {})))
-          .then(() => {
-            let indiceCuadro = 0;
-            const intervaloPaso = window.setInterval(() => {
-              if (!criatura.isConnected) {
-                window.clearInterval(intervaloPaso);
-                return;
-              }
-              indiceCuadro = (indiceCuadro + 1) % faunaMision.cuadros.length;
-              criatura.src = faunaMision.cuadros[indiceCuadro];
-            }, 360);
-          });
-      }
     }
     contenedorEscenario.appendChild(criatura);
   }
