@@ -2325,9 +2325,12 @@ body {
     98% { transform: translate(0, 0) scaleX(-1); }
     100% { transform: translate(0, 0) scaleX(1); }
 }
-@keyframes nubelunPasoMovil {
-    0% { transform: translateY(0) rotate(-1deg) scale(1, 1); }
-    100% { transform: translateY(-2px) rotate(1deg) scale(1.015, .985); }
+@keyframes nubelunCaminaMovil {
+    0% { transform: translateX(0) scaleX(1); }
+    48% { transform: translateX(-8vw) scaleX(1); }
+    50% { transform: translateX(-8vw) scaleX(-1); }
+    98% { transform: translateX(0) scaleX(-1); }
+    100% { transform: translateX(0) scaleX(1); }
 }
 @keyframes velarioVuela {
     0% { transform: translate(8vw, 1vh) rotate(-2deg); }
@@ -2739,7 +2742,7 @@ body {
     .escenario.escenario-cumbres .personaje-imagen { bottom: -7%; }
     .nimbus-cumbres { width: 26%; right: 2%; bottom: 0; }
     .aeralis-cumbres { width: 55%; right: -4%; }
-    .nubelun-cumbres { left: 83%; bottom: 47%; width: 7%; }
+    .nubelun-cumbres { left: 83%; bottom: 47%; width: 7%; animation: nubelunCaminaMovil 9s linear infinite; }
     .nubelun-cumbres.fauna-cumbres-animada .fauna-cumbres-cuadro-1 {
         opacity: 1;
         animation: none;
@@ -2756,7 +2759,7 @@ body {
             drop-shadow(-1px 0 0 rgba(3, 58, 84, .96))
             drop-shadow(0 1px 0 rgba(3, 58, 84, .96))
             drop-shadow(0 -1px 0 rgba(3, 58, 84, .96));
-        animation: nubelunPasoMovil .42s ease-in-out infinite alternate;
+        animation: none;
     }
     .velario-cumbres { top: 8%; left: 100%; width: 34%; }
     .lumiri-cumbres { left: 48%; bottom: 10%; width: 23%; }
@@ -4369,7 +4372,7 @@ button:disabled {
 
 .campo-palabra-secreta {
     display: grid;
-    grid-template-columns: 28px minmax(0, 1fr) minmax(48px, auto);
+    grid-template-columns: 28px minmax(0, 1fr) 34px minmax(48px, auto);
     align-items: center;
     gap: 8px;
 }
@@ -4422,6 +4425,41 @@ button:disabled {
     color: #f07972;
     font-size: 0.64rem;
     font-style: normal;
+}
+
+.btn-fijar-palabra-versus {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid rgba(114, 206, 243, .35);
+    border-radius: 8px;
+    background: rgba(10, 39, 55, .76);
+    color: rgba(255, 255, 255, .58);
+    font-size: .9rem;
+    box-shadow: none;
+    filter: grayscale(1);
+}
+
+.btn-fijar-palabra-versus:hover:not(:disabled),
+.btn-fijar-palabra-versus[aria-pressed="true"] {
+    border-color: #f0bd45;
+    background: rgba(104, 70, 13, .82);
+    color: #ffe7a0;
+    filter: none;
+}
+
+.btn-fijar-palabra-versus[aria-pressed="true"] {
+    box-shadow: 0 0 0 2px rgba(240, 189, 69, .18);
+}
+
+.ayuda-fijar-palabras-versus {
+    margin: -3px 0 2px;
+    color: rgba(255, 255, 255, .62);
+    font-size: .68rem;
+    line-height: 1.35;
+    text-align: center;
 }
 
 .btn-confirmar-palabras-versus {

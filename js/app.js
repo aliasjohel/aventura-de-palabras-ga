@@ -129,6 +129,7 @@ const btnSalirPreparacionVersusVertical = document.getElementById(
 const formPreparacionVersus = document.getElementById("formPreparacionVersus");
 const tematicaVersus = document.getElementById("tematicaVersus");
 const inputsPalabrasVersus = [...document.querySelectorAll(".input-palabra-versus")];
+const btnsFijarPalabrasVersus = [...document.querySelectorAll(".btn-fijar-palabra-versus")];
 const btnConfirmarPalabrasVersus = document.getElementById("btnConfirmarPalabrasVersus");
 const btnPalabrasAleatoriasVersus = document.getElementById("btnPalabrasAleatoriasVersus");
 const btnCompletarPalabrasPruebasVersus = document.getElementById(
@@ -1524,6 +1525,7 @@ function actualizarPreparacionRemota(sala) {
   if (!propioListo) return;
 
   inputsPalabrasVersus.forEach((input) => { input.disabled = true; });
+  habilitarFijadoresPalabrasVersus(false);
   tematicaVersus.disabled = true;
   btnPalabrasAleatoriasVersus.disabled = true;
   btnConfirmarPalabrasVersus.disabled = true;
@@ -2530,6 +2532,21 @@ btnSalirPreparacionVersusVertical.addEventListener("click", volverAlMenuDesdePre
 
 let palabrasSecretasVersus = [];
 let transicionCombateVersus = null;
+const ultimasPalabrasAleatoriasVersus = new Map();
+
+function fijarPalabraVersus(indice, fijada) {
+  const boton = btnsFijarPalabrasVersus[indice];
+  if (!boton) return;
+  const activa = Boolean(fijada && inputsPalabrasVersus[indice]?.value);
+  boton.setAttribute("aria-pressed", String(activa));
+  boton.title = activa ? "Liberar palabra" : "Conservar palabra";
+}
+
+function habilitarFijadoresPalabrasVersus(habilitados = true) {
+  btnsFijarPalabrasVersus.forEach((boton, indice) => {
+    boton.disabled = !habilitados || !inputsPalabrasVersus[indice].value;
+  });
+}
 
 function limpiarPalabraParaVersus(valor) {
   return VersusEngine.normalizarPalabra(valor, maximoLetrasPalabraVersus);
@@ -2600,6 +2617,10 @@ function abrirPreparacionVersus() {
     input.disabled = false;
     input.classList.remove("invalida");
   });
+  btnsFijarPalabrasVersus.forEach((boton, indice) => {
+    fijarPalabraVersus(indice, false);
+    boton.disabled = true;
+  });
   tematicaVersus.disabled = false;
   btnPalabrasAleatoriasVersus.disabled = false;
   validarPreparacionVersus();
@@ -2610,19 +2631,51 @@ function abrirPreparacionVersus() {
 inputsPalabrasVersus.forEach((input) => {
   input.addEventListener("input", () => {
     input.value = limpiarPalabraParaVersus(input.value);
+    habilitarFijadoresPalabrasVersus();
     validarPreparacionVersus(true);
   });
 });
 
-tematicaVersus.addEventListener("change", () => validarPreparacionVersus(true));
+btnsFijarPalabrasVersus.forEach((boton, indice) => {
+  boton.addEventListener("click", () => {
+    fijarPalabraVersus(indice, boton.getAttribute("aria-pressed") !== "true");
+  });
+});
+
+tematicaVersus.addEventListener("change", () => {
+  btnsFijarPalabrasVersus.forEach((boton, indice) => fijarPalabraVersus(indice, false));
+  validarPreparacionVersus(true);
+});
 
 function completarPalabrasAleatoriasVersus() {
   const banco = bancosPalabrasVersus[tematicaVersus.value] || [];
-  const seleccion = mezclarPalabrasVersus(banco).slice(0, maximoPalabrasVersus);
+  const clavesFijadas = new Set(inputsPalabrasVersus.flatMap((input, indice) => (
+    btnsFijarPalabrasVersus[indice]?.getAttribute("aria-pressed") === "true"
+      ? [obtenerClavePalabraVersus(input.value)]
+      : []
+  )));
+  const clavesAnteriores = ultimasPalabrasAleatoriasVersus.get(tematicaVersus.value) || new Set();
+  let seleccion = mezclarPalabrasVersus(banco.filter((palabra) => {
+    const clave = obtenerClavePalabraVersus(palabra);
+    return !clavesFijadas.has(clave) && !clavesAnteriores.has(clave);
+  }));
+  const cantidadNecesaria = maximoPalabrasVersus - clavesFijadas.size;
+  if (seleccion.length < cantidadNecesaria) {
+    seleccion = mezclarPalabrasVersus(banco.filter(
+      (palabra) => !clavesFijadas.has(obtenerClavePalabraVersus(palabra)),
+    ));
+  }
+  let indiceSeleccion = 0;
   inputsPalabrasVersus.forEach((input, indice) => {
-    input.value = seleccion[indice] || "";
+    if (btnsFijarPalabrasVersus[indice]?.getAttribute("aria-pressed") === "true") return;
+    input.value = seleccion[indiceSeleccion] || "";
+    indiceSeleccion += 1;
     input.dispatchEvent(new Event("input", { bubbles: true }));
   });
+  ultimasPalabrasAleatoriasVersus.set(
+    tematicaVersus.value,
+    new Set(inputsPalabrasVersus.map((input) => obtenerClavePalabraVersus(input.value))),
+  );
   btnConfirmarPalabrasVersus.focus();
 }
 
@@ -2634,6 +2687,7 @@ formPreparacionVersus.addEventListener("submit", async (evento) => {
 
   palabrasSecretasVersus = inputsPalabrasVersus.map((input) => input.value);
   inputsPalabrasVersus.forEach((input) => { input.disabled = true; });
+  habilitarFijadoresPalabrasVersus(false);
   tematicaVersus.disabled = true;
   btnPalabrasAleatoriasVersus.disabled = true;
   btnConfirmarPalabrasVersus.disabled = true;
@@ -2651,6 +2705,7 @@ formPreparacionVersus.addEventListener("submit", async (evento) => {
     } catch (error) {
       esperaRivalVersus.classList.add("oculto");
       inputsPalabrasVersus.forEach((input) => { input.disabled = false; });
+      habilitarFijadoresPalabrasVersus();
       tematicaVersus.disabled = false;
       btnPalabrasAleatoriasVersus.disabled = false;
       estadoPreparacionRivalVersus.className = "estado-preparacion-rival-versus error";
@@ -4108,8 +4163,532 @@ btnHabilidadVersus.addEventListener("click", activarHabilidadVersus);
 
 // Duelo local de cinco rondas. En línea, las palabras y jugadas del rival
 // llegan desde el otro dispositivo en lugar de esta simulación.
+const palabrasAdicionalesVersus = {
+  "paises": [
+    "IRLANDA",
+    "ISLANDIA",
+    "NORUEGA",
+    "SUECIA",
+    "FINLANDIA",
+    "DINAMARCA",
+    "ESTONIA",
+    "LETONIA",
+    "LITUANIA",
+    "HUNGRÍA",
+    "ESLOVAQUIA",
+    "ESLOVENIA",
+    "ALBANIA",
+    "MOLDAVIA",
+    "GEORGIA",
+    "ARMENIA",
+    "CHIPRE",
+    "MALTA",
+    "ANDORRA",
+    "MÓNACO",
+    "LUXEMBURGO",
+    "HOLANDA",
+    "NEPAL",
+    "BUTÁN",
+    "PAKISTÁN",
+    "BANGLADESH",
+    "MYANMAR",
+    "CAMBOYA",
+    "MALASIA",
+    "SINGAPUR",
+    "INDONESIA",
+    "FILIPINAS",
+    "MONGOLIA",
+    "KAZAJISTÁN",
+    "UZBEKISTÁN",
+    "IRÁN",
+    "IRAK",
+    "ISRAEL",
+    "JORDANIA",
+    "LÍBANO",
+    "SIRIA",
+    "CATAR",
+    "KUWAIT",
+    "OMÁN",
+    "YEMEN",
+    "ETIOPÍA",
+    "SOMALIA",
+    "SUDÁN",
+    "SENEGAL",
+    "NIGERIA"
+  ],
+  "frutas": [
+    "ACEROLA",
+    "AGUACATE",
+    "ALBARICOQUE",
+    "ALQUEJENJE",
+    "BABACO",
+    "CACAO",
+    "CAIMITO",
+    "CALABAZA",
+    "CLEMENTINA",
+    "CURUBA",
+    "FEIJOA",
+    "GUANÁBANA",
+    "JABUTICABA",
+    "LONGAN",
+    "LÚCUMA",
+    "MANGOSTÁN",
+    "MARULA",
+    "NANCE",
+    "PLÁTANO",
+    "QUINOTO",
+    "RAMBUTÁN",
+    "SALAK",
+    "SAPOTE",
+    "TAMARILLO",
+    "TANGELO",
+    "YUZU",
+    "ARAZÁ",
+    "BOROJÓ",
+    "COPAO",
+    "COROZO",
+    "CHONTADURO",
+    "MAMEY",
+    "PITANGA",
+    "NARANJILLA",
+    "MADROÑO",
+    "MURTA",
+    "CALAFATE",
+    "MAQUI",
+    "CAMUCAMU",
+    "NONI",
+    "PEPINO",
+    "BERENJENA",
+    "PIMIENTO",
+    "ZAPALLO",
+    "ZAPALLITO",
+    "ALMENDRA",
+    "AVELLANA",
+    "NUEZ",
+    "PISTACHO",
+    "ANACARDO"
+  ],
+  "animales": [
+    "ANTÍLOPE",
+    "ARMADILLO",
+    "AVESTRUZ",
+    "BABUINO",
+    "BARRACUDA",
+    "BUITRE",
+    "BURRO",
+    "CAIMÁN",
+    "CAPIBARA",
+    "CARACOL",
+    "CIERVO",
+    "COBRA",
+    "CODORNIZ",
+    "COLIBRÍ",
+    "COMADREJA",
+    "CÓNDOR",
+    "COTORRA",
+    "CUERVO",
+    "DROMEDARIO",
+    "EQUIDNA",
+    "ERIZO",
+    "FLAMENCO",
+    "GACELA",
+    "GAVIOTA",
+    "GECKO",
+    "HALCÓN",
+    "HÁMSTER",
+    "HURÓN",
+    "IGUANA",
+    "JABALÍ",
+    "LANGOSTA",
+    "LÉMUR",
+    "LINCE",
+    "LORO",
+    "MANTARRAYA",
+    "MAPACHE",
+    "MEDUSA",
+    "MOFETA",
+    "MURCIÉLAGO",
+    "ORCA",
+    "ORNITORRINCO",
+    "PELICANO",
+    "PEREZOSO",
+    "PIRAÑA",
+    "RANA",
+    "RENO",
+    "SALAMANDRA",
+    "SURICATA",
+    "TAPIR",
+    "TUCÁN"
+  ],
+  "comidas": [
+    "AJIACO",
+    "ALFAJOR",
+    "ARROLLADO",
+    "BAGUETTE",
+    "BIFE",
+    "BROCHETA",
+    "CANELONES",
+    "CAPELETI",
+    "CARBONADA",
+    "CAZUELA",
+    "CHIPA",
+    "CHUCRUT",
+    "CUSCÚS",
+    "CURRY",
+    "ESCABECHE",
+    "ESTOFADO",
+    "FAJITA",
+    "FAINÁ",
+    "FALAFEL",
+    "FIDEO",
+    "FONDUE",
+    "FRIJOLES",
+    "GARBANZOS",
+    "GAZPACHO",
+    "GYOZA",
+    "KEBAB",
+    "LENTEJAS",
+    "MACARRONES",
+    "MAKI",
+    "MANDIOCA",
+    "MARMITAKO",
+    "MONDONGO",
+    "MORTADELA",
+    "NACHOS",
+    "PANCHO",
+    "PAMBAZO",
+    "PASTRAMI",
+    "PESTO",
+    "PICADILLO",
+    "PIONONO",
+    "PISTO",
+    "PUPUSA",
+    "QUICHE",
+    "QUINOA",
+    "RATATOUILLE",
+    "SAMOSA",
+    "TEMPURA",
+    "TIRAMISÚ",
+    "TOSTADA",
+    "WAFFLE"
+  ],
+  "profesiones": [
+    "ACTUARIO",
+    "APICULTOR",
+    "ARQUEÓLOGO",
+    "ASTRONAUTA",
+    "ASTRÓNOMO",
+    "AUDITOR",
+    "BARBERO",
+    "BOTÁNICO",
+    "CAMARERO",
+    "CARTÓGRAFO",
+    "CERAMISTA",
+    "CIRUJANO",
+    "COMERCIANTE",
+    "CRONISTA",
+    "DECORADOR",
+    "DIPLOMÁTICO",
+    "EDITOR",
+    "ENTRENADOR",
+    "FILÓSOFO",
+    "FISCAL",
+    "FÍSICO",
+    "GUARDAPARQUE",
+    "HISTORIADOR",
+    "ILUSTRADOR",
+    "JUEZ",
+    "JOYERO",
+    "MATEMÁTICO",
+    "METEORÓLOGO",
+    "MINERO",
+    "MODELISTA",
+    "NOTARIO",
+    "DIETISTA",
+    "OCEANÓGRAFO",
+    "ÓPTICO",
+    "ORFEBRE",
+    "PEDIATRA",
+    "PELUQUERO",
+    "POLÍTICO",
+    "PRODUCTOR",
+    "QUÍMICO",
+    "RADIÓLOGO",
+    "RELOJERO",
+    "REPORTERO",
+    "SOCIÓLOGO",
+    "TÉCNICO",
+    "TERAPEUTA",
+    "TOPÓGRAFO",
+    "TORNERO",
+    "URBANISTA",
+    "ZAPATERO"
+  ],
+  "deportes": [
+    "ACROBACIA",
+    "AEROBISMO",
+    "AIKIDO",
+    "ALADELTA",
+    "MOTONÁUTICA",
+    "BALONMANO",
+    "BIATLÓN",
+    "BMX",
+    "BOBSLEIGH",
+    "BUCEO",
+    "CICLOCROSS",
+    "CROSS",
+    "CURLING",
+    "DARDOS",
+    "DECATLÓN",
+    "DESCENSO",
+    "DUATLÓN",
+    "ENDURO",
+    "FOOTGOLF",
+    "FREESTYLE",
+    "FRONTÓN",
+    "HALTEROFILIA",
+    "KENDO",
+    "KITESURF",
+    "LANZAMIENTO",
+    "MARCHA",
+    "MUAYTHAI",
+    "ORIENTACIÓN",
+    "PAINTBALL",
+    "PARAPENTE",
+    "PARKOUR",
+    "PELOTA",
+    "PESCA",
+    "PETANCA",
+    "RAQUETBOL",
+    "RODEO",
+    "SALTO",
+    "SENDERISMO",
+    "SKATE",
+    "SLALOM",
+    "SNORKEL",
+    "TENISMESA",
+    "TIRO",
+    "TRAMPOLÍN",
+    "TREKKING",
+    "TUMBLING",
+    "ULTRATRAIL",
+    "WAKEBOARD",
+    "WAKESURF",
+    "WINDSURF"
+  ],
+  "transportes": [
+    "AEROTAXI",
+    "ALADELTA",
+    "AUTOBÚS",
+    "AUTOCAR",
+    "AUTOGIRO",
+    "BARCAZA",
+    "BERGANTÍN",
+    "BICIMOTO",
+    "BIPLANO",
+    "CABRIOLET",
+    "CARGUERO",
+    "CARAVANA",
+    "CARRUAJE",
+    "CAZA",
+    "CHALANA",
+    "CICLOMOTOR",
+    "CORBETA",
+    "DILIGENCIA",
+    "DRON",
+    "DRAGA",
+    "ESCÚTER",
+    "FERROCARRIL",
+    "FURGÓN",
+    "GALEÓN",
+    "GÓNDOLA",
+    "GOLETA",
+    "GRANELERO",
+    "JEEP",
+    "MICRO",
+    "MINIBÚS",
+    "MONORRIEL",
+    "MOTOCARRO",
+    "MOTOTAXI",
+    "NAVÍO",
+    "PARAPENTE",
+    "PETROLERO",
+    "PIRAGUA",
+    "PORTAAVIONES",
+    "ROMPEHIELOS",
+    "TROLEBÚS",
+    "ULTRALIGERO",
+    "VAGONETA",
+    "ZEPPELIN",
+    "BIRRODADO",
+    "MOTONIEVE",
+    "AEROTREN",
+    "HIDROBUS",
+    "MOTOVELERO",
+    "TAXIBÚS",
+    "TRIMARÁN"
+  ],
+  "objetos": [
+    "ABANICO",
+    "ABRELATAS",
+    "AGUJA",
+    "ALFILER",
+    "ANILLO",
+    "ARMARIO",
+    "BALDE",
+    "BANDEJA",
+    "BASTÓN",
+    "BOLÍGRAFO",
+    "BOMBILLA",
+    "BORRADOR",
+    "BRÚJULA",
+    "CANASTA",
+    "CANDADO",
+    "CARPETA",
+    "CASCO",
+    "CENICERO",
+    "CINTURÓN",
+    "COLCHÓN",
+    "CORTINA",
+    "SACACORCHOS",
+    "EMBUDO",
+    "ESCALERA",
+    "ESTANTE",
+    "GOMA",
+    "GORRA",
+    "GRAPADORA",
+    "IMÁN",
+    "JABONERA",
+    "LINTERNA",
+    "MALETA",
+    "MANGUERA",
+    "MÁSCARA",
+    "MICRÓFONO",
+    "MONEDERO",
+    "PAPELERA",
+    "PERCHA",
+    "PINCEL",
+    "PIZARRA",
+    "REGLA",
+    "RODILLO",
+    "SÁBANA",
+    "SILBATO",
+    "SOFÁ",
+    "TALADRO",
+    "TOALLA",
+    "TRAPO",
+    "TRÍPODE",
+    "VENTILADOR"
+  ],
+  "naturaleza": [
+    "AURORA",
+    "BAHÍA",
+    "BRISA",
+    "CAÑÓN",
+    "CAVERNA",
+    "CENIZA",
+    "CÉSPED",
+    "CIELO",
+    "CORDILLERA",
+    "CRÁTER",
+    "DELTA",
+    "DUNA",
+    "ECLIPSE",
+    "ESTEPA",
+    "ESTUARIO",
+    "FARALLÓN",
+    "FIORDO",
+    "FUEGO",
+    "GÉISER",
+    "HORIZONTE",
+    "HUMEDAL",
+    "JUNGLA",
+    "LADERA",
+    "LAVA",
+    "LLANURA",
+    "MANANTIAL",
+    "MAREA",
+    "MESETA",
+    "METEORITO",
+    "PANTANO",
+    "PÁRAMO",
+    "PENÍNSULA",
+    "PLANICIE",
+    "QUEBRADA",
+    "RIBERA",
+    "SABANA",
+    "SALINA",
+    "SENDERO",
+    "SIERRA",
+    "SISMO",
+    "TERREMOTO",
+    "TORNADO",
+    "TUNDRA",
+    "VAGUADA",
+    "VEGETACIÓN",
+    "VENTISCA",
+    "YERBA",
+    "ARRECIFE",
+    "LOMA",
+    "OLEAJE"
+  ],
+  "nombres": [
+    "ADRIÁN",
+    "ALAN",
+    "ALEJANDRA",
+    "ALFONSO",
+    "AMANDA",
+    "ANDRÉS",
+    "ANTONIA",
+    "ARIANA",
+    "BELÉN",
+    "CANDELA",
+    "CARMEN",
+    "CECILIA",
+    "CLARA",
+    "DAMIÁN",
+    "DANTE",
+    "DELFINA",
+    "EDUARDO",
+    "ELÍAS",
+    "ESTEBAN",
+    "EUGENIA",
+    "EZEQUIEL",
+    "FABIÁN",
+    "FELIPE",
+    "FERNANDA",
+    "GABRIEL",
+    "GAEL",
+    "GLORIA",
+    "GUADALUPE",
+    "GUILLERMO",
+    "HELENA",
+    "HUGO",
+    "ISABEL",
+    "IVÁN",
+    "JAVIER",
+    "JEREMÍAS",
+    "JIMENA",
+    "JOSÉ",
+    "LEANDRO",
+    "LORENA",
+    "MANUEL",
+    "MARIANO",
+    "MARINA",
+    "NADIA",
+    "NATALIA",
+    "OLIVIA",
+    "RAMIRO",
+    "RAÚL",
+    "SALVADOR",
+    "VERÓNICA",
+    "ZOE"
+  ]
+};
+
 const bancosPalabrasVersus = {
   paises: [
+    ...palabrasAdicionalesVersus.paises,
     "ARGENTINA", "BRASIL", "CHILE", "PERÚ", "ESPAÑA", "MÉXICO", "CANADÁ", "ITALIA", "JAPÓN", "INDIA",
     "FRANCIA", "ALEMANIA", "PORTUGAL", "URUGUAY", "PARAGUAY", "BOLIVIA", "COLOMBIA", "ECUADOR", "VENEZUELA", "PANAMÁ",
     "CUBA", "HAITÍ", "JAMAICA", "BELICE", "GUATEMALA", "HONDURAS", "NICARAGUA", "DOMINICA", "GRANADA", "BAHAMAS",
@@ -4117,6 +4696,7 @@ const bancosPalabrasVersus = {
     "RUSIA", "CHINA", "TAILANDIA", "VIETNAM", "EGIPTO", "MARRUECOS", "KENIA", "ANGOLA", "AUSTRALIA", "TURQUÍA",
   ],
   frutas: [
+    ...palabrasAdicionalesVersus.frutas,
     "MANZANA", "PERA", "UVA", "KIWI", "MANGO", "LIMÓN", "NARANJA", "BANANA", "CIRUELA", "MELÓN",
     "SANDÍA", "PAPAYA", "ANANÁ", "DURAZNO", "CEREZA", "FRUTILLA", "MANDARINA", "POMELO", "COCO", "HIGO",
     "GRANADA", "GUAYABA", "MARACUYÁ", "MEMBRILLO", "DAMASCO", "ARÁNDANO", "FRAMBUESA", "MORA", "GROSELLA", "LIMA",
@@ -4124,6 +4704,7 @@ const bancosPalabrasVersus = {
     "PITAHAYA", "TAMARINDO", "CARAMBOLA", "KUMQUAT", "TORONJA", "UCHUVA", "YACA", "MAMÓN", "ZARZAMORA", "NECTARINA",
   ],
   animales: [
+    ...palabrasAdicionalesVersus.animales,
     "ÁGUILA", "BALLENA", "CABALLO", "CONEJO", "DELFÍN", "GATO", "JIRAFA", "LEÓN", "PANDA", "TIGRE",
     "PERRO", "ELEFANTE", "COCODRILO", "TORTUGA", "CANGURO", "KOALA", "CEBRA", "RINOCERONTE", "HIPOPÓTAMO", "MONO",
     "GORILA", "CHIMPANCÉ", "PINGÜINO", "TIBURÓN", "PULPO", "CALAMAR", "FOCA", "NUTRIA", "CASTOR", "ARDILLA",
@@ -4131,6 +4712,7 @@ const bancosPalabrasVersus = {
     "CAMELLO", "LLAMA", "CABRA", "OVEJA", "CERDO", "GALLO", "GALLINA", "PATO", "CISNE", "BÚHO",
   ],
   comidas: [
+    ...palabrasAdicionalesVersus.comidas,
     "PIZZA", "PASTA", "EMPANADA", "MILANESA", "LOCRO", "SOPA", "ARROZ", "TORTILLA", "ENSALADA", "HELADO",
     "HAMBURGUESA", "LASAÑA", "RAVIOLES", "ÑOQUIS", "ASADO", "GUISO", "TARTA", "PANQUEQUE", "ALBÓNDIGA", "CROQUETA",
     "SÁNDWICH", "TAMAL", "HUMITA", "AREPA", "TACOS", "BURRITO", "CEVICHE", "SUSHI", "RAMEN", "PAELLA",
@@ -4138,6 +4720,7 @@ const bancosPalabrasVersus = {
     "CHURRO", "FLAN", "BROWNIE", "GALLETA", "BIZCOCHO", "TORTA", "PASTEL", "BUDÍN", "MOUSSE", "GELATINA",
   ],
   profesiones: [
+    ...palabrasAdicionalesVersus.profesiones,
     "MÉDICO", "DOCENTE", "BOMBERO", "ABOGADO", "ARTISTA", "PANADERO", "PILOTO", "ACTOR", "COCINERO", "DENTISTA",
     "INGENIERO", "ARQUITECTO", "ENFERMERO", "PERIODISTA", "CONTADOR", "MECÁNICO", "ELECTRICISTA", "CARPINTERO", "PLOMERO", "JARDINERO",
     "VETERINARIO", "FARMACÉUTICO", "PSICÓLOGO", "FOTÓGRAFO", "DISEÑADOR", "PROGRAMADOR", "CIENTÍFICO", "ESCRITOR", "MÚSICO", "PINTOR",
@@ -4145,6 +4728,7 @@ const bancosPalabrasVersus = {
     "CARTERO", "CAJERO", "VENDEDOR", "SECRETARIO", "TRADUCTOR", "LOCUTOR", "AZAFATA", "AGRÓNOMO", "BIÓLOGO", "GEÓLOGO",
   ],
   deportes: [
+    ...palabrasAdicionalesVersus.deportes,
     "FÚTBOL", "TENIS", "RUGBY", "HOCKEY", "BOXEO", "NATACIÓN", "CICLISMO", "VOLEY", "GOLF", "JUDO",
     "BÁSQUET", "HANDBALL", "BÉISBOL", "SOFTBOL", "CRÍQUET", "PÁDEL", "SQUASH", "SURF", "REMO", "VELA",
     "ATLETISMO", "TRIATLÓN", "MARATÓN", "ESGRIMA", "KARATE", "TAEKWONDO", "SUMO", "LUCHA", "POLO", "BOCHAS",
@@ -4152,6 +4736,7 @@ const bancosPalabrasVersus = {
     "MOTOCROSS", "RALLY", "KARTING", "BOWLING", "BÁDMINTON", "WATERPOLO", "LACROSSE", "FUTSAL", "ARQUERÍA", "GIMNASIA",
   ],
   transportes: [
+    ...palabrasAdicionalesVersus.transportes,
     "AUTO", "TREN", "BARCO", "AVIÓN", "METRO", "BICICLETA", "CAMIÓN", "COLECTIVO", "TRANVÍA", "MOTO",
     "TAXI", "SUBTE", "ÓMNIBUS", "TRACTOR", "CAMIONETA", "FURGONETA", "MONOPATÍN", "TRICICLO", "CUATRICICLO", "MOTONETA",
     "VELERO", "LANCHA", "CANOA", "KAYAK", "BOTE", "YATE", "FERRY", "BUQUE", "CRUCERO", "SUBMARINO",
@@ -4159,6 +4744,7 @@ const bancosPalabrasVersus = {
     "AMBULANCIA", "PATRULLERO", "REMOLQUE", "CARRETA", "CARRO", "TRINEO", "LOCOMOTORA", "MOTOCICLETA", "AERONAVE", "CATAMARÁN",
   ],
   objetos: [
+    ...palabrasAdicionalesVersus.objetos,
     "MESA", "SILLA", "RELOJ", "LLAVE", "VASO", "LÁMPARA", "CUADERNO", "ESPEJO", "BOTELLA", "TIJERA",
     "PLATO", "TAZA", "TENEDOR", "CUCHILLO", "CUCHARA", "OLLA", "SARTÉN", "JARRA", "TERMO", "MATE",
     "MOCHILA", "CARTERA", "BILLETERA", "PARAGUAS", "SOMBRERO", "ZAPATO", "CAMISA", "PANTALÓN", "BUFANDA", "GUANTE",
@@ -4166,6 +4752,7 @@ const bancosPalabrasVersus = {
     "MARTILLO", "SERRUCHO", "PINZA", "CLAVO", "TORNILLO", "ESCOBA", "PALA", "CEPILLO", "PEINE", "ALMOHADA",
   ],
   naturaleza: [
+    ...palabrasAdicionalesVersus.naturaleza,
     "SOL", "MAR", "RÍO", "LUNA", "MONTAÑA", "VOLCÁN", "BOSQUE", "NUBE", "VIENTO", "LAGUNA",
     "OCÉANO", "PLAYA", "ISLA", "VALLE", "COLINA", "PRADERA", "DESIERTO", "SELVA", "CASCADA", "ARROYO",
     "LAGO", "GLACIAR", "ICEBERG", "ACANTILADO", "CUEVA", "ROCA", "PIEDRA", "ARENA", "TIERRA", "BARRO",
@@ -4173,6 +4760,7 @@ const bancosPalabrasVersus = {
     "ÁRBOL", "FLOR", "HOJA", "RAMA", "RAÍZ", "MUSGO", "HONGO", "SEMILLA", "PÉTALO", "JUNCAL",
   ],
   nombres: [
+    ...palabrasAdicionalesVersus.nombres,
     "ANA", "LUZ", "LEO", "JUAN", "SOFÍA", "MARTINA", "TOMÁS", "CARLOS", "ELENA", "JULIÁN",
     "MARÍA", "PEDRO", "LUCÍA", "DIEGO", "CAMILA", "MATEO", "VALENTINA", "SANTIAGO", "EMILIA", "NICOLÁS",
     "PAULA", "PABLO", "LAURA", "MARCOS", "DANIELA", "GABRIELA", "FEDERICO", "AGUSTINA", "SEBASTIÁN", "VICTORIA",
@@ -9614,6 +10202,7 @@ function actualizarPersonajesNarrativosCumbres() {
       clase: "nubelun-cumbres",
       src: "assets/images/ambiente/cumbres/nubelun-cumbres-v1.png",
       srcMovil: "assets/images/ambiente/cumbres/nubelun-cumbres-movil-v2.png",
+      srcMovilPaso: "assets/images/ambiente/cumbres/nubelun-cumbres-movil-paso-v3.png",
       cuadros: [
         "assets/images/ambiente/cumbres/nubelun-cumbres-v1.png",
         "assets/images/ambiente/cumbres/nubelun-cumbres-paso-v2.png",
@@ -9648,8 +10237,9 @@ function actualizarPersonajesNarrativosCumbres() {
       criatura.classList.toggle("fauna-cumbres-un-cuadro", nubelunEnMovil);
       criatura.setAttribute("role", "img");
       criatura.setAttribute("aria-label", faunaMision.alt);
+      const cuadrosMoviles = [faunaMision.srcMovil, faunaMision.srcMovilPaso].filter(Boolean);
       const cuadrosVisibles = nubelunEnMovil
-        ? [faunaMision.srcMovil || faunaMision.src]
+        ? [cuadrosMoviles[0] || faunaMision.src]
         : faunaMision.cuadros;
       cuadrosVisibles.forEach((src, indice) => {
         const cuadro = document.createElement("img");
@@ -9658,6 +10248,27 @@ function actualizarPersonajesNarrativosCumbres() {
         cuadro.alt = "";
         criatura.appendChild(cuadro);
       });
+      if (nubelunEnMovil && cuadrosMoviles.length > 1) {
+        const precargas = cuadrosMoviles.map((src) => {
+          const imagen = new Image();
+          imagen.src = src;
+          return imagen;
+        });
+        Promise.all(precargas.map((imagen) => imagen.decode().catch(() => {})))
+          .then(() => {
+            const cuadroMovil = criatura.querySelector(".fauna-cumbres-cuadro-1");
+            if (!cuadroMovil || !criatura.isConnected) return;
+            let indiceCuadro = 0;
+            const intervaloPaso = window.setInterval(() => {
+              if (!criatura.isConnected) {
+                window.clearInterval(intervaloPaso);
+                return;
+              }
+              indiceCuadro = (indiceCuadro + 1) % cuadrosMoviles.length;
+              cuadroMovil.src = cuadrosMoviles[indiceCuadro];
+            }, 360);
+          });
+      }
     } else {
       criatura.src = faunaMision.src;
       criatura.alt = faunaMision.alt;

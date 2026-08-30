@@ -33,7 +33,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260830-nubelun-movil-contorno-1">
+    <link rel="stylesheet" href="css/styles.css?v=20260830-versus-palabras-fijas-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -733,6 +733,8 @@
                                 <b>1</b>
                                 <input id="palabraSecretaVersus1" class="input-palabra-versus" type="text" minlength="3"
                                     maxlength="12" autocomplete="off" spellcheck="false" placeholder="Primera palabra">
+                                <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
+                                    aria-label="Conservar la primera palabra al volver a elegir" title="Conservar palabra">📌</button>
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </label>
@@ -741,6 +743,8 @@
                                 <b>2</b>
                                 <input id="palabraSecretaVersus2" class="input-palabra-versus" type="text" minlength="3"
                                     maxlength="12" autocomplete="off" spellcheck="false" placeholder="Segunda palabra">
+                                <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
+                                    aria-label="Conservar la segunda palabra al volver a elegir" title="Conservar palabra">📌</button>
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </label>
@@ -749,6 +753,8 @@
                                 <b>3</b>
                                 <input id="palabraSecretaVersus3" class="input-palabra-versus" type="text" minlength="3"
                                     maxlength="12" autocomplete="off" spellcheck="false" placeholder="Tercera palabra">
+                                <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
+                                    aria-label="Conservar la tercera palabra al volver a elegir" title="Conservar palabra">📌</button>
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </label>
@@ -757,6 +763,8 @@
                                 <b>4</b>
                                 <input id="palabraSecretaVersus4" class="input-palabra-versus" type="text" minlength="3"
                                     maxlength="12" autocomplete="off" spellcheck="false" placeholder="Cuarta palabra">
+                                <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
+                                    aria-label="Conservar la cuarta palabra al volver a elegir" title="Conservar palabra">📌</button>
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </label>
@@ -765,6 +773,8 @@
                                 <b>5</b>
                                 <input id="palabraSecretaVersus5" class="input-palabra-versus" type="text" minlength="3"
                                     maxlength="12" autocomplete="off" spellcheck="false" placeholder="Quinta palabra">
+                                <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
+                                    aria-label="Conservar la quinta palabra al volver a elegir" title="Conservar palabra">📌</button>
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </label>
@@ -772,6 +782,7 @@
 
                         <button id="btnPalabrasAleatoriasVersus" class="btn-palabras-aleatorias-versus" type="button">✨
                             Elegir palabras por m&iacute;</button>
+                        <p class="ayuda-fijar-palabras-versus">Tocá 📌 en las palabras que quieras conservar antes de volver a elegir.</p>
 
                         <button id="btnConfirmarPalabrasVersus" class="btn-confirmar-palabras-versus" type="submit"
                             disabled>Confirmar palabras</button>
@@ -1434,7 +1445,7 @@
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
     <script src="js/versus-room-supabase.js?v=20260817-auth-cuentas-2"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
-    <script src="js/app.js?v=20260830-nubelun-movil-contorno-1"></script>
+    <script src="js/app.js?v=20260830-versus-palabras-fijas-1"></script>
     <script src="js/pwa.js?v=20260827-modos-locales-offline-1"></script>
 </body>
 

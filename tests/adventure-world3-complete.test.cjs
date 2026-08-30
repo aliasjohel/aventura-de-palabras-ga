@@ -172,6 +172,7 @@ for (const imagen of ["nubelun-cumbres-paso-v2.png", "velario-cumbres-aleteo-v2.
 for (const imagen of [
   "nubelun-cumbres-v1.png",
   "nubelun-cumbres-movil-v2.png",
+  "nubelun-cumbres-movil-paso-v3.png",
   "nubelun-cumbres-paso-v2.png",
   "velario-cumbres-v1.png",
   "velario-cumbres-aleteo-v2.png",
@@ -186,13 +187,15 @@ assert.match(app, /const usarContenedorFauna = usarCuadrosAnimados \|\| nubelunE
 assert.match(app, /document\.createElement\(usarContenedorFauna \? "span" : "img"\)/);
 assert.match(app, /classList\.toggle\("fauna-cumbres-un-cuadro", nubelunEnMovil\)/);
 assert.match(app, /srcMovil:\s*"assets\/images\/ambiente\/cumbres\/nubelun-cumbres-movil-v2\.png"/);
-assert.match(app, /const cuadrosVisibles = nubelunEnMovil[\s\S]*?faunaMision\.srcMovil \|\| faunaMision\.src[\s\S]*?: faunaMision\.cuadros/);
-assert.doesNotMatch(app, /const intervaloPaso = window\.setInterval/);
+assert.match(app, /srcMovilPaso:\s*"assets\/images\/ambiente\/cumbres\/nubelun-cumbres-movil-paso-v3\.png"/);
+assert.match(app, /const cuadrosVisibles = nubelunEnMovil[\s\S]*?cuadrosMoviles\[0\] \|\| faunaMision\.src[\s\S]*?: faunaMision\.cuadros/);
+assert.match(app, /const cuadrosMoviles = \[faunaMision\.srcMovil, faunaMision\.srcMovilPaso\]\.filter\(Boolean\)/);
+assert.match(app, /Promise\.all\(precargas\.map[\s\S]*?const intervaloPaso = window\.setInterval[\s\S]*?cuadroMovil\.src = cuadrosMoviles\[indiceCuadro\][\s\S]*?, 360\)/);
 assert.match(css, /\.nubelun-cumbres:not\(\.fauna-cumbres-animada\),\s*\.nubelun-cumbres \.fauna-cumbres-cuadro\s*\{[\s\S]*?saturate\(1\.48\)/);
-assert.match(css, /@keyframes nubelunPasoMovil[\s\S]*?translateY\(-2px\)/);
-assert.match(css, /@media \(max-width: 640px\)[\s\S]*?\.nubelun-cumbres\s*\{\s*left:\s*83%;\s*bottom:\s*47%;\s*width:\s*7%/);
+assert.match(css, /@keyframes nubelunCaminaMovil[\s\S]*?translateX\(-8vw\)[\s\S]*?scaleX\(-1\)/);
+assert.match(css, /@media \(max-width: 640px\)[\s\S]*?\.nubelun-cumbres\s*\{\s*left:\s*83%;\s*bottom:\s*47%;\s*width:\s*7%;\s*animation:\s*nubelunCaminaMovil 9s linear infinite/);
 assert.match(css, /@media \(max-width: 640px\)[\s\S]*?\.nubelun-cumbres\.fauna-cumbres-animada \.fauna-cumbres-cuadro-2\s*\{[\s\S]*?display:\s*none/);
-assert.match(css, /\.nubelun-cumbres\.fauna-cumbres-un-cuadro \.fauna-cumbres-cuadro-1\s*\{[\s\S]*?animation:\s*nubelunPasoMovil \.42s/);
+assert.match(css, /\.nubelun-cumbres\.fauna-cumbres-un-cuadro \.fauna-cumbres-cuadro-1\s*\{[\s\S]*?animation:\s*none/);
 assert.match(css, /\.nubelun-cumbres\.fauna-cumbres-un-cuadro \.fauna-cumbres-cuadro-1\s*\{[\s\S]*?drop-shadow\(1px 0 0 rgba\(3, 58, 84, \.96\)\)[\s\S]*?drop-shadow\(-1px 0 0/);
 assert.match(css, /@keyframes nimbusDesafia\s*\{\s*50%\s*\{\s*transform:\s*translateY\(-4px\) rotate\(-\.6deg\) scale\(1\.01\)/);
 assert.match(css, /@media \(max-width: 640px\) and \(orientation: portrait\)[\s\S]*?\.cinematica-final-cumbres\s*\{[\s\S]*?rotate\(90deg\)/);
