@@ -112,11 +112,11 @@ assert.match(css, /left var\(--duracion-mezcla\)/);
 assert.match(css, /\.opcion-campana-cumbres\.revelando \.figura-campana-cumbres/);
 assert.match(app, /botonesPuzzleCumbres\.forEach\(\(boton\) => \(boton\.disabled = true\)\)/);
 assert.match(app, /¡Encontraste la chispa y abriste las corrientes del firmamento!/);
-assert.match(app, /assets\/images\/puzzles\/cumbres\/campana-celeste-v2\.png/);
-assert.match(app, /assets\/images\/puzzles\/cumbres\/chispa-celeste-v2\.png/);
-assert.ok(fs.existsSync(path.join(root, "assets", "images", "puzzles", "cumbres", "campana-celeste-v2.png")));
-assert.ok(fs.existsSync(path.join(root, "assets", "images", "puzzles", "cumbres", "chispa-celeste-v2.png")));
-for (const archivo of ["campana-celeste-v2.png", "chispa-celeste-v2.png"]) {
+assert.match(app, /assets\/images\/puzzles\/cumbres\/campana-celeste-v3\.png/);
+assert.match(app, /assets\/images\/puzzles\/cumbres\/chispa-celeste-v3\.png/);
+assert.ok(fs.existsSync(path.join(root, "assets", "images", "puzzles", "cumbres", "campana-celeste-v3.png")));
+assert.ok(fs.existsSync(path.join(root, "assets", "images", "puzzles", "cumbres", "chispa-celeste-v3.png")));
+for (const archivo of ["campana-celeste-v3.png", "chispa-celeste-v3.png"]) {
   const png = fs.readFileSync(path.join(root, "assets", "images", "puzzles", "cumbres", archivo));
   assert.equal(png[25], 6, `${archivo} debe conservar un canal alfa RGBA real`);
 }

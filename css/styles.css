@@ -2530,9 +2530,14 @@ body {
     height: 106%;
     object-fit: contain;
     object-position: center bottom;
-    filter: drop-shadow(0 11px 11px rgba(1, 10, 30, .48));
+    filter: none;
     transform-origin: center bottom;
     transition: transform .38s cubic-bezier(.2, .8, .25, 1.2), filter .2s ease;
+}
+
+.opcion-campana-cumbres.cruzando-arriba .figura-campana-cumbres,
+.opcion-campana-cumbres.cruzando-abajo .figura-campana-cumbres {
+    filter: none;
 }
 
 .reliquia-campana-cumbres {
@@ -16795,7 +16800,7 @@ button:disabled {
   animation: kairos-concepto-cierre 9s ease both;
 }
 
-.siglos-en-un-segundo:not(.kairos-victima-explorador):not(.kairos-victima-kairos) .kairos-final-montaje {
+.siglos-en-un-segundo:not(.kairos-victima-explorador) .kairos-final-montaje {
   display: block;
   position: absolute;
   z-index: 9;

@@ -4864,6 +4864,7 @@ const srcKairosAtaqueVersus = "assets/images/personajes/versus/kairos-ataque-v2.
 const srcExploradorEnvejecidoKairosVersus = "assets/images/personajes/versus/explorador-envejecido-kairos-v2.png";
 const srcExploradorAncianoKairosVersus = "assets/images/personajes/versus/explorador-anciano-kairos-v2.png";
 const imagenesEdadKairosVersus = Object.freeze({
+  kairos: Object.freeze({ intermedia: "assets/images/personajes/versus/kairos-envejecido-kairos-v1.png", anciana: "assets/images/personajes/versus/kairos-anciano-kairos-v1.png" }),
   explorador: Object.freeze({ intermedia: srcExploradorEnvejecidoKairosVersus, anciana: srcExploradorAncianoKairosVersus }),
   mago: Object.freeze({ intermedia: "assets/images/personajes/versus/mago-envejecido-kairos-v1.png", anciana: "assets/images/personajes/versus/mago-anciano-kairos-v1.png" }),
   guardiana: Object.freeze({ intermedia: "assets/images/personajes/versus/guardiana-envejecida-kairos-v1.png", anciana: "assets/images/personajes/versus/guardiana-anciana-kairos-v1.png" }),
@@ -4876,6 +4877,7 @@ const imagenesEdadKairosVersus = Object.freeze({
   kalamo: Object.freeze({ intermedia: "assets/images/personajes/versus/kalamo-envejecido-kairos-v1.png", anciana: "assets/images/personajes/versus/kalamo-anciano-kairos-v1.png" }),
 });
 const imagenesFinalKairosVersus = Object.freeze({
+  kairos: "assets/images/personajes/versus/kairos-final-kairos-v1.png",
   explorador: "assets/images/personajes/versus/kairos-final-explorador-concepto-v1.png",
   mago: "assets/images/personajes/versus/kairos-final-mago-v1.png",
   guardiana: "assets/images/personajes/versus/kairos-final-guardiana-v1.png",
@@ -11798,9 +11800,9 @@ function prepararRondaCampanasCumbres() {
     boton.disabled = true;
     boton.innerHTML = `
       <img class="reliquia-campana-cumbres"
-        src="assets/images/puzzles/cumbres/chispa-celeste-v2.png?v=20260830-campanas-imagenes-5" alt="" aria-hidden="true">
+        src="assets/images/puzzles/cumbres/chispa-celeste-v3.png?v=20260830-kairos-edades-1" alt="" aria-hidden="true">
       <img class="figura-campana-cumbres"
-        src="assets/images/puzzles/cumbres/campana-celeste-v2.png?v=20260830-campanas-imagenes-5" alt="" aria-hidden="true">`;
+        src="assets/images/puzzles/cumbres/campana-celeste-v3.png?v=20260830-kairos-edades-1" alt="" aria-hidden="true">`;
     boton.addEventListener("click", () => elegirCampanaCumbres(identidad));
     tablero.appendChild(boton);
     return boton;
