@@ -14,6 +14,8 @@ const ranuraCristalBosque = document.getElementById("ranuraCristalBosque");
 const cristalPanelBosque = document.getElementById("cristalPanelBosque");
 const ranuraCristalCumbres = document.getElementById("ranuraCristalCumbres");
 const cristalPanelCumbres = document.getElementById("cristalPanelCumbres");
+const ranuraCristalHielo = document.getElementById("ranuraCristalHielo");
+const cristalPanelHielo = document.getElementById("cristalPanelHielo");
 const pantallaMenu = document.getElementById("pantallaMenu");
 const pantallaJuego = document.getElementById("pantallaJuego");
 const pantallaSalaVersus = document.getElementById("pantallaSalaVersus");
@@ -322,6 +324,11 @@ let secuenciaCampanasCumbres = 0;
 let rondaSellosCumbres = 0;
 let indicesSellosCumbres = [];
 let secuenciaPistaSellosCumbres = 0;
+let rondaPlacasHielo = 0;
+let pasoPlacasHielo = 0;
+let placasHieloAceptando = false;
+let estadosCorazonTermico = [];
+let movimientosCorazonTermico = 0;
 const estadoPruebaBosque = document.getElementById("estadoPruebaBosque");
 const btnRepetirPruebaBosque = document.getElementById("btnRepetirPruebaBosque");
 const btnSalirPruebaBosque = document.getElementById("btnSalirPruebaBosque");
@@ -631,6 +638,7 @@ const spritesCaminataPorEscenario = {
   0: crearRutasSpritesCaminata("bosque"),
   1: crearRutasSpritesCaminata("bosque"),
   2: crearRutasSpritesCaminata("bosque"),
+  3: crearRutasSpritesCaminata("bosque"),
 };
 const spritesPortalPorEscenario = {
   0: crearRutasSpritesCaminata("portal-bosque", "explorador-portal"),
@@ -741,6 +749,18 @@ const escenasPorEscenario = [
     { fondos: ["cumbres-9.png"], texto: "⛓️ Rompe los cuatro sellos y libera a Aeralis de su prisión." },
     { fondos: ["cumbres-10.png"], texto: "🐲 Nimbus te desafía a demostrar que protegerás el Cristal Celeste." },
   ],
+  [
+    { fondos: ["hielo-1.png"], texto: "🌨️ La ventisca borra el camino mientras una presencia observa a Aren desde las montañas." },
+    { fondos: ["hielo-2.png"], texto: "🧊 Recordá las placas seguras y cruzá el lago antes de que el hielo se quiebre." },
+    { fondos: ["hielo-3.png"], texto: "🐾 Seguí las huellas luminosas entre las criaturas y los árboles de escarcha." },
+    { fondos: ["hielo-4.png"], texto: "🏘️ Descubrí qué fuerza dejó a toda una aldea detenida dentro del hielo." },
+    { fondos: ["hielo-5.png"], texto: "🌌 El observatorio boreal conserva la historia del deshielo y del pacto de Nivor." },
+    { fondos: ["hielo-6.png"], texto: "🐉 Nivor bloquea el camino: enfrentá al Guardián del Invierno en combate directo." },
+    { fondos: ["hielo-7.png"], texto: "🥚 El último huevo boreal revela el verdadero precio del acuerdo con Azrak." },
+    { fondos: ["hielo-8.png"], texto: "⚙️ Equilibrá el corazón térmico para detener el invierno eterno." },
+    { fondos: ["hielo-9.png"], texto: "🔮 Bajo el glaciar se encuentra la prueba del engaño que inició el desastre." },
+    { fondos: ["hielo-10.png"], texto: "❄️ Nivor desata Cero Absoluto en la batalla decisiva por el Cristal Glacial." },
+  ],
 ];
 
 document.addEventListener("touchstart", desbloquearAudio, { once: true });
@@ -806,6 +826,21 @@ const aventura = [
       { palabra: "ISLA", pista: "Tierra rodeada de agua... o de nubes." },
       { palabra: "TORMENTA", pista: "Trae viento, nubes oscuras, lluvia y rayos." },
       { palabra: "CRISTAL", pista: "Tesoro luminoso que equilibra cada mundo." },
+    ],
+  },
+  {
+    nombre: "❄️ Reino del Invierno Eterno",
+    palabras: [
+      { palabra: "NIEVE", pista: "Cae del cielo en pequeños copos blancos." },
+      { palabra: "HIELO", pista: "Es agua congelada y puede ser muy resbaladiza." },
+      { palabra: "GLACIAR", pista: "Enorme masa de hielo que avanza muy lentamente." },
+      { palabra: "ESCARCHA", pista: "Capa de pequeños cristales que cubre las superficies frías." },
+      { palabra: "AURORA", pista: "Luz de colores que danza en el cielo polar." },
+      { palabra: "VENTISCA", pista: "Tormenta de nieve acompañada por viento fuerte." },
+      { palabra: "INVIERNO", pista: "Es la estación más fría del año." },
+      { palabra: "FORTALEZA", pista: "Construcción protegida y difícil de conquistar." },
+      { palabra: "CRISTAL", pista: "Tesoro luminoso que mantiene el equilibrio del mundo." },
+      { palabra: "TEMPERATURA", pista: "Indica qué tan frío o caliente está algo." },
     ],
   },
 ];
@@ -949,6 +984,19 @@ const historiaCumbres = [
   { capitulo: "Misión 10", titulo: "El juramento del pequeño guardián", texto: "Con Aeralis libre, Nimbus comprende que Aren no es un ladrón. Aun así propone una última batalla de palabras: sólo entregará el cristal a quien jure protegerlo en los mundos que faltan." },
 ];
 
+const historiaHielo = [
+  { capitulo: "Misión 1", titulo: "La huella borrada", texto: "Aeralis deja a Aren sobre la nieve y emprende el regreso hacia Cumbres Celestes. Una ventisca repentina borra el camino detrás de él. Desde una cresta de hielo, dos ojos azules observan cada uno de sus pasos." },
+  { capitulo: "Misión 2", titulo: "El lago de cristal", texto: "El sendero termina frente a un lago congelado. Algunas placas pueden sostener a Aren, pero otras se quebrarán al tocarlas. La tormenta cubre rápidamente las señales del camino seguro." },
+  { capitulo: "Misión 3", titulo: "Las criaturas de la escarcha", texto: "Huellas luminosas atraviesan un bosque congelado. Las criaturas del lugar están alteradas por una fuerza que convierte ramas, garras y colmillos en cristal." },
+  { capitulo: "Misión 4", titulo: "La aldea detenida", texto: "Aren encuentra una aldea completa atrapada dentro del hielo. Sus faroles aún brillan y sus relojes se detuvieron al mismo tiempo. En una torre aparece una marca oscura que no pertenece a Nivor." },
+  { capitulo: "Misión 5", titulo: "El observatorio boreal", texto: "Los instrumentos del observatorio registraron el comienzo del deshielo. Entre sus mapas, Aren descubre que alguien provocó el desastre antes de ofrecerle a Nivor el poder para detenerlo." },
+  { capitulo: "Misión 6", titulo: "El Guardián del Invierno", texto: "Nivor desciende sobre el observatorio y acusa a Aren de querer destruir el último refugio de los dragones boreales. No aceptará explicaciones: para continuar, Aren deberá enfrentarlo directamente." },
+  { capitulo: "Misión 7", titulo: "El último huevo boreal", texto: "Tras el combate, Aren entra en la fortaleza y encuentra un huevo de dragón encerrado por hielo negro. Azrak lo convirtió en rehén para asegurarse de que Nivor mantuviera el invierno eterno." },
+  { capitulo: "Misión 8", titulo: "El corazón térmico", texto: "Tres núcleos alimentan la tormenta que cubre el reino. Aren deberá equilibrar su energía: demasiado frío congelará el mecanismo y demasiado calor quebrará la fortaleza." },
+  { capitulo: "Misión 9", titulo: "La verdad bajo el glaciar", texto: "En la cámara más profunda, Aren encuentra la prueba definitiva: Azrak causó el deshielo y después utilizó el miedo de Nivor para robar energía del Cristal Glacial." },
+  { capitulo: "Misión 10", titulo: "Cero Absoluto", texto: "Nivor contempla la prueba, pero aceptar la verdad significaría reconocer todo el daño que causó. Consumido por la culpa y el orgullo, desata Cero Absoluto y desafía a Aren por última vez." },
+];
+
 const estadosExploradorPorEscenario = {
   0: [
     "feliz", // El Bosque Encantado
@@ -975,6 +1023,7 @@ const estadosExploradorPorEscenario = {
     "feliz",
   ],
   2: ["feliz", "pensando", "preocupado", "pensando", "nervioso", "pensando", "preocupado", "feliz", "preocupado", "feliz"],
+  3: ["preocupado", "pensando", "nervioso", "preocupado", "pensando", "preocupado", "nervioso", "pensando", "preocupado", "preocupado"],
 };
 
 let palabraSecreta = "";
@@ -1047,6 +1096,8 @@ let experiencia = 0;
 let cristalesObtenidos = 0;
 let mundoDosCompletado = false;
 let mundoTresCompletado = false;
+let mundoCuatroCompletado = false;
+let primerDueloNivorCompletado = false;
 let desafioActual = 1;
 let desafiosCompletados = 0;
 let sonidoNarrativoPendiente = "";
@@ -1124,6 +1175,7 @@ const clavePersonajesDesbloqueados = "personajesDesbloqueadosAventuraGA";
 let guardianaDesbloqueada = false;
 let magoDesbloqueado = false;
 let dragonDesbloqueado = false;
+let nivorDesbloqueado = false;
 let hombreLoboDescubierto = false;
 let dueloAventuraActivo = null;
 const desafiosPorMision = 3;
@@ -1901,10 +1953,15 @@ function continuarAventura() {
   btnSiguiente.classList.add("oculto");
   limpiarCinematicaSantuario();
 
-  if (mundoTresCompletado) {
+  if (mundoCuatroCompletado) {
     detenerSonidos();
     mostrarPantalla(pantallaMenu);
     actualizarMenuPrincipal();
+    return;
+  }
+
+  if (mundoTresCompletado && escenarioActual === 2) {
+    void entrarAlMundoHielo();
     return;
   }
 
@@ -1931,6 +1988,20 @@ function continuarAventura() {
   void iniciarMisionAventura();
 }
 
+async function entrarAlMundoHielo() {
+  escenarioActual = 3;
+  misionActual = 0;
+  desafioActual = 1;
+  desafiosCompletados = 0;
+  palabrasUsadasEnMision = [];
+  historiaMisionPendiente = false;
+  maximoEscenarioDesbloqueado = Math.max(maximoEscenarioDesbloqueado, 3);
+  guardarProgreso();
+  await reproducirIntroduccionMundoHielo();
+  await iniciarMisionAventura({ presentarMision: true });
+  mostrarHistoriaMision({ misionYaCargada: true });
+}
+
 btnSiguiente.addEventListener("click", continuarAventura);
 
 function seleccionarPersonajeVersus(personaje) {
@@ -1952,10 +2023,12 @@ function cargarPersonajesDesbloqueados() {
     guardianaDesbloqueada = Array.isArray(personajes) && personajes.includes("guardiana");
     magoDesbloqueado = Array.isArray(personajes) && personajes.includes("mago");
     dragonDesbloqueado = Array.isArray(personajes) && personajes.includes("dragon");
+    nivorDesbloqueado = Array.isArray(personajes) && personajes.includes("dragon_hielo");
   } catch {
     guardianaDesbloqueada = false;
     magoDesbloqueado = false;
     dragonDesbloqueado = false;
+    nivorDesbloqueado = false;
   }
 }
 
@@ -1964,6 +2037,7 @@ function personajeDisponibleVersus(personaje) {
   if (personaje === "guardiana") return guardianaDesbloqueada;
   if (personaje === "mago") return magoDesbloqueado;
   if (personaje === "dragon") return dragonDesbloqueado;
+  if (personaje === "dragon_hielo") return nivorDesbloqueado;
   return true;
 }
 
@@ -1994,6 +2068,11 @@ function guardarDesbloqueoMago() {
   guardarPersonajeDesbloqueado("mago");
 }
 
+function guardarDesbloqueoNivor() {
+  nivorDesbloqueado = true;
+  guardarPersonajeDesbloqueado("dragon_hielo");
+}
+
 function actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada = false } = {}) {
   tarjetasPersonajesVersus.forEach((tarjeta) => {
     const disponible = personajeDisponibleVersus(tarjeta.dataset.personaje);
@@ -2002,8 +2081,10 @@ function actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada = false }
     tarjeta.disabled = seleccionBloqueada || !disponible;
     tarjeta.setAttribute("aria-disabled", `${seleccionBloqueada || !disponible}`);
     if (estado) {
-      const mundoRequerido = tarjeta.dataset.personaje === "dragon"
-        ? 3
+      const mundoRequerido = tarjeta.dataset.personaje === "dragon_hielo"
+        ? 4
+        : tarjeta.dataset.personaje === "dragon"
+          ? 3
         : tarjeta.dataset.personaje === "mago"
           ? 2
           : 1;
@@ -3022,6 +3103,8 @@ btnRepetirPruebaBosque.addEventListener("click", () => {
   } else if (pruebaEspecialBosqueActiva === "espejos") {
     iniciarPuzzleEspejosDesierto();
   } else if (["sopa-celeste", "campanas-celestes", "sellos-aeralis"].includes(pruebaEspecialBosqueActiva)) {
+    iniciarPuzzleCumbres(pruebaEspecialBosqueActiva);
+  } else if (["placas-hielo", "corazon-termico"].includes(pruebaEspecialBosqueActiva)) {
     iniciarPuzzleCumbres(pruebaEspecialBosqueActiva);
   }
 });
@@ -4804,7 +4887,9 @@ const probabilidadAciertoRivalVersus = 0.56;
 const duracionEntradaDueloVersus = 3200;
 
 function obtenerIntervaloJugadaRivalVersus() {
-  if (dueloAventuraActivo) return intervaloJugadaRivalVersus;
+  if (dueloAventuraActivo) {
+    return dueloAventuraActivo.intervaloRival || intervaloJugadaRivalVersus;
+  }
   if (!modoArcadeActivo) return modoPruebasActivo
     ? intervaloJugadaRivalVersus * 4
     : intervaloJugadaRivalVersus;
@@ -4812,7 +4897,9 @@ function obtenerIntervaloJugadaRivalVersus() {
 }
 
 function obtenerProbabilidadAciertoRivalVersus() {
-  if (dueloAventuraActivo) return probabilidadAciertoRivalVersus;
+  if (dueloAventuraActivo) {
+    return dueloAventuraActivo.probabilidadRival || probabilidadAciertoRivalVersus;
+  }
   if (!modoArcadeActivo) return probabilidadAciertoRivalVersus;
   return Math.min(.82, .43 + pisoCombateArcade * .055);
 }
@@ -5010,6 +5097,26 @@ const configuracionesDuelosAventura = Object.freeze({
     arena: "assets/images/fondos/cumbres-10.png",
     altArena: "Arena celeste del juramento de Nimbus",
   },
+  nivor_glacial: {
+    escenario: 3,
+    mision: 5,
+    rival: "dragon_hielo",
+    etiqueta: "PRIMER DUELO CONTRA NIVOR",
+    arena: "assets/images/fondos/hielo-6.png",
+    altArena: "Arena glacial ante la fortaleza de Nivor",
+    intervaloRival: 2700,
+    probabilidadRival: 0.62,
+  },
+  nivor_cero_absoluto: {
+    escenario: 3,
+    mision: 9,
+    rival: "dragon_hielo",
+    etiqueta: "BATALLA FINAL · CERO ABSOLUTO",
+    arena: "assets/images/fondos/hielo-10.png",
+    altArena: "Cumbre del Cero Absoluto bajo la aurora",
+    intervaloRival: 1900,
+    probabilidadRival: 0.76,
+  },
 });
 
 async function presentarDueloAventura(tipo) {
@@ -5172,11 +5279,46 @@ async function completarDueloAventura() {
     await reproducirCinematicaFinalCumbres();
     bloquearTeclado();
     btnPista.disabled = true;
-    btnSiguiente.textContent = "❄️ Continuar pronto en el Mundo de Hielo";
+    btnSiguiente.textContent = "❄️ Entrar al Reino del Invierno Eterno";
     btnSiguiente.classList.remove("oculto");
     mensajePersonaje.classList.remove("oculto");
     mensajePersonaje.textContent =
       "💎 Aeralis llevó a Aren al Mundo de Hielo. Nimbus ya está disponible en Versus.";
+    guardarProgreso();
+    return;
+  }
+
+  if (duelo.tipo === "nivor_glacial") {
+    primerDueloNivorCompletado = true;
+    desafiosCompletados = desafiosPorMision - 1;
+    sonidoNarrativoPendiente = avanzarMision();
+    btnSiguiente.textContent = "➡️ Seguir la pista de Nivor";
+    guardarProgreso();
+    mensajePersonaje.classList.remove("oculto");
+    mensajePersonaje.textContent =
+      "❄️ Nivor interrumpe el duelo y se retira. Algo más fuerte que su orgullo lo obliga a proteger la fortaleza.";
+    const mensajeCompleto = await mostrarMensajeDesafioSuperado();
+    if (mensajeCompleto) continuarAventura();
+    return;
+  }
+
+  if (duelo.tipo === "nivor_cero_absoluto") {
+    desafiosCompletados = desafiosPorMision;
+    cristalesObtenidos = Math.max(cristalesObtenidos, 4);
+    mundoCuatroCompletado = true;
+    historiaMisionPendiente = false;
+    guardarDesbloqueoNivor();
+    actualizarJugador();
+    actualizarDisponibilidadPersonajesVersus();
+    guardarProgreso();
+    await reproducirCinematicaFinalHielo();
+    bloquearTeclado();
+    btnPista.disabled = true;
+    btnSiguiente.textContent = "🔥 Mundo 5 · Próximamente";
+    btnSiguiente.classList.remove("oculto");
+    mensajePersonaje.classList.remove("oculto");
+    mensajePersonaje.textContent =
+      "💎 El Cristal Glacial está a salvo. Nivor descubrió el engaño de Azrak y ahora luchará junto a Aren.";
     guardarProgreso();
     return;
   }
@@ -5319,6 +5461,94 @@ async function reproducirCinematicaFinalCumbres() {
     await esperarMovimiento(250);
     capa.remove();
   }
+}
+
+async function reproducirIntroduccionMundoHielo() {
+  const capa = document.createElement("div");
+  capa.className = "cinematica-final-cumbres cinematica-mundo-hielo";
+  capa.innerHTML = `
+    <img class="cinematica-cumbres-ambiente" alt="" aria-hidden="true">
+    <img class="cinematica-cumbres-fondo" alt="Aren queda solo en la nieve mientras Nivor lo observa desde una cresta">
+    <div class="cinematica-cumbres-personajes" aria-hidden="true"></div>
+    <p class="cinematica-cumbres-texto"></p>
+    <button type="button" class="cinematica-cumbres-saltar">Continuar</button>`;
+  const origen = "assets/images/cinematicas/mundo-hielo/01-aren-vigilado-por-nivor-v1.png";
+  const ambiente = capa.querySelector(".cinematica-cumbres-ambiente");
+  const fondo = capa.querySelector(".cinematica-cumbres-fondo");
+  const texto = capa.querySelector(".cinematica-cumbres-texto");
+  ambiente.src = origen;
+  fondo.src = origen;
+  texto.textContent =
+    "Aeralis se pierde tras la ventisca. La nieve borra sus huellas y, desde la cresta, la silueta de Nivor vigila cada paso de Aren.";
+  document.body.appendChild(capa);
+  await esperarCargaImagen(fondo);
+  capa.classList.add("visible", "plano-ilustrado");
+  await new Promise((resolver) => {
+    const temporizador = window.setTimeout(resolver, prefiereReducirMovimiento.matches ? 900 : 5600);
+    capa.querySelector(".cinematica-cumbres-saltar").addEventListener("click", () => {
+      window.clearTimeout(temporizador);
+      resolver();
+    }, { once: true });
+  });
+  capa.classList.remove("visible");
+  await esperarMovimiento(250);
+  capa.remove();
+}
+
+async function reproducirCinematicaFinalHielo() {
+  const escenas = [
+    {
+      imagen: "02-nivor-rompe-cadenas-v1.png",
+      alt: "Nivor rompe las cadenas de hielo negro que retenían el último huevo boreal",
+      texto: "La prueba bajo el glaciar era cierta: Azrak provocó el deshielo y convirtió el miedo de Nivor en una cadena. El dragón rompe su pacto y libera el último huevo boreal.",
+    },
+    {
+      imagen: "03-nivor-entrega-cristal-v1.png",
+      alt: "Nivor entrega el Cristal Glacial a Aren al amanecer",
+      texto: "Al amanecer, Nivor confía a Aren el Cristal Glacial. No pide olvidar sus errores: promete repararlos y enfrentar a Azrak junto a los guardianes de los cuatro mundos.",
+    },
+  ];
+  const capa = document.createElement("div");
+  capa.className = "cinematica-final-cumbres cinematica-mundo-hielo";
+  capa.innerHTML = `
+    <img class="cinematica-cumbres-ambiente" alt="" aria-hidden="true">
+    <img class="cinematica-cumbres-fondo" alt="">
+    <div class="cinematica-cumbres-personajes" aria-hidden="true"></div>
+    <p class="cinematica-cumbres-texto"></p>
+    <button type="button" class="cinematica-cumbres-saltar">Saltar</button>`;
+  document.body.appendChild(capa);
+  const ambiente = capa.querySelector(".cinematica-cumbres-ambiente");
+  const fondo = capa.querySelector(".cinematica-cumbres-fondo");
+  const texto = capa.querySelector(".cinematica-cumbres-texto");
+  let saltar = false;
+  capa.querySelector(".cinematica-cumbres-saltar").addEventListener("click", () => (saltar = true));
+  await Promise.all(escenas.map(({ imagen }) =>
+    precargarImagen(`assets/images/cinematicas/mundo-hielo/${imagen}`)));
+  let primera = true;
+  for (const escena of escenas) {
+    if (saltar) break;
+    if (!primera) {
+      capa.classList.add("cambiando-plano");
+      await esperarMovimiento(prefiereReducirMovimiento.matches ? 0 : 260);
+    }
+    const origen = `assets/images/cinematicas/mundo-hielo/${escena.imagen}`;
+    ambiente.src = origen;
+    fondo.src = origen;
+    fondo.alt = escena.alt;
+    texto.textContent = escena.texto;
+    if (primera) {
+      capa.classList.add("visible", "plano-ilustrado");
+      primera = false;
+    } else {
+      capa.classList.remove("cambiando-plano");
+    }
+    for (let tiempo = 0; tiempo < (prefiereReducirMovimiento.matches ? 1200 : 6800) && !saltar; tiempo += 200) {
+      await new Promise((resolver) => window.setTimeout(resolver, 200));
+    }
+  }
+  capa.classList.remove("visible");
+  await esperarMovimiento(250);
+  capa.remove();
 }
 
 const victimasFaucesVersus = {
@@ -7989,13 +8219,15 @@ function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
   const secuenciaActual = ++secuenciaPresentacionMision;
   const esHistoriaDesierto = escenarioActual === 1;
   const esHistoriaCumbres = escenarioActual === 2;
+  const esHistoriaHielo = escenarioActual === 3;
 
   presentacionMisionYaCargada = misionYaCargada;
   modalHistoria.classList.toggle("historia-desierto", esHistoriaDesierto);
   modalHistoria.classList.toggle("historia-cumbres", esHistoriaCumbres);
+  modalHistoria.classList.toggle("historia-hielo", esHistoriaHielo);
   imagenSoporteMision.src = esHistoriaDesierto
     ? "assets/images/ui/presentacion-mision-piedra-desierto-v1.png"
-    : esHistoriaCumbres
+    : esHistoriaCumbres || esHistoriaHielo
       ? "assets/images/ui/presentacion-mision-cumbres-v1.png"
       : "assets/images/ui/presentacion-mision-tronco.png";
   numeroCapitulo.textContent = historia.capitulo;
@@ -8133,7 +8365,9 @@ function actualizarSelectorMisionesPruebas() {
         ? historiaBosque[indice]
         : mundo === 1
           ? historiaDesierto[indice]
-          : historiaCumbres[indice];
+          : mundo === 2
+            ? historiaCumbres[indice]
+            : historiaHielo[indice];
     opcion.value = `${indice}`;
     opcion.textContent = historia
       ? `Misión ${indice + 1} · ${historia.titulo}`
@@ -8156,6 +8390,7 @@ function obtenerCantidadMisiones(escenario) {
   if (escenario === 0) return historiaBosque.length;
   if (escenario === 1) return historiaDesierto.length;
   if (escenario === 2) return historiaCumbres.length;
+  if (escenario === 3) return historiaHielo.length;
   return aventura[escenario]?.palabras.length || 1;
 }
 
@@ -8187,7 +8422,9 @@ function iniciarMisionSeleccionadaPruebas() {
   historiaMisionPendiente = false;
   portalAbierto = false;
   mundoDosCompletado = escenarioActual >= 2;
-  mundoTresCompletado = false;
+  mundoTresCompletado = escenarioActual >= 3;
+  mundoCuatroCompletado = false;
+  primerDueloNivorCompletado = escenarioActual === 3 && misionActual > 5;
 
   if (escenarioActual === 0 && misionActual >= 9) {
     cristalesObtenidos = Math.max(cristalesObtenidos, 1);
@@ -8323,6 +8560,8 @@ function reiniciarEstadoAventura() {
   cristalesObtenidos = 0;
   mundoDosCompletado = false;
   mundoTresCompletado = false;
+  mundoCuatroCompletado = false;
+  primerDueloNivorCompletado = false;
   hombreLoboDescubierto = false;
   dueloAventuraActivo = null;
   maximoEscenarioDesbloqueado = 0;
@@ -8381,6 +8620,14 @@ function obtenerHistoriaMision() {
       capitulo: `Misión ${misionActual + 1}`,
       titulo: "Cumbres Celestes",
       texto: "Aren avanza entre islas flotantes mientras Nimbus busca a Aeralis.",
+    };
+  }
+
+  if (escenarioActual === 3) {
+    return historiaHielo[misionActual] || {
+      capitulo: `Misión ${misionActual + 1}`,
+      titulo: "Reino del Invierno Eterno",
+      texto: "Aren avanza hacia la fortaleza mientras la ventisca oculta la verdad de Nivor.",
     };
   }
 
@@ -9774,7 +10021,11 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
 
   const pruebaEspecial = obtenerPruebaEspecialBosquePendiente();
   const dueloAventura = obtenerDueloAventuraPendiente();
-  const sinPalabraNormal = Boolean(pruebaEspecial || dueloAventura);
+  const finalMundoCuatroCompletado =
+    escenarioActual === 3 && misionActual === 9 && mundoCuatroCompletado;
+  const sinPalabraNormal = Boolean(
+    pruebaEspecial || dueloAventura || finalMundoCuatroCompletado,
+  );
   const palabraSeleccionada = sinPalabraNormal ? null : obtenerPalabraAleatoria();
 
   palabraSecreta = palabraSeleccionada?.palabra || "";
@@ -9830,9 +10081,21 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   mostrarPantalla(pantallaJuego);
   programarPrecargaRecursosSecundarios();
 
+  if (finalMundoCuatroCompletado) {
+    bloquearTeclado();
+    btnPista.disabled = true;
+    btnSiguiente.textContent = "🔥 Mundo 5 · Próximamente";
+    btnSiguiente.classList.remove("oculto");
+    mensajePersonaje.textContent =
+      "💎 El Cristal Glacial está a salvo. Nivor está listo para luchar junto a Aren.";
+    return Promise.resolve();
+  }
+
   if (pruebaEspecial) {
-    mensajePersonaje.textContent = escenarioActual === 2
-      ? "Las Cumbres prepararon una prueba especial para dominar el viento."
+    mensajePersonaje.textContent = escenarioActual === 3
+      ? "El hielo antiguo preparó una prueba para revelar el camino hacia Nivor."
+      : escenarioActual === 2
+        ? "Las Cumbres prepararon una prueba especial para dominar el viento."
       : escenarioActual === 1
         ? "El desierto preparó una prueba especial para revelar el camino."
         : "El bosque preparó una prueba especial para abrir el camino.";
@@ -9845,8 +10108,12 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
       ? "La Guardiana del Bosque espera frente al portal apagado."
       : dueloAventura === "mago_desierto"
         ? "Zafir te espera para la prueba final del Cristal Dorado."
-        : dueloAventura === "nimbus_cumbres"
+      : dueloAventura === "nimbus_cumbres"
           ? "Nimbus te espera para el juramento final del Cristal Celeste."
+          : dueloAventura === "nivor_glacial"
+            ? "Nivor desciende sobre la arena. No habrá acertijos: esta vez deberás enfrentarlo."
+            : dueloAventura === "nivor_cero_absoluto"
+              ? "Nivor convoca el Cero Absoluto. La verdad se decidirá en una última batalla."
           : "El Guardián de la Luna te desafía a demostrar tu valor.";
     if (presentarMision) await presentarInicioMision();
     requestAnimationFrame(() => void presentarDueloAventura(dueloAventura));
@@ -9933,6 +10200,7 @@ function actualizarPanelCristales() {
   const cristalBosqueObtenido = cristalesObtenidos > 0;
   const cristalDesiertoObtenido = cristalesObtenidos > 1;
   const cristalCumbresObtenido = cristalesObtenidos > 2;
+  const cristalHieloObtenido = cristalesObtenidos > 3;
 
   cristalPanelBosque.classList.toggle("oculto", !cristalBosqueObtenido);
   ranuraCristalBosque.classList.toggle("obtenida", cristalBosqueObtenido);
@@ -9960,6 +10228,15 @@ function actualizarPanelCristales() {
       ? "Cristal Celeste de Cumbres Celestes obtenido"
       : "Cristal Celeste de Cumbres Celestes bloqueado",
   );
+  cristalPanelHielo?.classList.toggle("oculto", !cristalHieloObtenido);
+  ranuraCristalHielo?.classList.toggle("obtenida", cristalHieloObtenido);
+  ranuraCristalHielo?.classList.toggle("bloqueada", !cristalHieloObtenido);
+  ranuraCristalHielo?.setAttribute(
+    "aria-label",
+    cristalHieloObtenido
+      ? "Cristal Glacial del Reino del Invierno Eterno obtenido"
+      : "Cristal Glacial del Reino del Invierno Eterno bloqueado",
+  );
 }
 
 function guardarProgreso() {
@@ -9977,6 +10254,8 @@ function guardarProgreso() {
     portalAbierto,
     mundoDosCompletado,
     mundoTresCompletado,
+    mundoCuatroCompletado,
+    primerDueloNivorCompletado,
     hombreLoboDescubierto,
     maximoEscenarioDesbloqueado,
   };
@@ -10031,6 +10310,12 @@ function cargarProgreso() {
     progreso.mundoDosCompletado === true || cristalesObtenidos > 1;
   mundoTresCompletado =
     progreso.mundoTresCompletado === true || cristalesObtenidos > 2;
+  mundoCuatroCompletado =
+    progreso.mundoCuatroCompletado === true || cristalesObtenidos > 3;
+  primerDueloNivorCompletado =
+    progreso.primerDueloNivorCompletado === true
+    || mundoCuatroCompletado
+    || (escenarioActual === 3 && misionActual > 5);
   hombreLoboDescubierto = progreso.hombreLoboDescubierto === true
     || escenarioActual > 0
     || (escenarioActual === 0 && misionActual > 5);
@@ -10053,6 +10338,9 @@ function cargarProgreso() {
   }
   if (mundoTresCompletado) {
     guardarDesbloqueoNimbus();
+  }
+  if (mundoCuatroCompletado) {
+    guardarDesbloqueoNivor();
   }
 
   actualizarJugador();
@@ -10164,6 +10452,10 @@ function actualizarEscenaPorMision() {
     "escenario-cumbres",
     escenarioActual === 2,
   );
+  contenedorEscenario.classList.toggle(
+    "escenario-hielo",
+    escenarioActual === 3,
+  );
   if (escenarioActual === 1) {
     contenedorEscenario.dataset.misionDesierto = `${misionActual + 1}`;
   } else {
@@ -10174,19 +10466,51 @@ function actualizarEscenaPorMision() {
   } else {
     delete contenedorEscenario.dataset.misionCumbres;
   }
+  if (escenarioActual === 3) {
+    contenedorEscenario.dataset.misionHielo = `${misionActual + 1}`;
+  } else {
+    delete contenedorEscenario.dataset.misionHielo;
+  }
   fondoEscenario.src = `assets/images/fondos/${nombreFondo}`;
-  fondoEscenario.alt = escenarioActual === 2
-    ? "Cumbres Celestes"
-    : escenarioActual === 1
-      ? "Desierto Perdido"
-      : "Bosque Encantado";
+  fondoEscenario.alt = escenarioActual === 3
+    ? "Reino del Invierno Eterno"
+    : escenarioActual === 2
+      ? "Cumbres Celestes"
+      : escenarioActual === 1
+        ? "Desierto Perdido"
+        : "Bosque Encantado";
   actualizarBloqueoTroncoMision();
   actualizarVientoArenaMision();
   actualizarVidaDesiertoMision();
   actualizarLlegadaDesiertoMision();
   actualizarPersonajesNarrativosDesierto();
   actualizarPersonajesNarrativosCumbres();
+  actualizarPersonajesNarrativosHielo();
   volverEstadoBaseExplorador();
+}
+
+function actualizarPersonajesNarrativosHielo() {
+  contenedorEscenario
+    .querySelectorAll(".personaje-narrativo-hielo, .ambiente-hielo")
+    .forEach((elemento) => elemento.remove());
+  if (escenarioActual !== 3) return;
+
+  const ambiente = document.createElement("div");
+  ambiente.className = "ambiente-hielo";
+  ambiente.setAttribute("aria-hidden", "true");
+  ambiente.innerHTML = "<i></i><i></i><i></i><i></i>";
+  contenedorEscenario.appendChild(ambiente);
+
+  if (![5, 9].includes(misionActual)) return;
+  const nivor = document.createElement("img");
+  nivor.className = `personaje-narrativo-hielo nivor-hielo nivor-hielo-${misionActual + 1}`;
+  nivor.src = misionActual === 9
+    ? srcDragonHieloAtaqueVersus
+    : srcDragonHieloBaseVersus;
+  nivor.alt = misionActual === 9
+    ? "Nivor invocando el Cero Absoluto"
+    : "Nivor, guardián del Reino del Invierno Eterno";
+  contenedorEscenario.appendChild(nivor);
 }
 
 function actualizarPersonajesNarrativosCumbres() {
@@ -11405,6 +11729,8 @@ function obtenerTipoPruebaEspecial(escenario, mision) {
   if (escenario === 2 && mision === 1) return "sopa-celeste";
   if (escenario === 2 && mision === 3) return "campanas-celestes";
   if (escenario === 2 && mision === 8) return "sellos-aeralis";
+  if (escenario === 3 && mision === 1) return "placas-hielo";
+  if (escenario === 3 && mision === 7) return "corazon-termico";
   return "";
 }
 
@@ -11426,6 +11752,12 @@ function obtenerDueloAventuraPendiente() {
   if (escenarioActual === 2 && misionActual === 9 && !mundoTresCompletado) {
     return "nimbus_cumbres";
   }
+  if (escenarioActual === 3 && misionActual === 5 && !primerDueloNivorCompletado) {
+    return "nivor_glacial";
+  }
+  if (escenarioActual === 3 && misionActual === 9 && !mundoCuatroCompletado) {
+    return "nivor_cero_absoluto";
+  }
   return "";
 }
 
@@ -11444,14 +11776,16 @@ function abrirPruebaEspecialBosque(tipo) {
     "campanas-celestes",
     "sellos-aeralis",
   ].includes(tipo);
+  const esPruebaHielo = ["placas-hielo", "corazon-termico"].includes(tipo);
   modalPruebaBosque.classList.toggle("prueba-cumbres", esPruebaCumbres);
+  modalPruebaBosque.classList.toggle("prueba-hielo", esPruebaHielo);
   pantallaJuego.classList.add("prueba-bosque-activa");
   puzzleRamasDeslizante.classList.toggle("oculto", tipo !== "ramas");
   puzzleMemoriaLobos.classList.toggle("oculto", tipo !== "lobos");
   puzzleVientosDesierto.classList.toggle("oculto", tipo !== "vientos");
   puzzleOasisDesierto.classList.toggle("oculto", tipo !== "oasis");
   puzzleEspejosDesierto.classList.toggle("oculto", tipo !== "espejos");
-  puzzleCumbres.classList.toggle("oculto", !esPruebaCumbres);
+  puzzleCumbres.classList.toggle("oculto", !(esPruebaCumbres || esPruebaHielo));
   btnRepetirPruebaBosque.disabled = false;
   btnSalirPruebaBosque.disabled = false;
 
@@ -11495,6 +11829,11 @@ function abrirPruebaEspecialBosque(tipo) {
     return;
   }
 
+  if (esPruebaHielo) {
+    iniciarPuzzleCumbres(tipo);
+    return;
+  }
+
   if (esPruebaCumbres) {
     iniciarPuzzleCumbres(tipo);
     return;
@@ -11528,6 +11867,7 @@ function cerrarPruebaEspecialBosque() {
     "prueba-completada",
     "prueba-desierto",
     "prueba-cumbres",
+    "prueba-hielo",
   );
   pantallaJuego.classList.remove("prueba-bosque-activa");
   const focoAnterior = focoPrevioPruebaBosque;
@@ -11585,6 +11925,12 @@ let punteroSopaCumbresActivo = false;
 function iniciarPuzzleCumbres(tipo) {
   if (pruebaEspecialBosqueActiva !== tipo) return;
   puzzleCumbres.className = `puzzle-cumbres puzzle-${tipo}`;
+  puzzleCumbres.setAttribute(
+    "aria-label",
+    ["placas-hielo", "corazon-termico"].includes(tipo)
+      ? "Prueba del Reino del Invierno Eterno"
+      : "Prueba de Cumbres Celestes",
+  );
   puzzleCumbres.replaceChildren();
   botonesPuzzleCumbres = [];
   btnRepetirPruebaBosque.textContent = "↻ Reiniciar prueba";
@@ -11595,7 +11941,154 @@ function iniciarPuzzleCumbres(tipo) {
     iniciarCampanasCelestes();
   } else if (tipo === "sellos-aeralis") {
     iniciarSellosAeralis();
+  } else if (tipo === "placas-hielo") {
+    iniciarPlacasHielo();
+  } else if (tipo === "corazon-termico") {
+    iniciarCorazonTermico();
   }
+}
+
+const rutasPlacasHielo = Object.freeze([
+  Object.freeze([12, 8, 9, 5]),
+  Object.freeze([13, 9, 10, 6, 2]),
+  Object.freeze([15, 14, 10, 9, 5, 1]),
+]);
+
+function esperarPuzzleHielo(milisegundos) {
+  return new Promise((resolver) => window.setTimeout(resolver, milisegundos));
+}
+
+function iniciarPlacasHielo() {
+  etiquetaPruebaBosque.textContent = "PRUEBA DEL LAGO DE CRISTAL";
+  tituloPruebaBosque.textContent = "Recordá el camino seguro";
+  instruccionPruebaBosque.textContent =
+    "Mirá qué placas se iluminan. Cuando la nieve las cubra, tocá el recorrido en el mismo orden sin pisar el hielo quebradizo.";
+  btnRepetirPruebaBosque.textContent = "👁 Volver a observar";
+  rondaPlacasHielo = 0;
+  void prepararRondaPlacasHielo();
+}
+
+async function prepararRondaPlacasHielo() {
+  if (pruebaEspecialBosqueActiva !== "placas-hielo") return;
+  const secuencia = ++secuenciaPruebaBosque;
+  const ruta = rutasPlacasHielo[rondaPlacasHielo];
+  pasoPlacasHielo = 0;
+  placasHieloAceptando = false;
+  puzzleCumbres.replaceChildren();
+
+  const progreso = document.createElement("div");
+  progreso.className = "progreso-placas-hielo";
+  progreso.innerHTML = rutasPlacasHielo
+    .map((_, indice) => `<span class="${indice < rondaPlacasHielo ? "completada" : indice === rondaPlacasHielo ? "actual" : ""}"></span>`)
+    .join("");
+  const tablero = document.createElement("div");
+  tablero.className = "tablero-placas-hielo";
+  tablero.setAttribute("role", "grid");
+  tablero.setAttribute("aria-label", `Lago congelado, ronda ${rondaPlacasHielo + 1} de 3`);
+  botonesPuzzleCumbres = Array.from({ length: 16 }, (_, indice) => {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "placa-hielo";
+    boton.setAttribute("aria-label", `Placa ${indice + 1}`);
+    boton.disabled = true;
+    boton.addEventListener("click", () => elegirPlacaHielo(indice));
+    tablero.appendChild(boton);
+    return boton;
+  });
+  puzzleCumbres.append(progreso, tablero);
+  estadoPruebaBosque.textContent = `Ronda ${rondaPlacasHielo + 1} de 3 · Memorizá las placas iluminadas.`;
+  ruta.forEach((indice, orden) => {
+    botonesPuzzleCumbres[indice].classList.add("segura");
+    botonesPuzzleCumbres[indice].style.setProperty("--orden-placa", `${orden}`);
+  });
+
+  await esperarPuzzleHielo(prefiereReducirMovimiento.matches ? 500 : 1800);
+  if (secuencia !== secuenciaPruebaBosque || pruebaEspecialBosqueActiva !== "placas-hielo") return;
+  botonesPuzzleCumbres.forEach((boton) => {
+    boton.classList.remove("segura");
+    boton.disabled = false;
+  });
+  placasHieloAceptando = true;
+  estadoPruebaBosque.textContent = `Ronda ${rondaPlacasHielo + 1} de 3 · Repetí el camino antes de que se quiebre.`;
+  botonesPuzzleCumbres[ruta[0]]?.focus();
+}
+
+function elegirPlacaHielo(indice) {
+  if (!placasHieloAceptando || pruebaEspecialBosqueActiva !== "placas-hielo") return;
+  const ruta = rutasPlacasHielo[rondaPlacasHielo];
+  if (indice !== ruta[pasoPlacasHielo]) {
+    placasHieloAceptando = false;
+    botonesPuzzleCumbres[indice]?.classList.add("quebrada");
+    botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
+    estadoPruebaBosque.textContent = "Esa placa se quebró. La nieve volverá a mostrarte el camino.";
+    window.setTimeout(() => void prepararRondaPlacasHielo(), 900);
+    return;
+  }
+
+  botonesPuzzleCumbres[indice].classList.add("pisada");
+  botonesPuzzleCumbres[indice].disabled = true;
+  pasoPlacasHielo += 1;
+  if (pasoPlacasHielo < ruta.length) return;
+
+  placasHieloAceptando = false;
+  botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
+  rondaPlacasHielo += 1;
+  if (rondaPlacasHielo >= rutasPlacasHielo.length) {
+    estadoPruebaBosque.textContent = "¡Cruzaste el lago antes de que la ventisca borrara el camino!";
+    window.setTimeout(() => void completarPruebaEspecialBosque("placas-hielo"), 650);
+    return;
+  }
+  estadoPruebaBosque.textContent = `¡Bien! La ronda ${rondaPlacasHielo + 1} tendrá un camino más largo.`;
+  window.setTimeout(() => void prepararRondaPlacasHielo(), 800);
+}
+
+function iniciarCorazonTermico() {
+  etiquetaPruebaBosque.textContent = "PRUEBA DEL CORAZÓN TÉRMICO";
+  tituloPruebaBosque.textContent = "Equilibrá los tres núcleos";
+  instruccionPruebaBosque.textContent =
+    "Cada toque cambia un núcleo y también el siguiente. Dejá los tres en celeste estable: ni congelados ni sobrecargados.";
+  btnRepetirPruebaBosque.textContent = "↻ Reiniciar núcleos";
+  estadosCorazonTermico = [2, 0, 2];
+  movimientosCorazonTermico = 0;
+  renderizarCorazonTermico();
+}
+
+function renderizarCorazonTermico() {
+  puzzleCumbres.replaceChildren();
+  const maquina = document.createElement("div");
+  maquina.className = "maquina-corazon-termico";
+  maquina.setAttribute("role", "group");
+  maquina.setAttribute("aria-label", "Tres núcleos térmicos vinculados");
+  botonesPuzzleCumbres = estadosCorazonTermico.map((estado, indice) => {
+    const boton = document.createElement("button");
+    const nombres = ["congelado", "estable", "sobrecargado"];
+    boton.type = "button";
+    boton.className = `nucleo-termico estado-${nombres[estado]}`;
+    boton.innerHTML = `<span></span><strong>Núcleo ${indice + 1}</strong><small>${nombres[estado]}</small>`;
+    boton.setAttribute("aria-label", `Núcleo ${indice + 1}: ${nombres[estado]}`);
+    boton.addEventListener("click", () => ajustarNucleoTermico(indice));
+    maquina.appendChild(boton);
+    return boton;
+  });
+  const contador = document.createElement("p");
+  contador.className = "movimientos-corazon-termico";
+  contador.textContent = `${movimientosCorazonTermico} ajustes`;
+  puzzleCumbres.append(maquina, contador);
+  estadoPruebaBosque.textContent = estadosCorazonTermico.every((estado) => estado === 1)
+    ? "¡El corazón térmico está estable!"
+    : "Ajustá los núcleos. Cada control también modifica el siguiente.";
+}
+
+function ajustarNucleoTermico(indice) {
+  if (pruebaEspecialBosqueActiva !== "corazon-termico") return;
+  estadosCorazonTermico[indice] = (estadosCorazonTermico[indice] + 1) % 3;
+  const siguiente = (indice + 1) % estadosCorazonTermico.length;
+  estadosCorazonTermico[siguiente] = (estadosCorazonTermico[siguiente] + 1) % 3;
+  movimientosCorazonTermico += 1;
+  renderizarCorazonTermico();
+  if (!estadosCorazonTermico.every((estado) => estado === 1)) return;
+  botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
+  window.setTimeout(() => void completarPruebaEspecialBosque("corazon-termico"), 700);
 }
 
 function iniciarSopaCeleste() {
