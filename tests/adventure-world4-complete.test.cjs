@@ -45,7 +45,21 @@ while (colaLaberinto.length) {
     }
   }
 }
-assert.ok(longitudCaminoLaberinto >= 60, `El camino del laberinto debe ser largo; mide ${longitudCaminoLaberinto}`);
+let callejonesLaberinto = 0;
+let bifurcacionesLaberinto = 0;
+for (let fila = 1; fila < mapaHielo.length - 1; fila += 1) {
+  for (let columna = 1; columna < mapaHielo[fila].length - 1; columna += 1) {
+    if (mapaHielo[fila][columna] !== "0") continue;
+    const salidas = [[1, 0], [-1, 0], [0, 1], [0, -1]].filter(
+      ([deltaFila, deltaColumna]) => mapaHielo[fila + deltaFila]?.[columna + deltaColumna] === "0",
+    ).length;
+    if (salidas === 1) callejonesLaberinto += 1;
+    if (salidas >= 3) bifurcacionesLaberinto += 1;
+  }
+}
+assert.ok(longitudCaminoLaberinto >= 80, `El camino del laberinto debe ser largo; mide ${longitudCaminoLaberinto}`);
+assert.ok(callejonesLaberinto >= 8, `El laberinto necesita callejones sin salida; tiene ${callejonesLaberinto}`);
+assert.ok(bifurcacionesLaberinto >= 6, `El laberinto necesita bifurcaciones; tiene ${bifurcacionesLaberinto}`);
 assert.match(app, /function iniciarLaberintoHielo\(/);
 assert.match(app, /DeviceOrientationEvent\?\.requestPermission/);
 assert.match(app, /window\.addEventListener\("deviceorientation"/);
@@ -96,6 +110,6 @@ assert.match(css, /\.cristal-panel-glacial/);
 assert.match(app, /mundoCuatroCompletado,/);
 assert.match(app, /primerDueloNivorCompletado,/);
 assert.match(app, /finalMundoCuatroCompletado[\s\S]*?Mundo 5 · Próximamente/);
-assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v202`/);
+assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v203`/);
 
 console.log("World 4 adventure checks passed");

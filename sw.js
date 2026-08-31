@@ -1,6 +1,7 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v202`;
+const CACHE_NAME = `${CACHE_PREFIX}v203`;
 const LEGACY_CACHE_NAMES = new Set([
+  `${CACHE_PREFIX}v202`,
   `${CACHE_PREFIX}v201`,
   `${CACHE_PREFIX}v200`,
   `${CACHE_PREFIX}v199`,
@@ -458,10 +459,10 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260831-laberinto-hielo-5",
-  "./index.html": "20260831-laberinto-hielo-5",
-  "./css/styles.css": "20260831-laberinto-hielo-5",
-  "./js/app.js": "20260831-laberinto-hielo-5",
+  "./": "20260831-laberinto-hielo-6",
+  "./index.html": "20260831-laberinto-hielo-6",
+  "./css/styles.css": "20260831-laberinto-hielo-6",
+  "./js/app.js": "20260831-laberinto-hielo-6",
   "./js/pwa.js": "20260827-modos-locales-offline-1",
   "./js/supabase-loader.js": "20260827-supabase-diferido-1",
   "./assets/images/ui/presentacion-mision-cumbres-v1.png": "20260827-soporte-cumbres-1",
