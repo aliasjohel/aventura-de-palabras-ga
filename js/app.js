@@ -324,9 +324,11 @@ let secuenciaCampanasCumbres = 0;
 let rondaSellosCumbres = 0;
 let indicesSellosCumbres = [];
 let secuenciaPistaSellosCumbres = 0;
-let rondaPlacasHielo = 0;
-let pasoPlacasHielo = 0;
-let placasHieloAceptando = false;
+let cuadroLaberintoHielo = null;
+let escuchandoInclinacionLaberinto = false;
+let controlesLaberintoHielo = { x: 0, y: 0 };
+let inclinacionLaberintoHielo = { x: 0, y: 0 };
+let laberintoHieloCompletado = false;
 let estadosCorazonTermico = [];
 let movimientosCorazonTermico = 0;
 const estadoPruebaBosque = document.getElementById("estadoPruebaBosque");
@@ -528,6 +530,7 @@ let audioDesbloqueado = false;
 let ambienteActual = "";
 let temporizadorCrujidoPuente = null;
 const instanciasSonidoVersus = new Set();
+let contextoAudioTeclasVersus = null;
 const debugAudio = true;
 
 function reproducirSonidoVersus(nombre, volumen = 0.68) {
@@ -546,6 +549,30 @@ function reproducirSonidoVersus(nombre, volumen = 0.68) {
     liberar();
     logAudio(`${nombre} versus bloqueado`, error);
   });
+}
+
+function reproducirPulsacionTeclaVersus(origen = "jugador") {
+  const ConstructorAudio = window.AudioContext || window.webkitAudioContext;
+  if (!ConstructorAudio) return;
+
+  contextoAudioTeclasVersus ||= new ConstructorAudio();
+  if (contextoAudioTeclasVersus.state === "suspended") {
+    void contextoAudioTeclasVersus.resume();
+  }
+
+  const ahora = contextoAudioTeclasVersus.currentTime;
+  const oscilador = contextoAudioTeclasVersus.createOscillator();
+  const ganancia = contextoAudioTeclasVersus.createGain();
+  oscilador.type = "triangle";
+  oscilador.frequency.setValueAtTime(origen === "rival" ? 185 : 245, ahora);
+  oscilador.frequency.exponentialRampToValueAtTime(origen === "rival" ? 118 : 165, ahora + 0.055);
+  ganancia.gain.setValueAtTime(0.0001, ahora);
+  ganancia.gain.exponentialRampToValueAtTime(origen === "rival" ? 0.075 : 0.055, ahora + 0.006);
+  ganancia.gain.exponentialRampToValueAtTime(0.0001, ahora + 0.075);
+  oscilador.connect(ganancia);
+  ganancia.connect(contextoAudioTeclasVersus.destination);
+  oscilador.start(ahora);
+  oscilador.stop(ahora + 0.08);
 }
 
 function detenerSonidosVersus() {
@@ -581,8 +608,6 @@ const sonidosNarrativosPorMision = {
 
 const duracionTransicionHistoria = 300;
 const duracionCierrePresentacionMision = 1350;
-const duracionPresentacionMision = 8200;
-const duracionPresentacionMisionReducida = 5000;
 const duracionCaminataExplorador = 1200;
 const duracionCrucePuente = 3600;
 const duracionFadeEscenarioSalida = 250;
@@ -986,12 +1011,12 @@ const historiaCumbres = [
 
 const historiaHielo = [
   { capitulo: "Misión 1", titulo: "La huella borrada", texto: "Aeralis deja a Aren sobre la nieve y emprende el regreso hacia Cumbres Celestes. Una ventisca repentina borra el camino detrás de él. Desde una cresta de hielo, dos ojos azules observan cada uno de sus pasos." },
-  { capitulo: "Misión 2", titulo: "El lago de cristal", texto: "El sendero termina frente a un lago congelado. Algunas placas pueden sostener a Aren, pero otras se quebrarán al tocarlas. La tormenta cubre rápidamente las señales del camino seguro." },
+  { capitulo: "Misión 2", titulo: "El lago de cristal", texto: "El sendero termina frente a un lago congelado. Aren sigue las huellas que la ventisca deja ver por instantes y alcanza la otra orilla justo antes de que el hielo comience a resquebrajarse." },
   { capitulo: "Misión 3", titulo: "Las criaturas de la escarcha", texto: "Huellas luminosas atraviesan un bosque congelado. Las criaturas del lugar están alteradas por una fuerza que convierte ramas, garras y colmillos en cristal." },
   { capitulo: "Misión 4", titulo: "La aldea detenida", texto: "Aren encuentra una aldea completa atrapada dentro del hielo. Sus faroles aún brillan y sus relojes se detuvieron al mismo tiempo. En una torre aparece una marca oscura que no pertenece a Nivor." },
   { capitulo: "Misión 5", titulo: "El observatorio boreal", texto: "Los instrumentos del observatorio registraron el comienzo del deshielo. Entre sus mapas, Aren descubre que alguien provocó el desastre antes de ofrecerle a Nivor el poder para detenerlo." },
   { capitulo: "Misión 6", titulo: "El Guardián del Invierno", texto: "Nivor desciende sobre el observatorio y acusa a Aren de querer destruir el último refugio de los dragones boreales. No aceptará explicaciones: para continuar, Aren deberá enfrentarlo directamente." },
-  { capitulo: "Misión 7", titulo: "El último huevo boreal", texto: "Tras el combate, Aren entra en la fortaleza y encuentra un huevo de dragón encerrado por hielo negro. Azrak lo convirtió en rehén para asegurarse de que Nivor mantuviera el invierno eterno." },
+  { capitulo: "Misión 7", titulo: "El último huevo boreal", texto: "Tras el combate, Aren entra en la fortaleza y encuentra el último huevo de dragón atrapado en un laberinto de hielo negro. Deberá inclinar el antiguo mecanismo y guiarlo con cuidado hasta el nido para liberarlo." },
   { capitulo: "Misión 8", titulo: "El corazón térmico", texto: "Tres núcleos alimentan la tormenta que cubre el reino. Aren deberá equilibrar su energía: demasiado frío congelará el mecanismo y demasiado calor quebrará la fortaleza." },
   { capitulo: "Misión 9", titulo: "La verdad bajo el glaciar", texto: "En la cámara más profunda, Aren encuentra la prueba definitiva: Azrak causó el deshielo y después utilizó el miedo de Nivor para robar energía del Cristal Glacial." },
   { capitulo: "Misión 10", titulo: "Cero Absoluto", texto: "Nivor contempla la prueba, pero aceptar la verdad significaría reconocer todo el daño que causó. Consumido por la culpa y el orgullo, desata Cero Absoluto y desafía a Aren por última vez." },
@@ -1734,6 +1759,9 @@ function procesarEventoPartidaOnline(partida) {
   const propio = evento.actorId === partida.me?.userId;
   const estadoPropio = document.getElementById("estadoProgresoUno");
   const estadoRival = document.getElementById("estadoProgresoDos");
+  if (!propio && ["hit", "miss", "word_complete"].includes(evento.type)) {
+    reproducirPulsacionTeclaVersus("rival");
+  }
 
   if (evento.type === "hit") {
     mostrarEstadoProgresoVersus(propio ? estadoPropio : estadoRival, propio ? "¡Acierto!" : "El rival acertó", "acierto");
@@ -3104,7 +3132,7 @@ btnRepetirPruebaBosque.addEventListener("click", () => {
     iniciarPuzzleEspejosDesierto();
   } else if (["sopa-celeste", "campanas-celestes", "sellos-aeralis"].includes(pruebaEspecialBosqueActiva)) {
     iniciarPuzzleCumbres(pruebaEspecialBosqueActiva);
-  } else if (["placas-hielo", "corazon-termico"].includes(pruebaEspecialBosqueActiva)) {
+  } else if (["laberinto-hielo", "corazon-termico"].includes(pruebaEspecialBosqueActiva)) {
     iniciarPuzzleCumbres(pruebaEspecialBosqueActiva);
   }
 });
@@ -5924,6 +5952,7 @@ function comenzarRondaVersus() {
 }
 
 async function jugarLetraVersus(letra, boton) {
+  if (!boton.disabled) reproducirPulsacionTeclaVersus("jugador");
   if (adaptadorSalasVersus.proveedor !== "supabase") {
     jugarLetraDemoVersus(letra, boton);
     return;
@@ -6910,6 +6939,7 @@ function jugarTurnoRivalVersus() {
   const letra = demoVersus.pistaLupaRival
     || opciones[Math.floor(Math.random() * opciones.length)];
   if (!letra) return;
+  reproducirPulsacionTeclaVersus("rival");
   demoVersus.pistaLupaRival = "";
 
   const turno = VersusEngine.evaluarLetra({
@@ -8216,7 +8246,7 @@ function esperarAnimacionNarrativa(animacion) {
 
 function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
   const historia = obtenerHistoriaMision();
-  const secuenciaActual = ++secuenciaPresentacionMision;
+  secuenciaPresentacionMision += 1;
   const esHistoriaDesierto = escenarioActual === 1;
   const esHistoriaCumbres = escenarioActual === 2;
   const esHistoriaHielo = escenarioActual === 3;
@@ -8227,9 +8257,11 @@ function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
   modalHistoria.classList.toggle("historia-hielo", esHistoriaHielo);
   imagenSoporteMision.src = esHistoriaDesierto
     ? "assets/images/ui/presentacion-mision-piedra-desierto-v1.png"
-    : esHistoriaCumbres || esHistoriaHielo
-      ? "assets/images/ui/presentacion-mision-cumbres-v1.png"
-      : "assets/images/ui/presentacion-mision-tronco.png";
+    : esHistoriaHielo
+      ? "assets/images/ui/presentacion-mision-hielo-v1.png"
+      : esHistoriaCumbres
+        ? "assets/images/ui/presentacion-mision-cumbres-v1.png"
+        : "assets/images/ui/presentacion-mision-tronco.png";
   numeroCapitulo.textContent = historia.capitulo;
   tituloCapitulo.textContent = historia.titulo;
   textoCapitulo.textContent = historia.texto;
@@ -8245,18 +8277,8 @@ function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
     { saltarSoloCartel: true },
   );
 
-  const duracion = prefiereReducirMovimiento.matches
-    ? duracionPresentacionMisionReducida
-    : duracionPresentacionMision;
-
-  window.setTimeout(() => {
-    const presentacionSigueActiva =
-      secuenciaActual === secuenciaPresentacionMision &&
-      !modalHistoria.classList.contains("oculto") &&
-      !transicionEscenaActiva;
-
-    if (presentacionSigueActiva) btnContinuarHistoria.click();
-  }, duracion);
+  // El cartel permanece visible hasta que el jugador elige "Saltar".
+  // No usamos un temporizador: cada persona puede leer la historia a su ritmo.
 }
 
 function navegarMisionDev(direccion) {
@@ -11729,7 +11751,7 @@ function obtenerTipoPruebaEspecial(escenario, mision) {
   if (escenario === 2 && mision === 1) return "sopa-celeste";
   if (escenario === 2 && mision === 3) return "campanas-celestes";
   if (escenario === 2 && mision === 8) return "sellos-aeralis";
-  if (escenario === 3 && mision === 1) return "placas-hielo";
+  if (escenario === 3 && mision === 6) return "laberinto-hielo";
   if (escenario === 3 && mision === 7) return "corazon-termico";
   return "";
 }
@@ -11776,7 +11798,7 @@ function abrirPruebaEspecialBosque(tipo) {
     "campanas-celestes",
     "sellos-aeralis",
   ].includes(tipo);
-  const esPruebaHielo = ["placas-hielo", "corazon-termico"].includes(tipo);
+  const esPruebaHielo = ["laberinto-hielo", "corazon-termico"].includes(tipo);
   modalPruebaBosque.classList.toggle("prueba-cumbres", esPruebaCumbres);
   modalPruebaBosque.classList.toggle("prueba-hielo", esPruebaHielo);
   pantallaJuego.classList.add("prueba-bosque-activa");
@@ -11850,6 +11872,7 @@ function abrirPruebaEspecialBosque(tipo) {
 function cerrarPruebaEspecialBosque() {
   if (!pruebaEspecialBosqueActiva) return;
 
+  detenerLaberintoHielo();
   secuenciaPruebaBosque += 1;
   secuenciaCampanasCumbres += 1;
   punteroSopaCumbresActivo = false;
@@ -11927,7 +11950,7 @@ function iniciarPuzzleCumbres(tipo) {
   puzzleCumbres.className = `puzzle-cumbres puzzle-${tipo}`;
   puzzleCumbres.setAttribute(
     "aria-label",
-    ["placas-hielo", "corazon-termico"].includes(tipo)
+    ["laberinto-hielo", "corazon-termico"].includes(tipo)
       ? "Prueba del Reino del Invierno Eterno"
       : "Prueba de Cumbres Celestes",
   );
@@ -11941,105 +11964,215 @@ function iniciarPuzzleCumbres(tipo) {
     iniciarCampanasCelestes();
   } else if (tipo === "sellos-aeralis") {
     iniciarSellosAeralis();
-  } else if (tipo === "placas-hielo") {
-    iniciarPlacasHielo();
+  } else if (tipo === "laberinto-hielo") {
+    iniciarLaberintoHielo();
   } else if (tipo === "corazon-termico") {
     iniciarCorazonTermico();
   }
 }
 
-const rutasPlacasHielo = Object.freeze([
-  Object.freeze([12, 8, 9, 5]),
-  Object.freeze([13, 9, 10, 6, 2]),
-  Object.freeze([15, 14, 10, 9, 5, 1]),
+const mapaLaberintoHielo = Object.freeze([
+  "11111111111111111",
+  "10000010000010001",
+  "11111010111011101",
+  "10001010101000101",
+  "10101010101110101",
+  "10101010100000101",
+  "10101010101111101",
+  "10101000100010001",
+  "10101111111011101",
+  "10100000100010001",
+  "10111010101110101",
+  "10001010100010101",
+  "11101011111010101",
+  "10001000000010101",
+  "10111111111110101",
+  "10000000000000101",
+  "11111111111111111",
 ]);
+const ladoLaberintoHielo = mapaLaberintoHielo.length;
+const estadoLaberintoHielo = { x: 1.5, y: 1.5, vx: 0, vy: 0, ultimoTiempo: 0 };
 
 function esperarPuzzleHielo(milisegundos) {
   return new Promise((resolver) => window.setTimeout(resolver, milisegundos));
 }
 
-function iniciarPlacasHielo() {
-  etiquetaPruebaBosque.textContent = "PRUEBA DEL LAGO DE CRISTAL";
-  tituloPruebaBosque.textContent = "Recordá el camino seguro";
-  instruccionPruebaBosque.textContent =
-    "Mirá qué placas se iluminan. Cuando la nieve las cubra, tocá el recorrido en el mismo orden sin pisar el hielo quebradizo.";
-  btnRepetirPruebaBosque.textContent = "👁 Volver a observar";
-  rondaPlacasHielo = 0;
-  void prepararRondaPlacasHielo();
+function detenerLaberintoHielo() {
+  if (cuadroLaberintoHielo) cancelAnimationFrame(cuadroLaberintoHielo);
+  cuadroLaberintoHielo = null;
+  window.removeEventListener("deviceorientation", leerInclinacionLaberintoHielo);
+  window.removeEventListener("keydown", manejarTeclaLaberintoHielo);
+  window.removeEventListener("keyup", manejarTeclaLaberintoHielo);
+  escuchandoInclinacionLaberinto = false;
+  controlesLaberintoHielo = { x: 0, y: 0 };
+  inclinacionLaberintoHielo = { x: 0, y: 0 };
 }
 
-async function prepararRondaPlacasHielo() {
-  if (pruebaEspecialBosqueActiva !== "placas-hielo") return;
-  const secuencia = ++secuenciaPruebaBosque;
-  const ruta = rutasPlacasHielo[rondaPlacasHielo];
-  pasoPlacasHielo = 0;
-  placasHieloAceptando = false;
-  puzzleCumbres.replaceChildren();
+function leerInclinacionLaberintoHielo(evento) {
+  const beta = Math.max(-35, Math.min(35, Number(evento.beta) || 0)) / 24;
+  const gamma = Math.max(-35, Math.min(35, Number(evento.gamma) || 0)) / 24;
+  const angulo = Number(screen.orientation?.angle || window.orientation || 0);
+  if (angulo === 90) inclinacionLaberintoHielo = { x: beta, y: -gamma };
+  else if (angulo === -90 || angulo === 270) inclinacionLaberintoHielo = { x: -beta, y: gamma };
+  else if (Math.abs(angulo) === 180) inclinacionLaberintoHielo = { x: -gamma, y: -beta };
+  else inclinacionLaberintoHielo = { x: gamma, y: beta };
+}
 
-  const progreso = document.createElement("div");
-  progreso.className = "progreso-placas-hielo";
-  progreso.innerHTML = rutasPlacasHielo
-    .map((_, indice) => `<span class="${indice < rondaPlacasHielo ? "completada" : indice === rondaPlacasHielo ? "actual" : ""}"></span>`)
-    .join("");
+function manejarTeclaLaberintoHielo(evento) {
+  if (pruebaEspecialBosqueActiva !== "laberinto-hielo") return;
+  const valor = evento.type === "keydown" ? 1 : 0;
+  if (evento.key === "ArrowLeft") controlesLaberintoHielo.x = -valor;
+  else if (evento.key === "ArrowRight") controlesLaberintoHielo.x = valor;
+  else if (evento.key === "ArrowUp") controlesLaberintoHielo.y = -valor;
+  else if (evento.key === "ArrowDown") controlesLaberintoHielo.y = valor;
+  else return;
+  evento.preventDefault();
+}
+
+function hayChoqueLaberintoHielo(x, y) {
+  const radio = 0.27;
+  for (let fila = Math.floor(y - radio); fila <= Math.floor(y + radio); fila += 1) {
+    for (let columna = Math.floor(x - radio); columna <= Math.floor(x + radio); columna += 1) {
+      if (mapaLaberintoHielo[fila]?.[columna] !== "1") continue;
+      const cercanoX = Math.max(columna, Math.min(x, columna + 1));
+      const cercanoY = Math.max(fila, Math.min(y, fila + 1));
+      if ((x - cercanoX) ** 2 + (y - cercanoY) ** 2 < radio ** 2) return true;
+    }
+  }
+  return false;
+}
+
+function dibujarHuevoLaberintoHielo() {
+  const huevo = puzzleCumbres.querySelector(".huevo-laberinto-hielo");
+  if (!huevo) return;
+  huevo.style.setProperty("--huevo-x", `${(estadoLaberintoHielo.x / ladoLaberintoHielo) * 100}%`);
+  huevo.style.setProperty("--huevo-y", `${(estadoLaberintoHielo.y / ladoLaberintoHielo) * 100}%`);
+  huevo.style.setProperty("--giro-huevo", `${estadoLaberintoHielo.vx * 16}deg`);
+}
+
+function animarLaberintoHielo(tiempo) {
+  if (pruebaEspecialBosqueActiva !== "laberinto-hielo" || laberintoHieloCompletado) return;
+  const delta = estadoLaberintoHielo.ultimoTiempo
+    ? Math.min(0.034, (tiempo - estadoLaberintoHielo.ultimoTiempo) / 1000)
+    : 0.016;
+  estadoLaberintoHielo.ultimoTiempo = tiempo;
+  const fuerzaX = controlesLaberintoHielo.x || inclinacionLaberintoHielo.x;
+  const fuerzaY = controlesLaberintoHielo.y || inclinacionLaberintoHielo.y;
+  estadoLaberintoHielo.vx = (estadoLaberintoHielo.vx + fuerzaX * 7.2 * delta) * 0.975;
+  estadoLaberintoHielo.vy = (estadoLaberintoHielo.vy + fuerzaY * 7.2 * delta) * 0.975;
+  const velocidad = Math.hypot(estadoLaberintoHielo.vx, estadoLaberintoHielo.vy);
+  if (velocidad > 4.2) {
+    estadoLaberintoHielo.vx *= 4.2 / velocidad;
+    estadoLaberintoHielo.vy *= 4.2 / velocidad;
+  }
+
+  const siguienteX = estadoLaberintoHielo.x + estadoLaberintoHielo.vx * delta;
+  if (!hayChoqueLaberintoHielo(siguienteX, estadoLaberintoHielo.y)) estadoLaberintoHielo.x = siguienteX;
+  else estadoLaberintoHielo.vx *= -0.24;
+  const siguienteY = estadoLaberintoHielo.y + estadoLaberintoHielo.vy * delta;
+  if (!hayChoqueLaberintoHielo(estadoLaberintoHielo.x, siguienteY)) estadoLaberintoHielo.y = siguienteY;
+  else estadoLaberintoHielo.vy *= -0.24;
+  dibujarHuevoLaberintoHielo();
+
+  if (Math.hypot(
+    estadoLaberintoHielo.x - 1.5,
+    estadoLaberintoHielo.y - (ladoLaberintoHielo - 1.5),
+  ) < 0.42) {
+    laberintoHieloCompletado = true;
+    puzzleCumbres.querySelector(".meta-laberinto-hielo")?.classList.add("rescatado");
+    estadoPruebaBosque.textContent = "¡El huevo llegó a salvo al nido boreal!";
+    detenerLaberintoHielo();
+    window.setTimeout(() => void completarPruebaEspecialBosque("laberinto-hielo"), 650);
+    return;
+  }
+  cuadroLaberintoHielo = requestAnimationFrame(animarLaberintoHielo);
+}
+
+async function activarInclinacionLaberintoHielo(boton) {
+  try {
+    if (typeof window.DeviceOrientationEvent?.requestPermission === "function") {
+      const permiso = await window.DeviceOrientationEvent.requestPermission();
+      if (permiso !== "granted") throw new Error("permiso-denegado");
+    }
+    if (!escuchandoInclinacionLaberinto) {
+      window.addEventListener("deviceorientation", leerInclinacionLaberintoHielo, { passive: true });
+      escuchandoInclinacionLaberinto = true;
+    }
+    boton.textContent = "✓ Inclinación activa";
+    boton.disabled = true;
+    estadoPruebaBosque.textContent = "Incliná suavemente el teléfono y llevá el huevo hasta el nido.";
+  } catch (_error) {
+    estadoPruebaBosque.textContent = "No se pudo activar el sensor. Usá las flechas para guiar el huevo.";
+  }
+}
+
+function iniciarLaberintoHielo() {
+  detenerLaberintoHielo();
+  etiquetaPruebaBosque.textContent = "PRUEBA DEL ÚLTIMO HUEVO";
+  tituloPruebaBosque.textContent = "Guiá el huevo por el laberinto";
+  instruccionPruebaBosque.textContent =
+    "Incliná el celular para hacerlo rodar hasta el nido. También podés usar las flechas de la pantalla o del teclado.";
+  btnRepetirPruebaBosque.textContent = "↻ Volver al inicio";
+  laberintoHieloCompletado = false;
+  Object.assign(estadoLaberintoHielo, { x: 1.5, y: 1.5, vx: 0, vy: 0, ultimoTiempo: 0 });
+
   const tablero = document.createElement("div");
-  tablero.className = "tablero-placas-hielo";
-  tablero.setAttribute("role", "grid");
-  tablero.setAttribute("aria-label", `Lago congelado, ronda ${rondaPlacasHielo + 1} de 3`);
-  botonesPuzzleCumbres = Array.from({ length: 16 }, (_, indice) => {
+  tablero.className = "tablero-laberinto-hielo";
+  tablero.style.setProperty("--lado-laberinto", `${ladoLaberintoHielo}`);
+  tablero.setAttribute("role", "img");
+  tablero.setAttribute("aria-label", "Laberinto de hielo. El huevo comienza arriba a la izquierda y el nido está abajo a la izquierda.");
+  mapaLaberintoHielo.forEach((fila, y) => [...fila].forEach((celda, x) => {
+    if (celda !== "1") return;
+    const pared = document.createElement("i");
+    pared.className = "pared-laberinto-hielo";
+    pared.style.setProperty("--columna", `${x}`);
+    pared.style.setProperty("--fila", `${y}`);
+    tablero.appendChild(pared);
+  }));
+  const meta = document.createElement("span");
+  meta.className = "meta-laberinto-hielo";
+  meta.style.left = `${(1.5 / ladoLaberintoHielo) * 100}%`;
+  meta.style.top = `${((ladoLaberintoHielo - 1.5) / ladoLaberintoHielo) * 100}%`;
+  meta.setAttribute("aria-hidden", "true");
+  const huevo = document.createElement("span");
+  huevo.className = "huevo-laberinto-hielo";
+  huevo.setAttribute("aria-hidden", "true");
+  tablero.append(meta, huevo);
+
+  const acciones = document.createElement("div");
+  acciones.className = "controles-laberinto-hielo";
+  const activar = document.createElement("button");
+  activar.type = "button";
+  activar.className = "activar-inclinacion-hielo";
+  activar.textContent = "📱 Activar inclinación";
+  activar.addEventListener("click", () => void activarInclinacionLaberintoHielo(activar));
+  const direcciones = [["↑", 0, -1], ["←", -1, 0], ["↓", 0, 1], ["→", 1, 0]];
+  const cruceta = document.createElement("div");
+  cruceta.className = "cruceta-laberinto-hielo";
+  direcciones.forEach(([etiqueta, x, y]) => {
     const boton = document.createElement("button");
     boton.type = "button";
-    boton.className = "placa-hielo";
-    boton.setAttribute("aria-label", `Placa ${indice + 1}`);
-    boton.disabled = true;
-    boton.addEventListener("click", () => elegirPlacaHielo(indice));
-    tablero.appendChild(boton);
-    return boton;
+    boton.textContent = etiqueta;
+    boton.setAttribute("aria-label", `Mover ${etiqueta}`);
+    const comenzar = (evento) => {
+      evento.preventDefault();
+      controlesLaberintoHielo = { x, y };
+    };
+    const terminar = () => { controlesLaberintoHielo = { x: 0, y: 0 }; };
+    boton.addEventListener("pointerdown", comenzar);
+    boton.addEventListener("pointerup", terminar);
+    boton.addEventListener("pointercancel", terminar);
+    boton.addEventListener("pointerleave", terminar);
+    cruceta.appendChild(boton);
   });
-  puzzleCumbres.append(progreso, tablero);
-  estadoPruebaBosque.textContent = `Ronda ${rondaPlacasHielo + 1} de 3 · Memorizá las placas iluminadas.`;
-  ruta.forEach((indice, orden) => {
-    botonesPuzzleCumbres[indice].classList.add("segura");
-    botonesPuzzleCumbres[indice].style.setProperty("--orden-placa", `${orden}`);
-  });
-
-  await esperarPuzzleHielo(prefiereReducirMovimiento.matches ? 500 : 1800);
-  if (secuencia !== secuenciaPruebaBosque || pruebaEspecialBosqueActiva !== "placas-hielo") return;
-  botonesPuzzleCumbres.forEach((boton) => {
-    boton.classList.remove("segura");
-    boton.disabled = false;
-  });
-  placasHieloAceptando = true;
-  estadoPruebaBosque.textContent = `Ronda ${rondaPlacasHielo + 1} de 3 · Repetí el camino antes de que se quiebre.`;
-  botonesPuzzleCumbres[ruta[0]]?.focus();
-}
-
-function elegirPlacaHielo(indice) {
-  if (!placasHieloAceptando || pruebaEspecialBosqueActiva !== "placas-hielo") return;
-  const ruta = rutasPlacasHielo[rondaPlacasHielo];
-  if (indice !== ruta[pasoPlacasHielo]) {
-    placasHieloAceptando = false;
-    botonesPuzzleCumbres[indice]?.classList.add("quebrada");
-    botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
-    estadoPruebaBosque.textContent = "Esa placa se quebró. La nieve volverá a mostrarte el camino.";
-    window.setTimeout(() => void prepararRondaPlacasHielo(), 900);
-    return;
-  }
-
-  botonesPuzzleCumbres[indice].classList.add("pisada");
-  botonesPuzzleCumbres[indice].disabled = true;
-  pasoPlacasHielo += 1;
-  if (pasoPlacasHielo < ruta.length) return;
-
-  placasHieloAceptando = false;
-  botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
-  rondaPlacasHielo += 1;
-  if (rondaPlacasHielo >= rutasPlacasHielo.length) {
-    estadoPruebaBosque.textContent = "¡Cruzaste el lago antes de que la ventisca borrara el camino!";
-    window.setTimeout(() => void completarPruebaEspecialBosque("placas-hielo"), 650);
-    return;
-  }
-  estadoPruebaBosque.textContent = `¡Bien! La ronda ${rondaPlacasHielo + 1} tendrá un camino más largo.`;
-  window.setTimeout(() => void prepararRondaPlacasHielo(), 800);
+  acciones.append(activar, cruceta);
+  puzzleCumbres.append(tablero, acciones);
+  botonesPuzzleCumbres = [activar, ...cruceta.querySelectorAll("button")];
+  estadoPruebaBosque.textContent = "Activá la inclinación o usá las flechas para comenzar.";
+  dibujarHuevoLaberintoHielo();
+  window.addEventListener("keydown", manejarTeclaLaberintoHielo, { passive: false });
+  window.addEventListener("keyup", manejarTeclaLaberintoHielo, { passive: false });
+  cuadroLaberintoHielo = requestAnimationFrame(animarLaberintoHielo);
 }
 
 function iniciarCorazonTermico() {

@@ -1,6 +1,9 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v199`;
+const CACHE_NAME = `${CACHE_PREFIX}v202`;
 const LEGACY_CACHE_NAMES = new Set([
+  `${CACHE_PREFIX}v201`,
+  `${CACHE_PREFIX}v200`,
+  `${CACHE_PREFIX}v199`,
   `${CACHE_PREFIX}v198`,
   `${CACHE_PREFIX}v93`,
   `${CACHE_PREFIX}v94`,
@@ -114,6 +117,7 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/icons/apple-touch-icon.png",
   "./assets/icons/favicon-32.png",
   "./assets/images/ui/presentacion-mision-tronco.png",
+  "./assets/images/ui/presentacion-mision-hielo-v1.png",
   "./assets/images/fondos/bosque-0.png",
   "./assets/images/fondos/bosque-1.png",
   "./assets/images/fondos/bosque-2.png",
@@ -454,13 +458,14 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260831-mundo-hielo-1",
-  "./index.html": "20260831-mundo-hielo-1",
-  "./css/styles.css": "20260831-mundo-hielo-1",
-  "./js/app.js": "20260831-mundo-hielo-1",
+  "./": "20260831-laberinto-hielo-5",
+  "./index.html": "20260831-laberinto-hielo-5",
+  "./css/styles.css": "20260831-laberinto-hielo-5",
+  "./js/app.js": "20260831-laberinto-hielo-5",
   "./js/pwa.js": "20260827-modos-locales-offline-1",
   "./js/supabase-loader.js": "20260827-supabase-diferido-1",
   "./assets/images/ui/presentacion-mision-cumbres-v1.png": "20260827-soporte-cumbres-1",
+  "./assets/images/ui/presentacion-mision-hielo-v1.png": "20260831-soporte-hielo-1",
   "./assets/images/fondos/cumbres-1.png": "20260826-cumbres-1",
   "./assets/images/fondos/cumbres-2.png": "20260826-cumbres-1",
   "./assets/images/fondos/cumbres-3.png": "20260826-cumbres-1",
