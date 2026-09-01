@@ -1301,6 +1301,8 @@
 .versus-palabra-uno.efecto-tinta-bestia-desafio {
     isolation: isolate;
     overflow: hidden;
+}.versus-palabra-uno.efecto-tinta-bestia-desafio > * {
+    opacity: 0;
 }
 .versus-palabra-uno.efecto-tinta-bestia-desafio::before,
 .versus-palabra-uno.efecto-tinta-bestia-desafio::after {
@@ -1310,36 +1312,72 @@
     pointer-events: none;
 }
 .versus-palabra-uno.efecto-tinta-bestia-desafio::before {
-    inset: -18% -7%;
-    background:
-        radial-gradient(ellipse at 13% 44%, #07102d 0 9%, transparent 10%),
-        radial-gradient(ellipse at 28% 68%, #17124b 0 16%, transparent 17%),
-        radial-gradient(ellipse at 48% 38%, #07122f 0 23%, transparent 24%),
-        radial-gradient(ellipse at 70% 61%, #151047 0 22%, transparent 23%),
-        radial-gradient(ellipse at 91% 36%, #06102c 0 17%, transparent 18%),
-        linear-gradient(104deg, #05091f 8%, #10113e 46%, #07102d 82%);
-    filter: drop-shadow(0 0 8px rgba(32, 190, 194, .5));
-    clip-path: polygon(0 18%, 7% 10%, 13% 17%, 21% 5%, 31% 13%, 42% 3%, 53% 12%, 65% 5%, 77% 16%, 88% 7%, 100% 18%, 97% 83%, 88% 91%, 78% 84%, 67% 96%, 56% 87%, 45% 97%, 34% 86%, 21% 94%, 10% 84%, 2% 91%);
-    animation: cubrirPalabraTintaBestiaKalamo 5s cubic-bezier(.18, .72, .2, 1) both;
+    inset: 0;
+    border-radius: inherit;
+    background: #02040b url("../assets/images/personajes/versus/mirada-bestia-tintero-kalamo.png") center / cover no-repeat;
+    box-shadow: inset 0 0 18px #02040b, 0 0 10px rgba(39, 216, 234, .48);
+    animation: revelarMiradaBestiaKalamo 5s cubic-bezier(.18, .72, .2, 1) both;
 }
 .versus-palabra-uno.efecto-tinta-bestia-desafio::after {
-    inset: 7% 4%;
-    border-radius: 44% 57% 39% 61%;
+    inset: 0;
+    border-radius: inherit;
     background:
-        radial-gradient(circle at 18% 28%, rgba(71, 225, 218, .52) 0 2%, transparent 3%),
-        radial-gradient(circle at 83% 76%, rgba(90, 61, 190, .7) 0 3%, transparent 4%),
-        linear-gradient(168deg, transparent 9%, rgba(43, 152, 168, .22) 22%, transparent 38% 64%, rgba(89, 50, 178, .28) 77%, transparent 90%);
-    animation: brilloManchaBestiaKalamo 5s ease both;
+        radial-gradient(ellipse at 30% 52%, rgba(66, 239, 255, .58) 0 4%, rgba(38, 192, 230, .18) 12%, transparent 27%),
+        radial-gradient(ellipse at 70% 52%, rgba(66, 239, 255, .58) 0 4%, rgba(38, 192, 230, .18) 12%, transparent 27%),
+        linear-gradient(90deg, rgba(4, 7, 20, .52), transparent 24% 76%, rgba(4, 7, 20, .52));
+    mix-blend-mode: screen;
+    animation: pulsarMiradaBestiaKalamo 5s ease both;
 }
-@keyframes cubrirPalabraTintaBestiaKalamo {
-    0%, 16% { opacity: 0; transform: translateX(-54%) scale(.08, .34) rotate(-4deg); }
-    24% { opacity: .95; transform: translateX(-22%) scale(.62, .82) rotate(1deg); }
-    34%, 88% { opacity: 1; transform: none; }
-    96%, 100% { opacity: 0; transform: scale(1.07, .84); filter: blur(2px); }
+@keyframes revelarMiradaBestiaKalamo {
+    0%, 15% { opacity: 0; transform: scale(1.3, .18); filter: blur(8px) brightness(.25); }
+    25% { opacity: .82; transform: scale(1.08, .72); filter: blur(2px) brightness(.68); }
+    34%, 88% { opacity: 1; transform: none; filter: none; }
+    94% { opacity: .92; transform: scale(1.025); filter: brightness(1.28); }
+    100% { opacity: 0; transform: scale(1.09, .82); filter: blur(4px) brightness(.4); }
 }
-@keyframes brilloManchaBestiaKalamo {
-    0%, 23%, 96%, 100% { opacity: 0; }
-    31%, 89% { opacity: .85; }
+@keyframes pulsarMiradaBestiaKalamo {
+    0%, 25%, 96%, 100% { opacity: 0; }
+    34%, 48%, 66%, 88% { opacity: .8; }
+    42%, 57%, 76% { opacity: .28; }
+}
+/* La misma mirada cubre la vista del rival en Modo Pruebas y Torre Arcade. */
+.mini-teclado-rival-versus.efecto-key_theft > * {
+    opacity: 0;
+}
+.mini-teclado-rival-versus.efecto-key_theft::before {
+    content: "";
+    position: absolute;
+    z-index: 8;
+    inset: 0;
+    border-radius: inherit;
+    background: #02040b url("../assets/images/personajes/versus/mirada-bestia-tintero-kalamo.png") center / cover no-repeat;
+    box-shadow: inset 0 0 12px #02040b, 0 0 9px rgba(39, 216, 234, .46);
+    animation: revelarMiradaMiniBestiaKalamo 3s cubic-bezier(.18, .72, .2, 1) both;
+}
+.mini-teclado-rival-versus.efecto-key_theft::after {
+    content: "";
+    position: absolute;
+    z-index: 9;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at 30% 52%, rgba(66, 239, 255, .55) 0 4%, rgba(38, 192, 230, .15) 12%, transparent 27%),
+        radial-gradient(ellipse at 70% 52%, rgba(66, 239, 255, .55) 0 4%, rgba(38, 192, 230, .15) 12%, transparent 27%);
+    mix-blend-mode: screen;
+    animation: pulsarMiradaMiniBestiaKalamo 3s ease both;
+}
+@keyframes revelarMiradaMiniBestiaKalamo {
+    0%, 8% { opacity: 0; transform: scale(1.25, .18); filter: blur(6px) brightness(.3); }
+    18% { opacity: .88; transform: scale(1.06, .76); filter: blur(1px) brightness(.72); }
+    27%, 82% { opacity: 1; transform: none; filter: none; }
+    91% { opacity: .9; transform: scale(1.025); filter: brightness(1.25); }
+    100% { opacity: 0; transform: scale(1.08, .8); filter: blur(3px) brightness(.45); }
+}
+@keyframes pulsarMiradaMiniBestiaKalamo {
+    0%, 17%, 94%, 100% { opacity: 0; }
+    27%, 46%, 65%, 83% { opacity: .8; }
+    37%, 56%, 74% { opacity: .25; }
 }
 
 .kalamo-final-golpea {
@@ -1450,66 +1488,66 @@
 }
 @keyframes extraeArmasRemateExploradorKalamo {
     0%, 23% { opacity: 0; transform: scale(.96); }
-    29%, 39% { opacity: 1; transform: none; }
-    44%, 100% { opacity: 0; transform: scale(1.04); filter: brightness(1.32) drop-shadow(0 0 24px #54fff0); }
+    25%, 32% { opacity: 1; transform: none; }
+    35%, 100% { opacity: 0; transform: scale(1.04); filter: brightness(1.32) drop-shadow(0 0 24px #54fff0); }
 }
 @keyframes preparaGolpeRemateExploradorKalamo {
-    0%, 38% { opacity: 0; transform: translateX(-7vw) scale(.9) rotate(-2deg); }
-    43% { opacity: 1; transform: translateX(-2vw) scale(.96) rotate(-1deg); }
-    49%, 53% { opacity: 1; transform: translateX(0) scale(1.02); }
-    57%, 100% { opacity: 0; transform: translateX(3vw) scale(1.06); }
+    0%, 31% { opacity: 0; transform: translateX(-7vw) scale(.9) rotate(-2deg); }
+    34% { opacity: 1; transform: translateX(-2vw) scale(.96) rotate(-1deg); }
+    38%, 41% { opacity: 1; transform: translateX(0) scale(1.02); }
+    44%, 100% { opacity: 0; transform: translateX(3vw) scale(1.06); }
 }
 @keyframes lanzaExploradorHaciaPantallaKalamo {
-    0%, 51% { opacity: 0; transform: translateX(-5vw) scale(.78); }
-    56% { opacity: 1; transform: translateX(-1vw) scale(.92); }
-    61% { opacity: 1; transform: translateX(2vw) scale(1.07); filter: brightness(1.34) drop-shadow(0 0 30px #5846d0); }
-    66%, 100% { opacity: 0; transform: translateX(8vw) scale(1.34); filter: blur(2px) brightness(1.5); }
+    0%, 40% { opacity: 0; transform: translateX(-5vw) scale(.78); }
+    43% { opacity: 1; transform: translateX(-1vw) scale(.92); }
+    47% { opacity: 1; transform: translateX(2vw) scale(1.07); filter: brightness(1.34) drop-shadow(0 0 30px #5846d0); }
+    51%, 100% { opacity: 0; transform: translateX(8vw) scale(1.34); filter: blur(2px) brightness(1.5); }
 }
 @keyframes golpeGenericoHaciaPantallaKalamo {
-    0%, 51% { opacity: 0; transform: translateX(-8vw) scale(.82) rotate(-2deg); }
-    55% { opacity: 1; transform: translateX(-3vw) scale(.92); }
-    60% { opacity: 1; transform: translateX(2vw) scale(1.04); filter: brightness(1.32) drop-shadow(0 0 28px #5543c8); }
-    65%, 100% { opacity: 0; transform: translateX(6vw) scale(1.12); filter: blur(1px) brightness(1.5); }
+    0%, 40% { opacity: 0; transform: translateX(-8vw) scale(.82) rotate(-2deg); }
+    43% { opacity: 1; transform: translateX(-3vw) scale(.92); }
+    47% { opacity: 1; transform: translateX(2vw) scale(1.04); filter: brightness(1.32) drop-shadow(0 0 28px #5543c8); }
+    51%, 100% { opacity: 0; transform: translateX(6vw) scale(1.12); filter: blur(1px) brightness(1.5); }
 }
 @keyframes victimaGenericaHaciaPantallaKalamo {
-    0%, 52% { opacity: 0; transform: translate(0, 3vh) scale(.82) rotate(0); }
-    56% { opacity: 1; transform: translate(0, 0) scale(.94) rotate(-3deg); }
-    60% { opacity: 1; transform: translate(-7vw, -3vh) scale(1.18) rotate(6deg); filter: brightness(1.7) drop-shadow(0 0 26px #6352d6); }
-    64% { opacity: .92; transform: translate(-18vw, -7vh) scale(2.25) rotate(-5deg); filter: blur(1px) brightness(1.55); }
-    67%, 100% { opacity: 0; transform: translate(-25vw, -10vh) scale(3.6) rotate(4deg); filter: blur(5px) brightness(1.8); }
+    0%, 41% { opacity: 0; transform: translate(0, 3vh) scale(.82) rotate(0); }
+    44% { opacity: 1; transform: translate(0, 0) scale(.94) rotate(-3deg); }
+    47% { opacity: 1; transform: translate(-7vw, -3vh) scale(1.18) rotate(6deg); filter: brightness(1.7) drop-shadow(0 0 26px #6352d6); }
+    50% { opacity: .92; transform: translate(-18vw, -7vh) scale(2.25) rotate(-5deg); filter: blur(1px) brightness(1.55); }
+    53%, 100% { opacity: 0; transform: translate(-25vw, -10vh) scale(3.6) rotate(4deg); filter: blur(5px) brightness(1.8); }
 }
 @keyframes exploradorEstampadoPantallaKalamo {
-    0%, 60% { opacity: 0; transform: scale(.22); filter: blur(9px) brightness(2.2); }
-    64% { opacity: 1; transform: scale(1.13); filter: blur(0) brightness(1.45); }
-    67% { opacity: 1; transform: scale(.98); }
-    70%, 85% { opacity: 1; transform: scale(1); }
-    89%, 100% { opacity: 0; transform: scale(1.04); filter: blur(1px) brightness(.72); }
+    0%, 47% { opacity: 0; transform: scale(.22); filter: blur(9px) brightness(2.2); }
+    51% { opacity: 1; transform: scale(1.13); filter: blur(0) brightness(1.45); }
+    55% { opacity: 1; transform: scale(.98); }
+    59%, 89% { opacity: 1; transform: scale(1); filter: none; }
+    93%, 100% { opacity: 0; transform: scale(1.04); filter: blur(1px) brightness(.72); }
 }
 @keyframes destelloVidrioRemateExploradorKalamo {
-    0%, 61% { opacity: 0; transform: scale(.1); }
-    64% { opacity: .96; transform: scale(.85); }
-    67% { opacity: .24; transform: scale(2.4); }
-    70%, 100% { opacity: 0; transform: scale(3); }
+    0%, 48% { opacity: 0; transform: scale(.1); }
+    51% { opacity: .96; transform: scale(.85); }
+    54% { opacity: .24; transform: scale(2.4); }
+    58%, 100% { opacity: 0; transform: scale(3); }
 }
 @keyframes fondoRemateExploradorKalamo {
     0%, 6% { filter: none; transform: scale(1); }
-    14%, 59% { filter: saturate(.6) hue-rotate(8deg) brightness(.28); transform: scale(1.025); }
-    64% { filter: brightness(2.1); transform: scale(1.06); }
-    68%, 87% { filter: saturate(.42) brightness(.16); transform: scale(1.08); }
-    92%, 100% { filter: saturate(.54) brightness(.25); transform: scale(1.04); }
+    14%, 46% { filter: saturate(.6) hue-rotate(8deg) brightness(.28); transform: scale(1.025); }
+    51% { filter: brightness(2.1); transform: scale(1.06); }
+    55%, 91% { filter: saturate(.42) brightness(.16); transform: scale(1.08); }
+    95%, 100% { filter: saturate(.54) brightness(.25); transform: scale(1.04); }
 }
 @keyframes resplandorRemateExploradorKalamo {
     0%, 7% { opacity: 0; transform: scale(.2); }
-    15%, 61% { opacity: 1; transform: scale(1); }
-    65% { opacity: 1; transform: scale(1.8); }
-    72%, 100% { opacity: 0; transform: scale(2.2); }
+    15%, 48% { opacity: 1; transform: scale(1); }
+    52% { opacity: 1; transform: scale(1.8); }
+    59%, 100% { opacity: 0; transform: scale(2.2); }
 }
 @keyframes temblorRemateExploradorKalamo {
-    0%, 55%, 59%, 62%, 66%, 100% { transform: none; }
-    57% { transform: translate(-5px, 3px); }
-    60% { transform: translate(7px, -4px); }
-    63% { transform: translate(-11px, 6px); }
-    64.5% { transform: translate(10px, -7px); }
+    0%, 42%, 46%, 49%, 53%, 100% { transform: none; }
+    44% { transform: translate(-5px, 3px); }
+    47% { transform: translate(7px, -4px); }
+    50% { transform: translate(-11px, 6px); }
+    51.5% { transform: translate(10px, -7px); }
 }
 @keyframes victoriaRemateExploradorKalamo {
     0%, 86% { opacity: 0; transform: translate(-50%, 13vh) scale(.65); }
@@ -16767,6 +16805,7 @@ button:disabled {
   object-fit: contain;
   transform-origin: 50% 100%;
   transform: scaleX(-1);
+  scale: var(--kairos-escala-base, 1);
 }
 
 .siglos-en-un-segundo .victima-final-explorador {
@@ -16778,6 +16817,7 @@ button:disabled {
   display: block;
   opacity: 0;
   filter: sepia(.22) saturate(.95) contrast(1.06) drop-shadow(0 0 18px #f2d879);
+  scale: var(--kairos-escala-media, var(--kairos-escala-base, 1));
   animation: kairos-edad-media 9s ease both;
 }
 
@@ -16785,8 +16825,24 @@ button:disabled {
   display: block;
   opacity: 0;
   filter: grayscale(.18) sepia(.28) saturate(.92) contrast(1.08) drop-shadow(0 0 18px #f2d879);
+  scale: var(--kairos-escala-final, var(--kairos-escala-media, var(--kairos-escala-base, 1)));
   animation: kairos-edad-anciana 9s ease both;
 }
+
+/* Iguala la altura visual de cada víctima con Kairós pese a los distintos
+   márgenes transparentes de las ilustraciones. Nimbus es la excepción:
+   crece de forma deliberada en cada salto temporal. */
+.siglos-en-un-segundo.kairos-victima-explorador { --kairos-escala-base: 1.05; --kairos-escala-media: 1.05; --kairos-escala-final: 1.04; }
+.siglos-en-un-segundo.kairos-victima-mago { --kairos-escala-base: 2.4; --kairos-escala-media: 1.5; --kairos-escala-final: 1.43; }
+.siglos-en-un-segundo.kairos-victima-guardiana { --kairos-escala-base: 1; --kairos-escala-media: 1; --kairos-escala-final: .95; }
+.siglos-en-un-segundo.kairos-victima-dragon { --kairos-escala-base: 1.12; --kairos-escala-media: .95; --kairos-escala-final: 1.27; }
+.siglos-en-un-segundo.kairos-victima-hombre_lobo { --kairos-escala-base: 1.11; --kairos-escala-media: 1.1; --kairos-escala-final: 1.11; }
+.siglos-en-un-segundo.kairos-victima-t_shadow { --kairos-escala-base: 1.05; --kairos-escala-media: 1.06; --kairos-escala-final: 1.06; }
+.siglos-en-un-segundo.kairos-victima-guardian_alba { --kairos-escala-base: 1; --kairos-escala-media: 1; --kairos-escala-final: 1.12; }
+.siglos-en-un-segundo.kairos-victima-dragon_hielo { --kairos-escala-base: 1.09; --kairos-escala-media: 1.05; --kairos-escala-final: 1.24; }
+.siglos-en-un-segundo.kairos-victima-azrak { --kairos-escala-base: .97; --kairos-escala-media: .97; --kairos-escala-final: .91; }
+.siglos-en-un-segundo.kairos-victima-kalamo { --kairos-escala-base: .95; --kairos-escala-media: .94; --kairos-escala-final: .97; }
+.siglos-en-un-segundo.kairos-victima-kairos { --kairos-escala-base: 1.04; --kairos-escala-media: 1.04; --kairos-escala-final: 1.03; }
 
 .siglos-en-un-segundo.kairos-victima-explorador .kairos-final-concepto {
   display: block;
@@ -16863,7 +16919,7 @@ button:disabled {
   .siglos-en-un-segundo.kairos-victima-mago .kairos-edad-intermedia,
   .siglos-en-un-segundo.kairos-victima-mago .kairos-edad-final {
     right: -2%;
-    width: min(64vw, 470px);
+    width: min(45vw, 520px);
   }
 }
 

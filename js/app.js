@@ -3560,7 +3560,7 @@ function mostrarVistaImpactoRivalVersus(personaje, letraForzada = "") {
     black_hole: "El teclado queda atrapado durante 5 segundos.",
     key_bounce: "Las teclas salen despedidas durante 5 segundos.",
     ice_screen: "La pantalla rival queda congelada durante 5 segundos.",
-      key_theft: "La Bestia del Tintero embiste y destruye el teclado durante 5 segundos.",
+      key_theft: "La mirada de la Bestia oculta la palabra mientras destruye el teclado durante 5 segundos.",
     forced_miss: letraForzada
       ? `La calavera pulsó la ${letraForzada}: error forzado.`
       : "La calavera obligó al rival a cometer un error.",
@@ -7825,7 +7825,7 @@ function reproducirLibroPalabrasPerdidasVersus(victima = personajeRivalVersus) {
   fondoCinematicaVersus.src = fondoVersus.src;
   crearParticulasEclipseVersus();
   const victimaFinal = victima in personajesVersus ? victima : "mago";
-  programarReaccionVictimaFinalVersus(victimaLibroKalamoVersus, victimaFinal, 5000);
+  programarReaccionVictimaFinalVersus(victimaLibroKalamoVersus, victimaFinal, 4100);
   pantallaRotaKalamoVersus.src = pantallasRotasKalamoVersus[victimaFinal];
   pantallaRotaKalamoVersus.alt = `${personajesVersus[victimaFinal].nombre}, estampado contra la pantalla por Kalamo`;
   etiquetaCinematicaVersus.textContent = "GRAN CALIGRAFÍA";

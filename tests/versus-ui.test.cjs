@@ -349,6 +349,11 @@ for (const recurso of [
 assert.match(estilos, /@keyframes formarKalamoTintaUno/);
 assert.match(estilos, /@keyframes exploradorEstampadoPantallaKalamo/);
 assert.match(app, /setTimeout\(completarCinematicaFinalVersus, 12200\)/);
+assert.match(app, /victimaLibroKalamoVersus, victimaFinal, 4100/);
+assert.match(estilos, /59%, 89% \{ opacity: 1; transform: scale\(1\); filter: none; \}/);
+assert.match(estilos, /kairos-victima-mago \{ --kairos-escala-base: 2\.4; --kairos-escala-media: 1\.5; --kairos-escala-final: 1\.43; \}/);
+assert.match(estilos, /kairos-victima-dragon \{ --kairos-escala-base: 1\.12; --kairos-escala-media: \.95; --kairos-escala-final: 1\.27; \}/);
+assert.match(estilos, /scale: var\(--kairos-escala-final/);
 assert.match(app, /pantallasRotasKalamoVersus/);
 for (const recurso of [
   "mago-pantalla-rota-kalamo-v1", "guardiana-pantalla-rota-kalamo-v1",
@@ -371,7 +376,14 @@ assert.doesNotMatch(html, /tinta-vortice-teclado-kalamo\.png/);
 assert.doesNotMatch(app, /crearZonaTinta\(/);
 assert.match(app, /fragmento-tecla-bestia-kalamo/);
 assert.match(app, /efecto-tinta-bestia-desafio/);
-assert.match(estilos, /cubrirPalabraTintaBestiaKalamo/);
+assert.match(estilos, /revelarMiradaBestiaKalamo/);
+assert.match(estilos, /pulsarMiradaBestiaKalamo/);
+assert.match(estilos, /efecto-tinta-bestia-desafio > \*/);
+assert.match(estilos, /mini-teclado-rival-versus\.efecto-key_theft::before/);
+assert.match(estilos, /revelarMiradaMiniBestiaKalamo/);
+assert.match(app, /La mirada de la Bestia oculta la palabra/);
+assert.match(estilos, /mirada-bestia-tintero-kalamo\.png/);
+assert.match(serviceWorker, /mirada-bestia-tintero-kalamo\.png/);
 assert.match(estilos, /Versus v16: iguala la masa visual/);
 assert.match(estilos, /cinematica-victima-alba\.victima-final-explorador/);
 assert.match(estilos, /cinematica-victima-shadow\.victima-final-guardiana/);

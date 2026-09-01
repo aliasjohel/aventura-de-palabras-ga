@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v204`;
+const CACHE_NAME = `${CACHE_PREFIX}v210`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v203`,
   `${CACHE_PREFIX}v202`,
@@ -415,6 +415,7 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/kalamo-final-alcanza-libro.png",
   "./assets/images/personajes/versus/kalamo-final-extrae-armas.png",
   "./assets/images/personajes/versus/bestia-tintero-kalamo.png",
+  "./assets/images/personajes/versus/mirada-bestia-tintero-kalamo.png",
   "./assets/images/personajes/versus/kairos-seleccion-v2.png",
   "./assets/images/personajes/versus/kairos-combate-v1.png",
   "./assets/images/personajes/versus/kairos-ataque-v2.png",
@@ -462,8 +463,8 @@ const CORE_ASSETS = [
 const ASSET_REVISIONS = {
   "./": "20260831-laberinto-hielo-7",
   "./index.html": "20260831-laberinto-hielo-7",
-  "./css/styles.css": "20260831-laberinto-hielo-7",
-  "./js/app.js": "20260831-laberinto-hielo-7",
+  "./css/styles.css": "20260901-kairos-escalas-2",
+  "./js/app.js": "20260901-kalamo-final-ritmo-1",
   "./js/pwa.js": "20260827-modos-locales-offline-1",
   "./js/supabase-loader.js": "20260827-supabase-diferido-1",
   "./assets/images/ui/presentacion-mision-cumbres-v1.png": "20260827-soporte-cumbres-1",
@@ -588,6 +589,7 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/versus/hombre-lobo-transformacion.png": "20260820-lobo-transformacion-22",
   "./assets/images/elementos/tronco-antiguo-caido-bosque.png": "20260820-aventura-tronco-19",
   "./assets/images/personajes/versus/bestia-tintero-kalamo.png": "20260820-versus-escalas-17",
+  "./assets/images/personajes/versus/mirada-bestia-tintero-kalamo.png": "20260901-kalamo-mirada-3",
   "./assets/images/personajes/versus/libro-sello-kalamo.png": "20260820-kalamo-tinta-centro-2",
   "./assets/images/personajes/versus/kalamo-final-golpe-impulso.png": "20260820-kalamo-tinta-centro-2",
   "./assets/images/fondos/bosque-6-lobos-v2.png": "20260817-lobos-alineados-1",
