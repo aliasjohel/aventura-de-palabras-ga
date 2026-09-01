@@ -11972,23 +11972,27 @@ function iniciarPuzzleCumbres(tipo) {
 }
 
 const mapaLaberintoHielo = Object.freeze([
-  "11111111111111111",
-  "10100010000000001",
-  "10101011101111101",
-  "10001000100000101",
-  "11111110101110101",
-  "10000010101000101",
-  "11101010111011101",
-  "10001010000010001",
-  "10111111111110111",
-  "10000010000010101",
-  "10111010111010101",
-  "10100010101010001",
-  "10101110101011101",
-  "10100010001000001",
-  "10111011101111111",
-  "10001000000000001",
-  "11111111111111111",
+  "111111111111111111111",
+  "100010100000000010001",
+  "111010101111101010101",
+  "100010000000101000101",
+  "101111111111101111101",
+  "101000000000001010001",
+  "101010111111111010111",
+  "101010001000000010001",
+  "101011101011111011101",
+  "101010101000001000101",
+  "101010101111111011101",
+  "101000100000001000001",
+  "101111101111101111101",
+  "100000101000100000101",
+  "111110101110111110101",
+  "100010100000100000101",
+  "111010111110101111101",
+  "100010000010101000101",
+  "101111111011101010101",
+  "100000000000001010001",
+  "111111111111111111111",
 ]);
 const ladoLaberintoHielo = mapaLaberintoHielo.length;
 const estadoLaberintoHielo = { x: 1.5, y: 1.5, vx: 0, vy: 0, ultimoTiempo: 0 };
@@ -12075,7 +12079,7 @@ function animarLaberintoHielo(tiempo) {
   dibujarHuevoLaberintoHielo();
 
   if (Math.hypot(
-    estadoLaberintoHielo.x - 1.5,
+    estadoLaberintoHielo.x - (ladoLaberintoHielo - 1.5),
     estadoLaberintoHielo.y - (ladoLaberintoHielo - 1.5),
   ) < 0.42) {
     laberintoHieloCompletado = true;
@@ -12120,7 +12124,7 @@ function iniciarLaberintoHielo() {
   tablero.className = "tablero-laberinto-hielo";
   tablero.style.setProperty("--lado-laberinto", `${ladoLaberintoHielo}`);
   tablero.setAttribute("role", "img");
-  tablero.setAttribute("aria-label", "Laberinto de hielo. El huevo comienza arriba a la izquierda y el nido está abajo a la izquierda.");
+  tablero.setAttribute("aria-label", "Laberinto de hielo. El huevo comienza arriba a la izquierda y el nido está abajo a la derecha.");
   mapaLaberintoHielo.forEach((fila, y) => [...fila].forEach((celda, x) => {
     if (celda !== "1") return;
     const pared = document.createElement("i");
@@ -12131,7 +12135,7 @@ function iniciarLaberintoHielo() {
   }));
   const meta = document.createElement("span");
   meta.className = "meta-laberinto-hielo";
-  meta.style.left = `${(1.5 / ladoLaberintoHielo) * 100}%`;
+  meta.style.left = `${((ladoLaberintoHielo - 1.5) / ladoLaberintoHielo) * 100}%`;
   meta.style.top = `${((ladoLaberintoHielo - 1.5) / ladoLaberintoHielo) * 100}%`;
   meta.setAttribute("aria-hidden", "true");
   const huevo = document.createElement("span");

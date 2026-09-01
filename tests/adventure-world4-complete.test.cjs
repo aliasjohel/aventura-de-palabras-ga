@@ -22,18 +22,18 @@ assert.equal((selectorPuzzles.match(/escenario === 3 && mision ===/g) || []).len
 assert.match(selectorPuzzles, /mision === 6\) return "laberinto-hielo"/);
 assert.match(selectorPuzzles, /mision === 7\) return "corazon-termico"/);
 assert.match(app, /const mapaLaberintoHielo = Object\.freeze/);
-assert.equal((app.match(/"1[01]{15}1",?/g) || []).length, 17);
+assert.equal((app.match(/"1[01]{19}1",?/g) || []).length, 21);
 assert.match(app, /const ladoLaberintoHielo = mapaLaberintoHielo\.length/);
 const bloqueMapa = app.match(/const mapaLaberintoHielo = Object\.freeze\(\[([\s\S]*?)\]\);/)?.[1] || "";
 const mapaHielo = [...bloqueMapa.matchAll(/"([01]+)"/g)].map((coincidencia) => coincidencia[1]);
 const colaLaberinto = [[1, 1, 0]];
 const visitadasLaberinto = new Set(["1,1"]);
+const origenLaberinto = new Map([["1,1", null]]);
 let longitudCaminoLaberinto = -1;
 while (colaLaberinto.length) {
   const [fila, columna, distancia] = colaLaberinto.shift();
-  if (fila === 15 && columna === 1) {
+  if (fila === 19 && columna === 19) {
     longitudCaminoLaberinto = distancia;
-    break;
   }
   for (const [deltaFila, deltaColumna] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
     const siguienteFila = fila + deltaFila;
@@ -41,25 +41,47 @@ while (colaLaberinto.length) {
     const clave = `${siguienteFila},${siguienteColumna}`;
     if (mapaHielo[siguienteFila]?.[siguienteColumna] === "0" && !visitadasLaberinto.has(clave)) {
       visitadasLaberinto.add(clave);
+      origenLaberinto.set(clave, `${fila},${columna}`);
       colaLaberinto.push([siguienteFila, siguienteColumna, distancia + 1]);
     }
   }
 }
-let callejonesLaberinto = 0;
-let bifurcacionesLaberinto = 0;
-for (let fila = 1; fila < mapaHielo.length - 1; fila += 1) {
-  for (let columna = 1; columna < mapaHielo[fila].length - 1; columna += 1) {
-    if (mapaHielo[fila][columna] !== "0") continue;
-    const salidas = [[1, 0], [-1, 0], [0, 1], [0, -1]].filter(
-      ([deltaFila, deltaColumna]) => mapaHielo[fila + deltaFila]?.[columna + deltaColumna] === "0",
-    ).length;
-    if (salidas === 1) callejonesLaberinto += 1;
-    if (salidas >= 3) bifurcacionesLaberinto += 1;
+const caminoCorrectoLaberinto = new Set();
+for (let celda = "19,19"; celda; celda = origenLaberinto.get(celda)) caminoCorrectoLaberinto.add(celda);
+const ramalesMedidosLaberinto = new Set();
+const extensionesRamalesLaberinto = [];
+for (const celda of caminoCorrectoLaberinto) {
+  const [fila, columna] = celda.split(",").map(Number);
+  for (const [deltaFila, deltaColumna] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+    const entradaRamal = `${fila + deltaFila},${columna + deltaColumna}`;
+    if (mapaHielo[fila + deltaFila]?.[columna + deltaColumna] !== "0"
+      || caminoCorrectoLaberinto.has(entradaRamal)
+      || ramalesMedidosLaberinto.has(entradaRamal)) continue;
+    const pendientesRamal = [entradaRamal];
+    const celdasRamal = new Set([entradaRamal]);
+    ramalesMedidosLaberinto.add(entradaRamal);
+    while (pendientesRamal.length) {
+      const actual = pendientesRamal.shift();
+      const [filaActual, columnaActual] = actual.split(",").map(Number);
+      for (const [avanceFila, avanceColumna] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        const siguiente = `${filaActual + avanceFila},${columnaActual + avanceColumna}`;
+        if (mapaHielo[filaActual + avanceFila]?.[columnaActual + avanceColumna] === "0"
+          && !caminoCorrectoLaberinto.has(siguiente)
+          && !celdasRamal.has(siguiente)) {
+          celdasRamal.add(siguiente);
+          ramalesMedidosLaberinto.add(siguiente);
+          pendientesRamal.push(siguiente);
+        }
+      }
+    }
+    extensionesRamalesLaberinto.push(celdasRamal.size);
   }
 }
-assert.ok(longitudCaminoLaberinto >= 80, `El camino del laberinto debe ser largo; mide ${longitudCaminoLaberinto}`);
-assert.ok(callejonesLaberinto >= 8, `El laberinto necesita callejones sin salida; tiene ${callejonesLaberinto}`);
-assert.ok(bifurcacionesLaberinto >= 6, `El laberinto necesita bifurcaciones; tiene ${bifurcacionesLaberinto}`);
+assert.ok(longitudCaminoLaberinto >= 100, `El camino del laberinto debe ser largo; mide ${longitudCaminoLaberinto}`);
+assert.ok(
+  extensionesRamalesLaberinto.filter((longitud) => longitud >= 8).length >= 6,
+  `El laberinto necesita al menos seis rutas falsas largas; tiene ${extensionesRamalesLaberinto.join(", ")}`,
+);
 assert.match(app, /function iniciarLaberintoHielo\(/);
 assert.match(app, /DeviceOrientationEvent\?\.requestPermission/);
 assert.match(app, /window\.addEventListener\("deviceorientation"/);
@@ -110,6 +132,6 @@ assert.match(css, /\.cristal-panel-glacial/);
 assert.match(app, /mundoCuatroCompletado,/);
 assert.match(app, /primerDueloNivorCompletado,/);
 assert.match(app, /finalMundoCuatroCompletado[\s\S]*?Mundo 5 · Próximamente/);
-assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v203`/);
+assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v204`/);
 
 console.log("World 4 adventure checks passed");
