@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v210`;
+const CACHE_NAME = `${CACHE_PREFIX}v211`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v203`,
   `${CACHE_PREFIX}v202`,
@@ -233,6 +233,11 @@ const CORE_ASSETS = [
   "./assets/images/fondos/hielo-8.png",
   "./assets/images/fondos/hielo-9.png",
   "./assets/images/fondos/hielo-10.png",
+  "./assets/images/fondos/hielo-1-yeti-paso-1-v2.png",
+  "./assets/images/fondos/hielo-1-yeti-paso-2-v2.png",
+  "./assets/images/fondos/hielo-3-zorro-paso-1-v2.png",
+  "./assets/images/fondos/hielo-3-zorro-paso-2-v2.png",
+  "./assets/images/fondos/hielo-4-aldea-congelada-v2.png",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-v1.png",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-movil-v2.png",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-movil-paso-v3.png",
@@ -463,8 +468,8 @@ const CORE_ASSETS = [
 const ASSET_REVISIONS = {
   "./": "20260831-laberinto-hielo-7",
   "./index.html": "20260831-laberinto-hielo-7",
-  "./css/styles.css": "20260901-kairos-escalas-2",
-  "./js/app.js": "20260901-kalamo-final-ritmo-1",
+  "./css/styles.css": "20260901-mundo-hielo-vivo-1",
+  "./js/app.js": "20260901-mundo-hielo-vivo-1",
   "./js/pwa.js": "20260827-modos-locales-offline-1",
   "./js/supabase-loader.js": "20260827-supabase-diferido-1",
   "./assets/images/ui/presentacion-mision-cumbres-v1.png": "20260827-soporte-cumbres-1",
@@ -489,6 +494,11 @@ const ASSET_REVISIONS = {
   "./assets/images/fondos/hielo-8.png": "20260831-mundo-hielo-1",
   "./assets/images/fondos/hielo-9.png": "20260831-mundo-hielo-1",
   "./assets/images/fondos/hielo-10.png": "20260831-mundo-hielo-1",
+  "./assets/images/fondos/hielo-1-yeti-paso-1-v2.png": "20260901-mundo-hielo-vivo-1",
+  "./assets/images/fondos/hielo-1-yeti-paso-2-v2.png": "20260901-mundo-hielo-vivo-1",
+  "./assets/images/fondos/hielo-3-zorro-paso-1-v2.png": "20260901-mundo-hielo-vivo-1",
+  "./assets/images/fondos/hielo-3-zorro-paso-2-v2.png": "20260901-mundo-hielo-vivo-1",
+  "./assets/images/fondos/hielo-4-aldea-congelada-v2.png": "20260901-mundo-hielo-vivo-1",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-v1.png": "20260829-fauna-cumbres-alpha-4",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-movil-v2.png": "20260830-nubelun-movil-contorno-1",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-movil-paso-v3.png": "20260830-versus-palabras-fijas-1",

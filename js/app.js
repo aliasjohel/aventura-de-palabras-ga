@@ -645,6 +645,7 @@ const duracionMaximaAranaBosque = 7400;
 const prefiereReducirMovimiento = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 );
+let intervaloFaunaHielo = null;
 const clasesAnimacionExplorador = [
   "celebrando",
   "reaccion-acierto",
@@ -775,10 +776,10 @@ const escenasPorEscenario = [
     { fondos: ["cumbres-10.png"], texto: "🐲 Nimbus te desafía a demostrar que protegerás el Cristal Celeste." },
   ],
   [
-    { fondos: ["hielo-1.png"], texto: "🌨️ La ventisca borra el camino mientras una presencia observa a Aren desde las montañas." },
+    { fondos: ["hielo-1-yeti-paso-1-v2.png"], texto: "🌨️ La ventisca borra el camino mientras una criatura de las nieves cruza las montañas." },
     { fondos: ["hielo-2.png"], texto: "🧊 Recordá las placas seguras y cruzá el lago antes de que el hielo se quiebre." },
-    { fondos: ["hielo-3.png"], texto: "🐾 Seguí las huellas luminosas entre las criaturas y los árboles de escarcha." },
-    { fondos: ["hielo-4.png"], texto: "🏘️ Descubrí qué fuerza dejó a toda una aldea detenida dentro del hielo." },
+    { fondos: ["hielo-3-zorro-paso-1-v2.png"], texto: "🐾 Seguí al zorro boreal y las huellas luminosas entre los árboles de escarcha." },
+    { fondos: ["hielo-4-aldea-congelada-v2.png"], texto: "🏘️ Descubrí qué fuerza dejó a los habitantes de una aldea detenidos dentro del hielo." },
     { fondos: ["hielo-5.png"], texto: "🌌 El observatorio boreal conserva la historia del deshielo y del pacto de Nivor." },
     { fondos: ["hielo-6.png"], texto: "🐉 Nivor bloquea el camino: enfrentá al Guardián del Invierno en combate directo." },
     { fondos: ["hielo-7.png"], texto: "🥚 El último huevo boreal revela el verdadero precio del acuerdo con Azrak." },
@@ -1010,10 +1011,10 @@ const historiaCumbres = [
 ];
 
 const historiaHielo = [
-  { capitulo: "Misión 1", titulo: "La huella borrada", texto: "Aeralis deja a Aren sobre la nieve y emprende el regreso hacia Cumbres Celestes. Una ventisca repentina borra el camino detrás de él. Desde una cresta de hielo, dos ojos azules observan cada uno de sus pasos." },
+  { capitulo: "Misión 1", titulo: "La huella borrada", texto: "Aeralis deja a Aren sobre la nieve y emprende el regreso hacia Cumbres Celestes. Una ventisca repentina borra el camino detrás de él. A lo lejos, un enorme yeti cruza la cresta y desaparece entre la nieve." },
   { capitulo: "Misión 2", titulo: "El lago de cristal", texto: "El sendero termina frente a un lago congelado. Aren sigue las huellas que la ventisca deja ver por instantes y alcanza la otra orilla justo antes de que el hielo comience a resquebrajarse." },
-  { capitulo: "Misión 3", titulo: "Las criaturas de la escarcha", texto: "Huellas luminosas atraviesan un bosque congelado. Las criaturas del lugar están alteradas por una fuerza que convierte ramas, garras y colmillos en cristal." },
-  { capitulo: "Misión 4", titulo: "La aldea detenida", texto: "Aren encuentra una aldea completa atrapada dentro del hielo. Sus faroles aún brillan y sus relojes se detuvieron al mismo tiempo. En una torre aparece una marca oscura que no pertenece a Nivor." },
+  { capitulo: "Misión 3", titulo: "Las criaturas de la escarcha", texto: "Un zorro boreal de cola cristalina sigue las huellas luminosas que atraviesan el bosque congelado. Las criaturas del lugar están alteradas por una fuerza que convierte ramas, garras y colmillos en cristal." },
+  { capitulo: "Misión 4", titulo: "La aldea detenida", texto: "Aren encuentra una aldea completa atrapada dentro del hielo. Sus habitantes permanecen inmóviles bajo la escarcha, los faroles aún brillan y los relojes se detuvieron al mismo tiempo. En una torre aparece una marca oscura que no pertenece a Nivor." },
   { capitulo: "Misión 5", titulo: "El observatorio boreal", texto: "Los instrumentos del observatorio registraron el comienzo del deshielo. Entre sus mapas, Aren descubre que alguien provocó el desastre antes de ofrecerle a Nivor el poder para detenerlo." },
   { capitulo: "Misión 6", titulo: "El Guardián del Invierno", texto: "Nivor desciende sobre el observatorio y acusa a Aren de querer destruir el último refugio de los dragones boreales. No aceptará explicaciones: para continuar, Aren deberá enfrentarlo directamente." },
   { capitulo: "Misión 7", titulo: "El último huevo boreal", texto: "Tras el combate, Aren entra en la fortaleza y encuentra el último huevo de dragón atrapado en un laberinto de hielo negro. Deberá inclinar el antiguo mecanismo y guiarlo con cuidado hasta el nido para liberarlo." },
@@ -10256,8 +10257,8 @@ function actualizarPanelCristales() {
   ranuraCristalHielo?.setAttribute(
     "aria-label",
     cristalHieloObtenido
-      ? "Cristal Glacial del Reino del Invierno Eterno obtenido"
-      : "Cristal Glacial del Reino del Invierno Eterno bloqueado",
+      ? "Cristal Glacial Violeta del Reino del Invierno Eterno obtenido"
+      : "Cristal Glacial Violeta del Reino del Invierno Eterno bloqueado",
   );
 }
 
@@ -10512,6 +10513,10 @@ function actualizarEscenaPorMision() {
 }
 
 function actualizarPersonajesNarrativosHielo() {
+  if (intervaloFaunaHielo) {
+    window.clearInterval(intervaloFaunaHielo);
+    intervaloFaunaHielo = null;
+  }
   contenedorEscenario
     .querySelectorAll(".personaje-narrativo-hielo, .ambiente-hielo")
     .forEach((elemento) => elemento.remove());
@@ -10522,6 +10527,43 @@ function actualizarPersonajesNarrativosHielo() {
   ambiente.setAttribute("aria-hidden", "true");
   ambiente.innerHTML = "<i></i><i></i><i></i><i></i>";
   contenedorEscenario.appendChild(ambiente);
+
+  const faunaAnimadaPorMision = {
+    0: {
+      cuadros: [
+        "assets/images/fondos/hielo-1-yeti-paso-1-v2.png",
+        "assets/images/fondos/hielo-1-yeti-paso-2-v2.png",
+      ],
+      intervalo: 1050,
+    },
+    2: {
+      cuadros: [
+        "assets/images/fondos/hielo-3-zorro-paso-1-v2.png",
+        "assets/images/fondos/hielo-3-zorro-paso-2-v2.png",
+      ],
+      intervalo: 720,
+    },
+  };
+  const faunaAnimada = faunaAnimadaPorMision[misionActual];
+  if (faunaAnimada) {
+    const misionFauna = misionActual;
+    fondoEscenario.src = faunaAnimada.cuadros[0];
+    if (!prefiereReducirMovimiento.matches) {
+      void Promise.all(faunaAnimada.cuadros.map((src) => precargarImagen(src))).then(() => {
+        if (escenarioActual !== 3 || misionActual !== misionFauna) return;
+        let cuadroActual = 0;
+        intervaloFaunaHielo = window.setInterval(() => {
+          if (escenarioActual !== 3 || misionActual !== misionFauna) {
+            window.clearInterval(intervaloFaunaHielo);
+            intervaloFaunaHielo = null;
+            return;
+          }
+          cuadroActual = (cuadroActual + 1) % faunaAnimada.cuadros.length;
+          fondoEscenario.src = faunaAnimada.cuadros[cuadroActual];
+        }, faunaAnimada.intervalo);
+      });
+    }
+  }
 
   if (![5, 9].includes(misionActual)) return;
   const nivor = document.createElement("img");

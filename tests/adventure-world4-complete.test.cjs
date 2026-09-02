@@ -11,11 +11,33 @@ const sw = fs.readFileSync(path.join(root, "sw.js"), "utf8");
 assert.match(app, /nombre: "❄️ Reino del Invierno Eterno"/);
 assert.match(app, /const historiaHielo = \[/);
 assert.match(app, /if \(escenarioActual === 3\) \{[\s\S]*?return historiaHielo\[misionActual\]/);
-assert.equal((app.match(/fondos: \["hielo-\d+\.png"\]/g) || []).length, 10);
-for (let mission = 1; mission <= 10; mission += 1) {
-  assert.ok(fs.existsSync(path.join(root, "assets", "images", "fondos", `hielo-${mission}.png`)));
-  assert.match(sw, new RegExp(`assets/images/fondos/hielo-${mission}\\.png`));
+const fondosMundoHielo = [
+  "hielo-1-yeti-paso-1-v2.png",
+  "hielo-2.png",
+  "hielo-3-zorro-paso-1-v2.png",
+  "hielo-4-aldea-congelada-v2.png",
+  "hielo-5.png",
+  "hielo-6.png",
+  "hielo-7.png",
+  "hielo-8.png",
+  "hielo-9.png",
+  "hielo-10.png",
+];
+assert.equal((app.match(/fondos: \["hielo-[^"]+\.png"\]/g) || []).length, 10);
+for (const fondo of fondosMundoHielo) {
+  assert.ok(fs.existsSync(path.join(root, "assets", "images", "fondos", fondo)));
+  assert.match(sw, new RegExp(`assets/images/fondos/${fondo.replace(".", "\\.")}`));
 }
+for (const cuadroAnimado of [
+  "hielo-1-yeti-paso-2-v2.png",
+  "hielo-3-zorro-paso-2-v2.png",
+]) {
+  assert.ok(fs.existsSync(path.join(root, "assets", "images", "fondos", cuadroAnimado)));
+  assert.match(app, new RegExp(cuadroAnimado.replace(".", "\\.")));
+  assert.match(sw, new RegExp(cuadroAnimado.replace(".", "\\.")));
+}
+assert.match(app, /let intervaloFaunaHielo = null/);
+assert.match(app, /prefiereReducirMovimiento\.matches[\s\S]*?intervaloFaunaHielo = window\.setInterval/);
 
 const selectorPuzzles = app.match(/function obtenerTipoPruebaEspecial\(escenario, mision\) \{[\s\S]+?\n\}/)?.[0] || "";
 assert.equal((selectorPuzzles.match(/escenario === 3 && mision ===/g) || []).length, 2);
@@ -128,10 +150,11 @@ for (const image of [
 
 assert.match(html, /id="ranuraCristalHielo"/);
 assert.match(html, /id="cristalPanelHielo"/);
-assert.match(css, /\.cristal-panel-glacial/);
+assert.match(html, /Cristal Glacial Violeta/);
+assert.match(css, /\.cristal-panel-glacial \{ filter: hue-rotate\(105deg\)/);
 assert.match(app, /mundoCuatroCompletado,/);
 assert.match(app, /primerDueloNivorCompletado,/);
 assert.match(app, /finalMundoCuatroCompletado[\s\S]*?Mundo 5 · Próximamente/);
-assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v204`/);
+assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v211`/);
 
 console.log("World 4 adventure checks passed");
