@@ -1,6 +1,9 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v213`;
+const CACHE_NAME = `${CACHE_PREFIX}v216`;
 const LEGACY_CACHE_NAMES = new Set([
+  `${CACHE_PREFIX}v215`,
+  `${CACHE_PREFIX}v214`,
+  `${CACHE_PREFIX}v213`,
   `${CACHE_PREFIX}v203`,
   `${CACHE_PREFIX}v202`,
   `${CACHE_PREFIX}v201`,
@@ -238,6 +241,10 @@ const CORE_ASSETS = [
   "./assets/images/fondos/hielo-3-zorro-paso-1-v2.png",
   "./assets/images/fondos/hielo-3-zorro-paso-2-v2.png",
   "./assets/images/fondos/hielo-4-aldea-congelada-v2.png",
+  "./assets/images/personajes/mundo-hielo/yeti-camina-paso-1-v2.png",
+  "./assets/images/personajes/mundo-hielo/yeti-camina-paso-2-v2.png",
+  "./assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-1-v2.png",
+  "./assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-2-v2.png",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-v1.png",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-movil-v2.png",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-movil-paso-v3.png",
@@ -468,8 +475,8 @@ const CORE_ASSETS = [
 const ASSET_REVISIONS = {
   "./": "20260831-laberinto-hielo-7",
   "./index.html": "20260831-laberinto-hielo-7",
-  "./css/styles.css": "20260901-mundo-hielo-vivo-1",
-  "./js/app.js": "20260901-mundo-hielo-vivo-1",
+  "./css/styles.css": "20260903-fauna-hielo-caminata-3",
+  "./js/app.js": "20260903-fauna-hielo-caminata-3",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-ataque.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-impacto.png": "20260902-personajes-chibi-1",
@@ -512,6 +519,10 @@ const ASSET_REVISIONS = {
   "./assets/images/fondos/hielo-3-zorro-paso-1-v2.png": "20260901-mundo-hielo-vivo-1",
   "./assets/images/fondos/hielo-3-zorro-paso-2-v2.png": "20260901-mundo-hielo-vivo-1",
   "./assets/images/fondos/hielo-4-aldea-congelada-v2.png": "20260901-mundo-hielo-vivo-1",
+  "./assets/images/personajes/mundo-hielo/yeti-camina-paso-1-v2.png": "20260903-fauna-hielo-caminata-1",
+  "./assets/images/personajes/mundo-hielo/yeti-camina-paso-2-v2.png": "20260903-fauna-hielo-caminata-1",
+  "./assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-1-v2.png": "20260903-fauna-hielo-caminata-1",
+  "./assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-2-v2.png": "20260903-fauna-hielo-caminata-1",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-v1.png": "20260829-fauna-cumbres-alpha-4",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-movil-v2.png": "20260830-nubelun-movil-contorno-1",
   "./assets/images/ambiente/cumbres/nubelun-cumbres-movil-paso-v3.png": "20260830-versus-palabras-fijas-1",

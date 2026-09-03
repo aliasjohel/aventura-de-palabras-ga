@@ -645,7 +645,6 @@ const duracionMaximaAranaBosque = 7400;
 const prefiereReducirMovimiento = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 );
-let intervaloFaunaHielo = null;
 const clasesAnimacionExplorador = [
   "celebrando",
   "reaccion-acierto",
@@ -776,9 +775,9 @@ const escenasPorEscenario = [
     { fondos: ["cumbres-10.png"], texto: "🐲 Nimbus te desafía a demostrar que protegerás el Cristal Celeste." },
   ],
   [
-    { fondos: ["hielo-1-yeti-paso-1-v2.png"], texto: "🌨️ La ventisca borra el camino mientras una criatura de las nieves cruza las montañas." },
+    { fondos: ["hielo-1.png"], texto: "🌨️ La ventisca borra el camino mientras una criatura de las nieves cruza las montañas." },
     { fondos: ["hielo-2.png"], texto: "🧊 Recordá las placas seguras y cruzá el lago antes de que el hielo se quiebre." },
-    { fondos: ["hielo-3-zorro-paso-1-v2.png"], texto: "🐾 Seguí al zorro boreal y las huellas luminosas entre los árboles de escarcha." },
+    { fondos: ["hielo-3.png"], texto: "🐾 Seguí al zorro boreal y las huellas luminosas entre los árboles de escarcha." },
     { fondos: ["hielo-4-aldea-congelada-v2.png"], texto: "🏘️ Descubrí qué fuerza dejó a los habitantes de una aldea detenidos dentro del hielo." },
     { fondos: ["hielo-5.png"], texto: "🌌 El observatorio boreal conserva la historia del deshielo y del pacto de Nivor." },
     { fondos: ["hielo-6.png"], texto: "🐉 Nivor bloquea el camino: enfrentá al Guardián del Invierno en combate directo." },
@@ -10512,11 +10511,56 @@ function actualizarEscenaPorMision() {
   volverEstadoBaseExplorador();
 }
 
-function actualizarPersonajesNarrativosHielo() {
-  if (intervaloFaunaHielo) {
-    window.clearInterval(intervaloFaunaHielo);
-    intervaloFaunaHielo = null;
+function iniciarFaunaHieloCuandoLaEscenaEsteLibre(fauna, misionFauna) {
+  let temporizadorInicio = null;
+  const observador = new MutationObserver(programarInicio);
+
+  function detenerEspera() {
+    if (temporizadorInicio) window.clearTimeout(temporizadorInicio);
+    temporizadorInicio = null;
+    observador.disconnect();
   }
+
+  function escenaBloqueada() {
+    return (
+      !modalHistoria.classList.contains("oculto") ||
+      pantallaJuego.classList.contains("presentacion-mision-preparada") ||
+      pantallaJuego.classList.contains("presentacion-mision-activa") ||
+      pantallaJuego.classList.contains("interfaz-revelandose")
+    );
+  }
+
+  function programarInicio() {
+    if (
+      escenarioActual !== 3 ||
+      misionActual !== misionFauna ||
+      !fauna.isConnected
+    ) {
+      detenerEspera();
+      return;
+    }
+
+    if (temporizadorInicio) window.clearTimeout(temporizadorInicio);
+    temporizadorInicio = null;
+    if (escenaBloqueada()) return;
+
+    temporizadorInicio = window.setTimeout(() => {
+      temporizadorInicio = null;
+      if (escenaBloqueada()) {
+        programarInicio();
+        return;
+      }
+      fauna.classList.add("en-marcha");
+      observador.disconnect();
+    }, 650);
+  }
+
+  observador.observe(modalHistoria, { attributes: true, attributeFilter: ["class"] });
+  observador.observe(pantallaJuego, { attributes: true, attributeFilter: ["class"] });
+  programarInicio();
+}
+
+function actualizarPersonajesNarrativosHielo() {
   contenedorEscenario
     .querySelectorAll(".personaje-narrativo-hielo, .ambiente-hielo")
     .forEach((elemento) => elemento.remove());
@@ -10530,37 +10574,47 @@ function actualizarPersonajesNarrativosHielo() {
 
   const faunaAnimadaPorMision = {
     0: {
+      clase: "fauna-yeti-hielo",
       cuadros: [
-        "assets/images/fondos/hielo-1-yeti-paso-1-v2.png",
-        "assets/images/fondos/hielo-1-yeti-paso-2-v2.png",
+        "assets/images/personajes/mundo-hielo/yeti-camina-paso-1-v2.png",
+        "assets/images/personajes/mundo-hielo/yeti-camina-paso-2-v2.png",
       ],
-      intervalo: 1050,
+      descripcion: "Yeti caminando por el valle helado",
     },
     2: {
+      clase: "fauna-zorro-hielo",
       cuadros: [
-        "assets/images/fondos/hielo-3-zorro-paso-1-v2.png",
-        "assets/images/fondos/hielo-3-zorro-paso-2-v2.png",
+        "assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-1-v2.png",
+        "assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-2-v2.png",
       ],
-      intervalo: 720,
+      descripcion: "Zorro boreal caminando por el sendero",
     },
   };
   const faunaAnimada = faunaAnimadaPorMision[misionActual];
   if (faunaAnimada) {
     const misionFauna = misionActual;
-    fondoEscenario.src = faunaAnimada.cuadros[0];
+    const fauna = document.createElement("div");
+    fauna.className = `personaje-narrativo-hielo fauna-hielo ${faunaAnimada.clase}`;
+    fauna.setAttribute("role", "img");
+    fauna.setAttribute("aria-label", faunaAnimada.descripcion);
+    faunaAnimada.cuadros.forEach((src, indice) => {
+      const cuadro = document.createElement("img");
+      cuadro.className = `fauna-hielo-cuadro fauna-hielo-cuadro-${indice + 1}`;
+      cuadro.src = src;
+      cuadro.alt = "";
+      cuadro.setAttribute("aria-hidden", "true");
+      fauna.appendChild(cuadro);
+    });
+    contenedorEscenario.appendChild(fauna);
+
     if (!prefiereReducirMovimiento.matches) {
       void Promise.all(faunaAnimada.cuadros.map((src) => precargarImagen(src))).then(() => {
-        if (escenarioActual !== 3 || misionActual !== misionFauna) return;
-        let cuadroActual = 0;
-        intervaloFaunaHielo = window.setInterval(() => {
-          if (escenarioActual !== 3 || misionActual !== misionFauna) {
-            window.clearInterval(intervaloFaunaHielo);
-            intervaloFaunaHielo = null;
-            return;
-          }
-          cuadroActual = (cuadroActual + 1) % faunaAnimada.cuadros.length;
-          fondoEscenario.src = faunaAnimada.cuadros[cuadroActual];
-        }, faunaAnimada.intervalo);
+        if (
+          escenarioActual !== 3 ||
+          misionActual !== misionFauna ||
+          !fauna.isConnected
+        ) return;
+        iniciarFaunaHieloCuandoLaEscenaEsteLibre(fauna, misionFauna);
       });
     }
   }
