@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v211`;
+const CACHE_NAME = `${CACHE_PREFIX}v213`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v203`,
   `${CACHE_PREFIX}v202`,
@@ -470,6 +470,19 @@ const ASSET_REVISIONS = {
   "./index.html": "20260831-laberinto-hielo-7",
   "./css/styles.css": "20260901-mundo-hielo-vivo-1",
   "./js/app.js": "20260901-mundo-hielo-vivo-1",
+  "./assets/images/personajes/versus/t-shadow-base.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/t-shadow-ataque.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/t-shadow-impacto.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/t-shadow-victoria.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/guardian-alba-base.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/guardian-alba-ataque.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/guardian-alba-habilidad.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/guardian-alba-impacto.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/guardian-alba-victoria.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/carnivora-devorando-t-shadow.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/carnivora-devorando-guardian-alba.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/mano-abismo-atrapa-t-shadow.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/mano-abismo-atrapa-guardian-alba.png": "20260902-personajes-chibi-1",
   "./js/pwa.js": "20260827-modos-locales-offline-1",
   "./js/supabase-loader.js": "20260827-supabase-diferido-1",
   "./assets/images/ui/presentacion-mision-cumbres-v1.png": "20260827-soporte-cumbres-1",
@@ -527,11 +540,11 @@ const ASSET_REVISIONS = {
   "./assets/images/ambiente/desierto/lagartija-camina-3.png": "20260827-lagartija-caminata-1",
   "./assets/images/ambiente/desierto/lagartija-camina-4.png": "20260827-lagartija-caminata-1",
   "./assets/images/ambiente/desierto/pasto-seco-viento.png": "20260826-fauna-desierto-1",
-  "./assets/images/personajes/versus/kairos-seleccion-v2.png": "20260823-kairos-5",
-  "./assets/images/personajes/versus/kairos-combate-v1.png": "20260823-kairos-5",
-  "./assets/images/personajes/versus/kairos-ataque-v2.png": "20260824-kairos-6",
-  "./assets/images/personajes/versus/kairos-envejecido-kairos-v1.png": "20260830-kairos-edades-1",
-  "./assets/images/personajes/versus/kairos-anciano-kairos-v1.png": "20260830-kairos-edades-1",
+  "./assets/images/personajes/versus/kairos-seleccion-v2.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/kairos-combate-v1.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/kairos-ataque-v2.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/kairos-envejecido-kairos-v1.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/kairos-anciano-kairos-v1.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/explorador-envejecido-kairos-v2.png": "20260823-kairos-5",
   "./assets/images/personajes/versus/explorador-anciano-kairos-v2.png": "20260823-kairos-5",
   "./assets/images/personajes/versus/mago-envejecido-kairos-v1.png": "20260824-kairos-edades-1",
@@ -542,10 +555,10 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/versus/dragon-anciano-kairos-v1.png": "20260824-kairos-edades-1",
   "./assets/images/personajes/versus/hombre-lobo-envejecido-kairos-v1.png": "20260824-kairos-edades-1",
   "./assets/images/personajes/versus/hombre-lobo-anciano-kairos-v1.png": "20260824-kairos-edades-1",
-  "./assets/images/personajes/versus/t-shadow-envejecido-kairos-v1.png": "20260824-kairos-edades-1",
-  "./assets/images/personajes/versus/t-shadow-anciano-kairos-v1.png": "20260824-kairos-edades-1",
-  "./assets/images/personajes/versus/guardian-alba-envejecido-kairos-v1.png": "20260824-kairos-edades-1",
-  "./assets/images/personajes/versus/guardian-alba-anciano-kairos-v1.png": "20260824-kairos-edades-1",
+  "./assets/images/personajes/versus/t-shadow-envejecido-kairos-v1.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/t-shadow-anciano-kairos-v1.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/guardian-alba-envejecido-kairos-v1.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/guardian-alba-anciano-kairos-v1.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/dragon-hielo-envejecido-kairos-v1.png": "20260824-kairos-edades-1",
   "./assets/images/personajes/versus/dragon-hielo-anciano-kairos-v1.png": "20260824-kairos-edades-1",
   "./assets/images/personajes/versus/azrak-envejecido-kairos-v1.png": "20260824-kairos-edades-1",
@@ -556,12 +569,12 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/versus/kairos-final-guardiana-v1.png": "20260824-kairos-finales-ilustrados-1",
   "./assets/images/personajes/versus/kairos-final-dragon-v1.png": "20260824-kairos-finales-ilustrados-1",
   "./assets/images/personajes/versus/kairos-final-hombre-lobo-v1.png": "20260824-kairos-finales-ilustrados-1",
-  "./assets/images/personajes/versus/kairos-final-t-shadow-v1.png": "20260824-kairos-finales-ilustrados-1",
-  "./assets/images/personajes/versus/kairos-final-guardian-alba-v1.png": "20260824-kairos-finales-ilustrados-1",
+  "./assets/images/personajes/versus/kairos-final-t-shadow-v1.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/kairos-final-guardian-alba-v1.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/kairos-final-dragon-hielo-v1.png": "20260824-kairos-finales-ilustrados-1",
   "./assets/images/personajes/versus/kairos-final-azrak-v1.png": "20260824-kairos-finales-ilustrados-1",
   "./assets/images/personajes/versus/kairos-final-kalamo-v1.png": "20260824-kairos-finales-ilustrados-1",
-  "./assets/images/personajes/versus/kairos-final-kairos-v1.png": "20260830-kairos-montaje-1",
+  "./assets/images/personajes/versus/kairos-final-kairos-v1.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/kairos-final-explorador-concepto-v1.png": "20260823-kairos-5",
   "./assets/images/elements/cristal-sabiduria-dorado-v2.png": "20260821-desierto-correcciones-1",
   "./assets/images/fondos/desierto-2.png": "20260821-desierto-completo-1",
@@ -589,8 +602,8 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/versus/guardiana-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
   "./assets/images/personajes/versus/dragon-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
   "./assets/images/personajes/versus/hombre-lobo-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
-  "./assets/images/personajes/versus/t-shadow-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
-  "./assets/images/personajes/versus/guardian-alba-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
+  "./assets/images/personajes/versus/t-shadow-pantalla-rota-kalamo-v1.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/guardian-alba-pantalla-rota-kalamo-v1.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/dragon-hielo-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
   "./assets/images/personajes/versus/azrak-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
   "./assets/images/personajes/versus/kalamo-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
@@ -607,8 +620,15 @@ const ASSET_REVISIONS = {
   "./js/versus-engine.js": "20260817-versus-recuperacion-1",
   "./js/supabase-client.js": "20260817-amigos-cuentas-1",
   "./js/versus-room-supabase.js": "20260817-auth-cuentas-2",
-  "./assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png": "20260817-alume-sin-rayo-1",
+  "./assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png": "20260902-personajes-chibi-1",
 };
+
+// Segunda pasada del rediseño: proporciones estilizadas basadas en los conceptos originales.
+for (const path of Object.keys(ASSET_REVISIONS)) {
+  if (ASSET_REVISIONS[path] === "20260902-personajes-chibi-1") {
+    ASSET_REVISIONS[path] = "20260902-personajes-estilizados-2";
+  }
+}
 
 const REVISIONES_ACTUALES = Object.fromEntries(
   CORE_ASSETS.map((path) => [path, ASSET_REVISIONS[path] || LEGACY_REVISION]),
