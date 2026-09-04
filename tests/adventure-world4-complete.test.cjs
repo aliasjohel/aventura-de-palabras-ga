@@ -32,7 +32,7 @@ for (const cuadroAnimado of [
   "yeti-camina-paso-1-v2.png",
   "zorro-hielo-camina-paso-1-v2.png",
   "zorro-hielo-camina-paso-2-v2.png",
-  "yeti-lanza-bola-v5.png",
+  "yeti-brazos-arriba-v6.png",
   "zorro-hielo-camina-paso-alto-v4.png",
 ]) {
   assert.ok(fs.existsSync(path.join(root, "assets", "images", "personajes", "mundo-hielo", cuadroAnimado)));
@@ -43,11 +43,12 @@ assert.match(app, /function iniciarFaunaHieloCuandoLaEscenaEsteLibre\(/);
 assert.match(app, /fauna\.classList\.add\("en-marcha"\)/);
 assert.match(css, /@keyframes cruzarFaunaHielo/);
 assert.match(css, /@keyframes ocultarPresentacionFauna/);
-assert.match(css, /@keyframes balanceoYetiHielo/);
-assert.match(css, /@keyframes lanzarBolaNieveYeti/);
+assert.match(css, /@keyframes respirarYetiHielo/);
+assert.match(css, /@keyframes poseBrazosArribaYetiHielo/);
 assert.match(css, /--desplazamiento-cruce:\s*-\d+%/);
-assert.match(app, /proyectil:\s*"bola-nieve-yeti"/);
+assert.doesNotMatch(app, /bola-nieve-yeti/);
 assert.match(css, /\.fauna-yeti-hielo\s*\{[\s\S]*?z-index:\s*1;[\s\S]*?width:\s*14%;/);
+assert.match(css, /\.fauna-zorro-hielo\s*\{[\s\S]*?z-index:\s*1;/);
 assert.match(app, /presentacion:\s*"assets\/images\/personajes\/mundo-hielo\/zorro-hielo-camina-paso-1-v2\.png"/);
 
 const selectorPuzzles = app.match(/function obtenerTipoPruebaEspecial\(escenario, mision\) \{[\s\S]+?\n\}/)?.[0] || "";
@@ -166,6 +167,6 @@ assert.match(css, /\.cristal-panel-glacial \{ filter: hue-rotate\(105deg\)/);
 assert.match(app, /mundoCuatroCompletado,/);
 assert.match(app, /primerDueloNivorCompletado,/);
 assert.match(app, /finalMundoCuatroCompletado[\s\S]*?Mundo 5 · Próximamente/);
-assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v219`/);
+assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v220`/);
 
 console.log("World 4 adventure checks passed");

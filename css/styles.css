@@ -17022,14 +17022,11 @@ button:disabled {
 #pantallaJuego:has(#modalHistoria:not(.oculto)) .fauna-hielo.en-marcha .fauna-hielo-presentacion,
 #pantallaJuego.presentacion-mision-preparada .fauna-hielo.en-marcha .fauna-hielo-cuadro,
 #pantallaJuego.presentacion-mision-activa .fauna-hielo.en-marcha .fauna-hielo-cuadro,
-#pantallaJuego:has(#modalHistoria:not(.oculto)) .fauna-hielo.en-marcha .fauna-hielo-cuadro,
-#pantallaJuego.presentacion-mision-preparada .bola-nieve-yeti,
-#pantallaJuego.presentacion-mision-activa .bola-nieve-yeti,
-#pantallaJuego:has(#modalHistoria:not(.oculto)) .bola-nieve-yeti {
+#pantallaJuego:has(#modalHistoria:not(.oculto)) .fauna-hielo.en-marcha .fauna-hielo-cuadro {
   animation-play-state: paused;
 }
 .fauna-yeti-hielo {
-  --ciclo-yeti: 4.8s;
+  --ciclo-yeti: 12s;
   z-index: 1;
   left: 68%;
   bottom: 36%;
@@ -17037,33 +17034,19 @@ button:disabled {
   transform-origin: center bottom;
 }
 .fauna-yeti-hielo.en-marcha {
-  animation: balanceoYetiHielo var(--ciclo-yeti) ease-in-out var(--demora-cruce, .9s) infinite both;
+  animation: respirarYetiHielo 3.8s ease-in-out var(--demora-cruce, .9s) infinite both;
 }
 .fauna-yeti-hielo.en-marcha .fauna-hielo-cuadro-1 {
   animation: poseReposoYetiHielo var(--ciclo-yeti) step-end var(--demora-cruce, .9s) infinite;
 }
 .fauna-yeti-hielo.en-marcha .fauna-hielo-cuadro-2 {
-  animation: poseLanzamientoYetiHielo var(--ciclo-yeti) step-end var(--demora-cruce, .9s) infinite;
-}
-.bola-nieve-yeti {
-  position: absolute;
-  z-index: 2;
-  left: 8%;
-  top: 30%;
-  width: 12%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  opacity: 0;
-  background: radial-gradient(circle at 34% 30%, #fff 0 16%, #dff8ff 36%, #82cce5 72%, #397a9b 100%);
-  box-shadow: 0 0 7px rgba(205, 247, 255, .9);
-}
-.fauna-yeti-hielo.en-marcha .bola-nieve-yeti {
-  animation: lanzarBolaNieveYeti var(--ciclo-yeti) ease-out var(--demora-cruce, .9s) infinite;
+  animation: poseBrazosArribaYetiHielo var(--ciclo-yeti) step-end var(--demora-cruce, .9s) infinite;
 }
 .fauna-zorro-hielo {
   --duracion-cruce: 11s;
   --ritmo-paso: .84s;
   --desplazamiento-cruce: -320%;
+  z-index: 1;
   left: 55%;
   bottom: 12%;
   width: 26%;
@@ -17077,24 +17060,17 @@ button:disabled {
   to { transform: translate3d(var(--desplazamiento-cruce), 0, 0); }
 }
 @keyframes ocultarPresentacionFauna { to { opacity: 0; } }
-@keyframes balanceoYetiHielo {
-  0%, 45%, 100% { transform: translate3d(0, 0, 0) rotate(0); }
-  54% { transform: translate3d(0, 1%, 0) rotate(-1.2deg); }
-  64% { transform: translate3d(0, 0, 0) rotate(.7deg); }
+@keyframes respirarYetiHielo {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -.35%, 0) scale(1.012); }
 }
 @keyframes poseReposoYetiHielo {
-  0%, 49%, 87%, 100% { opacity: 1; }
-  50%, 86% { opacity: 0; }
+  0%, 77%, 90%, 100% { opacity: 1; }
+  78%, 89% { opacity: 0; }
 }
-@keyframes poseLanzamientoYetiHielo {
-  0%, 49%, 87%, 100% { opacity: 0; }
-  50%, 86% { opacity: 1; }
-}
-@keyframes lanzarBolaNieveYeti {
-  0%, 57% { opacity: 0; transform: translate3d(0, 0, 0) scale(.72); }
-  58% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
-  82% { opacity: 1; transform: translate3d(-235%, 42%, 0) scale(.9); }
-  89%, 100% { opacity: 0; transform: translate3d(-285%, 68%, 0) scale(.65); }
+@keyframes poseBrazosArribaYetiHielo {
+  0%, 77%, 90%, 100% { opacity: 0; }
+  78%, 89% { opacity: 1; }
 }
 @keyframes pasoFaunaHieloUno {
   0%, 49.9% { opacity: 1; }
