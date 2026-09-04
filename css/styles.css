@@ -17026,17 +17026,18 @@ button:disabled {
   animation-play-state: paused;
 }
 .fauna-yeti-hielo {
-  --duracion-cruce: 15s;
-  --ritmo-paso: .92s;
-  --desplazamiento-cruce: -610%;
+  --duracion-cruce: 9.5s;
+  --ritmo-paso: 1.5s;
+  --desplazamiento-yeti: -118%;
   z-index: 1;
   left: 68%;
   bottom: 36%;
   width: 14%;
 }
+.fauna-yeti-hielo.en-marcha { animation-name: ocultarseYetiDetrasMontana; }
 .fauna-zorro-hielo {
   --duracion-cruce: 11s;
-  --ritmo-paso: .72s;
+  --ritmo-paso: .84s;
   --desplazamiento-cruce: -320%;
   left: 55%;
   bottom: 12%;
@@ -17049,6 +17050,14 @@ button:disabled {
 @keyframes cruzarFaunaHielo {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(var(--desplazamiento-cruce), 0, 0); }
+}
+@keyframes ocultarseYetiDetrasMontana {
+  0%, 72% { opacity: 1; }
+  90% { opacity: .32; }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--desplazamiento-yeti), 0, 0);
+  }
 }
 @keyframes ocultarPresentacionFauna { to { opacity: 0; } }
 @keyframes pasoFaunaHieloUno {

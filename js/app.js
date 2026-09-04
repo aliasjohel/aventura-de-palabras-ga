@@ -10578,7 +10578,7 @@ function actualizarPersonajesNarrativosHielo() {
       presentacion: "assets/images/personajes/mundo-hielo/yeti-camina-paso-1-v2.png",
       cuadros: [
         "assets/images/personajes/mundo-hielo/yeti-camina-paso-2-v2.png",
-        "assets/images/personajes/mundo-hielo/yeti-camina-paso-alternado-v3.png",
+        "assets/images/personajes/mundo-hielo/yeti-camina-paso-suave-v4.png",
       ],
       descripcion: "Yeti caminando por el valle helado",
     },
@@ -10587,7 +10587,7 @@ function actualizarPersonajesNarrativosHielo() {
       presentacion: "assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-1-v2.png",
       cuadros: [
         "assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-2-v2.png",
-        "assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-alternado-v3.png",
+        "assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-alto-v4.png",
       ],
       descripcion: "Zorro boreal caminando por el sendero",
     },
