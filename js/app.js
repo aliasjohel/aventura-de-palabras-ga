@@ -10575,17 +10575,19 @@ function actualizarPersonajesNarrativosHielo() {
   const faunaAnimadaPorMision = {
     0: {
       clase: "fauna-yeti-hielo",
+      presentacion: "assets/images/personajes/mundo-hielo/yeti-camina-paso-1-v2.png",
       cuadros: [
-        "assets/images/personajes/mundo-hielo/yeti-camina-paso-1-v2.png",
         "assets/images/personajes/mundo-hielo/yeti-camina-paso-2-v2.png",
+        "assets/images/personajes/mundo-hielo/yeti-camina-paso-alternado-v3.png",
       ],
       descripcion: "Yeti caminando por el valle helado",
     },
     2: {
       clase: "fauna-zorro-hielo",
+      presentacion: "assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-1-v2.png",
       cuadros: [
-        "assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-1-v2.png",
         "assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-2-v2.png",
+        "assets/images/personajes/mundo-hielo/zorro-hielo-camina-paso-alternado-v3.png",
       ],
       descripcion: "Zorro boreal caminando por el sendero",
     },
@@ -10597,6 +10599,12 @@ function actualizarPersonajesNarrativosHielo() {
     fauna.className = `personaje-narrativo-hielo fauna-hielo ${faunaAnimada.clase}`;
     fauna.setAttribute("role", "img");
     fauna.setAttribute("aria-label", faunaAnimada.descripcion);
+    const presentacion = document.createElement("img");
+    presentacion.className = "fauna-hielo-presentacion";
+    presentacion.src = faunaAnimada.presentacion;
+    presentacion.alt = "";
+    presentacion.setAttribute("aria-hidden", "true");
+    fauna.appendChild(presentacion);
     faunaAnimada.cuadros.forEach((src, indice) => {
       const cuadro = document.createElement("img");
       cuadro.className = `fauna-hielo-cuadro fauna-hielo-cuadro-${indice + 1}`;
@@ -10608,7 +10616,8 @@ function actualizarPersonajesNarrativosHielo() {
     contenedorEscenario.appendChild(fauna);
 
     if (!prefiereReducirMovimiento.matches) {
-      void Promise.all(faunaAnimada.cuadros.map((src) => precargarImagen(src))).then(() => {
+      const imagenesFauna = [faunaAnimada.presentacion, ...faunaAnimada.cuadros];
+      void Promise.all(imagenesFauna.map((src) => precargarImagen(src))).then(() => {
         if (
           escenarioActual !== 3 ||
           misionActual !== misionFauna ||

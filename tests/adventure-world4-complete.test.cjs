@@ -33,6 +33,8 @@ for (const cuadroAnimado of [
   "yeti-camina-paso-2-v2.png",
   "zorro-hielo-camina-paso-1-v2.png",
   "zorro-hielo-camina-paso-2-v2.png",
+  "yeti-camina-paso-alternado-v3.png",
+  "zorro-hielo-camina-paso-alternado-v3.png",
 ]) {
   assert.ok(fs.existsSync(path.join(root, "assets", "images", "personajes", "mundo-hielo", cuadroAnimado)));
   assert.match(app, new RegExp(cuadroAnimado.replace(".", "\\.")));
@@ -41,7 +43,10 @@ for (const cuadroAnimado of [
 assert.match(app, /function iniciarFaunaHieloCuandoLaEscenaEsteLibre\(/);
 assert.match(app, /fauna\.classList\.add\("en-marcha"\)/);
 assert.match(css, /@keyframes cruzarFaunaHielo/);
+assert.match(css, /@keyframes ocultarPresentacionFauna/);
 assert.match(css, /--desplazamiento-cruce:\s*-\d+%/);
+assert.match(css, /\.fauna-yeti-hielo\s*\{[\s\S]*?z-index:\s*1;[\s\S]*?width:\s*14%;/);
+assert.match(app, /presentacion:\s*"assets\/images\/personajes\/mundo-hielo\/zorro-hielo-camina-paso-1-v2\.png"/);
 
 const selectorPuzzles = app.match(/function obtenerTipoPruebaEspecial\(escenario, mision\) \{[\s\S]+?\n\}/)?.[0] || "";
 assert.equal((selectorPuzzles.match(/escenario === 3 && mision ===/g) || []).length, 2);
@@ -159,6 +164,6 @@ assert.match(css, /\.cristal-panel-glacial \{ filter: hue-rotate\(105deg\)/);
 assert.match(app, /mundoCuatroCompletado,/);
 assert.match(app, /primerDueloNivorCompletado,/);
 assert.match(app, /finalMundoCuatroCompletado[\s\S]*?Mundo 5 · Próximamente/);
-assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v216`/);
+assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v217`/);
 
 console.log("World 4 adventure checks passed");

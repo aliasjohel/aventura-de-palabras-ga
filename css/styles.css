@@ -16993,6 +16993,7 @@ button:disabled {
 .fauna-hielo.en-marcha {
   animation: cruzarFaunaHielo var(--duracion-cruce) linear var(--demora-cruce, .9s) 1 both;
 }
+.fauna-hielo-presentacion,
 .fauna-hielo-cuadro {
   position: absolute;
   inset: 0;
@@ -17001,29 +17002,37 @@ button:disabled {
   height: 100%;
   object-fit: contain;
 }
-.fauna-hielo-cuadro-1 { opacity: 1; }
+.fauna-hielo-presentacion { opacity: 1; }
+.fauna-hielo-cuadro-1,
 .fauna-hielo-cuadro-2 { opacity: 0; }
+.fauna-hielo.en-marcha .fauna-hielo-presentacion {
+  animation: ocultarPresentacionFauna 1ms step-end var(--demora-cruce, .9s) 1 forwards;
+}
 .fauna-hielo.en-marcha .fauna-hielo-cuadro-1 {
-  animation: pasoFaunaHieloUno var(--ritmo-paso) linear var(--demora-cruce, .9s) infinite both;
+  animation: pasoFaunaHieloUno var(--ritmo-paso) linear var(--demora-cruce, .9s) infinite;
 }
 .fauna-hielo.en-marcha .fauna-hielo-cuadro-2 {
-  animation: pasoFaunaHieloDos var(--ritmo-paso) linear var(--demora-cruce, .9s) infinite both;
+  animation: pasoFaunaHieloDos var(--ritmo-paso) linear var(--demora-cruce, .9s) infinite;
 }
 #pantallaJuego.presentacion-mision-preparada .fauna-hielo.en-marcha,
 #pantallaJuego.presentacion-mision-activa .fauna-hielo.en-marcha,
 #pantallaJuego:has(#modalHistoria:not(.oculto)) .fauna-hielo.en-marcha,
+#pantallaJuego.presentacion-mision-preparada .fauna-hielo.en-marcha .fauna-hielo-presentacion,
+#pantallaJuego.presentacion-mision-activa .fauna-hielo.en-marcha .fauna-hielo-presentacion,
+#pantallaJuego:has(#modalHistoria:not(.oculto)) .fauna-hielo.en-marcha .fauna-hielo-presentacion,
 #pantallaJuego.presentacion-mision-preparada .fauna-hielo.en-marcha .fauna-hielo-cuadro,
 #pantallaJuego.presentacion-mision-activa .fauna-hielo.en-marcha .fauna-hielo-cuadro,
 #pantallaJuego:has(#modalHistoria:not(.oculto)) .fauna-hielo.en-marcha .fauna-hielo-cuadro {
   animation-play-state: paused;
 }
 .fauna-yeti-hielo {
-  --duracion-cruce: 13s;
-  --ritmo-paso: 1.05s;
-  --desplazamiento-cruce: -330%;
-  left: 62%;
-  bottom: 26%;
-  width: 28%;
+  --duracion-cruce: 15s;
+  --ritmo-paso: .92s;
+  --desplazamiento-cruce: -610%;
+  z-index: 1;
+  left: 68%;
+  bottom: 36%;
+  width: 14%;
 }
 .fauna-zorro-hielo {
   --duracion-cruce: 11s;
@@ -17033,7 +17042,7 @@ button:disabled {
   bottom: 12%;
   width: 26%;
 }
-.fauna-zorro-hielo .fauna-hielo-cuadro-2 { transform: translateY(20%); }
+.fauna-zorro-hielo .fauna-hielo-cuadro { transform: translateY(20%); }
 .nivor-hielo { right: 2%; bottom: 0; width: min(43%, 520px); max-height: 87%; transform: scaleX(-1); }
 .nivor-hielo-10 { width: min(48%, 580px); filter: drop-shadow(0 0 23px rgba(118, 231, 255, .72)) drop-shadow(0 18px 20px rgba(0, 7, 30, .7)); }
 @keyframes nieveMundoHielo { to { translate: 9vw 125vh; rotate: 320deg; } }
@@ -17041,6 +17050,7 @@ button:disabled {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(var(--desplazamiento-cruce), 0, 0); }
 }
+@keyframes ocultarPresentacionFauna { to { opacity: 0; } }
 @keyframes pasoFaunaHieloUno {
   0%, 49.9% { opacity: 1; }
   50%, 100% { opacity: 0; }
