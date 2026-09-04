@@ -15307,7 +15307,12 @@ button:disabled {
   box-shadow:0 0 0 2px #baf4ff,0 0 28px rgba(70,207,255,.72);
 }
 .versus-personaje-uno.personaje-dragon_hielo,
-.versus-personaje-dos.personaje-dragon_hielo { width:min(31vw,390px); bottom:18%; filter:drop-shadow(0 0 15px rgba(93,221,255,.7)); }
+.versus-personaje-dos.personaje-dragon_hielo {
+  width:min(38vw,67vh,480px);
+  height:82%;
+  bottom:10%;
+  filter:drop-shadow(0 0 15px rgba(93,221,255,.7));
+}
 .versus-personaje-uno.personaje-dragon_hielo { left:1%; }
 .versus-personaje-dos.personaje-dragon_hielo { right:1%; transform:scaleX(-1); animation-name:respirarPersonajeDosInvertidoVersus; }
 .versus-personaje-uno.entrando-duelo.entrada-dragon_hielo { animation:entradaNivorJugadorVersus 2.2s cubic-bezier(.17,.74,.23,1) both; }
@@ -15363,8 +15368,8 @@ button:disabled {
    conserve el tamaño de su pose base y el aliento nazca en la boca. */
 .versus-personaje-uno.personaje-dragon_hielo.lanzando-hielo,
 .versus-personaje-dos.personaje-dragon_hielo.lanzando-hielo {
-  width:min(46vw,576px);
-  height:78%;
+  width:min(52vw,680px);
+  height:86%;
 }
 .versus-personaje-uno.personaje-dragon_hielo.lanzando-hielo { left:-2%; }
 .versus-personaje-dos.personaje-dragon_hielo.lanzando-hielo { right:-2%; }
@@ -15428,7 +15433,7 @@ button:disabled {
 @keyframes victoriaCeroAbsoluto { 0%,70%{opacity:0;transform:translate(-50%,12vh) scale(.65)} 82%,100%{opacity:1;transform:translate(-50%,0) scale(1)} }
 
 @media (orientation:landscape) and (max-height:600px) {
-  .versus-personaje-uno.personaje-dragon_hielo,.versus-personaje-dos.personaje-dragon_hielo{width:min(29vw,49vh);bottom:20%}
+  .versus-personaje-uno.personaje-dragon_hielo,.versus-personaje-dos.personaje-dragon_hielo{width:min(38vw,67vh);height:82%;bottom:10%}
   .cinematica-nivor-victoria{width:min(39vw,66vh)}
 }
 
@@ -15591,10 +15596,10 @@ button:disabled {
 /* Nivor v3: descenso vertical con aleteo y contacto con el suelo. */
 .versus-personaje-uno.entrando-duelo.entrada-dragon_hielo,
 .versus-personaje-dos.entrando-duelo.entrada-dragon_hielo-rival {
-  width:min(31vw,390px);
-  height:auto;
+  width:min(38vw,67vh,480px);
+  height:82%;
   object-fit:contain;
-  bottom:17%;
+  bottom:10%;
   scale:1.07;
 }
 .versus-personaje-uno.entrando-duelo.entrada-dragon_hielo { animation:aterrizajeNivorJugador 3.05s cubic-bezier(.2,.68,.2,1) both; }

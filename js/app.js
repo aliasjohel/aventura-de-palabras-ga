@@ -5318,6 +5318,7 @@ async function completarDueloAventura() {
 
   if (duelo.tipo === "nivor_glacial") {
     primerDueloNivorCompletado = true;
+    await reproducirRetiradaNivorGlacial();
     desafiosCompletados = desafiosPorMision - 1;
     sonidoNarrativoPendiente = avanzarMision();
     btnSiguiente.textContent = "➡️ Seguir la pista de Nivor";
@@ -5356,6 +5357,68 @@ async function completarDueloAventura() {
   portalAbierto = true;
   guardarProgreso();
   await completarAperturaPortal();
+}
+
+async function reproducirRetiradaNivorGlacial() {
+  const escenas = [
+    {
+      imagen: "01-nivor-reconoce-derrota-v1.png",
+      alt: "Aren y el enorme dragón Nivor se observan tras el primer duelo",
+      texto: "Nivor repliega las alas. Aren venció el duelo, pero el dragón todavía se niega a revelar qué protege en la fortaleza.",
+    },
+    {
+      imagen: "02-alarma-fortaleza-v1.png",
+      alt: "Una alarma violeta ilumina la fortaleza y alerta a Nivor",
+      texto: "Un pulso violeta atraviesa la tormenta. Al mirar la fortaleza, la furia de Nivor se convierte en alarma.",
+    },
+    {
+      imagen: "03-nivor-regresa-fortaleza-v1.png",
+      alt: "Nivor se retira volando hacia la fortaleza mientras Aren lo observa",
+      texto: "Sin dar explicaciones, Nivor levanta vuelo y regresa a toda velocidad. Su retirada deja una pista: allí dentro hay algo que teme perder.",
+    },
+  ];
+  const capa = document.createElement("div");
+  capa.className = "cinematica-final-cumbres cinematica-mundo-hielo cinematica-retirada-nivor";
+  capa.innerHTML = `
+    <img class="cinematica-cumbres-ambiente" alt="" aria-hidden="true">
+    <img class="cinematica-cumbres-fondo" alt="">
+    <div class="cinematica-cumbres-personajes" aria-hidden="true"></div>
+    <p class="cinematica-cumbres-texto"></p>
+    <button type="button" class="cinematica-cumbres-saltar">Saltar</button>`;
+  document.body.appendChild(capa);
+  const ambiente = capa.querySelector(".cinematica-cumbres-ambiente");
+  const fondo = capa.querySelector(".cinematica-cumbres-fondo");
+  const texto = capa.querySelector(".cinematica-cumbres-texto");
+  let saltar = false;
+  capa.querySelector(".cinematica-cumbres-saltar").addEventListener("click", () => (saltar = true));
+  await Promise.all(escenas.map(({ imagen }) =>
+    precargarImagen(`assets/images/cinematicas/mundo-hielo/primer-duelo/${imagen}`)));
+
+  let primera = true;
+  for (const escena of escenas) {
+    if (saltar) break;
+    if (!primera) {
+      capa.classList.add("cambiando-plano");
+      await esperarMovimiento(prefiereReducirMovimiento.matches ? 0 : 260);
+    }
+    const origen = `assets/images/cinematicas/mundo-hielo/primer-duelo/${escena.imagen}`;
+    ambiente.src = origen;
+    fondo.src = origen;
+    fondo.alt = escena.alt;
+    texto.textContent = escena.texto;
+    if (primera) {
+      capa.classList.add("visible", "plano-ilustrado");
+      primera = false;
+    } else {
+      capa.classList.remove("cambiando-plano");
+    }
+    for (let tiempo = 0; tiempo < (prefiereReducirMovimiento.matches ? 1100 : 5400) && !saltar; tiempo += 200) {
+      await new Promise((resolver) => window.setTimeout(resolver, 200));
+    }
+  }
+  capa.classList.remove("visible");
+  await esperarMovimiento(250);
+  capa.remove();
 }
 
 async function reproducirCinematicaFinalCumbres() {

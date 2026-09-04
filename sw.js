@@ -1,6 +1,7 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v221`;
+const CACHE_NAME = `${CACHE_PREFIX}v222`;
 const LEGACY_CACHE_NAMES = new Set([
+  `${CACHE_PREFIX}v221`,
   `${CACHE_PREFIX}v220`,
   `${CACHE_PREFIX}v219`,
   `${CACHE_PREFIX}v218`,
@@ -269,6 +270,9 @@ const CORE_ASSETS = [
   "./assets/images/cinematicas/mundo-hielo/01-aren-vigilado-por-nivor-v1.png",
   "./assets/images/cinematicas/mundo-hielo/02-nivor-rompe-cadenas-v1.png",
   "./assets/images/cinematicas/mundo-hielo/03-nivor-entrega-cristal-v1.png",
+  "./assets/images/cinematicas/mundo-hielo/primer-duelo/01-nivor-reconoce-derrota-v1.png",
+  "./assets/images/cinematicas/mundo-hielo/primer-duelo/02-alarma-fortaleza-v1.png",
+  "./assets/images/cinematicas/mundo-hielo/primer-duelo/03-nivor-regresa-fortaleza-v1.png",
   "./assets/images/ambiente/desierto/alacran-camina-1.png",
   "./assets/images/ambiente/desierto/alacran-camina-2.png",
   "./assets/images/ambiente/desierto/halcon-alas-arriba.png",
@@ -481,8 +485,8 @@ const CORE_ASSETS = [
 const ASSET_REVISIONS = {
   "./": "20260831-laberinto-hielo-7",
   "./index.html": "20260831-laberinto-hielo-7",
-  "./css/styles.css": "20260904-yeti-tamano-2",
-  "./js/app.js": "20260904-yeti-tamano-2",
+  "./css/styles.css": "20260904-nivor-retirada-1",
+  "./js/app.js": "20260904-nivor-retirada-1",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-ataque.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-impacto.png": "20260902-personajes-chibi-1",
@@ -548,6 +552,9 @@ const ASSET_REVISIONS = {
   "./assets/images/cinematicas/mundo-hielo/01-aren-vigilado-por-nivor-v1.png": "20260831-mundo-hielo-1",
   "./assets/images/cinematicas/mundo-hielo/02-nivor-rompe-cadenas-v1.png": "20260831-mundo-hielo-1",
   "./assets/images/cinematicas/mundo-hielo/03-nivor-entrega-cristal-v1.png": "20260831-mundo-hielo-1",
+  "./assets/images/cinematicas/mundo-hielo/primer-duelo/01-nivor-reconoce-derrota-v1.png": "20260904-nivor-retirada-1",
+  "./assets/images/cinematicas/mundo-hielo/primer-duelo/02-alarma-fortaleza-v1.png": "20260904-nivor-retirada-1",
+  "./assets/images/cinematicas/mundo-hielo/primer-duelo/03-nivor-regresa-fortaleza-v1.png": "20260904-nivor-retirada-1",
   "./assets/sounds/cinematica-final-mundo3.mp3": "20260829-cinematica-mundo3-1",
   "./assets/images/ambiente/desierto/alacran-camina-1.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/alacran-camina-2.png": "20260826-fauna-desierto-1",

@@ -140,6 +140,18 @@ assert.match(app, /if \(!propio && \["hit", "miss", "word_complete"\]\.includes\
 assert.match(app, /function jugarTurnoRivalVersus\([\s\S]*?reproducirPulsacionTeclaVersus\("rival"\)/);
 
 assert.match(app, /nivor_glacial: \{[\s\S]*?escenario: 3,[\s\S]*?mision: 5,[\s\S]*?rival: "dragon_hielo"/);
+assert.match(app, /duelo\.tipo === "nivor_glacial"[\s\S]*?await reproducirRetiradaNivorGlacial\(\)/);
+assert.match(app, /async function reproducirRetiradaNivorGlacial\(/);
+for (const escena of [
+  "01-nivor-reconoce-derrota-v1.png",
+  "02-alarma-fortaleza-v1.png",
+  "03-nivor-regresa-fortaleza-v1.png",
+]) {
+  assert.ok(fs.existsSync(path.join(root, "assets", "images", "cinematicas", "mundo-hielo", "primer-duelo", escena)));
+  assert.match(app, new RegExp(escena.replace(".", "\\.")));
+  assert.match(sw, new RegExp(escena.replace(".", "\\.")));
+}
+assert.match(css, /\.versus-personaje-dos\.personaje-dragon_hielo\s*\{[\s\S]*?width:min\(38vw,67vh,480px\);[\s\S]*?height:82%;/);
 assert.match(app, /nivor_cero_absoluto: \{[\s\S]*?escenario: 3,[\s\S]*?mision: 9,[\s\S]*?rival: "dragon_hielo"/);
 assert.match(app, /intervaloRival: 1900/);
 assert.match(app, /probabilidadRival: 0\.76/);
@@ -168,6 +180,6 @@ assert.match(css, /\.cristal-panel-glacial \{ filter: hue-rotate\(105deg\)/);
 assert.match(app, /mundoCuatroCompletado,/);
 assert.match(app, /primerDueloNivorCompletado,/);
 assert.match(app, /finalMundoCuatroCompletado[\s\S]*?Mundo 5 · Próximamente/);
-assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v221`/);
+assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v222`/);
 
 console.log("World 4 adventure checks passed");
