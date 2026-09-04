@@ -10577,10 +10577,11 @@ function actualizarPersonajesNarrativosHielo() {
       clase: "fauna-yeti-hielo",
       presentacion: "assets/images/personajes/mundo-hielo/yeti-camina-paso-1-v2.png",
       cuadros: [
-        "assets/images/personajes/mundo-hielo/yeti-camina-paso-2-v2.png",
-        "assets/images/personajes/mundo-hielo/yeti-camina-paso-suave-v4.png",
+        "assets/images/personajes/mundo-hielo/yeti-camina-paso-1-v2.png",
+        "assets/images/personajes/mundo-hielo/yeti-lanza-bola-v5.png",
       ],
-      descripcion: "Yeti caminando por el valle helado",
+      proyectil: "bola-nieve-yeti",
+      descripcion: "Yeti lanzando una bola de nieve desde la colina",
     },
     2: {
       clase: "fauna-zorro-hielo",
@@ -10613,6 +10614,12 @@ function actualizarPersonajesNarrativosHielo() {
       cuadro.setAttribute("aria-hidden", "true");
       fauna.appendChild(cuadro);
     });
+    if (faunaAnimada.proyectil) {
+      const proyectil = document.createElement("i");
+      proyectil.className = faunaAnimada.proyectil;
+      proyectil.setAttribute("aria-hidden", "true");
+      fauna.appendChild(proyectil);
+    }
     contenedorEscenario.appendChild(fauna);
 
     if (!prefiereReducirMovimiento.matches) {
