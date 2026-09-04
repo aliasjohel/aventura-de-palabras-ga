@@ -17036,6 +17036,11 @@ button:disabled {
 .fauna-yeti-hielo.en-marcha {
   animation: respirarYetiHielo 3.8s ease-in-out var(--demora-cruce, .9s) infinite both;
 }
+.fauna-yeti-hielo .fauna-hielo-presentacion,
+.fauna-yeti-hielo .fauna-hielo-cuadro-1 {
+  transform: scale(.86);
+  transform-origin: center bottom;
+}
 .fauna-yeti-hielo.en-marcha .fauna-hielo-cuadro-1 {
   animation: poseReposoYetiHielo var(--ciclo-yeti) step-end var(--demora-cruce, .9s) infinite;
 }

@@ -48,6 +48,7 @@ assert.match(css, /@keyframes poseBrazosArribaYetiHielo/);
 assert.match(css, /--desplazamiento-cruce:\s*-\d+%/);
 assert.doesNotMatch(app, /bola-nieve-yeti/);
 assert.match(css, /\.fauna-yeti-hielo\s*\{[\s\S]*?z-index:\s*1;[\s\S]*?width:\s*14%;/);
+assert.match(css, /\.fauna-yeti-hielo \.fauna-hielo-presentacion,[\s\S]*?\.fauna-yeti-hielo \.fauna-hielo-cuadro-1\s*\{[\s\S]*?transform:\s*scale\(\.86\)/);
 assert.match(css, /\.fauna-zorro-hielo\s*\{[\s\S]*?z-index:\s*1;/);
 assert.match(app, /presentacion:\s*"assets\/images\/personajes\/mundo-hielo\/zorro-hielo-camina-paso-1-v2\.png"/);
 
@@ -167,6 +168,6 @@ assert.match(css, /\.cristal-panel-glacial \{ filter: hue-rotate\(105deg\)/);
 assert.match(app, /mundoCuatroCompletado,/);
 assert.match(app, /primerDueloNivorCompletado,/);
 assert.match(app, /finalMundoCuatroCompletado[\s\S]*?Mundo 5 · Próximamente/);
-assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v220`/);
+assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v221`/);
 
 console.log("World 4 adventure checks passed");

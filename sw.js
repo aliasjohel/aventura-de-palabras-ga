@@ -1,6 +1,7 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v220`;
+const CACHE_NAME = `${CACHE_PREFIX}v221`;
 const LEGACY_CACHE_NAMES = new Set([
+  `${CACHE_PREFIX}v220`,
   `${CACHE_PREFIX}v219`,
   `${CACHE_PREFIX}v218`,
   `${CACHE_PREFIX}v217`,
@@ -480,8 +481,8 @@ const CORE_ASSETS = [
 const ASSET_REVISIONS = {
   "./": "20260831-laberinto-hielo-7",
   "./index.html": "20260831-laberinto-hielo-7",
-  "./css/styles.css": "20260904-yeti-brazos-1",
-  "./js/app.js": "20260904-yeti-brazos-1",
+  "./css/styles.css": "20260904-yeti-tamano-2",
+  "./js/app.js": "20260904-yeti-tamano-2",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-ataque.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-impacto.png": "20260902-personajes-chibi-1",
