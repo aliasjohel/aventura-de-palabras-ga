@@ -1,6 +1,7 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v223`;
+const CACHE_NAME = `${CACHE_PREFIX}v224`;
 const LEGACY_CACHE_NAMES = new Set([
+  `${CACHE_PREFIX}v223`,
   `${CACHE_PREFIX}v222`,
   `${CACHE_PREFIX}v221`,
   `${CACHE_PREFIX}v220`,
@@ -492,7 +493,7 @@ const ASSET_REVISIONS = {
   "./": "20260831-laberinto-hielo-7",
   "./index.html": "20260831-laberinto-hielo-7",
   "./css/styles.css": "20260904-portal-azrak-1",
-  "./js/app.js": "20260904-portal-azrak-1",
+  "./js/app.js": "20260904-azrak-mirada-2",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-ataque.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-impacto.png": "20260902-personajes-chibi-1",
@@ -560,7 +561,7 @@ const ASSET_REVISIONS = {
   "./assets/images/cinematicas/mundo-hielo/03-nivor-entrega-cristal-v1.png": "20260831-mundo-hielo-1",
   "./assets/images/cinematicas/mundo-hielo/04-nivor-arrepentido-v1.png": "20260904-portal-azrak-1",
   "./assets/images/cinematicas/mundo-hielo/05-cristales-abren-grieta-v1.png": "20260904-portal-azrak-1",
-  "./assets/images/cinematicas/mundo-hielo/06-azrak-en-la-grieta-v1.png": "20260904-portal-azrak-1",
+  "./assets/images/cinematicas/mundo-hielo/06-azrak-en-la-grieta-v1.png": "20260904-azrak-mirada-2",
   "./assets/images/cinematicas/mundo-hielo/07-nivor-desafia-grieta-v1.png": "20260904-portal-azrak-1",
   "./assets/images/cinematicas/mundo-hielo/08-portal-mundo-cinco-v1.png": "20260904-portal-azrak-1",
   "./assets/images/cinematicas/mundo-hielo/primer-duelo/01-nivor-reconoce-derrota-v1.png": "20260904-nivor-retirada-1",

@@ -5658,7 +5658,7 @@ async function reproducirCinematicaFinalHielo() {
     } else {
       capa.classList.remove("cambiando-plano");
     }
-    for (let tiempo = 0; tiempo < (prefiereReducirMovimiento.matches ? 1200 : 5600) && !saltar; tiempo += 200) {
+    for (let tiempo = 0; tiempo < (prefiereReducirMovimiento.matches ? 1200 : 8200) && !saltar; tiempo += 200) {
       await new Promise((resolver) => window.setTimeout(resolver, 200));
     }
   }
