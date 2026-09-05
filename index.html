@@ -33,7 +33,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260904-portal-azrak-1">
+    <link rel="stylesheet" href="css/styles.css?v=20260905-guia-real-2">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
@@ -134,7 +134,7 @@
                     <section id="bienvenidaTutorialVersus" class="bienvenida-tutorial-versus">
                         <div class="insignia-tutorial-versus" aria-hidden="true">⚔️</div>
                         <h2 id="tituloTutorialVersus">¿Es tu primera batalla?</h2>
-                        <p>Te enseñamos el duelo, los corazones y las habilidades en menos de dos minutos.</p>
+                        <p>Practicá en la arena real, a tu ritmo. El reloj y el rival esperan mientras aprendés.</p>
                         <div class="acciones-bienvenida-tutorial-versus">
                             <button id="btnComenzarTutorialVersus" type="button">Jugar tutorial</button>
                             <button id="btnOmitirTutorialVersus" type="button">Omitir por ahora</button>
@@ -142,44 +142,12 @@
                     </section>
 
                     <section id="pasoTutorialVersus" class="paso-tutorial-versus oculto">
-                        <div id="escenaTutorialVersus" class="escena-tutorial-versus" data-paso="0">
-                            <div class="tutorial-rival">
-                                <span>RIVAL</span>
-                                <div id="corazonesRivalTutorialVersus" class="corazones-tutorial-versus">♥ ♥ ♥</div>
-                            </div>
-                            <div class="tutorial-jugador">
-                                <span>VOS</span>
-                                <div id="corazonesJugadorTutorialVersus" class="corazones-tutorial-versus">♥ ♥ ♥</div>
-                            </div>
-                            <div class="palabra-tutorial-versus">
-                                <small id="temaTutorialVersus">ANIMALES · PALABRA 1/5</small>
-                                <strong id="palabraTutorialVersus">G _ T O</strong>
-                                <div id="intentosTutorialVersus" class="intentos-tutorial-versus">◆ ◆ ◆ ◆ ◆ ◆</div>
-                            </div>
-                            <div id="tecladoTutorialVersus" class="teclado-tutorial-versus">
-                                <button type="button" data-accion="acierto">A</button>
-                                <button type="button" data-accion="error">X</button>
-                                <button type="button" data-accion="agotar">Agotar intentos</button>
-                            </div>
-                            <button id="btnCargaTutorialVersus" class="carga-tutorial-versus" type="button">
-                                <span>✨ Acertar 8 letras</span><i><b id="barraCargaTutorialVersus"></b></i>
-                            </button>
-                            <button id="btnHabilidadTutorialVersus" class="habilidad-tutorial-versus" type="button"
-                                disabled>
-                                🌿 Usar Enredo de raíces
-                            </button>
-                            <div id="impactoTutorialVersus" class="impacto-tutorial-versus" aria-hidden="true">
-                                <small>PANTALLA DEL RIVAL</small>
-                                <div class="mini-teclado-tutorial-versus"><i>Q</i><i>W</i><i>E</i><i>R</i><i>T</i></div>
-                                <strong>Teclado bloqueado 5 s</strong>
-                            </div>
-                        </div>
                         <div class="texto-paso-tutorial-versus">
-                            <small id="numeroPasoTutorialVersus">PASO 1 DE 5</small>
+                            <small id="numeroPasoTutorialVersus">PASO 1 DE 8</small>
                             <h2 id="tituloPasoTutorialVersus">Completá la palabra</h2>
                             <p id="descripcionPasoTutorialVersus">Elegí la A para completar GATO. Cada palabra terminada
                                 le quita un corazón al rival.</p>
-                            <p id="accionPasoTutorialVersus" class="accion-paso-tutorial-versus">Tocá la letra A para
+                            <p id="accionPasoTutorialVersus" class="accion-paso-tutorial-versus" aria-live="polite">Tocá la letra A para
                                 continuar.</p>
                             <button id="btnSiguienteTutorialVersus" type="button" disabled>Siguiente</button>
                         </div>
@@ -1455,7 +1423,7 @@
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
     <script src="js/versus-room-supabase.js?v=20260817-auth-cuentas-2"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
-    <script src="js/app.js?v=20260905-final-hielo-musica-1"></script>
+    <script src="js/app.js?v=20260905-guia-real-2"></script>
     <script src="js/pwa.js?v=20260827-modos-locales-offline-1"></script>
 </body>
 

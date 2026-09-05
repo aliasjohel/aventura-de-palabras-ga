@@ -50,22 +50,11 @@ const progresoTutorialVersus = document.getElementById("progresoTutorialVersus")
 const btnCerrarTutorialVersus = document.getElementById("btnCerrarTutorialVersus");
 const btnComenzarTutorialVersus = document.getElementById("btnComenzarTutorialVersus");
 const btnOmitirTutorialVersus = document.getElementById("btnOmitirTutorialVersus");
-const escenaTutorialVersus = document.getElementById("escenaTutorialVersus");
 const numeroPasoTutorialVersus = document.getElementById("numeroPasoTutorialVersus");
 const tituloPasoTutorialVersus = document.getElementById("tituloPasoTutorialVersus");
 const descripcionPasoTutorialVersus = document.getElementById("descripcionPasoTutorialVersus");
 const accionPasoTutorialVersus = document.getElementById("accionPasoTutorialVersus");
 const btnSiguienteTutorialVersus = document.getElementById("btnSiguienteTutorialVersus");
-const palabraTutorialVersus = document.getElementById("palabraTutorialVersus");
-const temaTutorialVersus = document.getElementById("temaTutorialVersus");
-const intentosTutorialVersus = document.getElementById("intentosTutorialVersus");
-const corazonesRivalTutorialVersus = document.getElementById("corazonesRivalTutorialVersus");
-const corazonesJugadorTutorialVersus = document.getElementById("corazonesJugadorTutorialVersus");
-const tecladoTutorialVersus = document.getElementById("tecladoTutorialVersus");
-const btnCargaTutorialVersus = document.getElementById("btnCargaTutorialVersus");
-const barraCargaTutorialVersus = document.getElementById("barraCargaTutorialVersus");
-const btnHabilidadTutorialVersus = document.getElementById("btnHabilidadTutorialVersus");
-const impactoTutorialVersus = document.getElementById("impactoTutorialVersus");
 const btnConfiguracion = document.getElementById("btnConfiguracion");
 const modalConfiguracion = document.getElementById("modalConfiguracion");
 const btnCerrarConfiguracion = document.getElementById("btnCerrarConfiguracion");
@@ -2273,113 +2262,240 @@ function salirModoArcade() {
 }
 
 const claveTutorialVersusVisto = "tutorialVersusVistoAventuraGA";
+const tutorialCombateVersus = {
+  activo: false, ocupado: false, completado: false, letras: [],
+  sesion: 0, temporizadores: new Set(), respaldo: null,
+};
 const pasosTutorialVersus = [
-  {
-    titulo: "Completá la palabra",
-    descripcion: "Elegí la A para completar GATO. Cada palabra terminada le quita un corazón al rival.",
-    accion: "Tocá la letra A para continuar.",
-  },
-  {
-    titulo: "Cuidá tus intentos",
-    descripcion: "Una letra incorrecta consume un intento. El corazón se conserva mientras todavía queden intentos.",
-    accion: "Probá la letra X.",
-  },
-  {
-    titulo: "Perder una ronda suma otra palabra",
-    descripcion: "Al agotar los seis intentos perdés un corazón. La aventura agrega una palabra aleatoria de la misma temática para que el duelo continúe.",
-    accion: "Simulá que agotaste los intentos.",
-  },
-  {
-    titulo: "Cargá tu habilidad",
-    descripcion: "Cada letra correcta llena la barra. Al llegar a ocho letras, la habilidad queda lista para usar.",
-    accion: "Completá la barra de habilidad.",
-  },
-  {
-    titulo: "Atacá y mirá el resultado",
-    descripcion: "Al usar una habilidad verás una ventana con lo que está ocurriendo en la pantalla y el teclado del rival.",
-    accion: "Usá Enredo de raíces.",
-  },
+  { titulo: "Completá la palabra", descripcion: "Jugás con la Guardiana. G, T y O ya están descubiertas y sumaron 3 de carga. Cada palabra terminada le quita un corazón al rival.", accion: "Tocá la A en el teclado de combate.", letras: ["A"] },
+  { titulo: "Cuidá tus intentos", descripcion: "Ahora buscás PERRO. Una letra incorrecta consume un intento, pero todavía conservás tu corazón.", accion: "Probá la X y mirá tus intentos.", letras: ["X"] },
+  { titulo: "Cuando se agotan los intentos", descripcion: "Quedan cinco intentos. Probá las letras marcadas: al agotarlos perdés un corazón y se agrega una palabra aleatoria de la misma temática.", accion: "Probá B, C, D, F y H, de a una.", letras: ["B", "C", "D", "F", "H"] },
+  { titulo: "Cargá tu habilidad", descripcion: "Buscá LORO. Cada letra descubierta suma carga; la O aparece dos veces. Con esta palabra vas a llegar a 8/8.", accion: "Tocá L, O y R para llenar la barra.", letras: ["L", "O", "R"] },
+  { titulo: "Lanzá tu habilidad", descripcion: "Enredo de raíces está listo. Usalo y mirá la animación y la ventana del teclado rival: sus teclas quedan atrapadas.", accion: "Tocá Enredo de raíces en el combate.", habilidad: true },
+  { titulo: "Ahora la recibís vos", descripcion: "Zafir va a lanzar Caos arcano. Mirá cómo viaja su habilidad y cambia de lugar las teclas de tu pantalla.", accion: "El rival espera hasta que estés listo.", rival: true },
+  { titulo: "Jugá con el efecto recibido", descripcion: "Pausamos el efecto para que puedas observarlo. Las teclas cambiaron de lugar, pero mantienen sus letras. En una partida el efecto dura 5 segundos.", accion: "Encontrá y tocá la O en el teclado desordenado.", letras: ["O"] },
+  { titulo: "Ganemos el combate", descripcion: "Adelantamos la práctica al último corazón del rival. Completá TIGRE para ver el ataque final y la cinemática de victoria de la Guardiana.", accion: "Tocá la E para ganar.", letras: ["E"] },
 ];
 
 function tutorialVersusYaVisto() {
-  try {
-    return localStorage.getItem(claveTutorialVersusVisto) === "1";
-  } catch {
-    return false;
-  }
+  try { return localStorage.getItem(claveTutorialVersusVisto) === "1"; } catch { return false; }
 }
-
 function guardarTutorialVersusVisto() {
-  try {
-    localStorage.setItem(claveTutorialVersusVisto, "1");
-  } catch {
-    // El tutorial sigue funcionando aunque el navegador no permita persistencia.
-  }
+  try { localStorage.setItem(claveTutorialVersusVisto, "1"); } catch { /* Práctica sin persistencia. */ }
 }
-
+function programarTutorialVersus(accion, demora) {
+  const sesion = tutorialCombateVersus.sesion;
+  const id = setTimeout(() => {
+    tutorialCombateVersus.temporizadores.delete(id);
+    if (tutorialCombateVersus.activo && sesion === tutorialCombateVersus.sesion) accion();
+  }, demora);
+  tutorialCombateVersus.temporizadores.add(id);
+}
+function actualizarControlesTutorialVersus() {
+  if (!tutorialCombateVersus.activo) return;
+  const esperando = !tutorialCombateVersus.ocupado && !tutorialCombateVersus.completado;
+  tecladoVersus.querySelectorAll("button").forEach((boton) => {
+    const habilitada = esperando && boton.textContent === tutorialCombateVersus.letras[0];
+    boton.disabled = !habilitada;
+    boton.classList.toggle("objetivo-tutorial", habilitada);
+  });
+  const habilidad = esperando && Boolean(pasosTutorialVersus[pasoActualTutorialVersus].habilidad);
+  btnHabilidadVersus.disabled = !habilidad;
+  btnHabilidadVersus.classList.toggle("objetivo-tutorial", habilidad);
+}
+function pausarCombateTutorialVersus() {
+  pantallaVersus.classList.add("tutorial-pausado");
+  // Conservar la muestra del efecto hasta que el usuario continúe.
+  if (temporizadorVistaImpactoRivalVersus) clearTimeout(temporizadorVistaImpactoRivalVersus);
+  temporizadorVistaImpactoRivalVersus = null;
+  if (demoVersus.temporizadorEfectoHabilidad) clearTimeout(demoVersus.temporizadorEfectoHabilidad);
+  demoVersus.temporizadorEfectoHabilidad = null;
+  detenerCaosContinuoTecladoVersus();
+}
 function completarAccionPasoTutorialVersus() {
+  tutorialCombateVersus.ocupado = false;
+  tutorialCombateVersus.completado = true;
+  pausarCombateTutorialVersus();
   btnSiguienteTutorialVersus.disabled = false;
-  accionPasoTutorialVersus.textContent = pasoActualTutorialVersus === pasosTutorialVersus.length - 1
-    ? "¡Listo! Ya conocés lo esencial del duelo."
-    : "¡Bien hecho! Podés continuar.";
+  accionPasoTutorialVersus.textContent = pasoActualTutorialVersus === 7
+    ? "¡Ganaste! Ya probaste letras, ataques y habilidades en ambos sentidos."
+    : "Combate en pausa. Mirá el resultado y continuá cuando quieras.";
   accionPasoTutorialVersus.classList.add("completada");
+  actualizarControlesTutorialVersus();
+  btnSiguienteTutorialVersus.focus({ preventScroll: true });
 }
-
 function renderizarPasoTutorialVersus() {
   const paso = pasosTutorialVersus[pasoActualTutorialVersus];
-  escenaTutorialVersus.dataset.paso = `${pasoActualTutorialVersus}`;
-  progresoTutorialVersus.textContent = `TUTORIAL · ${pasoActualTutorialVersus + 1}/${pasosTutorialVersus.length}`;
+  tutorialCombateVersus.letras = [...(paso.letras || [])];
+  tutorialCombateVersus.ocupado = false;
+  tutorialCombateVersus.completado = false;
+  progresoTutorialVersus.textContent = "PRÁCTICA · A TU RITMO";
   numeroPasoTutorialVersus.textContent = `PASO ${pasoActualTutorialVersus + 1} DE ${pasosTutorialVersus.length}`;
   tituloPasoTutorialVersus.textContent = paso.titulo;
   descripcionPasoTutorialVersus.textContent = paso.descripcion;
   accionPasoTutorialVersus.textContent = paso.accion;
   accionPasoTutorialVersus.classList.remove("completada");
-  btnSiguienteTutorialVersus.disabled = true;
-  btnSiguienteTutorialVersus.textContent = pasoActualTutorialVersus === pasosTutorialVersus.length - 1
-    ? "Terminar tutorial"
-    : "Siguiente";
-  palabraTutorialVersus.textContent = pasoActualTutorialVersus === 0 ? "G _ T O" : "_ _ _ _";
-  temaTutorialVersus.textContent = pasoActualTutorialVersus === 2
-    ? "ANIMALES · PALABRA EXTRA"
-    : "ANIMALES · PALABRA 1/5";
-  intentosTutorialVersus.textContent = "◆ ◆ ◆ ◆ ◆ ◆";
-  corazonesRivalTutorialVersus.textContent = "♥ ♥ ♥";
-  corazonesJugadorTutorialVersus.textContent = "♥ ♥ ♥";
-  barraCargaTutorialVersus.style.width = pasoActualTutorialVersus === 4 ? "100%" : "0%";
-  btnCargaTutorialVersus.classList.remove("completa");
-  btnHabilidadTutorialVersus.disabled = pasoActualTutorialVersus !== 4;
-  impactoTutorialVersus.classList.remove("visible");
-  tecladoTutorialVersus.querySelectorAll("button").forEach((boton) => {
-    boton.disabled = false;
-    boton.classList.remove("correcta", "incorrecta");
-  });
+  btnSiguienteTutorialVersus.disabled = !paso.rival;
+  btnSiguienteTutorialVersus.textContent = paso.rival ? "Ver ataque rival" : pasoActualTutorialVersus === 7 ? "Terminar tutorial" : "Continuar";
+  if (pasoActualTutorialVersus !== 6) {
+    limpiarEfectoVisualHabilidadVersus();
+    ocultarVistaImpactoRivalVersus();
+  }
+  if (pasoActualTutorialVersus === 7) {
+    demoVersus.palabrasJugador[demoVersus.indiceJugador] = "TIGRE";
+    demoVersus.letrasJugador = new Set(["T", "I", "G", "R"]);
+    demoVersus.vidasRival = 1;
+    actualizarVidasVersus();
+    actualizarProgresosVersus();
+  }
+  pausarCombateTutorialVersus();
+  actualizarControlesTutorialVersus();
 }
-
 function comenzarTutorialVersus() {
-  pasoActualTutorialVersus = 0;
+  if (tutorialCombateVersus.activo) return;
+  tutorialCombateVersus.respaldo = {
+    jugador: personajeJugadorVersus, rival: personajeRivalVersus,
+    arcade: modoArcadeActivo, tema: tematicaVersus.value,
+    palabras: palabrasSecretasVersus,
+    demo: Object.fromEntries(Object.entries(demoVersus).map(([clave, valor]) =>
+      [clave, valor instanceof Set ? new Set(valor) : Array.isArray(valor) ? [...valor] : valor])),
+    pantalla: document.querySelector(".pantalla.activa"),
+  };
+  tutorialCombateVersus.activo = true;
+  tutorialCombateVersus.sesion += 1;
+  modoArcadeActivo = false;
+  personajeJugadorVersus = "guardiana";
+  personajeRivalVersus = "mago";
+  palabrasSecretasVersus = ["GATO", "PERRO", "LORO", "OSO", "TIGRE"];
+  tematicaVersus.value = "animales";
+  crearTecladoVersus();
+  prepararDueloVersus({ comenzarRonda: false });
+  demoVersus.tematicaParaJugador = "animales";
+  demoVersus.palabrasJugador = [...palabrasSecretasVersus];
+  demoVersus.letrasJugador = new Set(["G", "T", "O"]);
+  demoVersus.cargaHabilidadJugador = 3;
+  actualizarPanelHabilidadVersus(3);
+  actualizarProgresosVersus();
+  document.querySelector(".versus-jugador-uno .versus-etiqueta").textContent = "VOS · GUARDIANA";
+  document.querySelector(".versus-jugador-dos .versus-etiqueta").textContent = "RIVAL · ZAFIR";
+  mostrarEstadoProgresoVersus(document.getElementById("estadoProgresoDos"), "Rival en pausa");
+  document.body.classList.add("tutorial-combate-real");
+  modalTutorialVersus.classList.add("guia-en-arena");
+  modalTutorialVersus.setAttribute("aria-modal", "false");
+  modalTutorialVersus.setAttribute("aria-labelledby", "tituloPasoTutorialVersus");
   bienvenidaTutorialVersus.classList.add("oculto");
   pasoTutorialVersus.classList.remove("oculto");
+  mostrarPantalla(pantallaVersus);
+  pasoActualTutorialVersus = 0;
+  renderizarPasoTutorialVersus();
+  tecladoVersus.querySelector("button:not(:disabled)")?.focus({ preventScroll: true });
+}
+function abrirTutorialVersus({ mostrarBienvenida = false, alCerrar = null } = {}) {
+  if (tutorialCombateVersus.activo) return;
+  accionPosteriorTutorialVersus = alCerrar;
+  document.body.appendChild(modalTutorialVersus);
+  modalTutorialVersus.classList.remove("oculto");
+  modalTutorialVersus.setAttribute("aria-modal", "true");
+  modalTutorialVersus.setAttribute("aria-labelledby", "tituloTutorialVersus");
+  bienvenidaTutorialVersus.classList.toggle("oculto", !mostrarBienvenida);
+  pasoTutorialVersus.classList.toggle("oculto", mostrarBienvenida);
+  if (!mostrarBienvenida) comenzarTutorialVersus();
+  else btnComenzarTutorialVersus.focus();
+}
+function cerrarTutorialVersus({ recordar = false } = {}) {
+  if (recordar) guardarTutorialVersusVisto();
+  const respaldo = tutorialCombateVersus.respaldo;
+  tutorialCombateVersus.activo = false;
+  tutorialCombateVersus.sesion += 1;
+  tutorialCombateVersus.temporizadores.forEach(clearTimeout);
+  tutorialCombateVersus.temporizadores.clear();
+  if (respaldo) {
+    const resolverFinal = demoVersus.resolverCinematica;
+    const resolverAnuncio = demoVersus.resolverAnuncioFin;
+    cancelarCinematicaFinalVersus();
+    resolverFinal?.();
+    resolverAnuncio?.();
+    detenerRondaVersus();
+    ocultarRevelacionesPalabrasVersus();
+    ocultarVistaImpactoRivalVersus();
+    resultadoRondaVersus.classList.add("oculto");
+    avisoAvanceVersus.classList.add("oculto");
+    personajeJugadorVersus = respaldo.jugador;
+    personajeRivalVersus = respaldo.rival;
+    modoArcadeActivo = respaldo.arcade;
+    palabrasSecretasVersus = respaldo.palabras;
+    tematicaVersus.value = respaldo.tema;
+    Object.assign(demoVersus, respaldo.demo);
+    configurarPersonajesCombateVersus();
+    tutorialCombateVersus.respaldo = null;
+  }
+  pantallaVersus.classList.remove("tutorial-pausado");
+  tecladoVersus.querySelectorAll(".objetivo-tutorial").forEach(b => b.classList.remove("objetivo-tutorial"));
+  btnHabilidadVersus.classList.remove("objetivo-tutorial");
+  document.body.classList.remove("tutorial-combate-real");
+  modalTutorialVersus.classList.remove("guia-en-arena");
+  modalTutorialVersus.classList.add("oculto");
+  const continuar = accionPosteriorTutorialVersus;
+  accionPosteriorTutorialVersus = null;
+  if (respaldo) mostrarPantalla(respaldo.pantalla || pantallaMenu);
+  if (continuar) continuar();
+  else btnTutorialVersus.focus();
+}
+function jugarLetraTutorialVersus(letra, boton) {
+  if (boton.disabled || tutorialCombateVersus.ocupado || tutorialCombateVersus.completado || letra !== tutorialCombateVersus.letras[0]) return;
+  tutorialCombateVersus.letras.shift();
+  pantallaVersus.classList.remove("tutorial-pausado");
+  jugarLetraDemoVersus(letra, boton);
+  if (pasoActualTutorialVersus === 7) return;
+  if (!tutorialCombateVersus.letras.length) {
+    tutorialCombateVersus.ocupado = true;
+    accionPasoTutorialVersus.textContent = "Mirá lo que pasa en la arena…";
+    programarTutorialVersus(completarAccionPasoTutorialVersus, [0, 2, 3].includes(pasoActualTutorialVersus) ? 2300 : 500);
+  } else {
+    accionPasoTutorialVersus.textContent = `Ahora tocá la ${tutorialCombateVersus.letras[0]}.`;
+  }
+  actualizarControlesTutorialVersus();
+}
+function lanzarHabilidadTutorialVersus(desdeRival = false) {
+  if (tutorialCombateVersus.ocupado || tutorialCombateVersus.completado) return;
+  tutorialCombateVersus.ocupado = true;
+  pantallaVersus.classList.remove("tutorial-pausado");
+  btnSiguienteTutorialVersus.disabled = true;
+  accionPasoTutorialVersus.textContent = "Mirá el lanzamiento y el efecto en el teclado…";
+  if (desdeRival) {
+    demoVersus.cargaHabilidadRival = letrasParaHabilidadVersus;
+    activarHabilidadRivalLocalVersus();
+  } else activarHabilidadLocalVersus();
+  actualizarControlesTutorialVersus();
+  programarTutorialVersus(() => {
+    completarAccionPasoTutorialVersus();
+    btnSiguienteTutorialVersus.textContent = "Continuar";
+  }, 1600);
+}
+function avanzarTutorialRealVersus() {
+  if (btnSiguienteTutorialVersus.disabled || tutorialCombateVersus.ocupado) return;
+  if (pasoActualTutorialVersus === 5 && !tutorialCombateVersus.completado) {
+    lanzarHabilidadTutorialVersus(true);
+    return;
+  }
+  if (!tutorialCombateVersus.completado) return;
+  if (pasoActualTutorialVersus === pasosTutorialVersus.length - 1) {
+    cerrarTutorialVersus({ recordar: true });
+    return;
+  }
+  pasoActualTutorialVersus += 1;
   renderizarPasoTutorialVersus();
 }
 
-function abrirTutorialVersus({ mostrarBienvenida = false, alCerrar = null } = {}) {
-  accionPosteriorTutorialVersus = alCerrar;
-  modalTutorialVersus.classList.remove("oculto");
-  bienvenidaTutorialVersus.classList.toggle("oculto", !mostrarBienvenida);
-  pasoTutorialVersus.classList.toggle("oculto", mostrarBienvenida);
-  progresoTutorialVersus.textContent = mostrarBienvenida ? "GUÍA DE COMBATE" : "TUTORIAL · 1/5";
-  if (!mostrarBienvenida) comenzarTutorialVersus();
-  (mostrarBienvenida ? btnComenzarTutorialVersus : tecladoTutorialVersus.querySelector("button"))?.focus();
-}
-
-function cerrarTutorialVersus({ recordar = false } = {}) {
-  if (recordar) guardarTutorialVersusVisto();
-  modalTutorialVersus.classList.add("oculto");
-  impactoTutorialVersus.classList.remove("visible");
-  const continuar = accionPosteriorTutorialVersus;
-  accionPosteriorTutorialVersus = null;
-  if (continuar) continuar();
-  else btnTutorialVersus.focus();
+async function mostrarVictoriaTutorialVersus() {
+  const sesion = tutorialCombateVersus.sesion;
+  tutorialCombateVersus.ocupado = true;
+  actualizarControlesTutorialVersus();
+  await mostrarAnuncioFinVersus();
+  if (!tutorialCombateVersus.activo || sesion !== tutorialCombateVersus.sesion) return;
+  await obtenerReproductorFinalVersus("guardiana", "mago")();
+  if (!tutorialCombateVersus.activo || sesion !== tutorialCombateVersus.sesion) return;
+  completarAccionPasoTutorialVersus();
 }
 
 function entrarAlModoVersus() {
@@ -2413,51 +2529,11 @@ btnComenzarTutorialVersus.addEventListener("click", comenzarTutorialVersus);
 btnOmitirTutorialVersus.addEventListener("click", () => cerrarTutorialVersus({ recordar: true }));
 btnCerrarTutorialVersus.addEventListener("click", () => cerrarTutorialVersus({ recordar: true }));
 
-tecladoTutorialVersus.addEventListener("click", (evento) => {
-  const boton = evento.target.closest("button");
-  if (!boton || boton.disabled) return;
-  if (pasoActualTutorialVersus === 0 && boton.dataset.accion === "acierto") {
-    boton.classList.add("correcta");
-    boton.disabled = true;
-    palabraTutorialVersus.textContent = "G A T O";
-    corazonesRivalTutorialVersus.innerHTML = "♥ ♥ <i>♥</i>";
-    completarAccionPasoTutorialVersus();
-  } else if (pasoActualTutorialVersus === 1 && boton.dataset.accion === "error") {
-    boton.classList.add("incorrecta");
-    boton.disabled = true;
-    intentosTutorialVersus.textContent = "◆ ◆ ◆ ◆ ◆ ◇";
-    completarAccionPasoTutorialVersus();
-  } else if (pasoActualTutorialVersus === 2 && boton.dataset.accion === "agotar") {
-    boton.disabled = true;
-    intentosTutorialVersus.textContent = "◇ ◇ ◇ ◇ ◇ ◇";
-    corazonesJugadorTutorialVersus.innerHTML = "♥ ♥ <i>♥</i>";
-    palabraTutorialVersus.textContent = "_ _ _ _ _";
-    completarAccionPasoTutorialVersus();
+btnSiguienteTutorialVersus.addEventListener("click", avanzarTutorialRealVersus);
+document.addEventListener("keydown", (evento) => {
+  if (evento.key === "Escape" && !modalTutorialVersus.classList.contains("oculto")) {
+    cerrarTutorialVersus();
   }
-});
-
-btnCargaTutorialVersus.addEventListener("click", () => {
-  if (pasoActualTutorialVersus !== 3) return;
-  barraCargaTutorialVersus.style.width = "100%";
-  btnCargaTutorialVersus.classList.add("completa");
-  completarAccionPasoTutorialVersus();
-});
-
-btnHabilidadTutorialVersus.addEventListener("click", () => {
-  if (pasoActualTutorialVersus !== 4) return;
-  btnHabilidadTutorialVersus.disabled = true;
-  impactoTutorialVersus.classList.add("visible");
-  completarAccionPasoTutorialVersus();
-});
-
-btnSiguienteTutorialVersus.addEventListener("click", () => {
-  if (btnSiguienteTutorialVersus.disabled) return;
-  if (pasoActualTutorialVersus >= pasosTutorialVersus.length - 1) {
-    cerrarTutorialVersus({ recordar: true });
-    return;
-  }
-  pasoActualTutorialVersus += 1;
-  renderizarPasoTutorialVersus();
 });
 
 function iniciarPruebaVersusLocal() {
@@ -2846,6 +2922,10 @@ btnCompletarPalabrasPruebasVersus.addEventListener("click", () => {
 });
 
 async function volverAlMenuDesdeVersus() {
+  if (tutorialCombateVersus.activo) {
+    cerrarTutorialVersus();
+    return;
+  }
   if (modoArcadeActivo) {
     salirModoArcade();
     return;
@@ -3772,6 +3852,7 @@ function sincronizarTecladoDemoVersus() {
       || demoVersus.teclasRobadasJugador.has(boton.textContent)
       || demoVersus.letrasJugador.has(boton.textContent);
   });
+  actualizarControlesTutorialVersus();
 }
 
 function limpiarEfectoVisualHabilidadVersus() {
@@ -4262,6 +4343,10 @@ function activarHabilidadRivalLocalVersus() {
 
 async function activarHabilidadVersus() {
   if (btnHabilidadVersus.disabled) return;
+  if (tutorialCombateVersus.activo) {
+    if (pasoActualTutorialVersus === 4) lanzarHabilidadTutorialVersus();
+    return;
+  }
   if (adaptadorSalasVersus.proveedor !== "supabase") {
     activarHabilidadLocalVersus();
     return;
@@ -6039,6 +6124,7 @@ function limpiarEntradaDueloVersus() {
 }
 
 function comenzarRondaVersus() {
+  if (tutorialCombateVersus.activo) return;
   mostrarEstadoProgresoVersus(
     document.getElementById("estadoProgresoUno"),
     "Elegí una letra",
@@ -6060,6 +6146,10 @@ function comenzarRondaVersus() {
 
 async function jugarLetraVersus(letra, boton) {
   if (!boton.disabled) reproducirPulsacionTeclaVersus("jugador");
+  if (tutorialCombateVersus.activo) {
+    jugarLetraTutorialVersus(letra, boton);
+    return;
+  }
   if (adaptadorSalasVersus.proveedor !== "supabase") {
     jugarLetraDemoVersus(letra, boton);
     return;
@@ -7015,6 +7105,7 @@ function jugarLetraDemoVersus(letra, boton) {
 }
 
 function jugarTurnoRivalVersus() {
+  if (tutorialCombateVersus.activo) return;
   if (demoVersus.finalizadoRival || demoVersus.partidaFinalizada) return;
 
   const efectoActivo = Date.now() < demoVersus.efectoRivalHasta ? demoVersus.efectoRival : "";
@@ -7514,6 +7605,10 @@ function mostrarAnuncioFinVersus(palabraPerdida = "") {
 }
 
 async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = "") {
+  if (tutorialCombateVersus.activo) {
+    await mostrarVictoriaTutorialVersus();
+    return;
+  }
   if (dueloAventuraActivo) {
     await mostrarAnuncioFinVersus(palabraPerdida);
     mostrarResultadoPartidaVersus(ganador, detalle);

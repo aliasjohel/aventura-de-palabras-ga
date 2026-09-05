@@ -17309,3 +17309,58 @@ button:disabled {
   .placa-hielo.segura,
   .nucleo-termico.estado-estable > span { animation-duration: 1ms; }
 }
+
+/* Guía sobre el combate real: el panel ocupa su propio espacio. */
+body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
+.tutorial-combate-real #pantallaVersus.activa {
+    padding-right: calc(var(--ancho-guia) + 18px);
+}
+.modal-tutorial-versus.guia-en-arena {
+    inset: 10px 10px 10px auto;
+    width: var(--ancho-guia);
+    padding: 0;
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    overflow: visible;
+    pointer-events: none;
+}
+.guia-en-arena .panel-tutorial-versus {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
+    border: 1px solid #b79954;
+    border-radius: 16px;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+}
+.guia-en-arena .cabecera-tutorial-versus { padding: 8px 10px; letter-spacing: .06em; flex-shrink: 0; }
+.guia-en-arena .paso-tutorial-versus { display: block; padding: 0; overflow: auto; }
+.guia-en-arena .paso-tutorial-versus.oculto { display: none; }
+.guia-en-arena .texto-paso-tutorial-versus { padding: 16px; }
+.guia-en-arena .texto-paso-tutorial-versus h2 { font-size: clamp(1.05rem, 1.6vw, 1.5rem); margin: 10px 0; }
+.guia-en-arena .texto-paso-tutorial-versus p { font-size: .9rem; line-height: 1.5; }
+.guia-en-arena #btnSiguienteTutorialVersus { width: 100%; margin-top: 12px; min-height: 42px; }
+.tutorial-combate-real .herramientas-pruebas-versus,
+.tutorial-combate-real .herramientas-habilidades-pruebas-versus { display: none !important; }
+.tutorial-combate-real .objetivo-tutorial {
+    outline: 3px solid #ffe28c;
+    outline-offset: 3px;
+    box-shadow: 0 0 18px #ffe28c !important;
+}
+.pantalla-versus.tutorial-pausado .versus-marco *,
+.pantalla-versus.tutorial-pausado .versus-marco *::before,
+.pantalla-versus.tutorial-pausado .versus-marco *::after { animation-play-state: paused !important; }
+@media (orientation: landscape) and (max-height: 500px) {
+    .guia-en-arena .texto-paso-tutorial-versus { padding: 10px; }
+    .guia-en-arena .texto-paso-tutorial-versus p { font-size: .78rem; line-height: 1.35; margin: 8px 0; }
+    .guia-en-arena .texto-paso-tutorial-versus h2 { font-size: 1rem; margin: 6px 0; }
+    .guia-en-arena #numeroPasoTutorialVersus { font-size: .62rem; }
+    .guia-en-arena #btnSiguienteTutorialVersus { margin-top: 6px; }
+}
+@media (orientation: portrait) and (max-width: 700px) {
+    .tutorial-combate-real #pantallaVersus.activa { padding: 18px; }
+    .modal-tutorial-versus.guia-en-arena { display: none; }
+}

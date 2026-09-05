@@ -1,6 +1,7 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v226`;
+const CACHE_NAME = `${CACHE_PREFIX}v227`;
 const LEGACY_CACHE_NAMES = new Set([
+  `${CACHE_PREFIX}v226`,
   `${CACHE_PREFIX}v225`,
   `${CACHE_PREFIX}v224`,
   `${CACHE_PREFIX}v223`,
@@ -493,10 +494,10 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260831-laberinto-hielo-7",
-  "./index.html": "20260831-laberinto-hielo-7",
-  "./css/styles.css": "20260904-portal-azrak-1",
-  "./js/app.js": "20260905-final-hielo-musica-1",
+  "./": "20260905-guia-real-2",
+  "./index.html": "20260905-guia-real-2",
+  "./css/styles.css": "20260905-guia-real-2",
+  "./js/app.js": "20260905-guia-real-2",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-ataque.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-impacto.png": "20260902-personajes-chibi-1",
