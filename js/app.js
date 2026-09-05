@@ -5343,11 +5343,11 @@ async function completarDueloAventura() {
     await reproducirCinematicaFinalHielo();
     bloquearTeclado();
     btnPista.disabled = true;
-    btnSiguiente.textContent = "🔥 Mundo 5 · Próximamente";
+    btnSiguiente.textContent = "🔥 Mundo 5: Reino de Azrak · Próximamente";
     btnSiguiente.classList.remove("oculto");
     mensajePersonaje.classList.remove("oculto");
     mensajePersonaje.textContent =
-      "💎 El Cristal Glacial está a salvo. Nivor descubrió el engaño de Azrak y ahora luchará junto a Aren.";
+      "🔥 Los cuatro cristales abrieron el camino. Aren se prepara para entrar al reino final de Azrak.";
     guardarProgreso();
     return;
   }
@@ -5594,9 +5594,34 @@ async function reproducirCinematicaFinalHielo() {
       texto: "La prueba bajo el glaciar era cierta: Azrak provocó el deshielo y convirtió el miedo de Nivor en una cadena. El dragón rompe su pacto y libera el último huevo boreal.",
     },
     {
+      imagen: "04-nivor-arrepentido-v1.png",
+      alt: "Nivor derrama una lágrima al contemplar el reino que congeló",
+      texto: "Al contemplar el reino que condenó al hielo, Nivor baja la cabeza. Una lágrima cristalina cae sobre la nieve. «Mi miedo convirtió este hogar en una prisión».",
+    },
+    {
       imagen: "03-nivor-entrega-cristal-v1.png",
       alt: "Nivor entrega el Cristal Glacial a Aren al amanecer",
       texto: "Al amanecer, Nivor confía a Aren el Cristal Glacial. No pide olvidar sus errores: promete repararlos y enfrentar a Azrak junto a los guardianes de los cuatro mundos.",
+    },
+    {
+      imagen: "05-cristales-abren-grieta-v1.png",
+      alt: "Los cuatro cristales abren una grieta roja y negra en la aurora",
+      texto: "El Cristal Glacial despierta a los otros tres. Los cuatro no sólo restauran los mundos: juntos revelan el camino hacia el Quinto Sello.",
+    },
+    {
+      imagen: "06-azrak-en-la-grieta-v1.png",
+      alt: "La proyección gigante de Azrak aparece dentro de la grieta",
+      texto: "Azrak aparece entre las llamas: «Por fin reuniste las cuatro llaves. Creíste que restaurabas los mundos… pero también abrías el camino hacia mí».",
+    },
+    {
+      imagen: "07-nivor-desafia-grieta-v1.png",
+      alt: "Nivor intenta congelar la grieta mientras Azrak destruye el hielo",
+      texto: "Nivor intenta cerrar la grieta, pero Azrak quiebra el hielo con una mano. «Tu pacto terminó, Nivor. Ahora comienza tu deuda».",
+    },
+    {
+      imagen: "08-portal-mundo-cinco-v1.png",
+      alt: "Aren contempla el portal al reino volcánico de Azrak mientras Nivor protege el huevo",
+      texto: "La grieta se convierte en un portal. Nivor permanece junto al huevo: «Yo protegeré este reino. Vos terminá lo que los guardianes comenzamos».",
     },
   ];
   const capa = document.createElement("div");
@@ -5633,7 +5658,7 @@ async function reproducirCinematicaFinalHielo() {
     } else {
       capa.classList.remove("cambiando-plano");
     }
-    for (let tiempo = 0; tiempo < (prefiereReducirMovimiento.matches ? 1200 : 6800) && !saltar; tiempo += 200) {
+    for (let tiempo = 0; tiempo < (prefiereReducirMovimiento.matches ? 1200 : 5600) && !saltar; tiempo += 200) {
       await new Promise((resolver) => window.setTimeout(resolver, 200));
     }
   }
@@ -10169,10 +10194,10 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   if (finalMundoCuatroCompletado) {
     bloquearTeclado();
     btnPista.disabled = true;
-    btnSiguiente.textContent = "🔥 Mundo 5 · Próximamente";
+    btnSiguiente.textContent = "🔥 Mundo 5: Reino de Azrak · Próximamente";
     btnSiguiente.classList.remove("oculto");
     mensajePersonaje.textContent =
-      "💎 El Cristal Glacial está a salvo. Nivor está listo para luchar junto a Aren.";
+      "🔥 Los cuatro cristales mantienen abierta la grieta hacia el reino final de Azrak.";
     return Promise.resolve();
   }
 

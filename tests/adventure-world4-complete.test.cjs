@@ -167,6 +167,11 @@ for (const image of [
   "01-aren-vigilado-por-nivor-v1.png",
   "02-nivor-rompe-cadenas-v1.png",
   "03-nivor-entrega-cristal-v1.png",
+  "04-nivor-arrepentido-v1.png",
+  "05-cristales-abren-grieta-v1.png",
+  "06-azrak-en-la-grieta-v1.png",
+  "07-nivor-desafia-grieta-v1.png",
+  "08-portal-mundo-cinco-v1.png",
 ]) {
   assert.ok(fs.existsSync(path.join(root, "assets", "images", "cinematicas", "mundo-hielo", image)));
   assert.match(app, new RegExp(image.replace(".", "\\.")));
@@ -179,7 +184,9 @@ assert.match(html, /Cristal Glacial Violeta/);
 assert.match(css, /\.cristal-panel-glacial \{ filter: hue-rotate\(105deg\)/);
 assert.match(app, /mundoCuatroCompletado,/);
 assert.match(app, /primerDueloNivorCompletado,/);
-assert.match(app, /finalMundoCuatroCompletado[\s\S]*?Mundo 5 · Próximamente/);
-assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v222`/);
+assert.match(app, /Una lágrima cristalina cae sobre la nieve/);
+assert.match(app, /Por fin reuniste las cuatro llaves/);
+assert.match(app, /Mundo 5: Reino de Azrak · Próximamente/);
+assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v223`/);
 
 console.log("World 4 adventure checks passed");

@@ -1,6 +1,7 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v222`;
+const CACHE_NAME = `${CACHE_PREFIX}v223`;
 const LEGACY_CACHE_NAMES = new Set([
+  `${CACHE_PREFIX}v222`,
   `${CACHE_PREFIX}v221`,
   `${CACHE_PREFIX}v220`,
   `${CACHE_PREFIX}v219`,
@@ -270,6 +271,11 @@ const CORE_ASSETS = [
   "./assets/images/cinematicas/mundo-hielo/01-aren-vigilado-por-nivor-v1.png",
   "./assets/images/cinematicas/mundo-hielo/02-nivor-rompe-cadenas-v1.png",
   "./assets/images/cinematicas/mundo-hielo/03-nivor-entrega-cristal-v1.png",
+  "./assets/images/cinematicas/mundo-hielo/04-nivor-arrepentido-v1.png",
+  "./assets/images/cinematicas/mundo-hielo/05-cristales-abren-grieta-v1.png",
+  "./assets/images/cinematicas/mundo-hielo/06-azrak-en-la-grieta-v1.png",
+  "./assets/images/cinematicas/mundo-hielo/07-nivor-desafia-grieta-v1.png",
+  "./assets/images/cinematicas/mundo-hielo/08-portal-mundo-cinco-v1.png",
   "./assets/images/cinematicas/mundo-hielo/primer-duelo/01-nivor-reconoce-derrota-v1.png",
   "./assets/images/cinematicas/mundo-hielo/primer-duelo/02-alarma-fortaleza-v1.png",
   "./assets/images/cinematicas/mundo-hielo/primer-duelo/03-nivor-regresa-fortaleza-v1.png",
@@ -485,8 +491,8 @@ const CORE_ASSETS = [
 const ASSET_REVISIONS = {
   "./": "20260831-laberinto-hielo-7",
   "./index.html": "20260831-laberinto-hielo-7",
-  "./css/styles.css": "20260904-nivor-retirada-1",
-  "./js/app.js": "20260904-nivor-retirada-1",
+  "./css/styles.css": "20260904-portal-azrak-1",
+  "./js/app.js": "20260904-portal-azrak-1",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-ataque.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-impacto.png": "20260902-personajes-chibi-1",
@@ -552,6 +558,11 @@ const ASSET_REVISIONS = {
   "./assets/images/cinematicas/mundo-hielo/01-aren-vigilado-por-nivor-v1.png": "20260831-mundo-hielo-1",
   "./assets/images/cinematicas/mundo-hielo/02-nivor-rompe-cadenas-v1.png": "20260831-mundo-hielo-1",
   "./assets/images/cinematicas/mundo-hielo/03-nivor-entrega-cristal-v1.png": "20260831-mundo-hielo-1",
+  "./assets/images/cinematicas/mundo-hielo/04-nivor-arrepentido-v1.png": "20260904-portal-azrak-1",
+  "./assets/images/cinematicas/mundo-hielo/05-cristales-abren-grieta-v1.png": "20260904-portal-azrak-1",
+  "./assets/images/cinematicas/mundo-hielo/06-azrak-en-la-grieta-v1.png": "20260904-portal-azrak-1",
+  "./assets/images/cinematicas/mundo-hielo/07-nivor-desafia-grieta-v1.png": "20260904-portal-azrak-1",
+  "./assets/images/cinematicas/mundo-hielo/08-portal-mundo-cinco-v1.png": "20260904-portal-azrak-1",
   "./assets/images/cinematicas/mundo-hielo/primer-duelo/01-nivor-reconoce-derrota-v1.png": "20260904-nivor-retirada-1",
   "./assets/images/cinematicas/mundo-hielo/primer-duelo/02-alarma-fortaleza-v1.png": "20260904-nivor-retirada-1",
   "./assets/images/cinematicas/mundo-hielo/primer-duelo/03-nivor-regresa-fortaleza-v1.png": "20260904-nivor-retirada-1",
