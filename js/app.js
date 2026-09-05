@@ -491,6 +491,12 @@ const musicaSegundoCristal = new Audio("assets/sounds/recibe-2-diamante.mp3");
 const musicaCinematicaFinalMundo3 = new Audio(
   "assets/sounds/cinematica-final-mundo3.mp3",
 );
+const musicaCinematicaFinalMundo4 = new Audio(
+  "assets/sounds/cinematica-final-mundo4.mp3",
+);
+musicaCinematicaFinalMundo4.loop = false;
+musicaCinematicaFinalMundo4.volume = 0.58;
+musicaCinematicaFinalMundo4.preload = "auto";
 musicaMuralDragon.loop = false;
 musicaMuralDragon.volume = 0.58;
 musicaMuralDragon.preload = "auto";
@@ -5637,34 +5643,47 @@ async function reproducirCinematicaFinalHielo() {
   const fondo = capa.querySelector(".cinematica-cumbres-fondo");
   const texto = capa.querySelector(".cinematica-cumbres-texto");
   let saltar = false;
-  capa.querySelector(".cinematica-cumbres-saltar").addEventListener("click", () => (saltar = true));
-  await Promise.all(escenas.map(({ imagen }) =>
-    precargarImagen(`assets/images/cinematicas/mundo-hielo/${imagen}`)));
-  let primera = true;
-  for (const escena of escenas) {
-    if (saltar) break;
-    if (!primera) {
-      capa.classList.add("cambiando-plano");
-      await esperarMovimiento(prefiereReducirMovimiento.matches ? 0 : 260);
+  capa.querySelector(".cinematica-cumbres-saltar").addEventListener("click", () => {
+    saltar = true;
+    detenerMusicaCinematica(musicaCinematicaFinalMundo4, 0.58);
+  });
+  try {
+    await Promise.all(escenas.map(({ imagen }) =>
+      precargarImagen(`assets/images/cinematicas/mundo-hielo/${imagen}`)));
+    let primera = true;
+    for (const escena of escenas) {
+      if (saltar) break;
+      if (!primera) {
+        capa.classList.add("cambiando-plano");
+        await esperarMovimiento(prefiereReducirMovimiento.matches ? 0 : 260);
+      }
+      const origen = `assets/images/cinematicas/mundo-hielo/${escena.imagen}`;
+      ambiente.src = origen;
+      fondo.src = origen;
+      fondo.alt = escena.alt;
+      texto.textContent = escena.texto;
+      // La mezcla cambia a suspenso en 33.84 s: sincronizar con Azrak incluso
+      // con movimiento reducido o retrasos del dispositivo.
+      if (escena.imagen === "06-azrak-en-la-grieta-v1.png") {
+        musicaCinematicaFinalMundo4.currentTime = 33.84;
+      }
+      if (primera) {
+        capa.classList.add("visible", "plano-ilustrado");
+        primera = false;
+        reproducirMusicaCinematica(musicaCinematicaFinalMundo4, "Final del mundo 4", 0.58);
+      } else {
+        capa.classList.remove("cambiando-plano");
+      }
+      for (let tiempo = 0; tiempo < (prefiereReducirMovimiento.matches ? 1200 : 8200) && !saltar; tiempo += 200) {
+        await new Promise((resolver) => window.setTimeout(resolver, 200));
+      }
     }
-    const origen = `assets/images/cinematicas/mundo-hielo/${escena.imagen}`;
-    ambiente.src = origen;
-    fondo.src = origen;
-    fondo.alt = escena.alt;
-    texto.textContent = escena.texto;
-    if (primera) {
-      capa.classList.add("visible", "plano-ilustrado");
-      primera = false;
-    } else {
-      capa.classList.remove("cambiando-plano");
-    }
-    for (let tiempo = 0; tiempo < (prefiereReducirMovimiento.matches ? 1200 : 8200) && !saltar; tiempo += 200) {
-      await new Promise((resolver) => window.setTimeout(resolver, 200));
-    }
+  } finally {
+    detenerMusicaCinematica(musicaCinematicaFinalMundo4, 0.58);
+    capa.classList.remove("visible");
+    await esperarMovimiento(250);
+    capa.remove();
   }
-  capa.classList.remove("visible");
-  await esperarMovimiento(250);
-  capa.remove();
 }
 
 const victimasFaucesVersus = {
@@ -7845,6 +7864,45 @@ function reproducirLegionUmbriaVersus(victima = personajeRivalVersus) {
   });
 }
 
+let cuadroRayoManoAlba = null;
+
+function detenerSeguimientoRayoAlba() {
+  if (cuadroRayoManoAlba !== null) cancelAnimationFrame(cuadroRayoManoAlba);
+  cuadroRayoManoAlba = null;
+}
+
+function seguirRayoManoAlba() {
+  detenerSeguimientoRayoAlba();
+  const personaje = cinematicaFinalVersus.querySelector(".cinematica-alba-ataque");
+  const rayo = cinematicaFinalVersus.querySelector(".alba-final-rayo-carga");
+  const sello = cinematicaFinalVersus.querySelector(".alba-final-sello");
+  const actualizar = () => {
+    if (!cinematicaFinalVersus.classList.contains("activa") ||
+        !cinematicaFinalVersus.classList.contains("juicio-amanecer")) {
+      detenerSeguimientoRayoAlba();
+      return;
+    }
+    const marco = cinematicaFinalVersus.getBoundingClientRect();
+    const pose = personaje.getBoundingClientRect();
+    const destino = sello.getBoundingClientRect();
+    if (marco.width && marco.height && pose.height) {
+      const escalaX = cinematicaFinalVersus.clientWidth / marco.width;
+      const escalaY = cinematicaFinalVersus.clientHeight / marco.height;
+      // Centro de la palma en el lienzo transparente de la pose de carga.
+      const x = (pose.left + pose.width * 0.80 - marco.left) * escalaX;
+      const y = (pose.top + pose.height * 0.24 - marco.top) * escalaY;
+      const dx = (destino.left + destino.width / 2 - marco.left) * escalaX - x;
+      const dy = (destino.top + destino.height / 2 - marco.top) * escalaY - y;
+      rayo.style.left = `${x}px`;
+      rayo.style.top = `${y}px`;
+      rayo.style.width = `${Math.hypot(dx, dy)}px`;
+      rayo.style.transform = `translateY(-50%) rotate(${Math.atan2(dy, dx)}rad)`;
+    }
+    cuadroRayoManoAlba = requestAnimationFrame(actualizar);
+  };
+  actualizar();
+}
+
 function reproducirJuicioAmanecerVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   fondoCinematicaVersus.src = fondoVersus.src;
@@ -7856,6 +7914,7 @@ function reproducirJuicioAmanecerVersus(victima = personajeRivalVersus) {
   cinematicaFinalVersus.classList.remove("oculto");
   void cinematicaFinalVersus.offsetWidth;
   cinematicaFinalVersus.classList.add("activa");
+  seguirRayoManoAlba();
   btnSaltarCinematicaVersus.focus();
   reproducirSonidoVersus("versusFinish", 0.92);
 
@@ -7974,6 +8033,7 @@ function reproducirSiglosEnUnSegundoVersus(victima = personajeRivalVersus) {
 }
 
 function completarCinematicaFinalVersus() {
+  detenerSeguimientoRayoAlba();
   if (demoVersus.temporizadorReaccionCinematica) {
     clearTimeout(demoVersus.temporizadorReaccionCinematica);
     demoVersus.temporizadorReaccionCinematica = null;
@@ -8008,6 +8068,7 @@ function completarCinematicaFinalVersus() {
 }
 
 function cancelarCinematicaFinalVersus() {
+  detenerSeguimientoRayoAlba();
   ocultarAnuncioFinVersus();
   if (demoVersus.temporizadorReaccionCinematica) {
     clearTimeout(demoVersus.temporizadorReaccionCinematica);
@@ -9127,6 +9188,7 @@ function desvanecerMusicaPrologo(duracion) {
 }
 
 function detenerSonidos() {
+  detenerMusicaCinematica(musicaCinematicaFinalMundo4, 0.58);
   detenerMusicaCinematica(musicaMuralDragon, 0.58);
   detenerMusicaCinematica(musicaCaminaPortal, 0.62);
   detenerMusicaCinematica(musicaSegundoCristal, 0.52);

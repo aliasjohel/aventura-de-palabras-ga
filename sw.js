@@ -1,6 +1,8 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v224`;
+const CACHE_NAME = `${CACHE_PREFIX}v226`;
 const LEGACY_CACHE_NAMES = new Set([
+  `${CACHE_PREFIX}v225`,
+  `${CACHE_PREFIX}v224`,
   `${CACHE_PREFIX}v223`,
   `${CACHE_PREFIX}v222`,
   `${CACHE_PREFIX}v221`,
@@ -328,6 +330,7 @@ const CORE_ASSETS = [
   "./assets/sounds/camina-al-portal.mp3",
   "./assets/sounds/recibe-2-diamante.mp3",
   "./assets/sounds/cinematica-final-mundo3.mp3",
+  "./assets/sounds/cinematica-final-mundo4.mp3",
   "./assets/images/personajes/versus/dragon-base.png",
   "./assets/images/personajes/aventura/devoradunas-emerge-v1.png",
   "./assets/images/personajes/aventura/devoradunas-persigue-v1.png",
@@ -493,7 +496,7 @@ const ASSET_REVISIONS = {
   "./": "20260831-laberinto-hielo-7",
   "./index.html": "20260831-laberinto-hielo-7",
   "./css/styles.css": "20260904-portal-azrak-1",
-  "./js/app.js": "20260904-azrak-mirada-2",
+  "./js/app.js": "20260905-final-hielo-musica-1",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-ataque.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-impacto.png": "20260902-personajes-chibi-1",
@@ -567,6 +570,7 @@ const ASSET_REVISIONS = {
   "./assets/images/cinematicas/mundo-hielo/primer-duelo/01-nivor-reconoce-derrota-v1.png": "20260904-nivor-retirada-1",
   "./assets/images/cinematicas/mundo-hielo/primer-duelo/02-alarma-fortaleza-v1.png": "20260904-nivor-retirada-1",
   "./assets/images/cinematicas/mundo-hielo/primer-duelo/03-nivor-regresa-fortaleza-v1.png": "20260904-nivor-retirada-1",
+  "./assets/sounds/cinematica-final-mundo4.mp3": "20260905-final-hielo-musica-1",
   "./assets/sounds/cinematica-final-mundo3.mp3": "20260829-cinematica-mundo3-1",
   "./assets/images/ambiente/desierto/alacran-camina-1.png": "20260826-fauna-desierto-1",
   "./assets/images/ambiente/desierto/alacran-camina-2.png": "20260826-fauna-desierto-1",
@@ -657,7 +661,7 @@ const ASSET_REVISIONS = {
   "./js/versus-engine.js": "20260817-versus-recuperacion-1",
   "./js/supabase-client.js": "20260817-amigos-cuentas-1",
   "./js/versus-room-supabase.js": "20260817-auth-cuentas-2",
-  "./assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png": "20260905-final-hielo-musica-1",
 };
 
 // Segunda pasada del rediseño: proporciones estilizadas basadas en los conceptos originales.
