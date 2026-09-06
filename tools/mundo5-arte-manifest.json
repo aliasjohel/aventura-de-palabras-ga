@@ -99,5 +99,17 @@
     "tool": "image_gen integrada",
     "prompt": "Use case: illustration-story. New 16:9 cinematic game illustration. References define EXACT creature identities: Nivor white-blue ice dragon and black-purple armored THREE-HEADED Cerberus. Epic low-angle wide shot of TWO COLOSSAL beasts battling in Azrak's volcanic obsidian fortress arena, ruined towers tiny beside them establish enormous scale. Nivor fills left half, crystal wings spread, breathes a huge cyan-white ice torrent from mouth toward center. Cerberus fills right half in low aggressive stalking stance, all THREE horned heads visible, each mouth breathing orange fire toward center. Fire and ice collide into brilliant steam and ice shards between them. Purple storm clouds, lava far below stone platform, gold and cyan cinematic light, polished richly detailed painterly fantasy storybook art matching game. Both entire heads and attack origins visible, balanced giant silhouettes, powerful family adventure action without gore or wounds. No humans needed, no text, no UI, no borders.",
     "postprocess": "Copia del original generado"
+  },
+  {
+    "file": "assets/images/cinematicas/reino-azrak/eleccion-v2.png",
+    "source": "exec-a6c41fb4-97df-47d9-9638-f0dbbdffeb8e.png",
+    "tool": "image_gen integrada",
+    "prompt": "Create replacement 16:9 illustration for Shadow chooses to protect Aren. Use these references to preserve EXACT Aren, Shadow and Azrak character identities and polished painterly fantasy game style. Aren in brown explorer hat and blue scarf stands independently at LEFT with sword ready. Shadow, hooded black armored violet-eyed knight, stands CENTER beside Aren with both hands on his OWN two purple blades, making a decisive protective battle stance. Leave visible space between Aren and Shadow: no touching hands, no handholding, no grabbing wrists. Azrak red-skinned black-haired horned armored demon stands at RIGHT facing LEFT directly toward Aren and Shadow, three-quarter FRONT view with his FACE clearly visible, furious at Shadow's defiance, weapon drawn. All three stand on same volcanic obsidian arena floor; purple storm sky and distant throne. Shadow's blades part violet storm energy to open a safe path forward. Strong visual opposition, characters looking toward their opponent. No Azrak back view, no smiling villain, no handshake, no text, no UI, no gore."
+  },
+  {
+    "file": "assets/images/cinematicas/reino-azrak/union-v2.png",
+    "source": "exec-49a72c66-7feb-4768-9479-f6f7cb2ddb67.png",
+    "tool": "image_gen integrada",
+    "prompt": "Edit this exact 16:9 final combined-attack game cinematic. Keep ALL heroes, all three dragons, wolf guardian, crystal colors, beams, positions, background and overall composition unchanged. Change ONLY Azrak at RIGHT and his immediate failing magical shield: he is LOSING under the combined power, NOT smiling or relaxed. His face must show angry fear and obvious effort/pain: deeply furrowed brows, widened alarmed eyes, mouth open in a strained furious grimace, no smile or smirk. Bend knees slightly and lean his shoulders BACK under the force, one braced hand trembling against the shield. Add glowing cracks and fragments to his failing magical shield, a few sparks around armor, but no injury, no blood, no gore. Keep his exact red skin, black hair, horns and black-gold armor. Make the moment read unequivocally as Azrak being overwhelmed and about to be defeated by everyone. Preserve polished painterly family fantasy style. No text, no UI."
   }
 ]

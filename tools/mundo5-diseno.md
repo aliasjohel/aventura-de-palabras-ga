@@ -39,3 +39,7 @@ Lume aparece cautiva en la misión 7. Al resolver el eclipse desaparece su prisi
 Demonios voladores recorren las misiones 1, 2, 3 y 6; el cancerbero de tres cabezas acecha quieto en las misiones 4, 5 y 9, con respiración suave. Los voladores alternan alas altas y bajas. Ya no hay criaturas caminando junto a Aren. Las criaturas pasan detrás de Aren, no interceptan los controles y respetan movimiento reducido. Los PNG del directorio `assets/images/ambiente/reino-azrak/` tienen transparencia real; sus prompts figuran en el manifiesto y el procesamiento autorizado en `prepare-azrak-sprites.py`.
 
 Aren tiene expresiones propias en las diez misiones del reino. En el balcón (misión 6) se ubica sobre el piso libre a la derecha de la mesa. El quinto cristal permanece con Lume hasta que recupera su poder al final; recién entonces Aren lo recibe.
+
+### Ajuste del desenlace
+
+Después del choque de gigantes se muestran el rescate de Aren por Nimbus y la intervención de Aeralis; recién después Nivor congela a Azrak. La elección de Shadow usa `eleccion-v2.png` (ambos aliados separados y Azrak de frente), y el ataque conjunto usa `union-v2.png` (Azrak desbordado por el ataque, con su defensa quebrándose). Los planos aceptan una imagen versionada sin cambiar su identificador narrativo. El panel compensa el margen del PNG cuadrado de los tres últimos cristales para igualar la altura visible del primero en escritorio y móvil.

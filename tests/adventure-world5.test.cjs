@@ -167,12 +167,13 @@ test('mission 8 keeps three completed portals and advances only on the fourth wo
 
 test('cinematic illustrations exist offline and the giant rescue precedes the battle', () => {
   for (const shot of [...world.betrayal, ...world.finale]) {
-    const asset = `assets/images/cinematicas/reino-azrak/${shot.key}-v1.png`;
+    const asset = `assets/images/cinematicas/reino-azrak/${shot.image || shot.key + '-v1.png'}`;
     assert.ok(fs.existsSync(path.join(__dirname, '..', asset)), asset);
     assert.ok(sw.includes(asset), `Offline cinematic ${asset}`);
   }
   const keys = world.finale.map(s => s.key);
   assert.ok(keys.indexOf('emboscada-cancerbero') < keys.indexOf('portal-nivor'));
   assert.ok(keys.indexOf('portal-nivor') < keys.indexOf('titanes'));
-  assert.ok(keys.indexOf('titanes') < keys.indexOf('hielo'));
+  assert.deepEqual(keys.slice(keys.indexOf('titanes'), keys.indexOf('guardianes') + 1), ['titanes', 'rescate', 'madre', 'hielo', 'guardianes']);
+  assert.doesNotMatch(world.finale.find(s => s.key === 'rescate').text, /rompe parte del hielo/);
 });
