@@ -10,16 +10,19 @@
     ['La puerta de ceniza', 'entrada', 'Los cuatro cristales llevan a Aren al reino de Azrak. Tras él, la grieta se cierra. Una brasa verde entre las rocas le recuerda que todavía hay vida que proteger.'],
     ['El puente de las runas', 'entrada', 'El puente se desarma sobre el abismo. Sus runas muestran un camino por unos instantes: Aren deberá recordar el orden para reconstruir cada tramo.', 'runas-azrak'],
     ['La sombra del centinela', 'entrada', 'Shadow, el centinela de Azrak, observa desde una torre. Podría derrumbar el sendero, pero aparta la mirada. «Volvé mientras puedas», murmura antes de desaparecer.'],
-    ['La forja de los nombres', 'forja', 'La fortaleza se alimenta de palabras arrancadas a los cuatro mundos. Aren recupera los nombres que la forja había borrado y apaga sus primeras cadenas.'],
+    ['La forja de los nombres', 'forja', 'La fortaleza se alimenta de palabras arrancadas a los cuatro mundos. Aren recupera los nombres que la forja había borrado. Entre ellos descubre el de Lume, guardiana del último cristal, a quien Azrak encerró en la Cámara del Eclipse.'],
     ['Los cuatro juramentos', 'forja', 'Los guardianes responden a los cristales. Para abrirles un camino, Aren debe devolver cada símbolo a su sello: bosque, desierto, cielo e invierno.', 'sellos-azrak'],
     ['Una orden imposible', 'forja', 'Azrak ordena a Shadow destruir el puente, aunque sus propios centinelas sigan cruzándolo. Shadow vacila. Aren comprende que bajo esa armadura todavía queda una voluntad propia.'],
-    ['Luz entre las sombras', 'forja', 'La última cerradura enciende sus vecinas cada vez que se la toca. Aren debe apagar la red de sombras sin apagar la luz de los cristales.', 'eclipse-azrak'],
-    ['El camino de los guardianes', 'entrada', 'La Guardiana y Zafir atraviesan los sellos. Aeralis y Nimbus surcan la tormenta; Nivor abandona por un momento su refugio, ahora protegido. Aren ya no avanza solo.'],
+    ['Luz entre las sombras', 'forja', 'Una voz llega desde la luz cautiva: «Soy Lume, guardiana del Cristal de la Unión. Azrak me encerró aquí y aprisionó mi cristal en el Quinto Sello». Para liberarla, Aren debe apagar la red de sombras: cada sello cambia también a sus vecinos.', 'eclipse-azrak'],
+    ['El camino de los guardianes', 'entrada', 'Libre del eclipse, Lume guía a Aren: «Solo juntos podremos abrir el Quinto Sello». La Guardiana, Zafir y el Guardián de la Luna atraviesan los portales. Aeralis y Nimbus surcan la tormenta; Nivor abandona por un momento su refugio, ahora protegido. Aren ya no avanza solo.'],
     ['Antes del último umbral', 'trono', 'Los guardianes contienen la tormenta para que Aren alcance el trono. Shadow espera en la puerta. «Le juré lealtad», dice. Aren responde: «Todavía podés elegir a quién proteger».'],
     ['La última palabra', 'trono', 'Shadow desenvaina frente al trono de Azrak. Primero habrá que vencer al centinela. Detrás de él espera quien encadenó a los cuatro mundos.'],
   ].map(([title, background, text, puzzle], index) => ({
     capitulo: `Misión ${index + 1}`, titulo: title, texto: text,
-    fondos: [`reino-azrak/${background}-v1.png`], puzzle: puzzle || '',
+    fondos: [`reino-azrak/${[
+      'entrada', 'puente-runas', 'torre-centinela', 'forja', 'sala-juramentos',
+      'balcon-orden', 'camara-eclipse', 'sendero-guardianes', 'ultimo-umbral', 'trono',
+    ][index]}-v1.png`], puzzle: puzzle || '',
   }));
   const words = [
     ['CENIZA', 'Polvo que queda después del fuego.'], ['PUENTE', 'Une dos orillas sobre un río o un abismo.'],
@@ -163,7 +166,7 @@
     { key: 'hielo', text: 'Nivor congela los pies de Azrak y sujeta su brazo al suelo. «No volverás a encadenar a mi familia».', actors: [actor('nivor', 'dragon-hielo-ataque-v2.png', 26, 73, 49), azrak('sacudida', 'azrak-impacto.png')], effect: 'hielo' },
     { key: 'rescate', text: 'Azrak rompe parte del hielo y lanza un ataque hacia Aren. Nimbus se arroja entre ambos y lo recoge al vuelo. Por un instante, el tiempo parece detenerse.', actors: [azrak('', 'azrak-ataque.png')], effect: 'rescate', duration: 8500 },
     { key: 'madre', text: 'Otra descarga corta el cielo. Aeralis se interpone: su aliento luminoso choca con el ataque de Azrak y protege a su hijo y a Aren.', actors: [actor('aeralis', '../aventura/aeralis-liberada-v1.png', 27, 57, 58), azrak('', 'azrak-ataque.png')], effect: 'choque' },
-    { key: 'guardianes', text: 'La Guardiana enlaza sus raíces con la magia de Zafir. El Guardián de la Luna corta las sombras y A. Lumen abre una brecha de luz en la defensa de Azrak.', actors: [actor('guardiana', '../coleccion/guardiana-bosque-ataque-raices.png', 13, 76, 30), actor('zafir', 'mago-ataque.png', 31, 73, 30), actor('luna', 'hombre-lobo-zarpazo.png', 47, 76, 34), actor('alume', 'guardian-alba-final-carga-sin-rayo.png', 55, 55, 30), azrak('sacudida')], effect: 'guardianes' },
+    { key: 'guardianes', text: 'La Guardiana enlaza sus raíces con la magia de Zafir. El Guardián de la Luna corta las sombras y Lume, la guardiana que Aren liberó del eclipse, abre una brecha de luz en la defensa de Azrak.', actors: [actor('guardiana', '../coleccion/guardiana-bosque-ataque-raices.png', 13, 76, 30), actor('zafir', 'mago-ataque.png', 31, 73, 30), actor('luna', 'hombre-lobo-zarpazo.png', 47, 76, 34), actor('alume', 'guardian-alba-final-carga-sin-rayo.png', 55, 55, 30), azrak('sacudida')], effect: 'guardianes' },
     { key: 'contraataque', text: 'Azrak se sobrepone. Quiebra las raíces y extiende una ola oscura sobre la arena. Los guardianes retroceden; Aren apenas logra mantenerse en pie.', actors: [aren(17, 76, 'sacudida'), actor('guardiana', 'guardiana-susto-impacto.png', 34, 77, 28), azrak('', 'azrak-invocacion-portal.png')], effect: 'onda' },
     { key: 'regreso', text: 'Una sombra intercepta el golpe. Shadow reaparece: usó la grieta para escapar. Azrak extiende la mano, pero su antiguo centinela se vuelve hacia Aren.', actors: [aren(), shadow(47, 'aparecer'), azrak()], effect: 'bruma' },
     { key: 'eleccion', text: '«Mi juramento ya no te pertenece. Yo elijo a quién proteger». Shadow abre un paso dentro de la tormenta e invita a los guardianes a reunir su poder.', actors: [aren(), shadow(43, '', 't-shadow-ataque.png'), azrak()], effect: 'portal' },
@@ -202,10 +205,19 @@
       for (const [index, shot] of shots.entries()) {
         if (skipped) break;
         layer.dataset.shot = shot.key;
-        stage.className = `azrak-cinema-stage efecto-${shot.effect || 'ninguno'}`;
+        stage.className = 'azrak-cinema-stage escena-ilustrada';
         stage.replaceChildren();
         layer.querySelector('.azrak-cinema-caption span').textContent = `${kind === 'traicion' ? 'LA TRAICIÓN' : 'EL ÚLTIMO JURAMENTO'} · ${index + 1}/${shots.length}`;
         layer.querySelector('.azrak-cinema-caption p').textContent = shot.text;
+        const illustration = document.createElement('img');
+        illustration.className = 'azrak-cinema-illustration';
+        illustration.src = `assets/images/cinematicas/reino-azrak/${shot.key}-v1.png`;
+        illustration.alt = shot.text;
+        stage.append(illustration);
+        illustration.onerror = () => {
+        if (!illustration.isConnected) return;
+        illustration.remove();
+        stage.className = `azrak-cinema-stage efecto-${shot.effect || 'ninguno'}`;
         for (const a of shot.actors) {
           const img = document.createElement('img'); img.src = sprites + a.file; img.alt = a.id;
           img.className = `azrak-cinema-actor actor-${a.id} ${a.motion}`;
@@ -218,6 +230,7 @@
           rescue.innerHTML = `<img class="rescate-nimbus" src="${sprites}dragon-base.png" alt="Nimbus volando"><img class="rescate-aren" src="${sprites}explorador-base.png" alt="Aren a salvo sobre Nimbus">`;
           stage.append(rescue);
         }
+        };
         sound(shot.key === 'amanecer' ? 'victoria' : 'habilidad');
         // The readable duration remains intact for reduced motion; only movement changes.
         layer.classList.toggle('movimiento-reducido', reduced);

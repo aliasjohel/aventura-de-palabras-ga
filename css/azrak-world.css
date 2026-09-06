@@ -20,6 +20,9 @@
 .azrak-cinema-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(#0005, transparent 35%, transparent 75%, #09060e); z-index: 6; }
 .azrak-cinema-actor { position: absolute; left: var(--x); top: var(--y); height: var(--size); width: auto; max-width: 48%; object-fit: contain; transform: translate(-50%, -100%); transform-origin: center bottom; filter: drop-shadow(0 12px 10px #0008); z-index: 2; animation: azrakLlegada .65s both; }
 .actor-azrak { z-index: 1; }
+.azrak-cinema-stage.escena-ilustrada { background: #09060e; }
+.azrak-cinema-stage.escena-ilustrada::after { display: none; }
+.azrak-cinema-illustration { display: block; width: 100%; height: 100%; object-fit: contain; }
 .azrak-cinema-caption { padding: 14px clamp(18px, 5vw, 90px) 20px; text-align: center; background: #09060e; }
 .azrak-cinema-caption span { font-size: .68rem; letter-spacing: .19em; color: #edbb75; }
 .azrak-cinema-caption p { font-size: clamp(.9rem, 1.7vw, 1.3rem); line-height: 1.5; max-width: 1000px; margin: 9px auto 0; }
