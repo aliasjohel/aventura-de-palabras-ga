@@ -659,6 +659,7 @@ const spritesCaminataPorEscenario = {
   1: crearRutasSpritesCaminata("bosque"),
   2: crearRutasSpritesCaminata("bosque"),
   3: crearRutasSpritesCaminata("bosque"),
+  4: crearRutasSpritesCaminata("bosque"),
 };
 const spritesPortalPorEscenario = {
   0: crearRutasSpritesCaminata("portal-bosque", "explorador-portal"),
@@ -10890,6 +10891,7 @@ function actualizarEscenaPorMision() {
   actualizarPersonajesNarrativosDesierto();
   actualizarPersonajesNarrativosCumbres();
   actualizarPersonajesNarrativosHielo();
+  AzrakWorld.mountScene(contenedorEscenario, escenarioActual === 4 ? misionActual : -1);
   volverEstadoBaseExplorador();
 }
 
@@ -13829,6 +13831,14 @@ async function completarPruebaEspecialBosque(tipo) {
 
   await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 700 : 1500);
   if (secuencia !== secuenciaPruebaBosque || pruebaEspecialBosqueActiva !== "completando") return;
+
+  if (tipo === "eclipse-azrak") {
+    const lume = contenedorEscenario.querySelector('.lume-azrak');
+    if (lume) {
+      lume.classList.replace('lume-cautiva', 'lume-libre');
+      lume.querySelector('figcaption').textContent = '«Soy libre. Ahora vamos juntos»';
+    }
+  }
 
   if (pruebaBosqueEnModoDemo) {
     cerrarPruebaEspecialBosque();

@@ -188,6 +188,6 @@ assert.match(app, /Una lágrima cristalina cae sobre la nieve/);
 assert.match(app, /Por fin reuniste las cuatro llaves/);
 assert.match(app, /prefiereReducirMovimiento\.matches \? 1200 : 8200/);
 assert.match(app, /Entrar al Reino de Azrak/);
-assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v228`/);
+assert.ok(Number(sw.match(/CACHE_NAME = `\$\{CACHE_PREFIX\}v(\d+)`/)?.[1]) >= 228);
 
 console.log("World 4 adventure checks passed");

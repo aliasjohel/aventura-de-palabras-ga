@@ -32,6 +32,37 @@
     ['ESPERANZA', 'Confianza en que el futuro puede ser mejor.'], ['LIBERTAD', 'Poder elegir el propio camino.'],
   ].map(([palabra, pista]) => ({ palabra, pista }));
   const symbols = ['🌿', '☀️', '☁️', '❄️'];
+  function mountScene(container, mission) {
+    container.querySelectorAll('.vida-azrak').forEach(element => element.remove());
+    if (mission < 0) return;
+    const layer = document.createElement('div');
+    layer.className = 'vida-azrak';
+    const addImage = (parent, src, className, alt = '') => {
+      const img = document.createElement('img');
+      img.src = src; img.className = className; img.alt = alt;
+      parent.append(img); return img;
+    };
+    if ([6, 7, 8].includes(mission)) {
+      const lume = document.createElement('figure');
+      lume.className = `lume-azrak ${mission === 6 ? 'lume-cautiva' : 'lume-libre'}`;
+      addImage(lume, sprites + 'guardian-alba-base.png', 'lume-figura', 'Lume, guardiana del Cristal de la Unión');
+      const label = document.createElement('figcaption');
+      label.textContent = mission === 6 ? 'Lume · Atrapada en el eclipse' : 'Lume · Guardiana de la Unión';
+      lume.append(label); layer.append(lume);
+    }
+    const creatures = { 0: ['vuelo'], 1: ['vuelo', 'vuelo'], 2: ['vuelo'], 3: ['pasos'], 4: ['pasos'], 5: ['vuelo', 'pasos'], 8: ['pasos'] }[mission] || [];
+    creatures.forEach((type, index) => {
+      const creature = document.createElement('div');
+      creature.className = `demonio-azrak demonio-${type}`;
+      creature.style.setProperty('--demora', `${index ? -9 : -3}s`);
+      creature.style.setProperty('--altura', `${index ? 28 : 12}%`);
+      creature.setAttribute('aria-hidden', 'true');
+      const files = type === 'vuelo' ? ['demonio-volador-v1.png'] : ['demonio-paso-1-v1.png', 'demonio-paso-2-v1.png'];
+      files.forEach((file, frame) => addImage(creature, 'assets/images/ambiente/reino-azrak/' + file, `demonio-cuadro cuadro-${frame}`));
+      layer.append(creature);
+    });
+    container.append(layer);
+  }
   const paths = [[0, 2, 1, 3], [3, 0, 2, 1, 0], [1, 3, 2, 0, 3, 1]];
   function toggleLight(board, index) {
     const next = [...board];
@@ -248,5 +279,5 @@
       if (focusBefore?.isConnected) focusBefore.focus({ preventScroll: true });
     }
   }
-  return { missions, words, paths, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, playCinematic, betrayal, finale, base };
+  return { missions, words, paths, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, mountScene, playCinematic, betrayal, finale, base };
 });

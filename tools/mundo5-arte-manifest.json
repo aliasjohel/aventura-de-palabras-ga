@@ -39,5 +39,23 @@
     "tool": "image_gen (integrada)",
     "reference": "assets/images/cinematicas/reino-azrak/amanecer-v1.png",
     "prompt": "Use case: illustration-story. Create ONE 16:9 final epilogue illustration for this same family fantasy game. Reference image is character identity and painterly style reference, not an edit target. Keep exact Aren design: young brown-haired explorer, brown explorer hat, tan adventure clothes, blue scarf, backpack. Show Aren in foreground smiling gently and closing his folded map after the adventure, on a safe hillside overlooking restored luminous paths to green forest, golden desert, floating sky islands and distant white glacier. Peaceful golden sunrise, hopeful ending, richly detailed polished storybook rendering matching reference. No battle, no text, no letters, no interface, no watermark. Wide composition with whole main character comfortably within center half for readable landscape illustration."
+  },
+  {
+    "file": "assets/images/ambiente/reino-azrak/demonio-volador-v1.png",
+    "tool": "image_gen integrada",
+    "prompt": "Use case: stylized-concept. Create one isolated full-body small flying imp demon game sprite, transparent background with real alpha. Three-quarter side view facing right, broad bat wings raised, compact charcoal-purple body, two short curved horns, glowing amber eyes, tiny clawed feet tucked up and curling tail. Polished painterly family fantasy adventure game art, detailed like storybook RPG characters, mischievous rather than terrifying, no gore. Clean readable silhouette at small size. Entire wings and tail within frame, no cropping, no scenery, no ground, no text, no shadow backdrop. Single creature only.",
+    "postprocess": "Transparencia y reducción a 512x512 con tools/prepare-azrak-sprites.py, autorizadas por el usuario."
+  },
+  {
+    "file": "assets/images/ambiente/reino-azrak/demonio-paso-1-v1.png",
+    "tool": "image_gen integrada",
+    "prompt": "Use case: stylized-concept. One full-body wingless little horned imp demon walking to the right in side profile, first walking-cycle pose: near foot forward, far foot back, opposite arms swinging. Charcoal violet skin, stubby curved horns, amber eyes, pointed ears, curled tail, simple worn bronze belt. Small mischievous volcanic realm inhabitant for family storybook fantasy RPG, polished detailed painted rendering. Real transparent alpha background, isolated single character, full body including feet and tail, centered with generous clear margin, no ground or scenery, no writing, no weapons, no gore. Must read clearly at tiny game size.",
+    "postprocess": "Transparencia y reducción a 512x512 con tools/prepare-azrak-sprites.py, autorizadas por el usuario."
+  },
+  {
+    "file": "assets/images/ambiente/reino-azrak/demonio-paso-2-v1.png",
+    "tool": "image_gen integrada",
+    "prompt": "Edit the imp pose for animation. MUST visibly change leg positions: passing pose with BOTH FEET DIRECTLY BELOW THE BELT, one foot planted on baseline, the other knee bent and lifted just in front. No long stride. Arms hanging closer to torso. Keep head, torso, belt, character identity, scale and placement exactly same. Single imp on genuinely transparent alpha background, no checkerboard painted into image, no scenery. This frame alternates with the long-stride pose to show walking.",
+    "postprocess": "Transparencia y reducción a 512x512 con tools/prepare-azrak-sprites.py, autorizadas por el usuario."
   }
 ]
