@@ -57,5 +57,47 @@
     "tool": "image_gen integrada",
     "prompt": "Edit the imp pose for animation. MUST visibly change leg positions: passing pose with BOTH FEET DIRECTLY BELOW THE BELT, one foot planted on baseline, the other knee bent and lifted just in front. No long stride. Arms hanging closer to torso. Keep head, torso, belt, character identity, scale and placement exactly same. Single imp on genuinely transparent alpha background, no checkerboard painted into image, no scenery. This frame alternates with the long-stride pose to show walking.",
     "postprocess": "Transparencia y reducción a 512x512 con tools/prepare-azrak-sprites.py, autorizadas por el usuario."
+  },
+  {
+    "file": "assets/images/ambiente/reino-azrak/demonio-volador-alas-bajas-v1.png",
+    "source": "exec-6dba512e-be31-4914-a728-6b30cf723dc4.png",
+    "tool": "image_gen integrada",
+    "prompt": "Edit target is the supplied flying imp sprite. Create its WINGS DOWN animation frame. Keep the head, torso, face, horns, hands, tucked feet and curled tail EXACTLY in the same position and same size on the square canvas. Only rotate the two wings at their shoulder joints so they sweep DOWN beside the body, tips pointing toward the lower corners. This must be a clearly different downstroke silhouette, no wings pointing up. Preserve original purple bat-like wings and storybook painted design. Full silhouette inside frame. Transparent alpha background, no shadow, no scenery, no text. For aligned game animation with the original wings-up frame.",
+    "postprocess": "Transparencia y alineación autorizadas; tools/prepare-azrak-sprites.py"
+  },
+  {
+    "file": "assets/images/ambiente/reino-azrak/cancerbero-acecho-v1.png",
+    "source": "exec-459d82b9-fbd9-4a3b-8c92-c2d6a19779b2.png",
+    "tool": "image_gen integrada",
+    "prompt": "Edit this exact three-headed basalt armored Cerberus. Change ONLY its pose to LOW STALKING CROUCH, like a predator sneaking toward the left. NOT seated, NOT lying sphinx-like with upright necks. Keep belly just above ground, all four legs visibly bent supporting weight, rear haunches raised slightly, long back almost horizontal. Lower all THREE necks and heads forward near shoulder height, all three faces clearly visible looking left, shoulders hunched, tail held low behind. Preserve black-purple armored hide, horns, amber eyes, tusks and identity. One full-body creature isolated on truly transparent background, entire silhouette within landscape canvas, no floor or scenery, no text, no gore.",
+    "postprocess": "Transparencia y alineación autorizadas; tools/prepare-azrak-sprites.py"
+  },
+  {
+    "file": "assets/images/fondos/reino-azrak/sendero-guardianes-apagado-v1.png",
+    "source": "exec-94547869-09c2-4f1f-9d2f-0fef24b3d82f.png",
+    "tool": "image_gen integrada",
+    "prompt": "Edit target: this exact game background with four portals. Keep the composition, camera, architecture, four portal frames, road, fortress, rocks and portal positions and sizes EXACTLY unchanged. Turn all FOUR portals OFF: replace ONLY the bright inner windows (forest, desert, sky, ice) with opaque unlit dark violet-black stone/magical surfaces. Remove the colored glow cast by these four openings on their immediate frames and steps. Retain the distant purple sky and atmosphere. No characters, no new objects, no text. Same landscape 16:9 dimensions. This is the inactive background used beneath precisely aligned active portal overlays from the original, so do not shift or reshape anything.",
+    "postprocess": "Copia del original generado"
+  },
+  {
+    "file": "assets/images/cinematicas/reino-azrak/emboscada-cancerbero-v1.png",
+    "source": "exec-eaaaaf73-96d1-4a91-8662-b36fffbb0c95.png",
+    "tool": "image_gen integrada",
+    "prompt": "New 16:9 cinematic illustration, opening of a colossal ambush. Reference 1 defines exact Aren (brown hat blue scarf young explorer), forest guardian woman in green armor and hooded purple mage Zafir, and volcanic fortress setting/style. Reference 2 defines exact THREE-HEADED armored black-purple Cerberus. Low camera behind the three small heroes grouped bottom-left, visibly looking UP in alarm at a TITANIC Cerberus filling right two-thirds towering above obsidian fortress walls. All THREE heads clear, all three mouths launch orange streams of fire toward the heroes, fire still several meters from them, no contact or injury. The heroes brace to defend. A large purple dormant portal behind them on the left. Epic scale contrast, fortress architecture tiny beside beast, storm violet sky, lava far below. Detailed polished painterly family fantasy game, dramatic anticipation. Do not include ice dragon yet. No gore, no text, no UI.",
+    "postprocess": "Copia del original generado"
+  },
+  {
+    "file": "assets/images/cinematicas/reino-azrak/portal-nivor-v1.png",
+    "source": "exec-dbf363af-ae85-45e6-a89c-14b17743865c.png",
+    "tool": "image_gen integrada",
+    "prompt": "Edit target is cinematic reference 1. Correct ONLY Nivor's anatomy emerging from the LEFT portal. His current head is much too small and foreclaws too large. Enlarge his white-blue ice dragon HEAD and NECK to roughly TWO TIMES the current head dimensions, so its visible skull is comparable in size to EACH of the Cerberus heads at right. His head must project forward from the portal on a thick powerful neck. Reduce both forepaws/claws by about 35 percent to balance head-to-paw proportions. Use reference 2 for normal head/neck/paw anatomy. Preserve the exact portal, small foreground heroes, three-headed Cerberus, arena, camera, fire/ice collision and lighting. The ice breath must originate from the enlarged mouth, same left-to-right direction. 16:9 polished cinematic fantasy game artwork. No extra limbs, no extra heads on ice dragon, no text, no gore.",
+    "postprocess": "Copia del original generado"
+  },
+  {
+    "file": "assets/images/cinematicas/reino-azrak/titanes-v1.png",
+    "source": "exec-68debba7-2cc8-4b93-9ece-8b4cffcf3457.png",
+    "tool": "image_gen integrada",
+    "prompt": "Use case: illustration-story. New 16:9 cinematic game illustration. References define EXACT creature identities: Nivor white-blue ice dragon and black-purple armored THREE-HEADED Cerberus. Epic low-angle wide shot of TWO COLOSSAL beasts battling in Azrak's volcanic obsidian fortress arena, ruined towers tiny beside them establish enormous scale. Nivor fills left half, crystal wings spread, breathes a huge cyan-white ice torrent from mouth toward center. Cerberus fills right half in low aggressive stalking stance, all THREE horned heads visible, each mouth breathing orange fire toward center. Fire and ice collide into brilliant steam and ice shards between them. Purple storm clouds, lava far below stone platform, gold and cyan cinematic light, polished richly detailed painterly fantasy storybook art matching game. Both entire heads and attack origins visible, balanced giant silhouettes, powerful family adventure action without gore or wounds. No humans needed, no text, no UI, no borders.",
+    "postprocess": "Copia del original generado"
   }
 ]

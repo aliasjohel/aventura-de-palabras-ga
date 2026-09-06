@@ -1049,6 +1049,7 @@ const estadosExploradorPorEscenario = {
   ],
   2: ["feliz", "pensando", "preocupado", "pensando", "nervioso", "pensando", "preocupado", "feliz", "preocupado", "feliz"],
   3: ["preocupado", "pensando", "nervioso", "preocupado", "pensando", "preocupado", "nervioso", "pensando", "preocupado", "preocupado"],
+  4: ["feliz", "pensando", "pensando", "pensando", "feliz", "pensando", "feliz", "feliz", "pensando", "feliz"],
 };
 
 let palabraSecreta = "";
@@ -1207,6 +1208,9 @@ let nivorDesbloqueado = false;
 let hombreLoboDescubierto = false;
 let dueloAventuraActivo = null;
 const desafiosPorMision = 3;
+function obtenerCantidadDesafiosMision(escenario = escenarioActual, mision = misionActual) {
+  return escenario === 4 && mision === 7 ? 4 : desafiosPorMision;
+}
 const adaptadorLocalSalasVersus = VersusRoom.crearAdaptadorLocal();
 let adaptadorSalasVersus = adaptadorLocalSalasVersus;
 let promesaConexionSalasVersus = null;
@@ -3467,6 +3471,9 @@ function verificarEstado() {
       return;
     }
 
+    const encendidoPortal = escenarioActual === 4 && misionActual === 7
+      ? AzrakWorld.ignitePortal(contenedorEscenario, desafiosCompletados, prefiereReducirMovimiento.matches)
+      : Promise.resolve();
     sonidoNarrativoPendiente = avanzarMision();
     btnSiguiente.textContent = historiaMisionPendiente
       ? "➡️ Siguiente misión"
@@ -3484,7 +3491,7 @@ function verificarEstado() {
     guardarProgreso();
     bloquearTeclado();
     btnSiguiente.classList.add("oculto");
-    void mensajeSuperadoTerminado.then((mensajeCompleto) => {
+    void Promise.all([mensajeSuperadoTerminado, encendidoPortal]).then(([mensajeCompleto]) => {
       if (mensajeCompleto) continuarAventura();
     });
   }
@@ -8835,7 +8842,7 @@ function actualizarCabeceraMision() {
       ? "🌲 Tema: palabras del Bosque Encantado"
       : `Tema: palabras de ${escenario.nombre}`;
   detalleMision.textContent =
-    `Misión ${misionActual + 1} · Desafío ${desafioActual} de ${desafiosPorMision}`;
+    `Misión ${misionActual + 1} · Desafío ${desafioActual} de ${obtenerCantidadDesafiosMision()}`;
 }
 
 function actualizarVistaMisionDev() {
@@ -10530,7 +10537,7 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
 function avanzarMision() {
   desafiosCompletados++;
 
-  if (desafiosCompletados < desafiosPorMision) {
+  if (desafiosCompletados < obtenerCantidadDesafiosMision()) {
     historiaMisionPendiente = false;
     return "";
   }
@@ -10694,7 +10701,7 @@ function cargarProgreso() {
   misionActual = Math.max(misionActual, 0);
   desafiosCompletados = Math.min(
     Math.max(desafiosCompletados, 0),
-    desafiosPorMision - 1,
+    obtenerCantidadDesafiosMision() - 1,
   );
   desafioActual = desafiosCompletados + 1;
   monedas = progreso.monedas ?? 0;
@@ -10891,7 +10898,7 @@ function actualizarEscenaPorMision() {
   actualizarPersonajesNarrativosDesierto();
   actualizarPersonajesNarrativosCumbres();
   actualizarPersonajesNarrativosHielo();
-  AzrakWorld.mountScene(contenedorEscenario, escenarioActual === 4 ? misionActual : -1);
+  AzrakWorld.mountScene(contenedorEscenario, escenarioActual === 4 ? misionActual : -1, desafiosCompletados);
   volverEstadoBaseExplorador();
 }
 

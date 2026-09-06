@@ -137,3 +137,42 @@ test('the memory puzzle accepts all three rounds, retries mistakes and cancels t
   assert.equal(timers.size, 0);
   assert.equal(completed, 1);
 });
+
+test('mission 8 keeps three completed portals and advances only on the fourth word', () => {
+  const ctx = vm.createContext({
+    escenarioActual: 4, misionActual: 7, desafiosCompletados: 0, desafiosPorMision: 3,
+    historiaMisionPendiente: false, palabrasUsadasEnMision: [], mensajePersonaje: {},
+    obtenerCantidadMisiones: () => 10,
+    ...Object.fromEntries(['detenerAmbiente', 'detenerAmbientePuente', 'detenerAmbienteCristal',
+      'detenerPortalMision', 'detenerAmbienteHojas', 'detenerTormenta', 'detenerNiebla',
+      'detenerMiradasLobos', 'detenerPresenciaBosque', 'detenerAranaBosque'].map(name => [name, () => {}])),
+  });
+  const helper = app.match(/function obtenerCantidadDesafiosMision\([\s\S]*?\n\}/)[0];
+  const start = app.indexOf('function avanzarMision()');
+  vm.runInContext(helper + '\n' + app.slice(start, app.indexOf('function actualizarJugador()', start)), ctx);
+  for (let i = 1; i <= 3; i++) {
+    ctx.avanzarMision();
+    assert.equal(ctx.misionActual, 7);
+    assert.equal(ctx.desafiosCompletados, i);
+  }
+  // Exercise the actual reload clamp, which must retain a saved third portal.
+  const clamp = app.slice(app.indexOf('  desafiosCompletados = Math.min('), app.indexOf('  desafioActual = desafiosCompletados + 1;', app.indexOf('  desafiosCompletados = Math.min(')));
+  vm.runInContext(clamp, ctx);
+  assert.equal(ctx.desafiosCompletados, 3);
+  ctx.avanzarMision();
+  assert.equal(ctx.misionActual, 8);
+  assert.equal(ctx.desafiosCompletados, 0);
+  assert.equal(ctx.obtenerCantidadDesafiosMision(), 3);
+});
+
+test('cinematic illustrations exist offline and the giant rescue precedes the battle', () => {
+  for (const shot of [...world.betrayal, ...world.finale]) {
+    const asset = `assets/images/cinematicas/reino-azrak/${shot.key}-v1.png`;
+    assert.ok(fs.existsSync(path.join(__dirname, '..', asset)), asset);
+    assert.ok(sw.includes(asset), `Offline cinematic ${asset}`);
+  }
+  const keys = world.finale.map(s => s.key);
+  assert.ok(keys.indexOf('emboscada-cancerbero') < keys.indexOf('portal-nivor'));
+  assert.ok(keys.indexOf('portal-nivor') < keys.indexOf('titanes'));
+  assert.ok(keys.indexOf('titanes') < keys.indexOf('hielo'));
+});

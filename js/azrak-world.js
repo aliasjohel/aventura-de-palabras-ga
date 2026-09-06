@@ -13,15 +13,15 @@
     ['La forja de los nombres', 'forja', 'La fortaleza se alimenta de palabras arrancadas a los cuatro mundos. Aren recupera los nombres que la forja había borrado. Entre ellos descubre el de Lume, guardiana del último cristal, a quien Azrak encerró en la Cámara del Eclipse.'],
     ['Los cuatro juramentos', 'forja', 'Los guardianes responden a los cristales. Para abrirles un camino, Aren debe devolver cada símbolo a su sello: bosque, desierto, cielo e invierno.', 'sellos-azrak'],
     ['Una orden imposible', 'forja', 'Azrak ordena a Shadow destruir el puente, aunque sus propios centinelas sigan cruzándolo. Shadow vacila. Aren comprende que bajo esa armadura todavía queda una voluntad propia.'],
-    ['Luz entre las sombras', 'forja', 'Una voz llega desde la luz cautiva: «Soy Lume, guardiana del Cristal de la Unión. Azrak me encerró aquí y aprisionó mi cristal en el Quinto Sello». Para liberarla, Aren debe apagar la red de sombras: cada sello cambia también a sus vecinos.', 'eclipse-azrak'],
-    ['El camino de los guardianes', 'entrada', 'Libre del eclipse, Lume guía a Aren: «Solo juntos podremos abrir el Quinto Sello». La Guardiana, Zafir y el Guardián de la Luna atraviesan los portales. Aeralis y Nimbus surcan la tormenta; Nivor abandona por un momento su refugio, ahora protegido. Aren ya no avanza solo.'],
-    ['Antes del último umbral', 'trono', 'Los guardianes contienen la tormenta para que Aren alcance el trono. Shadow espera en la puerta. «Le juré lealtad», dice. Aren responde: «Todavía podés elegir a quién proteger».'],
+    ['Luz entre las sombras', 'forja', 'Una voz llega desde la luz cautiva: «Soy Lume, guardiana del Cristal de la Unión. Azrak me encerró aquí y debilitó mi cristal con el Quinto Sello». Para liberarla, Aren debe apagar la red de sombras: cada sello cambia también a sus vecinos.', 'eclipse-azrak'],
+    ['El camino de los guardianes', 'entrada', 'Lume conserva el quinto cristal, aunque Azrak debilitó su luz. «Con cada palabra que recuperes podré encender un portal y llamar a los guardianes». Cuatro palabras despertarán los caminos del bosque, el desierto, el cielo y el invierno.'],
+    ['Antes del último umbral', 'trono', 'Aren avanza solo hacia el trono. Lume se queda con el quinto cristal, sosteniendo los cuatro portales para traer a los guardianes. Shadow espera en la puerta. «Le juré lealtad», dice. Aren responde: «Todavía podés elegir a quién proteger».'],
     ['La última palabra', 'trono', 'Shadow desenvaina frente al trono de Azrak. Primero habrá que vencer al centinela. Detrás de él espera quien encadenó a los cuatro mundos.'],
   ].map(([title, background, text, puzzle], index) => ({
     capitulo: `Misión ${index + 1}`, titulo: title, texto: text,
     fondos: [`reino-azrak/${[
       'entrada', 'puente-runas', 'torre-centinela', 'forja', 'sala-juramentos',
-      'balcon-orden', 'camara-eclipse', 'sendero-guardianes', 'ultimo-umbral', 'trono',
+      'balcon-orden', 'camara-eclipse', 'sendero-guardianes-apagado', 'ultimo-umbral', 'trono',
     ][index]}-v1.png`], puzzle: puzzle || '',
   }));
   const words = [
@@ -32,8 +32,9 @@
     ['ESPERANZA', 'Confianza en que el futuro puede ser mejor.'], ['LIBERTAD', 'Poder elegir el propio camino.'],
   ].map(([palabra, pista]) => ({ palabra, pista }));
   const symbols = ['🌿', '☀️', '☁️', '❄️'];
-  function mountScene(container, mission) {
+  function mountScene(container, mission, completed = 0) {
     container.querySelectorAll('.vida-azrak').forEach(element => element.remove());
+    container.dataset.misionAzrak = mission < 0 ? '' : String(mission + 1);
     if (mission < 0) return;
     const layer = document.createElement('div');
     layer.className = 'vida-azrak';
@@ -42,26 +43,82 @@
       img.src = src; img.className = className; img.alt = alt;
       parent.append(img); return img;
     };
-    if ([6, 7, 8].includes(mission)) {
+    if (mission === 7) mountPortals(layer, completed);
+    if ([6, 7].includes(mission)) {
       const lume = document.createElement('figure');
       lume.className = `lume-azrak ${mission === 6 ? 'lume-cautiva' : 'lume-libre'}`;
       addImage(lume, sprites + 'guardian-alba-base.png', 'lume-figura', 'Lume, guardiana del Cristal de la Unión');
+      if (mission === 7) addImage(lume, 'assets/images/elements/cristal-celeste-v1.png', 'cristal-union-lume', 'Quinto cristal');
       const label = document.createElement('figcaption');
       label.textContent = mission === 6 ? 'Lume · Atrapada en el eclipse' : 'Lume · Guardiana de la Unión';
       lume.append(label); layer.append(lume);
     }
-    const creatures = { 0: ['vuelo'], 1: ['vuelo', 'vuelo'], 2: ['vuelo'], 3: ['pasos'], 4: ['pasos'], 5: ['vuelo', 'pasos'], 8: ['pasos'] }[mission] || [];
+    const creatures = { 0: ['vuelo'], 1: ['vuelo', 'vuelo'], 2: ['vuelo'], 3: ['acecho'], 4: ['acecho'], 5: ['vuelo'], 8: ['acecho'] }[mission] || [];
     creatures.forEach((type, index) => {
       const creature = document.createElement('div');
       creature.className = `demonio-azrak demonio-${type}`;
       creature.style.setProperty('--demora', `${index ? -9 : -3}s`);
       creature.style.setProperty('--altura', `${index ? 28 : 12}%`);
       creature.setAttribute('aria-hidden', 'true');
-      const files = type === 'vuelo' ? ['demonio-volador-v1.png'] : ['demonio-paso-1-v1.png', 'demonio-paso-2-v1.png'];
+      const files = type === 'vuelo' ? ['demonio-volador-v1.png', 'demonio-volador-alas-bajas-v1.png'] : ['cancerbero-acecho-v1.png'];
       files.forEach((file, frame) => addImage(creature, 'assets/images/ambiente/reino-azrak/' + file, `demonio-cuadro cuadro-${frame}`));
       layer.append(creature);
     });
     container.append(layer);
+  }
+  const portalNames = ['Bosque', 'Desierto', 'Cielo', 'Invierno'];
+  const portalShapes = [[285, 414, 103, 142], [595, 447, 74, 110], [1077, 459, 72, 99], [1398, 445, 74, 113]];
+  function mountPortals(layer, completed) {
+    const ns = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 1672 941');
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+    svg.classList.add('portales-lume');
+    svg.setAttribute('aria-hidden', 'true');
+    const defs = document.createElementNS(ns, 'defs'); svg.append(defs);
+    portalShapes.forEach(([cx, cy, rx, ry], i) => {
+      const clip = document.createElementNS(ns, 'clipPath'); clip.id = `portal-lume-${i}`;
+      const ellipse = document.createElementNS(ns, 'ellipse');
+      for (const [key, value] of Object.entries({ cx, cy, rx, ry })) ellipse.setAttribute(key, value);
+      clip.append(ellipse); defs.append(clip);
+      const light = document.createElementNS(ns, 'image');
+      light.setAttribute('href', base + 'sendero-guardianes-v1.png');
+      light.setAttribute('width', '1672'); light.setAttribute('height', '941');
+      light.setAttribute('clip-path', `url(#portal-lume-${i})`);
+      light.classList.add('portal-lume');
+      light.classList.toggle('encendido', i < completed);
+      svg.append(light);
+    });
+    const beam = document.createElementNS(ns, 'path');
+    beam.classList.add('rayo-lume'); svg.append(beam);
+    layer.append(svg);
+    const status = document.createElement('p'); status.className = 'estado-portales-lume';
+    status.setAttribute('aria-live', 'polite');
+    status.textContent = `Portales encendidos: ${Math.min(completed, 4)}/4`;
+    layer.append(status);
+  }
+  async function ignitePortal(container, index, reduced = false) {
+    const layer = container.querySelector('.vida-azrak');
+    const portals = layer?.querySelectorAll('.portal-lume');
+    if (!portals?.[index]) return;
+    const lume = layer.querySelector('.lume-azrak');
+    lume?.classList.add('invocando');
+    const beam = layer.querySelector('.rayo-lume');
+    const [x, y] = portalShapes[index];
+    const svg = layer.querySelector('svg');
+    const crystal = layer.querySelector('.cristal-union-lume').getBoundingClientRect();
+    const point = svg.createSVGPoint();
+    point.x = crystal.x + crystal.width / 2; point.y = crystal.y + crystal.height / 2;
+    const start = point.matrixTransform(svg.getScreenCTM().inverse());
+    beam.setAttribute('d', `M ${start.x} ${start.y} Q 880 580 ${x} ${y}`);
+    beam.classList.add('activo');
+    portals[index].classList.add('encendido');
+    layer.querySelector('.estado-portales-lume').textContent = index === 3
+      ? '«Seguí, Aren. Yo sostendré los portales hasta que lleguen los guardianes»'
+      : `Lume llama al ${portalNames[index]} · ${index + 1}/4`;
+    await new Promise(resolve => setTimeout(resolve, reduced ? 900 : 2300));
+    if (!layer.isConnected) return;
+    beam.classList.remove('activo'); lume?.classList.remove('invocando');
   }
   const paths = [[0, 2, 1, 3], [3, 0, 2, 1, 0], [1, 3, 2, 0, 3, 1]];
   function toggleLight(board, index) {
@@ -194,15 +251,18 @@
   ];
   const finale = [
     { key: 'resiste', text: 'El duelo está ganado, pero Azrak absorbe la energía del trono. Los guardianes atraviesan el portal: esta vez, Aren no luchará solo.', actors: [aren(), actor('guardiana', '../coleccion/guardiana-bosque-base.png', 31, 74, 30), actor('zafir', 'mago-base.png', 43, 73, 29), azrak()], effect: 'portal' },
-    { key: 'hielo', text: 'Nivor congela los pies de Azrak y sujeta su brazo al suelo. «No volverás a encadenar a mi familia».', actors: [actor('nivor', 'dragon-hielo-ataque-v2.png', 26, 73, 49), azrak('sacudida', 'azrak-impacto.png')], effect: 'hielo' },
+    { key: 'emboscada-cancerbero', text: 'Un rugido sacude el trono. El cancerbero de Azrak se alza sobre los guardianes, enorme como una torre. Sus tres cabezas lanzan llamaradas y Aren apenas alcanza a levantar su espada.', actors: [aren(), actor('guardiana', '../coleccion/guardiana-bosque-base.png', 31, 74, 30)], duration: 8500 },
+    { key: 'portal-nivor', text: 'Antes de que el fuego los alcance, un rayo de hielo surge del portal que Lume mantiene abierto. Dos garras gigantes se aferran a la piedra. ¡Nivor ha respondido a la llamada!', actors: [actor('nivor', 'dragon-hielo-ataque-v2.png', 30, 75, 60)], duration: 8500 },
+    { key: 'titanes', text: 'Nivor emerge del portal frente al cancerbero. Fuego y hielo chocan por encima de los guardianes. El dragón avanza entre el vapor y levanta una muralla de hielo que contiene a la bestia.', actors: [actor('nivor', 'dragon-hielo-ataque-v2.png', 30, 75, 60)], duration: 9500 },
+    { key: 'hielo', text: 'Con el cancerbero contenido tras el hielo, Nivor congela los pies de Azrak y sujeta su brazo al suelo. «No volverás a encadenar a mi familia».', actors: [actor('nivor', 'dragon-hielo-ataque-v2.png', 26, 73, 49), azrak('sacudida', 'azrak-impacto.png')], effect: 'hielo' },
     { key: 'rescate', text: 'Azrak rompe parte del hielo y lanza un ataque hacia Aren. Nimbus se arroja entre ambos y lo recoge al vuelo. Por un instante, el tiempo parece detenerse.', actors: [azrak('', 'azrak-ataque.png')], effect: 'rescate', duration: 8500 },
     { key: 'madre', text: 'Otra descarga corta el cielo. Aeralis se interpone: su aliento luminoso choca con el ataque de Azrak y protege a su hijo y a Aren.', actors: [actor('aeralis', '../aventura/aeralis-liberada-v1.png', 27, 57, 58), azrak('', 'azrak-ataque.png')], effect: 'choque' },
     { key: 'guardianes', text: 'La Guardiana enlaza sus raíces con la magia de Zafir. El Guardián de la Luna corta las sombras y Lume, la guardiana que Aren liberó del eclipse, abre una brecha de luz en la defensa de Azrak.', actors: [actor('guardiana', '../coleccion/guardiana-bosque-ataque-raices.png', 13, 76, 30), actor('zafir', 'mago-ataque.png', 31, 73, 30), actor('luna', 'hombre-lobo-zarpazo.png', 47, 76, 34), actor('alume', 'guardian-alba-final-carga-sin-rayo.png', 55, 55, 30), azrak('sacudida')], effect: 'guardianes' },
     { key: 'contraataque', text: 'Azrak se sobrepone. Quiebra las raíces y extiende una ola oscura sobre la arena. Los guardianes retroceden; Aren apenas logra mantenerse en pie.', actors: [aren(17, 76, 'sacudida'), actor('guardiana', 'guardiana-susto-impacto.png', 34, 77, 28), azrak('', 'azrak-invocacion-portal.png')], effect: 'onda' },
     { key: 'regreso', text: 'Una sombra intercepta el golpe. Shadow reaparece: usó la grieta para escapar. Azrak extiende la mano, pero su antiguo centinela se vuelve hacia Aren.', actors: [aren(), shadow(47, 'aparecer'), azrak()], effect: 'bruma' },
     { key: 'eleccion', text: '«Mi juramento ya no te pertenece. Yo elijo a quién proteger». Shadow abre un paso dentro de la tormenta e invita a los guardianes a reunir su poder.', actors: [aren(), shadow(43, '', 't-shadow-ataque.png'), azrak()], effect: 'portal' },
-    { key: 'union', text: 'Hielo, cielo, bosque, sol, luna y sombra se unen. Aren alza los cuatro cristales. Juntos alcanzan el corazón del Quinto Sello y rompen el poder de Azrak.', actors: [aren(12), actor('guardiana', '../coleccion/guardiana-bosque-ataque-raices.png', 26, 76, 27), actor('zafir', 'mago-ataque.png', 38, 73, 26), shadow(51, '', 't-shadow-ataque.png'), azrak('derrota', 'azrak-impacto.png')], effect: 'union', duration: 8500 },
-    { key: 'amanecer', text: 'La tormenta se apaga. Azrak queda encerrado en el sello que pretendía dominar. Del Quinto Sello emerge el Cristal de la Unión. Los cinco cristales restauran los caminos entre mundos, y Shadow permanece junto a quienes eligió proteger.', actors: team(), effect: 'amanecer' },
+    { key: 'union', text: 'Hielo, cielo, bosque, sol, luna y sombra se unen. Aren alza los cuatro cristales y Lume suma la luz del quinto desde el portal. Juntos alcanzan el corazón del Quinto Sello y rompen el poder de Azrak.', actors: [aren(12), actor('guardiana', '../coleccion/guardiana-bosque-ataque-raices.png', 26, 76, 27), actor('zafir', 'mago-ataque.png', 38, 73, 26), shadow(51, '', 't-shadow-ataque.png'), azrak('derrota', 'azrak-impacto.png')], effect: 'union', duration: 8500 },
+    { key: 'amanecer', text: 'La tormenta se apaga. Azrak queda encerrado en el sello que pretendía dominar. Lume llega con el Cristal de la Unión, que recupera toda su luz al romperse el Quinto Sello, y se lo entrega a Aren. Los cinco cristales restauran los caminos entre mundos, y Shadow permanece junto a quienes eligió proteger.', actors: team(), effect: 'amanecer' },
     { key: 'epilogo', text: 'Aren guarda su mapa. No fue una sola fuerza la que salvó los mundos: fue aprender a escucharse y elegir ayudarse. FIN · Gracias por vivir esta aventura.', actors: team(), effect: 'amanecer', duration: 9000 },
   ];
 
@@ -279,5 +339,5 @@
       if (focusBefore?.isConnected) focusBefore.focus({ preventScroll: true });
     }
   }
-  return { missions, words, paths, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, mountScene, playCinematic, betrayal, finale, base };
+  return { missions, words, paths, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, mountScene, ignitePortal, playCinematic, betrayal, finale, base };
 });

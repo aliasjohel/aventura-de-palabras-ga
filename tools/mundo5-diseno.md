@@ -1,6 +1,6 @@
 # Mundo 5 · Reino de Azrak
 
-Diez misiones. Las misiones 2, 5 y 7 terminan con un puzzle, después de dos desafíos de palabras. La misión 10 encadena los duelos contra Shadow y Azrak. La victoria contra Shadow guarda un punto de continuidad: perder o abandonar contra Azrak no obliga a repetir el primer duelo.
+Diez misiones. La misión 8 tiene cuatro palabras, una por portal; las demás conservan tres desafíos. Las misiones 2, 5 y 7 terminan con un puzzle, después de dos desafíos de palabras. La misión 10 encadena los duelos contra Shadow y Azrak. La victoria contra Shadow guarda un punto de continuidad: perder o abandonar contra Azrak no obliga a repetir el primer duelo.
 
 El estado persistido `estadoFinalAzrak` distingue `shadow`, `traicion`, `azrak`, `final` y `completo`. Recargar durante una cinemática vuelve a reproducirla; saltarla continúa la historia. El quinto cristal se concede después del desenlace. El modo de pruebas no modifica la partida guardada.
 
@@ -12,7 +12,7 @@ El estado persistido `estadoFinalAzrak` distingue `shadow`, `traicion`, `azrak`,
 
 ## Cinemáticas
 
-La traición muestra a Shadow absorbido por una grieta, sin confirmar su destino. El final muestra hielo de Nivor, rescate de Aren por Nimbus con movimiento lento, intervención de Aeralis, ataques de los guardianes, contraataque de Azrak, regreso y elección de Shadow, ataque conjunto y liberación del Cristal de la Unión. Se usan sprites existentes y efectos animados por CSS. Pausar detiene escenas y animaciones; saltar permite continuar. Movimiento reducido conserva el tiempo de lectura.
+La traición muestra a Shadow absorbido por una grieta, sin confirmar su destino. El final muestra hielo de Nivor, rescate de Aren por Nimbus con movimiento lento, intervención de Aeralis, ataques de los guardianes, contraataque de Azrak, regreso y elección de Shadow, ataque conjunto y liberación del Cristal de la Unión. Se muestran ilustraciones completas con sprites y efectos CSS como respaldo si una imagen falla. Antes de la batalla de Nivor contra Azrak, el cancerbero embosca a Aren y los guardianes; Nivor emerge del portal para detener el fuego y enfrenta a la bestia en un choque de gigantes. Pausar detiene escenas y animaciones; saltar permite continuar. Movimiento reducido conserva el tiempo de lectura.
 
 En Modo Pruebas: las misiones 8 y 9 ofrecen «Probar escena» para la traición y el desenlace, respectivamente. En los duelos de aventura aparece «Probar victoria» para revisar las transiciones sin jugar toda la batalla. Las misiones 2, 5 y 7 ofrecen «Probar puzzle».
 
@@ -34,6 +34,8 @@ Generado con la herramienta integrada de generación de imágenes, sin CLI. Los 
 
 ## Personajes y ambiente en las misiones
 
-Lume aparece cautiva en la misión 7. Al resolver el eclipse desaparece su prisión; en las misiones 8 y 9 se muestra libre. Aren usa los cuatro cuadros de caminata compartidos con los mundos anteriores durante la transición real entre misiones.
+Lume aparece cautiva en la misión 7. Al resolver el eclipse desaparece su prisión; en la misión 8 se muestra libre con el quinto cristal debilitado. Cada palabra ilumina un portal. Aren sigue solo a la misión 9 mientras Lume permanece convocando a los guardianes. Los portales completados se restauran desde el progreso de palabras guardado. Aren usa los cuatro cuadros de caminata compartidos con los mundos anteriores durante la transición real entre misiones.
 
-Demonios voladores recorren las misiones 1, 2, 3 y 6; demonios con dos cuadros de pasos aparecen en las misiones 4, 5, 6 y 9. Las criaturas pasan detrás de Aren, no interceptan los controles y respetan movimiento reducido. Los PNG del directorio `assets/images/ambiente/reino-azrak/` tienen transparencia real; sus prompts figuran en el manifiesto y el procesamiento autorizado en `prepare-azrak-sprites.py`.
+Demonios voladores recorren las misiones 1, 2, 3 y 6; el cancerbero de tres cabezas acecha quieto en las misiones 4, 5 y 9, con respiración suave. Los voladores alternan alas altas y bajas. Ya no hay criaturas caminando junto a Aren. Las criaturas pasan detrás de Aren, no interceptan los controles y respetan movimiento reducido. Los PNG del directorio `assets/images/ambiente/reino-azrak/` tienen transparencia real; sus prompts figuran en el manifiesto y el procesamiento autorizado en `prepare-azrak-sprites.py`.
+
+Aren tiene expresiones propias en las diez misiones del reino. En el balcón (misión 6) se ubica sobre el piso libre a la derecha de la mesa. El quinto cristal permanece con Lume hasta que recupera su poder al final; recién entonces Aren lo recibe.
