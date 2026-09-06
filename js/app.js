@@ -1017,6 +1017,10 @@ const historiaHielo = [
   { capitulo: "Misión 10", titulo: "Cero Absoluto", texto: "Nivor contempla la prueba, pero aceptar la verdad significaría reconocer todo el daño que causó. Consumido por la culpa y el orgullo, desata Cero Absoluto y desafía a Aren por última vez." },
 ];
 
+// El quinto mundo comparte los motores de palabras, puzzles y combates.
+const historiaAzrak = AzrakWorld.missions;
+escenasPorEscenario.push(historiaAzrak.map(({ fondos, texto }) => ({ fondos, texto })));
+aventura.push({ nombre: "🔥 Reino de Azrak", palabras: AzrakWorld.words });
 const estadosExploradorPorEscenario = {
   0: [
     "feliz", // El Bosque Encantado
@@ -1117,6 +1121,9 @@ let cristalesObtenidos = 0;
 let mundoDosCompletado = false;
 let mundoTresCompletado = false;
 let mundoCuatroCompletado = false;
+let estadoFinalAzrak = "shadow";
+let finalAzrakEnCurso = false;
+let cerrarPuzzleAzrak = null;
 let primerDueloNivorCompletado = false;
 let desafioActual = 1;
 let desafiosCompletados = 0;
@@ -1976,7 +1983,7 @@ function continuarAventura() {
   btnSiguiente.classList.add("oculto");
   limpiarCinematicaSantuario();
 
-  if (mundoCuatroCompletado) {
+  if (escenarioActual === 4 && estadoFinalAzrak === "completo") {
     detenerSonidos();
     mostrarPantalla(pantallaMenu);
     actualizarMenuPrincipal();
@@ -2476,6 +2483,19 @@ function avanzarTutorialRealVersus() {
   if (btnSiguienteTutorialVersus.disabled || tutorialCombateVersus.ocupado) return;
   if (pasoActualTutorialVersus === 5 && !tutorialCombateVersus.completado) {
     lanzarHabilidadTutorialVersus(true);
+    return;
+  }
+
+  if (mundoCuatroCompletado && escenarioActual === 3) {
+    escenarioActual = 4;
+    misionActual = 0;
+    desafiosCompletados = 0;
+    desafioActual = 1;
+    palabrasUsadasEnMision = [];
+    historiaMisionPendiente = true;
+    maximoEscenarioDesbloqueado = Math.max(maximoEscenarioDesbloqueado, 4);
+    guardarProgreso();
+    void iniciarMisionAventura({ presentarMision: true }).then(() => mostrarHistoriaMision({ misionYaCargada: true }));
     return;
   }
   if (!tutorialCombateVersus.completado) return;
@@ -3192,6 +3212,9 @@ btnProbarPruebaBosque.addEventListener("click", () => {
 
 btnProbarEscenaPersonaje.addEventListener("click", () => {
   if (!modoPruebasActivo) return;
+  if (escenarioActual === 4 && [7, 8].includes(misionActual)) {
+    void AzrakWorld.playCinematic(misionActual === 7 ? "traicion" : "final", { reduced: prefiereReducirMovimiento.matches });
+  }
   if (escenarioActual === 0 && misionActual === 5) void ejecutarEncuentroHombreLoboMision();
   if (escenarioActual === 0 && misionActual === 9) void presentarDesbloqueoGuardianaBosque();
   if (escenarioActual === 2 && [8, 9].includes(misionActual)) void reproducirCinematicaFinalCumbres();
@@ -3206,6 +3229,10 @@ btnSalirMuralSantuario.addEventListener("click", () => {
 });
 
 btnRepetirPruebaBosque.addEventListener("click", () => {
+  if (pruebaEspecialBosqueActiva?.endsWith("-azrak")) {
+    iniciarPuzzleAzrak(pruebaEspecialBosqueActiva);
+    return;
+  }
   if (pruebaEspecialBosqueActiva === "ramas") {
     iniciarPuzzleRamasDeslizante();
   } else if (pruebaEspecialBosqueActiva === "lobos") {
@@ -5184,6 +5211,18 @@ let personajeJugadorVersus = "explorador";
 let personajeRivalVersus = "mago";
 
 const configuracionesDuelosAventura = Object.freeze({
+  shadow_final: {
+    escenario: 4, mision: 9, rival: "t_shadow",
+    etiqueta: "ÚLTIMO CENTINELA · SHADOW",
+    arena: "assets/images/fondos/reino-azrak/trono-v1.png",
+    altArena: "Umbral del trono de Azrak", intervaloRival: 2300, probabilidadRival: 0.69,
+  },
+  azrak_final: {
+    escenario: 4, mision: 9, rival: "azrak",
+    etiqueta: "BATALLA FINAL · AZRAK",
+    arena: "assets/images/fondos/reino-azrak/trono-v1.png",
+    altArena: "Trono del Quinto Sello", intervaloRival: 2100, probabilidadRival: 0.73,
+  },
   hombre_lobo: {
     escenario: 0,
     mision: 5,
@@ -5305,6 +5344,20 @@ function iniciarDueloAventura(tipo) {
     personajesVersus[configuracion.rival].nombre.toUpperCase();
   mensajeRondaVersus.textContent = configuracion.etiqueta;
   pantallaVersus.classList.add("duelo-aventura");
+  pantallaVersus.querySelector(".probar-victoria-aventura")?.remove();
+  if (modoPruebasActivo) {
+    const probarVictoria = document.createElement("button");
+    probarVictoria.type = "button";
+    probarVictoria.className = "probar-victoria-aventura";
+    probarVictoria.textContent = "🧪 Probar victoria";
+    probarVictoria.addEventListener("click", () => {
+      if (!modoPruebasActivo || !dueloAventuraActivo || demoVersus.partidaFinalizada) return;
+      demoVersus.vidasRival = 0;
+      actualizarVidasVersus();
+      finalizarPartidaVersus("jugador", "Victoria de prueba");
+    });
+    pantallaVersus.append(probarVictoria);
+  }
   btnSalirVersus.textContent = "← Abandonar prueba";
   btnSalirVersusVertical.textContent = "Abandonar prueba";
   mostrarPantalla(pantallaVersus);
@@ -5312,6 +5365,7 @@ function iniciarDueloAventura(tipo) {
 }
 
 function limpiarInterfazDueloAventura() {
+  pantallaVersus.querySelector(".probar-victoria-aventura")?.remove();
   pantallaVersus.classList.remove("duelo-aventura");
   btnSalirVersus.textContent = "← Volver";
   btnSalirVersusVertical.textContent = "Volver al menú";
@@ -5346,6 +5400,13 @@ async function completarDueloAventura() {
   otorgarMonedas(30, `aventura:${duelo.tipo}:duelo`);
   experiencia += 60;
   actualizarJugador();
+
+  if (duelo.tipo === "shadow_final" || duelo.tipo === "azrak_final") {
+    estadoFinalAzrak = duelo.tipo === "shadow_final" ? "traicion" : "final";
+    guardarProgreso();
+    await continuarFinalMundoCinco();
+    return;
+  }
 
   if (duelo.tipo === "hombre_lobo") {
     hombreLoboDescubierto = true;
@@ -5434,7 +5495,7 @@ async function completarDueloAventura() {
     await reproducirCinematicaFinalHielo();
     bloquearTeclado();
     btnPista.disabled = true;
-    btnSiguiente.textContent = "🔥 Mundo 5: Reino de Azrak · Próximamente";
+    btnSiguiente.textContent = "🔥 Entrar al Reino de Azrak";
     btnSiguiente.classList.remove("oculto");
     mensajePersonaje.classList.remove("oculto");
     mensajePersonaje.textContent =
@@ -5448,6 +5509,45 @@ async function completarDueloAventura() {
   portalAbierto = true;
   guardarProgreso();
   await completarAperturaPortal();
+}
+
+async function continuarFinalMundoCinco() {
+  if (finalAzrakEnCurso) return;
+  finalAzrakEnCurso = true;
+  try {
+    detenerSonidos();
+    const options = { reduced: prefiereReducirMovimiento.matches };
+    if (estadoFinalAzrak === "traicion") {
+      await AzrakWorld.playCinematic("traicion", options);
+      estadoFinalAzrak = "azrak";
+      guardarProgreso();
+      iniciarDueloAventura("azrak_final");
+    } else if (estadoFinalAzrak === "final") {
+      await AzrakWorld.playCinematic("final", options);
+      estadoFinalAzrak = "completo";
+      cristalesObtenidos = 5;
+      actualizarJugador();
+      desafiosCompletados = desafiosPorMision;
+      guardarProgreso();
+      mostrarFinalAventuraAzrak();
+    } else if (estadoFinalAzrak === "completo") {
+      mostrarFinalAventuraAzrak();
+    }
+  } finally {
+    finalAzrakEnCurso = false;
+  }
+}
+
+function mostrarFinalAventuraAzrak() {
+  mostrarPantalla(pantallaJuego);
+  bloquearTeclado();
+  palabraOculta.classList.add("oculto");
+  teclado.classList.add("oculto");
+  btnPista.classList.add("oculto");
+  mensajePersonaje.classList.remove("oculto");
+  mensajePersonaje.textContent = "🏆 ¡Completaste Aventura de Palabras! Los cuatro mundos vuelven a estar unidos. Shadow eligió su propio camino junto a Aren y los guardianes.";
+  btnSiguiente.textContent = "🏠 Volver al menú";
+  btnSiguiente.classList.remove("oculto");
 }
 
 async function reproducirRetiradaNivorGlacial() {
@@ -7611,6 +7711,11 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
   }
   if (dueloAventuraActivo) {
     await mostrarAnuncioFinVersus(palabraPerdida);
+    if (ganador === "jugador" && ["shadow_final", "azrak_final"].includes(dueloAventuraActivo?.tipo)) {
+      dueloAventuraActivo.resultado = ganador;
+      await completarDueloAventura();
+      return;
+    }
     mostrarResultadoPartidaVersus(ganador, detalle);
     return;
   }
@@ -8494,12 +8599,14 @@ function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
   const esHistoriaDesierto = escenarioActual === 1;
   const esHistoriaCumbres = escenarioActual === 2;
   const esHistoriaHielo = escenarioActual === 3;
+  const esHistoriaAzrak = escenarioActual === 4;
+  modalHistoria.classList.toggle("historia-azrak", esHistoriaAzrak);
 
   presentacionMisionYaCargada = misionYaCargada;
   modalHistoria.classList.toggle("historia-desierto", esHistoriaDesierto);
   modalHistoria.classList.toggle("historia-cumbres", esHistoriaCumbres);
   modalHistoria.classList.toggle("historia-hielo", esHistoriaHielo);
-  imagenSoporteMision.src = esHistoriaDesierto
+  imagenSoporteMision.src = esHistoriaDesierto || esHistoriaAzrak
     ? "assets/images/ui/presentacion-mision-piedra-desierto-v1.png"
     : esHistoriaHielo
       ? "assets/images/ui/presentacion-mision-hielo-v1.png"
@@ -8564,7 +8671,8 @@ function actualizarControlesDev() {
   btnProbarMuralSantuario.disabled = escenarioActual !== 0 || misionActual !== 8;
   btnProbarEscenaPersonaje.disabled = !(
     (escenarioActual === 0 && [5, 9].includes(misionActual)) ||
-    (escenarioActual === 2 && [8, 9].includes(misionActual))
+    (escenarioActual === 2 && [8, 9].includes(misionActual)) ||
+    (escenarioActual === 4 && [7, 8].includes(misionActual))
   );
 }
 
@@ -8633,7 +8741,7 @@ function actualizarSelectorMisionesPruebas() {
           ? historiaDesierto[indice]
           : mundo === 2
             ? historiaCumbres[indice]
-            : historiaHielo[indice];
+            : mundo === 3 ? historiaHielo[indice] : historiaAzrak[indice];
     opcion.value = `${indice}`;
     opcion.textContent = historia
       ? `Misión ${indice + 1} · ${historia.titulo}`
@@ -8657,6 +8765,7 @@ function obtenerCantidadMisiones(escenario) {
   if (escenario === 1) return historiaDesierto.length;
   if (escenario === 2) return historiaCumbres.length;
   if (escenario === 3) return historiaHielo.length;
+  if (escenario === 4) return historiaAzrak.length;
   return aventura[escenario]?.palabras.length || 1;
 }
 
@@ -8689,8 +8798,10 @@ function iniciarMisionSeleccionadaPruebas() {
   portalAbierto = false;
   mundoDosCompletado = escenarioActual >= 2;
   mundoTresCompletado = escenarioActual >= 3;
-  mundoCuatroCompletado = false;
-  primerDueloNivorCompletado = escenarioActual === 3 && misionActual > 5;
+  mundoCuatroCompletado = escenarioActual >= 4;
+  estadoFinalAzrak = "shadow";
+  primerDueloNivorCompletado = escenarioActual >= 4 || (escenarioActual === 3 && misionActual > 5);
+  if (escenarioActual === 4) cristalesObtenidos = 4;
 
   if (escenarioActual === 0 && misionActual >= 9) {
     cristalesObtenidos = Math.max(cristalesObtenidos, 1);
@@ -8827,6 +8938,7 @@ function reiniciarEstadoAventura() {
   mundoDosCompletado = false;
   mundoTresCompletado = false;
   mundoCuatroCompletado = false;
+  estadoFinalAzrak = "shadow";
   primerDueloNivorCompletado = false;
   hombreLoboDescubierto = false;
   dueloAventuraActivo = null;
@@ -8859,6 +8971,7 @@ function reiniciarEstadoAventura() {
 }
 
 function obtenerHistoriaMision() {
+  if (escenarioActual === 4) return historiaAzrak[misionActual] || historiaAzrak[0];
   if (escenarioActual === 0) {
     return (
       historiaBosque[misionActual] || {
@@ -10290,8 +10403,10 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   const dueloAventura = obtenerDueloAventuraPendiente();
   const finalMundoCuatroCompletado =
     escenarioActual === 3 && misionActual === 9 && mundoCuatroCompletado;
+  const cierreAzrak = escenarioActual === 4 && misionActual === 9
+    && ["traicion", "final", "completo"].includes(estadoFinalAzrak);
   const sinPalabraNormal = Boolean(
-    pruebaEspecial || dueloAventura || finalMundoCuatroCompletado,
+    pruebaEspecial || dueloAventura || finalMundoCuatroCompletado || cierreAzrak,
   );
   const palabraSeleccionada = sinPalabraNormal ? null : obtenerPalabraAleatoria();
 
@@ -10348,10 +10463,15 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   mostrarPantalla(pantallaJuego);
   programarPrecargaRecursosSecundarios();
 
+  if (cierreAzrak) {
+    await continuarFinalMundoCinco();
+    return;
+  }
+
   if (finalMundoCuatroCompletado) {
     bloquearTeclado();
     btnPista.disabled = true;
-    btnSiguiente.textContent = "🔥 Mundo 5: Reino de Azrak · Próximamente";
+    btnSiguiente.textContent = "🔥 Entrar al Reino de Azrak";
     btnSiguiente.classList.remove("oculto");
     mensajePersonaje.textContent =
       "🔥 Los cuatro cristales mantienen abierta la grieta hacia el reino final de Azrak.";
@@ -10359,7 +10479,9 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   }
 
   if (pruebaEspecial) {
-    mensajePersonaje.textContent = escenarioActual === 3
+    mensajePersonaje.textContent = escenarioActual === 4
+      ? "Los mecanismos de Azrak protegen el camino al trono."
+      : escenarioActual === 3
       ? "El hielo antiguo preparó una prueba para revelar el camino hacia Nivor."
       : escenarioActual === 2
         ? "Las Cumbres prepararon una prueba especial para dominar el viento."
@@ -10371,7 +10493,11 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   }
 
   if (dueloAventura) {
-    mensajePersonaje.textContent = dueloAventura === "guardiana"
+    mensajePersonaje.textContent = dueloAventura === "shadow_final"
+      ? "Shadow protege el último umbral. Tu próxima batalla será contra Azrak."
+      : dueloAventura === "azrak_final"
+        ? "Azrak te espera. Los guardianes cuentan con vos."
+      : dueloAventura === "guardiana"
       ? "La Guardiana del Bosque espera frente al portal apagado."
       : dueloAventura === "mago_desierto"
         ? "Zafir te espera para la prueba final del Cristal Dorado."
@@ -10464,6 +10590,11 @@ function actualizarJugador() {
 }
 
 function actualizarPanelCristales() {
+  const unionObtenida = estadoFinalAzrak === "completo";
+  document.getElementById("ranuraCristalAzrak").classList.toggle("bloqueada", !unionObtenida);
+  document.getElementById("ranuraCristalAzrak").classList.toggle("obtenida", unionObtenida);
+  document.getElementById("ranuraCristalAzrak").setAttribute("aria-label", unionObtenida ? "Cristal de la Unión obtenido" : "Cristal de la Unión bloqueado");
+  document.getElementById("cristalPanelAzrak").classList.toggle("oculto", !unionObtenida);
   const cristalBosqueObtenido = cristalesObtenidos > 0;
   const cristalDesiertoObtenido = cristalesObtenidos > 1;
   const cristalCumbresObtenido = cristalesObtenidos > 2;
@@ -10522,6 +10653,7 @@ function guardarProgreso() {
     mundoDosCompletado,
     mundoTresCompletado,
     mundoCuatroCompletado,
+    estadoFinalAzrak,
     primerDueloNivorCompletado,
     hombreLoboDescubierto,
     maximoEscenarioDesbloqueado,
@@ -10579,6 +10711,8 @@ function cargarProgreso() {
     progreso.mundoTresCompletado === true || cristalesObtenidos > 2;
   mundoCuatroCompletado =
     progreso.mundoCuatroCompletado === true || cristalesObtenidos > 3;
+  estadoFinalAzrak = ["shadow", "traicion", "azrak", "final", "completo"].includes(progreso.estadoFinalAzrak)
+    ? progreso.estadoFinalAzrak : "shadow";
   primerDueloNivorCompletado =
     progreso.primerDueloNivorCompletado === true
     || mundoCuatroCompletado
@@ -10739,7 +10873,10 @@ function actualizarEscenaPorMision() {
     delete contenedorEscenario.dataset.misionHielo;
   }
   fondoEscenario.src = `assets/images/fondos/${nombreFondo}`;
-  fondoEscenario.alt = escenarioActual === 3
+  contenedorEscenario.classList.toggle("escenario-azrak", escenarioActual === 4);
+  fondoEscenario.alt = escenarioActual === 4
+    ? `Reino de Azrak · ${historiaAzrak[misionActual].titulo}`
+    : escenarioActual === 3
     ? "Reino del Invierno Eterno"
     : escenarioActual === 2
       ? "Cumbres Celestes"
@@ -12093,6 +12230,7 @@ async function reanudarCinematicaFinalPortal() {
 }
 
 function obtenerTipoPruebaEspecial(escenario, mision) {
+  if (escenario === 4) return historiaAzrak[mision]?.puzzle || "";
   if (escenario === 0 && mision === 2) return "ramas";
   if (escenario === 0 && mision === 5) return "lobos";
   if (escenario === 1 && mision === 2) return "vientos";
@@ -12115,6 +12253,9 @@ function obtenerPruebaEspecialBosquePendiente() {
 }
 
 function obtenerDueloAventuraPendiente() {
+  if (escenarioActual === 4 && misionActual === 9) {
+    return estadoFinalAzrak === "shadow" ? "shadow_final" : estadoFinalAzrak === "azrak" ? "azrak_final" : "";
+  }
   if (escenarioActual === 0 && misionActual === 9 && !portalAbierto) {
     return "guardiana";
   }
@@ -12133,6 +12274,15 @@ function obtenerDueloAventuraPendiente() {
   return "";
 }
 
+function iniciarPuzzleAzrak(tipo) {
+  cerrarPuzzleAzrak?.();
+  etiquetaPruebaBosque.textContent = "REINO DE AZRAK · PUZZLE";
+  tituloPruebaBosque.textContent = { "runas-azrak": "El puente de las runas", "sellos-azrak": "Los cuatro juramentos", "eclipse-azrak": "Luz entre las sombras" }[tipo];
+  instruccionPruebaBosque.textContent = "Resolvé el mecanismo para continuar. Podés reiniciarlo sin perder corazones.";
+  btnRepetirPruebaBosque.textContent = "↻ Reiniciar puzzle";
+  cerrarPuzzleAzrak = AzrakWorld.mountPuzzle(puzzleCumbres, tipo, () => void completarPruebaEspecialBosque(tipo));
+}
+
 function abrirPruebaEspecialBosque(tipo) {
   if (!tipo || pruebaEspecialBosqueActiva) return;
 
@@ -12149,6 +12299,8 @@ function abrirPruebaEspecialBosque(tipo) {
     "sellos-aeralis",
   ].includes(tipo);
   const esPruebaHielo = ["laberinto-hielo", "corazon-termico"].includes(tipo);
+  const esPruebaAzrak = tipo.endsWith("-azrak");
+  modalPruebaBosque.classList.toggle("prueba-azrak", esPruebaAzrak);
   modalPruebaBosque.classList.toggle("prueba-cumbres", esPruebaCumbres);
   modalPruebaBosque.classList.toggle("prueba-hielo", esPruebaHielo);
   pantallaJuego.classList.add("prueba-bosque-activa");
@@ -12157,9 +12309,14 @@ function abrirPruebaEspecialBosque(tipo) {
   puzzleVientosDesierto.classList.toggle("oculto", tipo !== "vientos");
   puzzleOasisDesierto.classList.toggle("oculto", tipo !== "oasis");
   puzzleEspejosDesierto.classList.toggle("oculto", tipo !== "espejos");
-  puzzleCumbres.classList.toggle("oculto", !(esPruebaCumbres || esPruebaHielo));
+  puzzleCumbres.classList.toggle("oculto", !(esPruebaCumbres || esPruebaHielo || esPruebaAzrak));
   btnRepetirPruebaBosque.disabled = false;
   btnSalirPruebaBosque.disabled = false;
+
+  if (esPruebaAzrak) {
+    iniciarPuzzleAzrak(tipo);
+    return;
+  }
 
   if (tipo === "ramas") {
     etiquetaPruebaBosque.textContent = "PRUEBA DEL SENDERO";
@@ -12221,6 +12378,10 @@ function abrirPruebaEspecialBosque(tipo) {
 
 function cerrarPruebaEspecialBosque() {
   if (!pruebaEspecialBosqueActiva) return;
+  cerrarPuzzleAzrak?.();
+  cerrarPuzzleAzrak = null;
+  puzzleCumbres.setAttribute("role", "grid");
+  modalPruebaBosque.classList.remove("prueba-azrak");
 
   detenerLaberintoHielo();
   secuenciaPruebaBosque += 1;

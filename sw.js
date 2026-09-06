@@ -1,6 +1,7 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v227`;
+const CACHE_NAME = `${CACHE_PREFIX}v228`;
 const LEGACY_CACHE_NAMES = new Set([
+  `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
   `${CACHE_PREFIX}v225`,
   `${CACHE_PREFIX}v224`,
@@ -198,6 +199,11 @@ const CORE_ASSETS = [
   "./index.html",
   "./manifest.json",
   "./css/styles.css",
+  "./css/azrak-world.css",
+  "./js/azrak-world.js",
+  "./assets/images/fondos/reino-azrak/entrada-v1.png",
+  "./assets/images/fondos/reino-azrak/forja-v1.png",
+  "./assets/images/fondos/reino-azrak/trono-v1.png",
   "./css/intro.css",
   "./js/intro.js",
   "./js/supabase-loader.js",
@@ -494,10 +500,12 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260905-guia-real-2",
-  "./index.html": "20260905-guia-real-2",
+  "./": "20260905-mundo5-3",
+  "./index.html": "20260905-mundo5-3",
   "./css/styles.css": "20260905-guia-real-2",
-  "./js/app.js": "20260905-guia-real-2",
+  "./js/app.js": "20260905-mundo5-3",
+  "./js/azrak-world.js": "20260905-mundo5-3",
+  "./css/azrak-world.css": "20260905-mundo5-3",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-ataque.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-impacto.png": "20260902-personajes-chibi-1",
