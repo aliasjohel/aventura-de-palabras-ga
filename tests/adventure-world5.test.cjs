@@ -47,6 +47,10 @@ test('guardians empower Aren before his attack, then both complete music tracks 
     assert.ok(keys.indexOf(before) < keys.indexOf(after), `${before} before ${after}`);
   }
   assert.deepEqual(world.finale.filter(shot => shot.music).map(shot => [shot.key,shot.music]), [['resiste','battle'],['amanecer','peace']]);
+  assert.equal(world.finalMusic.battle.readingScale, 1.35);
+  assert.equal(world.finalMusic.battle.loop, true);
+  assert.equal(world.finalMusic.peace.readingScale || 1, 1);
+  assert.equal(Boolean(world.finalMusic.peace.loop), false);
   for (const track of Object.values(world.finalMusic)) {
     assert.ok(fs.existsSync(path.join(__dirname, '..', track.src)));
     assert.ok(sw.includes(track.src));

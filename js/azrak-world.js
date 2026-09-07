@@ -279,7 +279,7 @@
 
   // Dos movimientos musicales completos: la batalla y la restauración.
   const finalMusic = {
-    battle: { src: 'assets/sounds/victoria-mundo5.mp3', duration: 130951.813 },
+    battle: { src: 'assets/sounds/victoria-mundo5.mp3', duration: 130951.813, readingScale: 1.35, loop: true },
     peace: { src: 'assets/sounds/azrak-es-vencido.mp3', duration: 183864 },
   };
   const gifts = [
@@ -309,7 +309,7 @@
     { key: 'agua-desierto', image: 'restauracion-desierto-v1.png', focus: '42% 70%', zoom: 1.14, text: 'Bajo las palmeras renacen los jardines. El desierto sigue siendo dorado, pero vuelve a ser un hogar lleno de vida.', actors: team(), duration: 13000 },
     { key: 'cumbres-renacen', image: 'restauracion-cumbres-v1.png', text: 'Las nubes oscuras se separan. Los puentes de las Cumbres Celestes brillan otra vez y el viento vuelve a sostener sus islas.', actors: team(), duration: 14000 },
     { key: 'cielo-libre', image: 'restauracion-cumbres-v1.png', focus: '60% 35%', zoom: 1.12, text: 'Nimbus y Aeralis vuelan juntos sobre un cielo libre. Los caminos entre mundos quedan abiertos para todos.', actors: team(), duration: 13000 },
-    { key: 'abrazo', image: 'abrazo-guardianes-v2.png', text: 'De regreso junto a los cristales, todos rodean a Aren en un gran abrazo. Hasta Shadow se acerca: ahora también tiene un lugar.', actors: team(), duration: 17000 },
+    { key: 'abrazo', image: 'abrazo-shadow-orgulloso-v2.png', text: 'Los guardianes abrazan a Aren. Apartado, Shadow observa con los brazos cruzados y una sonrisa discreta: a su manera, también celebra.', actors: team(), duration: 17000 },
     { key: 'epilogo', image: 'epilogo-v1.png', text: 'Aren guarda su mapa. La aventura les enseñó que ningún poder es más grande que ayudarse. FIN · Gracias por salvar los mundos.', actors: team(), duration: 18000 },
   );
   const battleCaptions = {
@@ -345,7 +345,7 @@
     const focusBefore = document.activeElement;
     let skipped = false, paused = false, currentTrack = null, muted = false;
     const tracks = kind === 'final' ? Object.fromEntries(Object.entries(finalMusic).map(([key, spec]) => {
-      const audio = new Audio(spec.src); audio.preload = 'auto'; audio.volume = .65;
+      const audio = new Audio(spec.src); audio.preload = 'auto'; audio.volume = .65; audio.loop = Boolean(spec.loop);
       return [key, audio];
     })) : {};
     mute.hidden = kind !== 'final';
@@ -398,7 +398,7 @@
         }
         const soundtrackDuration = currentTrack && Number.isFinite(currentTrack.duration) && currentTrack.duration > 0
           ? currentTrack.duration * 1000 : finalMusic[phase]?.duration;
-        const duration = phase ? (shot.duration || 7200) * soundtrackDuration / weights[phase] : (shot.duration || 7200);
+        const duration = phase ? (shot.duration || 7200) * soundtrackDuration / weights[phase] * (finalMusic[phase].readingScale || 1) : (shot.duration || 7200);
         layer.dataset.shot = shot.key;
         stage.className = 'azrak-cinema-stage escena-ilustrada';
         stage.replaceChildren();
