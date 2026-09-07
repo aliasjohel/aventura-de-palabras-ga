@@ -37,6 +37,23 @@ test('eclipse starts unsolved, has a solution and every move is reversible', () 
   assert.equal(world.sealsSolved([2, 0, 3, 1]), true);
 });
 
+test('guardians empower Aren before his attack, then both complete music tracks accompany the ending', () => {
+  const keys = world.finale.map(shot => shot.key);
+  const portraits = world.finale.filter(shot => shot.portrait);
+  assert.equal(portraits.length, 8);
+  assert.equal(new Set(portraits.map(shot => shot.name)).size, 8);
+  for (const portrait of portraits) assert.ok(keys.indexOf(portrait.key) < keys.indexOf('transformacion'));
+  for (const [before, after] of [['union','transformacion'],['transformacion','ataque-union'],['ataque-union','azrak-vencido'],['azrak-vencido','amanecer'],['amanecer','aren-normal'],['aren-normal','deshielo'],['cielo-libre','abrazo'],['abrazo','epilogo']]) {
+    assert.ok(keys.indexOf(before) < keys.indexOf(after), `${before} before ${after}`);
+  }
+  assert.deepEqual(world.finale.filter(shot => shot.music).map(shot => [shot.key,shot.music]), [['resiste','battle'],['amanecer','peace']]);
+  for (const track of Object.values(world.finalMusic)) {
+    assert.ok(fs.existsSync(path.join(__dirname, '..', track.src)));
+    assert.ok(sw.includes(track.src));
+    assert.ok(track.duration > 120000);
+  }
+});
+
 function endingHarness(state, playback = async () => {}) {
   const calls = [];
   const ctx = vm.createContext({
@@ -167,6 +184,12 @@ test('mission 8 keeps three completed portals and advances only on the fourth wo
 
 test('cinematic illustrations exist offline and the giant rescue precedes the battle', () => {
   for (const shot of [...world.betrayal, ...world.finale]) {
+    if (shot.portrait) {
+      const portrait = path.posix.normalize(`assets/images/personajes/versus/${shot.actors[0].file}`);
+      assert.ok(fs.existsSync(path.join(__dirname, '..', portrait)), portrait);
+      assert.ok(sw.includes(portrait), `Offline portrait ${portrait}`);
+      continue;
+    }
     const asset = `assets/images/cinematicas/reino-azrak/${shot.image || shot.key + '-v1.png'}`;
     assert.ok(fs.existsSync(path.join(__dirname, '..', asset)), asset);
     assert.ok(sw.includes(asset), `Offline cinematic ${asset}`);

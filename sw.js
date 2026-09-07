@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v239`;
+const CACHE_NAME = `${CACHE_PREFIX}v240`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -238,6 +238,20 @@ const CORE_ASSETS = [
   "./assets/images/cinematicas/reino-azrak/union-v2.png",
   "./assets/images/cinematicas/reino-azrak/eleccion-v2.png",
   "./css/prologue-cinematic.css",
+  "./assets/images/cinematicas/reino-azrak/energia-unida-v1.png",
+  "./assets/images/cinematicas/reino-azrak/aren-transformacion-v2.png",
+  "./assets/images/cinematicas/reino-azrak/aren-ataque-union-v1.png",
+  "./assets/images/cinematicas/reino-azrak/aren-normalidad-v2.png",
+  "./assets/images/cinematicas/reino-azrak/restauracion-hielo-v1.png",
+  "./assets/images/cinematicas/reino-azrak/restauracion-bosque-v1.png",
+  "./assets/images/cinematicas/reino-azrak/restauracion-desierto-v1.png",
+  "./assets/images/cinematicas/reino-azrak/restauracion-cumbres-v1.png",
+  "./assets/images/cinematicas/reino-azrak/abrazo-guardianes-v2.png",
+  "./assets/sounds/victoria-mundo5.mp3",
+  "./assets/sounds/azrak-es-vencido.mp3",
+  "./css/desert-sand-trap.css",
+  "./js/desert-sand-trap.js",
+  "./assets/images/personajes/explorador-brazo-arena-v1.png",
   "./css/forest-root-trap.css",
   "./js/forest-root-trap.js",
   "./js/prologue-cinematic.js",

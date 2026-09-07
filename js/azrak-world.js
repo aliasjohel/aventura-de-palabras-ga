@@ -277,25 +277,97 @@
     { key: 'epilogo', text: 'Aren guarda su mapa. No fue una sola fuerza la que salvó los mundos: fue aprender a escucharse y elegir ayudarse. FIN · Gracias por vivir esta aventura.', actors: team(), effect: 'amanecer', duration: 9000 },
   ];
 
+  // Dos movimientos musicales completos: la batalla y la restauración.
+  const finalMusic = {
+    battle: { src: 'assets/sounds/victoria-mundo5.mp3', duration: 130951.813 },
+    peace: { src: 'assets/sounds/azrak-es-vencido.mp3', duration: 183864 },
+  };
+  const gifts = [
+    ['guardiana', 'La Guardiana del Bosque', '../coleccion/guardiana-bosque-ataque-raices.png', 'La vida del bosque te acompaña, Aren.', '#8fd36b'],
+    ['zafir', 'Zafir', 'mago-ataque.png', 'Mi magia será tuya. Confiá en lo que aprendiste.', '#bd86ff'],
+    ['luna', 'El Guardián de la Luna', 'hombre-lobo-zarpazo.png', 'Llevá mi fuerza. No vamos a dejarte solo.', '#cad9ff'],
+    ['nivor', 'Nivor', 'dragon-hielo-ataque-v2.png', 'Por mi familia y por quienes esperan despertar.', '#92e5ff'],
+    ['nimbus', 'Nimbus', 'dragon-base.png', '¡Vamos, Aren! Volvamos a abrir el cielo.', '#70ccff'],
+    ['aeralis', 'Aeralis', '../aventura/aeralis-liberada-v1.png', 'Que nuestra luz proteja tu camino.', '#96bbff'],
+    ['lume', 'Lume', '../versus/guardian-alba-final-carga-sin-rayo.png', 'El quinto cristal responde. Recibí la luz de la Unión.', '#ffe79a'],
+    ['shadow', 'Shadow', 't-shadow-ataque.png', 'Esta vez, mi poder sirve para proteger.', '#b49cff'],
+  ].map(([key, name, file, text, color]) => ({ key: 'energia-' + key, name, text, portrait: true, color, actors: [actor(key, file, 50, 86, 76)], duration: 3800 }));
+  finale.splice(finale.findIndex(shot => shot.key === 'union'), 3,
+    ...gifts,
+    { key: 'union', image: 'energia-unida-v1.png', text: 'Los guardianes entregan su energía. Los cinco cristales la reúnen alrededor de Aren: todos confían en él.', actors: team(), duration: 6500 },
+    { key: 'transformacion', image: 'aren-transformacion-v2.png', text: 'La luz transforma a Aren. Su corazón sigue siendo el mismo; ahora lleva la fuerza de todos los mundos.', actors: [aren(50)], duration: 6500 },
+    { key: 'ataque-union', image: 'aren-ataque-union-v1.png', text: '«¡Por todos los que nos esperan!» Aren concentra el poder recibido y lo dirige al corazón del Quinto Sello.', actors: [aren(), azrak()], duration: 6500 },
+    { key: 'azrak-vencido', image: 'amanecer-v1.png', focus: '18% 40%', zoom: 1.13, text: 'El sello se cierra sobre Azrak. Su poder se apaga. La batalla ha terminado.', actors: [azrak()], duration: 5500 },
+    { key: 'amanecer', music: 'peace', image: 'amanecer-v1.png', text: 'El silencio deja paso a la esperanza. Los guardianes rodean a Aren y reúnen los cinco cristales, por fin a salvo.', actors: team(), duration: 13000 },
+    { key: 'aren-normal', image: 'aren-normalidad-v2.png', text: 'La armadura de luz se disuelve en pequeñas chispas. Aren vuelve a ser el explorador de siempre. Sus amigos lo reciben con orgullo.', actors: team(), duration: 13000 },
+    { key: 'restaurar-caminos', image: 'amanecer-v1.png', focus: '50% 70%', zoom: 1.12, text: 'Aren acerca sus manos a los cristales. Con la ayuda de los guardianes, envía su luz por los portales hacia cada mundo.', actors: team(), duration: 13000 },
+    { key: 'deshielo', image: 'restauracion-hielo-v1.png', text: 'En el reino de Nivor, el hielo que aprisionaba a sus habitantes comienza a ceder. La luz de Aren recorre sus calles.', actors: team(), duration: 14000 },
+    { key: 'reencuentro-hielo', image: 'restauracion-hielo-v1.png', focus: '38% 68%', zoom: 1.16, text: 'Las personas congeladas despiertan y vuelven a abrazarse. El reino conserva su nieve, pero el frío ya no les roba la vida.', actors: team(), duration: 14000 },
+    { key: 'bosque-renace', image: 'restauracion-bosque-v1.png', text: 'Las sombras abandonan el Bosque Encantado. Las raíces se abren, los árboles recuperan sus hojas y el agua vuelve a correr.', actors: team(), duration: 14000 },
+    { key: 'vida-bosque', image: 'restauracion-bosque-v1.png', focus: '60% 65%', zoom: 1.14, text: 'Los animales salen de sus escondites. Donde antes había miedo, ahora crecen flores. El bosque vuelve a respirar en paz.', actors: team(), duration: 13000 },
+    { key: 'desierto-renace', image: 'restauracion-desierto-v1.png', text: 'En el desierto, la tormenta se disipa. El oasis recupera sus aguas y los antiguos caminos vuelven a unir a sus habitantes.', actors: team(), duration: 14000 },
+    { key: 'agua-desierto', image: 'restauracion-desierto-v1.png', focus: '42% 70%', zoom: 1.14, text: 'Bajo las palmeras renacen los jardines. El desierto sigue siendo dorado, pero vuelve a ser un hogar lleno de vida.', actors: team(), duration: 13000 },
+    { key: 'cumbres-renacen', image: 'restauracion-cumbres-v1.png', text: 'Las nubes oscuras se separan. Los puentes de las Cumbres Celestes brillan otra vez y el viento vuelve a sostener sus islas.', actors: team(), duration: 14000 },
+    { key: 'cielo-libre', image: 'restauracion-cumbres-v1.png', focus: '60% 35%', zoom: 1.12, text: 'Nimbus y Aeralis vuelan juntos sobre un cielo libre. Los caminos entre mundos quedan abiertos para todos.', actors: team(), duration: 13000 },
+    { key: 'abrazo', image: 'abrazo-guardianes-v2.png', text: 'De regreso junto a los cristales, todos rodean a Aren en un gran abrazo. Hasta Shadow se acerca: ahora también tiene un lugar.', actors: team(), duration: 17000 },
+    { key: 'epilogo', image: 'epilogo-v1.png', text: 'Aren guarda su mapa. La aventura les enseñó que ningún poder es más grande que ayudarse. FIN · Gracias por salvar los mundos.', actors: team(), duration: 18000 },
+  );
+  const battleCaptions = {
+    resiste: 'Azrak absorbe la energía del trono. Los guardianes llegan: Aren ya no está solo.',
+    'emboscada-cancerbero': 'El cancerbero de Azrak se alza como una torre. Sus tres cabezas lanzan fuego contra los guardianes.',
+    'portal-nivor': 'Lume sostiene el portal. Dos garras de hielo atraviesan la luz: ¡Nivor ha respondido!',
+    titanes: 'Fuego y hielo chocan. Nivor levanta una muralla que contiene al cancerbero.',
+    rescate: 'Azrak apunta hacia Aren. Nimbus lo recoge al vuelo y lo aleja del golpe.',
+    madre: 'Aeralis protege a su hijo y a Aren. Su aliento luminoso detiene el ataque.',
+    'victoria-nivor': 'Nivor encierra al cancerbero en hielo. La bestia ha sido vencida.',
+    hielo: 'El dragón inmoviliza a Azrak. «No volverás a encadenar a mi familia».',
+    guardianes: 'Raíces, magia, luna y luz abren una brecha. Los guardianes luchan juntos.',
+    contraataque: 'Azrak rompe sus ataduras. Una ola oscura obliga a todos a retroceder.',
+    regreso: 'Shadow reaparece y detiene el golpe. Ya no obedece a Azrak.',
+    eleccion: '«Yo elijo a quién proteger». Shadow invita a los guardianes a reunir su poder.',
+  };
+  for (const shot of finale) {
+    if (battleCaptions[shot.key]) { shot.text = battleCaptions[shot.key]; shot.duration = 5500; }
+  }
+  finale[0].music = 'battle';
+
   async function playCinematic(kind, { reduced = false, sound = () => {} } = {}) {
     const shots = kind === 'traicion' ? betrayal : finale;
     const layer = document.createElement('section'); layer.className = 'cinematica-azrak';
     layer.setAttribute('role', 'dialog'); layer.setAttribute('aria-modal', 'true');
     layer.setAttribute('aria-label', kind === 'traicion' ? 'La traición de Azrak' : 'El último juramento');
-    layer.innerHTML = '<div class="azrak-cinema-stage"></div><div class="azrak-cinema-caption"><span></span><p aria-live="polite"></p></div><nav><button type="button">Pausar</button><button type="button">Saltar cinemática</button></nav>';
+    layer.innerHTML = '<div class="azrak-cinema-stage"></div><div class="azrak-cinema-caption"><span></span><p aria-live="polite"></p></div><nav><button type="button">Pausar</button><button type="button" class="azrak-music-toggle">Silenciar</button><button type="button">Saltar cinemática</button></nav>';
     document.body.append(layer);
     const oldOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const stage = layer.querySelector('.azrak-cinema-stage');
-    const [pause, skip] = layer.querySelectorAll('button');
+    const [pause, mute, skip] = layer.querySelectorAll('button');
     const focusBefore = document.activeElement;
-    let skipped = false, paused = false;
-    const syncPause = () => layer.classList.toggle('pausada', paused || document.hidden);
+    let skipped = false, paused = false, currentTrack = null, muted = false;
+    const tracks = kind === 'final' ? Object.fromEntries(Object.entries(finalMusic).map(([key, spec]) => {
+      const audio = new Audio(spec.src); audio.preload = 'auto'; audio.volume = .65;
+      return [key, audio];
+    })) : {};
+    mute.hidden = kind !== 'final';
+    const playMusic = () => currentTrack?.play().catch(() => { mute.textContent = 'Activar música'; });
+    const syncPause = () => {
+      layer.classList.toggle('pausada', paused || document.hidden);
+      if (paused || document.hidden) currentTrack?.pause();
+      else if (currentTrack) playMusic();
+    };
+    mute.onclick = () => {
+      muted = mute.textContent === 'Activar música' ? false : !muted;
+      Object.values(tracks).forEach(audio => { audio.muted = muted; });
+      mute.textContent = muted ? 'Activar música' : 'Silenciar';
+      if (!paused && !document.hidden) playMusic();
+    };
     const onKey = event => {
       if (event.key === 'Escape') { skipped = true; event.preventDefault(); }
       if (event.key === 'Tab') {
         event.preventDefault();
-        (document.activeElement === pause ? skip : pause).focus();
+        const buttons = [...layer.querySelectorAll('nav button')].filter(button => !button.hidden);
+        const at = buttons.indexOf(document.activeElement);
+        buttons[(at + (event.shiftKey ? buttons.length - 1 : 1)) % buttons.length].focus();
       }
     };
     document.addEventListener('keydown', onKey);
@@ -304,18 +376,42 @@
     skip.onclick = () => { skipped = true; };
     skip.focus();
     try {
+      // The metadata is optional: playback remains usable offline or if an audio fails.
+      await Promise.all(Object.values(tracks).map(audio => new Promise(resolve => {
+        let timer;
+        const done = () => { clearTimeout(timer); audio.removeEventListener('loadedmetadata', done); audio.removeEventListener('error', done); resolve(); };
+        if (audio.readyState >= 1 || audio.error) { resolve(); return; }
+        audio.addEventListener('loadedmetadata', done); audio.addEventListener('error', done);
+        timer = setTimeout(done, 2500);
+      })));
+      const weights = {};
+      let phase;
+      for (const shot of shots) { phase = shot.music || phase; if (phase) weights[phase] = (weights[phase] || 0) + (shot.duration || 7200); }
+      phase = null;
       for (const [index, shot] of shots.entries()) {
         if (skipped) break;
+        if (shot.music) {
+          phase = shot.music;
+          currentTrack?.pause();
+          currentTrack = tracks[phase];
+          if (currentTrack) { currentTrack.currentTime = 0; if (!paused && !document.hidden) playMusic(); }
+        }
+        const soundtrackDuration = currentTrack && Number.isFinite(currentTrack.duration) && currentTrack.duration > 0
+          ? currentTrack.duration * 1000 : finalMusic[phase]?.duration;
+        const duration = phase ? (shot.duration || 7200) * soundtrackDuration / weights[phase] : (shot.duration || 7200);
         layer.dataset.shot = shot.key;
         stage.className = 'azrak-cinema-stage escena-ilustrada';
         stage.replaceChildren();
         layer.querySelector('.azrak-cinema-caption span').textContent = `${kind === 'traicion' ? 'LA TRAICIÓN' : 'EL ÚLTIMO JURAMENTO'} · ${index + 1}/${shots.length}`;
         layer.querySelector('.azrak-cinema-caption p').textContent = shot.text;
+        stage.style.setProperty('--plano-duracion', `${duration}ms`);
+        stage.style.setProperty('--plano-zoom', String(shot.zoom || 1.055));
+        stage.style.setProperty('--plano-foco', shot.focus || '50% 50%');
         const illustration = document.createElement('img');
         illustration.className = 'azrak-cinema-illustration';
-        illustration.src = `assets/images/cinematicas/reino-azrak/${shot.image || shot.key + '-v1.png'}`;
+        if (!shot.portrait) illustration.src = `assets/images/cinematicas/reino-azrak/${shot.image || shot.key + '-v1.png'}`;
         illustration.alt = shot.text;
-        stage.append(illustration);
+        if (!shot.portrait) stage.append(illustration);
         illustration.onerror = () => {
         if (!illustration.isConnected) return;
         illustration.remove();
@@ -333,16 +429,27 @@
           stage.append(rescue);
         }
         };
+        if (shot.portrait) {
+          stage.className = 'azrak-cinema-stage entrega-guardian';
+          stage.style.setProperty('--energia-guardian', shot.color);
+          const portrait = document.createElement('img');
+          portrait.className = 'retrato-entrega'; portrait.src = sprites + shot.actors[0].file; portrait.alt = shot.name;
+          const energy = document.createElement('div'); energy.className = 'energia-entrega'; energy.setAttribute('aria-hidden', 'true');
+          const name = document.createElement('strong'); name.className = 'nombre-entrega'; name.textContent = shot.name;
+          stage.append(energy, portrait, name);
+        }
         sound(shot.key === 'amanecer' ? 'victoria' : 'habilidad');
         // The readable duration remains intact for reduced motion; only movement changes.
         layer.classList.toggle('movimiento-reducido', reduced);
         let elapsed = 0;
-        while (elapsed < (shot.duration || 7200) && !skipped) {
-          await new Promise(resolve => setTimeout(resolve, 100));
-          if (!paused && !document.hidden) elapsed += 100;
+        while (elapsed < duration && !skipped) {
+          const before = performance.now();
+          await new Promise(resolve => setTimeout(resolve, Math.max(1, Math.min(100, duration - elapsed))));
+          if (!paused && !document.hidden) elapsed += performance.now() - before;
         }
       }
     } finally {
+      Object.values(tracks).forEach(audio => { audio.pause(); audio.currentTime = 0; audio.removeAttribute('src'); audio.load(); });
       document.removeEventListener('keydown', onKey);
       document.removeEventListener('visibilitychange', syncPause);
       layer.remove();
@@ -350,5 +457,5 @@
       if (focusBefore?.isConnected) focusBefore.focus({ preventScroll: true });
     }
   }
-  return { missions, words, paths, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, mountScene, ignitePortal, playCinematic, betrayal, finale, base };
+  return { missions, words, paths, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, mountScene, ignitePortal, playCinematic, betrayal, finale, finalMusic, base };
 });

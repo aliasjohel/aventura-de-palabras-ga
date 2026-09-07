@@ -23,6 +23,18 @@
 .azrak-cinema-stage.escena-ilustrada { background: #09060e; }
 .azrak-cinema-stage.escena-ilustrada::after { display: none; }
 .azrak-cinema-illustration { display: block; width: 100%; height: 100%; object-fit: contain; }
+.azrak-cinema-illustration { transform-origin:var(--plano-foco, 50% 50%); animation:planoFinalAzrak var(--plano-duracion, 8s) linear both; }
+@keyframes planoFinalAzrak { from { opacity:.2; transform:scale(1); } 5% { opacity:1; } to { opacity:1; transform:scale(var(--plano-zoom, 1.055)); } }
+.azrak-cinema-stage.entrega-guardian { background:radial-gradient(ellipse at center, color-mix(in srgb, var(--energia-guardian) 28%, transparent), #120c24 72%), url('../assets/images/fondos/reino-azrak/trono-v1.png') center/cover; }
+.retrato-entrega { position:absolute; width:85%; height:83%; object-fit:contain; left:7.5%; top:4%; z-index:2; filter:drop-shadow(0 0 18px var(--energia-guardian)); animation:entregaRetrato .6s ease-out both; }
+.energia-entrega { position:absolute; inset:15% 8% 0; opacity:.7; background:repeating-conic-gradient(from 0deg at 50% 65%, transparent 0 17deg, var(--energia-guardian) 19deg 20deg, transparent 22deg 40deg); mask-image:radial-gradient(ellipse, #000 5%, transparent 70%); animation:energiaLatido 2.5s ease-in-out infinite; }
+.nombre-entrega { position:absolute; bottom:5%; left:0; width:100%; z-index:7; text-align:center; color:#fff2cf; font-size:clamp(1.1rem, 3vw, 2rem); text-shadow:0 2px 8px #000; }
+@keyframes entregaRetrato { from { transform:translateY(12px); } to { transform:none; } }
+@keyframes energiaLatido { 50% { opacity:1; transform:scale(1.08); } }
+.cinematica-azrak.movimiento-reducido .azrak-cinema-illustration,
+.cinematica-azrak.movimiento-reducido .retrato-entrega,
+.cinematica-azrak.movimiento-reducido .energia-entrega { animation:none !important; opacity:1; transform:none; }
+.azrak-music-toggle[hidden] { display:none; }
 .azrak-cinema-caption { padding: 14px clamp(18px, 5vw, 90px) 20px; text-align: center; background: #09060e; }
 .azrak-cinema-caption span { font-size: .68rem; letter-spacing: .19em; color: #edbb75; }
 .azrak-cinema-caption p { font-size: clamp(.9rem, 1.7vw, 1.3rem); line-height: 1.5; max-width: 1000px; margin: 9px auto 0; }
