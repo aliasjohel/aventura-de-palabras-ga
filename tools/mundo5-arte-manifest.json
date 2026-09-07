@@ -111,5 +111,26 @@
     "source": "exec-49a72c66-7feb-4768-9479-f6f7cb2ddb67.png",
     "tool": "image_gen integrada",
     "prompt": "Edit this exact 16:9 final combined-attack game cinematic. Keep ALL heroes, all three dragons, wolf guardian, crystal colors, beams, positions, background and overall composition unchanged. Change ONLY Azrak at RIGHT and his immediate failing magical shield: he is LOSING under the combined power, NOT smiling or relaxed. His face must show angry fear and obvious effort/pain: deeply furrowed brows, widened alarmed eyes, mouth open in a strained furious grimace, no smile or smirk. Bend knees slightly and lean his shoulders BACK under the force, one braced hand trembling against the shield. Add glowing cracks and fragments to his failing magical shield, a few sparks around armor, but no injury, no blood, no gore. Keep his exact red skin, black hair, horns and black-gold armor. Make the moment read unequivocally as Azrak being overwhelmed and about to be defeated by everyone. Preserve polished painterly family fantasy style. No text, no UI."
+  },
+  {
+    "file": "assets/images/cinematicas/reino-azrak/victoria-nivor-v1.png",
+    "source": "exec-328ecba2-b93c-4cbc-9e80-3e827ae793f6.png",
+    "tool": "image_gen integrada",
+    "prompt": "Next 16:9 frame of the giant battle: preserve Nivor left and three-headed Cerberus right. Nivor victorious; Cerberus crouched, all heads lowered, fire extinguished, immobilized in thick translucent cyan ice prison. Same volcanic fortress and painterly fantasy style. No injuries, blood, text or UI.",
+    "postprocess": "Copia del original generado"
+  },
+  {
+    "file": "assets/images/personajes/versus/dragon-hielo-descenso-lateral-alto-v1.png",
+    "source": "exec-56787232-6681-44b0-9811-fbc8ebc67e26.png",
+    "tool": "image_gen integrada",
+    "prompt": "Create one game sprite of this exact white and cyan crystal dragon Nivor. Full SIDE PROFILE facing RIGHT, looking at opponent to the right, never looking at viewer. Airborne landing pose, body horizontal, all four legs lowered with feet beneath body ready to touch ground. BOTH wings raised HIGH above back in upstroke. Preserve character identity, white scales, cyan crystals, blue wing membranes, detailed polished fantasy illustration. Mouth closed, alert. Entire dragon tail wings feet inside square canvas with generous margins. Transparent background with real alpha, no checkerboard, no ground, no shadows, no particles, no text. This is frame 1 of two-frame wing animation, keep body centered and feet near bottom.",
+    "postprocess": "Transparencia por relleno desde bordes y lienzo común 1024x1024"
+  },
+  {
+    "file": "assets/images/personajes/versus/dragon-hielo-descenso-lateral-bajo-v1.png",
+    "source": "exec-df8e7bec-96d1-433a-a815-746e4b894c4b.png",
+    "tool": "image_gen integrada",
+    "prompt": "Edit this exact image into frame TWO of a two-frame landing wing animation. Change ONLY the two wings: sweep BOTH wings DOWN and outward in a strong downward flap, wing tips below shoulder height, wings extended toward left. Keep EXACT same canvas size, dragon body position, head position, feet position, tail position, scale, side view facing RIGHT and closed mouth. Feet remain lowered ready for landing. Do not rotate the dragon. Preserve detailed white/cyan crystal dragon identity. Background genuinely transparent alpha, no checkerboard, no ground, no text. Generous empty space above where wings used to be. Full wings inside canvas.",
+    "postprocess": "Transparencia por relleno desde bordes y lienzo común 1024x1024"
   }
 ]

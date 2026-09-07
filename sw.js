@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v232`;
+const CACHE_NAME = `${CACHE_PREFIX}v233`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -210,6 +210,7 @@ const CORE_ASSETS = [
   "./assets/images/cinematicas/reino-azrak/emboscada-cancerbero-v1.png",
   "./assets/images/cinematicas/reino-azrak/portal-nivor-v1.png",
   "./assets/images/cinematicas/reino-azrak/titanes-v1.png",
+  "./assets/images/cinematicas/reino-azrak/victoria-nivor-v1.png",
   "./assets/images/ambiente/reino-azrak/demonio-paso-1-v1.png",
   "./assets/images/ambiente/reino-azrak/demonio-paso-2-v1.png",
   "./assets/images/ambiente/reino-azrak/demonio-volador-v1.png",
@@ -427,8 +428,8 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/dragon-hielo-frontal-alas.png",
   "./assets/images/personajes/versus/dragon-hielo-aleteo-alto.png",
   "./assets/images/personajes/versus/dragon-hielo-aleteo-bajo.png",
-  "./assets/images/personajes/versus/dragon-hielo-descenso-alto.png",
-  "./assets/images/personajes/versus/dragon-hielo-descenso-bajo.png",
+  "./assets/images/personajes/versus/dragon-hielo-descenso-lateral-alto-v1.png",
+  "./assets/images/personajes/versus/dragon-hielo-descenso-lateral-bajo-v1.png",
   "./assets/images/elementos/hielo-pantalla-nivor-1.png",
   "./assets/images/elementos/hielo-pantalla-nivor-2.png",
   "./assets/images/elementos/hielo-pantalla-nivor-3.png",

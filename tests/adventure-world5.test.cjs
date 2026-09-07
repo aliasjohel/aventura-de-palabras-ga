@@ -174,6 +174,6 @@ test('cinematic illustrations exist offline and the giant rescue precedes the ba
   const keys = world.finale.map(s => s.key);
   assert.ok(keys.indexOf('emboscada-cancerbero') < keys.indexOf('portal-nivor'));
   assert.ok(keys.indexOf('portal-nivor') < keys.indexOf('titanes'));
-  assert.deepEqual(keys.slice(keys.indexOf('titanes'), keys.indexOf('guardianes') + 1), ['titanes', 'rescate', 'madre', 'hielo', 'guardianes']);
+  assert.deepEqual(keys.slice(keys.indexOf('titanes'), keys.indexOf('guardianes') + 1), ['titanes', 'rescate', 'madre', 'victoria-nivor', 'hielo', 'guardianes']);
   assert.doesNotMatch(world.finale.find(s => s.key === 'rescate').text, /rompe parte del hielo/);
 });
