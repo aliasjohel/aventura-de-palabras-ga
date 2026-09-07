@@ -104,10 +104,16 @@ test("la actualización reutiliza la caché anterior y descarga sólo las difere
   };
 
   vm.runInNewContext(
-    `${worker}\nself.__pwaTest = { CORE_ASSETS, ASSET_REVISIONS };`,
+    `${worker}\nself.__pwaTest = { CORE_ASSETS, ASSET_REVISIONS, CACHE_NAME };`,
     contexto,
   );
 
+  for (const recurso of contexto.self.__pwaTest.CORE_ASSETS) {
+    if (recurso === './' || /\.(html|css|js)$/.test(recurso)) {
+      assert.equal(contexto.self.__pwaTest.ASSET_REVISIONS[recurso], contexto.self.__pwaTest.CACHE_NAME,
+        `El archivo ejecutable ${recurso} debe renovarse con cada actualización`);
+    }
+  }
   const cacheAnterior = await cachesSimuladas.open("aventura-palabras-runtime-v93");
   for (const recurso of contexto.self.__pwaTest.CORE_ASSETS) {
     const url = new URL(recurso, contexto.self.registration.scope);

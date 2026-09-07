@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v236`;
+const CACHE_NAME = `${CACHE_PREFIX}v237`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -711,6 +711,14 @@ const ASSET_REVISIONS = {
 for (const path of Object.keys(ASSET_REVISIONS)) {
   if (ASSET_REVISIONS[path] === "20260902-personajes-chibi-1") {
     ASSET_REVISIONS[path] = "20260902-personajes-estilizados-2";
+  }
+}
+
+// El código y los estilos se instalan juntos en cada versión. Nunca heredar
+// sus revisiones manuales: eso podía anunciar una actualización con código viejo.
+for (const path of CORE_ASSETS) {
+  if (path === './' || /\.(?:html|css|js)$/.test(path)) {
+    ASSET_REVISIONS[path] = CACHE_NAME;
   }
 }
 

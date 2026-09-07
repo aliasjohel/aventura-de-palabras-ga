@@ -15633,6 +15633,16 @@ button:disabled {
   100%{transform:translateY(0) scaleX(-1)}
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .versus-personaje-uno.entrando-duelo.entrada-dragon_hielo,
+  .versus-personaje-dos.entrando-duelo.entrada-dragon_hielo-rival {
+    animation:none;
+    opacity:1;
+    transform:translateY(0);
+  }
+  .versus-personaje-dos.entrando-duelo.entrada-dragon_hielo-rival { transform:scaleX(-1); }
+}
+
 /* Nivor v4: congela al rival y asciende convertido en un sol de hielo. */
 .nivor-final-astro,
 .nivor-final-onda { display:none; }
