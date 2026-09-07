@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="css/azrak-world.css?v=20260905-mundo5-3">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
     <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
+    <link rel="stylesheet" href="css/prologue-cinematic.css?v=20260907-1">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
 </head>
 
@@ -1335,29 +1336,20 @@
 
         <div id="modalPrologo" class="modal-prologo oculto" role="dialog" aria-modal="true"
             aria-labelledby="tituloPrologo">
-            <div class="tarjeta-prologo">
-                <p class="leyenda-prologo">Aventura de Palabras</p>
-                <h2 id="tituloPrologo">LA LEYENDA DE LOS CINCO CRISTALES</h2>
-
-                <div id="textoPrologo" class="texto-prologo">
-                    <p>Hace muchos años, cinco Cristales de la Sabiduría mantenían el equilibrio entre los mundos.</p>
-
-                    <p>Pero una noche, una fuerza misteriosa hizo desaparecer los cristales. Sin su poder, los portales
-                        comenzaron a debilitarse y los mundos quedaron en peligro.</p>
-
-                    <p>Aren, un joven explorador, encontró un antiguo mapa que señalaba la ubicación del primer cristal,
-                        oculto en lo profundo del Bosque Encantado.</p>
-
-                    <p>Para recuperarlo deberá avanzar resolviendo palabras, superar los peligros del camino y descubrir
-                        quién robó los cristales.</p>
-
-                    <p>Para avanzar por este mundo, deberás descubrir palabras relacionadas con el bosque y todo lo que
-                        habita en él.</p>
-
-                    <p class="mision-prologo">Tu primera misión comienza en el Bosque Encantado.</p>
+            <div class="prologo-cine">
+                <header class="prologo-cabecera"><span>Aventura de Palabras</span><button id="prologoOmitir" type="button">Omitir</button></header>
+                <div class="prologo-ventana"><div id="prologoIlustracion" class="prologo-ilustracion" role="img" aria-label="Los cinco cristales iluminan un antiguo santuario."></div></div>
+                <div class="prologo-relato" aria-live="polite" aria-atomic="true">
+                    <span id="prologoContador">1 / 4</span>
+                    <h2 id="tituloPrologo">La leyenda de los cinco cristales</h2>
+                    <p id="textoPrologo">Hace muchos años, cinco Cristales de la Sabiduría mantenían el equilibrio entre los mundos.</p>
                 </div>
-
-                <button id="btnComenzarPrologo">🌲 Comenzar la aventura</button>
+                <nav class="prologo-controles" aria-label="Controles de la cinemática">
+                    <button id="prologoAnterior" type="button" disabled>Anterior</button>
+                    <button id="prologoPausa" type="button" aria-pressed="false">Pausar</button>
+                    <button id="prologoSiguiente" type="button">Siguiente</button>
+                    <button id="btnComenzarPrologo" type="button" hidden>Comenzar la aventura</button>
+                </nav>
             </div>
         </div>
 
@@ -1425,7 +1417,8 @@
     <script src="js/versus-room-supabase.js?v=20260817-auth-cuentas-2"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
     <script src="js/azrak-world.js?v=20260905-mundo5-3"></script>
-    <script src="js/app.js?v=20260905-mundo5-3"></script>
+    <script src="js/prologue-cinematic.js?v=20260907-1"></script>
+    <script src="js/app.js?v=20260907-prologo-1"></script>
     <script src="js/pwa.js?v=20260827-modos-locales-offline-1"></script>
 </body>
 

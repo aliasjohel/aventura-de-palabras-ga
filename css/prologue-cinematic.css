@@ -1,0 +1,62 @@
+#modalPrologo {
+  padding: 0;
+  background: #070e0d;
+}
+.prologo-cine {
+  width: 100%; height: 100dvh; overflow-y: auto;
+  display: flex; flex-direction: column; align-items: center;
+  color: #f4f7ef;
+  background: radial-gradient(ellipse at top, #1b3429, #070e0d 75%);
+}
+.prologo-cabecera {
+  width: min(100%, 1100px); display: flex; align-items: center; justify-content: space-between;
+  padding: max(14px, env(safe-area-inset-top)) 20px 12px;
+  gap: 16px; color: #ead08d; font-size: .8rem; letter-spacing: .1em;
+}
+#modalPrologo button { min-height: 44px; cursor: pointer; }
+#modalPrologo button[hidden] { display: none; }
+#modalPrologo button:focus-visible { outline: 3px solid #ffe297; outline-offset: 4px; }
+#modalPrologo button:disabled { opacity: .35; cursor: default; }
+.prologo-cabecera button, .prologo-controles button {
+  border: 1px solid #718471; border-radius: 10px; padding: 9px 16px;
+  background: #15251f; color: #f4f7ef; box-shadow: none;
+}
+.prologo-ventana {
+  flex: 0 0 auto; margin: auto 0; width: min(100%, 1000px, calc((100dvh - 300px) * 1.5));
+  min-width: min(100%, 320px); aspect-ratio: 3 / 2;
+  overflow: hidden; position: relative; border-radius: 8px;
+}
+.prologo-ilustracion {
+  position: absolute; inset: 0;
+  background-image: url('../assets/images/intro/conceptos/prologo-cuatro-escenas-v1.png');
+  background-size: 200% 200%; background-repeat: no-repeat;
+}
+.prologo-ilustracion.en-movimiento { animation: prologo-plano 10s ease-out both; }
+.prologo-pausado .prologo-ilustracion { animation-play-state: paused; }
+.prologo-relato { width: min(100%, 780px); padding: 18px 24px 10px; text-align: center; }
+#prologoContador { color: #c7b47e; font-size: .8rem; letter-spacing: .18em; }
+#tituloPrologo { color: #f7d889; font-size: clamp(1.3rem, 3vw, 2rem); margin: 8px 0; }
+#textoPrologo { display: block; font-size: clamp(1rem, 2vw, 1.15rem); line-height: 1.55; min-height: 3.1em; }
+.prologo-controles {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+  padding: 10px 20px max(22px, env(safe-area-inset-bottom));
+}
+#modalPrologo #btnComenzarPrologo { width: auto; margin: 0; animation: none; box-shadow: none; }
+@keyframes prologo-plano {
+  from { opacity: .25; transform: scale(1.015); }
+  12% { opacity: 1; }
+  to { opacity: 1; transform: scale(1.075); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .prologo-cine { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr auto; }
+  .prologo-cabecera { grid-column: 1 / -1; }
+  .prologo-ventana { grid-row: 2 / 4; width: 100%; min-width: 0; align-self: center; }
+  .prologo-relato { padding: 6px 18px; }
+  #tituloPrologo { font-size: 1.2rem; }
+  #textoPrologo { font-size: .95rem; }
+  .prologo-controles { padding: 8px 12px 16px; gap: 6px; }
+  .prologo-controles button { padding: 8px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .prologo-ilustracion.en-movimiento { animation: none; }
+}

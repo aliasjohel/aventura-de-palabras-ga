@@ -3115,6 +3115,7 @@ btnJugar.addEventListener("click", async () => {
 btnComenzarPrologo.addEventListener("click", async () => {
   if (btnComenzarPrologo.disabled || transicionPrologoActiva) return;
 
+  window.PrologueCinematic.stop();
   const secuenciaNarrativa = secuenciaPrologoActiva;
 
   reproducirSonidoComenzarAventura();
@@ -8900,11 +8901,13 @@ function mostrarPrologo() {
   btnComenzarPrologo.disabled = false;
   modalPrologo.classList.remove("cerrando", "oculto");
   modalPrologo.classList.add("abriendo");
+  window.PrologueCinematic.open();
   reproducirMusicaPrologo();
   finalizarSecuenciaNarrativa(secuenciaPrologoActiva);
   secuenciaPrologoActiva = iniciarSecuenciaNarrativa(() => {
     btnComenzarPrologo.click();
   });
+  btnSaltarNarrativa.classList.add("oculto");
 }
 
 function mostrarIntroduccionMundoDos() {
