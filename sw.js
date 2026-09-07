@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v241`;
+const CACHE_NAME = `${CACHE_PREFIX}v242`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -266,6 +266,12 @@ const CORE_ASSETS = [
   "./js/versus-room-supabase.js",
   "./js/adventure-puzzles.js",
   "./js/app.js",
+  "./js/kairos-forest.js",
+  "./css/kairos-forest.css",
+  "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png",
+  "./assets/images/cinematicas/bosque-kairos/ataque-v1.png",
+  "./assets/images/cinematicas/bosque-kairos/informe-sombra-v1.png",
+  "./assets/images/cinematicas/bosque-kairos/guardiana-revelada-v1.png",
   "./js/pwa.js",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.png",

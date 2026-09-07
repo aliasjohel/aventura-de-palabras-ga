@@ -1206,10 +1206,12 @@ let magoDesbloqueado = false;
 let dragonDesbloqueado = false;
 let nivorDesbloqueado = false;
 let hombreLoboDescubierto = false;
+let estadoPruebaKairos = "pendiente";
+let secuenciaKairosActiva = false;
 let dueloAventuraActivo = null;
 const desafiosPorMision = 3;
 function obtenerCantidadDesafiosMision(escenario = escenarioActual, mision = misionActual) {
-  return escenario === 4 && mision === 7 ? 4 : desafiosPorMision;
+  return (escenario === 4 && mision === 7) || (escenario === 0 && mision === 1) ? 4 : desafiosPorMision;
 }
 const adaptadorLocalSalasVersus = VersusRoom.crearAdaptadorLocal();
 let adaptadorSalasVersus = adaptadorLocalSalasVersus;
@@ -5228,6 +5230,13 @@ let personajeJugadorVersus = "explorador";
 let personajeRivalVersus = "mago";
 
 const configuracionesDuelosAventura = Object.freeze({
+  kairos_bosque: {
+    escenario: 0, mision: 1, rival: "kairos",
+    etiqueta: "EL DESAFÍO DEL TIEMPO · KAIRÓS",
+    arena: "assets/images/fondos/bosque-2.png",
+    altArena: "Sendero del Bosque Encantado ante Kairós",
+    intervaloRival: 3200, probabilidadRival: 0.48,
+  },
   shadow_final: {
     escenario: 4, mision: 9, rival: "t_shadow",
     etiqueta: "ÚLTIMO CENTINELA · SHADOW",
@@ -5295,6 +5304,21 @@ const configuracionesDuelosAventura = Object.freeze({
 });
 
 async function presentarDueloAventura(tipo) {
+  if (tipo === "kairos_bosque") {
+    if (secuenciaKairosActiva || dueloAventuraActivo || escenarioActual !== 0 || misionActual !== 1) return;
+    secuenciaKairosActiva = true;
+    try {
+      await esperarCierreHistoriaMision();
+      if (escenarioActual !== 0 || misionActual !== 1) return;
+      if (estadoPruebaKairos === "informe") {
+        await completarInformeKairos();
+      } else {
+        await KairosForest.play("entrada", { reduced: prefiereReducirMovimiento.matches });
+        if (escenarioActual === 0 && misionActual === 1) iniciarDueloAventura(tipo);
+      }
+    } finally { secuenciaKairosActiva = false; }
+    return;
+  }
   const configuracion = configuracionesDuelosAventura[tipo];
   if (
     !configuracion
@@ -5417,6 +5441,13 @@ async function completarDueloAventura() {
   otorgarMonedas(30, `aventura:${duelo.tipo}:duelo`);
   experiencia += 60;
   actualizarJugador();
+
+  if (duelo.tipo === "kairos_bosque") {
+    estadoPruebaKairos = "informe";
+    guardarProgreso();
+    await completarInformeKairos();
+    return;
+  }
 
   if (duelo.tipo === "shadow_final" || duelo.tipo === "azrak_final") {
     estadoFinalAzrak = duelo.tipo === "shadow_final" ? "traicion" : "final";
@@ -5565,6 +5596,18 @@ function mostrarFinalAventuraAzrak() {
   mensajePersonaje.textContent = "🏆 ¡Completaste Aventura de Palabras! Los cuatro mundos vuelven a estar unidos. Shadow eligió su propio camino junto a Aren y los guardianes.";
   btnSiguiente.textContent = "🏠 Volver al menú";
   btnSiguiente.classList.remove("oculto");
+}
+
+async function completarInformeKairos() {
+  await KairosForest.play("informe", { reduced: prefiereReducirMovimiento.matches });
+  if (escenarioActual !== 0 || misionActual !== 1) return;
+  estadoPruebaKairos = "completo";
+  desafiosCompletados = obtenerCantidadDesafiosMision() - 1;
+  sonidoNarrativoPendiente = avanzarMision();
+  btnSiguiente.textContent = "➡️ Siguiente misión";
+  guardarProgreso();
+  const mensajeCompleto = await mostrarMensajeDesafioSuperado();
+  if (mensajeCompleto) continuarAventura();
 }
 
 async function reproducirRetiradaNivorGlacial() {
@@ -8818,6 +8861,7 @@ function iniciarMisionSeleccionadaPruebas() {
   mundoCuatroCompletado = escenarioActual >= 4;
   estadoFinalAzrak = "shadow";
   primerDueloNivorCompletado = escenarioActual >= 4 || (escenarioActual === 3 && misionActual > 5);
+  estadoPruebaKairos = escenarioActual > 0 || misionActual > 1 ? "completo" : "pendiente";
   if (escenarioActual === 4) cristalesObtenidos = 4;
 
   if (escenarioActual === 0 && misionActual >= 9) {
@@ -8959,6 +9003,7 @@ function reiniciarEstadoAventura() {
   mundoCuatroCompletado = false;
   estadoFinalAzrak = "shadow";
   primerDueloNivorCompletado = false;
+  estadoPruebaKairos = "pendiente";
   hombreLoboDescubierto = false;
   dueloAventuraActivo = null;
   maximoEscenarioDesbloqueado = 0;
@@ -10514,7 +10559,9 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   }
 
   if (dueloAventura) {
-    mensajePersonaje.textContent = dueloAventura === "shadow_final"
+    mensajePersonaje.textContent = dueloAventura === "kairos_bosque"
+      ? "Kairós detuvo el tiempo en el sendero. Demostrá que podés seguir adelante."
+      : dueloAventura === "shadow_final"
       ? "Shadow protege el último umbral. Tu próxima batalla será contra Azrak."
       : dueloAventura === "azrak_final"
         ? "Azrak te espera. Los guardianes cuentan con vos."
@@ -10676,6 +10723,7 @@ function guardarProgreso() {
     mundoCuatroCompletado,
     estadoFinalAzrak,
     primerDueloNivorCompletado,
+    estadoPruebaKairos,
     hombreLoboDescubierto,
     maximoEscenarioDesbloqueado,
   };
@@ -10741,6 +10789,8 @@ function cargarProgreso() {
   hombreLoboDescubierto = progreso.hombreLoboDescubierto === true
     || escenarioActual > 0
     || (escenarioActual === 0 && misionActual > 5);
+  estadoPruebaKairos = escenarioActual > 0 || misionActual > 1
+    ? "completo" : progreso.estadoPruebaKairos === "informe" ? "informe" : "pendiente";
   maximoEscenarioDesbloqueado = Math.min(
     Math.max(
       progreso.maximoEscenarioDesbloqueado ?? escenarioActual,
@@ -12275,6 +12325,9 @@ function obtenerPruebaEspecialBosquePendiente() {
 }
 
 function obtenerDueloAventuraPendiente() {
+  if (escenarioActual === 0 && misionActual === 1 && desafiosCompletados >= desafiosPorMision && estadoPruebaKairos !== "completo") {
+    return "kairos_bosque";
+  }
   if (escenarioActual === 4 && misionActual === 9) {
     return estadoFinalAzrak === "shadow" ? "shadow_final" : estadoFinalAzrak === "azrak" ? "azrak_final" : "";
   }
