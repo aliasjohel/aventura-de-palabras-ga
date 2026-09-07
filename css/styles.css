@@ -15593,7 +15593,7 @@ button:disabled {
 @keyframes estallidoCeroAbsolutoV2 { 0%,64%{opacity:0;transform:scale(.45)}69%{opacity:1;transform:scale(1.08)}88%{opacity:.92;transform:scale(1)}100%{opacity:.4;transform:scale(.98)} }
 @keyframes victoriaCeroAbsolutoV2 { 0%,77%{opacity:0;transform:translate(-50%,12vh) scale(.7)}88%,100%{opacity:1;transform:translate(-50%,0) scale(1)} }
 
-/* Nivor v3: descenso vertical con aleteo y contacto con el suelo. */
+/* Nivor: frena inclinado y gira sobre las patas traseras al aterrizar. */
 .versus-personaje-uno.entrando-duelo.entrada-dragon_hielo,
 .versus-personaje-dos.entrando-duelo.entrada-dragon_hielo-rival {
   width:min(38vw,67vh,480px);
@@ -15602,29 +15602,35 @@ button:disabled {
   bottom:10%;
   scale:1.07;
 }
-.versus-personaje-uno.entrando-duelo.entrada-dragon_hielo { animation:aterrizajeNivorJugador 3.05s cubic-bezier(.2,.68,.2,1) both; }
-.versus-personaje-dos.entrando-duelo.entrada-dragon_hielo-rival { animation:aterrizajeNivorRival 3.05s cubic-bezier(.2,.68,.2,1) both; }
+.versus-personaje-uno.entrando-duelo.entrada-dragon_hielo {
+  transform-origin:50% 82%;
+  animation:aterrizajeNivorJugador 3.05s ease-in-out both;
+}
+.versus-personaje-dos.entrando-duelo.entrada-dragon_hielo-rival {
+  transform-origin:50% 82%;
+  animation:aterrizajeNivorRival 3.05s ease-in-out both;
+}
 @keyframes aterrizajeNivorJugador {
-  0%{transform:translateY(-86vh);opacity:0}
+  0%{transform:translateY(-86vh) rotate(-18deg);opacity:0}
   10%{opacity:1}
-  28%{transform:translateY(-56vh)}
-  48%{transform:translateY(-33vh)}
-  68%{transform:translateY(-14vh)}
-  84%{transform:translateY(-3vh)}
-  91%{transform:translateY(1.7vh)}
-  96%{transform:translateY(-.8vh)}
-  100%{transform:translateY(0)}
+  28%{transform:translateY(-56vh) rotate(-23deg)}
+  48%{transform:translateY(-30vh) rotate(-28deg)}
+  68%{transform:translateY(-9vh) rotate(-30deg)}
+  80%{transform:translateY(0) rotate(-26deg)}
+  87%{transform:translateY(.6vh) rotate(-19deg)}
+  96%{transform:translateY(.6vh) rotate(2deg)}
+  100%{transform:translateY(0) rotate(0deg)}
 }
 @keyframes aterrizajeNivorRival {
-  0%{transform:translateY(-86vh) scaleX(-1);opacity:0}
+  0%{transform:translateY(-86vh) rotate(18deg) scaleX(-1);opacity:0}
   10%{opacity:1}
-  28%{transform:translateY(-56vh) scaleX(-1)}
-  48%{transform:translateY(-33vh) scaleX(-1)}
-  68%{transform:translateY(-14vh) scaleX(-1)}
-  84%{transform:translateY(-3vh) scaleX(-1)}
-  91%{transform:translateY(1.7vh) scaleX(-1)}
-  96%{transform:translateY(-.8vh) scaleX(-1)}
-  100%{transform:translateY(0) scaleX(-1)}
+  28%{transform:translateY(-56vh) rotate(23deg) scaleX(-1)}
+  48%{transform:translateY(-30vh) rotate(28deg) scaleX(-1)}
+  68%{transform:translateY(-9vh) rotate(30deg) scaleX(-1)}
+  80%{transform:translateY(0) rotate(26deg) scaleX(-1)}
+  87%{transform:translateY(.6vh) rotate(19deg) scaleX(-1)}
+  96%{transform:translateY(.6vh) rotate(-2deg) scaleX(-1)}
+  100%{transform:translateY(0) rotate(0deg) scaleX(-1)}
 }
 
 /* Nivor v4: congela al rival y asciende convertido en un sol de hielo. */

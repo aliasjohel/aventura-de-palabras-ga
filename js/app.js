@@ -6165,7 +6165,7 @@ function programarAleteoEntradaNivor(elemento) {
     srcDragonHieloDescensoBajoVersus,
   ];
   elemento.src = cuadros[0];
-  for (let paso = 1; paso <= 13; paso += 1) {
+  for (let paso = 1; paso <= 11; paso += 1) {
     programarPasoEntradaVersus(() => {
       elemento.src = cuadros[paso % cuadros.length];
     }, paso * 210);
