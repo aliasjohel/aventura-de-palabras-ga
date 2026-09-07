@@ -1,0 +1,34 @@
+.trampa-raices {
+  position: absolute;
+  left: 8%; bottom: -3px;
+  width: clamp(170px, 22vw, 260px);
+  height: clamp(162px, 20.9vw, 247px);
+  pointer-events: none;
+  z-index: 3;
+  transform-origin: center bottom;
+  transition: opacity .75s ease, transform .85s ease, filter .4s ease;
+  filter: drop-shadow(0 3px 2px #081808a6);
+}
+.trampa-raices[hidden] { display: none; }
+.trampa-raices svg { width: 100%; height: 100%; overflow: visible; }
+.raices-suelo { fill: #17200dc4; }
+.raiz-etapa path {
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  opacity: 0;
+  transition: stroke-dashoffset .65s ease-out, opacity .15s ease;
+}
+.raiz-etapa.crecida path { stroke-dashoffset: 0; opacity: 1; }
+.raiz-borde { stroke: #201d10; stroke-width: 11; }
+.raiz-corteza { stroke: url(#cortezaRaices); stroke-width: 8; }
+.raiz-luz { stroke: #b1bc68; stroke-width: 1.2; }
+.raiz-etapa .raiz-hoja { fill: #587b32; stroke: #263b19; stroke-width: 1; stroke-dasharray: none; transition-delay: .3s; }
+.trampa-raices.capturado { filter: drop-shadow(0 0 5px #96bd4859); }
+.trampa-raices.liberando { opacity: 0; transform: translateY(35%) scaleY(.3); }
+@media (max-width: 700px) {
+  .trampa-raices { left: 20%; bottom: 8%; width: 130px; height: 124px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trampa-raices, .raiz-etapa path { transition: none; }
+  .trampa-raices.liberando { transform: none; }
+}
