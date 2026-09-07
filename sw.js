@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v235`;
+const CACHE_NAME = `${CACHE_PREFIX}v236`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -412,6 +412,7 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/t-shadow-impacto.png",
   "./assets/images/personajes/versus/carnivora-devorando-t-shadow.png",
   "./assets/images/personajes/versus/guardian-alba-base.png",
+  "./assets/images/personajes/versus/lume-invoca-portales-v1.png",
   "./assets/images/personajes/versus/guardian-alba-ataque.png",
   "./assets/images/personajes/versus/guardian-alba-habilidad.png",
   "./assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png",

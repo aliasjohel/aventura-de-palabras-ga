@@ -132,11 +132,17 @@
 .rayo-lume.activo { opacity: 1; stroke-dasharray: 2000; animation: llamadaLume 1.6s ease-out both; }
 @keyframes llamadaLume { from { stroke-dashoffset: 2000; } to { stroke-dashoffset: 0; } }
 .escenario-azrak[data-mision-azrak="8"] .lume-azrak { left: 60%; right: auto; bottom: 5%; width: 18%; height: 42%; }
-.cristal-union-lume { position: absolute; width: 25%; height: 30%; object-fit: contain; left: 50%; top: 47%; filter: saturate(0) sepia(.4) brightness(1.5) drop-shadow(0 0 6px #ffe69d); }
+.lume-gesto { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:0; transition:opacity .22s ease; filter:drop-shadow(0 0 14px #fff3a6); }
+.lume-libre .lume-figura { transition:opacity .22s ease; }
+.lume-azrak.invocando .lume-figura { opacity:0; }
+.lume-azrak.invocando .lume-gesto { opacity:1; }
+.cristal-union-lume { position: absolute; width: 25%; height: 30%; object-fit: contain; left: 50%; top: 47%; transition:top .6s cubic-bezier(.2,.8,.25,1),left .6s ease,filter .3s ease; filter: saturate(0) sepia(.4) brightness(1.5) drop-shadow(0 0 6px #ffe69d); }
+.lume-azrak.invocando .cristal-union-lume { left:14%; top:-19%; }
+.lume-azrak.invocacion-reducida .cristal-union-lume { transition:none; }
 .lume-azrak.invocando .cristal-union-lume { filter: saturate(0) sepia(.4) brightness(2) drop-shadow(0 0 18px #fff5b5); }
 .lume-azrak.invocando .lume-figura { filter: drop-shadow(0 0 18px #fff3a6); }
 .estado-portales-lume { position: absolute; top: 2%; left: 10%; right: 10%; margin: 0; padding: 5px 8px; border-radius: 8px; background: #130c21df; color: #fff1b9; text-align: center; font: 600 clamp(10px, 1.2vw, 14px)/1.3 system-ui; }
-@media (prefers-reduced-motion: reduce) { .portal-lume { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .portal-lume, .cristal-union-lume, .lume-gesto, .lume-libre .lume-figura { transition: none; } }
 
 /* Match painted crystal height despite the square canvas of the last three. */
 .panel-cristales #cristalPanelCumbres,

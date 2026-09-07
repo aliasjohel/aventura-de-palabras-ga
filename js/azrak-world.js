@@ -48,7 +48,10 @@
       const lume = document.createElement('figure');
       lume.className = `lume-azrak ${mission === 6 ? 'lume-cautiva' : 'lume-libre'}`;
       addImage(lume, sprites + 'guardian-alba-base.png', 'lume-figura', 'Lume, guardiana del Cristal de la Unión');
-      if (mission === 7) addImage(lume, 'assets/images/elements/cristal-celeste-v1.png', 'cristal-union-lume', 'Quinto cristal');
+      if (mission === 7) {
+        addImage(lume, sprites + 'lume-invoca-portales-v1.png', 'lume-gesto', '');
+        addImage(lume, 'assets/images/elements/cristal-celeste-v1.png', 'cristal-union-lume', 'Quinto cristal');
+      }
       const label = document.createElement('figcaption');
       label.textContent = mission === 6 ? 'Lume · Atrapada en el eclipse' : 'Lume · Guardiana de la Unión';
       lume.append(label); layer.append(lume);
@@ -100,9 +103,14 @@
   async function ignitePortal(container, index, reduced = false) {
     const layer = container.querySelector('.vida-azrak');
     const portals = layer?.querySelectorAll('.portal-lume');
-    if (!portals?.[index]) return;
+    if (!portals?.[index] || layer.dataset.invocando === 'true') return;
+    layer.dataset.invocando = 'true';
     const lume = layer.querySelector('.lume-azrak');
+    lume?.classList.toggle('invocacion-reducida', reduced);
     lume?.classList.add('invocando');
+    // El rayo nace del cristal una vez que termina de elevarse.
+    if (!reduced) await new Promise(resolve => setTimeout(resolve, 650));
+    if (!layer.isConnected) return;
     const beam = layer.querySelector('.rayo-lume');
     const [x, y] = portalShapes[index];
     const svg = layer.querySelector('svg');
@@ -116,9 +124,11 @@
     layer.querySelector('.estado-portales-lume').textContent = index === 3
       ? '«Seguí, Aren. Yo sostendré los portales hasta que lleguen los guardianes»'
       : `Lume llama al ${portalNames[index]} · ${index + 1}/4`;
-    await new Promise(resolve => setTimeout(resolve, reduced ? 900 : 2300));
+    await new Promise(resolve => setTimeout(resolve, reduced ? 900 : 1600));
     if (!layer.isConnected) return;
     beam.classList.remove('activo'); lume?.classList.remove('invocando');
+    if (!reduced) await new Promise(resolve => setTimeout(resolve, 450));
+    delete layer.dataset.invocando;
   }
   const paths = [[0, 2, 1, 3], [3, 0, 2, 1, 0], [1, 3, 2, 0, 3, 1]];
   function toggleLight(board, index) {

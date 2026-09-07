@@ -1,0 +1,9 @@
+[
+  {
+    "file": "assets/images/personajes/versus/lume-invoca-portales-v1.png",
+    "source": "exec-6940462e-8c69-4723-afe0-b0b8cdf13ed0.png",
+    "tool": "image_gen integrada",
+    "prompt": "Create a full-body spellcasting sprite of this EXACT blonde female guardian Lume, same face, ponytail, white gold armor and turquoise gemstones, same polished illustrated game style. She stands in three-quarter SIDE view facing LEFT and looks up LEFT toward her raised right hand. Her RIGHT ARM reaches diagonally up LEFT, open palm facing upward at head height, fingers elegantly releasing a levitating object. LEFT hand relaxed near waist. Sword sheathed, shield behind her back, no weapons in hands. NO crystal and NO light beam in this image: game code adds an independently floating crystal above the OPEN PALM. Both feet firmly on same baseline, entire full body visible with margin, portrait canvas. True transparent alpha background, no checkerboard, no scenery, no floor, no text. This is the active pose for raising a magical crystal to call guardians through portals.",
+    "postprocess": "Transparencia por relleno desde los bordes; lienzo 768x1152. Cristal y rayo animados por código."
+  }
+]
