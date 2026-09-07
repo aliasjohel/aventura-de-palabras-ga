@@ -1,0 +1,16 @@
+[
+  {
+    "file": "assets/images/personajes/versus/dragon-hielo-aterrizaje-alto-v2.png",
+    "source": "exec-d1d1973b-eca7-43af-a158-86a2e6883832.png",
+    "tool": "image_gen integrada",
+    "prompt": "Create a NEW anatomically different LANDING POSE sprite of this exact white cyan crystal dragon Nivor. SIDE VIEW facing RIGHT toward an opponent offscreen. Torso nearly UPRIGHT, inclined 65 degrees above horizontal, like a bird braking to land. Hips directly BELOW shoulders. TWO HIND LEGS extend DOWN vertically beneath hips, knees bent slightly, large hind FEET are the lowest part of the creature and ready to bear weight. BOTH FRONT LEGS are curled up against chest well ABOVE the hind feet. This must NOT be a horizontal four-legged standing dragon floating in air. Head bends forward to look horizontally RIGHT, not upward or at camera. Tail curves behind to left, never below hind soles. TWO WINGS fully raised overhead for upstroke. Same recognizable white scales, blue crystals, cyan wing membranes, polished fantasy illustration. Full body entirely within square canvas, margin around silhouette. Real transparent alpha background, no ground, no shadows, no checkerboard, no text. Body centered, hind soles near 90% canvas height. Frame 1 of paired landing wing animation.",
+    "postprocess": "Transparencia por relleno desde bordes; lienzo 1024x1024."
+  },
+  {
+    "file": "assets/images/personajes/versus/dragon-hielo-aterrizaje-bajo-v2.png",
+    "source": "exec-b8802cdb-816b-45f0-a557-d7475f68c898.png",
+    "tool": "image_gen integrada",
+    "prompt": "Edit this exact sprite to frame 2 of its landing wing animation. Change ONLY the WINGS to a LOW DOWNSTROKE: both wings extended outward and DOWN on either side, tips around hip height, not above head. Keep every other pixel position as close as possible: EXACT upright torso, curled front paws, extended hind legs beneath body, same feet and head coordinates, tail, scale and canvas. Dragon still faces RIGHT in side view, hips beneath shoulders, hind feet lowest ready to land. Leave empty space at top where raised wings were. No change to body anatomy or pose. Full wings contained within same square canvas. Real transparent alpha background, no checkerboard, no ground, no text. Preserve white and cyan crystal dragon identity and illustration style.",
+    "postprocess": "Transparencia por relleno desde bordes; lienzo 1024x1024; alineación +10,+69 píxeles."
+  }
+]

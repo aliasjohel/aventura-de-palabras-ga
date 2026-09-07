@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v234`;
+const CACHE_NAME = `${CACHE_PREFIX}v235`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -428,8 +428,8 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/dragon-hielo-frontal-alas.png",
   "./assets/images/personajes/versus/dragon-hielo-aleteo-alto.png",
   "./assets/images/personajes/versus/dragon-hielo-aleteo-bajo.png",
-  "./assets/images/personajes/versus/dragon-hielo-descenso-lateral-alto-v1.png",
-  "./assets/images/personajes/versus/dragon-hielo-descenso-lateral-bajo-v1.png",
+  "./assets/images/personajes/versus/dragon-hielo-aterrizaje-alto-v2.png",
+  "./assets/images/personajes/versus/dragon-hielo-aterrizaje-bajo-v2.png",
   "./assets/images/elementos/hielo-pantalla-nivor-1.png",
   "./assets/images/elementos/hielo-pantalla-nivor-2.png",
   "./assets/images/elementos/hielo-pantalla-nivor-3.png",
