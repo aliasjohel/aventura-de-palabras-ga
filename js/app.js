@@ -12515,7 +12515,7 @@ function abrirPruebaEspecialBosque(tipo) {
     etiquetaPruebaBosque.textContent = "PRUEBA DEL CIRCUITO SOLAR";
     tituloPruebaBosque.textContent = "Llevá la energía al núcleo";
     instruccionPruebaBosque.textContent =
-      "Girá los canales de piedra. La luz avanza solo por las uniones correctas y debe alcanzar el núcleo del centro.";
+      "Girá los canales de piedra para llevar la luz al núcleo central. El tablero tiene desvíos y callejones sin salida: que un canal se ilumine no significa que vayas por el camino correcto.";
     btnRepetirPruebaBosque.textContent = "↻ Desordenar canales";
     iniciarPuzzleVientosDesierto();
     return;
@@ -13398,22 +13398,31 @@ function moverPiezaPuzzleRamas(posicion) {
   void completarPruebaEspecialBosque("ramas");
 }
 
+const ladoTableroVientoDesierto = 7;
+const origenVientoDesierto = 42;
+const nucleoVientoDesierto = 24;
 const caminoEnergiaVientoDesierto = [
-  20, 21, 22, 23, 24,
-  19, 18, 17, 16, 15,
-  10, 5, 0, 1, 2, 3, 4, 9, 14, 13, 12,
+  42, 43, 44, 45, 46, 47, 48, 41, 34, 27, 20, 13, 6,
+  5, 4, 3, 2, 1, 0, 7, 14, 21, 28, 29, 30, 23, 16,
+  17, 18, 25, 24,
+];
+// Estos ramales reciben luz si se toma un giro equivocado y terminan cerrados.
+const desviosVientoDesierto = [
+  [30, 37, 36, 35],
+  [16, 15, 8, 9, 10],
+  [18, 11, 12, 19, 26, 33, 32, 31, 38],
 ];
 
 function iniciarPuzzleVientosDesierto() {
   if (pruebaEspecialBosqueActiva !== "vientos") return;
 
-  tiposCanalesVientoDesierto = Array.from({ length: 25 }, () => ({
+  tiposCanalesVientoDesierto = Array.from({ length: ladoTableroVientoDesierto ** 2 }, () => ({
     tipo: "bloqueado",
     objetivo: 0,
   }));
 
   caminoEnergiaVientoDesierto.forEach((casilla, posicion) => {
-    if (casilla === 12) {
+    if (casilla === nucleoVientoDesierto) {
       tiposCanalesVientoDesierto[casilla] = { tipo: "nucleo", objetivo: 0 };
       return;
     }
@@ -13431,6 +13440,16 @@ function iniciarPuzzleVientosDesierto() {
     );
   });
 
+  desviosVientoDesierto.forEach((ramal) => {
+    ramal.slice(1).forEach((casilla, offset) => {
+      const posicion = offset + 1;
+      const entrada = direccionEntreCasillas(casilla, ramal[posicion - 1]);
+      tiposCanalesVientoDesierto[casilla] = posicion === ramal.length - 1
+        ? { tipo: "ciego", objetivo: ["N", "E", "S", "O"].indexOf(entrada) }
+        : crearCanalParaDirecciones(entrada, direccionEntreCasillas(casilla, ramal[posicion + 1]));
+    });
+  });
+
   orientacionesVientosDesierto = tiposCanalesVientoDesierto.map(
     ({ tipo, objetivo }) => {
       if (tipo === "nucleo" || tipo === "bloqueado") return 0;
@@ -13443,16 +13462,16 @@ function iniciarPuzzleVientosDesierto() {
   );
   movimientosVientosDesierto = 0;
   estadoPruebaBosque.textContent =
-    "Hay una sola entrada solar en la esquina inferior izquierda. Conectá sus 21 tramos hasta el núcleo central.";
+    "Conectá la entrada solar con el núcleo. Cuidado: los desvíos también se iluminan, pero algunos terminan sin salida.";
   renderizarPuzzleVientosDesierto();
   botonesVientosDesierto[0]?.focus();
 }
 
 function direccionEntreCasillas(origen, destino) {
   const diferencia = destino - origen;
-  if (diferencia === -5) return "N";
+  if (diferencia === -ladoTableroVientoDesierto) return "N";
   if (diferencia === 1) return "E";
-  if (diferencia === 5) return "S";
+  if (diferencia === ladoTableroVientoDesierto) return "S";
   return "O";
 }
 
@@ -13480,7 +13499,7 @@ function obtenerAberturasCanal(indice) {
   const canal = tiposCanalesVientoDesierto[indice];
   if (canal.tipo === "bloqueado") return [];
   if (canal.tipo === "nucleo") return ["E"];
-  const bases = canal.tipo === "recto" ? [0, 2] : [0, 1];
+  const bases = canal.tipo === "ciego" ? [0] : canal.tipo === "recto" ? [0, 2] : [0, 1];
   const nombres = ["N", "E", "S", "O"];
   return bases.map(
     (direccion) => nombres[(direccion + orientacionesVientosDesierto[indice]) % 4],
@@ -13489,21 +13508,21 @@ function obtenerAberturasCanal(indice) {
 
 function obtenerCanalesEnergizados() {
   const energizados = new Set();
-  if (!obtenerAberturasCanal(20).includes("S")) return energizados;
+  if (!obtenerAberturasCanal(origenVientoDesierto).includes("S")) return energizados;
 
-  const pendientes = [20];
-  energizados.add(20);
-  const desplazamientos = { N: -5, E: 1, S: 5, O: -1 };
+  const pendientes = [origenVientoDesierto];
+  energizados.add(origenVientoDesierto);
+  const desplazamientos = { N: -ladoTableroVientoDesierto, E: 1, S: ladoTableroVientoDesierto, O: -1 };
   const opuestas = { N: "S", E: "O", S: "N", O: "E" };
 
   while (pendientes.length) {
     const actual = pendientes.shift();
-    const fila = Math.floor(actual / 5);
-    const columna = actual % 5;
+    const fila = Math.floor(actual / ladoTableroVientoDesierto);
+    const columna = actual % ladoTableroVientoDesierto;
     obtenerAberturasCanal(actual).forEach((direccion) => {
       if (direccion === "N" && fila === 0) return;
-      if (direccion === "S" && fila === 4) return;
-      if (direccion === "E" && columna === 4) return;
+      if (direccion === "S" && fila === ladoTableroVientoDesierto - 1) return;
+      if (direccion === "E" && columna === ladoTableroVientoDesierto - 1) return;
       if (direccion === "O" && columna === 0) return;
       const vecina = actual + desplazamientos[direccion];
       if (
@@ -13541,7 +13560,7 @@ function renderizarPuzzleVientosDesierto() {
       nucleo.setAttribute("role", "gridcell");
       nucleo.setAttribute(
         "aria-label",
-        energizados.has(indice) ? "Núcleo central activado" : "Núcleo central sin energía",
+        energizados.has(indice) ? "Núcleo central activado" : "Núcleo central sin energía, entrada por la derecha",
       );
       nucleo.innerHTML = "<span>✦</span>";
       tableroVientosDesierto.appendChild(nucleo);
@@ -13550,7 +13569,7 @@ function renderizarPuzzleVientosDesierto() {
 
     const boton = document.createElement("button");
     boton.type = "button";
-    boton.className = `canal-viento canal-${canal.tipo}${energizados.has(indice) ? " energizado" : ""}${indice === 20 ? " canal-origen" : ""}`;
+    boton.className = `canal-viento canal-${canal.tipo}${energizados.has(indice) ? " energizado" : ""}${indice === origenVientoDesierto ? " canal-origen" : ""}`;
     boton.dataset.viento = `${indice}`;
     boton.style.setProperty(
       "--giro-canal",
@@ -13559,7 +13578,7 @@ function renderizarPuzzleVientosDesierto() {
     boton.setAttribute("role", "gridcell");
     boton.setAttribute(
       "aria-label",
-      `Canal ${indice + 1}, ${energizados.has(indice) ? "con energía" : "sin energía"}`,
+      `Fila ${Math.floor(indice / ladoTableroVientoDesierto) + 1}, columna ${indice % ladoTableroVientoDesierto + 1}: canal ${canal.tipo}, abierto hacia ${obtenerAberturasCanal(indice).join(", ")}, ${energizados.has(indice) ? "con energía" : "sin energía"}`,
     );
     boton.innerHTML = "<span></span>";
     boton.addEventListener("click", () => girarObeliscoViento(indice));
@@ -13580,17 +13599,12 @@ function girarObeliscoViento(indice) {
   movimientosVientosDesierto += 1;
   reproducirSonido("colocarPieza");
   const energizados = renderizarPuzzleVientosDesierto();
-  const tramosEnergizados = caminoEnergiaVientoDesierto.filter((casilla) =>
-    energizados.has(casilla),
-  ).length;
-  const recorridoCompleto = caminoEnergiaVientoDesierto.every((casilla) =>
-    energizados.has(casilla),
-  );
+  const recorridoCompleto = energizados.has(nucleoVientoDesierto);
 
   if (!recorridoCompleto) {
     estadoPruebaBosque.textContent = `${movimientosVientosDesierto} ${
       movimientosVientosDesierto === 1 ? "movimiento" : "movimientos"
-    }. La luz recorrió ${tramosEnergizados} de los 21 tramos obligatorios.`;
+    }. El núcleo sigue sin energía. Revisá los giros y los caminos sin salida.`;
     tableroVientosDesierto.querySelector(`[data-viento="${indice}"]`)?.focus();
     return;
   }
@@ -14051,6 +14065,9 @@ async function completarPruebaEspecialBosque(tipo) {
   if (mensajeCompleto) continuarAventura();
 }
 
+const ladoMuralSantuario = 4;
+const cantidadPiezasMuralSantuario = ladoMuralSantuario ** 2;
+
 function mezclarPiezasMural(indices) {
   const resultado = [...indices];
 
@@ -14064,8 +14081,8 @@ function mezclarPiezasMural(indices) {
 
 function crearPiezaMuralSantuario(indice) {
   const pieza = document.createElement("button");
-  const fila = Math.floor(indice / 3);
-  const columna = indice % 3;
+  const fila = Math.floor(indice / ladoMuralSantuario);
+  const columna = indice % ladoMuralSantuario;
   pieza.type = "button";
   pieza.className = "pieza-mural-santuario";
   pieza.dataset.indice = `${indice}`;
@@ -14090,7 +14107,7 @@ function crearTableroMuralSantuario() {
   btnRetirarPiezaMural.disabled = true;
   btnRetirarPiezaMural.disabled = true;
 
-  for (let indice = 0; indice < 9; indice += 1) {
+  for (let indice = 0; indice < cantidadPiezasMuralSantuario; indice += 1) {
     const espacio = document.createElement("div");
     espacio.className = "espacio-mural-santuario";
     espacio.dataset.indice = `${indice}`;
@@ -14106,7 +14123,7 @@ function crearTableroMuralSantuario() {
     tableroMuralSantuario.appendChild(espacio);
   }
 
-  const orden = mezclarPiezasMural(Array.from({ length: 9 }, (_, indice) => indice));
+  const orden = mezclarPiezasMural(Array.from({ length: cantidadPiezasMuralSantuario }, (_, indice) => indice));
   orden.forEach((indice) => bandejaMuralSantuario.appendChild(crearPiezaMuralSantuario(indice)));
 }
 
@@ -14121,7 +14138,7 @@ function seleccionarPiezaMural(pieza) {
   );
   estadoMuralSantuario.textContent = piezaSeleccionadaMural
     ? `Fragmento ${Number(pieza.dataset.indice) + 1} seleccionado. Elegí un espacio para moverlo o intercambiarlo.`
-    : `${contarEspaciosMuralOcupados()} de 9 espacios ocupados`;
+    : `${contarEspaciosMuralOcupados()} de ${cantidadPiezasMuralSantuario} espacios ocupados`;
 }
 
 function iniciarArrastrePiezaMural(evento) {
@@ -14289,15 +14306,15 @@ function retirarPiezaMuralSantuario(
   bandejaMuralSantuario.appendChild(pieza);
   if (origen) actualizarEspacioMural(origen);
   limpiarSeleccionPiezaMural();
-  estadoMuralSantuario.textContent = `${contarEspaciosMuralOcupados()} de 9 espacios ocupados`;
+  estadoMuralSantuario.textContent = `${contarEspaciosMuralOcupados()} de ${cantidadPiezasMuralSantuario} espacios ocupados`;
 }
 
 function evaluarSolucionMuralSantuario() {
   const espacios = [...tableroMuralSantuario.querySelectorAll(".espacio-mural-santuario")];
   const ocupadas = contarEspaciosMuralOcupados();
-  estadoMuralSantuario.textContent = `${ocupadas} de 9 espacios ocupados`;
+  estadoMuralSantuario.textContent = `${ocupadas} de ${cantidadPiezasMuralSantuario} espacios ocupados`;
 
-  if (ocupadas < 9) return;
+  if (ocupadas < cantidadPiezasMuralSantuario) return;
 
   const resuelto = espacios.every((espacio) => {
     const pieza = espacio.querySelector(":scope > .pieza-mural-santuario");
@@ -14328,7 +14345,7 @@ function mostrarAyudaMuralSantuario() {
   temporizadorAyudaMural = setTimeout(() => {
     tableroMuralSantuario.classList.remove("guia-activa");
     btnAyudaMuralSantuario.disabled = false;
-    estadoMuralSantuario.textContent = `${contarEspaciosMuralOcupados()} de 9 espacios ocupados`;
+    estadoMuralSantuario.textContent = `${contarEspaciosMuralOcupados()} de ${cantidadPiezasMuralSantuario} espacios ocupados`;
     temporizadorAyudaMural = null;
   }, 3200);
 }
@@ -14358,7 +14375,7 @@ function abrirRompecabezasMuralSantuario() {
   btnAyudaMuralSantuario.disabled = false;
   btnRetirarPiezaMural.disabled = true;
   btnSalirMuralSantuario.disabled = false;
-  estadoMuralSantuario.textContent = "0 de 9 espacios ocupados";
+  estadoMuralSantuario.textContent = `0 de ${cantidadPiezasMuralSantuario} espacios ocupados`;
   modalMuralSantuario.classList.remove("oculto");
   pantallaJuego.classList.add("rompecabezas-mural-activo");
   bandejaMuralSantuario.querySelector(".pieza-mural-santuario")?.focus();

@@ -9319,7 +9319,8 @@ button:disabled {
 .tablero-mural-santuario {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     width: min(100%, 720px);
     aspect-ratio: 3 / 2;
     margin-inline: auto;
@@ -9415,8 +9416,8 @@ button:disabled {
     border-radius: 6px;
     background-image: url("../assets/images/elements/mural-dragon-bosque.png");
     background-repeat: no-repeat;
-    background-size: 300% 300%;
-    background-position: calc(var(--columna-pieza) * 50%) calc(var(--fila-pieza) * 50%);
+    background-size: 400% 400%;
+    background-position: calc(var(--columna-pieza) * 33.3333333333%) calc(var(--fila-pieza) * 33.3333333333%);
     box-shadow: 0 5px 9px rgba(0, 0, 0, 0.48);
     cursor: grab;
     touch-action: none;
@@ -16125,9 +16126,9 @@ button:disabled {
 .tablero-vientos-desierto {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: clamp(4px, 1vw, 8px);
-    width: min(100%, 520px);
+    grid-template-columns: repeat(7, 1fr);
+    gap: clamp(3px, .7vw, 6px);
+    width: min(100%, 620px);
     margin-inline: auto;
     padding: clamp(10px, 2vw, 18px);
     border: 7px ridge #9d6028;
@@ -16399,7 +16400,7 @@ button:disabled {
     }
 }
 @media (orientation: landscape) and (max-height: 760px) {
-    .tablero-vientos-desierto { width: min(100%, 52vh, 430px); }
+    .tablero-vientos-desierto { width: min(100%, 430px); }
 }
 @media (prefers-reduced-motion: reduce) {
     .personaje-narrativo-desierto,
@@ -17425,3 +17426,23 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
 @keyframes arenaKairosAparece { 0%, 39% { opacity: 0; } 42%, 85% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes arenaKairosCae { to { background-position-y: 5px; } }
 @media (prefers-reduced-motion: reduce) { .arena-reloj-kairos { animation: none; } }
+
+.canal-ciego > span::before { top:-4%; height:62%; border-radius:0 0 8px 8px; }
+.canal-ciego > span::after { display:none; }
+.tablero-vientos-desierto .canal-viento { min-height:30px; }
+@media (max-width:620px) {
+  .tablero-vientos-desierto { padding:5px; border-width:4px; gap:3px; }
+  .tablero-vientos-desierto .canal-viento { border-radius:6px; }
+}
+
+.nucleo-viento::after { content:""; position:absolute; right:-2px; top:42%; width:27%; height:16%; background:#4d301d; box-shadow:inset 0 0 0 2px #dcab63; }
+.nucleo-viento.energizado::after { background:#fff7ae; box-shadow:0 0 8px #ffc932; }
+
+@media (orientation:landscape) and (max-height:620px) {
+  .zona-rompecabezas-mural { grid-template-columns:minmax(0,1.5fr) minmax(220px,1fr); gap:12px; }
+  .tablero-mural-santuario { width:min(100%, calc((100dvh - 170px) * 1.5)); max-height:none; }
+  .bandeja-mural-santuario { grid-template-columns:repeat(4,minmax(0,1fr)); gap:4px; min-height:0; }
+  .sector-piezas-mural { padding:5px; }
+  .sector-piezas-mural > strong { font-size:.65rem; margin-bottom:4px; }
+  .cabecera-mural-santuario p { font-size:.76rem; margin-bottom:4px; }
+}
