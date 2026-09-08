@@ -1,7 +1,43 @@
 .escenario-azrak { isolation: isolate; }
 .probar-victoria-aventura { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); z-index: 150; border: 1px solid #be9870; border-radius: 12px; padding: 6px 12px; color: white; background: #23152de8; font-size: .75rem; }
 .cristal-panel-union { filter: hue-rotate(190deg) saturate(.7) brightness(1.35); }
-.historia-azrak .soporte-mision > img { filter: hue-rotate(285deg) saturate(.65); }
+.modal-historia.historia-azrak { background: radial-gradient(ellipse at center, #42204488, transparent 70%), #08060bf2; }
+.historia-azrak .presentacion-historia { width: min(96vw, 920px); min-height: 0; height: min(70vw, 610px, 88vh); }
+.historia-azrak .soporte-mision { inset: 0; width: 100%; height: 100%; transform: none; filter: drop-shadow(0 12px 24px #000a); }
+.historia-azrak .soporte-mision > img { width: 100%; height: 100%; }
+.historia-azrak .pergamino-mision { box-sizing: border-box; width: 76%; min-height: 0; height: 60%; padding: 8px; border: 0; background: none; box-shadow: none; clip-path: none; color: #fff0d5; }
+.historia-azrak .pergamino-mision::before,
+.historia-azrak .pergamino-mision::after,
+.historia-azrak .rollo-pergamino,
+.historia-azrak .clavo-pergamino { display: none; }
+.historia-azrak .contenido-pergamino { box-sizing: border-box; max-height: 100%; padding: 3px; scrollbar-color: #bd8654 transparent; }
+.historia-azrak .numero-capitulo { color: #edb67c; text-shadow: 0 2px 4px #000; }
+.historia-azrak .pergamino-mision h2 { color: #ffe6ba; text-shadow: 0 2px 5px #000; }
+.historia-azrak .separador-pergamino { color: #d09aea; }
+.historia-azrak #textoCapitulo { color: #fff0df; text-shadow: 0 2px 3px #000; }
+.modal-historia.historia-azrak.abriendo .soporte-mision,
+.modal-historia.historia-azrak.abriendo .pergamino-mision,
+.modal-historia.historia-azrak.abriendo .contenido-pergamino { animation: revelarCartelAzrak 650ms ease both; }
+.modal-historia.historia-azrak.cerrando .soporte-mision,
+.modal-historia.historia-azrak.cerrando .pergamino-mision { animation: revelarCartelAzrak 450ms ease reverse both; }
+@keyframes revelarCartelAzrak { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 600px) and (orientation: portrait) {
+  .historia-azrak .presentacion-historia { height: min(640px, 80vh); }
+  .historia-azrak .pergamino-mision { width: 78%; height: 61%; padding: 5px; }
+  .historia-azrak .pergamino-mision h2 { font-size: clamp(1.4rem, 6vw, 1.9rem); }
+}
+@media (max-height: 560px) and (orientation: landscape) {
+  .historia-azrak .presentacion-historia { width: min(92vw, 850px); height: 94vh; }
+  .historia-azrak .numero-capitulo { font-size: .9rem; margin-bottom: 6px; }
+  .historia-azrak .pergamino-mision h2 { font-size: 1.5rem; margin-bottom: 6px; }
+  .historia-azrak #textoCapitulo { font-size: .98rem; line-height: 1.35; }
+  .historia-azrak .separador-pergamino { margin-bottom: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .modal-historia.historia-azrak.abriendo .soporte-mision,
+  .modal-historia.historia-azrak.abriendo .pergamino-mision,
+  .modal-historia.historia-azrak.abriendo .contenido-pergamino { animation: none; }
+}
 .escenario-azrak::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1; background: radial-gradient(ellipse at 50% 100%, #f57c0022, transparent 65%); }
 .prueba-azrak .panel-prueba-bosque { background: linear-gradient(140deg, #251633, #100d17); border-color: #c7874a; }
 .puzzle-azrak { width: min(100%, 720px); margin: auto; padding: 12px; color: #fff2d4; text-align: center; }

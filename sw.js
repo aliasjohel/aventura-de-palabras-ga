@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v244`;
+const CACHE_NAME = `${CACHE_PREFIX}v245`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -138,6 +138,7 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/elementos/reloj-kairos-teclado-v1.png",
   "./assets/images/ui/presentacion-mision-tronco.png",
   "./assets/images/ui/presentacion-mision-hielo-v1.png",
+  "./assets/images/ui/presentacion-mision-azrak-v1.png",
   "./assets/images/fondos/bosque-0.png",
   "./assets/images/fondos/bosque-1.png",
   "./assets/images/fondos/bosque-2.png",

@@ -8756,8 +8756,10 @@ function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
   modalHistoria.classList.toggle("historia-desierto", esHistoriaDesierto);
   modalHistoria.classList.toggle("historia-cumbres", esHistoriaCumbres);
   modalHistoria.classList.toggle("historia-hielo", esHistoriaHielo);
-  imagenSoporteMision.src = esHistoriaDesierto || esHistoriaAzrak
-    ? "assets/images/ui/presentacion-mision-piedra-desierto-v1.png"
+  imagenSoporteMision.src = esHistoriaAzrak
+    ? "assets/images/ui/presentacion-mision-azrak-v1.png"
+    : esHistoriaDesierto
+      ? "assets/images/ui/presentacion-mision-piedra-desierto-v1.png"
     : esHistoriaHielo
       ? "assets/images/ui/presentacion-mision-hielo-v1.png"
       : esHistoriaCumbres
