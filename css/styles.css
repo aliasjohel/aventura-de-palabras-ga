@@ -2549,7 +2549,7 @@ body {
         filter .2s ease;
 }
 
-.opcion-campana-cumbres:disabled { cursor: default; opacity: 1; }
+.opcion-campana-cumbres:disabled { cursor: default; opacity: 1; background: transparent; }
 .opcion-campana-cumbres:not(:disabled):hover,
 .opcion-campana-cumbres:focus-visible {
     outline: 3px solid #d9fbff;

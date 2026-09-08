@@ -13171,8 +13171,33 @@ async function mezclarCampanasCumbres(posiciones, configuracion, secuencia) {
   botonIzquierdo?.focus();
 }
 
+function reproducirToqueCampanaCumbres() {
+  const ConstructorAudio = window.AudioContext || window.webkitAudioContext;
+  if (!ConstructorAudio) return;
+  contextoAudioTeclasVersus ||= new ConstructorAudio();
+  const contexto = contextoAudioTeclasVersus;
+  if (contexto.state === "suspended") void contexto.resume().catch(() => {});
+  const ahora = contexto.currentTime;
+  // Parciales inarmónicos y caída breve para un golpe de campana de cristal.
+  [1, 2.76, 5.4].forEach((parcial, indice) => {
+    const tono = contexto.createOscillator();
+    const volumen = contexto.createGain();
+    tono.type = "sine";
+    tono.frequency.setValueAtTime(740 * parcial, ahora);
+    volumen.gain.setValueAtTime(0.0001, ahora);
+    volumen.gain.exponentialRampToValueAtTime(0.12 / (indice + 1), ahora + 0.006);
+    volumen.gain.exponentialRampToValueAtTime(0.0001, ahora + 0.6);
+    tono.connect(volumen);
+    volumen.connect(contexto.destination);
+    tono.onended = () => { tono.disconnect(); volumen.disconnect(); };
+    tono.start(ahora);
+    tono.stop(ahora + 0.62);
+  });
+}
+
 function elegirCampanaCumbres(identidad) {
   if (!campanasCumbresAceptando || pruebaEspecialBosqueActiva !== "campanas-celestes") return;
+  reproducirToqueCampanaCumbres();
   campanasCumbresAceptando = false;
   botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
   const secuencia = ++secuenciaCampanasCumbres;
