@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v242`;
+const CACHE_NAME = `${CACHE_PREFIX}v243`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -133,6 +133,9 @@ const REVISIONES_CACHE_URL = "./__revisiones-recursos__.json";
 const RECURSOS_MODOS_LOCALES = [
   "./assets/icons/apple-touch-icon.png",
   "./assets/icons/favicon-32.png",
+  "./js/kalamo-desert.js",
+  "./assets/images/cinematicas/desierto-calamo/robo-mapa-v1.png",
+  "./assets/images/elementos/reloj-kairos-teclado-v1.png",
   "./assets/images/ui/presentacion-mision-tronco.png",
   "./assets/images/ui/presentacion-mision-hielo-v1.png",
   "./assets/images/fondos/bosque-0.png",

@@ -13,9 +13,8 @@
     ],
   };
   let active = null;
-  function play(kind, { reduced = false } = {}) {
+  function play(kind, { reduced = false, shots = scenes[kind], assetRoot = root, label = "La prueba de Kairós", heading = "BOSQUE ENCANTADO" } = {}) {
     if (active) return active;
-    const shots = scenes[kind];
     if (!shots) return Promise.resolve();
     active = new Promise(resolve => {
       const previous = document.activeElement;
@@ -23,19 +22,23 @@
       siblings.forEach(([el]) => { el.inert = true; });
       const layer = document.createElement("section");
       layer.className = "kairos-cinema";
+      layer.dataset.region = heading;
       layer.setAttribute("role", "dialog");
       layer.setAttribute("aria-modal", "true");
-      layer.setAttribute("aria-label", "La prueba de Kairós");
-      layer.innerHTML = `<img class="kairos-cinema-art" alt=""><div class="kairos-cinema-caption" aria-live="polite"><small></small><h2></h2><p></p></div><nav aria-label="Controles de la cinemática"><button type="button" data-action="pause"></button><button type="button" data-action="next">Siguiente →</button><button type="button" data-action="skip">Saltar</button></nav>`;
+      layer.setAttribute("aria-label", label);
+      layer.innerHTML = `<div class="story-cinema-scene"><img class="kairos-cinema-art" alt=""><img class="story-cinema-actor" alt="" hidden></div><div class="kairos-cinema-caption" aria-live="polite"><small></small><h2></h2><p></p></div><nav aria-label="Controles de la cinemática"><button type="button" data-action="pause"></button><button type="button" data-action="next">Siguiente →</button><button type="button" data-action="skip">Saltar</button></nav>`;
       document.body.append(layer);
       let index = 0, paused = reduced, elapsed = 0, last = performance.now(), ended = false;
       const buttons = [...layer.querySelectorAll("button")];
       function render() {
         const shot = shots[index];
         layer.dataset.shot = shot.image;
-        layer.querySelector("img").src = root + shot.image;
+        layer.querySelector("img").src = assetRoot + shot.image;
         layer.querySelector("img").alt = shot.title;
-        layer.querySelector("small").textContent = `BOSQUE ENCANTADO · ${index + 1} / ${shots.length}`;
+        const actor = layer.querySelector(".story-cinema-actor");
+        actor.hidden = !shot.actor;
+        if (shot.actor) { actor.src = assetRoot + shot.actor; actor.alt = shot.actorName || ""; }
+        layer.querySelector("small").textContent = `${heading} · ${index + 1} / ${shots.length}`;
         layer.querySelector("h2").textContent = shot.title;
         layer.querySelector("p").textContent = shot.text;
         buttons[0].textContent = paused ? "▶ Reanudar" : "Ⅱ Pausar";
@@ -82,5 +85,6 @@
     });
     return active;
   }
+  window.StoryCinematic = { play };
   window.KairosForest = { play, scenes };
 })();

@@ -56,17 +56,19 @@
       label.textContent = mission === 6 ? 'Lume · Atrapada en el eclipse' : 'Lume · Guardiana de la Unión';
       lume.append(label); layer.append(lume);
     }
-    const creatures = { 0: ['vuelo'], 1: ['vuelo', 'vuelo'], 2: ['vuelo'], 3: ['acecho'], 4: ['acecho'], 5: ['vuelo'], 8: ['acecho'] }[mission] || [];
-    creatures.forEach((type, index) => {
+    const count = mission === 0 ? 1 : mission === 5 ? 10 : 0;
+    for (let index = 0; index < count; index++) {
       const creature = document.createElement('div');
-      creature.className = `demonio-azrak demonio-${type}`;
-      creature.style.setProperty('--demora', `${index ? -9 : -3}s`);
-      creature.style.setProperty('--altura', `${index ? 28 : 12}%`);
+      creature.className = `demonio-azrak demonio-vuelo${mission === 5 ? ' demonio-lejano' : ''}`;
+      creature.style.setProperty('--demora', `${mission === 5 ? -11 + index * .38 : -3}s`);
+      creature.style.setProperty('--altura', `${mission === 5 ? 14 + (index % 4) * 1.7 : 12}%`);
+      creature.style.setProperty('--tamano-lejano', `${1.5 + (index % 3) * .25}%`);
+      creature.style.setProperty('--posicion-reducida', `${28 + index * 4}%`);
       creature.setAttribute('aria-hidden', 'true');
-      const files = type === 'vuelo' ? ['demonio-volador-v1.png', 'demonio-volador-alas-bajas-v1.png'] : ['cancerbero-acecho-v1.png'];
-      files.forEach((file, frame) => addImage(creature, 'assets/images/ambiente/reino-azrak/' + file, `demonio-cuadro cuadro-${frame}`));
+      ['demonio-volador-v1.png', 'demonio-volador-alas-bajas-v1.png'].forEach((file, frame) =>
+        addImage(creature, 'assets/images/ambiente/reino-azrak/' + file, `demonio-cuadro cuadro-${frame}`));
       layer.append(creature);
-    });
+    }
     container.append(layer);
   }
   const portalNames = ['Bosque', 'Desierto', 'Cielo', 'Invierno'];

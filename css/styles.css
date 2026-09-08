@@ -13176,6 +13176,8 @@ button:disabled {
 }
 
 .escenario.llegada-desierto-preparada .personaje-imagen {
+    animation: none;
+    transform: none;
     opacity: 0;
 }
 
@@ -13201,8 +13203,9 @@ button:disabled {
 }
 
 @keyframes aparecerExploradorDesierto {
-    0%, 8% { opacity: 0; transform: translateX(-72px) scale(.34); filter: brightness(1.8) saturate(.7); }
-    38% { opacity: 1; transform: translateX(-34px) scale(.62); filter: brightness(1.25); }
+    0%, 8% { opacity: 0; transform: translate(var(--salida-portal-x, 0px), var(--salida-portal-y, 0px)) scale(.34); filter: brightness(1.8) saturate(.7); }
+    20% { opacity: 1; transform: translate(var(--salida-portal-x, 0px), var(--salida-portal-y, 0px)) scale(.34); filter: brightness(1.8); }
+    48% { opacity: 1; transform: translate(calc(var(--salida-portal-x, 0px) * .5), calc(var(--salida-portal-y, 0px) * .5)) scale(.67); filter: brightness(1.25); }
     76% { transform: translateX(5px) scale(1.02); filter: none; }
     100% { opacity: 1; transform: none; filter: none; }
 }
@@ -15600,7 +15603,7 @@ button:disabled {
   height:82%;
   object-fit:contain;
   bottom:10%;
-  scale:1.07;
+  scale:1;
 }
 .versus-personaje-uno.entrando-duelo.entrada-dragon_hielo {
   transform-origin:50% 82%;
@@ -17380,3 +17383,45 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
     .tutorial-combate-real #pantallaVersus.activa { padding: 18px; }
     .modal-tutorial-versus.guia-en-arena { display: none; }
 }
+
+/* Kairós: breve giro del reloj sobre el teclado. */
+.teclado-versus.efecto-reloj-kairos { isolation: isolate; }
+.teclado-versus.efecto-reloj-kairos button { filter: saturate(.3); cursor: wait; }
+.teclado-versus.efecto-reloj-kairos::before {
+  content: ""; position: absolute; inset: -4px; z-index: 30; border-radius: 12px;
+  background: radial-gradient(ellipse, #123a50e8, #071625bc);
+  box-shadow: inset 0 0 22px #60e5ee88; pointer-events: auto;
+}
+.teclado-versus.efecto-reloj-kairos::after {
+  content: ""; position: absolute; inset: 0; z-index: 31; pointer-events: none;
+  background: url("../assets/images/elementos/reloj-kairos-teclado-v1.png") center / contain no-repeat;
+  filter: drop-shadow(0 0 9px #77efff);
+  mix-blend-mode: screen;
+  animation: giroRelojKairos 2s ease-in-out both;
+}
+@keyframes giroRelojKairos {
+  0% { transform: rotate(-180deg) scale(.5); opacity: 0; }
+  12% { opacity: 1; }
+  38% { transform: rotate(0) scale(1.05); }
+  48%, 85% { transform: rotate(0) scale(1); opacity: 1; }
+  100% { transform: scale(.85); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .teclado-versus.efecto-reloj-kairos::after { animation: none; }
+}
+
+.versus-personaje.entrando-duelo.nivor-aleteando {
+  scale: 1.25;
+  transform-origin: 50% 97%;
+  bottom: 16%;
+}
+.arena-reloj-kairos {
+  position: absolute; z-index: 32; left: calc(50% - 1px); top: 51%;
+  width: 2px; height: 14%; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, #bdffff 0 2px, transparent 2px 5px);
+  filter: drop-shadow(0 0 2px cyan);
+  animation: arenaKairosAparece 2s linear both, arenaKairosCae .24s linear infinite;
+}
+@keyframes arenaKairosAparece { 0%, 39% { opacity: 0; } 42%, 85% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes arenaKairosCae { to { background-position-y: 5px; } }
+@media (prefers-reduced-motion: reduce) { .arena-reloj-kairos { animation: none; } }

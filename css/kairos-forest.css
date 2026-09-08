@@ -7,4 +7,12 @@
 .kairos-cinema nav { display:flex; justify-content:center; gap:8px; }
 .kairos-cinema button { min-height:44px; border:1px solid #a6c694; border-radius:12px; background:#163b2d; color:#fff9e3; font:inherit; padding:9px 15px; cursor:pointer; }
 .kairos-cinema button:focus-visible { outline:3px solid #ffe8a2; outline-offset:2px; }
-@media (orientation:landscape) and (max-height:500px) { .kairos-cinema { grid-template-columns:minmax(0,1fr) minmax(270px,42%); grid-template-rows:minmax(0,1fr) auto; gap:8px; } .kairos-cinema-art { grid-row:1 / 3; } .kairos-cinema-caption p { font-size:15px; line-height:1.4; } .kairos-cinema nav { grid-column:2; } .kairos-cinema button { padding:8px; font-size:13px; } }
+@media (orientation:landscape) and (max-height:500px) { .kairos-cinema { grid-template-columns:minmax(0,1fr) minmax(270px,42%); grid-template-rows:minmax(0,1fr) auto; gap:8px; } .story-cinema-scene { grid-row:1 / 3; } .kairos-cinema-caption p { font-size:15px; line-height:1.4; } .kairos-cinema nav { grid-column:2; } .kairos-cinema button { padding:8px; font-size:13px; } }
+
+.kairos-cinema[data-region="DESIERTO PERDIDO"] { background:#1b1220; }
+.kairos-cinema[data-region="DESIERTO PERDIDO"] small { color:#eac89a; }
+.kairos-cinema[data-region="DESIERTO PERDIDO"] button { background:#422344; border-color:#d3b27b; }
+
+.story-cinema-scene { position:relative; min-height:0; overflow:hidden; }
+.story-cinema-scene:has(.story-cinema-actor:not([hidden])) .kairos-cinema-art { object-fit:cover; }
+.story-cinema-actor { position:absolute; height:90%; width:80%; object-fit:contain; left:10%; bottom:0; filter:drop-shadow(0 6px 10px #1b101aaa); }

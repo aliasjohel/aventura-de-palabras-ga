@@ -964,7 +964,7 @@ const historiaDesierto = [
     capitulo: "Misión 6",
     titulo: "El secreto de Zafir",
     texto:
-      "Ya libre de la ilusión, Zafir explica que la energía corrupta del templo despertó al Devoradunas. En una caravana enterrada encuentran provisiones y la última señal del camino. Desde ahora continuarán la expedición juntos.",
+      "Ya libre de la ilusión, Zafir explica que la energía corrupta del templo despertó al Devoradunas. En una caravana enterrada encuentran provisiones y la última señal del camino. Desde ahora continuarán la expedición juntos. Entre los restos de la caravana, una pluma de tinta se mueve sin que nadie la sostenga.",
   },
   {
     capitulo: "Misión 7",
@@ -1208,10 +1208,12 @@ let nivorDesbloqueado = false;
 let hombreLoboDescubierto = false;
 let estadoPruebaKairos = "pendiente";
 let secuenciaKairosActiva = false;
+let estadoEncuentroCalamo = "pendiente";
+let secuenciaCalamoActiva = false;
 let dueloAventuraActivo = null;
 const desafiosPorMision = 3;
 function obtenerCantidadDesafiosMision(escenario = escenarioActual, mision = misionActual) {
-  return (escenario === 4 && mision === 7) || (escenario === 0 && mision === 1) ? 4 : desafiosPorMision;
+  return (escenario === 4 && mision === 7) || (escenario === 0 && mision === 1) || (escenario === 1 && mision === 5) ? 4 : desafiosPorMision;
 }
 const adaptadorLocalSalasVersus = VersusRoom.crearAdaptadorLocal();
 let adaptadorSalasVersus = adaptadorLocalSalasVersus;
@@ -1661,6 +1663,7 @@ function actualizarTecladoPartidaOnline(partida) {
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = jugadaOnlineEnCurso
       || efectoBloqueoActivo
+      || tecladoVersus.classList.contains("efecto-reloj-kairos")
       || partida.status !== "playing"
       || !comenzo
       || partida.me?.finished
@@ -1999,6 +2002,19 @@ function continuarAventura() {
 
   if (mundoTresCompletado && escenarioActual === 2) {
     void entrarAlMundoHielo();
+    return;
+  }
+
+  if (mundoCuatroCompletado && escenarioActual === 3) {
+    escenarioActual = 4;
+    misionActual = 0;
+    desafiosCompletados = 0;
+    desafioActual = 1;
+    palabrasUsadasEnMision = [];
+    historiaMisionPendiente = true;
+    maximoEscenarioDesbloqueado = Math.max(maximoEscenarioDesbloqueado, 4);
+    guardarProgreso();
+    void iniciarMisionAventura({ presentarMision: true }).then(() => mostrarHistoriaMision({ misionYaCargada: true }));
     return;
   }
 
@@ -2493,18 +2509,6 @@ function avanzarTutorialRealVersus() {
     return;
   }
 
-  if (mundoCuatroCompletado && escenarioActual === 3) {
-    escenarioActual = 4;
-    misionActual = 0;
-    desafiosCompletados = 0;
-    desafioActual = 1;
-    palabrasUsadasEnMision = [];
-    historiaMisionPendiente = true;
-    maximoEscenarioDesbloqueado = Math.max(maximoEscenarioDesbloqueado, 4);
-    guardarProgreso();
-    void iniciarMisionAventura({ presentarMision: true }).then(() => mostrarHistoriaMision({ misionYaCargada: true }));
-    return;
-  }
   if (!tutorialCombateVersus.completado) return;
   if (pasoActualTutorialVersus === pasosTutorialVersus.length - 1) {
     cerrarTutorialVersus({ recordar: true });
@@ -3696,7 +3700,7 @@ function mostrarVistaImpactoRivalVersus(personaje, letraForzada = "") {
     forced_miss: letraForzada
       ? `La calavera pulsó la ${letraForzada}: error forzado.`
       : "La calavera obligó al rival a cometer un error.",
-    time_steal: "El cronómetro rival perdió 20 segundos.",
+    time_steal: "El rival pierde 20 segundos y su teclado se detiene durante 2 segundos.",
   };
   nombreImpactoRivalVersus.textContent = `${habilidad.icono} ${habilidad.nombre}`;
   detalleImpactoRivalVersus.textContent = detallesPorEfecto[habilidad.efecto]
@@ -3892,7 +3896,8 @@ function sincronizarTecladoDemoVersus() {
     || tecladoVersus.classList.contains("efecto-raices")
     || tecladoVersus.classList.contains("efecto-agujero-negro")
     || tecladoVersus.classList.contains("efecto-teclas-rotas")
-    || tecladoVersus.classList.contains("efecto-congelado");
+    || tecladoVersus.classList.contains("efecto-congelado")
+    || tecladoVersus.classList.contains("efecto-reloj-kairos");
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = bloqueado
       || demoVersus.teclasRobadasJugador.has(boton.textContent)
@@ -4285,7 +4290,45 @@ function actualizarPanelHabilidadVersus(carga = demoVersus.cargaHabilidadJugador
   actualizarPistaLupaVersus(pista);
 }
 
+let temporizadorRelojKairos = null;
+let bloqueoRivalKairosHasta = 0;
+
+function limpiarRelojKairosVersus() {
+  clearTimeout(temporizadorRelojKairos);
+  temporizadorRelojKairos = null;
+  bloqueoRivalKairosHasta = 0;
+  tecladoVersus.querySelector(".arena-reloj-kairos")?.remove();
+  tecladoVersus.classList.remove("efecto-reloj-kairos");
+  tecladoVersus.setAttribute("aria-label", "Teclado de combate");
+}
+
+function mostrarRelojKairosVersus() {
+  clearTimeout(temporizadorRelojKairos);
+  tecladoVersus.querySelector(".arena-reloj-kairos")?.remove();
+  tecladoVersus.classList.remove("efecto-reloj-kairos");
+  void tecladoVersus.offsetWidth;
+  tecladoVersus.classList.add("efecto-reloj-kairos");
+  const arena = document.createElement("span");
+  arena.className = "arena-reloj-kairos";
+  arena.setAttribute("aria-hidden", "true");
+  tecladoVersus.append(arena);
+  tecladoVersus.setAttribute("aria-label", "Kairós detuvo el teclado durante 2 segundos");
+  bloquearTecladoDemoVersus();
+  temporizadorRelojKairos = setTimeout(() => {
+    temporizadorRelojKairos = null;
+    tecladoVersus.querySelector(".arena-reloj-kairos")?.remove();
+    tecladoVersus.classList.remove("efecto-reloj-kairos");
+    tecladoVersus.setAttribute("aria-label", "Teclado de combate");
+    if (adaptadorSalasVersus.proveedor === "supabase" && partidaOnlineVersus) {
+      actualizarTecladoPartidaOnline(partidaOnlineVersus);
+    } else {
+      sincronizarTecladoDemoVersus();
+    }
+  }, 2000);
+}
+
 function animarRoboTiempoKairosVersus(desdeRival = false, segundos = 20) {
+  if (desdeRival && !demoVersus.partidaFinalizada && !demoVersus.finalizadoJugador) mostrarRelojKairosVersus();
   const panel = desdeRival ? tiempoVersusUno : tiempoVersusDos;
   panel.style.setProperty("--segundos-robados", `"-${segundos} s"`);
   panel.classList.remove("tiempo-robado-kairos");
@@ -4301,6 +4344,7 @@ function aplicarRoboTiempoLocalVersus(desdeRival = false, segundos = 20) {
     if (demoVersus.tiempoJugador === 0) agotarTiempoJugadorVersus();
   } else {
     demoVersus.tiempoRival = Math.max(0, demoVersus.tiempoRival - segundos);
+    bloqueoRivalKairosHasta = Date.now() + 2000;
     animarRoboTiempoKairosVersus(false, segundos);
     if (demoVersus.tiempoRival === 0) agotarTiempoRivalVersus();
   }
@@ -5230,6 +5274,13 @@ let personajeJugadorVersus = "explorador";
 let personajeRivalVersus = "mago";
 
 const configuracionesDuelosAventura = Object.freeze({
+  calamo_desierto: {
+    escenario: 1, mision: 5, rival: "kalamo",
+    etiqueta: "EL LADRÓN DE PALABRAS · CÁLAMO",
+    arena: "assets/images/fondos/desierto-6.png",
+    altArena: "Caravana enterrada del Desierto Perdido",
+    intervaloRival: 3000, probabilidadRival: 0.54,
+  },
   kairos_bosque: {
     escenario: 0, mision: 1, rival: "kairos",
     etiqueta: "EL DESAFÍO DEL TIEMPO · KAIRÓS",
@@ -5304,6 +5355,21 @@ const configuracionesDuelosAventura = Object.freeze({
 });
 
 async function presentarDueloAventura(tipo) {
+  if (tipo === "calamo_desierto") {
+    if (secuenciaCalamoActiva || dueloAventuraActivo || escenarioActual !== 1 || misionActual !== 5) return;
+    secuenciaCalamoActiva = true;
+    try {
+      await esperarCierreHistoriaMision();
+      if (escenarioActual !== 1 || misionActual !== 5) return;
+      if (estadoEncuentroCalamo === "huida") {
+        await completarHuidaCalamo();
+      } else {
+        await KalamoDesert.play("entrada", { reduced: prefiereReducirMovimiento.matches });
+        if (escenarioActual === 1 && misionActual === 5) iniciarDueloAventura(tipo);
+      }
+    } finally { secuenciaCalamoActiva = false; }
+    return;
+  }
   if (tipo === "kairos_bosque") {
     if (secuenciaKairosActiva || dueloAventuraActivo || escenarioActual !== 0 || misionActual !== 1) return;
     secuenciaKairosActiva = true;
@@ -5441,6 +5507,13 @@ async function completarDueloAventura() {
   otorgarMonedas(30, `aventura:${duelo.tipo}:duelo`);
   experiencia += 60;
   actualizarJugador();
+
+  if (duelo.tipo === "calamo_desierto") {
+    estadoEncuentroCalamo = "huida";
+    guardarProgreso();
+    await completarHuidaCalamo();
+    return;
+  }
 
   if (duelo.tipo === "kairos_bosque") {
     estadoPruebaKairos = "informe";
@@ -5596,6 +5669,18 @@ function mostrarFinalAventuraAzrak() {
   mensajePersonaje.textContent = "🏆 ¡Completaste Aventura de Palabras! Los cuatro mundos vuelven a estar unidos. Shadow eligió su propio camino junto a Aren y los guardianes.";
   btnSiguiente.textContent = "🏠 Volver al menú";
   btnSiguiente.classList.remove("oculto");
+}
+
+async function completarHuidaCalamo() {
+  await KalamoDesert.play("huida", { reduced: prefiereReducirMovimiento.matches });
+  if (escenarioActual !== 1 || misionActual !== 5) return;
+  estadoEncuentroCalamo = "completo";
+  desafiosCompletados = obtenerCantidadDesafiosMision() - 1;
+  sonidoNarrativoPendiente = avanzarMision();
+  btnSiguiente.textContent = "➡️ Seguir hacia el templo";
+  guardarProgreso();
+  const mensajeCompleto = await mostrarMensajeDesafioSuperado();
+  if (mensajeCompleto) continuarAventura();
 }
 
 async function completarInformeKairos() {
@@ -6216,6 +6301,7 @@ function programarAleteoEntradaNivor(elemento) {
     srcDragonHieloDescensoAltoVersus,
     srcDragonHieloDescensoBajoVersus,
   ];
+  elemento.classList.add("nivor-aleteando");
   elemento.src = cuadros[0];
   for (let paso = 1; paso <= 11; paso += 1) {
     programarPasoEntradaVersus(() => {
@@ -6250,6 +6336,8 @@ function limpiarEntradaDueloVersus() {
   demoVersus.temporizadoresEntrada.forEach(clearTimeout);
   demoVersus.temporizadoresEntrada = [];
   demoVersus.entradaActiva = false;
+  personajeVersusUno.classList.remove("nivor-aleteando");
+  personajeVersusDos.classList.remove("nivor-aleteando");
   marcoVersus.classList.remove("duelo-en-introduccion");
   entradaDueloVersus.className = "entrada-duelo-versus oculto";
   personajeVersusUno.classList.remove(
@@ -6379,11 +6467,11 @@ function iniciarEntradaDueloVersus() {
   }
   if (!movimientoReducido && personajeJugadorVersus === "dragon_hielo") {
     programarAleteoEntradaNivor(personajeVersusUno);
-    programarPasoEntradaVersus(() => { personajeVersusUno.src = srcDragonHieloBaseVersus; }, 3180);
+    programarPasoEntradaVersus(() => { personajeVersusUno.src = srcDragonHieloBaseVersus; personajeVersusUno.classList.remove("nivor-aleteando"); }, 3180);
   }
   if (!movimientoReducido && personajeRivalVersus === "dragon_hielo") {
     programarAleteoEntradaNivor(personajeVersusDos);
-    programarPasoEntradaVersus(() => { personajeVersusDos.src = srcDragonHieloBaseVersus; }, 3180);
+    programarPasoEntradaVersus(() => { personajeVersusDos.src = srcDragonHieloBaseVersus; personajeVersusDos.classList.remove("nivor-aleteando"); }, 3180);
   }
   if (!movimientoReducido && personajeJugadorVersus === "hombre_lobo") {
     programarTransformacionEntradaHombreLobo(personajeVersusUno);
@@ -7082,7 +7170,8 @@ function habilitarTecladoVersus() {
   const bloqueadoPorRaices = tecladoVersus.classList.contains("efecto-raices")
     || tecladoVersus.classList.contains("efecto-agujero-negro")
     || tecladoVersus.classList.contains("efecto-teclas-rotas")
-    || tecladoVersus.classList.contains("efecto-congelado");
+    || tecladoVersus.classList.contains("efecto-congelado")
+    || tecladoVersus.classList.contains("efecto-reloj-kairos");
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = bloqueadoPorRaices;
   });
@@ -7197,6 +7286,7 @@ function iniciarCombateArcade() {
 btnCombatirArcade.addEventListener("click", iniciarCombateArcade);
 
 function detenerRondaVersus() {
+  limpiarRelojKairosVersus();
   if (demoVersus.intervaloTiempo) clearInterval(demoVersus.intervaloTiempo);
   if (demoVersus.intervaloRival) clearInterval(demoVersus.intervaloRival);
   demoVersus.intervaloTiempo = null;
@@ -7269,7 +7359,7 @@ function jugarTurnoRivalVersus() {
   if (demoVersus.finalizadoRival || demoVersus.partidaFinalizada) return;
 
   const efectoActivo = Date.now() < demoVersus.efectoRivalHasta ? demoVersus.efectoRival : "";
-  if (efectoActivo === "roots") return;
+  if (efectoActivo === "roots" || Date.now() < bloqueoRivalKairosHasta) return;
   activarHabilidadRivalLocalVersus();
 
   const alfabeto = filasTeclado.flat();
@@ -8862,6 +8952,7 @@ function iniciarMisionSeleccionadaPruebas() {
   estadoFinalAzrak = "shadow";
   primerDueloNivorCompletado = escenarioActual >= 4 || (escenarioActual === 3 && misionActual > 5);
   estadoPruebaKairos = escenarioActual > 0 || misionActual > 1 ? "completo" : "pendiente";
+  estadoEncuentroCalamo = escenarioActual > 1 || (escenarioActual === 1 && misionActual > 5) ? "completo" : "pendiente";
   if (escenarioActual === 4) cristalesObtenidos = 4;
 
   if (escenarioActual === 0 && misionActual >= 9) {
@@ -9004,6 +9095,7 @@ function reiniciarEstadoAventura() {
   estadoFinalAzrak = "shadow";
   primerDueloNivorCompletado = false;
   estadoPruebaKairos = "pendiente";
+  estadoEncuentroCalamo = "pendiente";
   hombreLoboDescubierto = false;
   dueloAventuraActivo = null;
   maximoEscenarioDesbloqueado = 0;
@@ -9666,6 +9758,14 @@ function activarLlegadaDesiertoMision() {
     return;
   }
 
+  // Medir ambos centros evita depender de desplazamientos fijos en cada pantalla.
+  const portal = capa.querySelector(".portal-llegada-desierto").getBoundingClientRect();
+  const aren = personajeImagen.getBoundingClientRect();
+  const escala = parseFloat(getComputedStyle(personajeImagen).scale) || 1;
+  const origenX = (portal.left + portal.width / 2 - (aren.left + aren.width / 2)) / escala;
+  const origenY = (portal.top + portal.height / 2 - (aren.bottom - aren.height * .34 / 2)) / escala;
+  personajeImagen.style.setProperty("--salida-portal-x", `${origenX}px`);
+  personajeImagen.style.setProperty("--salida-portal-y", `${origenY}px`);
   const secuencia = ++secuenciaLlegadaDesierto;
   contenedorEscenario.classList.remove("llegada-desierto-preparada");
   void contenedorEscenario.offsetWidth;
@@ -10559,7 +10659,9 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   }
 
   if (dueloAventura) {
-    mensajePersonaje.textContent = dueloAventura === "kairos_bosque"
+    mensajePersonaje.textContent = dueloAventura === "calamo_desierto"
+      ? "Cálamo robó las palabras del mapa. Vencelo para recuperar el camino al templo."
+      : dueloAventura === "kairos_bosque"
       ? "Kairós detuvo el tiempo en el sendero. Demostrá que podés seguir adelante."
       : dueloAventura === "shadow_final"
       ? "Shadow protege el último umbral. Tu próxima batalla será contra Azrak."
@@ -10724,6 +10826,7 @@ function guardarProgreso() {
     estadoFinalAzrak,
     primerDueloNivorCompletado,
     estadoPruebaKairos,
+    estadoEncuentroCalamo,
     hombreLoboDescubierto,
     maximoEscenarioDesbloqueado,
   };
@@ -10789,6 +10892,8 @@ function cargarProgreso() {
   hombreLoboDescubierto = progreso.hombreLoboDescubierto === true
     || escenarioActual > 0
     || (escenarioActual === 0 && misionActual > 5);
+  estadoEncuentroCalamo = escenarioActual > 1 || (escenarioActual === 1 && misionActual > 5)
+    ? "completo" : progreso.estadoEncuentroCalamo === "huida" ? "huida" : "pendiente";
   estadoPruebaKairos = escenarioActual > 0 || misionActual > 1
     ? "completo" : progreso.estadoPruebaKairos === "informe" ? "informe" : "pendiente";
   maximoEscenarioDesbloqueado = Math.min(
@@ -12325,6 +12430,9 @@ function obtenerPruebaEspecialBosquePendiente() {
 }
 
 function obtenerDueloAventuraPendiente() {
+  if (escenarioActual === 1 && misionActual === 5 && desafiosCompletados >= desafiosPorMision && estadoEncuentroCalamo !== "completo") {
+    return "calamo_desierto";
+  }
   if (escenarioActual === 0 && misionActual === 1 && desafiosCompletados >= desafiosPorMision && estadoPruebaKairos !== "completo") {
     return "kairos_bosque";
   }

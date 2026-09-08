@@ -165,3 +165,13 @@
   .panel-cristales #cristalPanelHielo,
   .panel-cristales #cristalPanelAzrak { width: 31.5px; height: 31.5px; }
 }
+
+/* Una bandada distante sobre el castillo de la misión 6. */
+.demonio-vuelo.demonio-lejano {
+  width: var(--tamano-lejano); filter: brightness(.45) saturate(.35);
+  opacity: .72; animation-duration: 28s;
+}
+.demonio-lejano .cuadro-0, .demonio-lejano .cuadro-1 { animation-duration: .95s; }
+@media (prefers-reduced-motion: reduce) {
+  .demonio-azrak.demonio-lejano { left: var(--posicion-reducida); }
+}
