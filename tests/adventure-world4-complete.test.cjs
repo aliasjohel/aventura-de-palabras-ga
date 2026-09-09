@@ -53,7 +53,7 @@ assert.match(css, /\.fauna-zorro-hielo\s*\{[\s\S]*?z-index:\s*1;/);
 assert.match(app, /presentacion:\s*"assets\/images\/personajes\/mundo-hielo\/zorro-hielo-camina-paso-1-v2\.png"/);
 
 const selectorPuzzles = app.match(/function obtenerTipoPruebaEspecial\(escenario, mision\) \{[\s\S]+?\n\}/)?.[0] || "";
-assert.equal((selectorPuzzles.match(/escenario === 3 && mision ===/g) || []).length, 2);
+assert.equal((selectorPuzzles.match(/escenario === 3 && mision ===/g) || []).length, 3);
 assert.match(selectorPuzzles, /mision === 6\) return "laberinto-hielo"/);
 assert.match(selectorPuzzles, /mision === 7\) return "corazon-termico"/);
 assert.match(app, /const mapaLaberintoHielo = Object\.freeze/);
@@ -191,3 +191,5 @@ assert.match(app, /Entrar al Reino de Azrak/);
 assert.ok(Number(sw.match(/CACHE_NAME = `\$\{CACHE_PREFIX\}v(\d+)`/)?.[1]) >= 228);
 
 console.log("World 4 adventure checks passed");
+
+assert.match(selectorPuzzles, /mision === 2\) return "corrientes-hielo"/);

@@ -1008,7 +1008,7 @@ const historiaCumbres = [
 const historiaHielo = [
   { capitulo: "Misión 1", titulo: "La huella borrada", texto: "Aeralis deja a Aren sobre la nieve y emprende el regreso hacia Cumbres Celestes. Una ventisca repentina borra el camino detrás de él. A lo lejos, un enorme yeti cruza la cresta y desaparece entre la nieve." },
   { capitulo: "Misión 2", titulo: "El lago de cristal", texto: "El sendero termina frente a un lago congelado. Aren sigue las huellas que la ventisca deja ver por instantes y alcanza la otra orilla justo antes de que el hielo comience a resquebrajarse." },
-  { capitulo: "Misión 3", titulo: "Las criaturas de la escarcha", texto: "Un zorro boreal de cola cristalina sigue las huellas luminosas que atraviesan el bosque congelado. Las criaturas del lugar están alteradas por una fuerza que convierte ramas, garras y colmillos en cristal." },
+  { capitulo: "Misión 3", titulo: "Las criaturas de la escarcha", texto: "Un zorro boreal de cola cristalina sigue las huellas luminosas que atraviesan el bosque congelado. Las criaturas están alteradas por una fuerza que cristaliza el bosque. Aren deberá unir los cristales de tres colores sin cruzar sus corrientes para devolver la luz de la aurora al sendero." },
   { capitulo: "Misión 4", titulo: "La aldea detenida", texto: "Aren encuentra una aldea completa atrapada dentro del hielo. Sus habitantes permanecen inmóviles bajo la escarcha, los faroles aún brillan y los relojes se detuvieron al mismo tiempo. En una torre aparece una marca oscura que no pertenece a Nivor." },
   { capitulo: "Misión 5", titulo: "El observatorio boreal", texto: "Los instrumentos del observatorio registraron el comienzo del deshielo. Entre sus mapas, Aren descubre que alguien provocó el desastre antes de ofrecerle a Nivor el poder para detenerlo." },
   { capitulo: "Misión 6", titulo: "El Guardián del Invierno", texto: "Nivor desciende sobre el observatorio y acusa a Aren de querer destruir el último refugio de los dragones boreales. No aceptará explicaciones: para continuar, Aren deberá enfrentarlo directamente." },
@@ -3257,7 +3257,7 @@ btnRepetirPruebaBosque.addEventListener("click", () => {
     iniciarPuzzleEspejosDesierto();
   } else if (["sopa-celeste", "campanas-celestes", "sellos-aeralis"].includes(pruebaEspecialBosqueActiva)) {
     iniciarPuzzleCumbres(pruebaEspecialBosqueActiva);
-  } else if (["laberinto-hielo", "corazon-termico"].includes(pruebaEspecialBosqueActiva)) {
+  } else if (["corrientes-hielo", "laberinto-hielo", "corazon-termico"].includes(pruebaEspecialBosqueActiva)) {
     iniciarPuzzleCumbres(pruebaEspecialBosqueActiva);
   }
 });
@@ -12418,6 +12418,7 @@ function obtenerTipoPruebaEspecial(escenario, mision) {
   if (escenario === 2 && mision === 1) return "sopa-celeste";
   if (escenario === 2 && mision === 3) return "campanas-celestes";
   if (escenario === 2 && mision === 8) return "sellos-aeralis";
+  if (escenario === 3 && mision === 2) return "corrientes-hielo";
   if (escenario === 3 && mision === 6) return "laberinto-hielo";
   if (escenario === 3 && mision === 7) return "corazon-termico";
   return "";
@@ -12483,7 +12484,7 @@ function abrirPruebaEspecialBosque(tipo) {
     "campanas-celestes",
     "sellos-aeralis",
   ].includes(tipo);
-  const esPruebaHielo = ["laberinto-hielo", "corazon-termico"].includes(tipo);
+  const esPruebaHielo = ["corrientes-hielo", "laberinto-hielo", "corazon-termico"].includes(tipo);
   const esPruebaAzrak = tipo.endsWith("-azrak");
   modalPruebaBosque.classList.toggle("prueba-azrak", esPruebaAzrak);
   modalPruebaBosque.classList.toggle("prueba-cumbres", esPruebaCumbres);
@@ -12570,6 +12571,8 @@ function cerrarPruebaEspecialBosque() {
 
   detenerLaberintoHielo();
   secuenciaPruebaBosque += 1;
+  secuenciaRedHielo += 1;
+  punteroRedHieloActivo = false;
   secuenciaCampanasCumbres += 1;
   punteroSopaCumbresActivo = false;
   memoriaLobosAceptandoEntrada = false;
@@ -12646,7 +12649,7 @@ function iniciarPuzzleCumbres(tipo) {
   puzzleCumbres.className = `puzzle-cumbres puzzle-${tipo}`;
   puzzleCumbres.setAttribute(
     "aria-label",
-    ["laberinto-hielo", "corazon-termico"].includes(tipo)
+    ["corrientes-hielo", "laberinto-hielo", "corazon-termico"].includes(tipo)
       ? "Prueba del Reino del Invierno Eterno"
       : "Prueba de Cumbres Celestes",
   );
@@ -12660,6 +12663,8 @@ function iniciarPuzzleCumbres(tipo) {
     iniciarCampanasCelestes();
   } else if (tipo === "sellos-aeralis") {
     iniciarSellosAeralis();
+  } else if (tipo === "corrientes-hielo") {
+    iniciarCorrientesHielo();
   } else if (tipo === "laberinto-hielo") {
     iniciarLaberintoHielo();
   } else if (tipo === "corazon-termico") {
@@ -13072,6 +13077,219 @@ function validarTrayectoSopaCumbres() {
     estadoPruebaBosque.textContent = `${cantidad} de 3 palabras · El puente ya tiene ${cantidad} tramo${cantidad === 1 ? "" : "s"}.`;
   }
 }
+
+let colorActivoRedHielo = "";
+let caminosRedHielo = new Map();
+let trayectoActivoRedHielo = [];
+let extremoInicialRedHielo = null;
+let coloresCompletadosRedHielo = new Set();
+let punteroRedHieloActivo = false;
+let secuenciaRedHielo = 0;
+const ladoRedHielo = 8;
+const rondasRedHielo = Object.freeze([
+  Object.freeze({
+    cian: Object.freeze([25, 30]),
+    violeta: Object.freeze([2, 58]),
+    dorado: Object.freeze([5, 61]),
+  }),
+  Object.freeze({
+    cian: Object.freeze([12, 52]),
+    violeta: Object.freeze([23, 16]),
+    dorado: Object.freeze([47, 40]),
+  }),
+]);
+let rondaRedHieloActual = 0;
+
+function iniciarCorrientesHielo() {
+  etiquetaPruebaBosque.textContent = "PRUEBA DE LA AURORA CONGELADA";
+  tituloPruebaBosque.textContent = "Superá las dos redes de corrientes";
+  instruccionPruebaBosque.textContent =
+    "Uní los cristales del mismo color sin cruzar las corrientes de la aurora. Al completar la primera red, los extremos cambiarán de lugar para una segunda ronda.";
+  rondaRedHieloActual = 0;
+  prepararRondaRedHielo();
+}
+
+function obtenerExtremosRedHielo() {
+  return rondasRedHielo[rondaRedHieloActual];
+}
+
+function prepararRondaRedHielo() {
+  secuenciaRedHielo += 1;
+  punteroRedHieloActivo = false;
+  colorActivoRedHielo = "";
+  caminosRedHielo = new Map();
+  trayectoActivoRedHielo = [];
+  extremoInicialRedHielo = null;
+  coloresCompletadosRedHielo = new Set();
+  puzzleCumbres.replaceChildren();
+
+  const leyenda = document.createElement("div");
+  leyenda.className = "leyenda-red-hielo";
+  leyenda.innerHTML = `
+    <span class="cian">❄ ↔ ❄ Celeste</span>
+    <span class="violeta">❄ ↔ ❄ Morado</span>
+    <span class="dorado">❄ ↔ ❄ Amarillo</span>`;
+  const tablero = document.createElement("div");
+  tablero.className = "tablero-red-hielo";
+  tablero.setAttribute("role", "grid");
+  tablero.setAttribute(
+    "aria-label",
+    `Red ${rondaRedHieloActual + 1} de ${rondasRedHielo.length}, de ocho por ocho, con tres pares de corrientes entrelazadas`,
+  );
+
+  botonesPuzzleCumbres = Array.from({ length: ladoRedHielo * ladoRedHielo }, (_, indice) => {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "celda-red-hielo";
+    boton.dataset.indice = `${indice}`;
+    const extremo = obtenerExtremoRedHielo(indice);
+    if (extremo) {
+      boton.classList.add("extremo", `energia-${extremo.color}`);
+      boton.textContent = ({ cian: "◆", violeta: "●", dorado: "▲" })[extremo.color];
+      boton.setAttribute("aria-label", `${"Cristal"} ${extremo.color}`);
+    } else {
+      boton.setAttribute("aria-label", `Casilla libre, fila ${Math.floor(indice / ladoRedHielo) + 1}, columna ${(indice % ladoRedHielo) + 1}`);
+    }
+    boton.addEventListener("pointerdown", (evento) => {
+      evento.preventDefault();
+      tablero.setPointerCapture?.(evento.pointerId);
+      punteroRedHieloActivo = true;
+      activarCeldaRedHielo(indice);
+    });
+    boton.addEventListener("keydown", (evento) => {
+      if (evento.key !== "Enter" && evento.key !== " ") return;
+      evento.preventDefault();
+      activarCeldaRedHielo(indice);
+    });
+    tablero.appendChild(boton);
+    return boton;
+  });
+  tablero.addEventListener("pointermove", actualizarArrastreRedHielo);
+  tablero.addEventListener("pointerup", () => (punteroRedHieloActivo = false));
+  tablero.addEventListener("pointercancel", () => (punteroRedHieloActivo = false));
+  puzzleCumbres.append(leyenda, tablero);
+  estadoPruebaBosque.textContent =
+    `Red ${rondaRedHieloActual + 1} de ${rondasRedHielo.length} · 0 de 3 corrientes conectadas.`;
+  botonesPuzzleCumbres[0]?.focus();
+}
+
+function obtenerExtremoRedHielo(indice) {
+  for (const [color, extremos] of Object.entries(obtenerExtremosRedHielo())) {
+    const posicion = extremos.indexOf(indice);
+    if (posicion !== -1) return { color, posicion };
+  }
+  return null;
+}
+
+function activarCeldaRedHielo(indice) {
+  if (pruebaEspecialBosqueActiva !== "corrientes-hielo" || botonesPuzzleCumbres[indice]?.disabled) return;
+  const extremo = obtenerExtremoRedHielo(indice);
+  if (colorActivoRedHielo && extremo) {
+    const ultimo = trayectoActivoRedHielo.at(-1);
+    const esDestinoActivo =
+      extremo.color === colorActivoRedHielo &&
+      indice !== extremoInicialRedHielo &&
+      AdventurePuzzles.sonCeldasAdyacentes(ultimo, indice, ladoRedHielo);
+    const puedeCerrar =
+      esDestinoActivo;
+    if (!puedeCerrar) {
+      caminosRedHielo.delete(colorActivoRedHielo);
+      colorActivoRedHielo = "";
+      trayectoActivoRedHielo = [];
+      extremoInicialRedHielo = null;
+    }
+  }
+  if (!colorActivoRedHielo) {
+    if (!extremo) {
+      estadoPruebaBosque.textContent = "Comenzá el camino desde un cristal.";
+      return;
+    }
+    colorActivoRedHielo = extremo.color;
+    extremoInicialRedHielo = indice;
+    trayectoActivoRedHielo = [indice];
+    caminosRedHielo.set(extremo.color, [...trayectoActivoRedHielo]);
+    coloresCompletadosRedHielo.delete(extremo.color);
+    renderizarRedHielo();
+    estadoPruebaBosque.textContent = `Trazando la corriente ${extremo.color}.`;
+    return;
+  }
+  extenderCaminoRedHielo(indice);
+}
+
+function actualizarArrastreRedHielo(evento) {
+  if (!punteroRedHieloActivo || !colorActivoRedHielo) return;
+  const elemento = document.elementFromPoint(evento.clientX, evento.clientY)?.closest(".celda-red-hielo");
+  if (!elemento || !puzzleCumbres.contains(elemento)) return;
+  extenderCaminoRedHielo(Number(elemento.dataset.indice));
+}
+
+function extenderCaminoRedHielo(indice) {
+  if (!colorActivoRedHielo || pruebaEspecialBosqueActiva !== "corrientes-hielo" || botonesPuzzleCumbres[indice]?.disabled) return;
+  const ultimo = trayectoActivoRedHielo.at(-1);
+  if (indice === ultimo || !AdventurePuzzles.sonCeldasAdyacentes(ultimo, indice, ladoRedHielo)) return;
+  if (trayectoActivoRedHielo.at(-2) === indice) {
+    trayectoActivoRedHielo.pop();
+    caminosRedHielo.set(colorActivoRedHielo, [...trayectoActivoRedHielo]);
+    renderizarRedHielo();
+    return;
+  }
+  const ocupadoPorOtro = [...caminosRedHielo.entries()].some(
+    ([color, camino]) => color !== colorActivoRedHielo && camino.includes(indice),
+  );
+  const extremo = obtenerExtremoRedHielo(indice);
+  if (
+    ocupadoPorOtro ||
+    trayectoActivoRedHielo.includes(indice) ||
+    (extremo && extremo.color !== colorActivoRedHielo)
+  ) {
+    estadoPruebaBosque.textContent = "Las corrientes no pueden cruzarse ni atravesar el extremo de otro color. Buscá otro desvío.";
+    return;
+  }
+
+  trayectoActivoRedHielo.push(indice);
+  caminosRedHielo.set(colorActivoRedHielo, [...trayectoActivoRedHielo]);
+  renderizarRedHielo();
+  if (extremo && indice !== extremoInicialRedHielo) {
+    const colorCompletado = colorActivoRedHielo;
+    coloresCompletadosRedHielo.add(colorCompletado);
+    colorActivoRedHielo = "";
+    trayectoActivoRedHielo = [];
+    extremoInicialRedHielo = null;
+    reproducirSonido("cristalCasilla");
+    const cantidad = coloresCompletadosRedHielo.size;
+    if (cantidad === Object.keys(obtenerExtremosRedHielo()).length) {
+      const hayOtraRonda = rondaRedHieloActual + 1 < rondasRedHielo.length;
+      if (hayOtraRonda) {
+        estadoPruebaBosque.textContent =
+          "¡Primera red completada! La aurora cambió los cristales de lugar…";
+        botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
+        const secuencia = secuenciaRedHielo;
+        setTimeout(() => {
+          if (pruebaEspecialBosqueActiva === "corrientes-hielo" && secuencia === secuenciaRedHielo) {
+            rondaRedHieloActual += 1;
+            prepararRondaRedHielo();
+          }
+        }, prefiereReducirMovimiento.matches ? 80 : 650);
+      } else {
+        estadoPruebaBosque.textContent = "¡La aurora vuelve a fluir! Las criaturas recuperan su sendero entre la escarcha.";
+        void completarPruebaEspecialBosque("corrientes-hielo");
+      }
+    } else {
+      estadoPruebaBosque.textContent =
+        `Red ${rondaRedHieloActual + 1} de ${rondasRedHielo.length} · ${cantidad} de 3 corrientes conectadas.`;
+    }
+  }
+}
+
+function renderizarRedHielo() {
+  botonesPuzzleCumbres.forEach((boton) => {
+    boton.classList.remove("camino-cian", "camino-violeta", "camino-dorado");
+  });
+  caminosRedHielo.forEach((camino, color) => {
+    camino.forEach((indice) => botonesPuzzleCumbres[indice]?.classList.add(`camino-${color}`));
+  });
+}
+
 
 function iniciarCampanasCelestes() {
   etiquetaPruebaBosque.textContent = "PRUEBA DE LA CHISPA CELESTE";

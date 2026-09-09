@@ -17446,3 +17446,78 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
   .sector-piezas-mural > strong { font-size:.65rem; margin-bottom:4px; }
   .cabecera-mural-santuario p { font-size:.76rem; margin-bottom:4px; }
 }
+
+/* Corrientes de la aurora: mundo 4, misión 3. */
+.leyenda-red-hielo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: clamp(.72rem, 2.2vw, .95rem);
+}
+
+.leyenda-red-hielo span { padding: 4px 10px; border-radius: 999px; background: rgba(6, 26, 61, .62); }
+.leyenda-red-hielo .cian { color: #aaf5ff; box-shadow: inset 0 0 10px rgba(77, 227, 255, .18); }
+.leyenda-red-hielo .violeta { color: #e6bdff; box-shadow: inset 0 0 10px rgba(190, 104, 255, .18); }
+.leyenda-red-hielo .dorado { color: #ffe99a; box-shadow: inset 0 0 10px rgba(255, 203, 74, .18); }
+
+.tablero-red-hielo {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: clamp(3px, .8vw, 7px);
+    width: min(100%, 455px);
+    aspect-ratio: 1;
+    margin-inline: auto;
+    padding: clamp(10px, 2vw, 17px);
+    border: clamp(5px, 1vw, 8px) ridge #537cae;
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at 22% 18%, rgba(92, 224, 255, .16), transparent 28%),
+        radial-gradient(circle at 78% 77%, rgba(186, 104, 255, .14), transparent 30%),
+        linear-gradient(145deg, #071a3c, #122d5b);
+    box-shadow: inset 0 0 38px rgba(92, 180, 255, .13), 0 16px 34px rgba(1, 10, 31, .56);
+    touch-action: none;
+}
+
+.celda-red-hielo {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    border: 1px solid rgba(159, 213, 241, .2);
+    border-radius: 12px;
+    color: white;
+    background: rgba(26, 62, 108, .54);
+    box-shadow: inset 0 0 10px rgba(102, 193, 242, .08);
+    font-size: clamp(.8rem, 4vw, 1.6rem);
+    cursor: pointer;
+    transition: transform .12s ease, background .16s ease, box-shadow .16s ease;
+}
+
+.celda-red-hielo:hover,
+.celda-red-hielo:focus-visible { z-index: 2; outline: 2px solid #d8f8ff; transform: scale(1.06); }
+.celda-red-hielo.extremo { border-width: 2px; background: rgba(5, 20, 50, .82); }
+.celda-red-hielo.energia-cian,
+.celda-red-hielo.camino-cian { border-color: #74efff; background: #168fab; box-shadow: inset 0 0 13px #bff9ff, 0 0 17px rgba(60, 229, 255, .72); }
+.celda-red-hielo.energia-violeta,
+.celda-red-hielo.camino-violeta { border-color: #d799ff; background: #7542a8; box-shadow: inset 0 0 13px #eed5ff, 0 0 17px rgba(190, 104, 255, .68); }
+.celda-red-hielo.energia-dorado,
+.celda-red-hielo.camino-dorado { border-color: #ffe78b; background: #b87c1b; box-shadow: inset 0 0 13px #fff1b5, 0 0 17px rgba(255, 203, 74, .68); }
+
+
+@media (max-height: 560px) and (orientation: landscape) { .tablero-red-hielo { width: min(48vw, 62vh); } }
+
+.tablero-red-hielo { grid-template-rows: repeat(8, minmax(0, 1fr)); box-sizing: border-box; }
+.leyenda-red-hielo { flex-wrap: wrap; }
+@media (max-height: 560px) and (orientation: landscape) {
+ .panel-prueba-bosque:has(.puzzle-corrientes-hielo) { display:grid; grid-template-columns:1fr 1fr; column-gap:14px; }
+ .panel-prueba-bosque:has(.puzzle-corrientes-hielo) .cabecera-prueba-bosque { grid-column:1; grid-row:1; align-self:end; }
+ .panel-prueba-bosque:has(.puzzle-corrientes-hielo) .estado-prueba-bosque { grid-column:1; grid-row:2; }
+ .panel-prueba-bosque:has(.puzzle-corrientes-hielo) .acciones-prueba-bosque { grid-column:1; grid-row:3; align-self:start; }
+ .puzzle-corrientes-hielo { grid-column:2; grid-row:1 / 4; }
+ .tablero-red-hielo { width:min(100%, 77vh); padding:6px; gap:3px; }
+ .leyenda-red-hielo { gap:3px; font-size:.65rem; }
+ .leyenda-red-hielo span { padding:3px; }
+ .celda-red-hielo { font-size:1rem; border-radius:6px; }
+}
