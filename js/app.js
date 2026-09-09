@@ -13085,7 +13085,7 @@ let extremoInicialRedHielo = null;
 let coloresCompletadosRedHielo = new Set();
 let punteroRedHieloActivo = false;
 let secuenciaRedHielo = 0;
-const ladoRedHielo = 8;
+let ladoRedHielo = 8;
 const rondasRedHielo = Object.freeze([
   Object.freeze({
     cian: Object.freeze([25, 30]),
@@ -13097,14 +13097,15 @@ const rondasRedHielo = Object.freeze([
     violeta: Object.freeze([23, 16]),
     dorado: Object.freeze([47, 40]),
   }),
+  Object.freeze({ cian: Object.freeze([4, 48]), violeta: Object.freeze([37, 43]), dorado: Object.freeze([32, 76]) }),
 ]);
 let rondaRedHieloActual = 0;
 
 function iniciarCorrientesHielo() {
   etiquetaPruebaBosque.textContent = "PRUEBA DE LA AURORA CONGELADA";
-  tituloPruebaBosque.textContent = "Superá las dos redes de corrientes";
+  tituloPruebaBosque.textContent = "Superá las tres redes de corrientes";
   instruccionPruebaBosque.textContent =
-    "Uní los cristales del mismo color sin cruzar las corrientes de la aurora. Al completar la primera red, los extremos cambiarán de lugar para una segunda ronda.";
+    "Uní los cristales del mismo color sin cruzar las corrientes de la aurora. Son tres rondas: la última tiene un tablero circular y caminos curvos.";
   rondaRedHieloActual = 0;
   prepararRondaRedHielo();
 }
@@ -13114,6 +13115,7 @@ function obtenerExtremosRedHielo() {
 }
 
 function prepararRondaRedHielo() {
+  ladoRedHielo = rondaRedHieloActual === 2 ? 9 : 8;
   secuenciaRedHielo += 1;
   punteroRedHieloActivo = false;
   colorActivoRedHielo = "";
@@ -13131,10 +13133,11 @@ function prepararRondaRedHielo() {
     <span class="dorado">❄ ↔ ❄ Amarillo</span>`;
   const tablero = document.createElement("div");
   tablero.className = "tablero-red-hielo";
+  tablero.classList.toggle("red-hielo-circular", rondaRedHieloActual === 2);
   tablero.setAttribute("role", "grid");
   tablero.setAttribute(
     "aria-label",
-    `Red ${rondaRedHieloActual + 1} de ${rondasRedHielo.length}, de ocho por ocho, con tres pares de corrientes entrelazadas`,
+    `Red ${rondaRedHieloActual + 1} de ${rondasRedHielo.length}, de ${ladoRedHielo} por ${ladoRedHielo}, con tres pares de corrientes entrelazadas`,
   );
 
   botonesPuzzleCumbres = Array.from({ length: ladoRedHielo * ladoRedHielo }, (_, indice) => {
@@ -13142,6 +13145,11 @@ function prepararRondaRedHielo() {
     boton.type = "button";
     boton.className = "celda-red-hielo";
     boton.dataset.indice = `${indice}`;
+    if (rondaRedHieloActual === 2 && Math.hypot(Math.floor(indice / 9) - 4, indice % 9 - 4) > 4.6) {
+      boton.disabled = true;
+      boton.classList.add("fuera-circulo");
+      boton.setAttribute("aria-hidden", "true");
+    }
     const extremo = obtenerExtremoRedHielo(indice);
     if (extremo) {
       boton.classList.add("extremo", `energia-${extremo.color}`);
@@ -13168,9 +13176,16 @@ function prepararRondaRedHielo() {
   tablero.addEventListener("pointerup", () => (punteroRedHieloActivo = false));
   tablero.addEventListener("pointercancel", () => (punteroRedHieloActivo = false));
   puzzleCumbres.append(leyenda, tablero);
+  if (rondaRedHieloActual === 2) {
+    const lineas = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    lineas.setAttribute("viewBox", "0 0 9 9");
+    lineas.setAttribute("aria-hidden", "true");
+    lineas.classList.add("lineas-aurora");
+    tablero.append(lineas);
+  }
   estadoPruebaBosque.textContent =
     `Red ${rondaRedHieloActual + 1} de ${rondasRedHielo.length} · 0 de 3 corrientes conectadas.`;
-  botonesPuzzleCumbres[0]?.focus();
+  botonesPuzzleCumbres.find(boton => !boton.disabled)?.focus();
 }
 
 function obtenerExtremoRedHielo(indice) {
@@ -13261,7 +13276,7 @@ function extenderCaminoRedHielo(indice) {
       const hayOtraRonda = rondaRedHieloActual + 1 < rondasRedHielo.length;
       if (hayOtraRonda) {
         estadoPruebaBosque.textContent =
-          "¡Primera red completada! La aurora cambió los cristales de lugar…";
+          `¡Red ${rondaRedHieloActual + 1} completada! ${rondaRedHieloActual === 1 ? "Ahora rodeá las corrientes en el círculo de hielo." : "La aurora cambió los cristales de lugar…"}`;
         botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
         const secuencia = secuenciaRedHielo;
         setTimeout(() => {
@@ -13282,6 +13297,24 @@ function extenderCaminoRedHielo(indice) {
 }
 
 function renderizarRedHielo() {
+  const capa = puzzleCumbres.querySelector(".lineas-aurora");
+  if (capa) {
+    capa.replaceChildren();
+    caminosRedHielo.forEach((camino, color) => {
+      if (camino.length < 2) return;
+      const puntos = camino.map(i => [i % 9 + .5, Math.floor(i / 9) + .5]);
+      let d = "M " + puntos[0].join(" ");
+      for (let i = 1; i < puntos.length - 1; i++) {
+        const p = puntos[i], next = puntos[i + 1];
+        d += " Q " + p.join(" ") + " " + [(p[0]+next[0])/2,(p[1]+next[1])/2].join(" ");
+      }
+      d += " L " + puntos.at(-1).join(" ");
+      const trazo = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      trazo.setAttribute("d", d);
+      trazo.setAttribute("stroke", ({cian:"#74efff",violeta:"#d799ff",dorado:"#ffe78b"})[color]);
+      capa.append(trazo);
+    });
+  }
   botonesPuzzleCumbres.forEach((boton) => {
     boton.classList.remove("camino-cian", "camino-violeta", "camino-dorado");
   });

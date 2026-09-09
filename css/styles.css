@@ -17521,3 +17521,14 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
  .leyenda-red-hielo span { padding:3px; }
  .celda-red-hielo { font-size:1rem; border-radius:6px; }
 }
+
+/* Tercera red: rutas curvas dentro del disco de hielo. */
+.tablero-red-hielo.red-hielo-circular { position:relative; grid-template-columns:repeat(9,minmax(0,1fr)); grid-template-rows:repeat(9,minmax(0,1fr)); border-radius:50%; padding:8px; gap:0; border:4px solid #85cde9; }
+.red-hielo-circular .celda-red-hielo { z-index:2; border:0; border-radius:50%; background:radial-gradient(circle, #a5dbed55 0 2px, transparent 3px); box-shadow:none; font-size:1rem; }
+.red-hielo-circular .celda-red-hielo.extremo { background:radial-gradient(circle, currentColor, #132b4b 72%); border:2px solid currentColor; text-shadow:0 1px 3px #000; }
+.red-hielo-circular .energia-cian { color:#74efff; }
+.red-hielo-circular .energia-violeta { color:#d799ff; }
+.red-hielo-circular .energia-dorado { color:#ffe78b; }
+.red-hielo-circular .fuera-circulo { visibility:hidden; pointer-events:none; }
+.lineas-aurora { position:absolute; inset:8px; width:calc(100% - 16px); height:calc(100% - 16px); pointer-events:none; z-index:1; overflow:visible; }
+.lineas-aurora path { fill:none; stroke-width:.22; stroke-linecap:round; stroke-linejoin:round; }
