@@ -8759,7 +8759,7 @@ function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
   imagenSoporteMision.src = esHistoriaAzrak
     ? "assets/images/ui/presentacion-mision-azrak-v1.png"
     : esHistoriaDesierto
-      ? "assets/images/ui/presentacion-mision-piedra-desierto-v1.png"
+      ? "assets/images/ui/presentacion-mision-piedra-desierto-v2.png"
     : esHistoriaHielo
       ? "assets/images/ui/presentacion-mision-hielo-v1.png"
       : esHistoriaCumbres

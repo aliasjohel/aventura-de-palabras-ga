@@ -17596,3 +17596,46 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
 }
 
 @media (min-width:601px) and (min-height:561px) { .historia-cumbres .pergamino-mision h2 { font-size:2rem; } .historia-cumbres #textoCapitulo { font-size:1.08rem; line-height:1.4; } }
+
+/* Texto directamente sobre el cartel ilustrado del desierto. */
+.historia-desierto .presentacion-historia { width:min(96vw,920px); min-height:0; height:min(70vw,610px,88vh); }
+.historia-desierto .soporte-mision { inset:0; width:100%; height:100%; transform:none; }
+.historia-desierto .soporte-mision img { width:100%; height:100%; }
+.historia-desierto .pergamino-mision { width:62%; height:56%; min-height:0; padding:8px; clip-path:none; }
+.historia-desierto .contenido-pergamino { box-sizing:border-box; max-height:100%; padding:3px; }
+.modal-historia.historia-desierto.abriendo .soporte-mision,
+.modal-historia.historia-desierto.abriendo .pergamino-mision,
+.modal-historia.historia-desierto.abriendo .contenido-pergamino { animation:revelarTextoPergamino 650ms ease both; }
+.modal-historia.historia-desierto.cerrando .soporte-mision,
+.modal-historia.historia-desierto.cerrando .pergamino-mision { animation:ocultarTextoPergamino 450ms ease both; }
+@media (max-width:600px) and (orientation:portrait) {
+ .historia-desierto .presentacion-historia { height:min(800px,90vh); }
+ .historia-desierto .pergamino-mision { width:63%; height:56%; padding:5px; }
+ .historia-desierto .pergamino-mision h2 { font-size:clamp(1.25rem,5vw,1.65rem); }
+}
+@media (max-height:560px) and (orientation:landscape) {
+ .historia-desierto .presentacion-historia { width:min(92vw,850px); height:94vh; }
+ .historia-desierto .numero-capitulo { font-size:.9rem; margin-bottom:6px; }
+ .historia-desierto .pergamino-mision h2 { font-size:1.5rem; margin-bottom:6px; }
+ .historia-desierto #textoCapitulo { font-size:.98rem; line-height:1.35; }
+ .historia-desierto .separador-pergamino { margin-bottom:6px; }
+}
+@media (prefers-reduced-motion:reduce) {
+ .modal-historia.historia-desierto.abriendo .soporte-mision,
+ .modal-historia.historia-desierto.abriendo .pergamino-mision,
+ .modal-historia.historia-desierto.abriendo .contenido-pergamino { animation:none; }
+}
+
+
+.historia-desierto .pergamino-mision { box-sizing:border-box; border:0; background:none; box-shadow:none; }
+.historia-desierto .pergamino-mision::before,
+.historia-desierto .pergamino-mision::after,
+.historia-desierto .rollo-pergamino,
+.historia-desierto .clavo-pergamino { display:none; }
+.historia-desierto .soporte-mision img { border-radius:18px; }
+.historia-desierto .contenido-pergamino { width:100%; }
+.historia-desierto .pergamino-mision h2, .historia-desierto #textoCapitulo { color:#402b1b; text-shadow:none; }
+.historia-desierto .numero-capitulo { color:#674216; text-shadow:none; }
+.historia-desierto .separador-pergamino { color:#246b70; }
+@media (max-width:600px) and (orientation:portrait) { .historia-desierto #textoCapitulo { font-size:.95rem; line-height:1.4; } }
+@media (min-width:601px) and (min-height:561px) { .historia-desierto .pergamino-mision h2 { font-size:2rem; } .historia-desierto #textoCapitulo { font-size:1.08rem; line-height:1.4; } }

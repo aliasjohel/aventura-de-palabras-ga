@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v250`;
+const CACHE_NAME = `${CACHE_PREFIX}v251`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -282,7 +282,7 @@ const CORE_ASSETS = [
   "./assets/images/intro/libro-intro-sin-cristal.png",
   "./assets/images/intro/cristal-icono.png",
   "./assets/images/elementos/tronco-antiguo-caido-bosque.png",
-  "./assets/images/ui/presentacion-mision-piedra-desierto-v1.png",
+  "./assets/images/ui/presentacion-mision-piedra-desierto-v2.png",
   "./assets/images/ui/presentacion-mision-cumbres-v2.png",
   "./assets/images/fondos/menu-inicio-aventura.png",
   "./assets/images/fondos/desierto-1.png",
@@ -707,7 +707,7 @@ const ASSET_REVISIONS = {
   "./assets/images/cinematicas/desierto-final/03-mago-purifica-cristal-v1.png": "20260824-mundo2-cinematica-1",
   "./assets/images/cinematicas/desierto-final/04-mago-entrega-cristal-v1.png": "20260824-mundo2-cinematica-1",
   "./assets/images/cinematicas/desierto-final/05-mago-abre-portal-cumbres-v1.png": "20260824-mundo2-cinematica-1",
-  "./assets/images/ui/presentacion-mision-piedra-desierto-v1.png": "20260821-desierto-mision1-1",
+  "./assets/images/ui/presentacion-mision-piedra-desierto-v2.png": "20260821-desierto-mision1-1",
   "./assets/images/personajes/versus/kalamo-final-prepara-golpe-v1.png": "20260821-kalamo-pantalla-explorador-1",
   "./assets/images/personajes/versus/kalamo-final-lanza-explorador-v1.png": "20260821-kalamo-pantalla-explorador-1",
   "./assets/images/personajes/versus/explorador-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",

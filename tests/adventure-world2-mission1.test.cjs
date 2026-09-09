@@ -12,7 +12,7 @@ const soporte = path.join(
   "assets",
   "images",
   "ui",
-  "presentacion-mision-piedra-desierto-v1.png",
+  "presentacion-mision-piedra-desierto-v2.png",
 );
 
 assert.match(app, /const historiaDesierto = \[[\s\S]+Más allá del portal/);
@@ -21,13 +21,13 @@ assert.match(app, /function actualizarLlegadaDesiertoMision\(\)/);
 assert.match(app, /function activarLlegadaDesiertoMision\(\)/);
 assert.match(app, /iniciarMisionAventura\(\)\.then\(\(\) => \{\s*mostrarHistoriaMision\(\{ misionYaCargada: true \}\)/);
 assert.match(app, /capa-llegada-desierto/);
-assert.match(app, /presentacion-mision-piedra-desierto-v1\.png/);
+assert.match(app, /presentacion-mision-piedra-desierto-v2\.png/);
 assert.match(estilos, /\.modal-historia\.historia-desierto/);
 assert.match(estilos, /\.portal-llegada-desierto/);
 assert.match(estilos, /@keyframes cerrarPortalLlegadaDesierto/);
 assert.match(estilos, /@keyframes marcarYBorrarHuellaDesierto/);
 assert.match(html, /id="imagenSoporteMision"/);
-assert.match(serviceWorker, /presentacion-mision-piedra-desierto-v1\.png/);
+assert.match(serviceWorker, /presentacion-mision-piedra-desierto-v2\.png/);
 assert.ok(fs.existsSync(soporte), "Debe existir el soporte narrativo de piedra");
 assert.ok(fs.statSync(soporte).size > 100_000, "El soporte de piedra no debe estar vacío");
 
