@@ -460,6 +460,34 @@ document.addEventListener("keydown", (evento) => {
 });
 
 const musicaPrologo = new Audio("assets/sounds/prologo.mp3");
+const musicaDueloCalamo = new Audio("assets/sounds/azrak-batalla-final-musiclfiles.mp3");
+musicaDueloCalamo.preload = "auto";
+musicaDueloCalamo.volume = 0.55;
+musicaDueloCalamo.loop = true;
+let temaCalamoActivo = false;
+let temaCalamoPausado = false;
+
+function sincronizarTemaCalamo(pausado = temaCalamoPausado) {
+  temaCalamoPausado = pausado;
+  if (!temaCalamoActivo) return;
+  if (pausado || document.hidden) musicaDueloCalamo.pause();
+  else musicaDueloCalamo.play().catch(() => {});
+}
+
+function iniciarTemaCalamo() {
+  if (temaCalamoActivo) return;
+  temaCalamoActivo = true;
+  temaCalamoPausado = false;
+  musicaDueloCalamo.currentTime = 0;
+  sincronizarTemaCalamo();
+}
+
+function detenerTemaCalamo() {
+  temaCalamoActivo = false;
+  temaCalamoPausado = false;
+  musicaDueloCalamo.pause();
+  musicaDueloCalamo.currentTime = 0;
+}
 musicaPrologo.loop = false;
 musicaPrologo.volume = 0.25;
 const musicaMenu = globalThis.musicaMenuAventura
@@ -1127,6 +1155,7 @@ let estadoFinalAzrak = "shadow";
 let finalAzrakEnCurso = false;
 let cerrarPuzzleAzrak = null;
 let primerDueloNivorCompletado = false;
+let secuenciaDesafioNivorActiva = false;
 let desafioActual = 1;
 let desafiosCompletados = 0;
 let sonidoNarrativoPendiente = "";
@@ -5355,6 +5384,25 @@ const configuracionesDuelosAventura = Object.freeze({
 });
 
 async function presentarDueloAventura(tipo) {
+  if (tipo === "nivor_glacial") {
+    if (secuenciaDesafioNivorActiva || dueloAventuraActivo || escenarioActual !== 3 || misionActual !== 5) return;
+    secuenciaDesafioNivorActiva = true;
+    try {
+      await esperarCierreHistoriaMision();
+      if (escenarioActual !== 3 || misionActual !== 5) return;
+      await StoryCinematic.play("entrada", {
+        reduced: prefiereReducirMovimiento.matches,
+        assetRoot: "assets/images/",
+        label: "El desafío de Nivor", heading: "REINO DEL INVIERNO ETERNO",
+        shots: [
+          { image: "fondos/hielo-6.png", actor: "personajes/versus/dragon-hielo-base.png", actorName: "Nivor", title: "Un humano ante el invierno", text: "Nivor cierra el paso con sus alas. «¿Un simple humano cree que puede salvarlo todo? Ni siquiera resistís este frío. No voy a dejar que pongas en peligro lo que protejo»." },
+          { image: "fondos/hielo-6.png", actor: "personajes/versus/explorador-base.png", actorName: "Aren", title: "Aunque me cueste", text: "Aren recuerda la mano de Zafir entre las dunas. «No puedo salvarlo todo solo. Pero vi a esa gente atrapada en el hielo y no voy a abandonarla». Nivor golpea el suelo: «Entonces demostrá que podés seguir en pie»." },
+        ],
+      });
+      if (escenarioActual === 3 && misionActual === 5 && !dueloAventuraActivo) iniciarDueloAventura(tipo);
+    } finally { secuenciaDesafioNivorActiva = false; }
+    return;
+  }
   if (tipo === "calamo_desierto") {
     if (secuenciaCalamoActiva || dueloAventuraActivo || escenarioActual !== 1 || misionActual !== 5) return;
     secuenciaCalamoActiva = true;
@@ -5364,10 +5412,14 @@ async function presentarDueloAventura(tipo) {
       if (estadoEncuentroCalamo === "huida") {
         await completarHuidaCalamo();
       } else {
-        await KalamoDesert.play("entrada", { reduced: prefiereReducirMovimiento.matches });
+        iniciarTemaCalamo();
+        await KalamoDesert.play("entrada", { reduced: prefiereReducirMovimiento.matches, onPauseChange: sincronizarTemaCalamo });
         if (escenarioActual === 1 && misionActual === 5) iniciarDueloAventura(tipo);
       }
-    } finally { secuenciaCalamoActiva = false; }
+    } finally {
+      secuenciaCalamoActiva = false;
+      if (dueloAventuraActivo?.tipo !== "calamo_desierto") detenerTemaCalamo();
+    }
     return;
   }
   if (tipo === "kairos_bosque") {
@@ -5421,7 +5473,7 @@ function iniciarDueloAventura(tipo) {
   if (!configuracion) return;
 
   cancelarCinematicaFinalVersus();
-  detenerRondaVersus();
+  detenerRondaVersus({ conservarTemaCalamo: tipo === "calamo_desierto" });
   modoArcadeActivo = false;
   adaptadorSalasVersus = adaptadorLocalSalasVersus;
   partidaOnlineVersus = null;
@@ -5672,7 +5724,10 @@ function mostrarFinalAventuraAzrak() {
 }
 
 async function completarHuidaCalamo() {
-  await KalamoDesert.play("huida", { reduced: prefiereReducirMovimiento.matches });
+  iniciarTemaCalamo();
+  try {
+    await KalamoDesert.play("huida", { reduced: prefiereReducirMovimiento.matches, onPauseChange: sincronizarTemaCalamo });
+  } finally { detenerTemaCalamo(); }
   if (escenarioActual !== 1 || misionActual !== 5) return;
   estadoEncuentroCalamo = "completo";
   desafiosCompletados = obtenerCantidadDesafiosMision() - 1;
@@ -6373,6 +6428,7 @@ function limpiarEntradaDueloVersus() {
 
 function comenzarRondaVersus() {
   if (tutorialCombateVersus.activo) return;
+  if (dueloAventuraActivo?.tipo === "calamo_desierto") iniciarTemaCalamo();
   mostrarEstadoProgresoVersus(
     document.getElementById("estadoProgresoUno"),
     "Elegí una letra",
@@ -7200,7 +7256,7 @@ function agregarPalabraRecuperacionVersus(tipoJugador) {
 
 function prepararDueloVersus({ comenzarRonda = true } = {}) {
   cancelarCinematicaFinalVersus();
-  detenerRondaVersus();
+  detenerRondaVersus({ conservarTemaCalamo: dueloAventuraActivo?.tipo === "calamo_desierto" });
   ocultarRevelacionesPalabrasVersus();
   limpiarAnimacionAtaqueVersus();
   configurarPersonajesCombateVersus();
@@ -7285,7 +7341,8 @@ function iniciarCombateArcade() {
 
 btnCombatirArcade.addEventListener("click", iniciarCombateArcade);
 
-function detenerRondaVersus() {
+function detenerRondaVersus({ conservarTemaCalamo = false } = {}) {
+  if (!conservarTemaCalamo) detenerTemaCalamo();
   limpiarRelojKairosVersus();
   if (demoVersus.intervaloTiempo) clearInterval(demoVersus.intervaloTiempo);
   if (demoVersus.intervaloRival) clearInterval(demoVersus.intervaloRival);
@@ -7779,7 +7836,7 @@ function finalizarPartidaVersus(ganador, detalle, palabraPerdida = "") {
   if (demoVersus.partidaFinalizada) return;
   actualizarProgresosVersus();
   demoVersus.partidaFinalizada = true;
-  detenerRondaVersus();
+  detenerRondaVersus({ conservarTemaCalamo: dueloAventuraActivo?.tipo === "calamo_desierto" && ganador === "jugador" });
   bloquearTecladoDemoVersus();
 
   const palabraFinal = ganador === "rival" ? palabraPerdida : "";
@@ -9487,6 +9544,7 @@ function activarMusicaMenuPorInteraccion() {
 document.addEventListener("pointerdown", activarMusicaMenuPorInteraccion, { once: true });
 document.addEventListener("keydown", activarMusicaMenuPorInteraccion, { once: true });
 document.addEventListener("visibilitychange", () => {
+  sincronizarTemaCalamo();
   if (document.hidden) {
     pausarMusicaMenu();
     return;
@@ -9556,6 +9614,7 @@ function desvanecerMusicaPrologo(duracion) {
 }
 
 function detenerSonidos() {
+  detenerTemaCalamo();
   detenerMusicaCinematica(musicaCinematicaFinalMundo4, 0.58);
   detenerMusicaCinematica(musicaMuralDragon, 0.58);
   detenerMusicaCinematica(musicaCaminaPortal, 0.62);

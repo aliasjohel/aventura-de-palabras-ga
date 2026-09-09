@@ -1,5 +1,7 @@
 # Cierre de la batalla de Azrak
 
+Actualización posterior: la llegada de Cálamo y los tiempos vigentes se describen en [calamo-rescate-y-cine-horizontal.md](calamo-rescate-y-cine-horizontal.md). Los tiempos de esta nota corresponden al montaje anterior a esa llegada.
+
 ## Corrección de identidad integrada el 9 de septiembre
 
 Se recuperaron las dos imágenes ya generadas mediante ImageGen integrado en la tarea anterior y se verificaron contra `assets/images/personajes/versus/azrak-base.png`. Archivos finales: `assets/images/cinematicas/reino-azrak/azrak-sellado-v2.png` y `assets/images/cinematicas/reino-azrak/amanecer-v2.png`. Azrak conserva piel roja, silueta delgada, pelo oscuro, cuernos con grietas de lava y armadura ajustada. Se actualizaron las referencias de la cinemática, las precargas y la caché v254 para descargar las imágenes nuevas. La música incorpora la introducción descrita abajo.

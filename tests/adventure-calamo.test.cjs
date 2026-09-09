@@ -28,7 +28,7 @@ test('Cálamo espera los tres desafíos de la misión 6 y conserva la prueba fin
 
 test('la ilustración nueva y el arte de la aparición de Cálamo están disponibles sin conexión', () => {
   const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
-  for(const asset of ['assets/images/cinematicas/desierto-calamo/robo-mapa-v1.png', 'assets/images/fondos/desierto-6.png', 'assets/images/personajes/versus/kalamo-base.png']){
+  for(const asset of ['assets/images/cinematicas/desierto-calamo/robo-mapa-v1.png', 'assets/images/cinematicas/desierto-calamo/aren-se-levanta-v1.png', 'assets/images/fondos/desierto-6.png', 'assets/images/personajes/versus/kalamo-base.png']){
     assert.ok(fs.existsSync(path.join(root,asset)));
     assert.ok(sw.includes(asset));
   }

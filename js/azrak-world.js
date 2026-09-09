@@ -260,6 +260,8 @@
     { key: 'derrota-shadow', text: 'Shadow cae de rodillas. Aren baja su arma: «No tenés que seguir obedeciéndolo».', actors: [aren(), shadow(48, 'arrodillado', 't-shadow-impacto.png'), azrak()] },
     { key: 'traicion', text: '«Ya no me servís», sentencia Azrak. Una descarga alcanza a Shadow y abre una grieta bajo sus pies.', actors: [aren(), shadow(45, 'desvanecer', 't-shadow-impacto.png'), azrak('', 'azrak-ataque.png')], effect: 'traicion' },
     { key: 'ausencia', text: 'La grieta se cierra entre humo violeta. No queda rastro de Shadow. Aren se interpone: «Se terminó, Azrak».', actors: [aren(25), azrak()], effect: 'bruma' },
+    { key: 'burla-azrak', image: 'ausencia-v1.png', text: 'Azrak se ríe: «¿Vos vas a detenerme? Un simple humano, sin alas ni magia propia. No tenés ninguna posibilidad».', actors: [aren(25), azrak()], duration: 8500 },
+    { key: 'aren-decide', image: 'ausencia-v1.png', focus: '25% 65%', text: 'Aren tiembla, pero da un paso al frente: «Tengo miedo. También tengo personas por las que seguir. Si me derribás, voy a volver a levantarme».', actors: [aren(25), azrak()], duration: 10000 },
   ];
   const finale = [
     { key: 'resiste', text: 'El duelo está ganado, pero Azrak absorbe la energía del trono. Los guardianes atraviesan el portal: esta vez, Aren no luchará solo.', actors: [aren(), actor('guardiana', '../coleccion/guardiana-bosque-base.png', 31, 74, 30), actor('zafir', 'mago-base.png', 43, 73, 29), azrak()], effect: 'portal' },
@@ -297,10 +299,15 @@
   ].map(([key, name, file, text, color]) => ({ key: 'energia-' + key, name, text, portrait: true, color, actors: [actor(key, file, 50, 86, 76)], duration: 3800 }));
   finale.splice(finale.findIndex(shot => shot.key === 'union'), 3,
     ...gifts,
+    { key: 'azrak-interrumpe', silent: true, image: 'azrak-interrumpe-union-v1.png', text: '«¡No lo permitiré!» Azrak lanza una descarga hacia el grupo. Si los alcanza ahora, la unión quedará incompleta.', actors: [azrak()], duration: 5500 },
+    { key: 'calamo-llegada', music: 'ending', image: 'calamo-sonrisa-detalle-v1.png', text: 'Una sonrisa segura bajo la máscara. «Perdón por llegar tarde».', actors: [], duration: 5000 },
+    { key: 'calamo-barrera', image: 'calamo-barrera-tinta-v1.png', text: 'La descarga choca contra una barrera de tinta. «Esta vez no vine a robarte nada, Aren. ¡Terminá lo que empezaste!»', actors: [actor('calamo', 'kalamo-base.png', 50, 80, 65)], duration: 5500 },
+    { key: 'calamo-contiene', image: 'calamo-contiene-azrak-v1.png', text: 'Cálamo sujeta los brazos de Azrak con cintas de tinta. «¡No voy a contenerlo para siempre!» Los guardianes aprovechan esos segundos.', actors: [actor('calamo', 'kalamo-base.png', 30, 80, 55), azrak()], duration: 5500 },
     { key: 'union', image: 'energia-unida-v1.png', text: 'Los guardianes entregan su energía. Los cinco cristales la reúnen alrededor de Aren: todos confían en él.', actors: team(), duration: 6500 },
     { key: 'transformacion', image: 'aren-transformacion-v2.png', text: 'La luz transforma a Aren. Su corazón sigue siendo el mismo; ahora lleva la fuerza de todos los mundos.', actors: [aren(50)], duration: 6500 },
     { key: 'ataque-union', image: 'aren-ataque-union-v1.png', text: '«¡Por todos los que nos esperan!» Aren concentra el poder recibido y lo dirige al corazón del Quinto Sello.', actors: [aren(), azrak()], duration: 6500 },
-    { key: 'azrak-vencido', image: 'amanecer-v2.png', focus: '18% 40%', zoom: 1.13, text: 'El sello se cierra sobre Azrak. Su poder se apaga. La batalla ha terminado.', actors: [azrak()], duration: 5500 },
+    { key: 'sellado-inicio', image: 'sellado-inicio-v1.png', text: 'El cristal trepa por las piernas de Azrak. «¡No! ¿Cómo pudieron quebrar mi poder?», grita, intentando liberarse.', actors: [azrak()], duration: 5000 },
+    { key: 'azrak-vencido', image: 'sellado-avanza-v1.png', text: 'El sello alcanza sus hombros. «¡Yo dominaba estos mundos! ¿Cómo pude perder contra ustedes?» Su voz comienza a apagarse.', actors: [azrak()], duration: 5000 },
     { key: 'amanecer', music: 'peace', image: 'amanecer-v2.png', text: 'El silencio deja paso a la esperanza. Los guardianes rodean a Aren y reúnen los cinco cristales, por fin a salvo.', actors: team(), duration: 13000 },
     { key: 'aren-normal', image: 'aren-normalidad-v2.png', text: 'La armadura de luz se disuelve en pequeñas chispas. Aren vuelve a ser el explorador de siempre. Sus amigos lo reciben con orgullo.', actors: team(), duration: 13000 },
     { key: 'restaurar-caminos', image: 'amanecer-v2.png', focus: '50% 70%', zoom: 1.12, text: 'Aren acerca sus manos a los cristales. Con la ayuda de los guardianes, envía su luz por los portales hacia cada mundo.', actors: team(), duration: 13000 },
@@ -334,27 +341,97 @@
   }
   finale[0].music = 'battle';
   finale.splice(finale.findIndex(shot => shot.key === 'amanecer'), 0,
-    { key: 'sello-cerrado', image: 'azrak-sellado-v2.png', text: 'El último resplandor se apaga. Azrak permanece encerrado: el sello está completo y los mundos están a salvo.', actors: [], duration: 8500 },
+    { key: 'sello-cerrado', image: 'azrak-sellado-v2.png', text: '«Porque aprendimos a ayudarnos», responde Aren. El sello se cierra. Azrak ya no puede hacerles daño.', actors: [], duration: 4000 },
     { key: 'silencio', intertitle: true, text: 'Por un instante, los cinco mundos guardaron silencio.\nDespués de tanta oscuridad, la vida volvió a encontrar su camino.', actors: [], duration: 6500 });
 
   function planFinale(battleDuration = finalMusic.battle.duration, peaceDuration = finalMusic.peace.duration, endingDuration = finalMusic.ending.duration) {
     const peaceIndex = finale.findIndex(shot => shot.music === 'peace');
     const cueIndex = finale.findIndex(shot => shot.key === 'portal-nivor');
+    const endingIndex = finale.findIndex(shot => shot.music === 'ending');
     const weights = finale.slice(peaceIndex).reduce((sum, shot) => sum + shot.duration, 0);
-    const durations = finale.map((shot, i) => shot.intertitle ? shot.duration : i < cueIndex
+    const durations = finale.map((shot, i) => shot.intertitle || shot.silent ? shot.duration : i < cueIndex
       ? finalMusic.battle.nivorCue / cueIndex
       : i < peaceIndex ? shot.duration * finalMusic.battle.readingScale
       : shot.duration * peaceDuration / weights);
+    // Preserve the established first movement. Only Shadow's last hold meets the audio ending.
+    const shadowIndex = finale.findIndex(shot => shot.key === 'energia-shadow');
+    const beforeShadow = durations.slice(0, shadowIndex).reduce((sum, ms) => sum + ms, 0);
+    durations[shadowIndex] = Math.max(1, battleDuration - beforeShadow);
     const battleTotal = durations.slice(0, peaceIndex).reduce((sum, ms, i) => sum + (finale[i].intertitle ? 0 : ms), 0);
-    const endingStart = Math.max(0, endingDuration - Math.max(0, battleTotal - battleDuration));
+    const endingLength = durations.slice(endingIndex, peaceIndex).reduce((sum, ms, i) => sum + (finale[endingIndex + i].intertitle ? 0 : ms), 0);
+    const endingStart = Math.max(0, endingDuration - endingLength);
     return { durations, battleTotal, battleDuration, endingDuration, endingStart };
 
   }
 
+  function setupCinemaLandscape(layer, enabled, onChange) {
+    const mobile = enabled && matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) <= 900;
+    const navigation = layer.querySelector('nav');
+    const fullscreen = document.createElement('button');
+    fullscreen.type = 'button'; fullscreen.textContent = 'Pantalla completa';
+    fullscreen.hidden = !mobile || !layer.requestFullscreen;
+    navigation.append(fullscreen);
+    const guide = document.createElement('div');
+    guide.className = 'azrak-rotate-guide'; guide.hidden = true;
+    guide.innerHTML = '<div><span aria-hidden="true">↻</span><h2>Girá el celular</h2><p>El final se ve mejor en horizontal. La historia te espera.</p><button type="button" data-view="landscape">Ver en horizontal</button><button type="button" data-view="portrait">Ver en vertical</button></div>';
+    layer.append(guide);
+    layer.classList.toggle('cinema-mobile', mobile);
+    const orientation = globalThis.screen?.orientation;
+    const previousOrientation = orientation?.type?.startsWith('landscape') ? 'landscape' : 'portrait';
+    let closed = false, allowPortrait = false, requesting = false;
+    const state = { waiting: false, destroy };
+    const restoreOrientation = () => {
+      try { orientation?.unlock?.(); orientation?.lock?.(previousOrientation)?.catch(() => {}); } catch {}
+    };
+    const lockLandscape = async () => {
+      try { await orientation?.lock?.('landscape'); } catch { /* Manual rotation remains available. */ }
+      if (closed) restoreOrientation();
+    };
+    function update() {
+      if (closed) return;
+      const wasWaiting = state.waiting;
+      state.waiting = mobile && innerHeight > innerWidth && !allowPortrait;
+      guide.hidden = !state.waiting;
+      navigation.inert = state.waiting;
+      layer.classList.toggle('esperando-giro', state.waiting);
+      if (state.waiting && !wasWaiting) guide.querySelector('button').focus();
+      if (!state.waiting && wasWaiting) navigation.querySelector('button').focus();
+      onChange();
+    }
+    async function expand() {
+      if (closed || requesting) return;
+      requesting = true;
+      try {
+        if (!document.fullscreenElement && layer.requestFullscreen) {
+          try { await layer.requestFullscreen(); } catch { /* Browsers may require manual rotation. */ }
+        }
+        if (!closed) await lockLandscape();
+        if (closed && document.fullscreenElement === layer) await document.exitFullscreen?.().catch(() => {});
+      } finally { requesting = false; update(); }
+    }
+    fullscreen.onclick = expand;
+    guide.querySelector('[data-view="landscape"]').onclick = expand;
+    guide.querySelector('[data-view="portrait"]').onclick = () => { allowPortrait = true; update(); };
+    function destroy() {
+      closed = true;
+      window.removeEventListener('resize', update);
+      if (mobile) restoreOrientation();
+      if (document.fullscreenElement === layer) document.exitFullscreen?.().catch(() => {});
+    }
+    if (mobile) {
+      // Release the game's portrait lock before asking for landscape in an installed PWA.
+      try { orientation?.unlock?.(); } catch {}
+      void lockLandscape();
+      window.addEventListener('resize', update);
+    }
+    update();
+    return state;
+  }
+
   async function playCinematic(kind, { reduced = false, sound = () => {} } = {}) {
     const shots = kind === 'traicion' ? betrayal : finale;
-    // Start loading the two musical landmarks before their scheduled appearance.
-    const landmarkImages = kind === 'final' ? ['portal-nivor-v1.png', 'azrak-sellado-v2.png'].map(file => {
+    // Load the rescue and every stage of the seal before their scheduled appearance.
+    const landmarkImages = kind === 'final' ? ['portal-nivor-v1.png', 'azrak-interrumpe-union-v1.png', 'calamo-sonrisa-detalle-v1.png', 'calamo-barrera-tinta-v1.png', 'calamo-contiene-azrak-v1.png', 'sellado-inicio-v1.png', 'sellado-avanza-v1.png', 'azrak-sellado-v2.png'].map(file => {
       const image = new Image();
       image.src = `assets/images/cinematicas/reino-azrak/${file}`;
       return image;
@@ -370,6 +447,8 @@
     const [pause, mute, skip] = layer.querySelectorAll('button');
     const focusBefore = document.activeElement;
     let skipped = false, paused = false, currentTrack = null, muted = false;
+    let viewing = { waiting: false, destroy() {} };
+    const suspended = () => paused || document.hidden || viewing.waiting;
 
     const tracks = kind === 'final' ? Object.fromEntries(Object.entries(finalMusic).map(([key, spec]) => {
       const audio = new Audio(spec.src); audio.preload = 'auto'; audio.volume = .65; audio.loop = Boolean(spec.loop);
@@ -378,21 +457,21 @@
     mute.hidden = kind !== 'final';
     const playMusic = () => currentTrack?.play().catch(() => { mute.textContent = 'Activar música'; });
     const syncPause = () => {
-      layer.classList.toggle('pausada', paused || document.hidden);
-      if (paused || document.hidden) currentTrack?.pause();
+      layer.classList.toggle('pausada', suspended());
+      if (suspended()) currentTrack?.pause();
       else if (currentTrack) playMusic();
     };
     mute.onclick = () => {
       muted = mute.textContent === 'Activar música' ? false : !muted;
       Object.values(tracks).forEach(audio => { audio.muted = muted; });
       mute.textContent = muted ? 'Activar música' : 'Silenciar';
-      if (!paused && !document.hidden) playMusic();
+      if (!suspended()) playMusic();
     };
     const onKey = event => {
       if (event.key === 'Escape') { skipped = true; event.preventDefault(); }
       if (event.key === 'Tab') {
         event.preventDefault();
-        const buttons = [...layer.querySelectorAll('nav button')].filter(button => !button.hidden);
+        const buttons = [...layer.querySelectorAll(viewing.waiting ? '.azrak-rotate-guide button' : 'nav button')].filter(button => !button.hidden);
         const at = buttons.indexOf(document.activeElement);
         buttons[(at + (event.shiftKey ? buttons.length - 1 : 1)) % buttons.length].focus();
       }
@@ -402,6 +481,8 @@
     pause.onclick = () => { paused = !paused; syncPause(); pause.textContent = paused ? 'Continuar' : 'Pausar'; };
     skip.onclick = () => { skipped = true; };
     skip.focus();
+    viewing = setupCinemaLandscape(layer, kind === 'final', syncPause);
+    syncPause();
     try {
       // The metadata is optional: playback remains usable offline or if an audio fails.
       await Promise.all(Object.values(tracks).map(audio => new Promise(resolve => {
@@ -416,14 +497,14 @@
       let phase = null, phaseStart = 0, phaseOffset = 0;
       for (const [index, shot] of shots.entries()) {
         if (skipped) break;
-        if (shot.intertitle) { currentTrack?.pause(); currentTrack = null; phase = null; }
+        if (shot.intertitle || shot.silent) { currentTrack?.pause(); currentTrack = null; phase = null; }
         if (shot.music) {
           phase = shot.music;
-          phaseOffset = 0;
+          phaseOffset = phase === 'ending' ? timing.endingStart : 0;
           phaseStart = timing ? timing.durations.slice(0, index).reduce((sum, ms) => sum + ms, 0) : 0;
           currentTrack?.pause();
           currentTrack = tracks[phase];
-          if (currentTrack) { currentTrack.currentTime = 0; if (!paused && !document.hidden) playMusic(); }
+          if (currentTrack) { currentTrack.currentTime = phaseOffset / 1000; currentTrack.volume = phase === 'ending' ? 0 : .65; if (!suspended()) playMusic(); }
         }
         const duration = timing ? timing.durations[index] : (shot.duration || 7200);
         layer.dataset.shot = shot.key;
@@ -466,28 +547,18 @@
           const name = document.createElement('strong'); name.className = 'nombre-entrega'; name.textContent = shot.name;
           stage.append(energy, portrait, name);
         }
-        if (!shot.intertitle) sound(shot.key === 'amanecer' ? 'victoria' : 'habilidad');
+        if (!shot.intertitle && !shot.silent) sound(shot.key === 'amanecer' ? 'victoria' : 'habilidad');
         // The readable duration remains intact for reduced motion; only movement changes.
         layer.classList.toggle('movimiento-reducido', reduced);
         let elapsed = 0;
         while (elapsed < duration && !skipped) {
           const before = performance.now();
           await new Promise(resolve => setTimeout(resolve, Math.max(1, Math.min(100, duration - elapsed))));
-          if (!paused && !document.hidden) {
+          if (!suspended()) {
             const delta = performance.now() - before;
             elapsed += delta;
             if (timing && currentTrack) {
               const shotStart = timing.durations.slice(0, index).reduce((sum, ms) => sum + ms, 0);
-              if (phase === 'battle' && (currentTrack.ended || ((currentTrack.paused || currentTrack.readyState < 2) && shotStart + elapsed >= timing.battleDuration))) {
-                currentTrack.pause();
-                phase = 'ending';
-                phaseStart = timing.battleDuration;
-                phaseOffset = timing.endingStart;
-                currentTrack = tracks.ending;
-                currentTrack.currentTime = phaseOffset / 1000;
-                currentTrack.volume = 0;
-                playMusic();
-              }
               // Anchor each movement to its own audio clock; failed audio uses elapsed time.
               if (!currentTrack.paused && !currentTrack.ended && currentTrack.readyState >= 2 && !currentTrack.seeking) {
                 const shotStart = timing.durations.slice(0, index).reduce((sum, ms) => sum + ms, 0);
@@ -502,6 +573,7 @@
         }
       }
     } finally {
+      viewing.destroy();
       Object.values(tracks).forEach(audio => { audio.pause(); audio.currentTime = 0; audio.removeAttribute('src'); audio.load(); });
       document.removeEventListener('keydown', onKey);
       document.removeEventListener('visibilitychange', syncPause);

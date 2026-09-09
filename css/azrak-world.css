@@ -71,6 +71,16 @@
 .cinematica-azrak.movimiento-reducido .retrato-entrega,
 .cinematica-azrak.movimiento-reducido .energia-entrega { animation:none !important; opacity:1; transform:none; }
 .azrak-music-toggle[hidden] { display:none; }
+.cinematica-azrak button[hidden], .azrak-rotate-guide[hidden] { display:none; }
+.azrak-rotate-guide { position:absolute; inset:0; z-index:20; display:grid; place-items:center; padding:24px; background:#09060ef5; text-align:center; }
+.azrak-rotate-guide > div { max-width:360px; }
+.azrak-rotate-guide span { display:block; font-size:4rem; color:#edbb75; }
+.azrak-rotate-guide h2 { font-size:1.6rem; margin:12px 0; }
+.azrak-rotate-guide p { line-height:1.5; }
+.azrak-rotate-guide button { display:block; width:100%; min-height:46px; margin-top:14px; border:1px solid #bca377; border-radius:14px; padding:10px 16px; color:#fff1d9; background:#392641; font:inherit; cursor:pointer; }
+.azrak-rotate-guide [data-view="portrait"] { background:transparent; }
+.cinematica-azrak.esperando-giro nav { visibility:hidden; }
+.cinematica-azrak:fullscreen { width:100%; height:100%; }
 .azrak-cinema-caption { padding: 14px clamp(18px, 5vw, 90px) 20px; text-align: center; background: #09060e; }
 .azrak-cinema-caption span { font-size: .68rem; letter-spacing: .19em; color: #edbb75; }
 .azrak-cinema-caption p { font-size: clamp(.9rem, 1.7vw, 1.3rem); line-height: 1.5; max-width: 1000px; margin: 9px auto 0; }

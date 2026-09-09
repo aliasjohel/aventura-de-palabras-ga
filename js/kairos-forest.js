@@ -13,7 +13,7 @@
     ],
   };
   let active = null;
-  function play(kind, { reduced = false, shots = scenes[kind], assetRoot = root, label = "La prueba de Kairós", heading = "BOSQUE ENCANTADO" } = {}) {
+  function play(kind, { reduced = false, shots = scenes[kind], assetRoot = root, label = "La prueba de Kairós", heading = "BOSQUE ENCANTADO", onPauseChange = () => {} } = {}) {
     if (active) return active;
     if (!shots) return Promise.resolve();
     active = new Promise(resolve => {
@@ -57,6 +57,7 @@
         siblings.forEach(([el, inert]) => { el.inert = inert; });
         previous?.focus?.();
         active = null;
+        onPauseChange(false);
         resolve();
       }
       function next() { if (++index >= shots.length) finish(); else render(); }
@@ -69,7 +70,7 @@
         }
       }
       function visibility() { last = performance.now(); }
-      buttons[0].onclick = () => { paused = !paused; buttons[0].textContent = paused ? "▶ Reanudar" : "Ⅱ Pausar"; buttons[0].setAttribute("aria-pressed", String(paused)); last = performance.now(); };
+      buttons[0].onclick = () => { paused = !paused; buttons[0].textContent = paused ? "▶ Reanudar" : "Ⅱ Pausar"; buttons[0].setAttribute("aria-pressed", String(paused)); last = performance.now(); onPauseChange(paused); };
       buttons[1].onclick = next;
       buttons[2].onclick = finish;
       document.addEventListener("keydown", keydown, true);
@@ -81,6 +82,7 @@
         if (elapsed >= Math.max(11000, shots[index].text.length * 55)) next();
       }, 100);
       render();
+      onPauseChange(paused);
       buttons[0].focus();
     });
     return active;

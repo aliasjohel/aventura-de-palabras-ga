@@ -46,7 +46,7 @@ test('guardians empower Aren before his attack, then both complete music tracks 
   for (const [before, after] of [['union','transformacion'],['transformacion','ataque-union'],['ataque-union','azrak-vencido'],['azrak-vencido','amanecer'],['amanecer','aren-normal'],['aren-normal','deshielo'],['cielo-libre','abrazo'],['abrazo','epilogo']]) {
     assert.ok(keys.indexOf(before) < keys.indexOf(after), `${before} before ${after}`);
   }
-  assert.deepEqual(world.finale.filter(shot => shot.music).map(shot => [shot.key,shot.music]), [['resiste','battle'],['amanecer','peace']]);
+  assert.deepEqual(world.finale.filter(shot => shot.music).map(shot => [shot.key,shot.music]), [['resiste','battle'],['calamo-llegada','ending'],['amanecer','peace']]);
   assert.equal(world.finalMusic.battle.readingScale, 1.35);
   assert.equal(world.finalMusic.battle.loop, false);
   assert.equal(world.finalMusic.peace.readingScale || 1, 1);

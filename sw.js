@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v256`;
+const CACHE_NAME = `${CACHE_PREFIX}v261`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -227,6 +227,13 @@ const CORE_ASSETS = [
   "./assets/images/fondos/reino-azrak/ultimo-umbral-v1.png",
   "./assets/images/cinematicas/reino-azrak/amanecer-v2.png",
   "./assets/images/cinematicas/reino-azrak/azrak-sellado-v2.png",
+  "./assets/images/cinematicas/reino-azrak/azrak-interrumpe-union-v1.png",
+  "./assets/images/cinematicas/reino-azrak/calamo-sonrisa-detalle-v1.png",
+  "./assets/images/cinematicas/reino-azrak/calamo-barrera-tinta-v1.png",
+  "./assets/images/cinematicas/reino-azrak/calamo-contiene-azrak-v1.png",
+  "./assets/images/cinematicas/reino-azrak/sellado-inicio-v1.png",
+  "./assets/images/cinematicas/reino-azrak/sellado-avanza-v1.png",
+  "./assets/images/cinematicas/desierto-calamo/aren-se-levanta-v1.png",
   "./assets/images/cinematicas/reino-azrak/ausencia-v1.png",
   "./assets/images/cinematicas/reino-azrak/contraataque-v1.png",
   "./assets/images/cinematicas/reino-azrak/derrota-shadow-v1.png",
