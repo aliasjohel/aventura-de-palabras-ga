@@ -17561,3 +17561,38 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
  .modal-historia.historia-hielo.abriendo .pergamino-mision,
  .modal-historia.historia-hielo.abriendo .contenido-pergamino { animation:none; }
 }
+
+/* Isla flotante: texto sobre la piedra ilustrada. */
+.historia-cumbres .presentacion-historia { width:min(96vw,920px); min-height:0; height:min(70vw,610px,88vh); }
+.historia-cumbres .soporte-mision { inset:0; width:100%; height:100%; transform:none; }
+.historia-cumbres .soporte-mision img { width:100%; height:100%; border-radius:18px; }
+.historia-cumbres .pergamino-mision { position:absolute; top:17%; width:62%; height:46%; min-height:0; padding:5px; border:0; background:none; box-shadow:none; clip-path:none; }
+.historia-cumbres .pergamino-mision::before { display:none; }
+.historia-cumbres .contenido-pergamino { box-sizing:border-box; max-height:100%; padding:3px; }
+.historia-cumbres .numero-capitulo { color:#786024; }
+.historia-cumbres .pergamino-mision h2, .historia-cumbres #textoCapitulo { color:#344431; }
+.modal-historia.historia-cumbres.abriendo .soporte-mision,
+.modal-historia.historia-cumbres.abriendo .pergamino-mision,
+.modal-historia.historia-cumbres.abriendo .contenido-pergamino { animation:revelarTextoPergamino 650ms ease both; }
+.modal-historia.historia-cumbres.cerrando .soporte-mision,
+.modal-historia.historia-cumbres.cerrando .pergamino-mision { animation:ocultarTextoPergamino 450ms ease both; }
+@media (max-width:600px) and (orientation:portrait) {
+ .historia-cumbres .presentacion-historia { height:min(800px,90vh); }
+ .historia-cumbres .pergamino-mision { width:64%; padding:2px; }
+ .historia-cumbres .pergamino-mision h2 { font-size:clamp(1.25rem,5vw,1.65rem); }
+ .historia-cumbres #textoCapitulo { font-size:.95rem; line-height:1.4; }
+}
+@media (max-height:560px) and (orientation:landscape) {
+ .historia-cumbres .presentacion-historia { width:min(92vw,850px); height:94vh; }
+ .historia-cumbres .numero-capitulo { font-size:.85rem; margin-bottom:4px; }
+ .historia-cumbres .pergamino-mision h2 { font-size:1.35rem; margin-bottom:4px; }
+ .historia-cumbres #textoCapitulo { font-size:.95rem; line-height:1.3; }
+ .historia-cumbres .separador-pergamino { margin-bottom:4px; }
+}
+@media (prefers-reduced-motion:reduce) {
+ .modal-historia.historia-cumbres.abriendo .soporte-mision,
+ .modal-historia.historia-cumbres.abriendo .pergamino-mision,
+ .modal-historia.historia-cumbres.abriendo .contenido-pergamino { animation:none; }
+}
+
+@media (min-width:601px) and (min-height:561px) { .historia-cumbres .pergamino-mision h2 { font-size:2rem; } .historia-cumbres #textoCapitulo { font-size:1.08rem; line-height:1.4; } }

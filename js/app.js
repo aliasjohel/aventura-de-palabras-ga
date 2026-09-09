@@ -8763,7 +8763,7 @@ function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
     : esHistoriaHielo
       ? "assets/images/ui/presentacion-mision-hielo-v1.png"
       : esHistoriaCumbres
-        ? "assets/images/ui/presentacion-mision-cumbres-v1.png"
+        ? "assets/images/ui/presentacion-mision-cumbres-v2.png"
         : "assets/images/ui/presentacion-mision-tronco.png";
   numeroCapitulo.textContent = historia.capitulo;
   tituloCapitulo.textContent = historia.titulo;

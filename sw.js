@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v249`;
+const CACHE_NAME = `${CACHE_PREFIX}v250`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -283,7 +283,7 @@ const CORE_ASSETS = [
   "./assets/images/intro/cristal-icono.png",
   "./assets/images/elementos/tronco-antiguo-caido-bosque.png",
   "./assets/images/ui/presentacion-mision-piedra-desierto-v1.png",
-  "./assets/images/ui/presentacion-mision-cumbres-v1.png",
+  "./assets/images/ui/presentacion-mision-cumbres-v2.png",
   "./assets/images/fondos/menu-inicio-aventura.png",
   "./assets/images/fondos/desierto-1.png",
   "./assets/images/fondos/desierto-2.png",
@@ -584,7 +584,7 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/versus/mano-abismo-atrapa-guardian-alba.png": "20260902-personajes-chibi-1",
   "./js/pwa.js": "20260827-modos-locales-offline-1",
   "./js/supabase-loader.js": "20260827-supabase-diferido-1",
-  "./assets/images/ui/presentacion-mision-cumbres-v1.png": "20260827-soporte-cumbres-1",
+  "./assets/images/ui/presentacion-mision-cumbres-v2.png": "20260908-isla-cumbres-1",
   "./assets/images/ui/presentacion-mision-hielo-v1.png": "20260831-soporte-hielo-1",
   "./assets/images/fondos/cumbres-1.png": "20260826-cumbres-1",
   "./assets/images/fondos/cumbres-2.png": "20260826-cumbres-1",

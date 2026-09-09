@@ -154,9 +154,9 @@ assert.match(app, /MUNDO 4 · Aeralis deja a Aren/);
 assert.match(app, /classList\.toggle\("historia-cumbres", esHistoriaCumbres\)/);
 assert.match(css, /\.modal-historia\.historia-cumbres/);
 assert.match(css, /@keyframes aparecerPlacaCristalCumbres/);
-assert.match(app, /presentacion-mision-cumbres-v1\.png/);
-assert.match(sw, /presentacion-mision-cumbres-v1\.png/);
-assert.ok(fs.existsSync(path.join(root, "assets", "images", "ui", "presentacion-mision-cumbres-v1.png")));
+assert.match(app, /presentacion-mision-cumbres-v2\.png/);
+assert.match(sw, /presentacion-mision-cumbres-v2\.png/);
+assert.ok(fs.existsSync(path.join(root, "assets", "images", "ui", "presentacion-mision-cumbres-v2.png")));
 
 for (const criatura of [
   ["nubelun-cumbres-v1.png", "nubelun-cumbres", 0],
