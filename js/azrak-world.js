@@ -281,7 +281,7 @@
 
   // Dos movimientos musicales completos: la batalla y la restauración.
   const finalMusic = {
-    battle: { src: 'assets/sounds/victoria-mundo5.mp3', duration: 130951.813, readingScale: 1.35, loop: true },
+    battle: { src: 'assets/sounds/victoria-mundo5.mp3', duration: 130951.813, readingScale: 1.35, loop: false, nivorCue: 53000 },
     peace: { src: 'assets/sounds/azrak-es-vencido.mp3', duration: 183864 },
   };
   const gifts = [
@@ -332,9 +332,30 @@
     if (battleCaptions[shot.key]) { shot.text = battleCaptions[shot.key]; shot.duration = 5500; }
   }
   finale[0].music = 'battle';
+  finale.splice(finale.findIndex(shot => shot.key === 'amanecer'), 0,
+    { key: 'sello-cerrado', image: 'azrak-sellado-v1.png', text: 'El último resplandor se apaga. Azrak permanece encerrado: el sello está completo y los mundos están a salvo.', actors: [], duration: 8500 },
+    { key: 'silencio', intertitle: true, text: 'Por un instante, los cinco mundos guardaron silencio.\nDespués de tanta oscuridad, la vida volvió a encontrar su camino.', actors: [], duration: 6500 });
+
+  function planFinale(battleDuration = finalMusic.battle.duration, peaceDuration = finalMusic.peace.duration) {
+    const peaceIndex = finale.findIndex(shot => shot.music === 'peace');
+    const cueIndex = finale.findIndex(shot => shot.key === 'portal-nivor');
+    const weights = finale.slice(peaceIndex).reduce((sum, shot) => sum + shot.duration, 0);
+    const durations = finale.map((shot, i) => shot.intertitle ? shot.duration : i < cueIndex
+      ? finalMusic.battle.nivorCue / cueIndex
+      : i < peaceIndex ? shot.duration * finalMusic.battle.readingScale
+      : shot.duration * peaceDuration / weights);
+    const battleTotal = durations.slice(0, peaceIndex).reduce((sum, ms, i) => sum + (finale[i].intertitle ? 0 : ms), 0);
+    return { durations, battleTotal, replayStart: Math.max(0, 2 * battleDuration - battleTotal), battleDuration };
+  }
 
   async function playCinematic(kind, { reduced = false, sound = () => {} } = {}) {
     const shots = kind === 'traicion' ? betrayal : finale;
+    // Start loading the two musical landmarks before their scheduled appearance.
+    const landmarkImages = kind === 'final' ? ['portal-nivor-v1.png', 'azrak-sellado-v1.png'].map(file => {
+      const image = new Image();
+      image.src = `assets/images/cinematicas/reino-azrak/${file}`;
+      return image;
+    }) : [];
     const layer = document.createElement('section'); layer.className = 'cinematica-azrak';
     layer.setAttribute('role', 'dialog'); layer.setAttribute('aria-modal', 'true');
     layer.setAttribute('aria-label', kind === 'traicion' ? 'La traición de Azrak' : 'El último juramento');
@@ -346,6 +367,7 @@
     const [pause, mute, skip] = layer.querySelectorAll('button');
     const focusBefore = document.activeElement;
     let skipped = false, paused = false, currentTrack = null, muted = false;
+    let battleElapsed = 0, battleReplayed = false;
     const tracks = kind === 'final' ? Object.fromEntries(Object.entries(finalMusic).map(([key, spec]) => {
       const audio = new Audio(spec.src); audio.preload = 'auto'; audio.volume = .65; audio.loop = Boolean(spec.loop);
       return [key, audio];
@@ -386,22 +408,21 @@
         audio.addEventListener('loadedmetadata', done); audio.addEventListener('error', done);
         timer = setTimeout(done, 2500);
       })));
-      const weights = {};
-      let phase;
-      for (const shot of shots) { phase = shot.music || phase; if (phase) weights[phase] = (weights[phase] || 0) + (shot.duration || 7200); }
-      phase = null;
+      const trackDuration = key => Number.isFinite(tracks[key]?.duration) && tracks[key].duration > 0 ? tracks[key].duration * 1000 : finalMusic[key].duration;
+      const timing = kind === 'final' ? planFinale(trackDuration('battle'), trackDuration('peace')) : null;
+      let phase = null;
       for (const [index, shot] of shots.entries()) {
         if (skipped) break;
+        if (shot.intertitle) { currentTrack?.pause(); currentTrack = null; phase = null; }
         if (shot.music) {
           phase = shot.music;
           currentTrack?.pause();
           currentTrack = tracks[phase];
           if (currentTrack) { currentTrack.currentTime = 0; if (!paused && !document.hidden) playMusic(); }
         }
-        const soundtrackDuration = currentTrack && Number.isFinite(currentTrack.duration) && currentTrack.duration > 0
-          ? currentTrack.duration * 1000 : finalMusic[phase]?.duration;
-        const duration = phase ? (shot.duration || 7200) * soundtrackDuration / weights[phase] * (finalMusic[phase].readingScale || 1) : (shot.duration || 7200);
+        const duration = timing ? timing.durations[index] : (shot.duration || 7200);
         layer.dataset.shot = shot.key;
+        layer.classList.toggle('interludio-silencioso', Boolean(shot.intertitle));
         stage.className = 'azrak-cinema-stage escena-ilustrada';
         stage.replaceChildren();
         layer.querySelector('.azrak-cinema-caption span').textContent = `${kind === 'traicion' ? 'LA TRAICIÓN' : 'EL ÚLTIMO JURAMENTO'} · ${index + 1}/${shots.length}`;
@@ -411,9 +432,9 @@
         stage.style.setProperty('--plano-foco', shot.focus || '50% 50%');
         const illustration = document.createElement('img');
         illustration.className = 'azrak-cinema-illustration';
-        if (!shot.portrait) illustration.src = `assets/images/cinematicas/reino-azrak/${shot.image || shot.key + '-v1.png'}`;
+        if (!shot.portrait && !shot.intertitle) illustration.src = `assets/images/cinematicas/reino-azrak/${shot.image || shot.key + '-v1.png'}`;
         illustration.alt = shot.text;
-        if (!shot.portrait) stage.append(illustration);
+        if (!shot.portrait && !shot.intertitle) stage.append(illustration);
         illustration.onerror = () => {
         if (!illustration.isConnected) return;
         illustration.remove();
@@ -440,14 +461,31 @@
           const name = document.createElement('strong'); name.className = 'nombre-entrega'; name.textContent = shot.name;
           stage.append(energy, portrait, name);
         }
-        sound(shot.key === 'amanecer' ? 'victoria' : 'habilidad');
+        if (!shot.intertitle) sound(shot.key === 'amanecer' ? 'victoria' : 'habilidad');
         // The readable duration remains intact for reduced motion; only movement changes.
         layer.classList.toggle('movimiento-reducido', reduced);
         let elapsed = 0;
         while (elapsed < duration && !skipped) {
           const before = performance.now();
           await new Promise(resolve => setTimeout(resolve, Math.max(1, Math.min(100, duration - elapsed))));
-          if (!paused && !document.hidden) elapsed += performance.now() - before;
+          if (!paused && !document.hidden) {
+            const delta = performance.now() - before;
+            elapsed += delta;
+            if (phase === 'battle') {
+              battleElapsed += delta;
+              if (!battleReplayed && (currentTrack?.ended || battleElapsed >= timing.battleDuration)) {
+                battleReplayed = true;
+                if (currentTrack) { currentTrack.currentTime = timing.replayStart / 1000; playMusic(); }
+              }
+              // Use the soundtrack clock while it plays; fallback keeps silent/offline playback usable.
+              if (currentTrack && !currentTrack.paused && currentTrack.readyState >= 2 && !currentTrack.seeking) {
+                const musicTime = currentTrack.currentTime * 1000 + (battleReplayed ? timing.battleDuration - timing.replayStart : 0);
+                const shotStart = timing.durations.slice(0, index).reduce((sum, ms) => sum + ms, 0);
+                elapsed = Math.max(0, musicTime - shotStart);
+                battleElapsed = musicTime;
+              }
+            }
+          }
         }
       }
     } finally {
@@ -459,5 +497,5 @@
       if (focusBefore?.isConnected) focusBefore.focus({ preventScroll: true });
     }
   }
-  return { missions, words, paths, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, mountScene, ignitePortal, playCinematic, betrayal, finale, finalMusic, base };
+  return { missions, words, paths, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, mountScene, ignitePortal, playCinematic, planFinale, betrayal, finale, finalMusic, base };
 });

@@ -211,3 +211,12 @@
 @media (prefers-reduced-motion: reduce) {
   .demonio-azrak.demonio-lejano { left: var(--posicion-reducida); }
 }
+
+/* Silencio entre el sello y la restauración de los mundos. */
+.cinematica-azrak.interludio-silencioso, .interludio-silencioso .azrak-cinema-stage { background:#000; }
+.interludio-silencioso .azrak-cinema-caption { inset:0; width:100%; max-width:none; display:flex; align-items:center; justify-content:center; padding:12vw; background:none; border:0; box-shadow:none; }
+.interludio-silencioso .azrak-cinema-caption span { display:none; }
+.interludio-silencioso .azrak-cinema-caption p { max-width:760px; white-space:pre-line; text-align:center; font-size:clamp(1.1rem,3vw,1.8rem); line-height:1.7; animation:textoTrasBatalla 6.5s ease both; }
+@keyframes textoTrasBatalla { 0%,12% { opacity:0; } 30%,85% { opacity:1; } 100% { opacity:0; } }
+.cinematica-azrak.pausada .azrak-cinema-caption p { animation-play-state:paused; }
+.movimiento-reducido.interludio-silencioso .azrak-cinema-caption p { animation:none; }

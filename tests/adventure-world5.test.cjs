@@ -48,7 +48,7 @@ test('guardians empower Aren before his attack, then both complete music tracks 
   }
   assert.deepEqual(world.finale.filter(shot => shot.music).map(shot => [shot.key,shot.music]), [['resiste','battle'],['amanecer','peace']]);
   assert.equal(world.finalMusic.battle.readingScale, 1.35);
-  assert.equal(world.finalMusic.battle.loop, true);
+  assert.equal(world.finalMusic.battle.loop, false);
   assert.equal(world.finalMusic.peace.readingScale || 1, 1);
   assert.equal(Boolean(world.finalMusic.peace.loop), false);
   for (const track of Object.values(world.finalMusic)) {
@@ -188,6 +188,7 @@ test('mission 8 keeps three completed portals and advances only on the fourth wo
 
 test('cinematic illustrations exist offline and the giant rescue precedes the battle', () => {
   for (const shot of [...world.betrayal, ...world.finale]) {
+    if (shot.intertitle) continue;
     if (shot.portrait) {
       const portrait = path.posix.normalize(`assets/images/personajes/versus/${shot.actors[0].file}`);
       assert.ok(fs.existsSync(path.join(__dirname, '..', portrait)), portrait);

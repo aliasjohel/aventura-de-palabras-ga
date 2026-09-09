@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v251`;
+const CACHE_NAME = `${CACHE_PREFIX}v252`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -226,6 +226,7 @@ const CORE_ASSETS = [
   "./assets/images/fondos/reino-azrak/torre-centinela-v1.png",
   "./assets/images/fondos/reino-azrak/ultimo-umbral-v1.png",
   "./assets/images/cinematicas/reino-azrak/amanecer-v1.png",
+  "./assets/images/cinematicas/reino-azrak/azrak-sellado-v1.png",
   "./assets/images/cinematicas/reino-azrak/ausencia-v1.png",
   "./assets/images/cinematicas/reino-azrak/contraataque-v1.png",
   "./assets/images/cinematicas/reino-azrak/derrota-shadow-v1.png",
