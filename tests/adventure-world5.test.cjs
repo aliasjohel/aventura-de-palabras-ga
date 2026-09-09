@@ -54,7 +54,7 @@ test('guardians empower Aren before his attack, then both complete music tracks 
   for (const track of Object.values(world.finalMusic)) {
     assert.ok(fs.existsSync(path.join(__dirname, '..', track.src)));
     assert.ok(sw.includes(track.src));
-    assert.ok(track.duration > 120000);
+    assert.ok(track.excerpt ? track.duration > track.excerpt : track.duration > 120000);
   }
 });
 

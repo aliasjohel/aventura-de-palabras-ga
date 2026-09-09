@@ -279,9 +279,10 @@
     { key: 'epilogo', text: 'Aren guarda su mapa. No fue una sola fuerza la que salvó los mundos: fue aprender a escucharse y elegir ayudarse. FIN · Gracias por vivir esta aventura.', actors: team(), effect: 'amanecer', duration: 9000 },
   ];
 
-  // Dos movimientos musicales completos: la batalla y la restauración.
+  // Batalla original completa, tramo final de MusicLFiles y restauración.
   const finalMusic = {
-    battle: { src: 'assets/sounds/victoria-mundo5.mp3', duration: 130951.813, readingScale: 1.35, loop: false, nivorCue: 53000 },
+    battle: { src: 'assets/sounds/victoria-mundo5.mp3', duration: 130951.813, readingScale: 1.35, loop: false, nivorCue: 17000 },
+    ending: { src: 'assets/sounds/azrak-batalla-final-musiclfiles.mp3', duration: 134896.313, fadeIn: 500 },
     peace: { src: 'assets/sounds/azrak-es-vencido.mp3', duration: 183864 },
   };
   const gifts = [
@@ -299,10 +300,10 @@
     { key: 'union', image: 'energia-unida-v1.png', text: 'Los guardianes entregan su energía. Los cinco cristales la reúnen alrededor de Aren: todos confían en él.', actors: team(), duration: 6500 },
     { key: 'transformacion', image: 'aren-transformacion-v2.png', text: 'La luz transforma a Aren. Su corazón sigue siendo el mismo; ahora lleva la fuerza de todos los mundos.', actors: [aren(50)], duration: 6500 },
     { key: 'ataque-union', image: 'aren-ataque-union-v1.png', text: '«¡Por todos los que nos esperan!» Aren concentra el poder recibido y lo dirige al corazón del Quinto Sello.', actors: [aren(), azrak()], duration: 6500 },
-    { key: 'azrak-vencido', image: 'amanecer-v1.png', focus: '18% 40%', zoom: 1.13, text: 'El sello se cierra sobre Azrak. Su poder se apaga. La batalla ha terminado.', actors: [azrak()], duration: 5500 },
-    { key: 'amanecer', music: 'peace', image: 'amanecer-v1.png', text: 'El silencio deja paso a la esperanza. Los guardianes rodean a Aren y reúnen los cinco cristales, por fin a salvo.', actors: team(), duration: 13000 },
+    { key: 'azrak-vencido', image: 'amanecer-v2.png', focus: '18% 40%', zoom: 1.13, text: 'El sello se cierra sobre Azrak. Su poder se apaga. La batalla ha terminado.', actors: [azrak()], duration: 5500 },
+    { key: 'amanecer', music: 'peace', image: 'amanecer-v2.png', text: 'El silencio deja paso a la esperanza. Los guardianes rodean a Aren y reúnen los cinco cristales, por fin a salvo.', actors: team(), duration: 13000 },
     { key: 'aren-normal', image: 'aren-normalidad-v2.png', text: 'La armadura de luz se disuelve en pequeñas chispas. Aren vuelve a ser el explorador de siempre. Sus amigos lo reciben con orgullo.', actors: team(), duration: 13000 },
-    { key: 'restaurar-caminos', image: 'amanecer-v1.png', focus: '50% 70%', zoom: 1.12, text: 'Aren acerca sus manos a los cristales. Con la ayuda de los guardianes, envía su luz por los portales hacia cada mundo.', actors: team(), duration: 13000 },
+    { key: 'restaurar-caminos', image: 'amanecer-v2.png', focus: '50% 70%', zoom: 1.12, text: 'Aren acerca sus manos a los cristales. Con la ayuda de los guardianes, envía su luz por los portales hacia cada mundo.', actors: team(), duration: 13000 },
     { key: 'deshielo', image: 'restauracion-hielo-v1.png', text: 'En el reino de Nivor, el hielo que aprisionaba a sus habitantes comienza a ceder. La luz de Aren recorre sus calles.', actors: team(), duration: 14000 },
     { key: 'reencuentro-hielo', image: 'restauracion-hielo-v1.png', focus: '38% 68%', zoom: 1.16, text: 'Las personas congeladas despiertan y vuelven a abrazarse. El reino conserva su nieve, pero el frío ya no les roba la vida.', actors: team(), duration: 14000 },
     { key: 'bosque-renace', image: 'restauracion-bosque-v1.png', text: 'Las sombras abandonan el Bosque Encantado. Las raíces se abren, los árboles recuperan sus hojas y el agua vuelve a correr.', actors: team(), duration: 14000 },
@@ -333,10 +334,10 @@
   }
   finale[0].music = 'battle';
   finale.splice(finale.findIndex(shot => shot.key === 'amanecer'), 0,
-    { key: 'sello-cerrado', image: 'azrak-sellado-v1.png', text: 'El último resplandor se apaga. Azrak permanece encerrado: el sello está completo y los mundos están a salvo.', actors: [], duration: 8500 },
+    { key: 'sello-cerrado', image: 'azrak-sellado-v2.png', text: 'El último resplandor se apaga. Azrak permanece encerrado: el sello está completo y los mundos están a salvo.', actors: [], duration: 8500 },
     { key: 'silencio', intertitle: true, text: 'Por un instante, los cinco mundos guardaron silencio.\nDespués de tanta oscuridad, la vida volvió a encontrar su camino.', actors: [], duration: 6500 });
 
-  function planFinale(battleDuration = finalMusic.battle.duration, peaceDuration = finalMusic.peace.duration) {
+  function planFinale(battleDuration = finalMusic.battle.duration, peaceDuration = finalMusic.peace.duration, endingDuration = finalMusic.ending.duration) {
     const peaceIndex = finale.findIndex(shot => shot.music === 'peace');
     const cueIndex = finale.findIndex(shot => shot.key === 'portal-nivor');
     const weights = finale.slice(peaceIndex).reduce((sum, shot) => sum + shot.duration, 0);
@@ -345,13 +346,15 @@
       : i < peaceIndex ? shot.duration * finalMusic.battle.readingScale
       : shot.duration * peaceDuration / weights);
     const battleTotal = durations.slice(0, peaceIndex).reduce((sum, ms, i) => sum + (finale[i].intertitle ? 0 : ms), 0);
-    return { durations, battleTotal, replayStart: Math.max(0, 2 * battleDuration - battleTotal), battleDuration };
+    const endingStart = Math.max(0, endingDuration - Math.max(0, battleTotal - battleDuration));
+    return { durations, battleTotal, battleDuration, endingDuration, endingStart };
+
   }
 
   async function playCinematic(kind, { reduced = false, sound = () => {} } = {}) {
     const shots = kind === 'traicion' ? betrayal : finale;
     // Start loading the two musical landmarks before their scheduled appearance.
-    const landmarkImages = kind === 'final' ? ['portal-nivor-v1.png', 'azrak-sellado-v1.png'].map(file => {
+    const landmarkImages = kind === 'final' ? ['portal-nivor-v1.png', 'azrak-sellado-v2.png'].map(file => {
       const image = new Image();
       image.src = `assets/images/cinematicas/reino-azrak/${file}`;
       return image;
@@ -367,7 +370,7 @@
     const [pause, mute, skip] = layer.querySelectorAll('button');
     const focusBefore = document.activeElement;
     let skipped = false, paused = false, currentTrack = null, muted = false;
-    let battleElapsed = 0, battleReplayed = false;
+
     const tracks = kind === 'final' ? Object.fromEntries(Object.entries(finalMusic).map(([key, spec]) => {
       const audio = new Audio(spec.src); audio.preload = 'auto'; audio.volume = .65; audio.loop = Boolean(spec.loop);
       return [key, audio];
@@ -409,13 +412,15 @@
         timer = setTimeout(done, 2500);
       })));
       const trackDuration = key => Number.isFinite(tracks[key]?.duration) && tracks[key].duration > 0 ? tracks[key].duration * 1000 : finalMusic[key].duration;
-      const timing = kind === 'final' ? planFinale(trackDuration('battle'), trackDuration('peace')) : null;
-      let phase = null;
+      const timing = kind === 'final' ? planFinale(trackDuration('battle'), trackDuration('peace'), trackDuration('ending')) : null;
+      let phase = null, phaseStart = 0, phaseOffset = 0;
       for (const [index, shot] of shots.entries()) {
         if (skipped) break;
         if (shot.intertitle) { currentTrack?.pause(); currentTrack = null; phase = null; }
         if (shot.music) {
           phase = shot.music;
+          phaseOffset = 0;
+          phaseStart = timing ? timing.durations.slice(0, index).reduce((sum, ms) => sum + ms, 0) : 0;
           currentTrack?.pause();
           currentTrack = tracks[phase];
           if (currentTrack) { currentTrack.currentTime = 0; if (!paused && !document.hidden) playMusic(); }
@@ -471,18 +476,26 @@
           if (!paused && !document.hidden) {
             const delta = performance.now() - before;
             elapsed += delta;
-            if (phase === 'battle') {
-              battleElapsed += delta;
-              if (!battleReplayed && (currentTrack?.ended || battleElapsed >= timing.battleDuration)) {
-                battleReplayed = true;
-                if (currentTrack) { currentTrack.currentTime = timing.replayStart / 1000; playMusic(); }
+            if (timing && currentTrack) {
+              const shotStart = timing.durations.slice(0, index).reduce((sum, ms) => sum + ms, 0);
+              if (phase === 'battle' && (currentTrack.ended || ((currentTrack.paused || currentTrack.readyState < 2) && shotStart + elapsed >= timing.battleDuration))) {
+                currentTrack.pause();
+                phase = 'ending';
+                phaseStart = timing.battleDuration;
+                phaseOffset = timing.endingStart;
+                currentTrack = tracks.ending;
+                currentTrack.currentTime = phaseOffset / 1000;
+                currentTrack.volume = 0;
+                playMusic();
               }
-              // Use the soundtrack clock while it plays; fallback keeps silent/offline playback usable.
-              if (currentTrack && !currentTrack.paused && currentTrack.readyState >= 2 && !currentTrack.seeking) {
-                const musicTime = currentTrack.currentTime * 1000 + (battleReplayed ? timing.battleDuration - timing.replayStart : 0);
+              // Anchor each movement to its own audio clock; failed audio uses elapsed time.
+              if (!currentTrack.paused && !currentTrack.ended && currentTrack.readyState >= 2 && !currentTrack.seeking) {
                 const shotStart = timing.durations.slice(0, index).reduce((sum, ms) => sum + ms, 0);
-                elapsed = Math.max(0, musicTime - shotStart);
-                battleElapsed = musicTime;
+                elapsed = Math.max(0, currentTrack.currentTime * 1000 - phaseOffset + phaseStart - shotStart);
+              }
+              if (phase === 'ending') {
+                const endingElapsed = Math.max(0, shotStart + elapsed - phaseStart);
+                currentTrack.volume = .65 * Math.min(1, endingElapsed / finalMusic.ending.fadeIn);
               }
             }
           }

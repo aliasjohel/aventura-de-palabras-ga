@@ -1,16 +1,23 @@
 # Cierre de la batalla de Azrak
 
+## Corrección de identidad integrada el 9 de septiembre
+
+Se recuperaron las dos imágenes ya generadas mediante ImageGen integrado en la tarea anterior y se verificaron contra `assets/images/personajes/versus/azrak-base.png`. Archivos finales: `assets/images/cinematicas/reino-azrak/azrak-sellado-v2.png` y `assets/images/cinematicas/reino-azrak/amanecer-v2.png`. Azrak conserva piel roja, silueta delgada, pelo oscuro, cuernos con grietas de lava y armadura ajustada. Se actualizaron las referencias de la cinemática, las precargas y la caché v254 para descargar las imágenes nuevas. La música incorpora la introducción descrita abajo.
+
+Prompt del sello: corregir únicamente al personaje encerrado usando el diseño original de Azrak como referencia; rostro rojo visible, orejas puntiagudas, pelo oscuro, cuernos negros con grietas naranjas, armadura negra con bordes de bronce y emblema naranja, cintura delgada y cola roja. Sin casco ni torso voluminoso. Mantener cristal completamente cerrado, cinco gemas, fortaleza, cielo y composición.
+
+Prompt de victoria: corregir únicamente al villano dentro del cristal violeta del fondo superior izquierdo con esa misma identidad. Mantener todos los personajes del primer plano, rostros, ropa, posiciones, cinco cristales, altar, encuadre, castillo y cielo. Sin personajes adicionales ni texto.
+
 Imagen generada con la herramienta integrada ImageGen: `assets/images/cinematicas/reino-azrak/azrak-sellado-v1.png`. Referencia: `amanecer-v1.png`.
 
-## Tiempos
+## Tiempos vigentes
 
-- Nivor aparece en `portal-nivor` a los 53 segundos de la primera pasada musical, tomando como referencia el momento aproximado indicado por el usuario.
-- Batalla: 213,515 segundos. Primera pasada completa de 130,951813 segundos; segunda pasada desde 48,388626 segundos. Sin bucle automático. El final coincide con el plano del sello cerrado.
-- Interludio negro sin música: 6,5 segundos. Texto: «Por un instante, los cinco mundos guardaron silencio. Después de tanta oscuridad, la vida volvió a encontrar su camino».
-- El epílogo comienza luego con su pista completa de 183,864 segundos.
-- Pausa y cambio de pestaña detienen música y avance. Si el audio no puede reproducirse, los planos siguen con tiempos de respaldo.
-
-Validación: planificación temporal y suite de 45 pruebas; reproducción acelerada en navegador con reloj de audio simulado, entrada de Nivor, repetición parcial, silencio, cambio de pista y limpieza final. El golpe percusivo se referencia a 53 s según el usuario; no se realizó una comprobación auditiva del acento musical exacto.
+- Música original victoria-mundo5.mp3 desde cero hasta su final (130,951813 s). Nivor entra a los 17 s, conservando los tiempos originales de los planos.
+- Después entra Final Battle de MusicLFiles, archivo aportado por el usuario, desde 88,333126 s hasta su final a 134,896313 s. Se utilizan sus últimos 46,563187 s con una entrada de volumen de 0,5 s.
+- Fuente: https://pixabay.com/music/main-title-final-battle-123148/
+- Archivo integrado: assets/sounds/azrak-batalla-final-musiclfiles.mp3. AlexGrohl ya no se reproduce en la cinemática.
+- La batalla dura 177,515 s y termina con el sello cerrado. Sigue el interludio silencioso de 6,5 s y el epílogo con su pista completa de 183,864 s.
+- Validación: 12 pruebas y reproducción acelerada en navegador con audio simulado, verificando Nivor a 17 s, ausencia de repetición, punto de entrada y final natural de MusicLFiles, silencio y epílogo. Duración del MP3 medida mediante decodificación del archivo real. No se realizó escucha subjetiva del empalme.
 
 ## Prompt de la imagen
 

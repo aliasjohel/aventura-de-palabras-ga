@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v252`;
+const CACHE_NAME = `${CACHE_PREFIX}v256`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -225,8 +225,8 @@ const CORE_ASSETS = [
   "./assets/images/fondos/reino-azrak/sendero-guardianes-v1.png",
   "./assets/images/fondos/reino-azrak/torre-centinela-v1.png",
   "./assets/images/fondos/reino-azrak/ultimo-umbral-v1.png",
-  "./assets/images/cinematicas/reino-azrak/amanecer-v1.png",
-  "./assets/images/cinematicas/reino-azrak/azrak-sellado-v1.png",
+  "./assets/images/cinematicas/reino-azrak/amanecer-v2.png",
+  "./assets/images/cinematicas/reino-azrak/azrak-sellado-v2.png",
   "./assets/images/cinematicas/reino-azrak/ausencia-v1.png",
   "./assets/images/cinematicas/reino-azrak/contraataque-v1.png",
   "./assets/images/cinematicas/reino-azrak/derrota-shadow-v1.png",
@@ -252,6 +252,7 @@ const CORE_ASSETS = [
   "./assets/images/cinematicas/reino-azrak/restauracion-desierto-v1.png",
   "./assets/images/cinematicas/reino-azrak/restauracion-cumbres-v1.png",
   "./assets/images/cinematicas/reino-azrak/abrazo-shadow-orgulloso-v2.png",
+  "./assets/sounds/azrak-batalla-final-musiclfiles.mp3",
   "./assets/sounds/victoria-mundo5.mp3",
   "./assets/sounds/azrak-es-vencido.mp3",
   "./css/desert-sand-trap.css",
