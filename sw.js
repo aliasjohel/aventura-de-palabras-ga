@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v262`;
+const CACHE_NAME = `${CACHE_PREFIX}v263`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -939,6 +939,10 @@ async function responderRecursoEstatico(event) {
   const { request } = event;
   const cache = await caches.open(CACHE_NAME);
   const cachedResponse = await cache.match(request, { ignoreSearch: true });
+  // Keep each installed release consistent instead of mixing its code with
+  // background downloads from the next release while installation is pending.
+  const path = './' + new URL(request.url).pathname.slice(new URL(self.registration.scope).pathname.length);
+  if (cachedResponse && CORE_ASSETS.includes(path)) return cachedResponse;
   const actualizarCache = fetch(request, { cache: "no-cache" }).then(
     async (response) => {
       if (response.ok) {
@@ -976,6 +980,9 @@ self.addEventListener("fetch", (event) => {
 });
 
 self.addEventListener("message", (event) => {
+  if (event.data?.type === "GET_VERSION") {
+    event.ports?.[0]?.postMessage({ version: CACHE_NAME });
+  }
   if (event.data?.type === "SKIP_WAITING") {
     self.skipWaiting();
   }

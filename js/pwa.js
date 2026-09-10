@@ -27,6 +27,7 @@ async function registrarAplicacionInstalable() {
   let avisoPendiente = false;
   let recargandoPorActualizacion = false;
   let progresoInstalacion = null;
+  let errorInstalacion = false;
 
   const mostrarEstadoOffline = (estado, texto) => {
     if (!estadoOfflineJuego) return;
@@ -61,6 +62,7 @@ async function registrarAplicacionInstalable() {
     reutilizados = 0,
     estado,
   }) => {
+    errorInstalacion = false;
     const valor = Math.min(100, Math.max(0, Number(porcentaje) || 0));
     progresoInstalacion = {
       porcentaje: valor,
@@ -93,6 +95,7 @@ async function registrarAplicacionInstalable() {
   };
 
   const mostrarErrorDescarga = () => {
+    errorInstalacion = true;
     progresoInstalacion = null;
     iconoActualizacion.textContent = "!";
     tituloActualizacion.textContent = "No se completó la actualización";
@@ -188,7 +191,9 @@ async function registrarAplicacionInstalable() {
       return;
     }
     if (avisoPendiente && menuPrincipalPwa.classList.contains("activa")) {
-      presentarAvisoActualizacion();
+      if (workerEnEspera) presentarAvisoActualizacion();
+      else if (errorInstalacion) mostrarErrorDescarga();
+      else if (progresoInstalacion) actualizarBarraDescarga(progresoInstalacion);
     }
   }).observe(menuPrincipalPwa, { attributes: true, attributeFilter: ["class"] });
 

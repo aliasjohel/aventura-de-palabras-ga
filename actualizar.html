@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#171127">
+<title>Actualizar · Aventura de Palabras</title>
+<style>
+  *{box-sizing:border-box} body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:24px;background:#171127;color:#fff1d9;font:17px/1.5 system-ui,sans-serif}
+  main{max-width:540px;width:100%} h1{font-size:1.7rem} button,a{display:block;width:100%;padding:14px 20px;border-radius:12px;text-align:center;font:inherit;margin-top:18px}
+  button{background:#ffe0a3;color:#231631;border:0;cursor:pointer} button:disabled{opacity:.65} a{color:#ffe0a3;border:1px solid #756044;text-decoration:none} progress{width:100%;height:22px} [hidden]{display:none} small{color:#c8bfd9}
+</style>
+<main>
+  <h1>Actualizar el juego</h1>
+  <p>Buscá la versión nueva conservando tu partida y tus monedas.</p>
+  <p id="estado" role="status" aria-live="polite">Dejá esta pantalla abierta mientras se prepara la actualización.</p>
+  <progress id="progreso" max="100" hidden></progress>
+  <button id="buscar">Buscar y aplicar actualización</button>
+  <a id="volver" href="./">Volver al juego</a>
+  <p><small id="version"></small></p>
+</main>
+<script>
+(() => {
+  const estado = document.querySelector('#estado');
+  const progreso = document.querySelector('#progreso');
+  const buscar = document.querySelector('#buscar');
+  const version = document.querySelector('#version');
+  let autorizado = false, registro, completado = false;
+  const observados = new WeakSet();
+  const error = texto => { estado.textContent = texto; buscar.disabled = false; buscar.textContent = 'Reintentar actualización'; };
+  function consultarVersion(worker) {
+    return new Promise(resolve => {
+      if (!worker) return resolve(null);
+      const canal = new MessageChannel();
+      const timer = setTimeout(() => { canal.port1.close(); resolve(null); }, 3000);
+      canal.port1.onmessage = e => { clearTimeout(timer); canal.port1.close(); resolve(e.data?.version); };
+      worker.postMessage({type:'GET_VERSION'}, [canal.port2]);
+    });
+  }
+  async function verificar() {
+    const actual = await consultarVersion(navigator.serviceWorker.controller);
+    if (Number(actual?.match(/runtime-v(\d+)$/)?.[1]) < 263 || !actual) return false;
+    completado = true;
+    estado.textContent = 'Actualización aplicada. Ya podés volver al juego o abrirlo desde su ícono.';
+    version.textContent = 'Versión instalada: ' + actual.replace('aventura-palabras-runtime-', '');
+    progreso.hidden = true; buscar.hidden = true;
+    document.querySelector('#volver').href = './?actualizado=' + encodeURIComponent(actual);
+    return true;
+  }
+  function observar(worker) {
+    if (!worker || observados.has(worker)) return;
+    observados.add(worker);
+    const revisar = () => {
+      if (worker.state === 'installed' && autorizado) {
+        estado.textContent = 'Aplicando la actualización…';
+        worker.postMessage({type:'SKIP_WAITING'});
+      } else if (worker.state === 'redundant' && !completado) {
+        error('No se pudo completar la descarga. Tu partida sigue guardada. Volvé a intentarlo con esta pantalla abierta.');
+      }
+    };
+    worker.addEventListener('statechange', revisar); revisar();
+  }
+  if (!('serviceWorker' in navigator)) { error('Abrí este enlace en Chrome para actualizar el juego instalado.'); buscar.disabled = true; return; }
+  navigator.serviceWorker.addEventListener('controllerchange', () => { void verificar(); });
+  navigator.serviceWorker.addEventListener('message', e => {
+    if (e.data?.type !== 'PWA_INSTALL_PROGRESS' || !autorizado || completado) return;
+    if (e.data.estado === 'error') return error('La descarga no se completó. Tu partida sigue guardada. Tocá Reintentar actualización.');
+    progreso.hidden = false; progreso.value = e.data.porcentaje;
+    estado.textContent = `Preparando actualización: ${e.data.porcentaje}% (${e.data.completados} de ${e.data.total} archivos).`;
+  });
+  buscar.onclick = async () => {
+    autorizado = true; buscar.disabled = true;
+    estado.textContent = 'Buscando la versión nueva…';
+    try {
+      registro = await navigator.serviceWorker.register('./sw.js', {scope:'./', updateViaCache:'none'});
+      registro.addEventListener('updatefound', () => observar(registro.installing));
+      observar(registro.installing); observar(registro.waiting);
+      await registro.update();
+      observar(registro.installing); observar(registro.waiting);
+      if (!registro.installing && !registro.waiting && !await verificar()) {
+        error('El navegador aún no confirmó la versión nueva. Volvé a intentar la búsqueda en unos segundos.');
+      }
+    } catch (e) {
+      error('No se pudo buscar la actualización. Tu partida sigue guardada. Revisá la conexión y tocá Reintentar actualización.');
+    }
+  };
+})();
+</script>
+</html>
