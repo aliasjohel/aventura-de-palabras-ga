@@ -16021,8 +16021,8 @@ button:disabled {
 @keyframes nombreAzrakFinal { 0%,81%{opacity:0;transform:scale(1.4)} 88%,96%{opacity:1;transform:scale(1)} 100%{opacity:0} }
 
 @media (orientation:landscape) and (max-height:600px) {
-  .versus-personaje-uno.personaje-azrak,.versus-personaje-dos.personaje-azrak{width:min(23vw,45vh);bottom:17%}
-  .versus-personaje-dos.personaje-azrak{right:7%}
+  .versus-personaje-uno.personaje-azrak,.versus-personaje-dos.personaje-azrak{width:min(26vw,50vh);height:74%;bottom:14%}
+  .versus-personaje-dos.personaje-azrak{right:13%}
   .corte-infernal-versus{top:29%;width:min(17vw,30vh)}
   .habilidad-azrak-versus img{top:18%;width:min(22vw,38vh)}
   .cinematica-azrak-invocacion{width:min(37vw,70vh)}
@@ -17394,6 +17394,28 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
 }
 
 /* Kairós: breve giro del reloj sobre el teclado. */
+.teclado-versus.efecto-calavera-azrak { isolation:isolate; }
+.teclado-versus.efecto-calavera-azrak::before {
+  content:""; position:absolute; inset:-4px; z-index:30; border-radius:12px;
+  background:radial-gradient(ellipse, #672410ef, #180606ed); pointer-events:auto;
+  box-shadow:inset 0 0 24px #ff671c99;
+}
+.teclado-versus.efecto-calavera-azrak::after {
+  content:""; position:absolute; inset:-8px 0; z-index:31; pointer-events:none;
+  background:url('../assets/images/personajes/versus/calavera-ignea-azrak.png') center/contain no-repeat;
+  filter:drop-shadow(0 0 9px #ff8a29); animation:calaveraSobreTeclado 2s ease-in-out both;
+}
+.teclado-versus button.tecla-carbonizada {
+  background:linear-gradient(#432719,#1e1512); color:#ffb465; border-color:#f17a30;
+  box-shadow:inset 0 0 9px #0009, 0 0 5px #ff742b66;
+}
+@keyframes calaveraSobreTeclado {
+  0% { opacity:0; transform:scale(.45); }
+  18%,75% { opacity:1; transform:scale(1); }
+  90% { opacity:1; transform:scale(1.07); }
+  100% { opacity:0; transform:scale(.85); }
+}
+@media(prefers-reduced-motion:reduce) { .teclado-versus.efecto-calavera-azrak::after { animation:none; } }
 .teclado-versus.efecto-reloj-kairos { isolation: isolate; }
 .teclado-versus.efecto-reloj-kairos button { filter: saturate(.3); cursor: wait; }
 .teclado-versus.efecto-reloj-kairos::before {

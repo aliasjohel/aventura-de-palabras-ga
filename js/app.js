@@ -1692,7 +1692,7 @@ function actualizarTecladoPartidaOnline(partida) {
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = jugadaOnlineEnCurso
       || efectoBloqueoActivo
-      || tecladoVersus.classList.contains("efecto-reloj-kairos")
+      || tecladoVersus.classList.contains("efecto-calavera-azrak") || tecladoVersus.classList.contains("efecto-reloj-kairos")
       || partida.status !== "playing"
       || !comenzo
       || partida.me?.finished
@@ -3927,7 +3927,7 @@ function sincronizarTecladoDemoVersus() {
     || tecladoVersus.classList.contains("efecto-agujero-negro")
     || tecladoVersus.classList.contains("efecto-teclas-rotas")
     || tecladoVersus.classList.contains("efecto-congelado")
-    || tecladoVersus.classList.contains("efecto-reloj-kairos");
+    || tecladoVersus.classList.contains("efecto-calavera-azrak") || tecladoVersus.classList.contains("efecto-reloj-kairos");
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = bloqueado
       || demoVersus.teclasRobadasJugador.has(boton.textContent)
@@ -4252,13 +4252,43 @@ function obtenerLetraIncorrectaDisponibleVersus(palabra, letrasUsadas) {
   return opciones[Math.floor(Math.random() * opciones.length)] || "";
 }
 
-function animarTeclaCalaveraIgneaVersus(letra, recibida = false) {
+let temporizadorCalaveraTeclado = null;
+
+function limpiarCalaveraTecladoVersus() {
+  clearTimeout(temporizadorCalaveraTeclado);
+  temporizadorCalaveraTeclado = null;
+  tecladoVersus.classList.remove('efecto-calavera-azrak');
+}
+
+function mostrarCalaveraTecladoVersus(alTerminar) {
+  limpiarCalaveraTecladoVersus();
+  void tecladoVersus.offsetWidth;
+  tecladoVersus.classList.add('efecto-calavera-azrak');
+  bloquearTecladoDemoVersus();
+  temporizadorCalaveraTeclado = setTimeout(() => {
+    limpiarCalaveraTecladoVersus();
+    if (demoVersus.partidaFinalizada || demoVersus.finalizadoJugador) return;
+    alTerminar();
+    if (adaptadorSalasVersus.proveedor === 'supabase' && partidaOnlineVersus) {
+      actualizarTecladoPartidaOnline(partidaOnlineVersus);
+    } else {
+      sincronizarTecladoDemoVersus();
+    }
+  }, 2000);
+}
+
+function animarTeclaCalaveraIgneaVersus(letra, recibida = false, presentar = true) {
+  if (recibida && presentar) {
+    mostrarCalaveraTecladoVersus(() => animarTeclaCalaveraIgneaVersus(letra, true, false));
+    return;
+  }
   const tecla = [...tecladoVersus.querySelectorAll("button")]
     .find((boton) => boton.textContent === letra);
   if (!tecla) return;
   tecla.classList.remove("tecla-calavera-ignea", "impacto-recibido");
   void tecla.offsetWidth;
   tecla.classList.add("tecla-calavera-ignea");
+  tecla.classList.add('tecla-carbonizada');
   if (recibida) tecla.classList.add("impacto-recibido");
   setTimeout(() => tecla.classList.remove("tecla-calavera-ignea", "impacto-recibido"), 1100);
 }
@@ -4282,7 +4312,14 @@ function aplicarFalloForzadoRivalLocalVersus() {
   return letra;
 }
 
-function aplicarFalloForzadoJugadorLocalVersus() {
+function aplicarFalloForzadoJugadorLocalVersus(presentar = true) {
+  if (presentar) {
+    const palabraActual = obtenerPalabraActualJugadorVersus();
+    mostrarCalaveraTecladoVersus(() => {
+      if (obtenerPalabraActualJugadorVersus() === palabraActual) aplicarFalloForzadoJugadorLocalVersus(false);
+    });
+    return;
+  }
   const palabra = obtenerPalabraActualJugadorVersus();
   const letra = obtenerLetraIncorrectaDisponibleVersus(palabra, demoVersus.letrasJugador);
   if (!letra) return;
@@ -4294,7 +4331,7 @@ function aplicarFalloForzadoJugadorLocalVersus() {
   });
   demoVersus.letrasJugador = new Set(turno.letras);
   demoVersus.erroresJugador = turno.errores;
-  animarTeclaCalaveraIgneaVersus(letra, true);
+  animarTeclaCalaveraIgneaVersus(letra, true, false);
   vibrarImpactoVersus();
   reproducirSonidoVersus("error", 0.58);
   actualizarIntentosVersus(document.getElementById("intentosVersusUno"), turno.errores, "Jugador 1");
@@ -7228,7 +7265,7 @@ function habilitarTecladoVersus() {
     || tecladoVersus.classList.contains("efecto-agujero-negro")
     || tecladoVersus.classList.contains("efecto-teclas-rotas")
     || tecladoVersus.classList.contains("efecto-congelado")
-    || tecladoVersus.classList.contains("efecto-reloj-kairos");
+    || tecladoVersus.classList.contains("efecto-calavera-azrak") || tecladoVersus.classList.contains("efecto-reloj-kairos");
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = bloqueadoPorRaices;
   });
@@ -7343,6 +7380,7 @@ function iniciarCombateArcade() {
 btnCombatirArcade.addEventListener("click", iniciarCombateArcade);
 
 function detenerRondaVersus({ conservarTemaCalamo = false } = {}) {
+  limpiarCalaveraTecladoVersus();
   if (!conservarTemaCalamo) detenerTemaCalamo();
   limpiarRelojKairosVersus();
   if (demoVersus.intervaloTiempo) clearInterval(demoVersus.intervaloTiempo);
