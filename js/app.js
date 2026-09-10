@@ -3415,8 +3415,8 @@ function elegirLetra(letra, boton) {
     personaje.textContent = intentos <= 2 ? "😨" : "😕";
     mostrarReaccionExplorador("desanimado", "reaccion-error");
     mensajePersonaje.textContent = "Uy... esa letra no está.";
-    if (window.ForestRootTrap.message() || window.DesertSandTrap.message()) {
-      mensajePersonaje.textContent = window.ForestRootTrap.message() || window.DesertSandTrap.message();
+    if (window.ForestRootTrap.message() || window.DesertSandTrap.message() || window.WorldWordHazards.message()) {
+      mensajePersonaje.textContent = window.ForestRootTrap.message() || window.DesertSandTrap.message() || window.WorldWordHazards.message();
     }
   }
 
@@ -3430,6 +3430,7 @@ function verificarEstado() {
   if (gano) {
     window.ForestRootTrap.release();
     window.DesertSandTrap.release();
+    window.WorldWordHazards.release();
     personaje.textContent = "🥳";
     cancelarRetornoEstadoBaseExplorador();
     cambiarPersonaje("celebrando");
@@ -3543,8 +3544,8 @@ function verificarEstado() {
     cambiarPersonaje("triste");
     animarPersonajeTemporal("reaccion-derrota");
     mensajePersonaje.textContent = "No lo lograste. ¡Intentá otra vez!";
-    if (window.ForestRootTrap.message() || window.DesertSandTrap.message()) {
-      mensajePersonaje.textContent = window.ForestRootTrap.message() || window.DesertSandTrap.message();
+    if (window.ForestRootTrap.message() || window.DesertSandTrap.message() || window.WorldWordHazards.message()) {
+      mensajePersonaje.textContent = window.ForestRootTrap.message() || window.DesertSandTrap.message() || window.WorldWordHazards.message();
     }
     reproducirSecuenciaSonidos(["error", "derrota"]);
     bloquearTeclado();
@@ -9420,6 +9421,7 @@ function actualizarVidas() {
   vidas.textContent = "❤️".repeat(intentos) + "🤍".repeat(6 - intentos);
   window.ForestRootTrap.update(escenarioActual, misionActual, intentos);
   window.DesertSandTrap.update(escenarioActual, misionActual, intentos);
+  window.WorldWordHazards.update(escenarioActual, misionActual, intentos);
 }
 
 function palabraCompleta() {

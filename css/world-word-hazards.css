@@ -1,0 +1,19 @@
+.peligro-palabras { position:absolute; z-index:5; pointer-events:none; transition:opacity .65s; }
+.peligro-palabras[hidden] { display:none; }
+.peligro-palabras svg { display:block; width:100%; height:100%; overflow:visible; }
+.peligro-etapa { opacity:0; transition:opacity .5s ease; }
+.peligro-etapa.activa { opacity:1; }
+.peligro-palabras.liberando { opacity:0; }
+.viento-sombra { fill:#b0def013; stroke:#7cc8e359; stroke-width:5; }
+.viento-cinta { fill:none; stroke:#e2faff; stroke-width:4; stroke-linecap:round; stroke-dasharray:100 12 32 8; animation:vientoAtrapa 2.5s linear infinite; filter:drop-shadow(0 0 2px #78d7ff); }
+.viento-destello { fill:none; stroke:#81badb; stroke-width:2; }
+.viento-particula { fill:none; stroke:#fff6c3; stroke-width:2; stroke-linecap:round; }
+.hielo-bloque { fill:#93dffe6b; stroke:#cef5ff; stroke-width:2; stroke-linejoin:round; }
+.hielo-grieta { fill:none; stroke:#f0ffffba; stroke-width:1.6; }
+.cadena-eslabon { fill:#1c13368c; stroke:#b9a5d8; stroke-width:2.4; filter:drop-shadow(0 1px 1px #11071b); }
+.sello-oscuro { fill:#251337ed; stroke:#b9a5d8; stroke-width:3; stroke-linejoin:round; }
+.sello-runa { fill:#d97cfa; stroke:#fff0ff; stroke-width:1; filter:drop-shadow(0 0 4px #d064ff); }
+.peligro-palabras[data-stage="6"] { filter:drop-shadow(0 0 4px #bcdcff66); }
+#pantallaJuego:not(.activa) .peligro-palabras * { animation-play-state:paused; }
+@keyframes vientoAtrapa { to { stroke-dashoffset:-152; } }
+@media(prefers-reduced-motion:reduce) { .peligro-palabras, .peligro-etapa { transition:none; } .viento-cinta { animation:none; } }

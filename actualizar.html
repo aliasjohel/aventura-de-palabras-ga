@@ -38,7 +38,7 @@
   }
   async function verificar() {
     const actual = await consultarVersion(navigator.serviceWorker.controller);
-    if (Number(actual?.match(/runtime-v(\d+)$/)?.[1]) < 263 || !actual) return false;
+    if (Number(actual?.match(/runtime-v(\d+)$/)?.[1]) < 264 || !actual) return false;
     completado = true;
     estado.textContent = 'Actualización aplicada. Ya podés volver al juego o abrirlo desde su ícono.';
     version.textContent = 'Versión instalada: ' + actual.replace('aventura-palabras-runtime-', '');
