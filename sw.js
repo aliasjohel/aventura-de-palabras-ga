@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v265`;
+const CACHE_NAME = `${CACHE_PREFIX}v268`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -576,8 +576,8 @@ const CORE_ASSETS = [
 const ASSET_REVISIONS = {
   "./": "20260905-mundo5-3",
   "./index.html": "20260905-mundo5-3",
-  "./css/styles.css": "20260905-guia-real-2",
-  "./js/app.js": "20260905-mundo5-3",
+  "./css/styles.css": "20260910-lobos-tactil-1",
+  "./js/app.js": "20260910-azrak-teclado-3",
   "./js/azrak-world.js": "20260905-mundo5-3",
   "./css/azrak-world.css": "20260905-mundo5-3",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260902-personajes-chibi-1",

@@ -15976,6 +15976,7 @@ button:disabled {
 @keyframes calaveraIgneaJugador { 0%{opacity:0;transform:translate(-12vw,8vh) scale(.18) rotate(-25deg)} 20%{opacity:1} 68%{opacity:1;transform:translate(45vw,18vh) scale(.92) rotate(8deg)} 100%{opacity:0;transform:translate(47vw,23vh) scale(1.5) rotate(18deg);filter:brightness(2.5)} }
 @keyframes calaveraIgneaRival { 0%{opacity:0;transform:translate(12vw,8vh) scaleX(-1) scale(.18) rotate(-25deg)} 20%{opacity:1} 68%{opacity:1;transform:translate(-45vw,18vh) scaleX(-1) scale(.92) rotate(8deg)} 100%{opacity:0;transform:translate(-47vw,23vh) scaleX(-1) scale(1.5) rotate(18deg);filter:brightness(2.5)} }
 .teclado-versus button.tecla-calavera-ignea { position:relative;z-index:3;animation:teclaCalaveraIgnea 1.05s ease-out both; }
+.teclado-versus.efecto-calavera-azrak button::after,
 .teclado-versus button.tecla-calavera-ignea::after { content:"";position:absolute;inset:-18px -9px -4px;background:radial-gradient(ellipse at 50% 100%,#fff3a5 0 8%,#ff8b19 20%,#e62008 46%,transparent 70%);clip-path:polygon(50% 0,65% 30%,78% 15%,84% 49%,100% 38%,91% 100%,8% 100%,0 42%,20% 54%,28% 21%);z-index:-1;animation:llamaTeclaAzrak .18s ease-in-out infinite alternate;pointer-events:none; }
 @keyframes teclaCalaveraIgnea { 0%{transform:none} 24%{transform:translateY(-5px) scale(1.12);box-shadow:0 0 22px #ff4b0b} 42%{transform:translateY(4px) scale(.92)} 60%,100%{transform:none;filter:sepia(.8) saturate(2.2)} }
 @keyframes llamaTeclaAzrak { to{transform:scaleY(1.16) translateY(-3px);filter:brightness(1.35)} }
@@ -16081,6 +16082,8 @@ button:disabled {
 .escena-memoria-lobos::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,7,13,.22) 100%)}
 .lobo-memoria{position:absolute;z-index:2;width:clamp(44px,7%,56px);aspect-ratio:2/1;padding:0;border:0;border-radius:50%;background:transparent;box-shadow:none;opacity:1;transform:translate(-50%,-50%);cursor:pointer}
 .lobo-memoria-1{left:23.65%;top:35.85%}.lobo-memoria-2{left:77.67%;top:36.2%}.lobo-memoria-3{left:38.3%;top:55.95%}.lobo-memoria-4{left:62.4%;top:56.35%}
+.lobo-memoria { -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.lobo-memoria:focus:not(:focus-visible) { outline:none; }
 .lobo-memoria-3,.lobo-memoria-4{width:clamp(48px,8.5%,68px)}
 .lobo-memoria:hover,.lobo-memoria:active{transform:translate(-50%,-50%)}
 .lobo-memoria span{position:absolute;left:50%;top:50%;width:7cqw;aspect-ratio:2/1;transform:translate(-50%,-50%);pointer-events:none}
@@ -17393,16 +17396,24 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
     .modal-tutorial-versus.guia-en-arena { display: none; }
 }
 
-/* Kairós: breve giro del reloj sobre el teclado. */
+/* Azrak: cada tecla arde durante la aparición de la calavera. */
 .teclado-versus.efecto-calavera-azrak { isolation:isolate; }
 .teclado-versus.efecto-calavera-azrak::before {
-  content:""; position:absolute; inset:-4px; z-index:30; border-radius:12px;
-  background:radial-gradient(ellipse, #672410ef, #180606ed); pointer-events:auto;
-  box-shadow:inset 0 0 24px #ff671c99;
+  content:none;
+}
+.teclado-versus.efecto-calavera-azrak button {
+  position:relative; z-index:3; overflow:visible; opacity:1;
+  background:linear-gradient(#773210,#37160b); color:#fff0c2; border-color:#ff963a;
+  box-shadow:inset 0 0 9px #ff691955, 0 0 12px #ff742baa;
+}
+.teclado-versus.efecto-calavera-azrak button:nth-child(2n)::after { animation-delay:-.09s; }
+.teclado-versus.efecto-calavera-azrak button:nth-child(3n)::after { animation-delay:-.14s; }
+.teclado-versus button.tecla-calavera-ignea {
+  overflow:visible; opacity:1;
 }
 .teclado-versus.efecto-calavera-azrak::after {
   content:""; position:absolute; inset:-8px 0; z-index:31; pointer-events:none;
-  background:url('../assets/images/personajes/versus/calavera-ignea-azrak.png') center/contain no-repeat;
+  background:url('../assets/images/personajes/versus/eclipse-infernal-azrak.png') center/contain no-repeat;
   filter:drop-shadow(0 0 9px #ff8a29); animation:calaveraSobreTeclado 2s ease-in-out both;
 }
 .teclado-versus button.tecla-carbonizada {

@@ -1707,6 +1707,7 @@ function renderizarPartidaOnline(partida) {
   const rival = partida.opponent;
   if (!propio || !rival) return;
 
+  if (demoVersus.indiceJugador !== propio.wordIndex) limpiarQuemaduraTecladoVersus();
   demoVersus.tematicaParaJugador = propio.theme;
   demoVersus.tematicaParaRival = rival.theme;
   demoVersus.indiceJugador = propio.wordIndex;
@@ -4254,6 +4255,13 @@ function obtenerLetraIncorrectaDisponibleVersus(palabra, letrasUsadas) {
 
 let temporizadorCalaveraTeclado = null;
 
+function limpiarQuemaduraTecladoVersus() {
+  limpiarCalaveraTecladoVersus();
+  tecladoVersus.querySelectorAll("button").forEach((boton) => {
+    boton.classList.remove("tecla-carbonizada", "tecla-calavera-ignea", "impacto-recibido");
+  });
+}
+
 function limpiarCalaveraTecladoVersus() {
   clearTimeout(temporizadorCalaveraTeclado);
   temporizadorCalaveraTeclado = null;
@@ -4290,7 +4298,7 @@ function animarTeclaCalaveraIgneaVersus(letra, recibida = false, presentar = tru
   tecla.classList.add("tecla-calavera-ignea");
   tecla.classList.add('tecla-carbonizada');
   if (recibida) tecla.classList.add("impacto-recibido");
-  setTimeout(() => tecla.classList.remove("tecla-calavera-ignea", "impacto-recibido"), 1100);
+  setTimeout(() => tecla.classList.remove("tecla-calavera-ignea", "impacto-recibido"), 2600);
 }
 
 function aplicarFalloForzadoRivalLocalVersus() {
@@ -7380,7 +7388,7 @@ function iniciarCombateArcade() {
 btnCombatirArcade.addEventListener("click", iniciarCombateArcade);
 
 function detenerRondaVersus({ conservarTemaCalamo = false } = {}) {
-  limpiarCalaveraTecladoVersus();
+  limpiarQuemaduraTecladoVersus();
   if (!conservarTemaCalamo) detenerTemaCalamo();
   limpiarRelojKairosVersus();
   if (demoVersus.intervaloTiempo) clearInterval(demoVersus.intervaloTiempo);
@@ -7687,6 +7695,7 @@ function mostrarAvisoAvanceVersus(mensaje, tipo = "", demora = 0) {
 }
 
 function avanzarPalabraJugadorVersus(acertada) {
+  limpiarQuemaduraTecladoVersus();
   const numeroPalabra = demoVersus.indiceJugador + 1;
   const palabraPerdida = obtenerPalabraActualJugadorVersus();
   demoVersus.indiceJugador += 1;
