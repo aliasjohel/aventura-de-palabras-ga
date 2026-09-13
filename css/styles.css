@@ -13749,6 +13749,9 @@ button:disabled {
     width: clamp(215px, 40vw, 470px);
     height: 82%;
     filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 8px rgba(123, 42, 221, 0.55));
+    /* Alarga el sprite desde los pies, también durante sus animaciones. */
+    scale: 1 1.16;
+    transform-origin: center bottom;
 }
 
 .versus-personaje-uno.personaje-t_shadow { left: 4%; }
