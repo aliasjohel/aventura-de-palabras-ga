@@ -1152,6 +1152,8 @@ let mundoDosCompletado = false;
 let mundoTresCompletado = false;
 let mundoCuatroCompletado = false;
 let estadoFinalAzrak = "shadow";
+let estadoPrimerEncuentroShadow = "pendiente";
+let primerEncuentroShadowEnCurso = false;
 let finalAzrakEnCurso = false;
 let cerrarPuzzleAzrak = null;
 let primerDueloNivorCompletado = false;
@@ -5369,6 +5371,13 @@ const configuracionesDuelosAventura = Object.freeze({
     arena: "assets/images/fondos/reino-azrak/trono-v1.png",
     altArena: "Umbral del trono de Azrak", intervaloRival: 2300, probabilidadRival: 0.69,
   },
+  shadow_primero: {
+    escenario: 4, mision: 2, rival: "t_shadow",
+    etiqueta: "LA SOMBRA DEL CENTINELA · SHADOW",
+    arena: "assets/images/fondos/reino-azrak/torre-centinela-v1.png",
+    altArena: "Primer encuentro con Shadow frente a la torre",
+    intervaloRival: 2700, probabilidadRival: 0.59,
+  },
   azrak_final: {
     escenario: 4, mision: 9, rival: "azrak",
     etiqueta: "BATALLA FINAL · AZRAK",
@@ -5430,6 +5439,25 @@ const configuracionesDuelosAventura = Object.freeze({
 });
 
 async function presentarDueloAventura(tipo) {
+  if (tipo === "shadow_primero") {
+    if (primerEncuentroShadowEnCurso || dueloAventuraActivo || escenarioActual !== 4 || misionActual !== 2) return;
+    if (estadoPrimerEncuentroShadow === "rescate") {
+      await completarRescatePrimerShadow();
+      return;
+    }
+    primerEncuentroShadowEnCurso = true;
+    try {
+      await esperarCierreHistoriaMision();
+      if (escenarioActual !== 4 || misionActual !== 2) return;
+      await StoryCinematic.play("entrada", {
+        reduced: prefiereReducirMovimiento.matches, assetRoot: "assets/images/",
+        label: "La sombra del centinela", heading: "REINO DE AZRAK",
+        shots: [{ image:"fondos/reino-azrak/torre-centinela-v1.png", actor:"personajes/versus/t-shadow-base.png", actorName:"Shadow", title:"Nadie cruza mi torre", text:"Shadow aparece frente a Aren. «No darás un paso más». El explorador sostiene su mapa: «Los mundos necesitan sus cristales. No voy a volver atrás». ¡Comienza el duelo!" }],
+      });
+      if (escenarioActual === 4 && misionActual === 2 && !dueloAventuraActivo) iniciarDueloAventura(tipo);
+    } finally { primerEncuentroShadowEnCurso = false; }
+    return;
+  }
   if (tipo === "nivor_glacial") {
     if (secuenciaDesafioNivorActiva || dueloAventuraActivo || escenarioActual !== 3 || misionActual !== 5) return;
     secuenciaDesafioNivorActiva = true;
@@ -5598,6 +5626,16 @@ function reintentarDueloAventura() {
 async function completarDueloAventura() {
   const duelo = dueloAventuraActivo;
   if (!duelo || duelo.resultado !== "jugador") return;
+
+  if (duelo.tipo === "shadow_primero") {
+    dueloAventuraActivo = null;
+    limpiarInterfazDueloAventura();
+    mostrarPantalla(pantallaJuego);
+    estadoPrimerEncuentroShadow = "rescate";
+    guardarProgreso();
+    await completarRescatePrimerShadow();
+    return;
+  }
 
   dueloAventuraActivo = null;
   limpiarInterfazDueloAventura();
@@ -5782,6 +5820,28 @@ async function completarHuidaCalamo() {
   guardarProgreso();
   const mensajeCompleto = await mostrarMensajeDesafioSuperado();
   if (mensajeCompleto) continuarAventura();
+}
+
+async function completarRescatePrimerShadow() {
+  if (primerEncuentroShadowEnCurso || escenarioActual !== 4 || misionActual !== 2 || estadoPrimerEncuentroShadow !== "rescate") return;
+  primerEncuentroShadowEnCurso = true;
+  try {
+    await StoryCinematic.play("rescate", {
+      reduced: prefiereReducirMovimiento.matches,
+      assetRoot: "assets/images/cinematicas/reino-azrak/",
+      label: "El rescate de la quinta guardiana", heading: "REINO DE AZRAK",
+      shots: AzrakWorld.shadowEncounter,
+    });
+    if (escenarioActual !== 4 || misionActual !== 2 || estadoPrimerEncuentroShadow !== "rescate") return;
+    estadoPrimerEncuentroShadow = "completo";
+    otorgarMonedas(30, "aventura:shadow_primero:duelo");
+    experiencia += 60;
+    actualizarJugador();
+    desafiosCompletados = obtenerCantidadDesafiosMision() - 1;
+    sonidoNarrativoPendiente = avanzarMision();
+    guardarProgreso();
+    await iniciarMisionAventura({ presentarMision: true });
+  } finally { primerEncuentroShadowEnCurso = false; }
 }
 
 async function completarInformeKairos() {
@@ -7966,7 +8026,7 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
   }
   if (dueloAventuraActivo) {
     await mostrarAnuncioFinVersus(palabraPerdida);
-    if (ganador === "jugador" && ["shadow_final", "azrak_final"].includes(dueloAventuraActivo?.tipo)) {
+    if (ganador === "jugador" && ["shadow_primero", "shadow_final", "azrak_final"].includes(dueloAventuraActivo?.tipo)) {
       dueloAventuraActivo.resultado = ganador;
       await completarDueloAventura();
       return;
@@ -8143,8 +8203,26 @@ function programarReaccionVictimaFinalVersus(elemento, personaje, demora) {
   }, demora);
 }
 
+function prepararParticulasRemolinoZafir() {
+  if (cinematicaFinalVersus.querySelector('.remolino-particulas-magicas')) return;
+  const layer = document.createElement('div');
+  layer.className = 'cinematica-remolino-arcano remolino-particulas-magicas';
+  layer.setAttribute('aria-hidden', 'true');
+  // El mismo lienzo y encuadre que la ilustración: las órbitas siguen al tornado.
+  const particles = Array.from({ length: 8 }, (_, ring) => {
+    const y = 290 + ring * 140, radius = 400 - ring * 37;
+    return `<g transform="translate(512 ${y})">${Array.from({ length: 8 }, (_, n) => {
+      const size = 5 + n % 3 * 2;
+      return `<g class="zafir-mota-orbita" style="--radio-x:${radius}px;--radio-y:${35+ring*2}px;--fase:${-n*.21-ring*.13}s;--periodo:${1.5+ring*.07}s"><path class="zafir-mota" d="M0 ${-size*2} L${size} 0 0 ${size*2} ${-size} 0Z"/><path class="zafir-estela" d="M-8 0 L-${20+n*3} 2"/></g>`;
+    }).join('')}</g>`;
+  }).join('');
+  layer.innerHTML = `<svg viewBox="0 0 1024 1536" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">${particles}</svg>`;
+  cinematicaFinalVersus.append(layer);
+}
+
 function reproducirEclipseVioletaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
+  prepararParticulasRemolinoZafir();
   crearParticulasEclipseVersus();
   programarReaccionVictimaFinalVersus(victimaEclipseVersus, victima, 2150);
   fondoCinematicaVersus.src = fondoVersus.src;
@@ -9058,6 +9136,7 @@ function iniciarMisionSeleccionadaPruebas() {
   mundoTresCompletado = escenarioActual >= 3;
   mundoCuatroCompletado = escenarioActual >= 4;
   estadoFinalAzrak = "shadow";
+  estadoPrimerEncuentroShadow = AzrakWorld.shadowEncounterState(escenarioActual, misionActual);
   primerDueloNivorCompletado = escenarioActual >= 4 || (escenarioActual === 3 && misionActual > 5);
   estadoPruebaKairos = escenarioActual > 0 || misionActual > 1 ? "completo" : "pendiente";
   estadoEncuentroCalamo = escenarioActual > 1 || (escenarioActual === 1 && misionActual > 5) ? "completo" : "pendiente";
@@ -9201,6 +9280,7 @@ function reiniciarEstadoAventura() {
   mundoTresCompletado = false;
   mundoCuatroCompletado = false;
   estadoFinalAzrak = "shadow";
+  estadoPrimerEncuentroShadow = "pendiente";
   primerDueloNivorCompletado = false;
   estadoPruebaKairos = "pendiente";
   estadoEncuentroCalamo = "pendiente";
@@ -10774,6 +10854,8 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
       ? "Cálamo robó las palabras del mapa. Vencelo para recuperar el camino al templo."
       : dueloAventura === "kairos_bosque"
       ? "Kairós detuvo el tiempo en el sendero. Demostrá que podés seguir adelante."
+      : dueloAventura === "shadow_primero"
+      ? "Shadow te cierra el paso frente a la torre. Vencelo para continuar."
       : dueloAventura === "shadow_final"
       ? "Shadow protege el último umbral. Tu próxima batalla será contra Azrak."
       : dueloAventura === "azrak_final"
@@ -10936,6 +11018,7 @@ function guardarProgreso() {
     mundoCuatroCompletado,
     estadoFinalAzrak,
     primerDueloNivorCompletado,
+    estadoPrimerEncuentroShadow,
     estadoPruebaKairos,
     estadoEncuentroCalamo,
     hombreLoboDescubierto,
@@ -10996,6 +11079,7 @@ function cargarProgreso() {
     progreso.mundoCuatroCompletado === true || cristalesObtenidos > 3;
   estadoFinalAzrak = ["shadow", "traicion", "azrak", "final", "completo"].includes(progreso.estadoFinalAzrak)
     ? progreso.estadoFinalAzrak : "shadow";
+  estadoPrimerEncuentroShadow = AzrakWorld.shadowEncounterState(escenarioActual, misionActual, progreso.estadoPrimerEncuentroShadow);
   primerDueloNivorCompletado =
     progreso.primerDueloNivorCompletado === true
     || mundoCuatroCompletado
@@ -12542,6 +12626,7 @@ function obtenerPruebaEspecialBosquePendiente() {
 }
 
 function obtenerDueloAventuraPendiente() {
+  if (escenarioActual === 4 && misionActual === 2 && estadoPrimerEncuentroShadow !== "completo") return "shadow_primero";
   if (escenarioActual === 1 && misionActual === 5 && desafiosCompletados >= desafiosPorMision && estadoEncuentroCalamo !== "completo") {
     return "calamo_desierto";
   }
@@ -12577,7 +12662,7 @@ function iniciarPuzzleAzrak(tipo) {
     ? "Encontrá las cinco runas. Usá los botones o dos dedos para ampliar y arrastrá la escena para explorar."
     : "Resolvé el mecanismo para continuar. Podés reiniciarlo sin perder corazones.";
   btnRepetirPruebaBosque.textContent = "↻ Reiniciar puzzle";
-  cerrarPuzzleAzrak = AzrakWorld.mountPuzzle(puzzleCumbres, tipo, () => void completarPruebaEspecialBosque(tipo));
+  cerrarPuzzleAzrak = AzrakWorld.mountPuzzle(puzzleCumbres, tipo, () => void completarPruebaEspecialBosque(tipo), { sound: reproducirSonido });
 }
 
 function abrirPruebaEspecialBosque(tipo) {

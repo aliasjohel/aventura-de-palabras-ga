@@ -9,11 +9,11 @@
   const missions = [
     ['La puerta de ceniza', 'entrada', 'Los cuatro cristales llevan a Aren al reino de Azrak. Tras él, la grieta se cierra. Una brasa verde entre las rocas le recuerda que todavía hay vida que proteger.'],
     ['El puente de las runas', 'entrada', 'El puente se desarma sobre el abismo. Cinco runas quedaron escondidas entre las ruinas. Aren deberá encontrar la hoja, el sol, la nube, el copo de nieve y la estrella para reconstruir el camino.', 'runas-azrak'],
-    ['La sombra del centinela', 'entrada', 'Shadow, el centinela de Azrak, observa desde una torre. Podría derrumbar el sendero, pero aparta la mirada. «Volvé mientras puedas», murmura antes de desaparecer.'],
-    ['La forja de los nombres', 'forja', 'La fortaleza se alimenta de palabras arrancadas a los cuatro mundos. Aren recupera los nombres que la forja había borrado. Entre ellos descubre el de Lume, guardiana del último cristal, a quien Azrak encerró en la Cámara del Eclipse.'],
+    ['La sombra del centinela', 'entrada', 'Shadow baja de la torre y cierra el paso. «Nadie llega hasta Azrak sin enfrentarse conmigo». Aren se prepara: deberá vencer al centinela para continuar.'],
+    ['La forja de los nombres', 'forja', 'La luz de Lume devolvió las fuerzas a Aren. En la forja descubre que Shadow la llevó a la Cámara del Eclipse por haberlo rescatado. Azrak debilitó allí el Cristal de la Unión. Aren promete encontrarla.'],
     ['Los cuatro juramentos', 'forja', 'Los guardianes responden a los cristales. Para abrirles un camino, Aren debe devolver cada símbolo a su sello: bosque, desierto, cielo e invierno.', 'sellos-azrak'],
     ['Una orden imposible', 'forja', 'Azrak ordena a Shadow destruir el puente, aunque sus propios centinelas sigan cruzándolo. Shadow vacila. Aren comprende que bajo esa armadura todavía queda una voluntad propia.'],
-    ['Luz entre las sombras', 'forja', 'Una voz llega desde la luz cautiva: «Soy Lume, guardiana del Cristal de la Unión. Azrak me encerró aquí y debilitó mi cristal con el Quinto Sello». Para liberarla, Aren debe apagar la red de sombras: cada sello cambia también a sus vecinos.', 'eclipse-azrak'],
+    ['Luz entre las sombras', 'forja', 'Aren reconoce a la guardiana que lo salvó. «Lume, vine por vos». Ella responde: «Shadow me trajo aquí. Azrak debilitó mi cristal con el Quinto Sello». Para liberarla, Aren debe apagar la red de sombras: cada sello cambia también a sus vecinos.', 'eclipse-azrak'],
     ['El camino de los guardianes', 'entrada', 'Lume conserva el quinto cristal, aunque Azrak debilitó su luz. «Con cada palabra que recuperes podré encender un portal y llamar a los guardianes». Cuatro palabras despertarán los caminos del bosque, el desierto, el cielo y el invierno.'],
     ['Antes del último umbral', 'trono', 'Aren avanza solo hacia el trono. Lume se queda con el quinto cristal, sosteniendo los cuatro portales para traer a los guardianes. Shadow espera en la puerta. «Le juré lealtad», dice. Aren responde: «Todavía podés elegir a quién proteger».'],
     ['La última palabra', 'trono', 'Shadow desenvaina frente al trono de Azrak. Primero habrá que vencer al centinela. Detrás de él espera quien encadenó a los cuatro mundos.'],
@@ -139,9 +139,9 @@
     { name: 'Copo de nieve', x: 167, y: 853, size: 100, clue: 'Entre los escombros de la esquina inferior izquierda.' },
     { name: 'Estrella', x: 1360, y: 853, size: 100, clue: 'Las cadenas de la derecha rodean una piedra especial.' },
   ];
-  const hiddenRunesImage = base + 'puente-runas-ocultas-v1.png';
+  const hiddenRunesImage = base + 'puente-runas-ocultas-v2.png';
 
-  function mountHiddenRunes(container, board, message, makeButton, finish) {
+  function mountHiddenRunes(container, board, message, makeButton, finish, sound) {
     let closed = false, zoom = 1, dragged = false;
     const found = new Set(), pointers = new Map();
     board.className = 'runas-visor'; board.tabIndex = 0;
@@ -168,7 +168,7 @@
       item.append(preview, label); targets.append(item);
       const button = makeButton('', () => {
         if (closed || dragged || found.has(index)) return;
-        found.add(index); button.classList.add('encontrada'); button.setAttribute('aria-pressed', 'true');
+        found.add(index); sound('acertar'); button.classList.add('encontrada'); button.setAttribute('aria-pressed', 'true');
         button.setAttribute('aria-label', `${rune.name}, encontrada`); button.textContent = '✓';
         item.classList.add('encontrada'); label.textContent = `✓ ${rune.name}`; status();
         if (found.size === hiddenRunes.length) finish();
@@ -238,7 +238,7 @@
   function sealsSolved(values) { return values.every((value, index) => value === [2, 0, 3, 1][index]); }
 
   // Each puzzle owns its timers. Closing or restarting invalidates the old board.
-  function mountPuzzle(container, type, complete) {
+  function mountPuzzle(container, type, complete, { sound = () => {} } = {}) {
     let disposed = false, busy = false;
     const timers = new Set();
     const later = (fn, delay) => {
@@ -266,7 +266,7 @@
     };
     let closeRunes = () => {};
     if (type === 'runas-azrak') {
-      closeRunes = mountHiddenRunes(container, board, message, makeButton, finish);
+      closeRunes = mountHiddenRunes(container, board, message, makeButton, finish, sound);
     } else if (type === 'sellos-azrak') {
       const values = [0, 1, 2, 3];
       ['Norte', 'Este', 'Sur', 'Oeste'].forEach((direction, index) => {
@@ -314,6 +314,17 @@
       render();
     }
     return () => { disposed = true; closeRunes(); timers.forEach(clearTimeout); timers.clear(); };
+  }
+
+  const shadowEncounter = [
+    { image:'primer-shadow-aren-herido-v1.png', title:'Un contraataque inesperado', text:'Aren gana el duelo. Pero Shadow se incorpora y libera una descarga que el explorador no alcanza a esquivar. Aren cae malherido. «Esto todavía no terminó», dice el centinela.' },
+    { image:'primer-shadow-lume-rescate-v1.png', title:'La quinta guardiana', text:'Una luz se interpone. «Soy Lume, la quinta guardiana, protectora del Cristal de la Unión». Su escudo detiene a Shadow mientras su magia comienza a sanar las heridas de Aren.' },
+    { image:'primer-shadow-lume-rescate-v1.png', title:'Todavía podés continuar', text:'«Mi luz te devolverá las fuerzas. Cruzá el portal, Aren. Yo lo contendré». Lume lo ayuda a ponerse a salvo. «Volveré por vos», promete él antes de atravesar la luz.' },
+    { image:'primer-shadow-lume-capturada-v1.png', title:'El precio del rescate', text:'El portal se cierra. Agotada por el rescate, Lume no consigue evitar las ataduras de Shadow. El centinela la lleva a la Cámara del Eclipse. Allí, por orden de Azrak, el Quinto Sello debilita su cristal.' },
+  ];
+  function shadowEncounterState(world, mission, saved) {
+    if (world > 4 || (world === 4 && mission > 2)) return 'completo';
+    return ['rescate','completo'].includes(saved) ? saved : 'pendiente';
   }
 
   const actor = (id, file, x, y, size, motion = '') => ({ id, file, x, y, size, motion });
@@ -654,5 +665,5 @@
       if (focusBefore?.isConnected) focusBefore.focus({ preventScroll: true });
     }
   }
-  return { missions, words, hiddenRunes, hiddenRunesImage, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, mountScene, ignitePortal, playCinematic, planFinale, endingVolume, betrayal, finale, finalMusic, base };
+  return { missions, words, hiddenRunes, hiddenRunesImage, shadowEncounter, shadowEncounterState, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, mountScene, ignitePortal, playCinematic, planFinale, endingVolume, betrayal, finale, finalMusic, base };
 });

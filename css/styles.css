@@ -7126,6 +7126,23 @@ button:disabled {
     z-index: 4;
 }
 
+.remolino-particulas-magicas { display:none; z-index:7; }
+.remolino-particulas-magicas svg { width:100%; height:100%; overflow:visible; }
+.cinematica-final-versus.eclipse-violeta.activa .remolino-particulas-magicas { display:block; }
+.zafir-mota { fill:#e9bbff; filter:drop-shadow(0 0 5px #bd54ff); }
+.zafir-mota-orbita:nth-child(3n) .zafir-mota { fill:#b3f1ff; }
+.zafir-estela { fill:none; stroke:#d998ff; stroke-width:2; stroke-linecap:round; opacity:.55; }
+.cinematica-final-versus.eclipse-violeta.activa .zafir-mota-orbita { animation:orbitaMagicaZafir var(--periodo) linear var(--fase) infinite; }
+@keyframes orbitaMagicaZafir {
+  0%,100% { transform:translate(calc(-1*var(--radio-x)),0) scale(.75); opacity:.7; }
+  25% { transform:translate(0,var(--radio-y)) scale(1.25); opacity:1; }
+  50% { transform:translate(var(--radio-x),0) scale(.75); opacity:.7; }
+  75% { transform:translate(0,calc(-1*var(--radio-y))) scale(.4); opacity:.15; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .cinematica-final-versus.eclipse-violeta.activa .zafir-mota-orbita { animation:none; transform:translate(var(--radio-x),0); }
+}
+
 .remolino-arcano-frente {
     z-index: 6;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0 34%, rgba(0, 0, 0, 0.18) 39%, #000 49% 100%);
@@ -7354,6 +7371,18 @@ button:disabled {
 
 .cinematica-explorador-atrapado.victima-final-mago {
     --direccion-victima-eclipse: -1;
+}
+
+/* Centrado respecto del tornado, independiente del ancho de cada personaje. */
+.cinematica-final-versus #victimaEclipseVersus {
+    left: calc(5% + min(29vw, 335px) - min(12vw, 150px));
+    right: auto;
+    bottom: 5%;
+    width: min(24vw, 300px);
+    height: 68%;
+    object-fit: contain;
+    object-position: center;
+    transform-origin: 50% 50%;
 }
 
 .eclipse-particulas {
