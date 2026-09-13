@@ -46,7 +46,7 @@ test('guardians empower Aren before his attack, then both complete music tracks 
   for (const [before, after] of [['union','transformacion'],['transformacion','ataque-union'],['ataque-union','azrak-vencido'],['azrak-vencido','amanecer'],['amanecer','aren-normal'],['aren-normal','deshielo'],['cielo-libre','abrazo'],['abrazo','epilogo']]) {
     assert.ok(keys.indexOf(before) < keys.indexOf(after), `${before} before ${after}`);
   }
-  assert.deepEqual(world.finale.filter(shot => shot.music).map(shot => [shot.key,shot.music]), [['resiste','battle'],['calamo-llegada','ending'],['amanecer','peace']]);
+  assert.deepEqual(world.finale.filter(shot => shot.music).map(shot => [shot.key,shot.music]), [['resiste','battle'],['azrak-interrumpe','ending'],['amanecer','peace']]);
   assert.equal(world.finalMusic.battle.readingScale, 1.35);
   assert.equal(world.finalMusic.battle.loop, false);
   assert.equal(world.finalMusic.peace.readingScale || 1, 1);
@@ -108,55 +108,15 @@ test('reloading each final phase chooses the correct battle and never repeats Sh
   }
 });
 
-test('the memory puzzle accepts all three rounds, retries mistakes and cancels timers on exit', () => {
-  const timers = new Map();
-  let timerId = 0, completed = 0;
-  function element() {
-    const node = { children: [], disabled: false, textContent: '', attrs: {}, handlers: {},
-      classList: { add() {}, remove() {}, toggle() {} },
-      append(...children) { this.children.push(...children); },
-      prepend(child) { this.children.unshift(child); },
-      replaceChildren(...children) { this.children = children; },
-      setAttribute(key, value) { this.attrs[key] = value; },
-      addEventListener(type, callback) { this.handlers[type] = callback; },
-      click() { if (!this.disabled) this.handlers.click?.(); },
-      focus() {},
-      querySelectorAll() { return this.children.flatMap(child => [child, ...child.querySelectorAll()]); },
-    };
-    return node;
+test('hidden runes have five distinct targets inside the illustration and offline art', () => {
+  assert.equal(world.hiddenRunes.length, 5);
+  assert.equal(new Set(world.hiddenRunes.map(r => r.name)).size, 5);
+  for (const r of world.hiddenRunes) {
+    assert.ok(r.x-r.size/2 > 0 && r.x+r.size/2 < 1536);
+    assert.ok(r.y-r.size/2 > 0 && r.y+r.size/2 < 1024);
   }
-  const ctx = vm.createContext({
-    document: { createElement: element },
-    setTimeout(fn, delay) { const id = ++timerId; timers.set(id, { fn, delay }); return id; },
-    clearTimeout(id) { timers.delete(id); },
-  });
-  vm.runInContext(fs.readFileSync(path.join(__dirname, '../js/azrak-world.js'), 'utf8'), ctx);
-  const flush = () => {
-    for (const [id, timer] of [...timers.entries()].sort((a, b) => a[1].delay - b[1].delay)) {
-      if (timers.delete(id)) timer.fn();
-    }
-  };
-  const container = element();
-  const close = ctx.AzrakWorld.mountPuzzle(container, 'runas-azrak', () => completed++);
-  const buttons = container.children[1].children;
-  assert.ok(buttons.every(button => button.disabled));
-  flush();
-  buttons[1].click(); // Wrong first symbol must replay rather than advance.
-  assert.equal(completed, 0);
-  assert.ok(buttons.every(button => button.disabled));
-  flush();
-  for (const sequence of world.paths) {
-    for (const index of sequence) buttons[index].click();
-    flush();
-  }
-  assert.equal(completed, 1);
-  close();
-  const other = element();
-  const dispose = ctx.AzrakWorld.mountPuzzle(other, 'runas-azrak', () => completed++);
-  assert.ok(timers.size > 0);
-  dispose(); flush();
-  assert.equal(timers.size, 0);
-  assert.equal(completed, 1);
+  assert.ok(fs.existsSync(path.join(__dirname, '..', world.hiddenRunesImage)));
+  assert.ok(sw.includes(world.hiddenRunesImage));
 });
 
 test('mission 8 keeps three completed portals and advances only on the fourth word', () => {

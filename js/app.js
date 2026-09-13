@@ -8404,8 +8404,9 @@ function reproducirEclipseInfernalVersus(victima = personajeRivalVersus) {
   const victimaFinal = victima in personajesVersus ? victima : "mago";
   programarReaccionVictimaFinalVersus(victimaPortalAzrakVersus, victimaFinal, 2850);
   manoVictimaAzrakVersus.src = victimaFinal === "kairos"
-    ? srcKairosBaseVersus
+    ? "assets/images/personajes/versus/mano-abismo-atrapa-kairos-escena-v1.png"
     : `assets/images/personajes/versus/mano-abismo-atrapa-${victimaFinal.replaceAll("_", "-")}.png`;
+  manoVictimaAzrakVersus.classList.toggle("captura-kairos-escena", victimaFinal === "kairos");
   manoVictimaAzrakVersus.alt = `${personajesVersus[victimaFinal].nombre}, atrapado por la Mano del Abismo`;
   etiquetaCinematicaVersus.textContent = "RITO DEL ABISMO";
   tituloCinematicaVersus.textContent = "ECLIPSE INFERNAL";
@@ -12572,7 +12573,9 @@ function iniciarPuzzleAzrak(tipo) {
   cerrarPuzzleAzrak?.();
   etiquetaPruebaBosque.textContent = "REINO DE AZRAK · PUZZLE";
   tituloPruebaBosque.textContent = { "runas-azrak": "El puente de las runas", "sellos-azrak": "Los cuatro juramentos", "eclipse-azrak": "Luz entre las sombras" }[tipo];
-  instruccionPruebaBosque.textContent = "Resolvé el mecanismo para continuar. Podés reiniciarlo sin perder corazones.";
+  instruccionPruebaBosque.textContent = tipo === "runas-azrak"
+    ? "Encontrá las cinco runas. Usá los botones o dos dedos para ampliar y arrastrá la escena para explorar."
+    : "Resolvé el mecanismo para continuar. Podés reiniciarlo sin perder corazones.";
   btnRepetirPruebaBosque.textContent = "↻ Reiniciar puzzle";
   cerrarPuzzleAzrak = AzrakWorld.mountPuzzle(puzzleCumbres, tipo, () => void completarPruebaEspecialBosque(tipo));
 }

@@ -8,7 +8,7 @@
   const sprites = 'assets/images/personajes/versus/';
   const missions = [
     ['La puerta de ceniza', 'entrada', 'Los cuatro cristales llevan a Aren al reino de Azrak. Tras él, la grieta se cierra. Una brasa verde entre las rocas le recuerda que todavía hay vida que proteger.'],
-    ['El puente de las runas', 'entrada', 'El puente se desarma sobre el abismo. Sus runas muestran un camino por unos instantes: Aren deberá recordar el orden para reconstruir cada tramo.', 'runas-azrak'],
+    ['El puente de las runas', 'entrada', 'El puente se desarma sobre el abismo. Cinco runas quedaron escondidas entre las ruinas. Aren deberá encontrar la hoja, el sol, la nube, el copo de nieve y la estrella para reconstruir el camino.', 'runas-azrak'],
     ['La sombra del centinela', 'entrada', 'Shadow, el centinela de Azrak, observa desde una torre. Podría derrumbar el sendero, pero aparta la mirada. «Volvé mientras puedas», murmura antes de desaparecer.'],
     ['La forja de los nombres', 'forja', 'La fortaleza se alimenta de palabras arrancadas a los cuatro mundos. Aren recupera los nombres que la forja había borrado. Entre ellos descubre el de Lume, guardiana del último cristal, a quien Azrak encerró en la Cámara del Eclipse.'],
     ['Los cuatro juramentos', 'forja', 'Los guardianes responden a los cristales. Para abrirles un camino, Aren debe devolver cada símbolo a su sello: bosque, desierto, cielo e invierno.', 'sellos-azrak'],
@@ -132,7 +132,99 @@
     if (!reduced) await new Promise(resolve => setTimeout(resolve, 450));
     delete layer.dataset.invocando;
   }
-  const paths = [[0, 2, 1, 3], [3, 0, 2, 1, 0], [1, 3, 2, 0, 3, 1]];
+  const hiddenRunes = [
+    { name: 'Hoja', x: 134, y: 188, size: 80, clue: 'Entre las piedras y las hojas del muro izquierdo.' },
+    { name: 'Sol', x: 1368, y: 269, size: 88, clue: 'Revisá el escudo junto a la pequeña sombra.' },
+    { name: 'Nube', x: 730, y: 572, size: 84, clue: 'Buscá entre las vasijas del centro.' },
+    { name: 'Copo de nieve', x: 167, y: 853, size: 100, clue: 'Entre los escombros de la esquina inferior izquierda.' },
+    { name: 'Estrella', x: 1360, y: 853, size: 100, clue: 'Las cadenas de la derecha rodean una piedra especial.' },
+  ];
+  const hiddenRunesImage = base + 'puente-runas-ocultas-v1.png';
+
+  function mountHiddenRunes(container, board, message, makeButton, finish) {
+    let closed = false, zoom = 1, dragged = false;
+    const found = new Set(), pointers = new Map();
+    board.className = 'runas-visor'; board.tabIndex = 0;
+    board.setAttribute('aria-label', 'Escena del puente. Ampliá y arrastrá para buscar las cinco runas.');
+    const scene = document.createElement('div'); scene.className = 'runas-escena';
+    const picture = document.createElement('img'); picture.src = hiddenRunesImage;
+    picture.alt = 'Ruinas del puente con escudos, vasijas, escombros y cadenas. Hay cinco medallones escondidos.';
+    picture.draggable = false;
+    scene.append(picture); board.append(scene);
+    const targets = document.createElement('ul'); targets.className = 'runas-objetivos';
+    targets.setAttribute('aria-label', 'Runas por encontrar');
+    container.append(targets);
+    const status = () => { message.textContent = `Runas encontradas: ${found.size}/5 · Tocá los medallones en la escena.`; };
+    hiddenRunes.forEach((rune, index) => {
+      const item = document.createElement('li');
+      // Use the actual illustrated medallion as the search reference, without a second raster asset.
+      const preview = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      preview.setAttribute('viewBox', `${rune.x-rune.size/2} ${rune.y-rune.size/2} ${rune.size} ${rune.size}`);
+      preview.setAttribute('aria-hidden', 'true');
+      const crop = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+      crop.setAttribute('href', hiddenRunesImage); crop.setAttribute('width', '1536'); crop.setAttribute('height', '1024');
+      preview.append(crop);
+      const label = document.createElement('span'); label.textContent = rune.name;
+      item.append(preview, label); targets.append(item);
+      const button = makeButton('', () => {
+        if (closed || dragged || found.has(index)) return;
+        found.add(index); button.classList.add('encontrada'); button.setAttribute('aria-pressed', 'true');
+        button.setAttribute('aria-label', `${rune.name}, encontrada`); button.textContent = '✓';
+        item.classList.add('encontrada'); label.textContent = `✓ ${rune.name}`; status();
+        if (found.size === hiddenRunes.length) finish();
+      }, scene);
+      button.className = 'runa-oculta';
+      button.style.left = `${rune.x/1536*100}%`; button.style.top = `${rune.y/1024*100}%`;
+      button.style.width = `${rune.size/1536*100}%`; button.style.height = `${rune.size/1024*100}%`;
+      button.setAttribute('aria-label', `Runa ${rune.name}`); button.setAttribute('aria-pressed', 'false');
+    });
+    const controls = document.createElement('div'); controls.className = 'runas-controles'; container.append(controls);
+    const changeZoom = (next, anchorX = board.clientWidth/2, anchorY = board.clientHeight/2) => {
+      if (closed) return;
+      const before = zoom; zoom = Math.max(1, Math.min(3, next));
+      scene.style.width = `${zoom*100}%`;
+      board.scrollLeft = (board.scrollLeft+anchorX)*zoom/before-anchorX;
+      board.scrollTop = (board.scrollTop+anchorY)*zoom/before-anchorY;
+      minus.disabled = zoom <= 1; plus.disabled = zoom >= 3;
+      reset.textContent = `Vista completa · ${Math.round(zoom*100)}%`;
+    };
+    const minus = makeButton('− Alejar', () => changeZoom(zoom-.5), controls);
+    const plus = makeButton('+ Ampliar', () => changeZoom(zoom+.5), controls);
+    const reset = makeButton('Vista completa · 100%', () => { changeZoom(1); board.scrollTo(0,0); }, controls);
+    makeButton('Una pista', () => {
+      const next = hiddenRunes.find((_, index) => !found.has(index));
+      if (next) message.textContent = `${found.size}/5 · ${next.name}: ${next.clue}`;
+    }, controls);
+    minus.disabled = true;
+    board.addEventListener('pointerdown', event => {
+      if (closed || (event.pointerType === 'mouse' && event.button !== 0)) return;
+      if (!pointers.size) dragged = false;
+      pointers.set(event.pointerId, { x:event.clientX, y:event.clientY, startX:event.clientX, startY:event.clientY });
+      // Capture on the original target so a tap still clicks that rune.
+      event.target.setPointerCapture(event.pointerId);
+    });
+    board.addEventListener('pointermove', event => {
+      const old = pointers.get(event.pointerId); if (!old || closed) return;
+      const other = [...pointers.entries()].find(([id]) => id !== event.pointerId)?.[1];
+      if (other) {
+        const before = Math.hypot(old.x-other.x,old.y-other.y);
+        const after = Math.hypot(event.clientX-other.x,event.clientY-other.y);
+        const rect = board.getBoundingClientRect();
+        if (before > 0) changeZoom(zoom*after/before, (event.clientX+other.x)/2-rect.left, (event.clientY+other.y)/2-rect.top);
+        dragged = true;
+      } else if (Math.hypot(event.clientX-old.startX,event.clientY-old.startY)>6 || dragged) {
+        board.scrollLeft -= event.clientX-old.x; board.scrollTop -= event.clientY-old.y; dragged = true;
+      }
+      old.x=event.clientX; old.y=event.clientY;
+    });
+    const endPointer = event => pointers.delete(event.pointerId);
+    board.addEventListener('pointerup', endPointer); board.addEventListener('pointercancel', endPointer);
+    board.addEventListener('lostpointercapture', endPointer);
+    board.addEventListener('keydown', () => { dragged = false; });
+    picture.addEventListener('error', () => { if (!closed) message.textContent = 'No se pudo cargar la escena. Reiniciá el puzzle para volver a intentarlo.'; });
+    status();
+    return () => { closed = true; pointers.clear(); };
+  }
   function toggleLight(board, index) {
     const next = [...board];
     for (const candidate of [index, index - 3, index + 3, ...(index % 3 ? [index - 1] : []), ...(index % 3 < 2 ? [index + 1] : [])]) {
@@ -147,7 +239,7 @@
 
   // Each puzzle owns its timers. Closing or restarting invalidates the old board.
   function mountPuzzle(container, type, complete) {
-    let disposed = false, busy = false, round = 0, progress = 0, replay = 0;
+    let disposed = false, busy = false;
     const timers = new Set();
     const later = (fn, delay) => {
       const id = setTimeout(() => { timers.delete(id); if (!disposed) fn(); }, delay);
@@ -172,36 +264,9 @@
       container.querySelectorAll('button').forEach(button => { button.disabled = true; });
       later(complete, 650);
     };
+    let closeRunes = () => {};
     if (type === 'runas-azrak') {
-      const buttons = symbols.map((symbol, index) => makeButton(symbol, () => {
-        if (index !== paths[round][progress]) {
-          progress = 0; message.textContent = 'Esa runa no sigue el camino. Observá la secuencia otra vez.';
-          showPath(); return;
-        }
-        progress++;
-        message.textContent = `Tramo ${round + 1}/3 · ${progress}/${paths[round].length} runas recordadas`;
-        if (progress === paths[round].length) {
-          round++; progress = 0;
-          if (round === paths.length) finish(); else showPath();
-        }
-      }));
-      buttons.forEach((button, index) => button.setAttribute('aria-label', `Runa ${['bosque', 'sol', 'cielo', 'hielo'][index]}`));
-      const repeat = makeButton('Volver a mirar', () => { progress = 0; showPath(); }, container);
-      function showPath() {
-        const token = ++replay;
-        busy = true; buttons.forEach(button => { button.disabled = true; }); repeat.disabled = true;
-        message.textContent = `Tramo ${round + 1}/3 · Observá el orden de las runas.`;
-        paths[round].forEach((index, step) => {
-          later(() => { if (token === replay) buttons[index].classList.add('runa-encendida'); }, 450 + step * 900);
-          later(() => { if (token === replay) buttons[index].classList.remove('runa-encendida'); }, 1050 + step * 900);
-        });
-        later(() => {
-          if (token !== replay) return;
-          busy = false; buttons.forEach(button => { button.disabled = false; }); repeat.disabled = false;
-          message.textContent = `Tramo ${round + 1}/3 · Repetí el camino tocando las runas.`;
-        }, 450 + paths[round].length * 900);
-      }
-      showPath();
+      closeRunes = mountHiddenRunes(container, board, message, makeButton, finish);
     } else if (type === 'sellos-azrak') {
       const values = [0, 1, 2, 3];
       ['Norte', 'Este', 'Sur', 'Oeste'].forEach((direction, index) => {
@@ -248,7 +313,7 @@
       }, container);
       render();
     }
-    return () => { disposed = true; timers.forEach(clearTimeout); timers.clear(); };
+    return () => { disposed = true; closeRunes(); timers.forEach(clearTimeout); timers.clear(); };
   }
 
   const actor = (id, file, x, y, size, motion = '') => ({ id, file, x, y, size, motion });
@@ -281,10 +346,10 @@
     { key: 'epilogo', text: 'Aren guarda su mapa. No fue una sola fuerza la que salvó los mundos: fue aprender a escucharse y elegir ayudarse. FIN · Gracias por vivir esta aventura.', actors: team(), effect: 'amanecer', duration: 9000 },
   ];
 
-  // Batalla original completa, tramo final de MusicLFiles y restauración.
+  // Batalla original, MusicLFiles desde el inicio y restauración.
   const finalMusic = {
     battle: { src: 'assets/sounds/victoria-mundo5.mp3', duration: 130951.813, readingScale: 1.35, loop: false, nivorCue: 17000 },
-    ending: { src: 'assets/sounds/azrak-batalla-final-musiclfiles.mp3', duration: 134896.313, fadeIn: 500 },
+    ending: { src: 'assets/sounds/azrak-batalla-final-musiclfiles.mp3', duration: 134896.313, fadeIn: 500, smileCue: 10000, fadeOut: 4500 },
     peace: { src: 'assets/sounds/azrak-es-vencido.mp3', duration: 183864 },
   };
   const gifts = [
@@ -299,8 +364,8 @@
   ].map(([key, name, file, text, color]) => ({ key: 'energia-' + key, name, text, portrait: true, color, actors: [actor(key, file, 50, 86, 76)], duration: 3800 }));
   finale.splice(finale.findIndex(shot => shot.key === 'union'), 3,
     ...gifts,
-    { key: 'azrak-interrumpe', silent: true, image: 'azrak-interrumpe-union-v1.png', text: '«¡No lo permitiré!» Azrak lanza una descarga hacia el grupo. Si los alcanza ahora, la unión quedará incompleta.', actors: [azrak()], duration: 5500 },
-    { key: 'calamo-llegada', music: 'ending', image: 'calamo-sonrisa-detalle-v1.png', text: 'Una sonrisa segura bajo la máscara. «Perdón por llegar tarde».', actors: [], duration: 5000 },
+    { key: 'azrak-interrumpe', music: 'ending', image: 'azrak-interrumpe-union-v1.png', text: '«¡No lo permitiré!» Azrak lanza una descarga hacia el grupo. Si los alcanza ahora, la unión quedará incompleta.', actors: [azrak()], duration: 10000 },
+    { key: 'calamo-llegada', image: 'calamo-sonrisa-detalle-v1.png', text: 'Una sonrisa segura bajo la máscara. «Perdón por llegar tarde».', actors: [], duration: 5000 },
     { key: 'calamo-barrera', image: 'calamo-barrera-tinta-v1.png', text: 'La descarga choca contra una barrera de tinta. «Esta vez no vine a robarte nada, Aren. ¡Terminá lo que empezaste!»', actors: [actor('calamo', 'kalamo-base.png', 50, 80, 65)], duration: 5500 },
     { key: 'calamo-contiene', image: 'calamo-contiene-azrak-v1.png', text: 'Cálamo sujeta los brazos de Azrak con cintas de tinta. «¡No voy a contenerlo para siempre!» Los guardianes aprovechan esos segundos.', actors: [actor('calamo', 'kalamo-base.png', 30, 80, 55), azrak()], duration: 5500 },
     { key: 'union', image: 'energia-unida-v1.png', text: 'Los guardianes entregan su energía. Los cinco cristales la reúnen alrededor de Aren: todos confían en él.', actors: team(), duration: 6500 },
@@ -357,11 +422,18 @@
     const shadowIndex = finale.findIndex(shot => shot.key === 'energia-shadow');
     const beforeShadow = durations.slice(0, shadowIndex).reduce((sum, ms) => sum + ms, 0);
     durations[shadowIndex] = Math.max(1, battleDuration - beforeShadow);
+    durations[endingIndex] = finalMusic.ending.smileCue;
     const battleTotal = durations.slice(0, peaceIndex).reduce((sum, ms, i) => sum + (finale[i].intertitle ? 0 : ms), 0);
     const endingLength = durations.slice(endingIndex, peaceIndex).reduce((sum, ms, i) => sum + (finale[endingIndex + i].intertitle ? 0 : ms), 0);
-    const endingStart = Math.max(0, endingDuration - endingLength);
-    return { durations, battleTotal, battleDuration, endingDuration, endingStart };
+    const endingStart = 0;
+    return { durations, battleTotal, battleDuration, endingDuration, endingStart, endingLength };
 
+  }
+
+  function endingVolume(elapsed, length) {
+    const fadeIn = Math.min(1, Math.max(0, elapsed) / finalMusic.ending.fadeIn);
+    const fadeOut = Math.min(1, Math.max(0, length - elapsed) / finalMusic.ending.fadeOut);
+    return .65 * Math.min(fadeIn, fadeOut);
   }
 
   function setupCinemaLandscape(layer, enabled, onChange) {
@@ -566,7 +638,7 @@
               }
               if (phase === 'ending') {
                 const endingElapsed = Math.max(0, shotStart + elapsed - phaseStart);
-                currentTrack.volume = .65 * Math.min(1, endingElapsed / finalMusic.ending.fadeIn);
+                currentTrack.volume = endingVolume(endingElapsed, timing.endingLength);
               }
             }
           }
@@ -582,5 +654,5 @@
       if (focusBefore?.isConnected) focusBefore.focus({ preventScroll: true });
     }
   }
-  return { missions, words, paths, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, mountScene, ignitePortal, playCinematic, planFinale, betrayal, finale, finalMusic, base };
+  return { missions, words, hiddenRunes, hiddenRunesImage, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, mountScene, ignitePortal, playCinematic, planFinale, endingVolume, betrayal, finale, finalMusic, base };
 });

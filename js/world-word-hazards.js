@@ -7,6 +7,7 @@
   layer.setAttribute('aria-hidden', 'true');
   scene.append(layer);
   const poses = {
+    pensando: [1536,1024,558,78,930,841],
     nervioso: [1024,1536,210,156,735,1369], feliz: [1536,1024,568,71,904,757],
     preocupado: [1536,1024,558,43,928,839], acierto: [1024,1536,227,208,728,1151],
     desanimado: [1024,1536,290,243,773,1082], triste: [1536,1024,560,91,1041,841],
@@ -20,7 +21,12 @@
   const group = (body, i) => `<g class="peligro-etapa" data-etapa="${i+1}">${body}</g>`;
   const wind = Array.from({length:6}, (_, i) => {
     const y = 177-i*27, rx=30+i*7;
-    return group(`<ellipse class="viento-sombra" cx="80" cy="${y}" rx="${rx}" ry="${8+i*2}"/><path class="viento-cinta" d="M${80-rx} ${y} C${70-rx} ${y-18} ${90+rx} ${y-20} ${80+rx} ${y} C${70+rx} ${y+17} ${90-rx} ${y+13} ${84-rx} ${y+5}"/><path class="viento-destello" d="M${85-rx} ${y+4} Q80 ${y+19} ${78+rx} ${y-3}"/><path class="viento-particula" d="M${42+i*9} ${y-10} l9 -3 m-18 10 l5 -2"/>`, i);
+    const dust = Array.from({length:14}, (_, n) => {
+      const angle = n * Math.PI * 2 / 14;
+      const x = 80 + Math.cos(angle) * rx, py = y + Math.sin(angle) * (9+i*2);
+      return `<g class="viento-polvo" style="--orbita-x:${80-x}px;--orbita-y:${y-py}px;--demora:${-n*.19-i*.23}s;--duracion:${1.8+i*.16}s"><circle cx="${x}" cy="${py}" r="${.7+n%3*.4}"/>${n%4===0?`<path class="viento-fragmento" d="M${x+3} ${py-2} l4 -1 -1 3 -3 1Z"/>`:''}</g>`;
+    }).join('');
+    return group(`<ellipse class="viento-sombra" cx="80" cy="${y}" rx="${rx}" ry="${8+i*2}"/><path class="viento-cinta" d="M${80-rx} ${y} C${70-rx} ${y-18} ${90+rx} ${y-20} ${80+rx} ${y} C${70+rx} ${y+17} ${90-rx} ${y+13} ${84-rx} ${y+5}"/><path class="viento-destello" d="M${85-rx} ${y+4} Q80 ${y+19} ${78+rx} ${y-3}"/><path class="viento-particula" d="M${42+i*9} ${y-10} l9 -3 m-18 10 l5 -2"/>${dust}`, i);
   }).join('');
   const ice = [
     'M32 186 L41 159 L53 167 L67 155 L79 170 L91 153 L103 163 L119 157 L129 186Z',

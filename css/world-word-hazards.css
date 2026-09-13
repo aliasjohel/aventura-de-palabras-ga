@@ -5,7 +5,11 @@
 .peligro-etapa.activa { opacity:1; }
 .peligro-palabras.liberando { opacity:0; }
 .viento-sombra { fill:#b0def013; stroke:#7cc8e359; stroke-width:5; }
-.viento-cinta { fill:none; stroke:#e2faff; stroke-width:4; stroke-linecap:round; stroke-dasharray:100 12 32 8; animation:vientoAtrapa 2.5s linear infinite; filter:drop-shadow(0 0 2px #78d7ff); }
+.viento-cinta { fill:none; stroke:#e2faff80; stroke-width:2; stroke-linecap:round; stroke-dasharray:100 12 32 8; animation:vientoAtrapa 2.5s linear infinite; filter:drop-shadow(0 0 2px #78d7ff); }
+.viento-polvo { fill:#e8cb8b; animation:polvoEnOrbita var(--duracion) linear var(--demora) infinite; }
+.viento-polvo:nth-child(3n) { fill:#a6814c; }
+.viento-fragmento { fill:#c4ad7e; stroke:#f7e1af; stroke-width:.35; }
+@keyframes polvoEnOrbita { 0%,100% { transform:translate(0,0); opacity:.75; } 25% { transform:translate(var(--orbita-x),-5px); opacity:.35; } 50% { transform:translate(calc(var(--orbita-x)*2),calc(var(--orbita-y)*2)); opacity:.65; } 75% { transform:translate(var(--orbita-x),5px); opacity:1; } }
 .viento-destello { fill:none; stroke:#81badb; stroke-width:2; }
 .viento-particula { fill:none; stroke:#fff6c3; stroke-width:2; stroke-linecap:round; }
 .hielo-bloque { fill:#93dffe6b; stroke:#cef5ff; stroke-width:2; stroke-linejoin:round; }
@@ -16,4 +20,4 @@
 .peligro-palabras[data-stage="6"] { filter:drop-shadow(0 0 4px #bcdcff66); }
 #pantallaJuego:not(.activa) .peligro-palabras * { animation-play-state:paused; }
 @keyframes vientoAtrapa { to { stroke-dashoffset:-152; } }
-@media(prefers-reduced-motion:reduce) { .peligro-palabras, .peligro-etapa { transition:none; } .viento-cinta { animation:none; } }
+@media(prefers-reduced-motion:reduce) { .peligro-palabras, .peligro-etapa { transition:none; } .viento-cinta, .viento-polvo { animation:none; } }

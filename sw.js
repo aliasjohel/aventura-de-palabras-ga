@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v268`;
+const CACHE_NAME = `${CACHE_PREFIX}v269`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -205,6 +205,8 @@ const CORE_ASSETS = [
   "./css/styles.css",
   "./css/azrak-world.css",
   "./js/azrak-world.js",
+  "./assets/images/fondos/reino-azrak/puente-runas-ocultas-v1.png",
+  "./assets/images/personajes/versus/mano-abismo-atrapa-kairos-escena-v1.png",
   "./assets/images/fondos/reino-azrak/entrada-v1.png",
   "./assets/images/fondos/reino-azrak/forja-v1.png",
   "./assets/images/fondos/reino-azrak/trono-v1.png",
@@ -574,12 +576,14 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./": "20260905-mundo5-3",
-  "./index.html": "20260905-mundo5-3",
-  "./css/styles.css": "20260910-lobos-tactil-1",
-  "./js/app.js": "20260910-azrak-teclado-3",
-  "./js/azrak-world.js": "20260905-mundo5-3",
-  "./css/azrak-world.css": "20260905-mundo5-3",
+  "./css/world-word-hazards.css": "20260913-runas-viento-captura-1",
+  "./js/world-word-hazards.js": "20260913-runas-viento-captura-1",
+  "./": "20260913-runas-viento-captura-1",
+  "./index.html": "20260913-runas-viento-captura-1",
+  "./css/styles.css": "20260913-runas-viento-captura-1",
+  "./js/app.js": "20260913-runas-viento-captura-1",
+  "./js/azrak-world.js": "20260913-runas-viento-captura-1",
+  "./css/azrak-world.css": "20260913-runas-viento-captura-1",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-ataque.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-impacto.png": "20260902-personajes-chibi-1",

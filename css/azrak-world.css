@@ -50,6 +50,33 @@
 .puzzle-azrak button.runa-encendida:disabled { opacity: 1; }
 .azrak-puzzle-clues { border-left: 3px solid #efb96e; padding: 12px; background: #ffffff0a; text-align: left; line-height: 1.6; }
 .azrak-puzzle-status { min-height: 2.7em; line-height: 1.4; }
+.runas-visor { width:100%; aspect-ratio:3/2; max-height:48vh; overflow:auto; overscroll-behavior:contain; touch-action:none; border:2px solid #92704f; border-radius:12px; background:#140d20; cursor:grab; }
+.runas-visor:active { cursor:grabbing; }
+.runas-visor:focus-visible { outline:3px solid #ffe09c; }
+.runas-escena { position:relative; width:100%; user-select:none; }
+.runas-escena > img { display:block; width:100%; max-width:none; height:auto; pointer-events:none; }
+.puzzle-azrak .runa-oculta { position:absolute; transform:translate(-50%,-50%); min-width:32px; min-height:32px; padding:0; border:2px solid transparent; border-radius:50%; background:transparent; box-shadow:none; color:transparent; -webkit-tap-highlight-color:transparent; touch-action:none; }
+.puzzle-azrak .runa-oculta:hover,.puzzle-azrak .runa-oculta:active { transform:translate(-50%,-50%); background:transparent; }
+.puzzle-azrak .runa-oculta.encontrada { border-color:#a9ffdf; color:white; background:#123d3480; box-shadow:0 0 16px #b0ffe5; font-size:1.3rem; }
+.runas-objetivos { display:flex; justify-content:center; gap:10px; list-style:none; padding:0; margin:12px 0; }
+.runas-objetivos li { flex:1; max-width:105px; font-size:.75rem; color:#e9d8bc; }
+.runas-objetivos svg { display:block; width:46px; height:46px; margin:0 auto 4px; border-radius:50%; border:2px solid #715b4f; }
+.runas-objetivos .encontrada { color:#a9ffdf; }
+.runas-objetivos .encontrada svg { border-color:#a9ffdf; }
+.runas-controles { display:flex; flex-wrap:wrap; justify-content:center; gap:7px; }
+.prueba-azrak:has(.runas-visor) .estado-prueba-bosque { display:none; }
+@media(orientation:landscape) and (max-height:600px) {
+  .puzzle-azrak:has(.runas-visor) { display:grid; grid-template-columns:minmax(0,1fr) 220px; gap:6px 12px; width:100%; }
+  .puzzle-azrak:has(.runas-visor) .azrak-puzzle-status { grid-column:1/-1; min-height:0; }
+  .runas-visor { grid-column:1; grid-row:2/4; width:min(100%,calc((100dvh - 170px)*1.5)); max-height:none; justify-self:center; align-self:center; }
+  .runas-objetivos { grid-column:2; grid-row:2; flex-wrap:wrap; margin:0; gap:4px; }
+  .runas-objetivos li { flex:0 0 30%; font-size:.65rem; }
+  .runas-objetivos svg { width:30px; height:30px; }
+  .runas-controles { grid-column:2; grid-row:3; align-self:start; gap:4px; }
+  .puzzle-azrak .runas-controles button { min-height:32px; font-size:.7rem; padding:4px; }
+}
+.puzzle-azrak .runas-controles button { padding:8px; font-size:.8rem; }
+@media(max-width:600px) { .puzzle-azrak:has(.runas-visor) { padding:4px; box-sizing:border-box; } .runas-objetivos { gap:4px; } }
 .azrak-puzzle-board.tablero-eclipse { grid-template-columns: repeat(3, 1fr); max-width: 330px; }
 .cinematica-azrak { position: fixed; inset: 0; z-index: 20000; background: #09060e; color: #fff1d9; display: grid; grid-template-rows: minmax(0, 1fr) auto; font-family: system-ui, sans-serif; overflow: hidden; }
 .azrak-cinema-stage { position: relative; overflow: hidden; background: #261629 url('../assets/images/fondos/reino-azrak/trono-v1.png') center/cover; isolation: isolate; }
@@ -63,6 +90,8 @@
 @keyframes planoFinalAzrak { from { opacity:.2; transform:scale(1); } 5% { opacity:1; } to { opacity:1; transform:scale(var(--plano-zoom, 1.055)); } }
 .azrak-cinema-stage.entrega-guardian { background:radial-gradient(ellipse at center, color-mix(in srgb, var(--energia-guardian) 28%, transparent), #120c24 72%), url('../assets/images/fondos/reino-azrak/trono-v1.png') center/cover; }
 .retrato-entrega { position:absolute; width:85%; height:83%; object-fit:contain; left:7.5%; top:4%; z-index:2; filter:drop-shadow(0 0 18px var(--energia-guardian)); animation:entregaRetrato .6s ease-out both; }
+/* Compensa el margen transparente del retrato vertical de la Guardiana. */
+.cinematica-azrak[data-shot="energia-guardiana"] .retrato-entrega { scale:1.45; }
 .energia-entrega { position:absolute; inset:15% 8% 0; opacity:.7; background:repeating-conic-gradient(from 0deg at 50% 65%, transparent 0 17deg, var(--energia-guardian) 19deg 20deg, transparent 22deg 40deg); mask-image:radial-gradient(ellipse, #000 5%, transparent 70%); animation:energiaLatido 2.5s ease-in-out infinite; }
 .nombre-entrega { position:absolute; bottom:5%; left:0; width:100%; z-index:7; text-align:center; color:#fff2cf; font-size:clamp(1.1rem, 3vw, 2rem); text-shadow:0 2px 8px #000; }
 @keyframes entregaRetrato { from { transform:translateY(12px); } to { transform:none; } }
