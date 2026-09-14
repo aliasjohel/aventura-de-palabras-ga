@@ -14,10 +14,18 @@
 .viento-particula { fill:none; stroke:#fff6c3; stroke-width:2; stroke-linecap:round; }
 .hielo-bloque { fill:#93dffe6b; stroke:#cef5ff; stroke-width:2; stroke-linejoin:round; }
 .hielo-grieta { fill:none; stroke:#f0ffffba; stroke-width:1.6; }
-.cadena-eslabon { fill:#1c13368c; stroke:#b9a5d8; stroke-width:2.4; filter:drop-shadow(0 1px 1px #11071b); }
-.sello-oscuro { fill:#251337ed; stroke:#b9a5d8; stroke-width:3; stroke-linejoin:round; }
-.sello-runa { fill:#d97cfa; stroke:#fff0ff; stroke-width:1; filter:drop-shadow(0 0 4px #d064ff); }
+.jaula-resplandor { fill:#ff681a28; stroke:#ff7b2155; stroke-width:6; filter:blur(3px); }
+.jaula-aro { fill:none; stroke:#ffac32; stroke-width:3; filter:drop-shadow(0 0 3px #ff4c0a); }
+.jaula-fuego-exterior { fill:url(#jaula-fuego-gradiente); fill-opacity:.84; filter:drop-shadow(0 0 2px #ff530e); }
+.jaula-fuego-nucleo { fill:#fff0a8; fill-opacity:.9; }
+.jaula-llama { transform-box:fill-box; transform-origin:center bottom; animation:llamaJaula 1.35s ease-in-out var(--demora) infinite alternate; }
+.jaula-boveda { fill:none; stroke:#ffc348; stroke-width:5; stroke-linecap:round; filter:drop-shadow(0 0 3px #ff4c0a); }
+.jaula-brasa { fill:#ffd987; animation:brasaJaula 2.6s linear var(--demora) infinite; }
+.peligro-etapa:not(.activa) .jaula-llama, .peligro-etapa:not(.activa) .jaula-brasa { animation-play-state:paused; }
+.peligro-palabras[data-world="4"][data-stage="6"] { filter:drop-shadow(0 0 5px #ff650b77); }
+@keyframes llamaJaula { from { transform:scaleX(.91) scaleY(.97) skewX(-2deg); } to { transform:scaleX(1.06) scaleY(1.03) skewX(2deg); } }
+@keyframes brasaJaula { 0% { transform:translate(0,0); opacity:0; } 20% { opacity:.95; } 100% { transform:translate(var(--deriva),-95px); opacity:0; } }
 .peligro-palabras[data-stage="6"] { filter:drop-shadow(0 0 4px #bcdcff66); }
 #pantallaJuego:not(.activa) .peligro-palabras * { animation-play-state:paused; }
 @keyframes vientoAtrapa { to { stroke-dashoffset:-152; } }
-@media(prefers-reduced-motion:reduce) { .peligro-palabras, .peligro-etapa { transition:none; } .viento-cinta, .viento-polvo { animation:none; } }
+@media(prefers-reduced-motion:reduce) { .peligro-palabras, .peligro-etapa { transition:none; } .viento-cinta, .viento-polvo, .jaula-llama, .jaula-brasa { animation:none; } }

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v274`;
+const CACHE_NAME = `${CACHE_PREFIX}v275`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -579,10 +579,10 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./css/world-word-hazards.css": "20260913-runas-viento-captura-1",
-  "./js/world-word-hazards.js": "20260913-runas-viento-captura-1",
-  "./": "20260913-runas-viento-captura-1",
-  "./index.html": "20260913-runas-viento-captura-1",
+  "./css/world-word-hazards.css": "20260914-jaula-fuego",
+  "./js/world-word-hazards.js": "20260914-jaula-fuego",
+  "./": "20260914-jaula-fuego",
+  "./index.html": "20260914-jaula-fuego",
   "./css/styles.css": "20260913-shadow-runas-2",
   "./js/app.js": "20260913-shadow-runas-2",
   "./js/azrak-world.js": "20260913-shadow-runas-2",

@@ -1,4 +1,4 @@
-/* Consecuencias de los errores de palabras: viento, hielo y cadenas. */
+/* Consecuencias de los errores de palabras: viento, hielo y una jaula de llamas. */
 (() => {
   const actor = document.getElementById('personajeImagen');
   const scene = actor.parentElement;
@@ -16,7 +16,7 @@
   const messages = {
     2: ['', 'El viento empieza a girar alrededor de Aren.', 'Las ráfagas rodean sus botas.', 'El remolino se enrosca en sus piernas.', 'Aren apenas puede moverse contra el viento.', '¡El torbellino está por envolverlo!', 'El torbellino atrapó a Aren. ¡Reintentá para liberarlo!'],
     3: ['', 'La escarcha se pega a las botas de Aren.', 'El hielo empieza a sujetarle los tobillos.', 'Sus piernas quedan cubiertas de hielo.', 'El frío le alcanza la cintura. ¡Encontrá la palabra!', 'El hielo sube hasta sus hombros.', 'Aren quedó congelado. ¡Reintentá para romper el hielo!'],
-    4: ['', 'Una cadena oscura emerge del suelo.', 'Las cadenas rodean sus tobillos.', 'Otra cadena le sujeta una muñeca.', 'Las cadenas se cruzan frente a Aren.', 'Un sello oscuro empieza a cerrarse.', 'Las cadenas atraparon a Aren. ¡Reintentá para romper el sello!'],
+    4: ['', 'Las primeras llamas brotan alrededor de Aren.', 'Un círculo de fuego rodea sus botas.', 'Las llamas se elevan a un lado de Aren.', 'El fuego levanta las paredes de la jaula.', 'Las llamas se curvan sobre su cabeza. ¡Encontrá la palabra!', 'La jaula de fuego se cerró alrededor de Aren. ¡Reintentá para liberarlo!'],
   };
   const group = (body, i) => `<g class="peligro-etapa" data-etapa="${i+1}">${body}</g>`;
   const wind = Array.from({length:6}, (_, i) => {
@@ -36,12 +36,21 @@
     'M30 86 L34 48 L51 36 L65 50 L84 37 L102 42 L124 32 L132 85Z',
     'M33 57 L39 24 L60 12 L86 18 L106 9 L124 26 L132 58Z',
   ].map((d,i)=>group(`<path class="hielo-bloque" d="${d}"/><path class="hielo-grieta" d="M${48+i*2} ${177-i*28} l12 -12 -5 -10 m5 10 19 -3 M${104-i*2} ${174-i*28} l-9 -11 5 -11"/>`,i)).join('');
-  function chain(x1,y1,x2,y2) {
-    const length=Math.hypot(x2-x1,y2-y1), angle=Math.atan2(y2-y1,x2-x1)*180/Math.PI;
-    return `<g transform="translate(${x1} ${y1}) rotate(${angle})">${Array.from({length:Math.ceil(length/9)},(_,i)=>`<rect class="cadena-eslabon" x="${i*9}" y="${i%2?-2.3:-4}" width="13" height="${i%2?4.6:8}" rx="4"/>`).join('')}</g>`;
+  // Seis capas acumulativas: brasas, base, paredes, techo y cierre frontal.
+  function flame(x, bottom, top, width = 9, delay = 0) {
+    const height = bottom - top;
+    return `<g class="jaula-llama" style="--demora:${delay}s"><path class="jaula-fuego-exterior" d="M${x-width} ${bottom} C${x-width*2} ${bottom-height*.3} ${x+width} ${top+height*.4} ${x} ${top} C${x+width*2} ${top+height*.25} ${x+width*.3} ${bottom-height*.3} ${x+width} ${bottom}Z"/><path class="jaula-fuego-nucleo" d="M${x-width*.35} ${bottom} Q${x-width} ${bottom-height*.3} ${x+width*.2} ${top+height*.35} Q${x+width} ${bottom-height*.2} ${x+width*.35} ${bottom}Z"/></g>`;
   }
-  const chains = [chain(12,190,62,159), chain(146,190,96,155), chain(12,130,112,81), chain(147,126,48,78), chain(32,112,124,112), '<path class="sello-oscuro" d="M64 110 V97 A16 16 0 0 1 96 97 V110 M57 109 H103 V145 L80 155 57 145Z"/><path class="sello-runa" d="M80 118 L89 131 80 143 71 131Z"/>'].map(group).join('');
-  const art = {2:wind,3:ice,4:chains};
+  const embers = Array.from({length:18},(_,i)=>`<circle class="jaula-brasa" cx="${24+(i*37)%113}" cy="${173+(i%4)*5}" r="${.65+(i%3)*.35}" style="--demora:${-i*.21}s;--deriva:${i%2?8:-8}px"/>`).join('');
+  const fire = `<defs><linearGradient id="jaula-fuego-gradiente" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#ff4209"/><stop offset=".55" stop-color="#ff9c16"/><stop offset="1" stop-color="#ffde64"/></linearGradient></defs>` + [
+    `<ellipse class="jaula-resplandor" cx="80" cy="185" rx="63" ry="12"/>${[30,52,79,106,130].map((x,i)=>flame(x,190,170-i%2*9,5,-i*.3)).join('')}${embers}`,
+    `<ellipse class="jaula-aro" cx="80" cy="183" rx="63" ry="15"/>${[20,41,65,91,117,139].map((x,i)=>flame(x,188,151+i%2*9,6,-i*.23)).join('')}`,
+    flame(23,178,46,7,-.4)+flame(39,183,64,6,-.8)+[75,109,143].map((y,i)=>flame(19,y,y-24,5,-i*.4)).join(''),
+    flame(137,178,46,7,-.6)+flame(121,183,64,6,-.2)+[75,109,143].map((y,i)=>flame(141,y,y-24,5,-i*.4)).join(''),
+    `<path class="jaula-boveda" d="M23 64 Q23 18 66 14 M137 64 Q137 18 94 14"/>${flame(48,46,17,5,-.7)}${flame(112,46,17,5,-.3)}`,
+    `<path class="jaula-boveda jaula-cierre" d="M22 79 Q18 13 80 11 Q142 13 138 79 M65 15 Q80 3 95 15"/>${[54,80,106].map((x,i)=>flame(x,22,2+i%2*4,5,-i*.3)).join(' ')}${flame(58,192,26,4,-.5)}${flame(102,192,26,4,-.9)}<ellipse class="jaula-aro" cx="80" cy="187" rx="62" ry="13"/>`,
+  ].map(group).join('');
+  const art = {2:wind,3:ice,4:fire};
   let world = -1, stage = 0, frame = 0;
   function align() {
     if (layer.hidden) return;
