@@ -33,7 +33,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260913-torre-repetir">
+    <link rel="stylesheet" href="css/styles.css?v=20260914-busqueda-ranking">
     <link rel="stylesheet" href="css/azrak-world.css?v=20260913-runas-viento-captura-1">
     <link rel="stylesheet" href="css/kairos-forest.css?v=20260908-cinematicas-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
@@ -505,7 +505,20 @@
                             placeholder="Ej: Gabi">
                     </label>
 
-                    <details class="salas-manuales-versus" open>
+                    <section class="opcion-sala-versus" aria-label="Partidas públicas">
+                        <h3>Buscar partida</h3>
+                        <p>Encontrá un rival online. Después eligen sus personajes y preparan el duelo.</p>
+                        <button id="btnBuscarPartida" type="button">Buscar rival</button>
+                        <button id="btnCancelarBusqueda" type="button" class="oculto">Cancelar búsqueda</button>
+                        <p id="estadoBusqueda" role="status" aria-live="polite"></p>
+                        <details id="panelRanking">
+                            <summary>Ranking online</summary>
+                            <p>Partidas de Buscar rival: victoria 3 puntos · empate 1 punto.</p>
+                            <button id="btnActualizarRanking" type="button">Actualizar ranking</button>
+                            <div id="listaRanking" aria-live="polite"></div>
+                        </details>
+                    </section>
+                    <details class="salas-manuales-versus">
                         <summary>Jugar con c&oacute;digo de sala</summary>
                         <div class="acciones-sala-versus">
                             <article class="opcion-sala-versus">
@@ -1419,16 +1432,16 @@
     <script src="js/supabase-client.js?v=20260817-amigos-cuentas-1"></script>
     <script src="js/versus-engine.js?v=20260817-versus-recuperacion-1"></script>
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
-    <script src="js/versus-room-supabase.js?v=20260817-auth-cuentas-2"></script>
+    <script src="js/versus-room-supabase.js?v=20260914-busqueda-ranking"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
-    <script src="js/azrak-world.js?v=20260913-torre-repetir"></script>
+    <script src="js/azrak-world.js?v=20260914-busqueda-ranking"></script>
     <script src="js/prologue-cinematic.js?v=20260907-1"></script>
     <script src="js/forest-root-trap.js?v=20260907-1"></script>
     <script src="js/desert-sand-trap.js?v=20260907-1"></script>
     <script src="js/kairos-forest.js?v=20260909-musica-continua-1"></script>
     <script src="js/kalamo-desert.js?v=20260909-arco-aren-1"></script>
     <script src="js/world-word-hazards.js?v=20260913-runas-viento-captura-1"></script>
-    <script src="js/app.js?v=20260913-torre-repetir"></script>
+    <script src="js/app.js?v=20260914-busqueda-ranking"></script>
     <script src="js/pwa.js?v=20260909-recuperar-actualizacion-1"></script>
 </body>
 

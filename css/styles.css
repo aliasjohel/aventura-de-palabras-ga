@@ -17714,3 +17714,11 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
 
 .pisos-arcade li[aria-disabled='false'] { cursor: pointer; }
 .pisos-arcade li[role='button']:focus-visible { outline: 3px solid #ffe19b; outline-offset: 2px; }
+
+#panelRanking { margin-top: 16px; width: 100%; text-align: left; }
+#panelRanking summary { cursor: pointer; font-weight: 800; padding: 10px 0; }
+#listaRanking { max-height: 280px; overflow-y: auto; overflow-wrap: anywhere; }
+#listaRanking p { padding: 10px; border-bottom: 1px solid #ffffff26; }
+#listaRanking .ranking-propio { color: #ffe19b; background: #f5c25118; border-radius: 8px; }
+#estadoBusqueda { display: block; min-height: 1.5em; }
+#panelRanking p { display: block; }

@@ -1960,6 +1960,105 @@ function actualizarPartidaOnline(partida) {
   if (partida.status === "finished") finalizarPartidaOnline(partida);
 }
 
+let busquedaPublicaActiva = false;
+let peticionBusqueda = null;
+let temporizadorBusqueda = null;
+const btnBuscarPartida = document.getElementById("btnBuscarPartida");
+const btnCancelarBusqueda = document.getElementById("btnCancelarBusqueda");
+const estadoBusqueda = document.getElementById("estadoBusqueda");
+
+function mostrarBusquedaActiva(activa) {
+  busquedaPublicaActiva = activa;
+  btnBuscarPartida.disabled = activa;
+  btnCancelarBusqueda.classList.toggle("oculto", !activa);
+  btnCrearSalaVersus.disabled = activa;
+  btnUnirseSalaVersus.disabled = activa;
+  aliasSalaVersus.disabled = activa;
+}
+
+async function consultarBusquedaPublica() {
+  if (!busquedaPublicaActiva || peticionBusqueda) return;
+  let encontro = false;
+  try {
+    peticionBusqueda = adaptadorSalasVersus.buscarPartida({ alias: aliasSalaVersus.value });
+    const resultado = await peticionBusqueda;
+    encontro = Boolean(resultado?.room_id);
+    if (encontro && busquedaPublicaActiva) {
+      mostrarBusquedaActiva(false);
+      estadoBusqueda.textContent = "¡Rival encontrado! Elegí tu personaje.";
+      abrirSeleccionPersonajeVersus();
+    }
+  } catch (error) {
+    mostrarBusquedaActiva(false);
+    estadoBusqueda.textContent = `${error.message} Podés volver a intentar la búsqueda.`;
+  } finally {
+    peticionBusqueda = null;
+    if (busquedaPublicaActiva && !encontro) temporizadorBusqueda = setTimeout(consultarBusquedaPublica, 3000);
+  }
+}
+
+async function cancelarBusquedaPublica() {
+  if (!busquedaPublicaActiva && !peticionBusqueda) return;
+  mostrarBusquedaActiva(false);
+  btnBuscarPartida.disabled = true;
+  btnCrearSalaVersus.disabled = true;
+  btnUnirseSalaVersus.disabled = true;
+  clearTimeout(temporizadorBusqueda);
+  try {
+    const enCurso = await peticionBusqueda;
+    const resultado = await adaptadorSalasVersus.buscarPartida({ alias: aliasSalaVersus.value, cancelar: true });
+    if (resultado?.room_id || enCurso?.room_id) await adaptadorSalasVersus.salirSala();
+    estadoBusqueda.textContent = "Búsqueda cancelada.";
+  } catch (_) {
+    estadoBusqueda.textContent = "Sin conexión. La búsqueda pendiente caduca automáticamente en 30 segundos.";
+  } finally {
+    mostrarBusquedaActiva(false);
+  }
+}
+
+btnBuscarPartida.addEventListener("click", async () => {
+  if (busquedaPublicaActiva) return;
+  mostrarBusquedaActiva(true);
+  estadoBusqueda.textContent = "Conectando…";
+  try {
+    await asegurarConexionSalasVersus();
+    if (!busquedaPublicaActiva) return;
+    if (!adaptadorSalasVersus.buscarPartida) throw new Error("Necesitás conexión a internet para buscar rival.");
+    estadoBusqueda.textContent = "Buscando rival… Si todavía no hay otro jugador, podés esperar o cancelar.";
+    await consultarBusquedaPublica();
+  } catch (error) {
+    mostrarBusquedaActiva(false);
+    estadoBusqueda.textContent = error.message;
+  }
+});
+btnCancelarBusqueda.addEventListener("click", cancelarBusquedaPublica);
+
+async function cargarRankingPublico() {
+  const lista = document.getElementById("listaRanking");
+  const boton = document.getElementById("btnActualizarRanking");
+  if (boton.disabled) return;
+  boton.disabled = true;
+  lista.textContent = "Cargando ranking…";
+  try {
+    await asegurarConexionSalasVersus();
+    if (!adaptadorSalasVersus.obtenerRanking) throw new Error("Conectate a internet para ver el ranking.");
+    const filas = await adaptadorSalasVersus.obtenerRanking();
+    lista.replaceChildren();
+    if (!filas.length) lista.textContent = "Todavía no hay resultados. ¡Jugá una partida pública para inaugurar el ranking!";
+    for (const fila of filas) {
+      const item = document.createElement("p");
+      item.classList.toggle("ranking-propio", fila.me);
+      item.textContent = `${fila.position}. ${fila.alias}${fila.me ? " (vos)" : ""} · ${fila.points} puntos · ${fila.wins} victorias · ${fila.played} partidas`;
+      lista.appendChild(item);
+    }
+  } catch (error) { lista.textContent = error.message; }
+  finally { boton.disabled = false; }
+}
+document.getElementById("btnActualizarRanking").addEventListener("click", cargarRankingPublico);
+document.getElementById("panelRanking").addEventListener("toggle", (event) => {
+  if (event.target.open) void cargarRankingPublico();
+});
+
 async function abrirSalaVersus() {
   mostrarErrorSalaVersus();
   mostrarPantalla(pantallaSalaVersus);
@@ -1979,6 +2078,7 @@ async function abrirSalaVersus() {
 }
 
 async function salirDeSalaVersus() {
+  await cancelarBusquedaPublica();
   salidaSalaVersusEnCurso = true;
   try {
     await adaptadorSalasVersus.salirSala();

@@ -333,6 +333,26 @@
       return salaActual;
     }
 
+    async function buscarPartida({ alias, cancelar = false }) {
+      await inicializar();
+      const { data, error } = await cliente.rpc("find_versus_opponent", {
+        p_alias: raiz.VersusRoom.limpiarAlias(alias), p_cancel: cancelar,
+      });
+      if (error) throw traducirError(error, "No pudimos buscar un rival.");
+      if (data?.room_id) {
+        await cargarSala(data.room_id);
+        await escucharSala(data.room_id);
+      }
+      return data;
+    }
+
+    async function obtenerRanking() {
+      await inicializar();
+      const { data, error } = await cliente.rpc("get_versus_ranking");
+      if (error) throw traducirError(error, "No pudimos cargar el ranking.");
+      return data || [];
+    }
+
     async function unirseSala({ codigo, alias }) {
       await inicializar();
       const codigoLimpio = raiz.VersusRoom.limpiarCodigo(codigo);
@@ -525,6 +545,8 @@
       proveedor: "supabase",
       inicializar,
       crearSala,
+      buscarPartida,
+      obtenerRanking,
       unirseSala,
       actualizarPersonaje,
       guardarDesafio,
