@@ -31,7 +31,8 @@
     ['LUZ', 'Nos permite ver y aleja la oscuridad.'], ['VALOR', 'Nos ayuda a actuar aunque sintamos miedo.'],
     ['ESPERANZA', 'Confianza en que el futuro puede ser mejor.'], ['LIBERTAD', 'Poder elegir el propio camino.'],
   ].map(([palabra, pista]) => ({ palabra, pista }));
-  const symbols = ['🌿', '☀️', '☁️', '❄️'];
+  const symbols = ['Hoja', 'Sol', 'Nube', 'Copo de nieve'];
+  const oathSymbolsImage = 'assets/images/ui/juramentos-medallones-v1.png';
   function mountScene(container, mission, completed = 0) {
     container.querySelectorAll('.vida-azrak').forEach(element => element.remove());
     container.dataset.misionAzrak = mission < 0 ? '' : String(mission + 1);
@@ -269,11 +270,28 @@
       closeRunes = mountHiddenRunes(container, board, message, makeButton, finish, sound);
     } else if (type === 'sellos-azrak') {
       const values = [0, 1, 2, 3];
+      board.classList.add('tablero-juramentos');
       ['Norte', 'Este', 'Sur', 'Oeste'].forEach((direction, index) => {
-        makeButton(`${direction}: ${symbols[values[index]]}`, button => {
+        const button = makeButton('', () => {
           values[index] = (values[index] + 1) % symbols.length;
-          button.textContent = `${direction}: ${symbols[values[index]]}`;
+          renderSymbol();
         });
+        button.className = 'sello-juramento';
+        const heading = document.createElement('strong'); heading.textContent = direction;
+        const frame = document.createElement('span'); frame.className = 'juramento-medallon';
+        frame.setAttribute('aria-hidden', 'true');
+        const image = document.createElement('img'); image.src = oathSymbolsImage;
+        image.alt = ''; image.draggable = false; frame.append(image);
+        const label = document.createElement('span'); label.className = 'juramento-simbolo';
+        button.append(heading, frame, label);
+        function renderSymbol() {
+          const value = values[index];
+          image.style.left = `${-(value % 2) * 100}%`;
+          image.style.top = `${-Math.floor(value / 2) * 100}%`;
+          label.textContent = symbols[value];
+          button.setAttribute('aria-label', `${direction}: ${symbols[value]}. Cambiar símbolo`);
+        }
+        renderSymbol();
       });
       const clues = document.createElement('p'); clues.className = 'azrak-puzzle-clues';
       clues.textContent = 'El cielo guía al norte. El bosque recibe el amanecer al este. El invierno espera al sur. El sol descansa al oeste.';
@@ -529,32 +547,82 @@
     const stage = layer.querySelector('.azrak-cinema-stage');
     const [pause, mute, skip] = layer.querySelectorAll('button');
     const focusBefore = document.activeElement;
-    let skipped = false, paused = false, currentTrack = null, muted = false;
+    let skipped = false, paused = false, currentTrack = null, muted = false, musicReady = false, closed = false;
     let viewing = { waiting: false, destroy() {} };
-    const suspended = () => paused || document.hidden || viewing.waiting;
+    const controlsSuspended = () => paused || document.hidden || viewing.waiting;
+    const musicWaiting = () => Boolean(currentTrack && !muted && !musicReady);
+    const suspended = () => controlsSuspended() || musicWaiting();
+    const musicNotice = document.createElement('div'); musicNotice.className = 'azrak-music-notice'; musicNotice.hidden = true;
+    musicNotice.innerHTML = '<p role="status">Preparando la música…</p><button type="button">Activar música</button><button type="button">Continuar sin música</button>';
+    layer.append(musicNotice);
+    const [retryMusic, withoutMusic] = musicNotice.querySelectorAll('button');
+    const musicStatus = musicNotice.querySelector('p');
+    const updateMusicState = () => {
+      if (closed) return;
+      musicNotice.hidden = !musicWaiting() || viewing.waiting;
+      layer.classList.toggle('pausada', suspended());
+    };
 
     const tracks = kind === 'final' ? Object.fromEntries(Object.entries(finalMusic).map(([key, spec]) => {
       const audio = new Audio(spec.src); audio.preload = 'auto'; audio.volume = .65; audio.loop = Boolean(spec.loop);
+      audio.addEventListener('playing', () => {
+        if (closed || currentTrack !== audio) return;
+        musicReady = true; mute.textContent = muted ? 'Activar música' : 'Silenciar'; updateMusicState();
+      });
+      audio.addEventListener('waiting', () => {
+        if (closed || currentTrack !== audio) return;
+        musicReady = false; musicStatus.textContent = 'Preparando la música…'; updateMusicState();
+      });
+      audio.addEventListener('error', () => {
+        if (closed || currentTrack !== audio) return;
+        musicReady = false; musicStatus.textContent = 'No se pudo cargar la música. Podés reintentar o continuar sin ella.'; updateMusicState();
+      });
       return [key, audio];
     })) : {};
     mute.hidden = kind !== 'final';
-    const playMusic = () => currentTrack?.play().catch(() => { mute.textContent = 'Activar música'; });
+    const playMusic = () => {
+      const audio = currentTrack;
+      if (!audio || closed) return;
+      audio.play().catch(error => {
+        if (closed || currentTrack !== audio || controlsSuspended() || error.name === 'AbortError') return;
+        musicReady = false; mute.textContent = 'Activar música';
+        musicStatus.textContent = error.name === 'NotAllowedError'
+          ? 'Tocá Activar música para comenzar con sonido.'
+          : 'No se pudo reproducir la música. Podés reintentar o continuar sin ella.';
+        updateMusicState();
+      });
+    };
     const syncPause = () => {
-      layer.classList.toggle('pausada', suspended());
-      if (suspended()) currentTrack?.pause();
+      if (controlsSuspended() && currentTrack) musicReady = false;
+      updateMusicState();
+      if (controlsSuspended()) currentTrack?.pause();
       else if (currentTrack) playMusic();
+    };
+    retryMusic.onclick = () => {
+      muted = false; musicReady = false;
+      Object.values(tracks).forEach(audio => { audio.muted = false; });
+      if (currentTrack?.error) currentTrack.load();
+      musicStatus.textContent = 'Preparando la música…';
+      if (!controlsSuspended()) playMusic();
+      updateMusicState();
+    };
+    withoutMusic.onclick = () => {
+      muted = true;
+      Object.values(tracks).forEach(audio => { audio.muted = true; });
+      mute.textContent = 'Activar música'; updateMusicState();
     };
     mute.onclick = () => {
       muted = mute.textContent === 'Activar música' ? false : !muted;
       Object.values(tracks).forEach(audio => { audio.muted = muted; });
       mute.textContent = muted ? 'Activar música' : 'Silenciar';
-      if (!suspended()) playMusic();
+      updateMusicState();
+      if (!controlsSuspended()) playMusic();
     };
     const onKey = event => {
       if (event.key === 'Escape') { skipped = true; event.preventDefault(); }
       if (event.key === 'Tab') {
         event.preventDefault();
-        const buttons = [...layer.querySelectorAll(viewing.waiting ? '.azrak-rotate-guide button' : 'nav button')].filter(button => !button.hidden);
+        const buttons = [...layer.querySelectorAll(viewing.waiting ? '.azrak-rotate-guide button' : 'button')].filter(button => !button.hidden && button.getClientRects().length);
         const at = buttons.indexOf(document.activeElement);
         buttons[(at + (event.shiftKey ? buttons.length - 1 : 1)) % buttons.length].focus();
       }
@@ -580,14 +648,19 @@
       let phase = null, phaseStart = 0, phaseOffset = 0;
       for (const [index, shot] of shots.entries()) {
         if (skipped) break;
-        if (shot.intertitle || shot.silent) { currentTrack?.pause(); currentTrack = null; phase = null; }
+        if (shot.intertitle || shot.silent) { currentTrack?.pause(); currentTrack = null; phase = null; updateMusicState(); }
         if (shot.music) {
           phase = shot.music;
           phaseOffset = phase === 'ending' ? timing.endingStart : 0;
           phaseStart = timing ? timing.durations.slice(0, index).reduce((sum, ms) => sum + ms, 0) : 0;
           currentTrack?.pause();
           currentTrack = tracks[phase];
-          if (currentTrack) { currentTrack.currentTime = phaseOffset / 1000; currentTrack.volume = phase === 'ending' ? 0 : .65; if (!suspended()) playMusic(); }
+          musicReady = false; musicStatus.textContent = 'Preparando la música…';
+          if (currentTrack) { currentTrack.currentTime = phaseOffset / 1000; currentTrack.volume = phase === 'ending' ? 0 : .65; if (!controlsSuspended()) playMusic(); }
+          updateMusicState();
+          // A track must actually start before its first scene, unless the player chooses silence.
+          while (suspended() && !skipped) await new Promise(resolve => setTimeout(resolve, 100));
+          if (skipped) break;
         }
         const duration = timing ? timing.durations[index] : (shot.duration || 7200);
         layer.dataset.shot = shot.key;
@@ -642,7 +715,7 @@
             elapsed += delta;
             if (timing && currentTrack) {
               const shotStart = timing.durations.slice(0, index).reduce((sum, ms) => sum + ms, 0);
-              // Anchor each movement to its own audio clock; failed audio uses elapsed time.
+              // Only an explicit choice to continue without music permits the wall clock fallback.
               if (!currentTrack.paused && !currentTrack.ended && currentTrack.readyState >= 2 && !currentTrack.seeking) {
                 const shotStart = timing.durations.slice(0, index).reduce((sum, ms) => sum + ms, 0);
                 elapsed = Math.max(0, currentTrack.currentTime * 1000 - phaseOffset + phaseStart - shotStart);
@@ -656,6 +729,7 @@
         }
       }
     } finally {
+      closed = true;
       viewing.destroy();
       Object.values(tracks).forEach(audio => { audio.pause(); audio.currentTime = 0; audio.removeAttribute('src'); audio.load(); });
       document.removeEventListener('keydown', onKey);

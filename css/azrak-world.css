@@ -50,6 +50,24 @@
 .puzzle-azrak button.runa-encendida:disabled { opacity: 1; }
 .azrak-puzzle-clues { border-left: 3px solid #efb96e; padding: 12px; background: #ffffff0a; text-align: left; line-height: 1.6; }
 .azrak-puzzle-status { min-height: 2.7em; line-height: 1.4; }
+.azrak-puzzle-board.tablero-juramentos { grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 650px; gap: 10px; }
+.tablero-juramentos .sello-juramento { display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 0; padding: 8px; font-size: 1rem; border-color: #977449; background: #1d1328; }
+.sello-juramento strong { color: #ffe0a0; font-size: 1rem; }
+.juramento-medallon { display: block; position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: 12px; pointer-events: none; }
+.juramento-medallon img { position: absolute; width: 200%; height: 200%; max-width: none; object-fit: fill; user-select: none; }
+.juramento-simbolo { font-size: .8rem; line-height: 1.3; }
+@media (hover: hover) { .tablero-juramentos .sello-juramento:hover { border-color: #ffe0a0; background: #35233f; } }
+@media (max-width: 600px) and (orientation: portrait) {
+  .azrak-puzzle-board.tablero-juramentos { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 330px; }
+  .sello-juramento .juramento-medallon { width: min(100%, 105px); }
+}
+@media (max-height: 600px) and (orientation: landscape) {
+  .azrak-puzzle-board.tablero-juramentos { margin: 6px auto; max-width: 480px; }
+  .tablero-juramentos .sello-juramento { padding: 4px; gap: 2px; }
+  .sello-juramento .juramento-medallon { width: min(100%, 72px); }
+  .puzzle-azrak:has(.tablero-juramentos) .azrak-puzzle-clues { margin: 4px 0; padding: 6px 10px; line-height: 1.3; }
+  .puzzle-azrak:has(.tablero-juramentos) .azrak-puzzle-status { margin: 6px 0; min-height: 0; }
+}
 .runas-visor { width:100%; aspect-ratio:3/2; max-height:48vh; overflow:auto; overscroll-behavior:contain; touch-action:none; border:2px solid #92704f; border-radius:12px; background:#140d20; cursor:grab; }
 .runas-visor:active { cursor:grabbing; }
 .runas-visor:focus-visible { outline:3px solid #ffe09c; }
@@ -79,6 +97,11 @@
 @media(max-width:600px) { .puzzle-azrak:has(.runas-visor) { padding:4px; box-sizing:border-box; } .runas-objetivos { gap:4px; } }
 .azrak-puzzle-board.tablero-eclipse { grid-template-columns: repeat(3, 1fr); max-width: 330px; }
 .cinematica-azrak { position: fixed; inset: 0; z-index: 20000; background: #09060e; color: #fff1d9; display: grid; grid-template-rows: minmax(0, 1fr) auto; font-family: system-ui, sans-serif; overflow: hidden; }
+.azrak-music-notice { position: absolute; z-index: 30; inset: 0 0 65px; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: 12px; padding: 20px; background: #09060eed; text-align: center; }
+.azrak-music-notice[hidden] { display: none; }
+.azrak-music-notice p { flex: 0 0 100%; }
+.azrak-music-notice button { min-height: 44px; padding: 10px 16px; border: 1px solid #cba060; border-radius: 10px; background: #302039; color: #fff1d9; font: inherit; cursor: pointer; }
+.azrak-music-notice button:focus-visible { outline: 3px solid #ffe09c; outline-offset: 3px; }
 .azrak-cinema-stage { position: relative; overflow: hidden; background: #261629 url('../assets/images/fondos/reino-azrak/trono-v1.png') center/cover; isolation: isolate; }
 .azrak-cinema-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(#0005, transparent 35%, transparent 75%, #09060e); z-index: 6; }
 .azrak-cinema-actor { position: absolute; left: var(--x); top: var(--y); height: var(--size); width: auto; max-width: 48%; object-fit: contain; transform: translate(-50%, -100%); transform-origin: center bottom; filter: drop-shadow(0 12px 10px #0008); z-index: 2; animation: azrakLlegada .65s both; }

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v275`;
+const CACHE_NAME = `${CACHE_PREFIX}v278`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -182,6 +182,7 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/personajes/versus/bumeran-explorador.png",
   "./assets/images/personajes/versus/explorador-trampa-ancestral.png",
   "./assets/images/personajes/versus/mago-ataque.png",
+  "./assets/images/ui/juramentos-medallones-v1.png",
   "./assets/images/personajes/versus/bola-fuego-mago.png",
   "./assets/images/personajes/versus/mago-atrapado-trampa.png",
   "./assets/images/personajes/versus/mago-eclipse-violeta.png",
@@ -579,6 +580,8 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
+  "./assets/images/ui/juramentos-medallones-v1.png": "20260914-juramentos-ilustrados-1",
+  "./assets/images/personajes/versus/mago-ataque.png": "20260914-zafir-mano-abierta-1",
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
   "./": "20260914-jaula-fuego",
@@ -944,9 +947,40 @@ async function responderDesdeRed(request) {
   }
 }
 
+async function responderRangoCache(request, response) {
+  if (response.status !== 200) return fetch(request);
+  const range = request.headers.get("range");
+  const match = /^bytes=(\d*)-(\d*)$/i.exec(range.trim());
+  // An unsupported/malformed range may legally receive the complete resource.
+  if (!match || (!match[1] && !match[2])) return response;
+  const data = await response.arrayBuffer();
+  const size = data.byteLength;
+  const start = match[1] ? Number(match[1]) : Math.max(0, size - Number(match[2]));
+  const end = match[1] && match[2] ? Math.min(Number(match[2]), size - 1) : size - 1;
+  const headers = new Headers(response.headers);
+  headers.delete("content-encoding");
+  headers.set("Accept-Ranges", "bytes");
+  if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start > end || start >= size) {
+    headers.set("Content-Range", `bytes */${size}`);
+    headers.set("Content-Length", "0");
+    return new Response(null, { status: 416, headers });
+  }
+  headers.set("Content-Range", `bytes ${start}-${end}/${size}`);
+  headers.set("Content-Length", String(end - start + 1));
+  return new Response(data.slice(start, end + 1), { status: 206, headers });
+}
+
 async function responderRecursoEstatico(event) {
   const { request } = event;
   const cache = await caches.open(CACHE_NAME);
+  if (request.headers.has("range")) {
+    const headers = new Headers(request.headers); headers.delete("range");
+    const completeRequest = new Request(request, { headers });
+    const completeResponse = await cache.match(completeRequest, { ignoreSearch: true });
+    if (completeResponse) return responderRangoCache(request, completeResponse);
+    // Never store a partial response in place of the complete installed file.
+    return fetch(request);
+  }
   const cachedResponse = await cache.match(request, { ignoreSearch: true });
   // Keep each installed release consistent instead of mixing its code with
   // background downloads from the next release while installation is pending.
@@ -977,7 +1011,6 @@ self.addEventListener("fetch", (event) => {
   if (
     request.method !== "GET"
     || url.origin !== self.location.origin
-    || request.headers.has("range")
   ) {
     return;
   }
