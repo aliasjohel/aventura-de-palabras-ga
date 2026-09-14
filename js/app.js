@@ -2256,10 +2256,26 @@ function renderizarTorreArcade() {
     const indice = total - 1 - indiceInvertido;
     const rival = personajesVersus[personaje];
     const piso = document.createElement("li");
-    piso.className = indice < pisosDesbloqueadosArcade
-      ? "superado"
-      : indice === pisoActualArcade ? "actual" : "bloqueado";
-    if (torreCompletada && indice === total - 1) piso.className = "actual superado";
+    const disponible = indice <= pisosDesbloqueadosArcade;
+    piso.className = indice < pisosDesbloqueadosArcade ? "superado" : disponible ? "" : "bloqueado";
+    piso.classList.toggle("actual", indice === pisoActualArcade);
+    piso.setAttribute("role", "button");
+    piso.tabIndex = disponible ? 0 : -1;
+    piso.setAttribute("aria-disabled", String(!disponible));
+    piso.setAttribute("aria-pressed", String(indice === pisoActualArcade));
+    piso.setAttribute("aria-label", `Piso ${indice + 1}: ${rival.nombre}${disponible ? "" : ", bloqueado"}`);
+    const seleccionar = () => {
+      if (!disponible) return;
+      pisoActualArcade = indice;
+      renderizarTorreArcade();
+      pisosArcade.children[total - 1 - indice]?.focus({ preventScroll: true });
+    };
+    piso.addEventListener("click", seleccionar);
+    piso.addEventListener("keydown", (evento) => {
+      if (evento.key !== "Enter" && evento.key !== " ") return;
+      evento.preventDefault();
+      seleccionar();
+    });
     piso.innerHTML = `
       <span>${indice + 1}</span>
       <img src="${rival.base}" alt="">
@@ -2279,10 +2295,10 @@ function renderizarTorreArcade() {
   habilidadRivalArcade.textContent = `Habilidad: ${habilidad.nombre}`;
   dificultadArcade.textContent = obtenerDificultadArcade(pisoActualArcade);
   estadoArcade.textContent = torreCompletada
-    ? "¡Torre completada! Podés volver a desafiar al jefe final."
-    : `Progreso: ${pisosDesbloqueadosArcade} de ${total} rivales superados.`;
-  btnCombatirArcade.textContent = torreCompletada && pisoActualArcade === total - 1
-    ? "Desafiar otra vez al jefe"
+    ? "¡Torre completada! Elegí cualquier rival para volver a luchar."
+    : `Progreso: ${pisosDesbloqueadosArcade} de ${total} rivales superados. Podés elegir un rival anterior sin perder tu avance.`;
+  btnCombatirArcade.textContent = pisoActualArcade < pisosDesbloqueadosArcade
+    ? "Volver a luchar"
     : "Entrar al combate";
 }
 
@@ -8090,6 +8106,7 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
     iconoResultadoVersus.textContent = ganador === "jugador" ? "🏆" : "🏰";
     etiquetaResultadoVersus.textContent = `PISO ${pisoCombateArcade + 1} DE ${total}`;
     if (ganador === "jugador") {
+      const repeticion = pisoCombateArcade < pisosDesbloqueadosArcade;
       guardarProgresoArcade(pisoCombateArcade + 1);
       const completoLaTorre = pisoCombateArcade >= total - 1;
       pisoActualArcade = completoLaTorre ? total - 1 : pisoCombateArcade + 1;
@@ -8100,6 +8117,12 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
         ? "Venciste a todos los rivales del modo Arcade. La cima es tuya."
         : `${detalle} El siguiente piso ya está desbloqueado.`;
       btnRevanchaVersus.textContent = completoLaTorre ? "Ver torre completada" : "Continuar la torre";
+      if (repeticion) {
+        pisoActualArcade = Math.min(pisosDesbloqueadosArcade, total - 1);
+        tituloResultadoVersus.textContent = `¡Volviste a vencer a ${rival.nombre}!`;
+        detalleResultadoVersus.textContent = "Tu avance en la torre se conserva. Podés continuar desde donde llegaste o elegir otro rival.";
+        btnRevanchaVersus.textContent = "Volver a la torre";
+      }
     } else {
       pisoActualArcade = pisoCombateArcade;
       tituloResultadoVersus.textContent = ganador === "empate"
