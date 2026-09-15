@@ -17722,3 +17722,7 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
 #listaRanking .ranking-propio { color: #ffe19b; background: #f5c25118; border-radius: 8px; }
 #estadoBusqueda { display: block; min-height: 1.5em; }
 #panelRanking p { display: block; }
+
+.preparacion-imagenes-combate { position:absolute; inset:0; z-index:100; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; background:#120e20ed; color:#fff1d9; text-align:center; padding:20px; }
+.preparacion-imagenes-combate button { min-height:44px; padding:10px 20px; border:2px solid #dab57a; border-radius:12px; background:#322144; color:#fff1d9; font:inherit; cursor:pointer; }
+.preparacion-imagenes-combate button[hidden] { display:none; }

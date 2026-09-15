@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v278`;
+const CACHE_NAME = `${CACHE_PREFIX}v280`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -183,6 +183,8 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/personajes/versus/explorador-trampa-ancestral.png",
   "./assets/images/personajes/versus/mago-ataque.png",
   "./assets/images/ui/juramentos-medallones-v1.png",
+  "./assets/images/puzzles/lume-camara-verdadera-v1.png",
+  "./assets/images/puzzles/lume-camara-alterada-v1.png",
   "./assets/images/personajes/versus/bola-fuego-mago.png",
   "./assets/images/personajes/versus/mago-atrapado-trampa.png",
   "./assets/images/personajes/versus/mago-eclipse-violeta.png",
@@ -580,6 +582,8 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
+  "./assets/images/puzzles/lume-camara-verdadera-v1.png": "20260914-siete-diferencias-1",
+  "./assets/images/puzzles/lume-camara-alterada-v1.png": "20260914-siete-diferencias-1",
   "./assets/images/ui/juramentos-medallones-v1.png": "20260914-juramentos-ilustrados-1",
   "./assets/images/personajes/versus/mago-ataque.png": "20260914-zafir-mano-abierta-1",
   "./css/world-word-hazards.css": "20260914-jaula-fuego",

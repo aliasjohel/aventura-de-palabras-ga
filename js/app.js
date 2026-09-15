@@ -3941,7 +3941,11 @@ function actualizarPistaLupaVersus(letra = "") {
   });
 }
 
-function limpiarAnimacionHabilidadVersus() {
+function limpiarAnimacionHabilidadVersus({ conservarImpactos = false } = {}) {
+  if (!conservarImpactos) {
+    demoVersus.temporizadoresImpactoHabilidad.forEach(clearTimeout);
+    demoVersus.temporizadoresImpactoHabilidad = [];
+  }
   demoVersus.temporizadoresHabilidad.forEach(clearTimeout);
   demoVersus.temporizadoresHabilidad = [];
   animacionHabilidadVersus.className = "animacion-habilidad-versus";
@@ -3950,10 +3954,10 @@ function limpiarAnimacionHabilidadVersus() {
     personaje.classList.remove("usando-habilidad", "nivor-en-vuelo");
   });
   if (personajesVersus[personajeJugadorVersus]) {
-    personajeVersusUno.src = personajesVersus[personajeJugadorVersus].base;
+    establecerPoseCombateVersus(personajeVersusUno, "habilidad", null);
   }
   if (personajesVersus[personajeRivalVersus]) {
-    personajeVersusDos.src = personajesVersus[personajeRivalVersus].base;
+    establecerPoseCombateVersus(personajeVersusDos, "habilidad", null);
   }
 }
 
@@ -4000,7 +4004,7 @@ function reproducirAnimacionHabilidadVersus(
   personaje,
   { desdeRival = false, alImpactar = () => {} } = {},
 ) {
-  limpiarAnimacionHabilidadVersus();
+  limpiarAnimacionHabilidadVersus({ conservarImpactos: true });
   herramientasHabilidadesPruebasVersus.classList.add("ataque-en-curso");
   const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const atacante = desdeRival ? personajeVersusDos : personajeVersusUno;
@@ -4017,7 +4021,7 @@ function reproducirAnimacionHabilidadVersus(
     kalamo: srcKalamoHabilidadVersus,
     kairos: srcKairosAtaqueVersus,
   }[personaje];
-  if (pose) atacante.src = pose;
+  if (pose) establecerPoseCombateVersus(atacante, "habilidad", pose);
   atacante.classList.add("usando-habilidad");
   if (personaje === "dragon_hielo" && !movimientoReducido) {
     atacante.classList.add("nivor-en-vuelo");
@@ -4035,8 +4039,13 @@ function reproducirAnimacionHabilidadVersus(
 
   const demoraImpacto = personaje === "dragon_hielo" ? 140 : personaje === "azrak" ? 620 : personaje === "kalamo" ? 720 : personaje === "kairos" ? 700 : 560;
   const demoraLimpieza = personaje === "dragon_hielo" ? 1900 : personaje === "azrak" ? 1380 : personaje === "kalamo" ? 1480 : personaje === "kairos" ? 1550 : 1120;
-  programarPasoHabilidadVersus(alImpactar, movimientoReducido ? 80 : demoraImpacto);
-  programarPasoHabilidadVersus(limpiarAnimacionHabilidadVersus, movimientoReducido ? 180 : demoraLimpieza);
+  // A rival's visual animation must not cancel an ability already launched.
+  const impacto = setTimeout(() => {
+    demoVersus.temporizadoresImpactoHabilidad = demoVersus.temporizadoresImpactoHabilidad.filter(id => id !== impacto);
+    if (!demoVersus.partidaFinalizada) alImpactar();
+  }, movimientoReducido ? 80 : demoraImpacto);
+  demoVersus.temporizadoresImpactoHabilidad.push(impacto);
+  programarPasoHabilidadVersus(() => limpiarAnimacionHabilidadVersus({ conservarImpactos: true }), movimientoReducido ? 180 : demoraLimpieza);
 }
 
 function sincronizarTecladoDemoVersus() {
@@ -6351,6 +6360,54 @@ const victimasFaucesVersus = {
   },
 };
 
+const posesCombateVersus = new WeakMap();
+function actualizarPoseCombateVersus(elemento, personaje = elemento === personajeVersusUno ? personajeJugadorVersus : personajeRivalVersus) {
+  const poses = posesCombateVersus.get(elemento) || {};
+  const herido = elemento.classList.contains("recibiendo-dano") || elemento.classList.contains("recibiendo-dano-magico");
+  const src = poses.habilidad || poses.ataque || (herido && posesDanoPersonajeVersus[personaje]) || personajesVersus[personaje]?.base;
+  if (src && !elemento.src.endsWith(src)) elemento.src = src;
+}
+function establecerPoseCombateVersus(elemento, tipo, src) {
+  const poses = posesCombateVersus.get(elemento) || {};
+  poses[tipo] = src; posesCombateVersus.set(elemento, poses);
+  actualizarPoseCombateVersus(elemento);
+}
+
+let secuenciaPreparacionCombate = 0;
+let preparandoImagenesCombate = false;
+let imagenesCombateListas = [];
+function recursosPersonajeCombate(personaje) {
+  const poses = {
+    explorador: [srcExploradorPreparaBumeran, srcExploradorLanzaBumeran, srcExploradorLupaVersus],
+    mago: [srcMagoAtaqueVersus], guardiana: [srcGuardianaAtaqueVersus], dragon: [srcDragonAtaqueVersus],
+    hombre_lobo: [srcHombreLoboHumanoVersus, srcHombreLoboTransformacionVersus, srcHombreLoboAullidoVersus, srcHombreLoboZarpazoVersus, srcHombreLoboSaltoVersus],
+    t_shadow: [srcShadowAtaqueVersus], guardian_alba: [srcGuardianAlbaAtaqueVersus, srcGuardianAlbaHabilidadVersus],
+    dragon_hielo: [srcDragonHieloDescensoAltoVersus, srcDragonHieloDescensoBajoVersus, srcDragonHieloAtaqueVersus, srcDragonHieloVueloVersus],
+    azrak: [srcAzrakAtaqueVersus], kalamo: [srcKalamoAtaqueVersus, srcKalamoHabilidadVersus], kairos: [srcKairosAtaqueVersus],
+  };
+  return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || [])].filter(Boolean);
+}
+async function prepararImagenesCombate(personajes) {
+  // Retain decoded frames for this pair only, instead of all fighters on mobile.
+  const urls = [...new Set(personajes.flatMap(recursosPersonajeCombate))];
+  const images = await Promise.all(urls.map(src => new Promise((resolve, reject) => {
+    const image = new Image(); image.decoding = "async";
+    let settled = false;
+    const finish = error => {
+      if (settled) return; settled = true; clearTimeout(timer);
+      image.onload = image.onerror = null;
+      if (error) reject(error); else resolve(image);
+    };
+    const timer = setTimeout(() => finish(new Error(`No se pudo preparar ${src}`)), 15000);
+    image.onerror = () => finish(new Error(`No se pudo cargar ${src}`));
+    image.onload = async () => {
+      try { await image.decode(); finish(); } catch (error) { finish(error); }
+    };
+    image.src = src;
+  })));
+  return images;
+}
+
 const posesDanoPersonajeVersus = {
   hombre_lobo: srcHombreLoboImpactoVersus,
   t_shadow: srcShadowImpactoVersus,
@@ -6368,9 +6425,9 @@ function observarPoseDanoPersonajeVersus(elemento, obtenerPersonaje) {
     const recibiendoDano = elemento.classList.contains("recibiendo-dano")
       || elemento.classList.contains("recibiendo-dano-magico");
     if (recibiendoDano) {
-      elemento.src = pose;
+      actualizarPoseCombateVersus(elemento, personaje);
     } else if (elemento.src.endsWith(pose)) {
-      elemento.src = personajesVersus[personaje].base;
+      actualizarPoseCombateVersus(elemento, personaje);
     }
   }).observe(elemento, { attributes: true, attributeFilter: ["class"] });
 }
@@ -6407,6 +6464,7 @@ const demoVersus = {
   temporizadorEfectoHabilidad: null,
   intervaloCaosHabilidad: null,
   temporizadoresHabilidad: [],
+  temporizadoresImpactoHabilidad: [],
   tiempoJugador: duracionPartidaVersus,
   tiempoRival: duracionPartidaVersus,
   finalizadoJugador: false,
@@ -6439,18 +6497,20 @@ function programarPasoAtaqueVersus(accion, demora, atacante) {
 }
 
 function mostrarPoseDanoPersonajeVersus(elemento, personaje) {
-  const pose = posesDanoPersonajeVersus[personaje];
-  if (pose) elemento.src = pose;
+  if (!posesCombateVersus.get(elemento)?.ataque && !posesCombateVersus.get(elemento)?.habilidad) {
+    const pose = posesDanoPersonajeVersus[personaje];
+    if (pose) elemento.src = pose;
+  }
 }
 
 function restaurarPoseBasePersonajeVersus(elemento, personaje) {
-  if (personajesVersus[personaje]) elemento.src = personajesVersus[personaje].base;
+  actualizarPoseCombateVersus(elemento, personaje);
 }
 
 function limpiarAnimacionAtaqueJugadorVersus() {
   demoVersus.temporizadoresAtaqueJugador.forEach(clearTimeout);
   demoVersus.temporizadoresAtaqueJugador = [];
-  personajeVersusUno.src = personajesVersus[personajeJugadorVersus].base;
+  establecerPoseCombateVersus(personajeVersusUno, "ataque", null);
   restaurarPoseBasePersonajeVersus(personajeVersusDos, personajeRivalVersus);
   personajeVersusUno.classList.remove(
     "preparando-bumeran",
@@ -6486,7 +6546,7 @@ function limpiarAnimacionAtaqueJugadorVersus() {
 function limpiarAnimacionAtaqueRivalVersus() {
   demoVersus.temporizadoresAtaqueRival.forEach(clearTimeout);
   demoVersus.temporizadoresAtaqueRival = [];
-  personajeVersusDos.src = personajesVersus[personajeRivalVersus]?.base || srcMagoBaseVersus;
+  establecerPoseCombateVersus(personajeVersusDos, "ataque", null);
   restaurarPoseBasePersonajeVersus(personajeVersusUno, personajeJugadorVersus);
   personajeVersusDos.classList.remove(
     "preparando-bumeran",
@@ -6524,6 +6584,8 @@ function limpiarAnimacionAtaqueVersus() {
 }
 
 function configurarPersonajesCombateVersus() {
+  posesCombateVersus.delete(personajeVersusUno);
+  posesCombateVersus.delete(personajeVersusDos);
   const personaje = personajesVersus[personajeJugadorVersus];
   personajeVersusUno.src = personaje.base;
   personajeVersusUno.alt = `${personaje.nombre} del jugador 1`;
@@ -6610,6 +6672,9 @@ function programarEntradaKairosVersus(elemento) {
 }
 
 function limpiarEntradaDueloVersus() {
+  secuenciaPreparacionCombate++;
+  preparandoImagenesCombate = false;
+  marcoVersus.querySelector('.preparacion-imagenes-combate')?.remove();
   demoVersus.temporizadoresEntrada.forEach(clearTimeout);
   demoVersus.temporizadoresEntrada = [];
   demoVersus.entradaActiva = false;
@@ -6698,7 +6763,7 @@ async function jugarLetraVersus(letra, boton) {
 }
 
 function finalizarEntradaDueloVersus() {
-  if (!demoVersus.entradaActiva) return;
+  if (!demoVersus.entradaActiva || preparandoImagenesCombate) return;
   const anuncioDueloMostrado = entradaDueloVersus.classList.contains("mostrando-duelo");
   limpiarEntradaDueloVersus();
   configurarPersonajesCombateVersus();
@@ -6706,9 +6771,30 @@ function finalizarEntradaDueloVersus() {
   comenzarRondaVersus();
 }
 
-function iniciarEntradaDueloVersus() {
+async function iniciarEntradaDueloVersus() {
   if (demoVersus.partidaFinalizada || demoVersus.entradaActiva) return;
-
+  demoVersus.entradaActiva = true;
+  preparandoImagenesCombate = true;
+  const sequence = ++secuenciaPreparacionCombate;
+  const pair = [personajeJugadorVersus, personajeRivalVersus];
+  bloquearTecladoDemoVersus();
+  const notice = document.createElement('div'); notice.className = 'preparacion-imagenes-combate';
+  notice.innerHTML = '<p role="status">Preparando a los luchadores…</p><button type="button" hidden>Reintentar</button>';
+  marcoVersus.querySelector('.preparacion-imagenes-combate')?.remove(); marcoVersus.append(notice);
+  imagenesCombateListas = [];
+  try {
+    const images = await prepararImagenesCombate(pair);
+    if (sequence !== secuenciaPreparacionCombate || demoVersus.partidaFinalizada) return;
+    if (pair[0] !== personajeJugadorVersus || pair[1] !== personajeRivalVersus) { limpiarEntradaDueloVersus(); return; }
+    imagenesCombateListas = images;
+  } catch (error) {
+    if (sequence !== secuenciaPreparacionCombate) return;
+    notice.querySelector('p').textContent = 'No se pudieron preparar las imágenes. Reintentá para comenzar.';
+    const retry = notice.querySelector('button'); retry.hidden = false;
+    retry.onclick = () => { limpiarEntradaDueloVersus(); void iniciarEntradaDueloVersus(); };
+    return;
+  }
+  preparandoImagenesCombate = false; notice.remove();
   const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const duracion = movimientoReducido ? 450 : duracionEntradaDueloVersus;
   demoVersus.entradaActiva = true;
@@ -6788,11 +6874,11 @@ function reproducirAtaqueBumeranVersus() {
     return;
   }
 
-  personajeVersusUno.src = srcExploradorPreparaBumeran;
+  establecerPoseCombateVersus(personajeVersusUno, "ataque", srcExploradorPreparaBumeran);
   personajeVersusUno.classList.add("preparando-bumeran");
 
   programarPasoAtaqueVersus(() => {
-    personajeVersusUno.src = srcExploradorLanzaBumeran;
+    establecerPoseCombateVersus(personajeVersusUno, "ataque", srcExploradorLanzaBumeran);
     personajeVersusUno.classList.remove("preparando-bumeran");
     personajeVersusUno.classList.add("lanzando-bumeran");
     void bumeranVersus.offsetWidth;
@@ -6833,7 +6919,7 @@ function reproducirAtaqueMagoJugadorVersus() {
 
   personajeVersusUno.classList.add("concentrando-hechizo");
   programarPasoAtaqueVersus(() => {
-    personajeVersusUno.src = srcMagoAtaqueVersus;
+    establecerPoseCombateVersus(personajeVersusUno, "ataque", srcMagoAtaqueVersus);
     personajeVersusUno.classList.remove("concentrando-hechizo");
     personajeVersusUno.classList.add("lanzando-hechizo");
     void proyectilMagoJugadorVersus.offsetWidth;
@@ -6872,7 +6958,7 @@ function reproducirAtaqueGuardianaVersus() {
     return;
   }
 
-  personajeVersusUno.src = srcGuardianaAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusUno, "ataque", srcGuardianaAtaqueVersus);
   personajeVersusUno.classList.add("lanzando-viento");
   void proyectilGuardianaVersus.offsetWidth;
   proyectilGuardianaVersus.classList.add("volando");
@@ -6906,7 +6992,7 @@ function reproducirAtaqueDragonVersus() {
     return;
   }
 
-  personajeVersusUno.src = srcDragonAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusUno, "ataque", srcDragonAtaqueVersus);
   personajeVersusUno.classList.add("rugiendo-dragon");
 
   programarPasoAtaqueVersus(() => {
@@ -6940,7 +7026,7 @@ function reproducirAtaqueHombreLoboVersus() {
     return;
   }
 
-  personajeVersusUno.src = srcHombreLoboZarpazoVersus;
+  establecerPoseCombateVersus(personajeVersusUno, "ataque", srcHombreLoboZarpazoVersus);
   personajeVersusUno.classList.add("zarpando-lobo");
   zarpazoLoboVersus.classList.remove("desde-rival");
   void zarpazoLoboVersus.offsetWidth;
@@ -6962,7 +7048,7 @@ function reproducirAtaqueHombreLoboVersus() {
 function reproducirAtaqueDragonHieloVersus() {
   limpiarAnimacionAtaqueJugadorVersus();
   herramientasPruebasVersus.classList.add("ataque-en-curso");
-  personajeVersusUno.src = srcDragonHieloAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusUno, "ataque", srcDragonHieloAtaqueVersus);
   personajeVersusUno.classList.add("lanzando-hielo");
   alientoHieloVersus.classList.remove("desde-rival");
   void alientoHieloVersus.offsetWidth;
@@ -6983,7 +7069,7 @@ function reproducirAtaqueDragonHieloVersus() {
 function reproducirAtaqueAzrakVersus() {
   limpiarAnimacionAtaqueJugadorVersus();
   herramientasPruebasVersus.classList.add("ataque-en-curso");
-  personajeVersusUno.src = srcAzrakAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusUno, "ataque", srcAzrakAtaqueVersus);
   personajeVersusUno.classList.add("cortando-infernal");
   corteInfernalVersus.classList.remove("desde-rival");
   void corteInfernalVersus.offsetWidth;
@@ -7005,7 +7091,7 @@ function reproducirAtaqueAzrakVersus() {
 function reproducirAtaqueKalamoVersus() {
   limpiarAnimacionAtaqueJugadorVersus();
   herramientasPruebasVersus.classList.add("ataque-en-curso");
-  personajeVersusUno.src = srcKalamoAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusUno, "ataque", srcKalamoAtaqueVersus);
   personajeVersusUno.classList.add("lanzando-tinta");
   latigazoTintaKalamoVersus.classList.remove("desde-rival");
   void latigazoTintaKalamoVersus.offsetWidth;
@@ -7027,7 +7113,7 @@ function reproducirAtaqueKalamoVersus() {
 function reproducirAtaqueKairosVersus() {
   limpiarAnimacionAtaqueJugadorVersus();
   herramientasPruebasVersus.classList.add("ataque-en-curso");
-  personajeVersusUno.src = srcKairosAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusUno, "ataque", srcKairosAtaqueVersus);
   personajeVersusUno.classList.add("lanzando-tiempo");
   agujaTiempoKairosVersus.classList.remove("desde-rival");
   void agujaTiempoKairosVersus.offsetWidth;
@@ -7049,7 +7135,7 @@ function reproducirAtaqueKairosVersus() {
 function reproducirAtaqueShadowVersus() {
   limpiarAnimacionAtaqueJugadorVersus();
   herramientasPruebasVersus.classList.add("ataque-en-curso");
-  personajeVersusUno.src = srcShadowAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusUno, "ataque", srcShadowAtaqueVersus);
   personajeVersusUno.classList.add("cortando-shadow");
   corteShadowVersus.classList.remove("desde-rival");
   void corteShadowVersus.offsetWidth;
@@ -7070,7 +7156,7 @@ function reproducirAtaqueShadowVersus() {
 function reproducirAtaqueGuardianAlbaVersus() {
   limpiarAnimacionAtaqueJugadorVersus();
   herramientasPruebasVersus.classList.add("ataque-en-curso");
-  personajeVersusUno.src = srcGuardianAlbaAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusUno, "ataque", srcGuardianAlbaAtaqueVersus);
   personajeVersusUno.classList.add("lanzando-lumen");
   corteLumenVersus.classList.remove("desde-rival");
   void corteLumenVersus.offsetWidth;
@@ -7152,7 +7238,7 @@ function reproducirAtaqueMagoVersus() {
   personajeVersusDos.classList.add("concentrando-hechizo");
 
   programarPasoAtaqueVersus(() => {
-    personajeVersusDos.src = srcMagoAtaqueVersus;
+    establecerPoseCombateVersus(personajeVersusDos, "ataque", srcMagoAtaqueVersus);
     personajeVersusDos.classList.remove("concentrando-hechizo");
     personajeVersusDos.classList.add("lanzando-hechizo");
     void proyectilMagoVersus.offsetWidth;
@@ -7183,11 +7269,11 @@ function reproducirAtaqueExploradorRivalVersus() {
     return;
   }
 
-  personajeVersusDos.src = srcExploradorPreparaBumeran;
+  establecerPoseCombateVersus(personajeVersusDos, "ataque", srcExploradorPreparaBumeran);
   personajeVersusDos.classList.add("preparando-bumeran");
   bumeranVersus.classList.add("desde-rival");
   programarPasoAtaqueVersus(() => {
-    personajeVersusDos.src = srcExploradorLanzaBumeran;
+    establecerPoseCombateVersus(personajeVersusDos, "ataque", srcExploradorLanzaBumeran);
     personajeVersusDos.classList.remove("preparando-bumeran");
     personajeVersusDos.classList.add("lanzando-bumeran");
     void bumeranVersus.offsetWidth;
@@ -7205,7 +7291,7 @@ function reproducirAtaqueGuardianaRivalVersus() {
     return;
   }
 
-  personajeVersusDos.src = srcGuardianaAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusDos, "ataque", srcGuardianaAtaqueVersus);
   personajeVersusDos.classList.add("lanzando-viento");
   proyectilGuardianaVersus.classList.add("desde-rival");
   void proyectilGuardianaVersus.offsetWidth;
@@ -7222,7 +7308,7 @@ function reproducirAtaqueDragonRivalVersus() {
     return;
   }
 
-  personajeVersusDos.src = srcDragonAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusDos, "ataque", srcDragonAtaqueVersus);
   personajeVersusDos.classList.add("rugiendo-dragon");
   rugidoDragonVersus.classList.add("desde-rival");
   programarPasoAtaqueVersus(() => {
@@ -7239,7 +7325,7 @@ function reproducirAtaqueHombreLoboRivalVersus() {
     reproducirImpactoRivalReducidoVersus();
     return;
   }
-  personajeVersusDos.src = srcHombreLoboZarpazoVersus;
+  establecerPoseCombateVersus(personajeVersusDos, "ataque", srcHombreLoboZarpazoVersus);
   personajeVersusDos.classList.add("zarpando-lobo");
   zarpazoLoboVersus.classList.add("desde-rival");
   void zarpazoLoboVersus.offsetWidth;
@@ -7250,7 +7336,7 @@ function reproducirAtaqueHombreLoboRivalVersus() {
 
 function reproducirAtaqueDragonHieloRivalVersus() {
   limpiarAnimacionAtaqueRivalVersus();
-  personajeVersusDos.src = srcDragonHieloAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusDos, "ataque", srcDragonHieloAtaqueVersus);
   personajeVersusDos.classList.add("lanzando-hielo");
   alientoHieloVersus.classList.add("desde-rival");
   void alientoHieloVersus.offsetWidth;
@@ -7261,7 +7347,7 @@ function reproducirAtaqueDragonHieloRivalVersus() {
 
 function reproducirAtaqueAzrakRivalVersus() {
   limpiarAnimacionAtaqueRivalVersus();
-  personajeVersusDos.src = srcAzrakAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusDos, "ataque", srcAzrakAtaqueVersus);
   personajeVersusDos.classList.add("cortando-infernal");
   corteInfernalVersus.classList.add("desde-rival");
   void corteInfernalVersus.offsetWidth;
@@ -7272,7 +7358,7 @@ function reproducirAtaqueAzrakRivalVersus() {
 
 function reproducirAtaqueKalamoRivalVersus() {
   limpiarAnimacionAtaqueRivalVersus();
-  personajeVersusDos.src = srcKalamoAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusDos, "ataque", srcKalamoAtaqueVersus);
   personajeVersusDos.classList.add("lanzando-tinta");
   latigazoTintaKalamoVersus.classList.add("desde-rival");
   void latigazoTintaKalamoVersus.offsetWidth;
@@ -7283,7 +7369,7 @@ function reproducirAtaqueKalamoRivalVersus() {
 
 function reproducirAtaqueKairosRivalVersus() {
   limpiarAnimacionAtaqueRivalVersus();
-  personajeVersusDos.src = srcKairosAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusDos, "ataque", srcKairosAtaqueVersus);
   personajeVersusDos.classList.add("lanzando-tiempo");
   agujaTiempoKairosVersus.classList.add("desde-rival");
   void agujaTiempoKairosVersus.offsetWidth;
@@ -7294,7 +7380,7 @@ function reproducirAtaqueKairosRivalVersus() {
 
 function reproducirAtaqueShadowRivalVersus() {
   limpiarAnimacionAtaqueRivalVersus();
-  personajeVersusDos.src = srcShadowAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusDos, "ataque", srcShadowAtaqueVersus);
   personajeVersusDos.classList.add("cortando-shadow");
   corteShadowVersus.classList.add("desde-rival");
   void corteShadowVersus.offsetWidth;
@@ -7305,7 +7391,7 @@ function reproducirAtaqueShadowRivalVersus() {
 
 function reproducirAtaqueGuardianAlbaRivalVersus() {
   limpiarAnimacionAtaqueRivalVersus();
-  personajeVersusDos.src = srcGuardianAlbaAtaqueVersus;
+  establecerPoseCombateVersus(personajeVersusDos, "ataque", srcGuardianAlbaAtaqueVersus);
   personajeVersusDos.classList.add("lanzando-lumen");
   corteLumenVersus.classList.add("desde-rival");
   void corteLumenVersus.offsetWidth;
@@ -7639,7 +7725,9 @@ function jugarTurnoRivalVersus() {
   if (demoVersus.finalizadoRival || demoVersus.partidaFinalizada) return;
 
   const efectoActivo = Date.now() < demoVersus.efectoRivalHasta ? demoVersus.efectoRival : "";
-  if (efectoActivo === "roots" || Date.now() < bloqueoRivalKairosHasta) return;
+  // These effects disable the human keyboard too; the local AI cannot bypass it.
+  if (["roots", "black_hole", "key_bounce", "ice_screen", "key_theft"].includes(efectoActivo)
+    || Date.now() < bloqueoRivalKairosHasta) return;
   activarHabilidadRivalLocalVersus();
 
   const alfabeto = filasTeclado.flat();
@@ -12783,6 +12871,7 @@ function iniciarPuzzleAzrak(tipo) {
   tituloPruebaBosque.textContent = { "runas-azrak": "El puente de las runas", "sellos-azrak": "Los cuatro juramentos", "eclipse-azrak": "Luz entre las sombras" }[tipo];
   instruccionPruebaBosque.textContent = tipo === "runas-azrak"
     ? "Encontrá las cinco runas. Usá los botones o dos dedos para ampliar y arrastrá la escena para explorar."
+    : tipo === "eclipse-azrak" ? "Encontrá siete diferencias. Ampliá las imágenes y arrastrá para comparar cada rincón."
     : "Resolvé el mecanismo para continuar. Podés reiniciarlo sin perder corazones.";
   btnRepetirPruebaBosque.textContent = "↻ Reiniciar puzzle";
   cerrarPuzzleAzrak = AzrakWorld.mountPuzzle(puzzleCumbres, tipo, () => void completarPruebaEspecialBosque(tipo), { sound: reproducirSonido });

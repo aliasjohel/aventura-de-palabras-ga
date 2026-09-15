@@ -245,6 +245,10 @@
 
 /* Keep Aren on the open floor beside the command table. */
 .escenario-azrak[data-mision-azrak="6"] .personaje-imagen { --posicion-inicial-explorador: 45%; bottom: 2%; }
+.escenario.escenario-azrak[data-mision-azrak="3"] .personaje-imagen { bottom: -4%; }
+@media (max-width: 600px) and (orientation: portrait) {
+  .escenario.escenario-azrak[data-mision-azrak="3"] .personaje-imagen { bottom: 2%; }
+}
 .escenario-azrak[data-mision-azrak="8"] .fondo-escenario { object-fit: cover; scale: 1; }
 .portales-lume { position: absolute; inset: 0; width: 100%; height: 100%; }
 .portal-lume { opacity: 0; transition: opacity 1.1s ease; }
@@ -293,3 +297,29 @@
 @keyframes textoTrasBatalla { 0%,12% { opacity:0; } 30%,85% { opacity:1; } 100% { opacity:0; } }
 .cinematica-azrak.pausada .azrak-cinema-caption p { animation-play-state:paused; }
 .movimiento-reducido.interludio-silencioso .azrak-cinema-caption p { animation:none; }
+
+.camara-relato { margin:6px 0; line-height:1.4; }
+.camara-diferencias { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:10px 0; }
+.camara-diferencias figure { min-width:0; margin:0; }
+.camara-diferencias figcaption { padding:5px; color:#ffdf9f; font-weight:700; }
+.camara-visor { width:100%; aspect-ratio:3/2; overflow:auto; border:2px solid #8d6b9e; border-radius:10px; touch-action:none; overscroll-behavior:contain; scrollbar-width:thin; cursor:crosshair; }
+.camara-visor:focus-visible { outline:3px solid #ffe09c; outline-offset:2px; }
+.camara-escena { position:relative; width:100%; aspect-ratio:3/2; user-select:none; }
+.camara-escena > img { display:block; width:100%; height:100%; max-width:none; pointer-events:none; }
+.camara-alteracion { position:absolute; overflow:hidden; pointer-events:none; mask-image:linear-gradient(to right,transparent,#000 4%,#000 96%,transparent),linear-gradient(to bottom,transparent,#000 4%,#000 96%,transparent); mask-composite:intersect; }
+.camara-alteracion img { position:absolute; max-width:none; pointer-events:none; }
+.diferencia-encontrada { position:absolute; transform:translate(-50%,-50%); border:2px solid #c4ffb9; border-radius:50%; box-shadow:0 0 6px #12381c; color:white; display:grid; place-items:center; font-size:clamp(12px,2vw,22px); pointer-events:none; }
+.camara-cursor { position:absolute; width:18px; height:18px; transform:translate(-50%,-50%); border:2px dashed white; border-radius:50%; pointer-events:none; }
+.camara-cursor[hidden] { display:none; }
+.camara-controles { display:flex; flex-wrap:wrap; justify-content:center; gap:6px; }
+.puzzle-azrak .camara-controles button { padding:7px 10px; font-size:.85rem; min-height:44px; }
+.camara-hallazgos { font-size:.78rem; color:#c4ffb9; line-height:1.4; margin:6px 0; }
+.camara-diferencias.cargando { visibility:hidden; }
+.puzzle-azrak:has(.camara-diferencias) { width:100%; box-sizing:border-box; }
+.prueba-azrak:has(.camara-diferencias) .estado-prueba-bosque { display:none; }
+@media(max-width:600px) and (orientation:portrait) { .camara-diferencias { grid-template-columns:1fr; } }
+@media(max-height:600px) and (orientation:landscape) {
+ .camara-diferencias { max-width:690px; margin:5px auto; }
+ .camara-relato { font-size:.8rem; }
+ .puzzle-azrak:has(.camara-diferencias) .azrak-puzzle-status { min-height:0; margin:5px 0; }
+}

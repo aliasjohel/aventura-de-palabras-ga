@@ -13,7 +13,7 @@
     ['La forja de los nombres', 'forja', 'La luz de Lume devolvió las fuerzas a Aren. En la forja descubre que Shadow la llevó a la Cámara del Eclipse por haberlo rescatado. Azrak debilitó allí el Cristal de la Unión. Aren promete encontrarla.'],
     ['Los cuatro juramentos', 'forja', 'Los guardianes responden a los cristales. Para abrirles un camino, Aren debe devolver cada símbolo a su sello: bosque, desierto, cielo e invierno.', 'sellos-azrak'],
     ['Una orden imposible', 'forja', 'Azrak ordena a Shadow destruir el puente, aunque sus propios centinelas sigan cruzándolo. Shadow vacila. Aren comprende que bajo esa armadura todavía queda una voluntad propia.'],
-    ['Luz entre las sombras', 'forja', 'Aren reconoce a la guardiana que lo salvó. «Lume, vine por vos». Ella responde: «Shadow me trajo aquí. Azrak debilitó mi cristal con el Quinto Sello». Para liberarla, Aren debe apagar la red de sombras: cada sello cambia también a sus vecinos.', 'eclipse-azrak'],
+    ['Luz entre las sombras', 'forja', 'Aren reconoce a la guardiana que lo salvó. «Lume, vine por vos». Azrak ha creado una copia engañosa de su cámara. Siete detalles traicionan la ilusión: encontrarlos romperá las ataduras de Lume.', 'eclipse-azrak'],
     ['El camino de los guardianes', 'entrada', 'Lume conserva el quinto cristal, aunque Azrak debilitó su luz. «Con cada palabra que recuperes podré encender un portal y llamar a los guardianes». Cuatro palabras despertarán los caminos del bosque, el desierto, el cielo y el invierno.'],
     ['Antes del último umbral', 'trono', 'Aren avanza solo hacia el trono. Lume se queda con el quinto cristal, sosteniendo los cuatro portales para traer a los guardianes. Shadow espera en la puerta. «Le juré lealtad», dice. Aren responde: «Todavía podés elegir a quién proteger».'],
     ['La última palabra', 'trono', 'Shadow desenvaina frente al trono de Azrak. Primero habrá que vencer al centinela. Detrás de él espera quien encadenó a los cuatro mundos.'],
@@ -238,8 +238,131 @@
   }
   function sealsSolved(values) { return values.every((value, index) => value === [2, 0, 3, 1][index]); }
 
+  const differenceArt = {
+    original: 'assets/images/puzzles/lume-camara-verdadera-v1.png',
+    altered: 'assets/images/puzzles/lume-camara-alterada-v1.png',
+  };
+  const chamberDifferences = [
+    { x:95, y:67, w:110, h:115, name:'La luna del medallón', clue:'Compará los adornos de la pared superior izquierda.' },
+    { x:1308, y:123, w:62, h:66, name:'El cristal de la lámpara', clue:'La luz que cuelga arriba a la derecha oculta un cambio.' },
+    { x:65, y:276, w:49, h:109, name:'La botella del estante', clue:'Revisá los objetos de la estantería izquierda.' },
+    { x:1364, y:270, w:100, h:103, name:'La estrella del escudo', clue:'Observá la decoración de la pared derecha.' },
+    { x:171, y:710, w:41, h:55, name:'La cinta del libro', clue:'Compará con atención el libro de la esquina inferior izquierda.' },
+    { x:666, y:824, w:182, h:105, name:'El triángulo del suelo', clue:'Hay una diferencia en los dibujos del piso.' },
+    { x:1380, y:627, w:65, h:112, name:'El asa del jarrón', clue:'Observá la silueta de la vasija de la derecha.' },
+  ];
+  function chamberDifferenceAt(x, y, found = new Set()) {
+    return chamberDifferences.findIndex((d, i) => !found.has(i) && x >= d.x-12 && x <= d.x+d.w+12 && y >= d.y-12 && y <= d.y+d.h+12);
+  }
+  function mountChamberDifferences(container, board, message, makeButton, finish, sound, requestHint) {
+    let closed = false, ready = false, zoom = 1, hintPending = false;
+    const found = new Set(), hinted = new Set(), views = [], scenes = [];
+    board.className = 'camara-diferencias';
+    const intro = document.createElement('p'); intro.className = 'camara-relato';
+    intro.textContent = 'Azrak alteró siete detalles de la cámara. Compará las dos versiones para romper las ataduras de Lume.';
+    container.prepend(intro);
+    const discoveries = document.createElement('p'); discoveries.className = 'camara-hallazgos'; container.append(discoveries);
+    const status = text => { message.textContent = `${found.size}/7 diferencias · ${text || 'Tocá el detalle distinto en cualquiera de las imágenes.'}`; };
+    function mark(index) {
+      if (closed || !ready || index < 0 || found.has(index)) return;
+      found.add(index); sound('acertar');
+      const d = chamberDifferences[index];
+      scenes.forEach(scene => {
+        const ring = document.createElement('span'); ring.className = 'diferencia-encontrada'; ring.textContent = '✓'; ring.setAttribute('aria-hidden','true');
+        ring.style.cssText = `left:${(d.x+d.w/2)/1536*100}%;top:${(d.y+d.h/2)/1024*100}%;width:${(d.w+26)/1536*100}%;height:${(d.h+26)/1024*100}%;`;
+        scene.append(ring);
+      });
+      discoveries.textContent = [...found].map(i=>chamberDifferences[i].name).join(' · ');
+      status();
+      if (found.size === 7) { ready = false; finish(); message.textContent = '¡Encontraste las siete diferencias! La ilusión se rompe y Lume queda libre.'; }
+    }
+    ['Cámara verdadera', 'Ilusión de Azrak'].forEach((title, side) => {
+      const figure = document.createElement('figure'); const caption = document.createElement('figcaption'); caption.textContent = title;
+      const view = document.createElement('div'); view.className = 'camara-visor'; view.tabIndex = 0;
+      view.setAttribute('role','group'); view.setAttribute('aria-label',`${title}. Arrastrá para explorar al ampliar. Con teclado: flechas para mover el cursor y Enter para marcar.`);
+      const scene = document.createElement('div'); scene.className = 'camara-escena';
+      const img = document.createElement('img'); img.src = differenceArt.original; img.alt = 'Lume cautiva entre dos columnas, con estantes, lámparas, un libro, un jarrón y un suelo grabado.'; img.draggable = false; scene.append(img);
+      if (side) chamberDifferences.forEach(d => {
+        // Reuse every pixel of the original except these seven bounded illustrated patches.
+        const patch = document.createElement('span'); patch.className = 'camara-alteracion'; patch.setAttribute('aria-hidden','true');
+        patch.style.cssText = `left:${d.x/1536*100}%;top:${d.y/1024*100}%;width:${d.w/1536*100}%;height:${d.h/1024*100}%;`;
+        const altered = document.createElement('img'); altered.src = differenceArt.altered; altered.alt = ''; altered.draggable = false;
+        altered.style.cssText = `width:${1536/d.w*100}%;height:${1024/d.h*100}%;left:${-d.x/d.w*100}%;top:${-d.y/d.h*100}%;`;
+        patch.append(altered); scene.append(patch);
+      });
+      const cursor = document.createElement('span'); cursor.className = 'camara-cursor'; cursor.hidden = true; cursor.setAttribute('aria-hidden','true'); scene.append(cursor);
+      let cx=768, cy=512, pointer=null, moved=false;
+      view.addEventListener('keydown', event => {
+        if (!ready || closed) return;
+        const step=event.shiftKey?12:40;
+        if (event.key==='Enter' || event.key===' ') { event.preventDefault(); mark(chamberDifferenceAt(cx,cy,found)); return; }
+        if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return;
+        event.preventDefault(); cursor.hidden=false;
+        cx=Math.max(0,Math.min(1536,cx+(event.key==='ArrowRight'?step:event.key==='ArrowLeft'?-step:0)));
+        cy=Math.max(0,Math.min(1024,cy+(event.key==='ArrowDown'?step:event.key==='ArrowUp'?-step:0)));
+        cursor.style.left=`${cx/1536*100}%`; cursor.style.top=`${cy/1024*100}%`;
+        view.scrollLeft=cx/1536*scene.clientWidth-view.clientWidth/2; view.scrollTop=cy/1024*scene.clientHeight-view.clientHeight/2;
+      });
+      view.addEventListener('pointerdown', event => {
+        if (event.button!==0 || !ready || closed) return;
+        pointer={id:event.pointerId,x:event.clientX,y:event.clientY,left:view.scrollLeft,top:view.scrollTop}; moved=false; view.setPointerCapture(event.pointerId);
+      });
+      view.addEventListener('pointermove', event => {
+        if (!pointer || pointer.id!==event.pointerId) return;
+        const dx=event.clientX-pointer.x, dy=event.clientY-pointer.y;
+        if (Math.hypot(dx,dy)>8) moved=true;
+        if (moved) { view.scrollLeft=pointer.left-dx; view.scrollTop=pointer.top-dy; }
+      });
+      view.addEventListener('pointerup', event => {
+        if (!pointer || pointer.id!==event.pointerId) return;
+        pointer=null;
+        if (moved || closed || !ready) return;
+        const r=scene.getBoundingClientRect(); const index=chamberDifferenceAt((event.clientX-r.left)/r.width*1536,(event.clientY-r.top)/r.height*1024,found);
+        if (index<0) status('Ese detalle no suma una diferencia nueva. Seguí comparando.'); else mark(index);
+      });
+      view.addEventListener('pointercancel',()=>{pointer=null;});
+      view.addEventListener('scroll',()=>{
+        if(closed)return;
+        const other=views[1-side];if(!other)return;
+        if(Math.abs(other.scrollLeft-view.scrollLeft)>1)other.scrollLeft=view.scrollLeft;
+        if(Math.abs(other.scrollTop-view.scrollTop)>1)other.scrollTop=view.scrollTop;
+      });
+      views.push(view);scenes.push(scene);view.append(scene);figure.append(caption,view);board.append(figure);
+    });
+    const controls=document.createElement('div');controls.className='camara-controles';container.append(controls);
+    const changeZoom=next=>{
+      const x=(views[0].scrollLeft+views[0].clientWidth/2)/scenes[0].clientWidth;
+      const y=(views[0].scrollTop+views[0].clientHeight/2)/scenes[0].clientHeight;
+      zoom=Math.max(1,Math.min(3,next));scenes.forEach(s=>s.style.width=`${zoom*100}%`);
+      views.forEach(v=>{v.scrollLeft=x*scenes[0].clientWidth-v.clientWidth/2;v.scrollTop=y*scenes[0].clientHeight-v.clientHeight/2;});
+      minus.disabled=zoom===1;plus.disabled=zoom===3;reset.textContent=`Vista completa · ${zoom}×`;
+    };
+    const minus=makeButton('− Alejar',()=>changeZoom(zoom-.5),controls);
+    const plus=makeButton('+ Ampliar',()=>changeZoom(zoom+.5),controls);
+    const reset=makeButton('Vista completa · 1×',()=>changeZoom(1),controls);minus.disabled=true;
+    const hint=makeButton(requestHint?'Ver anuncio para una pista':'Una pista',async()=>{
+      if(!ready||hintPending)return;
+      hintPending=true;hint.disabled=true;
+      try {
+        // The future rewarded-ad adapter must resolve true ONLY after a reward is earned.
+        const earned=requestHint?await requestHint({puzzle:'eclipse-azrak'}):true;
+        if(closed||!ready)return;
+        if(earned!==true){status('No se obtuvo la pista. Podés seguir buscando.');return;}
+        const index=chamberDifferences.findIndex((_,i)=>!found.has(i)&&!hinted.has(i));
+        const next=index<0?chamberDifferences.findIndex((_,i)=>!found.has(i)):index;
+        hinted.add(next);status(chamberDifferences[next].clue);
+      } catch {if(!closed&&ready)status('La pista no está disponible ahora. Podés seguir buscando.');}
+      finally {hintPending=false;if(!closed&&ready)hint.disabled=false;}
+    },controls);
+    message.textContent='Preparando las dos cámaras…';board.classList.add('cargando');
+    Promise.all([...board.querySelectorAll('img')].map(img=>img.decode())).then(()=>{
+      if(closed)return;ready=true;board.classList.remove('cargando');status();
+    }).catch(()=>{if(!closed)message.textContent='No se pudieron cargar las cámaras. Reiniciá el puzzle para reintentar.';});
+    return ()=>{closed=true;ready=false;};
+  }
+
   // Each puzzle owns its timers. Closing or restarting invalidates the old board.
-  function mountPuzzle(container, type, complete, { sound = () => {} } = {}) {
+  function mountPuzzle(container, type, complete, { sound = () => {}, requestHint = null } = {}) {
     let disposed = false, busy = false;
     const timers = new Set();
     const later = (fn, delay) => {
@@ -302,34 +425,7 @@
       }, container);
       message.textContent = 'Tocá cada sello para cambiar su símbolo. Después comprobá el orden.';
     } else if (type === 'eclipse-azrak') {
-      let lights = initialLights(), moves = 0;
-      board.classList.add('tablero-eclipse');
-      const buttons = lights.map((_, index) => makeButton('', () => {
-        lights = toggleLight(lights, index); moves++; render();
-        if (lights.every(value => !value)) finish();
-      }));
-      function render() {
-        buttons.forEach((button, index) => {
-          button.textContent = lights[index] ? '◆' : '◇';
-          button.classList.toggle('runa-encendida', lights[index]);
-          button.setAttribute('aria-label', `Sello ${index + 1}, ${lights[index] ? 'encendido' : 'apagado'}`);
-          button.setAttribute('aria-pressed', String(lights[index]));
-        });
-        message.textContent = `Apagá los nueve sellos. Cada toque cambia ese sello y sus vecinos de arriba, abajo y los lados. Movimientos: ${moves}`;
-      }
-      makeButton('Mostrar una pista', () => {
-        // Solve the CURRENT board, including any player moves, by enumeration.
-        for (let mask = 1; mask < 512; mask++) {
-          let candidate = [...lights];
-          for (let i = 0; i < 9; i++) if (mask & (1 << i)) candidate = toggleLight(candidate, i);
-          if (candidate.every(value => !value)) {
-            const index = Math.log2(mask & -mask);
-            message.textContent = `Probá el sello ${index + 1}. Después podés pedir otra pista.`;
-            buttons[index].focus(); break;
-          }
-        }
-      }, container);
-      render();
+      closeRunes = mountChamberDifferences(container, board, message, makeButton, finish, sound, requestHint);
     }
     return () => { disposed = true; closeRunes(); timers.forEach(clearTimeout); timers.clear(); };
   }
@@ -739,5 +835,5 @@
       if (focusBefore?.isConnected) focusBefore.focus({ preventScroll: true });
     }
   }
-  return { missions, words, hiddenRunes, hiddenRunesImage, shadowEncounter, shadowEncounterState, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, mountScene, ignitePortal, playCinematic, planFinale, endingVolume, betrayal, finale, finalMusic, base };
+  return { chamberDifferences, chamberDifferenceAt, differenceArt, missions, words, hiddenRunes, hiddenRunesImage, shadowEncounter, shadowEncounterState, symbols, toggleLight, initialLights, sealsSolved, mountPuzzle, mountScene, ignitePortal, playCinematic, planFinale, endingVolume, betrayal, finale, finalMusic, base };
 });
