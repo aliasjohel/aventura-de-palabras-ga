@@ -62,6 +62,9 @@ assert.match(migration, /insert into public\.versus_players[\s\S]+v_invite\.chal
 assert.match(hardening, /create index versus_invites_room_idx/);
 assert.match(hardening, /select public\.is_permanent_versus_user\(\)/);
 assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v\d+`/);
-assert.match(sw, /"\.\/js\/versus-room-supabase\.js": "20260817-auth-cuentas-2"/);
+const revisionAdaptador = html.match(/js\/versus-room-supabase\.js\?v=([^" ]+)/)?.[1];
+assert.ok(revisionAdaptador, "El adaptador online tiene una revisión para la caché.");
+assert.ok(sw.includes(`"./js/versus-room-supabase.js": "${revisionAdaptador}"`),
+  "La caché y el HTML deben instalar la misma revisión del adaptador.");
 
 console.log("versus-social: comprobaciones correctas");

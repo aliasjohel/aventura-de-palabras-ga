@@ -1469,6 +1469,7 @@ function actualizarSalaVersus(sala) {
     etiqueta.textContent = `JUGADOR ${indice + 1}${jugador?.anfitrion ? " · ANFITRIÓN" : ""}`;
     const nombre = document.createElement("strong");
     nombre.textContent = jugador?.alias || "Esperando rival…";
+    if (jugador && globalThis.PlayerAvatar) tarjeta.append(PlayerAvatar.crear(jugador.identidad));
     tarjeta.append(etiqueta, nombre);
     jugadoresSalaVersus.append(tarjeta);
   }
@@ -1531,7 +1532,19 @@ function actualizarSeleccionPersonajeRemota(sala) {
   }
 }
 
+function actualizarIdentidadMultijugador(sala = adaptadorSalasVersus.obtenerSala()) {
+  globalThis.VersusIdentity?.actualizar({
+    sala: adaptadorSalasVersus.proveedor === "supabase" ? sala : null,
+    usuarioId: adaptadorSalasVersus.obtenerUsuarioId?.(),
+    enviar: adaptadorSalasVersus.enviarMensajeRapido,
+    activo: Boolean(partidaOnlineVersus && pantallaVersus.classList.contains("activa")
+      && ["playing", "finished"].includes(sala?.estado)),
+    matchId: partidaOnlineVersus?.matchId,
+  });
+}
+
 function actualizarEstadoMultijugador(sala) {
+  actualizarIdentidadMultijugador(sala);
   actualizarSalaVersus(sala);
   actualizarSeleccionPersonajeRemota(sala);
   actualizarPreparacionRemota(sala);
@@ -1912,6 +1925,7 @@ function actualizarPartidaOnline(partida) {
   if (!partida) {
     partidaOnlineVersus = null;
     partidaOnlineIniciada = false;
+    actualizarIdentidadMultijugador();
     return;
   }
   const esNueva = partidaOnlineVersus?.matchId !== partida.matchId;
@@ -1958,6 +1972,7 @@ function actualizarPartidaOnline(partida) {
     mostrarPantalla(pantallaVersus);
   }
   if (partida.status === "finished") finalizarPartidaOnline(partida);
+  actualizarIdentidadMultijugador();
 }
 
 let busquedaPublicaActiva = false;
@@ -3723,6 +3738,7 @@ function mostrarPantalla(pantallaSeleccionada) {
   });
 
   pantallaSeleccionada.classList.add("activa");
+  actualizarIdentidadMultijugador();
   actualizarOrientacionPantalla(pantallaSeleccionada);
 
   if (pantallaSeleccionada === pantallaMenu) {

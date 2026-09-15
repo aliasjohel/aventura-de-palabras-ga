@@ -29,6 +29,8 @@
         }
     </style>
     <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/player-avatar.css?v=20260915-social-1">
+    <link rel="stylesheet" href="css/versus-identity.css?v=20260915-social-1">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
@@ -81,6 +83,7 @@
                 <h2 class="studio">GA Games</h2>
                 <h1 class="titulo">Aventura de Palabras</h1>
                 <p class="subtitulo">Explorá mundos resolviendo palabras</p>
+                <button id="btnMiAvatar" class="secundario" type="button"><span id="avatarMenu"></span><span>Mi avatar</span></button>
 
                 <button id="btnJugar">🆕 Nueva aventura</button>
                 <button id="btnNuevaAventura" class="secundario oculto">
@@ -828,6 +831,8 @@
             <div id="marcoVersus" class="versus-marco">
                 <header class="versus-cabecera">
                     <div class="versus-jugador versus-jugador-uno">
+                        <span id="avatarDueloPropio" class="avatar-duelo" hidden></span>
+                        <span id="mensajeDueloPropio" class="mensaje-duelo" role="status" hidden></span>
                         <span class="versus-etiqueta">JUGADOR 1</span>
                         <div id="vidasVersusUno" class="versus-corazones" aria-label="Jugador 1: cinco vidas">♥ ♥ ♥ ♥ ♥
                         </div>
@@ -840,9 +845,19 @@
                     <div class="versus-tiempo versus-estado-combate" aria-label="Duelo en curso">
                         <span>DUELO</span>
                         <strong>VS</strong>
+                        <div id="chatRapidoVersus" hidden>
+                            <button id="abrirMensajesVersus" type="button" aria-expanded="false" aria-controls="panelMensajesVersus">💬 Mensajes</button>
+                            <div id="panelMensajesVersus" hidden aria-label="Mensajes rápidos">
+                                <div id="opcionesMensajesVersus"></div>
+                                <button id="silenciarMensajesVersus" type="button" aria-pressed="false">Silenciar rival</button>
+                                <span id="estadoMensajesVersus" role="status" aria-live="polite"></span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="versus-jugador versus-jugador-dos">
+                        <span id="avatarDueloRival" class="avatar-duelo" hidden></span>
+                        <span id="mensajeDueloRival" class="mensaje-duelo" role="status" hidden></span>
                         <span class="versus-etiqueta">JUGADOR 2</span>
                         <div id="vidasVersusDos" class="versus-corazones" aria-label="Jugador 2: cinco vidas">♥ ♥ ♥ ♥ ♥
                         </div>
@@ -1426,13 +1441,24 @@
     <button id="btnSaltarNarrativa" class="btn-saltar-narrativa oculto" type="button"
         aria-label="Saltar secuencia narrativa">Saltar</button>
 
+    <dialog id="editorAvatar" aria-labelledby="tituloAvatar">
+        <header class="avatar-header"><div><small>TU IDENTIDAD</small><h2 id="tituloAvatar">Mi avatar</h2></div><button id="cerrarAvatar" type="button" aria-label="Cerrar sin guardar">×</button></header>
+        <div class="avatar-preview"><span id="avatarPreview"></span><p id="avatarDescripcion"></p></div>
+        <fieldset><legend>Elegí tu avatar</legend><div id="opcionesAvatar" class="avatar-grid"></div></fieldset>
+        <fieldset><legend>Elegí tu marco</legend><div id="opcionesMarco" class="avatar-grid avatar-frames"></div></fieldset>
+        <p class="avatar-note">Tu elección se guarda en este dispositivo.</p>
+        <p id="estadoAvatar" role="status" aria-live="polite"></p>
+        <footer><button id="cancelarAvatar" class="secundario" type="button">Cancelar</button><button id="guardarAvatar" type="button">Guardar avatar</button></footer>
+    </dialog>
+    <script src="js/player-avatar.js?v=20260915-social-1"></script>
+    <script src="js/versus-identity.js?v=20260915-social-1"></script>
     <script src="js/intro.js?v=20260805-musica-menu-4"></script>
     <script src="js/supabase-loader.js?v=20260827-supabase-diferido-1"></script>
     <script src="js/supabase-config.js?v=20260805-supabase-1"></script>
     <script src="js/supabase-client.js?v=20260817-amigos-cuentas-1"></script>
     <script src="js/versus-engine.js?v=20260817-versus-recuperacion-1"></script>
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
-    <script src="js/versus-room-supabase.js?v=20260914-busqueda-ranking"></script>
+    <script src="js/versus-room-supabase.js?v=20260915-social-1"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
     <script src="js/azrak-world.js?v=20260914-busqueda-ranking"></script>
     <script src="js/prologue-cinematic.js?v=20260907-1"></script>
@@ -1441,7 +1467,7 @@
     <script src="js/kairos-forest.js?v=20260909-musica-continua-1"></script>
     <script src="js/kalamo-desert.js?v=20260909-arco-aren-1"></script>
     <script src="js/world-word-hazards.js?v=20260914-jaula-fuego"></script>
-    <script src="js/app.js?v=20260914-busqueda-ranking"></script>
+    <script src="js/app.js?v=20260915-social-1"></script>
     <script src="js/pwa.js?v=20260909-recuperar-actualizacion-1"></script>
 </body>
 

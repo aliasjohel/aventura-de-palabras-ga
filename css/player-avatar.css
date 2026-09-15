@@ -1,0 +1,30 @@
+.player-avatar { --rim: #ccb68e; display: inline-grid; place-items: center; width: 68px; height: 68px; box-sizing: border-box; flex-shrink: 0; border: 4px solid var(--rim); border-radius: 50%; background: radial-gradient(circle at 50% 30%, #354b68, #101827 75%); box-shadow: 0 0 0 2px #101722, 0 0 12px color-mix(in srgb, var(--rim) 35%, transparent); overflow: hidden; }
+.player-avatar img { width: 100%; height: 100%; object-fit: contain; }
+.frame-bosque { --rim: #68d99c; border-style: double; border-width: 7px; border-radius: 28% 50%; }
+.frame-hielo { --rim: #a0eaff; border-radius: 24%; border-style: ridge; }
+.frame-fuego { --rim: #ff965a; border-style: ridge; border-width: 6px; }
+.frame-arcano { --rim: #cb9cff; border-style: double; border-width: 7px; border-radius: 35%; }
+.frame-real { --rim: #ffe08a; border-style: double; border-width: 8px; border-radius: 22%; }
+#btnMiAvatar { display: flex; align-items: center; justify-content: center; gap: 14px; }
+#avatarMenu { display: flex; }
+#avatarMenu .player-avatar { width: 42px; height: 42px; }
+#editorAvatar { color: #f7f0de; background: linear-gradient(145deg, #182b3c, #0a1420); border: 1px solid #ae9561; border-radius: 22px; padding: 24px; width: min(620px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); box-sizing: border-box; overflow-y: auto; box-shadow: 0 24px 100px #000b; }
+#editorAvatar::backdrop { background: #020810d9; }
+.avatar-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.avatar-header small { color: #dfc38f; letter-spacing: .15em; }
+.avatar-header h2 { margin: 6px 0; }
+#editorAvatar .avatar-header button { width: 44px; height: 44px; margin: 0; padding: 0; font-size: 26px; }
+.avatar-preview { text-align: center; padding: 18px 0 8px; }
+#avatarPreview .player-avatar { width: 116px; height: 116px; }
+#editorAvatar fieldset { border: 0; padding: 0; margin: 16px 0; min-width: 0; }
+#editorAvatar legend { font-weight: bold; margin-bottom: 12px; }
+.avatar-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
+#editorAvatar .avatar-choice { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; margin: 0; padding: 12px 4px; width: 100%; color: #eee9df; background: #ffffff08; border: 2px solid transparent; border-radius: 12px; font-size: 13px; min-height: 114px; }
+#editorAvatar .avatar-choice[aria-pressed="true"] { border-color: #ffe08a; background: #ffe08a18; }
+#editorAvatar button:focus-visible { outline: 3px solid #a0eaff; outline-offset: 3px; }
+.avatar-note { color: #b5c4cf; font-size: 13px; text-align: center; }
+#estadoAvatar { color: #ffcf9e; }
+#estadoAvatar:empty { display: none; }
+#editorAvatar footer { display: flex; gap: 12px; }
+#editorAvatar footer button { flex: 1; margin: 0; }
+@media (max-width: 400px) { #editorAvatar { padding: 16px; } .avatar-grid { gap: 6px; } #editorAvatar .avatar-choice { font-size: 12px; } }

@@ -26,6 +26,7 @@
     let intervaloVerificacionSala = null;
     let recargaEnCurso = null;
     let recargaSolicitada = false;
+    let versionCanalSala = 0;
     let temporizadorSincronizacionAuth = null;
     const suscriptores = new Set();
     const suscriptoresPartida = new Set();
@@ -223,13 +224,15 @@
     }
 
     async function cargarSala(roomId) {
+      const versionCarga = versionCanalSala;
       const [{ data: sala, error: errorSala }, { data: jugadores, error: errorJugadores }] = await Promise.all([
         cliente.from("versus_rooms").select("id, code, status, host_id, created_at, updated_at").eq("id", roomId).maybeSingle(),
-        cliente.from("versus_players").select("id, user_id, alias, slot, ready, character_key, theme_key, preparation_ready, rematch_ready, joined_at").eq("room_id", roomId).order("slot"),
+        cliente.from("versus_players").select("id, user_id, alias, slot, ready, character_key, theme_key, preparation_ready, rematch_ready, joined_at, avatar_key, frame_key, quick_message_key, quick_message_at").eq("room_id", roomId).order("slot"),
       ]);
 
       if (errorSala) throw traducirError(errorSala, "No pudimos leer la sala.");
       if (errorJugadores) throw traducirError(errorJugadores, "No pudimos leer los jugadores.");
+      if (versionCarga !== versionCanalSala) return salaActual;
 
       if (!sala) {
         salaActual = null;
@@ -240,6 +243,19 @@
         return null;
       }
 
+      const propio = jugadores.find((jugador) => jugador.user_id === usuarioId);
+      const identidad = raiz.PlayerAvatar?.obtener();
+      if (propio && identidad && (propio.avatar_key !== identidad.avatar || propio.frame_key !== identidad.frame)) {
+        const { error } = await cliente.rpc("set_versus_identity", {
+          p_room_id: roomId, p_avatar_key: identidad.avatar, p_frame_key: identidad.frame,
+        });
+        if (!error) {
+          propio.avatar_key = identidad.avatar;
+          propio.frame_key = identidad.frame;
+        } else console.warn("No pudimos sincronizar el avatar.", error);
+      }
+
+      if (versionCarga !== versionCanalSala) return salaActual;
       salaActual = {
         id: sala.id,
         codigo: sala.code,
@@ -250,6 +266,9 @@
           id: jugador.user_id,
           registroId: jugador.id,
           alias: jugador.alias,
+          identidad: { avatar: jugador.avatar_key, frame: jugador.frame_key },
+          mensajeRapido: jugador.quick_message_key,
+          mensajeEn: jugador.quick_message_at,
           anfitrion: jugador.slot === 1,
           listo: jugador.ready,
           personaje: jugador.character_key,
@@ -287,6 +306,7 @@
     }
 
     async function detenerCanal() {
+      versionCanalSala += 1;
       if (intervaloVerificacionSala) clearInterval(intervaloVerificacionSala);
       intervaloVerificacionSala = null;
       if (!canalSala) return;
@@ -530,6 +550,16 @@
       return cargarPartida();
     }
 
+    async function enviarMensajeRapido(mensaje) {
+      if (!salaActual?.id) throw new Error("No hay una sala activa.");
+      const roomId = salaActual.id;
+      const { error } = await cliente.rpc("send_versus_quick_message", {
+        p_room_id: roomId, p_message_key: mensaje,
+      });
+      if (error) throw traducirError(error, "No pudimos enviar el mensaje. Intentá de nuevo.");
+      if (salaActual?.id === roomId) await recargarSala();
+    }
+
     async function activarHabilidad() {
       if (!salaActual?.id) throw new Error("No hay una sala activa.");
       const { data, error } = await cliente.rpc("activate_versus_ability", {
@@ -554,6 +584,7 @@
       pedirRevancha,
       cargarPartida,
       jugarLetra,
+      enviarMensajeRapido,
       activarHabilidad,
       salirSala,
       suscribir,
