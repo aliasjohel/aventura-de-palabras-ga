@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v282`;
+const CACHE_NAME = `${CACHE_PREFIX}v283`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -592,17 +592,17 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/versus/mago-ataque.png": "20260914-zafir-mano-abierta-1",
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
-  "./": "20260915-social-1",
-  "./index.html": "20260915-social-1",
+  "./": "20260915-shadow-kairos-1",
+  "./index.html": "20260915-shadow-kairos-1",
   "./css/player-avatar.css": "20260915-social-1",
   "./js/player-avatar.js": "20260915-social-1",
   "./css/versus-identity.css": "20260915-social-1",
   "./js/versus-identity.js": "20260915-social-1",
-  "./css/styles.css": "20260913-shadow-runas-2",
-  "./js/app.js": "20260915-social-1",
+  "./css/styles.css": "20260915-shadow-kairos-1",
+  "./js/app.js": "20260915-shadow-kairos-1",
   "./js/azrak-world.js": "20260913-shadow-runas-2",
   "./css/azrak-world.css": "20260913-runas-viento-captura-1",
-  "./assets/images/personajes/versus/t-shadow-base.png": "20260902-personajes-chibi-1",
+  "./assets/images/personajes/versus/t-shadow-base.png": "20260915-shadow-kairos-1",
   "./assets/images/personajes/versus/t-shadow-ataque.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-impacto.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/t-shadow-victoria.png": "20260902-personajes-chibi-1",

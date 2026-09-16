@@ -4530,7 +4530,7 @@ function mostrarRelojKairosVersus() {
   arena.className = "arena-reloj-kairos";
   arena.setAttribute("aria-hidden", "true");
   tecladoVersus.append(arena);
-  tecladoVersus.setAttribute("aria-label", "Kairós detuvo el teclado durante 2 segundos");
+  tecladoVersus.setAttribute("aria-label", "Kairós envejeció el teclado: teclas bloqueadas durante 2 segundos");
   bloquearTecladoDemoVersus();
   temporizadorRelojKairos = setTimeout(() => {
     temporizadorRelojKairos = null;
