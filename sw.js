@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v285`;
+const CACHE_NAME = `${CACHE_PREFIX}v286`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -598,8 +598,8 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/versus/mago-ataque.png": "20260914-zafir-mano-abierta-1",
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
-  "./": "20260920-codigo-amigo-1",
-  "./index.html": "20260920-codigo-amigo-1",
+  "./": "20260920-guia-versus-1",
+  "./index.html": "20260920-guia-versus-1",
   "./css/player-avatar.css": "20260920-perfil-1",
   "./js/player-avatar.js": "20260920-codigo-amigo-1",
   "./css/versus-identity.css": "20260915-social-1",
