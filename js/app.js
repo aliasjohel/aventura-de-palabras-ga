@@ -2642,7 +2642,7 @@ function cerrarTutorialVersus({ recordar = false } = {}) {
   accionPosteriorTutorialVersus = null;
   if (respaldo) mostrarPantalla(respaldo.pantalla || pantallaMenu);
   if (continuar) continuar();
-  else btnTutorialVersus.focus();
+  else document.getElementById("btnModosJuego").focus();
 }
 function jugarLetraTutorialVersus(letra, boton) {
   if (boton.disabled || tutorialCombateVersus.ocupado || tutorialCombateVersus.completado || letra !== tutorialCombateVersus.letras[0]) return;
@@ -2713,6 +2713,20 @@ function entrarAlModoVersus() {
     return;
   }
   abrirSalaVersus();
+}
+
+const selectorModosJuego = document.getElementById("selectorModosJuego");
+const tiendaMenu = document.getElementById("tiendaMenu");
+document.getElementById("btnModosJuego").addEventListener("click", () => selectorModosJuego.showModal());
+document.getElementById("cerrarModosJuego").addEventListener("click", () => selectorModosJuego.close());
+document.getElementById("btnTienda").addEventListener("click", () => tiendaMenu.showModal());
+document.getElementById("cerrarTiendaMenu").addEventListener("click", () => tiendaMenu.close());
+document.getElementById("tiendaIrPerfil").addEventListener("click", () => {
+  tiendaMenu.close();
+  document.getElementById("btnMiAvatar").click();
+});
+for (const boton of [btnVersus, btnArcade, btnTutorialVersus]) {
+  boton.addEventListener("click", () => selectorModosJuego.close());
 }
 
 btnVersus.addEventListener("click", () => {
@@ -3466,6 +3480,7 @@ selectorMundoPruebas.addEventListener("change", () => {
 });
 
 btnIniciarMisionPruebas.addEventListener("click", () => {
+  cerrarConfiguracion();
   iniciarMisionSeleccionadaPruebas();
 });
 
@@ -3484,6 +3499,7 @@ btnNuevaAventura.addEventListener("click", () => {
 
   if (!confirmar) return;
 
+  cerrarConfiguracion();
   reproducirSonidoComenzarAventura();
   localStorage.removeItem("progresoAventuraGA");
   reiniciarEstadoAventura();
@@ -12356,7 +12372,7 @@ const escenasDesafioGuardianaBosque = Object.freeze([
     imagen: "assets/images/cinematicas/bosque-mision-10/02-desafio-guardiana-v1.png",
     titulo: "La prueba del portal",
     texto:
-      "—El cristal respondió a tu valor, pero no dejaré que su poder cruce el portal sin una última prueba. Demostrá que podés vencerme en un duelo de palabras.",
+      "—El cristal respondió a tu valor, pero no dejaré que su poder cruce el portal sin una última prueba. Te desafío a un duelo.",
   },
 ]);
 

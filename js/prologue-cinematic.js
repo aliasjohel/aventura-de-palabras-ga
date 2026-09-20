@@ -1,10 +1,10 @@
 /* Cinemática ilustrada del prólogo; el juego conserva el control de su inicio y cierre. */
 (() => {
   const scenes = [
-    ['La leyenda de los cinco cristales', 'Hace muchos años, cinco Cristales de la Sabiduría mantenían el equilibrio entre los mundos.', 'Los cinco cristales iluminan un antiguo santuario.', '0% 0%'],
-    ['Una noche, la luz desapareció', 'Una fuerza misteriosa hizo desaparecer los cristales. Los portales comenzaron a debilitarse y los mundos quedaron en peligro.', 'Una sombra envuelve los cristales y apaga el santuario.', '100% 0%'],
-    ['Un mapa. Una esperanza.', 'Aren, un joven explorador, encontró un antiguo mapa. Señalaba el primer cristal, oculto en lo profundo del Bosque Encantado.', 'Aren descubre una ruta en un antiguo mapa.', '0% 100%'],
-    ['Tu aventura comienza aquí', 'Resolvé palabras sobre el bosque y sus habitantes, superá los peligros del camino y descubrí quién robó los cristales.', 'Aren comienza su viaje por el Bosque Encantado.', '100% 100%'],
+    ['La leyenda de los cinco cristales', 'Hace muchos años, cinco Cristales de la Sabiduría mantenían el equilibrio entre los mundos. Sus guardianes habían jurado protegerlos para que su poder nunca cayera en manos equivocadas.', 'Los cinco cristales iluminan un antiguo santuario.', '0% 0%'],
+    ['La huida de los guardianes', 'Una noche, Azrak llegó al santuario en busca de los cristales. Los guardianes intentaron detenerlo, pero no pudieron vencerlo. Para mantener los cristales a salvo, los separaron y huyeron con ellos hacia distintos reinos.', 'Una sombra envuelve los cristales y apaga el santuario.', '100% 0%'],
+    ['Un mapa. Una esperanza.', 'Desde entonces, nadie volvió a tener noticias de los guardianes. Una extraña oscuridad comenzó a extenderse por los mundos. Aren, un joven explorador, encontró un antiguo mapa: la primera pista lo llevaba al Bosque Encantado.', 'Aren descubre una ruta en un antiguo mapa.', '0% 100%'],
+    ['Tu aventura comienza aquí', 'Aren partió en busca de los guardianes. Para reunir los cristales y devolver el equilibrio a los mundos, tendría que ganarse su confianza y descubrir cómo detener la oscuridad.', 'Aren comienza su viaje por el Bosque Encantado.', '100% 100%'],
   ];
   const modal = document.getElementById('modalPrologo');
   const title = document.getElementById('tituloPrologo');

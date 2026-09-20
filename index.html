@@ -36,6 +36,7 @@
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
     <link rel="stylesheet" href="css/styles.css?v=20260920-kairos-cinematica-1">
+    <link rel="stylesheet" href="css/menu-navigation.css?v=20260920-menu-1">
     <link rel="stylesheet" href="css/azrak-world.css?v=20260913-runas-viento-captura-1">
     <link rel="stylesheet" href="css/kairos-forest.css?v=20260908-cinematicas-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
@@ -83,16 +84,11 @@
                 <h2 class="studio">GA Games</h2>
                 <h1 class="titulo">Aventura de Palabras</h1>
                 <p class="subtitulo">Explorá mundos resolviendo palabras</p>
-                <button id="btnMiAvatar" class="secundario" type="button"><span id="avatarMenu"></span><span>Mi perfil</span></button>
+                <div class="menu-perfil"><button id="btnMiAvatar" type="button" aria-label="Abrir mi perfil"><span id="avatarMenu"></span><span>Mi perfil <span aria-hidden="true">›</span></span></button></div>
 
                 <button id="btnJugar">🆕 Nueva aventura</button>
-                <button id="btnNuevaAventura" class="secundario oculto">
-                    🆕 Nueva aventura
-                </button>
-                <button id="btnVersus" class="btn-versus-menu">⚔️ Multijugador</button>
-                <button id="btnArcade" class="btn-arcade-menu" type="button">🏰 Modo Arcade</button>
-                <button id="btnTutorialVersus" class="btn-tutorial-versus-menu" type="button">❔ Cómo jugar modo versus</button>
-                <button disabled>Estadísticas</button>
+                <button id="btnModosJuego" type="button" aria-haspopup="dialog">⚔️ Modos de juego</button>
+                <button id="btnTienda" type="button" aria-haspopup="dialog">✦ Tienda <small>Próximamente</small></button>
                 <button id="btnConfiguracion" type="button">Configuración</button>
 
                 <p id="estadoOfflineJuego" class="estado-offline-juego" role="status" aria-live="polite">
@@ -100,20 +96,7 @@
                 </p>
                 <a href="actualizar.html" class="estado-offline-juego">Buscar actualizaciones</a>
 
-                <label class="control-modo-pruebas" for="modoPruebas">
-                    <input id="modoPruebas" type="checkbox">
-                    <span>Modo Pruebas</span>
-                </label>
 
-                <div id="panelModoPruebas" class="panel-modo-pruebas oculto" aria-label="Herramientas de prueba">
-                    <label for="selectorMundoPruebas">Mundo</label>
-                    <select id="selectorMundoPruebas"></select>
-
-                    <label for="selectorMisionPruebas">Misión</label>
-                    <select id="selectorMisionPruebas"></select>
-
-                    <button id="btnIniciarMisionPruebas" type="button">Iniciar misión</button>
-                </div>
             </div>
             <div id="modalConfiguracion" class="modal-configuracion oculto" role="dialog" aria-modal="true"
                 aria-labelledby="tituloConfiguracion">
@@ -128,6 +111,21 @@
                         <input id="vibracionAtaques" type="checkbox" role="switch">
                     </label>
                     <p id="estadoVibracion" class="estado-vibracion" aria-live="polite"></p>
+                    <button id="btnNuevaAventura" class="secundario oculto" type="button">Empezar una nueva aventura</button>
+                    <label class="control-modo-pruebas" for="modoPruebas">
+                        <input id="modoPruebas" type="checkbox">
+                        <span>Modo Pruebas</span>
+                    </label>
+
+                    <div id="panelModoPruebas" class="panel-modo-pruebas oculto" aria-label="Herramientas de prueba">
+                        <label for="selectorMundoPruebas">Mundo</label>
+                        <select id="selectorMundoPruebas"></select>
+
+                        <label for="selectorMisionPruebas">Misión</label>
+                        <select id="selectorMisionPruebas"></select>
+
+                        <button id="btnIniciarMisionPruebas" type="button">Iniciar misión</button>
+                    </div>
                     <button id="btnCerrarConfiguracion" type="button">Listo</button>
                 </div>
             </div>
@@ -171,7 +169,7 @@
 
                 <header class="arcade-cabecera">
                     <p>TORRE DE LOS CAMPEONES</p>
-                    <h2 id="tituloArcade">Modo Arcade</h2>
+                    <h2 id="tituloArcade">Torre</h2>
                     <span id="estadoArcade">Venc&eacute; a todos los rivales y alcanzá la cima.</span>
                 </header>
 
@@ -198,7 +196,7 @@
             <div class="versus-aviso-orientacion" role="status">
                 <span>↻</span>
                 <strong>Girá el celular</strong>
-                <p>El modo arcade se juega en horizontal.</p>
+                <p>La Torre se juega en horizontal.</p>
                 <button id="btnSalirArcadeVertical" type="button">Volver al menú</button>
             </div>
         </section>
@@ -1374,7 +1372,7 @@
                 <div class="prologo-relato" aria-live="polite" aria-atomic="true">
                     <span id="prologoContador">1 / 4</span>
                     <h2 id="tituloPrologo">La leyenda de los cinco cristales</h2>
-                    <p id="textoPrologo">Hace muchos años, cinco Cristales de la Sabiduría mantenían el equilibrio entre los mundos.</p>
+                    <p id="textoPrologo">Hace muchos años, cinco Cristales de la Sabiduría mantenían el equilibrio entre los mundos. Sus guardianes habían jurado protegerlos para que su poder nunca cayera en manos equivocadas.</p>
                 </div>
                 <nav class="prologo-controles" aria-label="Controles de la cinemática">
                     <button id="prologoAnterior" type="button" disabled>Anterior</button>
@@ -1440,6 +1438,29 @@
     <button id="btnSaltarNarrativa" class="btn-saltar-narrativa oculto" type="button"
         aria-label="Saltar secuencia narrativa">Saltar</button>
 
+    <dialog id="selectorModosJuego" class="menu-dialogo" aria-labelledby="tituloModosJuego">
+        <header class="menu-dialogo-cabecera"><div><small>ELEGÍ TU DESAFÍO</small><h2 id="tituloModosJuego">Modos de juego</h2></div><button id="cerrarModosJuego" type="button" aria-label="Volver al menú">×</button></header>
+        <div class="tarjetas-modos">
+            <button id="btnArcade" class="tarjeta-modo tarjeta-modo-torre" type="button">
+                <span class="modo-ilustracion" aria-hidden="true"></span>
+                <span class="modo-etiqueta">UN JUGADOR · SIN CONEXIÓN</span>
+                <span class="modo-textos"><strong>Torre</strong><span>Elegí tu personaje, vencé a cada rival y conquistá la cima.</span><span class="modo-entrar">Subir a la torre <b aria-hidden="true">→</b></span></span>
+            </button>
+            <button id="btnVersus" class="tarjeta-modo tarjeta-modo-versus" type="button">
+                <span class="modo-ilustracion" aria-hidden="true"><img class="modo-heroe" src="assets/images/personajes/versus/explorador-base.png" alt=""><img class="modo-rival" src="assets/images/personajes/versus/t-shadow-base.png" alt=""><b>VS</b></span>
+                <span class="modo-etiqueta">DOS JUGADORES · ONLINE</span>
+                <span class="modo-textos"><strong>Multijugador</strong><span>Desafiá a tus amigos o encontrá un rival para tu próximo duelo.</span><span class="modo-entrar">Entrar a la arena <b aria-hidden="true">→</b></span></span>
+            </button>
+        </div>
+        <button id="btnTutorialVersus" class="modos-guia" type="button">❔ Cómo jugar modo versus <span aria-hidden="true">→</span></button>
+    </dialog>
+    <dialog id="tiendaMenu" class="menu-dialogo tienda-dialogo" aria-labelledby="tituloTiendaMenu">
+        <header class="menu-dialogo-cabecera"><div><small>PRÓXIMAMENTE</small><h2 id="tituloTiendaMenu">Tienda</h2></div><button id="cerrarTiendaMenu" type="button" aria-label="Volver al menú">×</button></header>
+        <div class="tienda-emblema" aria-hidden="true">✦</div>
+        <p>La tienda está en preparación.</p><p>Mientras tanto, podés elegir tu avatar y tu marco desde Mi perfil.</p>
+        <button id="tiendaIrPerfil" type="button">Ir a Mi perfil</button>
+    </dialog>
+
     <dialog id="editorAvatar" aria-labelledby="tituloAvatar">
         <header class="avatar-header"><div><small>AVENTURA DE PALABRAS</small><h2 id="tituloAvatar">Mi perfil</h2></div><button id="cerrarAvatar" type="button" aria-label="Cerrar sin guardar">×</button></header>
         <section class="perfil-cabecera" aria-label="Identidad del jugador">
@@ -1477,13 +1498,13 @@
     <script src="js/versus-room-supabase.js?v=20260920-perfil-1"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
     <script src="js/azrak-world.js?v=20260914-busqueda-ranking"></script>
-    <script src="js/prologue-cinematic.js?v=20260907-1"></script>
+    <script src="js/prologue-cinematic.js?v=20260920-menu-1"></script>
     <script src="js/forest-root-trap.js?v=20260907-1"></script>
     <script src="js/desert-sand-trap.js?v=20260907-1"></script>
     <script src="js/kairos-forest.js?v=20260909-musica-continua-1"></script>
     <script src="js/kalamo-desert.js?v=20260909-arco-aren-1"></script>
     <script src="js/world-word-hazards.js?v=20260914-jaula-fuego"></script>
-    <script src="js/app.js?v=20260920-perfil-1"></script>
+    <script src="js/app.js?v=20260920-menu-1"></script>
     <script src="js/pwa.js?v=20260909-recuperar-actualizacion-1"></script>
 </body>
 
