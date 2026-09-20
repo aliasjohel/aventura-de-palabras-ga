@@ -16875,7 +16875,7 @@ button:disabled {
   scale: var(--kairos-escala-base, 1);
 }
 
-.siglos-en-un-segundo .victima-final-explorador {
+.siglos-en-un-segundo #victimaKairosVersus {
   display: block;
   animation: kairos-edad-base 9s ease both;
 }

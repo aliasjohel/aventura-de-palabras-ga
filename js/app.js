@@ -2048,6 +2048,16 @@ btnBuscarPartida.addEventListener("click", async () => {
 });
 btnCancelarBusqueda.addEventListener("click", cancelarBusquedaPublica);
 
+globalThis.PlayerProfile = Object.freeze({
+  cargar: async () => {
+    const adapter = await asegurarConexionSalasVersus();
+    if (!adapter.obtenerPerfilJugador) throw new Error("Sin conexión");
+    const profile = await adapter.obtenerPerfilJugador();
+    return { ...profile, alias: profile.alias || aliasSalaVersus.value.trim() || "Aventurero" };
+  },
+  nombrePersonaje: (key) => personajesVersus[key]?.nombre || "Personaje",
+});
+
 async function cargarRankingPublico() {
   const lista = document.getElementById("listaRanking");
   const boton = document.getElementById("btnActualizarRanking");

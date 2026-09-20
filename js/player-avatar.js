@@ -25,9 +25,17 @@
     const badge = document.createElement("span");
     badge.className = `player-avatar frame-${frame}`;
     const img = document.createElement("img");
+    const face = document.createElement("span");
+    face.className = "player-avatar-portrait";
     img.src = `assets/images/personajes/versus/${avatar}-base.png`;
     img.alt = "";
-    badge.append(img);
+    face.append(img);
+    const ornament = document.createElement("img");
+    ornament.className = "player-avatar-frame";
+    ornament.src = `assets/images/perfil/marco-${frame}-v1.png`;
+    ornament.alt = "";
+    ornament.setAttribute("aria-hidden", "true");
+    badge.append(face, ornament);
     return badge;
   }
   function renderMenu() {
@@ -53,6 +61,52 @@
       button.setAttribute("aria-pressed", String(selected));
     });
   }
+  let profileRequest = 0;
+  async function loadProfile() {
+    const request = ++profileRequest;
+    el("perfilNombre").textContent = "Aventurero";
+    el("perfilId").textContent = "Conectando…";
+    el("perfilEstado").textContent = "Cargando tu historial…";
+    el("perfilRanking").textContent = "";
+    el("perfilFavoritos").replaceChildren();
+    el("reintentarPerfil").hidden = true;
+    ["Jugadas", "Victorias", "Derrotas", "Empates"].forEach(key => { el(`perfil${key}`).textContent = "—"; });
+    try {
+      const profile = await globalThis.PlayerProfile.cargar();
+      if (request !== profileRequest || !dialog.open) return;
+      el("perfilNombre").textContent = profile.alias || "Aventurero";
+      el("perfilId").textContent = profile.friend_code || profile.id;
+      for (const [id, key] of [["Jugadas", "played"], ["Victorias", "wins"], ["Derrotas", "losses"], ["Empates", "draws"]]) {
+        el(`perfil${id}`).textContent = String(profile[key] || 0);
+      }
+      el("perfilEstado").textContent = profile.guest
+        ? "Perfil de invitado. Vinculá tu cuenta desde Multijugador para conservar el historial al cambiar de dispositivo."
+        : "Tu historial está vinculado a tu cuenta.";
+      el("perfilRanking").textContent = `${profile.points || 0} puntos de ranking · ${profile.ranked_played || 0} partidas públicas`;
+      for (const favorite of profile.favorites || []) {
+        const card = document.createElement("div");
+        const name = document.createElement("strong");
+        name.textContent = globalThis.PlayerProfile.nombrePersonaje(favorite.character);
+        const detail = document.createElement("span");
+        detail.textContent = `${favorite.played} partidas · ${favorite.wins} victorias`;
+        card.append(name, detail);
+        el("perfilFavoritos").append(card);
+      }
+      if (!profile.favorites?.length) el("perfilFavoritos").textContent = "Jugá una partida multijugador para descubrir tus favoritos.";
+      if (profile.legacy_played) {
+        const note = document.createElement("small");
+        note.textContent = "Tus resultados anteriores cuentan; sus personajes no quedaron registrados.";
+        el("perfilFavoritos").append(note);
+      }
+    } catch (_) {
+      if (request !== profileRequest || !dialog.open) return;
+      el("perfilId").textContent = "Sin conexión";
+      el("perfilEstado").textContent = "No pudimos cargar tu perfil. Podés elegir tu apariencia y reintentar la conexión.";
+      el("reintentarPerfil").hidden = false;
+    }
+  }
+  el("reintentarPerfil").addEventListener("click", () => { void loadProfile(); });
+  dialog.addEventListener("close", () => { profileRequest += 1; });
   function choices(container, entries, property) {
     entries.forEach(([id, label]) => {
       const button = document.createElement("button");
@@ -80,6 +134,7 @@
     el("estadoAvatar").textContent = "";
     renderPreview();
     dialog.showModal();
+    void loadProfile();
   });
   ["cerrarAvatar", "cancelarAvatar"].forEach((id) => el(id).addEventListener("click", () => dialog.close()));
   el("guardarAvatar").addEventListener("click", () => {

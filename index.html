@@ -29,13 +29,13 @@
         }
     </style>
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="css/player-avatar.css?v=20260915-social-1">
+    <link rel="stylesheet" href="css/player-avatar.css?v=20260920-perfil-1">
     <link rel="stylesheet" href="css/versus-identity.css?v=20260915-social-1">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260915-shadow-kairos-1">
+    <link rel="stylesheet" href="css/styles.css?v=20260920-kairos-cinematica-1">
     <link rel="stylesheet" href="css/azrak-world.css?v=20260913-runas-viento-captura-1">
     <link rel="stylesheet" href="css/kairos-forest.css?v=20260908-cinematicas-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
@@ -83,7 +83,7 @@
                 <h2 class="studio">GA Games</h2>
                 <h1 class="titulo">Aventura de Palabras</h1>
                 <p class="subtitulo">Explorá mundos resolviendo palabras</p>
-                <button id="btnMiAvatar" class="secundario" type="button"><span id="avatarMenu"></span><span>Mi avatar</span></button>
+                <button id="btnMiAvatar" class="secundario" type="button"><span id="avatarMenu"></span><span>Mi perfil</span></button>
 
                 <button id="btnJugar">🆕 Nueva aventura</button>
                 <button id="btnNuevaAventura" class="secundario oculto">
@@ -1442,15 +1442,32 @@
         aria-label="Saltar secuencia narrativa">Saltar</button>
 
     <dialog id="editorAvatar" aria-labelledby="tituloAvatar">
-        <header class="avatar-header"><div><small>TU IDENTIDAD</small><h2 id="tituloAvatar">Mi avatar</h2></div><button id="cerrarAvatar" type="button" aria-label="Cerrar sin guardar">×</button></header>
-        <div class="avatar-preview"><span id="avatarPreview"></span><p id="avatarDescripcion"></p></div>
+        <header class="avatar-header"><div><small>AVENTURA DE PALABRAS</small><h2 id="tituloAvatar">Mi perfil</h2></div><button id="cerrarAvatar" type="button" aria-label="Cerrar sin guardar">×</button></header>
+        <section class="perfil-cabecera" aria-label="Identidad del jugador">
+            <span id="avatarPreview"></span>
+            <div class="perfil-identidad"><small>JUGADOR</small><h3 id="perfilNombre">Aventurero</h3><p class="perfil-id">ID: <span id="perfilId">Conectando…</span></p><p id="avatarDescripcion"></p></div>
+        </section>
+        <section class="perfil-historial" aria-labelledby="tituloHistorialPerfil">
+            <h3 id="tituloHistorialPerfil">Historial multijugador</h3>
+            <p id="perfilEstado" role="status" aria-live="polite">Cargando tu historial…</p>
+            <dl class="perfil-estadisticas">
+                <div><dd id="perfilJugadas">—</dd><dt>Partidas</dt></div>
+                <div><dd id="perfilVictorias">—</dd><dt>Victorias</dt></div>
+                <div><dd id="perfilDerrotas">—</dd><dt>Derrotas</dt></div>
+                <div><dd id="perfilEmpates">—</dd><dt>Empates</dt></div>
+            </dl>
+            <p id="perfilRanking" class="perfil-ranking"></p>
+            <h4>Personajes favoritos</h4><div id="perfilFavoritos" class="perfil-favoritos"></div>
+            <p class="avatar-note">Tus favoritos son los personajes que más usás en partidas multijugador terminadas.</p>
+            <button id="reintentarPerfil" class="secundario" type="button" hidden>Reintentar conexión</button>
+        </section>
         <fieldset><legend>Elegí tu avatar</legend><div id="opcionesAvatar" class="avatar-grid"></div></fieldset>
         <fieldset><legend>Elegí tu marco</legend><div id="opcionesMarco" class="avatar-grid avatar-frames"></div></fieldset>
         <p class="avatar-note">Tu elección se guarda en este dispositivo.</p>
         <p id="estadoAvatar" role="status" aria-live="polite"></p>
-        <footer><button id="cancelarAvatar" class="secundario" type="button">Cancelar</button><button id="guardarAvatar" type="button">Guardar avatar</button></footer>
+        <footer><button id="cancelarAvatar" class="secundario" type="button">Cancelar</button><button id="guardarAvatar" type="button">Guardar apariencia</button></footer>
     </dialog>
-    <script src="js/player-avatar.js?v=20260915-social-1"></script>
+    <script src="js/player-avatar.js?v=20260920-perfil-1"></script>
     <script src="js/versus-identity.js?v=20260915-social-1"></script>
     <script src="js/intro.js?v=20260805-musica-menu-4"></script>
     <script src="js/supabase-loader.js?v=20260827-supabase-diferido-1"></script>
@@ -1458,7 +1475,7 @@
     <script src="js/supabase-client.js?v=20260817-amigos-cuentas-1"></script>
     <script src="js/versus-engine.js?v=20260817-versus-recuperacion-1"></script>
     <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
-    <script src="js/versus-room-supabase.js?v=20260915-social-1"></script>
+    <script src="js/versus-room-supabase.js?v=20260920-perfil-1"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
     <script src="js/azrak-world.js?v=20260914-busqueda-ranking"></script>
     <script src="js/prologue-cinematic.js?v=20260907-1"></script>
@@ -1467,7 +1484,7 @@
     <script src="js/kairos-forest.js?v=20260909-musica-continua-1"></script>
     <script src="js/kalamo-desert.js?v=20260909-arco-aren-1"></script>
     <script src="js/world-word-hazards.js?v=20260914-jaula-fuego"></script>
-    <script src="js/app.js?v=20260915-shadow-kairos-1"></script>
+    <script src="js/app.js?v=20260920-perfil-1"></script>
     <script src="js/pwa.js?v=20260909-recuperar-actualizacion-1"></script>
 </body>
 

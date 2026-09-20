@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v283`;
+const CACHE_NAME = `${CACHE_PREFIX}v284`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -202,6 +202,12 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/elementos/estela-escarcha-nivor.png",
 ];
 const CORE_ASSETS = [
+  "./assets/images/perfil/marco-clasico-v1.png",
+  "./assets/images/perfil/marco-bosque-v1.png",
+  "./assets/images/perfil/marco-hielo-v1.png",
+  "./assets/images/perfil/marco-fuego-v1.png",
+  "./assets/images/perfil/marco-arcano-v1.png",
+  "./assets/images/perfil/marco-real-v1.png",
   "./css/versus-identity.css",
   "./js/versus-identity.js",
   "./css/player-avatar.css",
@@ -592,14 +598,14 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/versus/mago-ataque.png": "20260914-zafir-mano-abierta-1",
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
-  "./": "20260915-shadow-kairos-1",
-  "./index.html": "20260915-shadow-kairos-1",
-  "./css/player-avatar.css": "20260915-social-1",
-  "./js/player-avatar.js": "20260915-social-1",
+  "./": "20260920-perfil-1",
+  "./index.html": "20260920-perfil-1",
+  "./css/player-avatar.css": "20260920-perfil-1",
+  "./js/player-avatar.js": "20260920-perfil-1",
   "./css/versus-identity.css": "20260915-social-1",
   "./js/versus-identity.js": "20260915-social-1",
-  "./css/styles.css": "20260915-shadow-kairos-1",
-  "./js/app.js": "20260915-shadow-kairos-1",
+  "./css/styles.css": "20260920-kairos-cinematica-1",
+  "./js/app.js": "20260920-perfil-1",
   "./js/azrak-world.js": "20260913-shadow-runas-2",
   "./css/azrak-world.css": "20260913-runas-viento-captura-1",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260915-shadow-kairos-1",
@@ -765,7 +771,7 @@ const ASSET_REVISIONS = {
   "./js/adventure-puzzles.js": "20260827-puzzles-cumbres-1",
   "./js/versus-engine.js": "20260817-versus-recuperacion-1",
   "./js/supabase-client.js": "20260817-amigos-cuentas-1",
-  "./js/versus-room-supabase.js": "20260915-social-1",
+  "./js/versus-room-supabase.js": "20260920-perfil-1",
   "./assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png": "20260905-final-hielo-musica-1",
 };
 

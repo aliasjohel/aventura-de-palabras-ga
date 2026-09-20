@@ -97,9 +97,12 @@ assert.match(estilos, /personaje-dos\.personaje-kairos[\s\S]+?scaleX\(-1\)/);
 assert.doesNotMatch(estilos, /kairos-final-victima[\s\S]{0,300}mix-blend-mode/);
 const victimaKairosCss = estilos.slice(
   estilos.indexOf(".siglos-en-un-segundo .kairos-final-victima"),
-  estilos.indexOf(".siglos-en-un-segundo .victima-final-explorador"),
+  estilos.indexOf(".siglos-en-un-segundo #victimaKairosVersus"),
 );
 assert.match(victimaKairosCss, /transform: scaleX\(-1\)/);
+// La edad base no debe activar víctimas compartidas de otras cinemáticas.
+assert.doesNotMatch(estilos, /\.siglos-en-un-segundo \.victima-final-explorador\s*\{/);
+assert.match(estilos, /\.siglos-en-un-segundo #victimaKairosVersus\s*\{[^}]*animation: kairos-edad-base/);
 
 assert.match(migracion, /add column if not exists time_penalty_seconds/);
 assert.match(migracion, /time_penalty_seconds \+ 20/);

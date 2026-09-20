@@ -373,6 +373,12 @@
       return data || [];
     }
 
+    async function obtenerPerfilJugador() {
+      const { data, error } = await cliente.rpc("get_versus_player_profile");
+      if (error) throw traducirError(error, "No pudimos cargar tu perfil.");
+      return { ...data, guest: !esCuentaPermanente() };
+    }
+
     async function unirseSala({ codigo, alias }) {
       await inicializar();
       const codigoLimpio = raiz.VersusRoom.limpiarCodigo(codigo);
@@ -577,6 +583,7 @@
       crearSala,
       buscarPartida,
       obtenerRanking,
+      obtenerPerfilJugador,
       unirseSala,
       actualizarPersonaje,
       guardarDesafio,
