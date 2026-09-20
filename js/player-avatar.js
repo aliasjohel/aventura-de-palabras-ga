@@ -75,7 +75,7 @@
       const profile = await globalThis.PlayerProfile.cargar();
       if (request !== profileRequest || !dialog.open) return;
       el("perfilNombre").textContent = profile.alias || "Aventurero";
-      el("perfilId").textContent = profile.friend_code || profile.id;
+      el("perfilId").textContent = profile.friend_code || "Creá tu perfil de Amigos desde Multijugador para obtenerlo.";
       for (const [id, key] of [["Jugadas", "played"], ["Victorias", "wins"], ["Derrotas", "losses"], ["Empates", "draws"]]) {
         el(`perfil${id}`).textContent = String(profile[key] || 0);
       }
