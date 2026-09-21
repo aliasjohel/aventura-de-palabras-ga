@@ -60,3 +60,23 @@
  .menu-dialogo .modos-guia { margin-top: 12px; padding: 10px; }
 }
 @media (prefers-reduced-motion: reduce) { .menu-dialogo .tarjeta-modo { transition: none; } }
+/* Free introductory shop collection. */
+#tiendaMenu { max-width: 760px; text-align: left; }
+#tiendaMenu .menu-dialogo-cabecera { flex-wrap: wrap; }
+#tiendaMenu #cerrarTiendaMenu { width: auto; height: auto; min-height: 44px; padding: 9px 12px; border-radius: 10px; font-size: 13px; white-space: nowrap; }
+.tienda-vista { display: flex; align-items: center; gap: 24px; margin: 22px 0; padding: 22px; border: 1px solid #d8bc7955; border-radius: 16px; background: radial-gradient(ellipse at left,#83704033,transparent),#060d1866; }
+#tiendaAvatarPreview .player-avatar { width: 150px; height: 150px; }
+.tienda-vista small { color: #dfc38f; font-size: 10px; letter-spacing: .15em; }
+.tienda-vista h3 { margin: 8px 0; font: bold 26px Georgia,serif; }
+#tiendaAplicarMarco { margin: 8px 0 0; font-size: 13px; }
+#tiendaAplicarMarco:disabled { opacity: .65; cursor: default; }
+.tienda-seccion { font-size: 15px; margin-bottom: 14px; }
+.tienda-marcos { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; }
+#tiendaMenu .tienda-marcos button { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; margin: 0; padding: 12px 4px; border: 2px solid #a7c0de22; border-radius: 12px; background: #ffffff05; color: #f2e5cb; font-size: 13px; box-shadow: none; }
+.tienda-marcos .player-avatar { width: 92px; height: 92px; }
+#tiendaMenu .tienda-marcos button[aria-pressed="true"] { border-color: #ffe08a; background: #ffe08a12; }
+#tiendaEstado { color: #ffe08a; }
+#tiendaEstado:empty { display: none; }
+.tienda-futuro { margin-top: 20px; padding: 16px; border: 1px solid #a993d344; border-radius: 12px; background: #a993d30a; }
+.tienda-futuro strong { color: #dac8f5; }
+@media (max-width: 540px) { .tienda-vista { flex-direction: column; gap: 10px; text-align: center; padding: 16px; } #tiendaAvatarPreview .player-avatar { width: 120px; height: 120px; } .tienda-marcos .player-avatar { width: 76px; height: 76px; } }

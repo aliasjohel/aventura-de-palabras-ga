@@ -29,14 +29,14 @@
         }
     </style>
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="css/player-avatar.css?v=20260920-perfil-1">
+    <link rel="stylesheet" href="css/player-avatar.css?v=20260921-tienda-1">
     <link rel="stylesheet" href="css/versus-identity.css?v=20260915-social-1">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
     <link rel="stylesheet" href="css/styles.css?v=20260920-kairos-cinematica-1">
-    <link rel="stylesheet" href="css/menu-navigation.css?v=20260920-menu-1">
+    <link rel="stylesheet" href="css/menu-navigation.css?v=20260921-tienda-1">
     <link rel="stylesheet" href="css/azrak-world.css?v=20260913-runas-viento-captura-1">
     <link rel="stylesheet" href="css/kairos-forest.css?v=20260908-cinematicas-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
@@ -88,7 +88,7 @@
 
                 <button id="btnJugar">🆕 Nueva aventura</button>
                 <button id="btnModosJuego" type="button" aria-haspopup="dialog">⚔️ Modos de juego</button>
-                <button id="btnTienda" type="button" aria-haspopup="dialog">✦ Tienda <small>Próximamente</small></button>
+                <button id="btnTienda" type="button" aria-haspopup="dialog">✦ Tienda</button>
                 <button id="btnConfiguracion" type="button">Configuración</button>
 
                 <p id="estadoOfflineJuego" class="estado-offline-juego" role="status" aria-live="polite">
@@ -1455,14 +1455,19 @@
         <button id="btnTutorialVersus" class="modos-guia" type="button">❔ Cómo jugar modo versus <span aria-hidden="true">→</span></button>
     </dialog>
     <dialog id="tiendaMenu" class="menu-dialogo tienda-dialogo" aria-labelledby="tituloTiendaMenu">
-        <header class="menu-dialogo-cabecera"><div><small>PRÓXIMAMENTE</small><h2 id="tituloTiendaMenu">Tienda</h2></div><button id="cerrarTiendaMenu" type="button" aria-label="Volver al menú">×</button></header>
-        <div class="tienda-emblema" aria-hidden="true">✦</div>
-        <p>La tienda está en preparación.</p><p>Mientras tanto, podés elegir tu avatar y tu marco desde Mi perfil.</p>
+        <header class="menu-dialogo-cabecera"><div><small>EL BAZAR DE LOS REINOS</small><h2 id="tituloTiendaMenu">Tienda</h2></div><button id="cerrarTiendaMenu" type="button">← Volver al menú</button></header>
+        <p>Un toque de magia para tu perfil. Probá un marco y elegí tu favorito.</p>
+        <section class="tienda-vista" aria-labelledby="tiendaMarcoNombre"><span id="tiendaAvatarPreview"></span><div><small>VISTA PREVIA</small><h3 id="tiendaMarcoNombre"></h3><p id="tiendaMarcoDetalle"></p><button id="tiendaAplicarMarco" type="button">Usar marco gratis</button></div></section>
+        <h3 class="tienda-seccion">Colección de marcos · Gratis</h3>
+        <div id="tiendaMarcos" class="tienda-marcos" aria-label="Marcos disponibles"></div>
+        <p id="tiendaEstado" role="status" aria-live="polite"></p>
+        <p class="avatar-note">Estos marcos son gratuitos. Tu elección se guarda en este dispositivo.</p>
+        <aside class="tienda-futuro"><strong>El bazar seguirá creciendo</strong><p>Más adelante llegarán nuevas colecciones, fondos y títulos para tu perfil.</p></aside>
         <button id="tiendaIrPerfil" type="button">Ir a Mi perfil</button>
     </dialog>
 
     <dialog id="editorAvatar" aria-labelledby="tituloAvatar">
-        <header class="avatar-header"><div><small>AVENTURA DE PALABRAS</small><h2 id="tituloAvatar">Mi perfil</h2></div><button id="cerrarAvatar" type="button" aria-label="Cerrar sin guardar">×</button></header>
+        <header class="avatar-header"><div><small>AVENTURA DE PALABRAS</small><h2 id="tituloAvatar">Mi perfil</h2></div><button id="cerrarAvatar" type="button">← Volver al menú</button></header>
         <section class="perfil-cabecera" aria-label="Identidad del jugador">
             <span id="avatarPreview"></span>
             <div class="perfil-identidad"><small>JUGADOR</small><h3 id="perfilNombre">Aventurero</h3><p class="perfil-id">Código de amigo: <span id="perfilId">Conectando…</span></p><p id="avatarDescripcion"></p></div>
@@ -1487,7 +1492,7 @@
         <p id="estadoAvatar" role="status" aria-live="polite"></p>
         <footer><button id="cancelarAvatar" class="secundario" type="button">Cancelar</button><button id="guardarAvatar" type="button">Guardar apariencia</button></footer>
     </dialog>
-    <script src="js/player-avatar.js?v=20260920-codigo-amigo-1"></script>
+    <script src="js/player-avatar.js?v=20260921-tienda-1"></script>
     <script src="js/versus-identity.js?v=20260915-social-1"></script>
     <script src="js/intro.js?v=20260805-musica-menu-4"></script>
     <script src="js/supabase-loader.js?v=20260827-supabase-diferido-1"></script>
@@ -1498,13 +1503,13 @@
     <script src="js/versus-room-supabase.js?v=20260920-perfil-1"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
     <script src="js/azrak-world.js?v=20260914-busqueda-ranking"></script>
-    <script src="js/prologue-cinematic.js?v=20260920-menu-1"></script>
+    <script src="js/prologue-cinematic.js?v=20260921-tienda-1"></script>
     <script src="js/forest-root-trap.js?v=20260907-1"></script>
     <script src="js/desert-sand-trap.js?v=20260907-1"></script>
     <script src="js/kairos-forest.js?v=20260909-musica-continua-1"></script>
     <script src="js/kalamo-desert.js?v=20260909-arco-aren-1"></script>
     <script src="js/world-word-hazards.js?v=20260914-jaula-fuego"></script>
-    <script src="js/app.js?v=20260920-menu-1"></script>
+    <script src="js/app.js?v=20260921-tienda-1"></script>
     <script src="js/pwa.js?v=20260909-recuperar-actualizacion-1"></script>
 </body>
 

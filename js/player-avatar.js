@@ -148,4 +148,58 @@
     dialog.close();
   });
   renderMenu();
+  // The first shop collection uses the existing free cosmetics and identity save.
+  const descriptions = {
+    clasico: "La insignia de quien comienza una gran aventura.",
+    bosque: "Llevá la magia del bosque a cada encuentro.",
+    hielo: "El brillo de los reinos helados acompaña tu camino.",
+    fuego: "Una chispa de valentía para tus próximos desafíos.",
+    arcano: "Un halo de misterio para los amantes de la magia.",
+    real: "Un acabado majestuoso para tu retrato.",
+  };
+  let shopFrame = saved.frame;
+  function renderShop() {
+    el("tiendaAvatarPreview").replaceChildren(portrait(saved.avatar, shopFrame));
+    el("tiendaMarcoNombre").textContent = `Marco ${frames.find(([id]) => id === shopFrame)[1]}`;
+    el("tiendaMarcoDetalle").textContent = descriptions[shopFrame];
+    const equipped = shopFrame === saved.frame;
+    el("tiendaAplicarMarco").disabled = equipped;
+    el("tiendaAplicarMarco").textContent = equipped ? "Marco equipado" : "Usar marco gratis";
+    el("tiendaMarcos").querySelectorAll("button").forEach(button => {
+      button.setAttribute("aria-pressed", String(button.dataset.frame === shopFrame));
+    });
+  }
+  frames.forEach(([id, label]) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.frame = id;
+    button.setAttribute("aria-label", `Probar marco ${label}`);
+    button.append(portrait("explorador", id));
+    const name = document.createElement("span");
+    name.textContent = label;
+    button.append(name);
+    button.addEventListener("click", () => {
+      shopFrame = id;
+      el("tiendaEstado").textContent = "";
+      renderShop();
+    });
+    el("tiendaMarcos").append(button);
+  });
+  el("btnTienda").addEventListener("click", () => {
+    shopFrame = saved.frame;
+    el("tiendaEstado").textContent = "";
+    renderShop();
+  });
+  el("tiendaAplicarMarco").addEventListener("click", () => {
+    const next = { ...saved, frame: shopFrame };
+    try { localStorage.setItem(key, JSON.stringify(next)); }
+    catch (_) {
+      el("tiendaEstado").textContent = "No pudimos guardar el marco. Volvé a intentarlo.";
+      return;
+    }
+    saved = next;
+    renderMenu();
+    renderShop();
+    el("tiendaEstado").textContent = "¡Marco equipado! Ya podés verlo en tu perfil.";
+  });
 })();

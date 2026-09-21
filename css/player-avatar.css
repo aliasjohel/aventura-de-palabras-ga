@@ -10,7 +10,8 @@
 .avatar-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .avatar-header small, .perfil-identidad > small { color: #dfc38f; letter-spacing: .15em; font-size: 10px; }
 .avatar-header h2 { margin: 6px 0; }
-#editorAvatar .avatar-header button { width: 44px; height: 44px; margin: 0; padding: 0; font-size: 26px; }
+#editorAvatar .avatar-header { flex-wrap: wrap; }
+#editorAvatar .avatar-header button { width: auto; min-height: 44px; margin: 0; padding: 10px 14px; font-size: 13px; white-space: nowrap; }
 .perfil-cabecera { display: flex; align-items: center; gap: 22px; padding: 24px 0; }
 #avatarPreview .player-avatar { width: 132px; height: 132px; }
 .perfil-identidad { min-width: 0; }

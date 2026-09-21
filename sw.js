@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v287`;
+const CACHE_NAME = `${CACHE_PREFIX}v288`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -593,22 +593,22 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./css/menu-navigation.css": "20260920-menu-1",
+  "./css/menu-navigation.css": "20260921-tienda-1",
   "./assets/images/puzzles/lume-camara-verdadera-v1.png": "20260914-siete-diferencias-1",
   "./assets/images/puzzles/lume-camara-alterada-v1.png": "20260914-siete-diferencias-1",
   "./assets/images/ui/juramentos-medallones-v1.png": "20260914-juramentos-ilustrados-1",
   "./assets/images/personajes/versus/mago-ataque.png": "20260914-zafir-mano-abierta-1",
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
-  "./": "20260920-menu-1",
-  "./index.html": "20260920-menu-1",
-  "./js/prologue-cinematic.js": "20260920-menu-1",
-  "./css/player-avatar.css": "20260920-perfil-1",
-  "./js/player-avatar.js": "20260920-codigo-amigo-1",
+  "./": "20260921-tienda-1",
+  "./index.html": "20260921-tienda-1",
+  "./js/prologue-cinematic.js": "20260921-tienda-1",
+  "./css/player-avatar.css": "20260921-tienda-1",
+  "./js/player-avatar.js": "20260921-tienda-1",
   "./css/versus-identity.css": "20260915-social-1",
   "./js/versus-identity.js": "20260915-social-1",
   "./css/styles.css": "20260920-kairos-cinematica-1",
-  "./js/app.js": "20260920-menu-1",
+  "./js/app.js": "20260921-tienda-1",
   "./js/azrak-world.js": "20260913-shadow-runas-2",
   "./css/azrak-world.css": "20260913-runas-viento-captura-1",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260915-shadow-kairos-1",
