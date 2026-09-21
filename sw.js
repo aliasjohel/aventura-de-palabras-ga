@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v288`;
+const CACHE_NAME = `${CACHE_PREFIX}v289`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -535,8 +535,9 @@ const CORE_ASSETS = [
   "./assets/images/personajes/versus/guardiana-pantalla-rota-kalamo-v1.png",
   "./assets/images/personajes/versus/dragon-pantalla-rota-kalamo-v1.png",
   "./assets/images/personajes/versus/hombre-lobo-pantalla-rota-kalamo-v1.png",
-  "./assets/images/personajes/versus/t-shadow-pantalla-rota-kalamo-v1.png",
-  "./assets/images/personajes/versus/guardian-alba-pantalla-rota-kalamo-v1.png",
+  "./assets/images/personajes/versus/t-shadow-cara-vidrio-kalamo-v2.png",
+  "./assets/images/personajes/versus/guardian-alba-cara-vidrio-kalamo-v2.png",
+  "./assets/images/personajes/versus/kairos-cara-vidrio-kalamo-v2.png",
   "./assets/images/personajes/versus/dragon-hielo-pantalla-rota-kalamo-v1.png",
   "./assets/images/personajes/versus/azrak-pantalla-rota-kalamo-v1.png",
   "./assets/images/personajes/versus/kalamo-pantalla-rota-kalamo-v1.png",
@@ -757,8 +758,6 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/versus/guardiana-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
   "./assets/images/personajes/versus/dragon-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
   "./assets/images/personajes/versus/hombre-lobo-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
-  "./assets/images/personajes/versus/t-shadow-pantalla-rota-kalamo-v1.png": "20260902-personajes-chibi-1",
-  "./assets/images/personajes/versus/guardian-alba-pantalla-rota-kalamo-v1.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/dragon-hielo-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
   "./assets/images/personajes/versus/azrak-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",
   "./assets/images/personajes/versus/kalamo-pantalla-rota-kalamo-v1.png": "20260821-kalamo-pantalla-todos-3",

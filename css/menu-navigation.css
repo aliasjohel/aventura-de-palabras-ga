@@ -1,6 +1,7 @@
 /* Compact main menu and illustrated mode selection. */
 .panel-configuracion { max-height: calc(100dvh - 44px); overflow-y: auto; }
-#pantallaMenu .menu-perfil { order: -1; width: 100%; display: flex; justify-content: flex-end; }
+#pantallaMenu .menu-perfil { order: -1; width: 100%; display: flex; justify-content: flex-start; }
+#pantallaMenu #btnAbrirPruebasMenu { width: auto; min-height: 44px; margin: 0 0 0 auto; padding: 8px 10px; font-size: 12px; color: #ffedc7; border-radius: 12px; border: 1px solid #dbbd7855; background: #071b24b3; box-shadow: none; }
 #pantallaMenu #btnMiAvatar { width: auto; margin: 0; padding: 4px 10px 4px 4px; gap: 8px; border: 1px solid #dbbd7855; border-radius: 40px; background: #071b24b3; color: #ffedc7; font-size: 12px; box-shadow: none; }
 #pantallaMenu #avatarMenu .player-avatar { width: 42px; height: 42px; }
 #pantallaMenu #btnModosJuego { border-color: #d7b571aa; background: linear-gradient(160deg,#80602288,#2d25184d); }

@@ -42,7 +42,7 @@ assert.match(app, /const escenasDesafioGuardianaBosque = Object\.freeze\(\[/);
 assert.match(app, /01-encuentro-guardiana-v1\.png/);
 assert.match(app, /02-desafio-guardiana-v1\.png/);
 assert.match(app, /Una voz entre las hojas/);
-assert.match(app, /Demostrá que podés vencerme en un duelo de palabras/);
+assert.match(app, /Te desafío a un duelo\./);
 assert.match(app, /continuar\.textContent = indice === escenasDesafioGuardianaBosque\.length - 1[\s\S]+Aceptar desafío/);
 assert.match(estilos, /\.cinematica-desafio-guardiana/);
 assert.match(estilos, /\.imagen-cinematica-desafio-guardiana[\s\S]+object-fit: contain/);

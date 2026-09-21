@@ -842,6 +842,46 @@ const aventura = [
       { palabra: "CIERVO", pista: "Animal del bosque con astas." },
       { palabra: "RAMA", pista: "Parte del árbol donde nacen las hojas." },
       { palabra: "BUHO", pista: "Ave nocturna de ojos grandes." },
+      {"palabra":"ARDILLA","pista":"Roedor de cola esponjosa que trepa por los árboles."},
+      {"palabra":"CONEJO","pista":"Animal de orejas largas que vive en madrigueras."},
+      {"palabra":"LIEBRE","pista":"Pariente del conejo que corre veloz por el campo."},
+      {"palabra":"ERIZO","pista":"Pequeño mamífero que se protege con púas."},
+      {"palabra":"TEJON","pista":"Mamífero que excava y tiene franjas negras en la cara."},
+      {"palabra":"CASTOR","pista":"Roedor que construye diques con ramas."},
+      {"palabra":"NUTRIA","pista":"Mamífero de río que nada y se alimenta de peces."},
+      {"palabra":"JABALI","pista":"Cerdo salvaje con colmillos."},
+      {"palabra":"OSO","pista":"Gran mamífero peludo que puede hibernar."},
+      {"palabra":"MARIPOSA","pista":"Insecto de alas coloridas que antes fue oruga."},
+      {"palabra":"ABEJA","pista":"Insecto que recoge néctar y produce miel."},
+      {"palabra":"HORMIGA","pista":"Insecto que vive en colonias y sigue caminos en fila."},
+      {"palabra":"GRILLO","pista":"Insecto que canta frotando sus alas."},
+      {"palabra":"CARACOL","pista":"Animal lento que lleva una concha en espiral."},
+      {"palabra":"RANA","pista":"Anfibio que salta y croa junto al agua."},
+      {"palabra":"SAPO","pista":"Anfibio de piel rugosa, pariente de la rana."},
+      {"palabra":"PAJARO","pista":"Animal con plumas, pico y dos alas."},
+      {"palabra":"NIDO","pista":"Refugio donde las aves ponen sus huevos."},
+      {"palabra":"PLUMA","pista":"Cubre el cuerpo de las aves."},
+      {"palabra":"TRONCO","pista":"Parte gruesa del árbol que sostiene las ramas."},
+      {"palabra":"RAIZ","pista":"Parte de la planta que absorbe agua bajo tierra."},
+      {"palabra":"CORTEZA","pista":"Capa exterior que protege el tronco."},
+      {"palabra":"SEMILLA","pista":"Puede germinar y convertirse en una planta."},
+      {"palabra":"BELLOTA","pista":"Fruto del roble con un pequeño sombrero."},
+      {"palabra":"PIÑA","pista":"Cono del pino que guarda sus semillas."},
+      {"palabra":"HELECHO","pista":"Planta de hojas divididas que no produce flores."},
+      {"palabra":"HONGO","pista":"Crece en sitios húmedos y puede tener forma de sombrero."},
+      {"palabra":"FLOR","pista":"Parte vistosa de muchas plantas que atrae polinizadores."},
+      {"palabra":"PETALO","pista":"Cada pieza de color que forma una flor."},
+      {"palabra":"ROBLE","pista":"Árbol de madera resistente que produce bellotas."},
+      {"palabra":"PINO","pista":"Árbol con hojas en forma de aguja y piñas."},
+      {"palabra":"SAUCE","pista":"Árbol cuyas ramas pueden colgar cerca del agua."},
+      {"palabra":"ARBUSTO","pista":"Planta leñosa más baja que un árbol, con varios tallos."},
+      {"palabra":"ENREDADERA","pista":"Planta que trepa y se enrolla en otras superficies."},
+      {"palabra":"SENDERO","pista":"Camino estrecho para caminar por el bosque."},
+      {"palabra":"ARROYO","pista":"Corriente de agua más pequeña que un río."},
+      {"palabra":"CASCADA","pista":"Caída de agua desde un desnivel."},
+      {"palabra":"LAGUNA","pista":"Depósito natural de agua menor que un lago."},
+      {"palabra":"ROCIO","pista":"Gotitas que aparecen sobre las hojas al amanecer."},
+      {"palabra":"CLARO","pista":"Espacio del bosque donde se abren los árboles y entra luz."},
     ],
   },
   {
@@ -860,6 +900,46 @@ const aventura = [
       { palabra: "SERPIENTE", pista: "Reptil que se arrastra." },
       { palabra: "CALOR", pista: "Sensación típica del desierto." },
       { palabra: "BRUJULA", pista: "Sirve para orientarse." },
+      {"palabra":"PALMERA","pista":"Árbol de tronco alto coronado por grandes hojas."},
+      {"palabra":"DATIL","pista":"Fruto dulce de ciertas palmeras."},
+      {"palabra":"CARAVANA","pista":"Grupo de viajeros que cruza el desierto acompañado."},
+      {"palabra":"CANTIMPLORA","pista":"Recipiente que lleva agua durante una caminata."},
+      {"palabra":"MAPA","pista":"Dibujo que muestra lugares y caminos de un territorio."},
+      {"palabra":"ESPEJISMO","pista":"Ilusión óptica que puede parecer agua a lo lejos."},
+      {"palabra":"SEQUIA","pista":"Período prolongado en el que falta la lluvia."},
+      {"palabra":"SED","pista":"Necesidad de beber agua."},
+      {"palabra":"POLVO","pista":"Partículas muy finas que el viento puede levantar."},
+      {"palabra":"ROCA","pista":"Masa sólida natural que forma parte del suelo."},
+      {"palabra":"PIEDRA","pista":"Fragmento de roca que podés recoger del suelo."},
+      {"palabra":"CAÑON","pista":"Valle profundo y estrecho entre paredes de roca."},
+      {"palabra":"MESETA","pista":"Terreno elevado cuya parte superior es bastante plana."},
+      {"palabra":"VALLE","pista":"Terreno bajo situado entre montañas."},
+      {"palabra":"HORIZONTE","pista":"Línea lejana donde parecen juntarse cielo y tierra."},
+      {"palabra":"SOMBRA","pista":"Zona oscura que da refugio cuando algo tapa el sol."},
+      {"palabra":"REFUGIO","pista":"Lugar que protege del peligro o del mal tiempo."},
+      {"palabra":"TIENDA","pista":"Vivienda de tela que se arma para acampar."},
+      {"palabra":"TURBANTE","pista":"Tela larga que se enrolla alrededor de la cabeza."},
+      {"palabra":"SANDALIA","pista":"Calzado abierto sujeto con tiras."},
+      {"palabra":"LAGARTO","pista":"Reptil con cuatro patas, cola larga y escamas."},
+      {"palabra":"GECO","pista":"Pequeño lagarto capaz de trepar por paredes."},
+      {"palabra":"VIBORA","pista":"Serpiente venenosa de colmillos especializados."},
+      {"palabra":"BUITRE","pista":"Ave que se alimenta principalmente de animales muertos."},
+      {"palabra":"HALCON","pista":"Ave rapaz famosa por la velocidad de su vuelo."},
+      {"palabra":"CHACAL","pista":"Mamífero de la familia del perro que habita zonas áridas."},
+      {"palabra":"FENEC","pista":"Pequeño zorro del desierto con orejas muy grandes."},
+      {"palabra":"DROMEDARIO","pista":"Pariente del camello que tiene una sola joroba."},
+      {"palabra":"ESCARABAJO","pista":"Insecto con alas delanteras duras como un escudo."},
+      {"palabra":"SAL","pista":"Mineral de sabor salado que queda al evaporarse ciertas aguas."},
+      {"palabra":"SALINA","pista":"Terreno donde se acumula o se extrae sal."},
+      {"palabra":"ARCILLA","pista":"Tierra fina que se moldea al mezclarla con agua."},
+      {"palabra":"COBRE","pista":"Metal de color rojizo usado en cables y utensilios."},
+      {"palabra":"CUARZO","pista":"Mineral duro que puede formar cristales transparentes."},
+      {"palabra":"FOSIL","pista":"Resto o huella de un ser vivo conservado en roca."},
+      {"palabra":"RUINA","pista":"Restos de una construcción antigua o destruida."},
+      {"palabra":"PIRAMIDE","pista":"Construcción de base ancha y caras que se unen en una punta."},
+      {"palabra":"OBELISCO","pista":"Monumento alto y estrecho terminado en punta."},
+      {"palabra":"JEROGLIFICO","pista":"Signo de una escritura antigua que usa figuras."},
+      {"palabra":"ANFORA","pista":"Vasija antigua de cuello estrecho y dos asas."},
     ],
   },
   {
@@ -875,6 +955,46 @@ const aventura = [
       { palabra: "ISLA", pista: "Tierra rodeada de agua... o de nubes." },
       { palabra: "TORMENTA", pista: "Trae viento, nubes oscuras, lluvia y rayos." },
       { palabra: "CRISTAL", pista: "Tesoro luminoso que equilibra cada mundo." },
+      {"palabra":"CUMBRE","pista":"Punto más elevado de una montaña."},
+      {"palabra":"CORDILLERA","pista":"Conjunto de montañas enlazadas entre sí."},
+      {"palabra":"PICO","pista":"Cima de una montaña que termina en punta."},
+      {"palabra":"LADERA","pista":"Costado inclinado de una montaña."},
+      {"palabra":"PRECIPICIO","pista":"Corte del terreno con una caída muy profunda."},
+      {"palabra":"ABISMO","pista":"Profundidad enorme que parece no tener fondo."},
+      {"palabra":"PEÑASCO","pista":"Roca grande que sobresale del terreno."},
+      {"palabra":"ROCA","pista":"Material sólido natural que forma las montañas."},
+      {"palabra":"PUENTE","pista":"Construcción que permite cruzar un río o un abismo."},
+      {"palabra":"CUERDA","pista":"Conjunto de fibras trenzadas que sirve para sujetar."},
+      {"palabra":"NUDO","pista":"Lazo apretado que se hace con una cuerda."},
+      {"palabra":"ESCALADA","pista":"Actividad de subir por paredes de roca."},
+      {"palabra":"ARNES","pista":"Conjunto de correas que sujeta al escalador."},
+      {"palabra":"MOSQUETON","pista":"Aro metálico con cierre que conecta cuerdas en la escalada."},
+      {"palabra":"BRISA","pista":"Viento suave que acaricia el rostro."},
+      {"palabra":"RAFAGA","pista":"Golpe de viento breve y repentino."},
+      {"palabra":"VENDAVAL","pista":"Viento muy fuerte que sacude todo a su paso."},
+      {"palabra":"TRUENO","pista":"Sonido fuerte que acompaña a un relámpago."},
+      {"palabra":"RELAMPAGO","pista":"Destello que ilumina el cielo durante una tormenta."},
+      {"palabra":"LLUVIA","pista":"Agua que cae de las nubes en gotas."},
+      {"palabra":"GRANIZO","pista":"Bolas de hielo que caen del cielo."},
+      {"palabra":"NIEBLA","pista":"Nube baja que dificulta ver el camino."},
+      {"palabra":"NEBLINA","pista":"Niebla ligera que deja ver un poco más lejos."},
+      {"palabra":"ARCOIRIS","pista":"Arco de colores que aparece con gotas de agua y luz solar."},
+      {"palabra":"CIELO","pista":"Espacio que vemos sobre nuestras cabezas."},
+      {"palabra":"ESTRELLA","pista":"Astro que brilla con luz propia."},
+      {"palabra":"LUNA","pista":"Satélite natural que acompaña a la Tierra."},
+      {"palabra":"COMETA","pista":"Astro que puede mostrar una larga cola al acercarse al Sol."},
+      {"palabra":"ECLIPSE","pista":"Ocurre cuando un astro oculta total o parcialmente a otro."},
+      {"palabra":"ALBA","pista":"Primera luz del día antes de salir el sol."},
+      {"palabra":"OCASO","pista":"Momento en que el sol se oculta al final del día."},
+      {"palabra":"CONDOR","pista":"Gran ave andina que planea con sus enormes alas."},
+      {"palabra":"HALCON","pista":"Ave de presa que alcanza gran velocidad al descender."},
+      {"palabra":"PLUMA","pista":"Pieza ligera que cubre las alas de las aves."},
+      {"palabra":"ALA","pista":"Parte del cuerpo que permite volar a muchas aves."},
+      {"palabra":"VUELO","pista":"Acción de desplazarse por el aire."},
+      {"palabra":"CAMPANA","pista":"Objeto de metal que suena al golpearlo."},
+      {"palabra":"ECO","pista":"Repetición de un sonido al rebotar en una superficie."},
+      {"palabra":"SANTUARIO","pista":"Lugar sagrado dedicado a la veneración o al refugio."},
+      {"palabra":"COLUMNA","pista":"Soporte vertical que sostiene parte de un edificio."},
     ],
   },
   {
@@ -890,6 +1010,46 @@ const aventura = [
       { palabra: "FORTALEZA", pista: "Construcción protegida y difícil de conquistar." },
       { palabra: "CRISTAL", pista: "Tesoro luminoso que mantiene el equilibrio del mundo." },
       { palabra: "TEMPERATURA", pista: "Indica qué tan frío o caliente está algo." },
+      {"palabra":"COPO","pista":"Pequeña porción de nieve que cae del cielo."},
+      {"palabra":"CARAMBANO","pista":"Punta de hielo que cuelga de una superficie."},
+      {"palabra":"HELADA","pista":"Frío que congela el agua sobre el suelo y las plantas."},
+      {"palabra":"FRIO","pista":"Sensación que sentimos cuando baja la temperatura."},
+      {"palabra":"CONGELACION","pista":"Proceso por el que un líquido se vuelve sólido por el frío."},
+      {"palabra":"DESHIELO","pista":"Derretimiento de la nieve o el hielo al subir la temperatura."},
+      {"palabra":"AVALANCHA","pista":"Gran masa de nieve que cae por una ladera."},
+      {"palabra":"ALUD","pista":"Desprendimiento de nieve que desciende por una montaña."},
+      {"palabra":"ICEBERG","pista":"Gran bloque de hielo que flota en el mar."},
+      {"palabra":"TUNDRA","pista":"Paisaje muy frío con musgos y poca vegetación alta."},
+      {"palabra":"IGLU","pista":"Refugio construido con bloques de nieve compacta."},
+      {"palabra":"TRINEO","pista":"Vehículo con patines que se desliza sobre la nieve."},
+      {"palabra":"ESQUI","pista":"Tabla larga que se usa para deslizarse por la nieve."},
+      {"palabra":"PATIN","pista":"Calzado con cuchilla que permite deslizarse sobre hielo."},
+      {"palabra":"ABRIGO","pista":"Prenda gruesa que protege del frío."},
+      {"palabra":"BUFANDA","pista":"Prenda larga que se coloca alrededor del cuello."},
+      {"palabra":"GUANTE","pista":"Prenda que cubre la mano y separa sus dedos."},
+      {"palabra":"MANOPLA","pista":"Prenda de abrigo que reúne cuatro dedos y separa el pulgar."},
+      {"palabra":"GORRO","pista":"Prenda que abriga la cabeza."},
+      {"palabra":"BOTA","pista":"Calzado que cubre el pie y parte de la pierna."},
+      {"palabra":"LANA","pista":"Fibra que se obtiene del pelo de la oveja."},
+      {"palabra":"MANTA","pista":"Pieza de tejido que cubre y abriga el cuerpo."},
+      {"palabra":"CHIMENEA","pista":"Conducto por el que sale el humo de una casa."},
+      {"palabra":"HOGUERA","pista":"Fuego encendido al aire libre para calentarse."},
+      {"palabra":"LEÑA","pista":"Madera cortada que se usa como combustible."},
+      {"palabra":"FOCA","pista":"Mamífero marino de aletas cortas que descansa sobre hielo."},
+      {"palabra":"MORSA","pista":"Mamífero marino con dos colmillos largos."},
+      {"palabra":"PINGUINO","pista":"Ave que no vuela y nada con sus alas como aletas."},
+      {"palabra":"RENO","pista":"Ciervo de regiones frías que puede tirar de un trineo."},
+      {"palabra":"LIEBRE","pista":"Animal de orejas largas; algunas especies se vuelven blancas en invierno."},
+      {"palabra":"LOBO","pista":"Mamífero que aúlla y puede vivir en manadas."},
+      {"palabra":"OSO","pista":"Gran mamífero cuya especie polar tiene pelaje blanco."},
+      {"palabra":"ZORRO","pista":"Mamífero de cola espesa cuya especie ártica resiste el frío."},
+      {"palabra":"TERMOMETRO","pista":"Instrumento que sirve para medir la temperatura."},
+      {"palabra":"ESTUFA","pista":"Aparato que calienta una habitación."},
+      {"palabra":"VAPOR","pista":"Agua en estado gaseoso."},
+      {"palabra":"CRISTALINO","pista":"Se dice de algo transparente como el cristal."},
+      {"palabra":"POLAR","pista":"Relacionado con las regiones cercanas a los polos."},
+      {"palabra":"NORTE","pista":"Punto cardinal opuesto al sur."},
+      {"palabra":"SUR","pista":"Punto cardinal opuesto al norte."},
     ],
   },
 ];
@@ -1084,6 +1244,8 @@ let palabraSecreta = "";
 let pistaActual = "";
 let letrasElegidas = [];
 let palabrasUsadasEnMision = [];
+// Se conserva por mundo y misión al guardar, incluso entre sesiones.
+let historialPalabrasAventura = {};
 let intentos = 6;
 let escenarioActual = 0;
 let misionActual = 0;
@@ -3475,6 +3637,12 @@ modoPruebas.addEventListener("change", () => {
   actualizarModoPruebas(modoPruebas.checked);
 });
 
+document.getElementById("btnAbrirPruebasMenu").addEventListener("click", () => {
+  abrirConfiguracion();
+  modoPruebas.scrollIntoView({ block: "center" });
+  modoPruebas.focus();
+});
+
 selectorMundoPruebas.addEventListener("change", () => {
   actualizarSelectorMisionesPruebas();
 });
@@ -5227,83 +5395,225 @@ const palabrasAdicionalesVersus = {
 const bancosPalabrasVersus = {
   paises: [
     ...palabrasAdicionalesVersus.paises,
-    "ARGENTINA", "BRASIL", "CHILE", "PERÚ", "ESPAÑA", "MÉXICO", "CANADÁ", "ITALIA", "JAPÓN", "INDIA",
-    "FRANCIA", "ALEMANIA", "PORTUGAL", "URUGUAY", "PARAGUAY", "BOLIVIA", "COLOMBIA", "ECUADOR", "VENEZUELA", "PANAMÁ",
-    "CUBA", "HAITÍ", "JAMAICA", "BELICE", "GUATEMALA", "HONDURAS", "NICARAGUA", "DOMINICA", "GRANADA", "BAHAMAS",
-    "SUIZA", "AUSTRIA", "BÉLGICA", "GRECIA", "POLONIA", "CROACIA", "SERBIA", "RUMANIA", "BULGARIA", "UCRANIA",
-    "RUSIA", "CHINA", "TAILANDIA", "VIETNAM", "EGIPTO", "MARRUECOS", "KENIA", "ANGOLA", "AUSTRALIA", "TURQUÍA",
+    "ARGENTINA", "BRASIL", "CHILE", "PERÚ", "ESPAÑA", "MÉXICO", "CANADÁ", "ITALIA",
+    "JAPÓN", "INDIA", "FRANCIA", "ALEMANIA", "PORTUGAL", "URUGUAY", "PARAGUAY", "BOLIVIA",
+    "COLOMBIA", "ECUADOR", "VENEZUELA", "PANAMÁ", "CUBA", "HAITÍ", "JAMAICA", "BELICE",
+    "GUATEMALA", "HONDURAS", "NICARAGUA", "DOMINICA", "GRANADA", "BAHAMAS", "SUIZA", "AUSTRIA",
+    "BÉLGICA", "GRECIA", "POLONIA", "CROACIA", "SERBIA", "RUMANIA", "BULGARIA", "UCRANIA",
+    "RUSIA", "CHINA", "TAILANDIA", "VIETNAM", "EGIPTO", "MARRUECOS", "KENIA", "ANGOLA",
+    "AUSTRALIA", "TURQUÍA",
   ],
   frutas: [
     ...palabrasAdicionalesVersus.frutas,
-    "MANZANA", "PERA", "UVA", "KIWI", "MANGO", "LIMÓN", "NARANJA", "BANANA", "CIRUELA", "MELÓN",
-    "SANDÍA", "PAPAYA", "ANANÁ", "DURAZNO", "CEREZA", "FRUTILLA", "MANDARINA", "POMELO", "COCO", "HIGO",
-    "GRANADA", "GUAYABA", "MARACUYÁ", "MEMBRILLO", "DAMASCO", "ARÁNDANO", "FRAMBUESA", "MORA", "GROSELLA", "LIMA",
-    "PALTA", "TOMATE", "CAQUI", "LICHI", "NÍSPERO", "TUNA", "DÁTIL", "ACEITUNA", "BERGAMOTA", "CHIRIMOYA",
-    "PITAHAYA", "TAMARINDO", "CARAMBOLA", "KUMQUAT", "TORONJA", "UCHUVA", "YACA", "MAMÓN", "ZARZAMORA", "NECTARINA",
+    "MANZANA", "PERA", "UVA", "KIWI", "MANGO", "LIMÓN", "NARANJA", "BANANA",
+    "CIRUELA", "MELÓN", "SANDÍA", "PAPAYA", "ANANÁ", "DURAZNO", "CEREZA", "FRUTILLA",
+    "MANDARINA", "POMELO", "COCO", "HIGO", "GRANADA", "GUAYABA", "MARACUYÁ", "MEMBRILLO",
+    "DAMASCO", "ARÁNDANO", "FRAMBUESA", "MORA", "GROSELLA", "LIMA", "PALTA", "TOMATE",
+    "CAQUI", "LICHI", "NÍSPERO", "TUNA", "DÁTIL", "ACEITUNA", "BERGAMOTA", "CHIRIMOYA",
+    "PITAHAYA", "TAMARINDO", "CARAMBOLA", "KUMQUAT", "TORONJA", "UCHUVA", "YACA", "MAMÓN",
+    "ZARZAMORA", "NECTARINA",
   ],
   animales: [
     ...palabrasAdicionalesVersus.animales,
-    "ÁGUILA", "BALLENA", "CABALLO", "CONEJO", "DELFÍN", "GATO", "JIRAFA", "LEÓN", "PANDA", "TIGRE",
-    "PERRO", "ELEFANTE", "COCODRILO", "TORTUGA", "CANGURO", "KOALA", "CEBRA", "RINOCERONTE", "HIPOPÓTAMO", "MONO",
-    "GORILA", "CHIMPANCÉ", "PINGÜINO", "TIBURÓN", "PULPO", "CALAMAR", "FOCA", "NUTRIA", "CASTOR", "ARDILLA",
-    "LOBO", "ZORRO", "OSO", "PUMA", "JAGUAR", "LEOPARDO", "GUEPARDO", "HIENA", "BÚFALO", "BISONTE",
-    "CAMELLO", "LLAMA", "CABRA", "OVEJA", "CERDO", "GALLO", "GALLINA", "PATO", "CISNE", "BÚHO",
+    "ÁGUILA", "BALLENA", "CABALLO", "CONEJO", "DELFÍN", "GATO", "JIRAFA", "LEÓN",
+    "PANDA", "TIGRE", "PERRO", "ELEFANTE", "COCODRILO", "TORTUGA", "CANGURO", "KOALA",
+    "CEBRA", "RINOCERONTE", "HIPOPÓTAMO", "MONO", "GORILA", "CHIMPANCÉ", "PINGÜINO", "TIBURÓN",
+    "PULPO", "CALAMAR", "FOCA", "NUTRIA", "CASTOR", "ARDILLA", "LOBO", "ZORRO",
+    "OSO", "PUMA", "JAGUAR", "LEOPARDO", "GUEPARDO", "HIENA", "BÚFALO", "BISONTE",
+    "CAMELLO", "LLAMA", "CABRA", "OVEJA", "CERDO", "GALLO", "GALLINA", "PATO",
+    "CISNE", "BÚHO", "VACA", "LIEBRE", "SAPO", "SERPIENTE", "RATÓN", "RATA",
+    "TOPO", "TEJÓN", "MULA", "TORO", "BUEY", "TERNERO", "POTRO", "YEGUA",
+    "PAVO", "GANSO", "PALOMA", "CANARIO", "GORRIÓN", "GOLONDRINA", "HORNERO", "TERO",
+    "ÑANDÚ", "CARPINCHO", "COATÍ", "ZORRINO", "ALPACA", "VICUÑA", "GUANACO", "VENADO",
+    "ALCE", "MORSA", "MANATÍ", "BELUGA", "NARVAL", "CACHALOTE", "ORANGUTÁN", "BONOBO",
+    "MACACO", "MANDRIL", "ABEJA", "HORMIGA", "MARIPOSA", "MOSCA", "MOSQUITO", "ARAÑA",
+    "ESCORPIÓN", "CUCARACHA", "GRILLO", "LIBÉLULA", "PULGA", "PIOJO", "GUSANO", "LOMBRIZ",
+    "BABOSA", "PEZ", "ATÚN", "SARDINA", "MERLUZA", "SALMÓN", "TRUCHA", "BACALAO",
+    "PEJERREY", "DORADO", "SURUBÍ", "PACÚ", "BAGRE", "ANGUILA", "RAYA", "CANGREJO",
+    "CAMARÓN", "LANGOSTINO", "ALMEJA", "OSTRA", "MEJILLÓN", "LAGARTO", "LAGARTIJA", "CAMALEÓN",
+    "VÍBORA", "BOA", "PITÓN", "ANACONDA", "CABRITO", "CORDERO", "LECHÓN", "POLLITO",
+    "JILGUERO", "LECHUZA", "CARPINTERO", "CHAJÁ", "BENTEVEO", "BAILARÍN", "CALANDRIA", "ZORZAL",
+    "TORDO", "MIRLO", "PETIRROJO", "RUISEÑOR", "LAVANDERA", "ALONDRA", "ABUBILLA", "URRACA",
+    "GRAJA", "GRAJILLA", "ESTORNINO", "CUCO", "ALCIÓN", "VENCEJO", "AVIÓN", "AVOCETA",
+    "CHORLITO", "ZARAPITO", "AGACHADIZA", "AVEFRÍA", "OSTRERO", "GARCETA", "GARZA", "CIGÜEÑA",
+    "IBIS", "ESPÁTULA", "GRULLA", "ALBATROS", "PETREL", "PARDELA", "FULMAR", "FRAILECILLO",
+    "ARAO", "ALCATRAZ", "CORMORÁN", "ANHINGA", "SOMORMUJO", "ZAMPULLÍN", "MACÁ", "PORRÓN",
+    "CERCETA", "ÁNADE", "EIDER", "SERRETA", "UROGALLO", "PERDIZ", "FAISÁN", "PINTADA",
+    "PAVÓN", "QUETZAL", "GUACAMAYO", "CACATÚA", "PERIQUITO", "AGAPORNIS", "NINFA", "TURACO",
   ],
   comidas: [
     ...palabrasAdicionalesVersus.comidas,
-    "PIZZA", "PASTA", "EMPANADA", "MILANESA", "LOCRO", "SOPA", "ARROZ", "TORTILLA", "ENSALADA", "HELADO",
-    "HAMBURGUESA", "LASAÑA", "RAVIOLES", "ÑOQUIS", "ASADO", "GUISO", "TARTA", "PANQUEQUE", "ALBÓNDIGA", "CROQUETA",
-    "SÁNDWICH", "TAMAL", "HUMITA", "AREPA", "TACOS", "BURRITO", "CEVICHE", "SUSHI", "RAMEN", "PAELLA",
-    "RISOTTO", "POLENTA", "PURÉ", "OMELETTE", "CHURRASCO", "CHORIZO", "MATAMBRE", "PARRILLA", "CALZONE", "FOCACCIA",
-    "CHURRO", "FLAN", "BROWNIE", "GALLETA", "BIZCOCHO", "TORTA", "PASTEL", "BUDÍN", "MOUSSE", "GELATINA",
+    "PIZZA", "PASTA", "EMPANADA", "MILANESA", "LOCRO", "SOPA", "ARROZ", "TORTILLA",
+    "ENSALADA", "HELADO", "HAMBURGUESA", "LASAÑA", "RAVIOLES", "ÑOQUIS", "ASADO", "GUISO",
+    "TARTA", "PANQUEQUE", "ALBÓNDIGA", "CROQUETA", "SÁNDWICH", "TAMAL", "HUMITA", "AREPA",
+    "TACOS", "BURRITO", "CEVICHE", "SUSHI", "RAMEN", "PAELLA", "RISOTTO", "POLENTA",
+    "PURÉ", "OMELETTE", "CHURRASCO", "CHORIZO", "MATAMBRE", "PARRILLA", "CALZONE", "FOCACCIA",
+    "CHURRO", "FLAN", "BROWNIE", "GALLETA", "BIZCOCHO", "TORTA", "PASTEL", "BUDÍN",
+    "MOUSSE", "GELATINA", "POLLO", "CARNE", "PESCADO", "HUEVO", "PAN", "QUESO",
+    "LECHE", "YOGUR", "MANTECA", "MANTEQUILLA", "CREMA", "RICOTA", "JAMÓN", "SALAME",
+    "SALCHICHA", "MORCILLA", "PANCETA", "LOMO", "LOMITO", "COSTILLA", "CHULETA", "BISTEC",
+    "FILETE", "SUPREMA", "NUGGET", "ALITA", "MUSLO", "PECHUGA", "PAVO", "CERDO",
+    "TERNERA", "CORDERO", "CALDO", "PUCHERO", "COCIDO", "PAPILLA", "POTAJE", "POROTO",
+    "ALUBIA", "LENTEJA", "GARBANZO", "ARVEJA", "GUISANTE", "SOJA", "TOFU", "HUMMUS",
+    "SALSA", "MAYONESA", "MOSTAZA", "KÉTCHUP", "ALIOLI", "CHIMICHURRI", "GUACAMOLE", "PAPA",
+    "BATATA", "ZANAHORIA", "CEBOLLA", "AJO", "LECHUGA", "TOMATE", "PEPINO", "REMOLACHA",
+    "ACELGA", "ESPINACA", "BRÓCOLI", "COLIFLOR", "REPOLLO", "RABANITO", "NABO", "PUERRO",
+    "APIO", "BERENJENA", "ZAPALLO", "CALABAZA", "CHOCLO", "MAÍZ", "MANÍ", "PALOMITAS",
+    "POCHOCLO", "MEDIALUNA", "CHOCOLATE", "CARAMELO", "BOMBÓN", "MERMELADA", "MIEL", "AZÚCAR",
+    "HARINA", "AVENA", "GRANOLA", "CEREAL", "GALLETITA", "BIZCOCHUELO", "MAGDALENA", "MUFFIN",
+    "BUÑUELO", "TURRÓN", "MERENGUE", "COMPOTA", "NATILLA", "SORBETE",
   ],
   profesiones: [
     ...palabrasAdicionalesVersus.profesiones,
-    "MÉDICO", "DOCENTE", "BOMBERO", "ABOGADO", "ARTISTA", "PANADERO", "PILOTO", "ACTOR", "COCINERO", "DENTISTA",
-    "INGENIERO", "ARQUITECTO", "ENFERMERO", "PERIODISTA", "CONTADOR", "MECÁNICO", "ELECTRICISTA", "CARPINTERO", "PLOMERO", "JARDINERO",
-    "VETERINARIO", "FARMACÉUTICO", "PSICÓLOGO", "FOTÓGRAFO", "DISEÑADOR", "PROGRAMADOR", "CIENTÍFICO", "ESCRITOR", "MÚSICO", "PINTOR",
-    "ESCULTOR", "BAILARÍN", "CANTANTE", "DIRECTOR", "CAMARÓGRAFO", "POLICÍA", "SOLDADO", "MARINERO", "TAXISTA", "CHOFER",
-    "CARTERO", "CAJERO", "VENDEDOR", "SECRETARIO", "TRADUCTOR", "LOCUTOR", "AZAFATA", "AGRÓNOMO", "BIÓLOGO", "GEÓLOGO",
+    "MÉDICO", "DOCENTE", "BOMBERO", "ABOGADO", "ARTISTA", "PANADERO", "PILOTO", "ACTOR",
+    "COCINERO", "DENTISTA", "INGENIERO", "ARQUITECTO", "ENFERMERO", "PERIODISTA", "CONTADOR", "MECÁNICO",
+    "ELECTRICISTA", "CARPINTERO", "PLOMERO", "JARDINERO", "VETERINARIO", "FARMACÉUTICO", "PSICÓLOGO", "FOTÓGRAFO",
+    "DISEÑADOR", "PROGRAMADOR", "CIENTÍFICO", "ESCRITOR", "MÚSICO", "PINTOR", "ESCULTOR", "BAILARÍN",
+    "CANTANTE", "DIRECTOR", "CAMARÓGRAFO", "POLICÍA", "SOLDADO", "MARINERO", "TAXISTA", "CHOFER",
+    "CARTERO", "CAJERO", "VENDEDOR", "SECRETARIO", "TRADUCTOR", "LOCUTOR", "AZAFATA", "AGRÓNOMO",
+    "BIÓLOGO", "GEÓLOGO", "MAESTRO", "PROFESOR", "ALBAÑIL", "HERRERO", "SOLDADOR", "CERRAJERO",
+    "FONTANERO", "GASISTA", "TAPICERO", "SASTRE", "MODISTA", "COSTURERO", "FLORISTA", "LIBRERO",
+    "KIOSQUERO", "FERRETERO", "CARNICERO", "PESCADERO", "VERDULERO", "FRUTERO", "REPOSTERO", "PASTELERO",
+    "HELADERO", "MOZO", "MESERO", "BARMAN", "BARISTA", "CONSERJE", "PORTERO", "SERENO",
+    "VIGILANTE", "LIMPIADOR", "RECOLECTOR", "BARRENDERO", "REPARTIDOR", "MENSAJERO", "CAMIONERO", "COLECTIVERO",
+    "MAQUINISTA", "AGRICULTOR", "CAMPESINO", "GANADERO", "PASTOR", "TAMBERO", "PESCADOR", "LEÑADOR",
+    "OBRERO", "CAPATAZ", "JORNALERO", "GUARDAVIDAS", "SOCORRISTA", "PARAMÉDICO", "PARTERA", "CAMILLERO",
+    "CUIDADOR", "MASAJISTA", "JINETE", "DOMADOR", "ADIESTRADOR", "PAYASO", "MAGO", "MIMO",
+    "ACRÓBATA", "MALABARISTA", "TITIRITERO", "GUIONISTA", "POETA", "NOVELISTA", "COMPOSITOR", "PIANISTA",
+    "GUITARRISTA", "VIOLINISTA", "BAJISTA", "BATERISTA", "CORRECTOR", "REDACTOR", "DIBUJANTE", "TATUADOR",
+    "MAQUILLADOR", "ESTILISTA", "SONIDISTA", "ARCHIVERO", "INTÉRPRETE", "ANALISTA", "GERENTE", "EMPRESARIO",
+    "ASESOR", "CONSULTOR", "INSPECTOR", "SUPERVISOR", "ESCRIBANO", "ÁRBITRO", "EDUCADOR", "TUTOR",
+    "PRECEPTOR", "RECTOR", "DECANO", "PEDAGOGO", "LOGOPEDA", "PSICÓMETRA",
   ],
   deportes: [
     ...palabrasAdicionalesVersus.deportes,
-    "FÚTBOL", "TENIS", "RUGBY", "HOCKEY", "BOXEO", "NATACIÓN", "CICLISMO", "VOLEY", "GOLF", "JUDO",
-    "BÁSQUET", "HANDBALL", "BÉISBOL", "SOFTBOL", "CRÍQUET", "PÁDEL", "SQUASH", "SURF", "REMO", "VELA",
-    "ATLETISMO", "TRIATLÓN", "MARATÓN", "ESGRIMA", "KARATE", "TAEKWONDO", "SUMO", "LUCHA", "POLO", "BOCHAS",
-    "BILLAR", "AJEDREZ", "PATINAJE", "ESQUÍ", "SNOWBOARD", "ALPINISMO", "ESCALADA", "EQUITACIÓN", "CANOTAJE", "KAYAK",
-    "MOTOCROSS", "RALLY", "KARTING", "BOWLING", "BÁDMINTON", "WATERPOLO", "LACROSSE", "FUTSAL", "ARQUERÍA", "GIMNASIA",
+    "FÚTBOL", "TENIS", "RUGBY", "HOCKEY", "BOXEO", "NATACIÓN", "CICLISMO", "VOLEY",
+    "GOLF", "JUDO", "BÁSQUET", "HANDBALL", "BÉISBOL", "SOFTBOL", "CRÍQUET", "PÁDEL",
+    "SQUASH", "SURF", "REMO", "VELA", "ATLETISMO", "TRIATLÓN", "MARATÓN", "ESGRIMA",
+    "KARATE", "TAEKWONDO", "SUMO", "LUCHA", "POLO", "BOCHAS", "BILLAR", "AJEDREZ",
+    "PATINAJE", "ESQUÍ", "SNOWBOARD", "ALPINISMO", "ESCALADA", "EQUITACIÓN", "CANOTAJE", "KAYAK",
+    "MOTOCROSS", "RALLY", "KARTING", "BOWLING", "BÁDMINTON", "WATERPOLO", "LACROSSE", "FUTSAL",
+    "ARQUERÍA", "GIMNASIA",
   ],
   transportes: [
     ...palabrasAdicionalesVersus.transportes,
-    "AUTO", "TREN", "BARCO", "AVIÓN", "METRO", "BICICLETA", "CAMIÓN", "COLECTIVO", "TRANVÍA", "MOTO",
-    "TAXI", "SUBTE", "ÓMNIBUS", "TRACTOR", "CAMIONETA", "FURGONETA", "MONOPATÍN", "TRICICLO", "CUATRICICLO", "MOTONETA",
-    "VELERO", "LANCHA", "CANOA", "KAYAK", "BOTE", "YATE", "FERRY", "BUQUE", "CRUCERO", "SUBMARINO",
-    "HELICÓPTERO", "AVIONETA", "PLANEADOR", "DIRIGIBLE", "GLOBO", "COHETE", "LANZADERA", "HIDROAVIÓN", "TELEFÉRICO", "FUNICULAR",
-    "AMBULANCIA", "PATRULLERO", "REMOLQUE", "CARRETA", "CARRO", "TRINEO", "LOCOMOTORA", "MOTOCICLETA", "AERONAVE", "CATAMARÁN",
+    "AUTO", "TREN", "BARCO", "AVIÓN", "METRO", "BICICLETA", "CAMIÓN", "COLECTIVO",
+    "TRANVÍA", "MOTO", "TAXI", "SUBTE", "ÓMNIBUS", "TRACTOR", "CAMIONETA", "FURGONETA",
+    "MONOPATÍN", "TRICICLO", "CUATRICICLO", "MOTONETA", "VELERO", "LANCHA", "CANOA", "KAYAK",
+    "BOTE", "YATE", "FERRY", "BUQUE", "CRUCERO", "SUBMARINO", "HELICÓPTERO", "AVIONETA",
+    "PLANEADOR", "DIRIGIBLE", "GLOBO", "COHETE", "LANZADERA", "HIDROAVIÓN", "TELEFÉRICO", "FUNICULAR",
+    "AMBULANCIA", "PATRULLERO", "REMOLQUE", "CARRETA", "CARRO", "TRINEO", "LOCOMOTORA", "MOTOCICLETA",
+    "AERONAVE", "CATAMARÁN",
   ],
   objetos: [
     ...palabrasAdicionalesVersus.objetos,
-    "MESA", "SILLA", "RELOJ", "LLAVE", "VASO", "LÁMPARA", "CUADERNO", "ESPEJO", "BOTELLA", "TIJERA",
-    "PLATO", "TAZA", "TENEDOR", "CUCHILLO", "CUCHARA", "OLLA", "SARTÉN", "JARRA", "TERMO", "MATE",
-    "MOCHILA", "CARTERA", "BILLETERA", "PARAGUAS", "SOMBRERO", "ZAPATO", "CAMISA", "PANTALÓN", "BUFANDA", "GUANTE",
-    "TELÉFONO", "TABLETA", "RADIO", "CÁMARA", "AURICULAR", "TECLADO", "PANTALLA", "CONTROL", "CARGADOR", "BATERÍA",
-    "MARTILLO", "SERRUCHO", "PINZA", "CLAVO", "TORNILLO", "ESCOBA", "PALA", "CEPILLO", "PEINE", "ALMOHADA",
+    "MESA", "SILLA", "RELOJ", "LLAVE", "VASO", "LÁMPARA", "CUADERNO", "ESPEJO",
+    "BOTELLA", "TIJERA", "PLATO", "TAZA", "TENEDOR", "CUCHILLO", "CUCHARA", "OLLA",
+    "SARTÉN", "JARRA", "TERMO", "MATE", "MOCHILA", "CARTERA", "BILLETERA", "PARAGUAS",
+    "SOMBRERO", "ZAPATO", "CAMISA", "PANTALÓN", "BUFANDA", "GUANTE", "TELÉFONO", "TABLETA",
+    "RADIO", "CÁMARA", "AURICULAR", "TECLADO", "PANTALLA", "CONTROL", "CARGADOR", "BATERÍA",
+    "MARTILLO", "SERRUCHO", "PINZA", "CLAVO", "TORNILLO", "ESCOBA", "PALA", "CEPILLO",
+    "PEINE", "ALMOHADA", "LIBRO", "LÁPIZ", "PAPEL", "CAMA", "JABÓN", "LATA",
+    "CAJA", "BOLSA", "BOLSO", "MONEDA", "BILLETE", "BOTÓN", "HILO", "TELA",
+    "LANA", "GUITARRA", "PIANO", "FLAUTA", "VIOLÍN", "TAMBOR", "BOMBO", "PELOTA",
+    "MUÑECA", "PELUCHE", "JUGUETE", "DADO", "NAIPE", "LENTES", "ANTEOJOS", "TELEVISOR",
+    "COMPUTADORA", "IMPRESORA", "RATÓN", "MOUSE", "PARLANTE", "HELADERA", "HORNO", "ESTUFA",
+    "BATIDORA", "LICUADORA", "TOSTADORA", "CAFETERA", "PAVA", "TETERA", "RALLADOR", "COLADOR",
+    "CUCHARÓN", "SALERO", "AZUCARERA", "ENCHUFE", "INTERRUPTOR", "FÓSFORO", "ENCENDEDOR", "FOCO",
+    "PILA", "REMERA", "BLUSA", "VESTIDO", "FALDA", "POLLERA", "SUÉTER", "CAMPERA",
+    "CHAQUETA", "SACO", "TRAJE", "CHALECO", "PONCHO", "PIJAMA", "BATA", "BOTA",
+    "SANDALIA", "ZAPATILLA", "MEDIA", "CALCETÍN", "GORRO", "PULSERA", "COLLAR", "ARO",
+    "CUERDA", "RED", "ESCUDO", "ESPADA", "BANDERA", "MAPA", "TERMÓMETRO", "JERINGA",
+    "VENDA", "GASA", "CURITA", "MULETA", "PUERTA", "VENTANA", "LADRILLO", "TEJA",
+    "BALDOSA", "CUADERNILLO", "AGENDA", "DIARIO", "REVISTA", "PERIÓDICO", "CARTA", "SOBRE",
+    "SELLO", "POSTAL", "FOTO", "RETRATO", "MARCO", "ÁLBUM", "ESTUCHE", "CRAYÓN",
+    "TIZA", "ACUARELA", "TÉMPERA", "PALETA", "CARTULINA", "CARTÓN", "PUNZÓN", "COMPÁS",
+    "ESCUADRA", "CALCULADORA", "ÁBACO", "SACAPUNTAS", "CORRECTOR", "ROTULADOR", "MARCADOR", "FIBRA",
+    "RESALTADOR", "TINTERO", "PLUMA", "PORTAMINAS", "CLIP", "BROCHE", "GANCHO", "CINTA",
+    "PEGAMENTO", "TIJERAS", "CÚTER", "GUILLOTINA", "ENGRAPADORA", "ARCHIVADOR", "FICHERO", "FICHA",
+    "TARJETA", "CARPETÍN", "PORTAFOLIO", "ATRIL", "PUPITRE", "ESCRITORIO", "BANCO", "BANQUETA",
+    "TABURETE", "SILLÓN", "MECEDORA", "BUTACA", "REPOSERA", "HAMACA", "CUNA", "CATRE",
+    "LITERA", "SOMIER", "RESPALDO", "CABECERA", "CÓMODA", "APARADOR", "VITRINA", "BIBLIOTECA",
+    "REPISA", "CAJÓN", "BAÚL", "COFRE", "ARCA", "CAJITA", "JOYERO", "NECESER",
+    "BOTIQUÍN", "COSTURERO", "ALHAJERO", "ALFOMBRA", "FELPUDO", "MANTEL", "SERVILLETA", "INDIVIDUAL",
+    "POSAVASOS", "POSAFUENTES", "AGARRADERA", "DELANTAL", "FUNDA", "COLCHA", "EDREDÓN", "COBIJA",
+    "FRAZADA", "ACOLCHADO", "ALMOHADÓN", "COJÍN", "MOSQUITERO", "VISILLO", "PERSIANA", "ESTOR",
+    "POSTIGO", "PORTÓN", "REJA", "CERROJO", "PICAPORTE", "MANIJA", "BISAGRA", "CERRADURA",
+    "PESTILLO", "PASADOR", "MIRILLA", "TIMBRE", "BUZÓN", "CAMPANA", "CENCERRO", "CASCABEL",
+    "SONAJERO", "BALÓN", "CANICA", "TROMPO", "YOYÓ", "COMETA", "BARRILETE", "DOMINÓ",
+    "ROMPECABEZAS", "TÍTERE", "MARIONETA", "PATINETA", "PATÍN", "RAQUETA", "BATE", "ARCO",
+    "FLECHA", "DIANA", "SOGA", "CABLE", "ALAMBRE", "CADENA", "ESLABÓN", "ARNÉS",
+    "MOSQUETÓN", "HEBILLA", "CINCHA", "ESLINGA", "ANCLA", "REMO", "TIMÓN", "VELA",
+    "MÁSTIL", "VELAMEN", "BRIDA", "RIENDA", "MONTURA", "ESTRIBO", "HERRADURA", "LÁTIGO",
+    "CORREA", "BOZAL", "JAULA", "PECERA", "COMEDERO", "BEBEDERO", "ACUARIO", "TERRARIO",
+    "JARRÓN", "FLORERO", "MACETA", "REGADERA", "RASTRILLO", "AZADA", "AZADÓN", "HOZ",
+    "GUADAÑA", "MACHETE", "HACHA", "PICOTA", "PICO", "CARRETILLA", "PODADORA", "SIERRA",
+    "LIJA", "LIMA", "FORMÓN", "CINCEL", "BURIL", "GUBIA", "MAZO", "MARTILLETE",
+    "TENAZA", "ALICATE", "TUERCA", "ARANDELA", "TARUGO", "TACO", "CLAVIJA", "REMACHE",
+    "GRAPA", "MORSA", "PRENSA", "SARGENTO", "TORNO", "YUNQUE",
   ],
   naturaleza: [
     ...palabrasAdicionalesVersus.naturaleza,
-    "SOL", "MAR", "RÍO", "LUNA", "MONTAÑA", "VOLCÁN", "BOSQUE", "NUBE", "VIENTO", "LAGUNA",
-    "OCÉANO", "PLAYA", "ISLA", "VALLE", "COLINA", "PRADERA", "DESIERTO", "SELVA", "CASCADA", "ARROYO",
-    "LAGO", "GLACIAR", "ICEBERG", "ACANTILADO", "CUEVA", "ROCA", "PIEDRA", "ARENA", "TIERRA", "BARRO",
-    "LLUVIA", "NIEVE", "GRANIZO", "TORMENTA", "TRUENO", "RELÁMPAGO", "NIEBLA", "ROCÍO", "HIELO", "ESCARCHA",
-    "ÁRBOL", "FLOR", "HOJA", "RAMA", "RAÍZ", "MUSGO", "HONGO", "SEMILLA", "PÉTALO", "JUNCAL",
+    "SOL", "MAR", "RÍO", "LUNA", "MONTAÑA", "VOLCÁN", "BOSQUE", "NUBE",
+    "VIENTO", "LAGUNA", "OCÉANO", "PLAYA", "ISLA", "VALLE", "COLINA", "PRADERA",
+    "DESIERTO", "SELVA", "CASCADA", "ARROYO", "LAGO", "GLACIAR", "ICEBERG", "ACANTILADO",
+    "CUEVA", "ROCA", "PIEDRA", "ARENA", "TIERRA", "BARRO", "LLUVIA", "NIEVE",
+    "GRANIZO", "TORMENTA", "TRUENO", "RELÁMPAGO", "NIEBLA", "ROCÍO", "HIELO", "ESCARCHA",
+    "ÁRBOL", "FLOR", "HOJA", "RAMA", "RAÍZ", "MUSGO", "HONGO", "SEMILLA",
+    "PÉTALO", "JUNCAL", "AGUA", "AIRE", "SUELO", "PASTO", "HIERBA", "ROBLE",
+    "SAUCE", "ÁLAMO", "ABETO", "CEDRO", "CIPRÉS", "EUCALIPTO", "ARCE", "HAYA",
+    "CEIBO", "OMBÚ", "JACARANDÁ", "LAPACHO", "ACACIA", "PINO", "PALMERA", "CACTUS",
+    "HELECHO", "LIQUEN", "ALGA", "TRÉBOL", "ROSA", "CLAVEL", "TULIPÁN", "GIRASOL",
+    "MARGARITA", "ORQUÍDEA", "VIOLETA", "LIRIO", "AMAPOLA", "JAZMÍN", "LAVANDA", "ROMERO",
+    "TOMILLO", "MENTA", "ALBAHACA", "ORÉGANO", "LAUREL", "PEREJIL", "TRONCO", "CORTEZA",
+    "TALLO", "ESPINA", "SAVIA", "RESINA", "POLEN", "FRUTO", "BELLOTA", "PIÑA",
+    "ESPORA", "SETA", "BROTE", "RETOÑO", "FAUNA", "FLORA", "NIDO", "MADRIGUERA",
+    "PANAL", "COLMENA", "HUELLA", "PLUMA", "PELO", "ESCAMA", "CUERNO", "ASTA",
+    "GARRA", "PEZUÑA", "ALA", "ALETA", "PICO", "OTOÑO", "INVIERNO", "VERANO",
+    "PRIMAVERA", "AMANECER", "ATARDECER", "NOCHE", "DÍA", "ESTACIÓN", "PLANETA", "SATÉLITE",
+    "ASTEROIDE", "COMETA", "ESTRELLA", "GALAXIA", "COSMOS", "UNIVERSO", "ESPACIO", "GRAVEDAD",
+    "LUZ", "SOMBRA", "ARCOÍRIS", "BRUMA", "NEBLINA", "SEQUÍA", "HELADA", "DESHIELO",
+    "ALUD", "AVALANCHA", "COPO", "AGUACERO", "LLOVIZNA", "HURACÁN", "CICLÓN", "TIFÓN",
+    "TSUNAMI", "MAREMOTO", "OLA", "ESPUMA", "GOTA", "OXÍGENO", "CARBONO", "NITRÓGENO",
+    "HIDRÓGENO", "HELIO", "OZONO", "SUBSUELO", "HUMUS", "ARCILLA", "LIMO", "GRAVA",
+    "GUIJARRO", "PEÑASCO", "ARENISCA", "CALIZA", "GRANITO", "BASALTO", "OBSIDIANA", "PIZARRA",
+    "MÁRMOL", "CUARZO", "ÁGATA", "ÓPALO", "RUBÍ", "ZAFIRO", "ESMERALDA", "DIAMANTE",
+    "TOPACIO", "AMATISTA", "TURMALINA", "JADE", "ÓNIX", "ÁMBAR", "PERLA", "CORAL",
   ],
   nombres: [
     ...palabrasAdicionalesVersus.nombres,
-    "ANA", "LUZ", "LEO", "JUAN", "SOFÍA", "MARTINA", "TOMÁS", "CARLOS", "ELENA", "JULIÁN",
-    "MARÍA", "PEDRO", "LUCÍA", "DIEGO", "CAMILA", "MATEO", "VALENTINA", "SANTIAGO", "EMILIA", "NICOLÁS",
-    "PAULA", "PABLO", "LAURA", "MARCOS", "DANIELA", "GABRIELA", "FEDERICO", "AGUSTINA", "SEBASTIÁN", "VICTORIA",
-    "FLORENCIA", "FRANCO", "ROMINA", "BRUNO", "JULIETA", "FACUNDO", "ROCÍO", "IGNACIO", "MALENA", "SIMÓN",
-    "NOELIA", "RENZO", "CATALINA", "BENJAMÍN", "MICAELA", "JOAQUÍN", "MILAGROS", "BAUTISTA", "ABRIL", "ALMA",
+    "ANA", "LUZ", "LEO", "JUAN", "SOFÍA", "MARTINA", "TOMÁS", "CARLOS",
+    "ELENA", "JULIÁN", "MARÍA", "PEDRO", "LUCÍA", "DIEGO", "CAMILA", "MATEO",
+    "VALENTINA", "SANTIAGO", "EMILIA", "NICOLÁS", "PAULA", "PABLO", "LAURA", "MARCOS",
+    "DANIELA", "GABRIELA", "FEDERICO", "AGUSTINA", "SEBASTIÁN", "VICTORIA", "FLORENCIA", "FRANCO",
+    "ROMINA", "BRUNO", "JULIETA", "FACUNDO", "ROCÍO", "IGNACIO", "MALENA", "SIMÓN",
+    "NOELIA", "RENZO", "CATALINA", "BENJAMÍN", "MICAELA", "JOAQUÍN", "MILAGROS", "BAUTISTA",
+    "ABRIL", "ALMA", "LUIS", "MARTÍN", "JORGE", "MIGUEL", "ROBERTO", "RICARDO",
+    "SERGIO", "FERNANDO", "ALEJANDRO", "ALBERTO", "GUSTAVO", "HÉCTOR", "RUBÉN", "RAFAEL",
+    "ÓSCAR", "RAMÓN", "MARCELO", "MATÍAS", "MAURO", "JUANA", "JULIA", "LUISA",
+    "CARLA", "PATRICIA", "SANDRA", "SILVIA", "SUSANA", "MARTA", "MÓNICA", "ROSA",
+    "NORMA", "GRACIELA", "BEATRIZ", "ALICIA", "LILIANA", "ADRIANA", "CLAUDIA", "MARCELA",
+    "MARIANA", "GISELA", "JAZMÍN", "MÍA", "LUNA", "SOL", "LARA", "VIOLETA",
+    "VALERIA", "RENATA", "THIAGO", "TIAGO", "TOBÍAS", "ULISES", "JOEL", "CIRO",
+    "AXEL", "MANUELA", "MERCEDES", "PILAR", "PAZ", "INÉS", "IRENE", "ABEL",
+    "ABELARDO", "ABIGAIL", "ABRAHAM", "ADA", "ADÁN", "ADELA", "ADELAIDA", "ADELINA",
+    "ADOLFO", "AGUSTÍN", "AÍDA", "AILÉN", "AITANA", "ALDO", "ALEX", "ALEXANDER",
+    "ALEXANDRA", "ALEXIS", "ALINA", "AMALIA", "AMANCIO", "AMADEO", "AMELIA", "AMIRA",
+    "AMPARO", "ANABEL", "ANABELLA", "ANAHÍ", "ANALÍA", "ANASTASIA", "ÁNGEL", "ÁNGELA",
+    "ÁNGELES", "ANGÉLICA", "ANÍBAL", "ANSELMO", "ANTONIO", "ANTONELLA", "AQUILES", "ARACELI",
+    "ARIEL", "ARMANDO", "ARNALDO", "ARTURO", "ASUNCIÓN", "AURELIA", "AURELIO", "AURORA",
+    "BÁRBARA", "BARTOLOMÉ", "BENICIO", "BENITO", "BERENICE", "BERNARDO", "BERTA", "BLANCA",
+    "BLAS", "BRENDA", "BRIAN", "BRISA", "CAMILO", "CANDELARIA", "CARINA", "CARLOTA",
+    "CARMELO", "CAROLINA", "CASANDRA", "CASILDA", "CATALINO", "CAYETANA", "CAYETANO", "CÉSAR",
+    "CELESTE", "CINTIA", "CLAUDIO", "CLEMENTE", "CONCEPCIÓN", "CONSTANZA", "CONSUELO", "CORAL",
+    "CRISTIAN", "CRISTINA", "CRISTÓBAL", "DAFNE", "DALILA", "DANA", "DANIEL", "DARÍO",
+    "DÉBORA", "DEMETRIO", "DENIS", "DENISE", "DIANA", "DINA", "DOLORES", "DOMINGO",
+    "DORA", "DOROTEA", "DULCE", "EDGAR", "EDMUNDO", "EDITH", "EDNA", "EFRAÍN",
+    "ELISA", "ELISABET", "ELOÍSA", "ELSA", "ELVIRA", "EMILIANO", "EMILIO", "EMMA",
+    "ENRIQUE", "ERIC", "ERIKA", "ERNESTO", "ESMERALDA", "ESPERANZA", "ESTELA", "ESTER",
+    "ESTRELLA", "EVA", "EVANGELINA", "EVELIN", "FABIANA", "FABIOLA", "FÁTIMA", "FAUSTO",
+    "FELICIA", "FERMÍN", "FIDEL", "FILOMENA", "FLAVIA", "FLAVIO", "FLOR", "FLORIÁN",
+    "FRANCISCA", "FRANCISCO",
   ],
 };
 const clavesBancosPalabrasVersus = Object.fromEntries(
@@ -8416,12 +8726,12 @@ const pantallasRotasKalamoVersus = {
   guardiana: "assets/images/personajes/versus/guardiana-pantalla-rota-kalamo-v1.png",
   dragon: "assets/images/personajes/versus/dragon-pantalla-rota-kalamo-v1.png",
   hombre_lobo: "assets/images/personajes/versus/hombre-lobo-pantalla-rota-kalamo-v1.png",
-  t_shadow: "assets/images/personajes/versus/t-shadow-pantalla-rota-kalamo-v1.png",
-  guardian_alba: "assets/images/personajes/versus/guardian-alba-pantalla-rota-kalamo-v1.png",
+  t_shadow: "assets/images/personajes/versus/t-shadow-cara-vidrio-kalamo-v2.png",
+  guardian_alba: "assets/images/personajes/versus/guardian-alba-cara-vidrio-kalamo-v2.png",
   dragon_hielo: "assets/images/personajes/versus/dragon-hielo-pantalla-rota-kalamo-v1.png",
   azrak: "assets/images/personajes/versus/azrak-pantalla-rota-kalamo-v1.png",
   kalamo: "assets/images/personajes/versus/kalamo-pantalla-rota-kalamo-v1.png",
-  kairos: srcKairosBaseVersus,
+  kairos: "assets/images/personajes/versus/kairos-cara-vidrio-kalamo-v2.png",
 };
 
 function configurarVictimaFinalVersus(elemento, personaje) {
@@ -8767,6 +9077,7 @@ function reproducirLibroPalabrasPerdidasVersus(victima = personajeRivalVersus) {
   cinematicaFinalVersus.classList.add("libro-palabras-perdidas");
   cinematicaFinalVersus.classList.add("kalamo-final-remate-pantalla");
   cinematicaFinalVersus.classList.toggle("kalamo-victima-explorador", victimaFinal === "explorador");
+  cinematicaFinalVersus.classList.toggle("kalamo-impacto-frontal", ["kairos", "guardian_alba", "t_shadow"].includes(victimaFinal));
   cinematicaFinalVersus.classList.remove("oculto");
   void cinematicaFinalVersus.offsetWidth;
   cinematicaFinalVersus.classList.add("activa");
@@ -8845,6 +9156,7 @@ function completarCinematicaFinalVersus() {
     "libro-palabras-perdidas",
     "kalamo-final-remate-pantalla",
     "kalamo-victima-explorador",
+    "kalamo-impacto-frontal",
     "siglos-en-un-segundo",
     ...clasesVictimasKairosVersus,
   );
@@ -8882,6 +9194,7 @@ function cancelarCinematicaFinalVersus() {
     "kalamo-final-remate-pantalla",
     "kalamo-victima-explorador",
     "siglos-en-un-segundo",
+    "kalamo-impacto-frontal",
     ...clasesVictimasKairosVersus,
   );
   particulasEclipseVersus.replaceChildren();
@@ -9511,6 +9824,7 @@ function mostrarIntroduccionMundoDos() {
 }
 
 function reiniciarEstadoAventura() {
+  historialPalabrasAventura = {};
   cancelarSecuenciaNarrativaActual();
   detenerSonidos();
   cancelarRetornoEstadoBaseExplorador();
@@ -11257,6 +11571,7 @@ function guardarProgreso() {
   if (modoPruebasActivo) return;
 
   const progreso = {
+    historialPalabrasAventura,
     escenarioActual,
     misionActual,
     desafioActual,
@@ -11284,6 +11599,7 @@ function guardarProgreso() {
 }
 
 function cargarProgreso() {
+  historialPalabrasAventura = {};
   const progresoGuardado = localStorage.getItem("progresoAventuraGA");
 
   if (!progresoGuardado) {
@@ -11304,6 +11620,18 @@ function cargarProgreso() {
   }
 
   escenarioActual = progreso.escenarioActual ?? 0;
+  for (let mundo = 0; mundo < aventura.length; mundo++) {
+    const anterior = progreso.historialPalabrasAventura?.[mundo];
+    if (!anterior || typeof anterior !== "object") continue;
+    const validas = new Set(aventura[mundo].palabras.map(item => item.palabra));
+    const limpiar = lista => Array.isArray(lista)
+      ? [...new Set(lista.filter(palabra => validas.has(palabra)))] : [];
+    historialPalabrasAventura[mundo] = {
+      usadas: limpiar(anterior.usadas),
+      mision: Number.isInteger(anterior.mision) ? anterior.mision : -1,
+      enMision: limpiar(anterior.enMision),
+    };
+  }
   misionActual = progreso.misionActual ?? 0;
   desafiosCompletados =
     progreso.desafiosCompletados ??
@@ -11390,21 +11718,35 @@ function actualizarMenuPrincipal() {
 
 function obtenerPalabraAleatoria() {
   const escenario = aventura[escenarioActual];
-
-  let palabrasDisponibles = escenario.palabras.filter(
-    (item) => !palabrasUsadasEnMision.includes(item.palabra),
-  );
-
-  if (palabrasDisponibles.length === 0) {
-    palabrasUsadasEnMision = [];
-    palabrasDisponibles = escenario.palabras;
+  // Las pruebas no consumen las palabras de la partida real.
+  const historial = modoPruebasActivo
+    ? { usadas: palabrasUsadasEnMision, mision: misionActual, enMision: palabrasUsadasEnMision }
+    : (historialPalabrasAventura[escenarioActual] ??= { usadas: [], mision: misionActual, enMision: [] });
+  if (historial.mision !== misionActual) {
+    historial.mision = misionActual;
+    historial.enMision = [];
   }
-
+  let palabrasDisponibles = escenario.palabras.filter(item => !historial.usadas.includes(item.palabra));
+  if (!palabrasDisponibles.length) {
+    const ultima = historial.usadas.at(-1);
+    historial.usadas = [];
+    palabrasDisponibles = escenario.palabras.filter(item =>
+      !historial.enMision.includes(item.palabra) && item.palabra !== ultima);
+    // Sólo puede ocurrir tras agotar el banco entero en una misma misión.
+    if (!palabrasDisponibles.length) {
+      historial.enMision = [];
+      palabrasDisponibles = escenario.palabras.filter(item => item.palabra !== ultima);
+    }
+  } else {
+    const sinRepetirMision = palabrasDisponibles.filter(item => !historial.enMision.includes(item.palabra));
+    if (sinRepetirMision.length) palabrasDisponibles = sinRepetirMision;
+  }
   const indice = Math.floor(Math.random() * palabrasDisponibles.length);
   const palabraSeleccionada = palabrasDisponibles[indice];
-
-  palabrasUsadasEnMision.push(palabraSeleccionada.palabra);
-
+  historial.usadas.push(palabraSeleccionada.palabra);
+  if (!historial.enMision.includes(palabraSeleccionada.palabra)) historial.enMision.push(palabraSeleccionada.palabra);
+  palabrasUsadasEnMision = [...historial.enMision];
+  guardarProgreso();
   return palabraSeleccionada;
 }
 

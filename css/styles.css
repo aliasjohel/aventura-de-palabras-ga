@@ -1459,6 +1459,12 @@
 .kalamo-final-remate-pantalla.kalamo-victima-explorador .kalamo-final-pantalla-rota {
     object-fit: contain;
 }
+.cinematica-final-versus.kalamo-impacto-frontal .kalamo-final-pantalla-rota {
+    object-fit: contain;
+    background: #080c16;
+    width: 100%;
+    left: 0;
+}
 .kalamo-final-remate-pantalla .kalamo-final-libro,
 .kalamo-final-remate-pantalla .kalamo-final-impactos {
     display: none !important;

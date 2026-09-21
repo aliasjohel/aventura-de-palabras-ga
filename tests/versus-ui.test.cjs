@@ -360,7 +360,7 @@ assert.match(app, /pantallasRotasKalamoVersus/);
 for (const recurso of [
   "mago-pantalla-rota-kalamo-v1", "guardiana-pantalla-rota-kalamo-v1",
   "dragon-pantalla-rota-kalamo-v1", "hombre-lobo-pantalla-rota-kalamo-v1",
-  "t-shadow-pantalla-rota-kalamo-v1", "guardian-alba-pantalla-rota-kalamo-v1",
+  "t-shadow-cara-vidrio-kalamo-v2", "guardian-alba-cara-vidrio-kalamo-v2", "kairos-cara-vidrio-kalamo-v2",
   "dragon-hielo-pantalla-rota-kalamo-v1", "azrak-pantalla-rota-kalamo-v1",
   "kalamo-pantalla-rota-kalamo-v1",
 ]) {

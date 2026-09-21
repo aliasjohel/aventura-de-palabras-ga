@@ -15,11 +15,13 @@ const codigoBancos = app.slice(inicio, fin);
 const bancos = Function(`"use strict"; ${codigoBancos}; return bancosPalabrasVersus;`)();
 
 assert.equal(Object.keys(bancos).length, 10, "Deben existir diez temáticas");
+const cantidades = { paises: 100, frutas: 100, animales: 250, comidas: 200,
+  profesiones: 200, deportes: 100, transportes: 100, objetos: 400, naturaleza: 250, nombres: 300 };
 
 for (const [tematica, palabras] of Object.entries(bancos)) {
-  assert.equal(palabras.length, 100, `${tematica} debe tener 100 palabras`);
+  assert.equal(palabras.length, cantidades[tematica], `${tematica} debe tener la cantidad prevista`);
   const claves = palabras.map((palabra) => engine.obtenerClavePalabra(palabra));
-  assert.equal(new Set(claves).size, 100, `${tematica} no debe contener duplicados equivalentes`);
+  assert.equal(new Set(claves).size, palabras.length, `${tematica} no debe contener duplicados equivalentes`);
 
   palabras.forEach((palabra) => {
     const longitud = [...palabra].length;
@@ -50,8 +52,12 @@ const migrationExpansion = fs.readFileSync(migrationExpansionPath, "utf8");
 const expansionRows = [...migrationExpansion.matchAll(/^  \('([^']+)', '([^']+)'\)[,;]?$/gm)]
   .map((match) => ({ tematica: match[1], palabra: match[2] }));
 rows.push(...expansionRows);
+const ampliacion = fs.readFileSync(path.join(__dirname,
+  '../supabase/migrations/20260921051546_expand_versus_dictionary_2000.sql'), 'utf8');
+rows.push(...[...ampliacion.matchAll(/^  \('([^']+)', '([^']+)'\)[,;]?$/gm)]
+  .map(match => ({ tematica: match[1], palabra: match[2] })));
 
-assert.equal(rows.length, 1000, "Supabase debe contener las mismas 1000 palabras");
+assert.equal(rows.length, 2000, "Supabase debe contener las mismas 2000 palabras");
 for (const [tematica, palabras] of Object.entries(bancos)) {
   const remotas = rows
     .filter((row) => row.tematica === tematica)
@@ -59,7 +65,10 @@ for (const [tematica, palabras] of Object.entries(bancos)) {
   assert.deepEqual(remotas.toSorted(), palabras.toSorted(), `${tematica} debe coincidir entre la app y Supabase`);
 }
 
-console.log("versus-words: 10 temáticas y 1000 palabras verificadas");
+for (const palabra of ['VACA', 'LIEBRE', 'SAPO', 'RATÓN', 'ABEJA', 'PEZ']) {
+  assert.ok(bancos.animales.includes(palabra), `Debe aceptar el animal común ${palabra}`);
+}
+console.log("versus-words: 10 temáticas y 2000 palabras verificadas");
 
 assert.match(app, /const clavesAnteriores = ultimasPalabrasAleatoriasVersus/);
 assert.match(app, /btnsFijarPalabrasVersus\[indice\].*aria-pressed/);
