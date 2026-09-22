@@ -29,14 +29,14 @@
         }
     </style>
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="css/player-avatar.css?v=20260921-tienda-1">
+    <link rel="stylesheet" href="css/player-avatar.css?v=20260921-social-mapa-1">
     <link rel="stylesheet" href="css/versus-identity.css?v=20260915-social-1">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
     <link rel="stylesheet" href="css/styles.css?v=20260920-kairos-cinematica-1">
-    <link rel="stylesheet" href="css/menu-navigation.css?v=20260921-tienda-1">
+    <link rel="stylesheet" href="css/menu-navigation.css?v=20260921-social-mapa-1">
     <link rel="stylesheet" href="css/azrak-world.css?v=20260913-runas-viento-captura-1">
     <link rel="stylesheet" href="css/kairos-forest.css?v=20260908-cinematicas-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
@@ -86,7 +86,7 @@
                 <p class="subtitulo">Explorá mundos resolviendo palabras</p>
                 <div class="menu-perfil"><button id="btnMiAvatar" type="button" aria-label="Abrir mi perfil"><span id="avatarMenu"></span><span>Mi perfil <span aria-hidden="true">›</span></span></button><button id="btnAbrirPruebasMenu" type="button" aria-haspopup="dialog" aria-controls="modalConfiguracion">Modo prueba</button></div>
 
-                <button id="btnJugar">🆕 Nueva aventura</button>
+                <button id="btnJugar" type="button" aria-haspopup="dialog" aria-controls="mapaAventura">🗺️ Aventura</button>
                 <button id="btnModosJuego" type="button" aria-haspopup="dialog">⚔️ Modos de juego</button>
                 <button id="btnTienda" type="button" aria-haspopup="dialog">✦ Tienda</button>
                 <button id="btnConfiguracion" type="button">Configuración</button>
@@ -98,6 +98,15 @@
 
 
             </div>
+            <dialog id="mapaAventura" class="menu-dialogo mapa-aventura" aria-labelledby="tituloMapaAventura">
+                <header class="menu-dialogo-cabecera"><div><small>EL VIAJE DE AREN</small><h2 id="tituloMapaAventura">Tu aventura</h2></div><button id="cerrarMapaAventura" type="button" aria-label="Cerrar mapa">×</button></header>
+                <p class="mapa-intro">Seguí el camino de los cristales o volvé a tus misiones favoritas.</p>
+                <button id="continuarMapaAventura" type="button">Continuar aventura</button>
+                <p id="estadoMapaAventura" class="mapa-estado" role="status"></p>
+                <div id="caminoMapaAventura" class="mapa-camino" aria-label="Mundos de la aventura"></div>
+                <section id="misionesMapaAventura" class="mapa-misiones" aria-labelledby="tituloMisionesMapa"></section>
+                <footer class="mapa-pie"><p>Volver a jugar conserva tu partida. Las recompensas de la repetición no se suman a tu progreso.</p><button id="nuevaDesdeMapa" class="secundario" type="button">Empezar una nueva aventura</button></footer>
+            </dialog>
             <div id="modalConfiguracion" class="modal-configuracion oculto" role="dialog" aria-modal="true"
                 aria-labelledby="tituloConfiguracion">
                 <div class="panel-configuracion">
@@ -853,7 +862,7 @@
                     </div>
 
                     <div class="versus-jugador versus-jugador-dos">
-                        <span id="avatarDueloRival" class="avatar-duelo" hidden></span>
+                        <button id="avatarDueloRival" type="button" class="avatar-duelo" aria-label="Ver perfil del rival" hidden></button>
                         <span id="mensajeDueloRival" class="mensaje-duelo" role="status" hidden></span>
                         <span class="versus-etiqueta">JUGADOR 2</span>
                         <div id="vidasVersusDos" class="versus-corazones" aria-label="Jugador 2: cinco vidas">♥ ♥ ♥ ♥ ♥
@@ -1351,6 +1360,7 @@
                         <h2 id="tituloResultadoVersus">¡Ganaste la ronda!</h2>
                         <p id="detalleResultadoVersus">Completaste la palabra antes que tu rival.</p>
                         <button id="btnRevanchaVersus" class="oculto" type="button">Jugar revancha</button>
+                        <button id="verPerfilRival" class="secundario" type="button" hidden>Ver perfil del rival</button>
                         <button id="btnMenuResultadoVersus" class="secundario" type="button">Volver al menú</button>
                     </div>
                 </div>
@@ -1482,6 +1492,7 @@
                 <div><dd id="perfilEmpates">—</dd><dt>Empates</dt></div>
             </dl>
             <p id="perfilRanking" class="perfil-ranking"></p>
+            <button id="verHistorialRivales" class="secundario" type="button">Ver mis partidas y rivales</button>
             <h4>Personajes favoritos</h4><div id="perfilFavoritos" class="perfil-favoritos"></div>
             <p class="avatar-note">Tus favoritos son los personajes que más usás en partidas multijugador terminadas.</p>
             <button id="reintentarPerfil" class="secundario" type="button" hidden>Reintentar conexión</button>
@@ -1492,15 +1503,30 @@
         <p id="estadoAvatar" role="status" aria-live="polite"></p>
         <footer><button id="cancelarAvatar" class="secundario" type="button">Cancelar</button><button id="guardarAvatar" type="button">Guardar apariencia</button></footer>
     </dialog>
-    <script src="js/player-avatar.js?v=20260921-tienda-1"></script>
+    <dialog id="perfilPublico" class="menu-dialogo perfil-publico" aria-labelledby="nombrePerfilPublico">
+      <header class="menu-dialogo-cabecera"><div><small>COMUNIDAD DE AVENTUREROS</small><h2 id="nombrePerfilPublico">Perfil del jugador</h2></div><button id="cerrarPerfilPublico" type="button" aria-label="Cerrar perfil">×</button></header>
+      <button id="volverPerfilPublico" class="enlace-perfil-jugador" type="button" hidden>← Volver al perfil anterior</button>
+      <p id="estadoPerfilPublico" role="status" aria-live="polite"></p>
+      <div id="contenidoPerfilPublico" hidden>
+        <div class="perfil-publico-identidad"><span id="avatarPerfilPublico"></span><div><p id="rankingPerfilPublico" class="perfil-ranking"></p><p id="aparienciaPerfilPublico"></p></div></div>
+        <dl id="estadisticasPerfilPublico" class="perfil-estadisticas"></dl>
+        <h3>Trofeos</h3><div id="trofeosPerfilPublico" class="perfil-publico-trofeos"></div>
+        <h3>Personaje favorito</h3><div id="favoritoPerfilPublico" class="perfil-publico-favorito"></div>
+        <h3>Historial de partidas</h3><p class="avatar-note">Tocá un rival para visitar su perfil. Los resultados se conservan al cerrar la sala.</p>
+        <div id="partidasPerfilPublico" class="perfil-publico-partidas"></div>
+        <button id="masPartidasPerfil" class="secundario" type="button" hidden>Ver más partidas</button>
+      </div>
+      <button id="reintentarPerfilPublico" class="secundario" type="button" hidden>Reintentar</button>
+    </dialog>
+    <script src="js/player-avatar.js?v=20260921-social-mapa-1"></script>
     <script src="js/versus-identity.js?v=20260915-social-1"></script>
     <script src="js/intro.js?v=20260805-musica-menu-4"></script>
     <script src="js/supabase-loader.js?v=20260827-supabase-diferido-1"></script>
     <script src="js/supabase-config.js?v=20260805-supabase-1"></script>
     <script src="js/supabase-client.js?v=20260817-amigos-cuentas-1"></script>
     <script src="js/versus-engine.js?v=20260817-versus-recuperacion-1"></script>
-    <script src="js/versus-room.js?v=20260805-salas-versus-1"></script>
-    <script src="js/versus-room-supabase.js?v=20260920-perfil-1"></script>
+    <script src="js/versus-room.js?v=20260921-social-mapa-1"></script>
+    <script src="js/versus-room-supabase.js?v=20260921-social-mapa-1"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
     <script src="js/azrak-world.js?v=20260914-busqueda-ranking"></script>
     <script src="js/prologue-cinematic.js?v=20260921-tienda-1"></script>
@@ -1509,7 +1535,8 @@
     <script src="js/kairos-forest.js?v=20260909-musica-continua-1"></script>
     <script src="js/kalamo-desert.js?v=20260909-arco-aren-1"></script>
     <script src="js/world-word-hazards.js?v=20260914-jaula-fuego"></script>
-    <script src="js/app.js?v=20260921-tienda-1"></script>
+    <script src="js/app.js?v=20260921-social-mapa-1"></script>
+    <script src="js/public-player-profile.js?v=20260921-social-mapa-1"></script>
     <script src="js/pwa.js?v=20260909-recuperar-actualizacion-1"></script>
 </body>
 

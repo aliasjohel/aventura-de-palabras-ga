@@ -17,6 +17,30 @@
     return `${alias || ""}`.trim().replace(/\s+/g, " ").slice(0, 16);
   }
 
+
+  // Se compara una copia normalizada; el nombre visible conserva sus tildes.
+  function aliasInapropiado(alias) {
+    const base = String(alias || "").normalize("NFKD").toLowerCase()
+      .replace(/[\u0300-\u036f\u200b-\u200f\u202a-\u202e\u2060-\u206f\ufeff]/g, "");
+    return [base, base.replace(/\d+$/g, "")].some(value => {
+      const normal = value.replace(/[034157@$!]/g, c => ({0:"o",3:"e",4:"a",1:"i",5:"s",7:"t","@":"a","$":"s","!":"i"}[c]));
+      const compact = normal.replace(/[^a-z]/g, "").replace(/(.)\1+/g, "$1");
+      const largos = new RegExp("(boludo|boluda|pelotudo|pelotuda|mierda|carajo|hijodeputa|hijadeputa|hdp|putamadre|conchadetumadre|conchatumadre|pendejo|pendeja|cabron|cabrona|maricon|gilipolas|culero|culera|fuck|shit|bitch|ashole)");
+      const cortos = new RegExp("^(el|la|soy|un|una)?(puto|puta|culo|pija|pito|cono|foro|fora|marica|verga)(s|123|pro|gamer|xd)?$");
+      return largos.test(compact) || cortos.test(compact)
+        || normal.split(/[^a-z]+/).some(p => cortos.test(p.replace(/(.)\1+/g, "$1")));
+    });
+  }
+
+  function validarAlias(alias) {
+    const nombre = limpiarAlias(alias);
+    if (aliasInapropiado(nombre)) throw new Error("Elegí otro nombre: no se permiten malas palabras ni insultos.");
+    if (nombre.length < 2) throw new Error("Escribí un nombre de al menos 2 caracteres.");
+    return nombre;
+  }
+
+  function aliasVisible(alias) { return aliasInapropiado(alias) ? "Aventurero" : alias; }
+
   function limpiarCodigo(codigo) {
     return `${codigo || ""}`.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6);
   }
@@ -47,8 +71,7 @@
     };
 
     function crearSala({ alias }) {
-      const nombre = limpiarAlias(alias);
-      if (nombre.length < 2) throw new Error("Escribí un nombre de al menos 2 caracteres.");
+      const nombre = validarAlias(alias);
       let codigo = generarCodigo();
       while (leer(codigo)) codigo = generarCodigo();
       const ahora = new Date().toISOString();
@@ -64,8 +87,7 @@
 
     function unirseSala({ codigo, alias }) {
       const codigoLimpio = limpiarCodigo(codigo);
-      const nombre = limpiarAlias(alias);
-      if (nombre.length < 2) throw new Error("Escribí un nombre de al menos 2 caracteres.");
+      const nombre = validarAlias(alias);
       if (codigoLimpio.length !== 6) throw new Error("El código debe tener 6 caracteres.");
       const sala = leer(codigoLimpio);
       if (!sala) throw new Error("No encontramos una sala con ese código.");
@@ -130,5 +152,5 @@
     });
   }
 
-  return Object.freeze({ crearAdaptadorLocal, limpiarAlias, limpiarCodigo });
+  return Object.freeze({ crearAdaptadorLocal, limpiarAlias, limpiarCodigo, aliasInapropiado, validarAlias, aliasVisible });
 });

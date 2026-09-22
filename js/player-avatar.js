@@ -144,6 +144,7 @@
       return;
     }
     saved = { ...draft };
+    window.dispatchEvent(new CustomEvent("player-appearance-saved", { detail: { source: "profile" } }));
     renderMenu();
     dialog.close();
   });
@@ -198,6 +199,7 @@
       return;
     }
     saved = next;
+    window.dispatchEvent(new CustomEvent("player-appearance-saved", { detail: { source: "shop" } }));
     renderMenu();
     renderShop();
     el("tiendaEstado").textContent = "¡Marco equipado! Ya podés verlo en tu perfil.";

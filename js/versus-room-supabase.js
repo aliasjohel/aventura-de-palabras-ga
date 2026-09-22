@@ -196,6 +196,9 @@
 
       if (!sesion?.user?.id) throw new Error("Supabase no devolvió una identidad de jugador.");
       actualizarSesion(sesion);
+      if (raiz.localStorage?.getItem("aventuraPalabrasIdentidadV1")) {
+        try { await guardarApariencia(raiz.PlayerAvatar.obtener()); } catch (error) { console.warn(error.message); }
+      }
       if (!suscripcionAuth) {
         const { data } = cliente.auth.onAuthStateChange((_evento, nuevaSesion) => {
           actualizarSesion(nuevaSesion);
@@ -343,7 +346,7 @@
 
     async function crearSala({ alias }) {
       await inicializar();
-      const nombre = raiz.VersusRoom.limpiarAlias(alias);
+      const nombre = raiz.VersusRoom.validarAlias(alias);
       if (nombre.length < 2) throw new Error("Escribí un nombre de al menos 2 caracteres.");
 
       const { data, error } = await cliente.rpc("create_versus_room", { p_alias: nombre });
@@ -356,7 +359,7 @@
     async function buscarPartida({ alias, cancelar = false }) {
       await inicializar();
       const { data, error } = await cliente.rpc("find_versus_opponent", {
-        p_alias: raiz.VersusRoom.limpiarAlias(alias), p_cancel: cancelar,
+        p_alias: cancelar ? raiz.VersusRoom.limpiarAlias(alias) : raiz.VersusRoom.validarAlias(alias), p_cancel: cancelar,
       });
       if (error) throw traducirError(error, "No pudimos buscar un rival.");
       if (data?.room_id) {
@@ -373,6 +376,17 @@
       return data || [];
     }
 
+    async function obtenerPerfilPublico(userId = null, offset = 0) {
+      const { data, error } = await cliente.rpc("get_versus_public_profile", { p_user_id: userId, p_offset: offset });
+      if (error) throw traducirError(error, "No pudimos cargar este perfil.");
+      return data;
+    }
+
+    async function guardarApariencia(identidad) {
+      const { error } = await cliente.rpc("save_versus_appearance", { p_avatar: identidad.avatar, p_frame: identidad.frame });
+      if (error) throw traducirError(error, "No pudimos compartir tu apariencia. Volvé a intentarlo.");
+    }
+
     async function obtenerPerfilJugador() {
       const { data, error } = await cliente.rpc("get_versus_player_profile");
       if (error) throw traducirError(error, "No pudimos cargar tu perfil.");
@@ -382,7 +396,7 @@
     async function unirseSala({ codigo, alias }) {
       await inicializar();
       const codigoLimpio = raiz.VersusRoom.limpiarCodigo(codigo);
-      const nombre = raiz.VersusRoom.limpiarAlias(alias);
+      const nombre = raiz.VersusRoom.validarAlias(alias);
       if (nombre.length < 2) throw new Error("Escribí un nombre de al menos 2 caracteres.");
       if (codigoLimpio.length !== 6) throw new Error("El código debe tener 6 caracteres.");
 
@@ -514,7 +528,7 @@
     }
 
     const guardarPerfil = (alias) => ejecutarRpcSocial(
-      "upsert_versus_profile", { p_alias: alias }, "No pudimos guardar tu perfil.",
+      "upsert_versus_profile", { p_alias: raiz.VersusRoom.validarAlias(alias) }, "No pudimos guardar tu perfil.",
     );
     const enviarSolicitudAmistad = (codigo) => ejecutarRpcSocial(
       "send_versus_friend_request", { p_friend_code: codigo }, "No pudimos enviar la solicitud.",
@@ -584,6 +598,8 @@
       buscarPartida,
       obtenerRanking,
       obtenerPerfilJugador,
+      obtenerPerfilPublico,
+      guardarApariencia,
       unirseSala,
       actualizarPersonaje,
       guardarDesafio,

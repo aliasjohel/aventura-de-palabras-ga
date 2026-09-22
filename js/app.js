@@ -1246,6 +1246,7 @@ let letrasElegidas = [];
 let palabrasUsadasEnMision = [];
 // Se conserva por mundo y misión al guardar, incluso entre sesiones.
 let historialPalabrasAventura = {};
+globalThis.AventuraMapa = { repeticion: null, iniciando: false };
 let intentos = 6;
 let escenarioActual = 0;
 let misionActual = 0;
@@ -1283,7 +1284,7 @@ function otorgarMonedas(cantidad, origen) {
   const valor = Math.max(0, Math.trunc(Number(cantidad) || 0));
   if (!valor) return;
   monedas += valor;
-  if (modoPruebasActivo) return;
+  if (modoPruebasActivo || globalThis.AventuraMapa?.repeticion) return;
 
   const recompensas = leerRecompensasMonedasPendientes();
   recompensas.push({
@@ -1587,6 +1588,7 @@ function actualizarPanelAmigosVersus(
       nombre: amigo.alias,
       detalle: `Código ${amigo.friend_code}`,
       acciones: [
+        { texto: "Ver perfil", accion: () => PublicPlayerProfile.abrir(amigo.user_id) },
         { texto: "Desafiar", accion: () => adaptadorSalasVersus.enviarInvitacion(amigo.user_id) },
         { texto: "Quitar", accion: () => adaptadorSalasVersus.eliminarAmigo(amigo.friendship_id) },
       ],
@@ -1695,6 +1697,11 @@ function actualizarSeleccionPersonajeRemota(sala) {
 }
 
 function actualizarIdentidadMultijugador(sala = adaptadorSalasVersus.obtenerSala()) {
+  const rival = adaptadorSalasVersus.proveedor === "supabase" ? sala?.jugadores?.find(j => j.id !== adaptadorSalasVersus.obtenerUsuarioId?.()) : null;
+  const botonPerfil = document.getElementById("verPerfilRival");
+  botonPerfil.hidden = !rival;
+  botonPerfil.dataset.userId = rival?.id || "";
+  document.getElementById("avatarDueloRival").dataset.userId = rival?.id || "";
   globalThis.VersusIdentity?.actualizar({
     sala: adaptadorSalasVersus.proveedor === "supabase" ? sala : null,
     usuarioId: adaptadorSalasVersus.obtenerUsuarioId?.(),
@@ -2217,7 +2224,18 @@ globalThis.PlayerProfile = Object.freeze({
     const profile = await adapter.obtenerPerfilJugador();
     return { ...profile, alias: profile.alias || aliasSalaVersus.value.trim() || "Aventurero" };
   },
+  cargarPublico: async (id = null, offset = 0) => {
+    const adapter = await asegurarConexionSalasVersus();
+    if (!adapter.obtenerPerfilPublico) throw new Error("Conectate a internet para ver los perfiles.");
+    return adapter.obtenerPerfilPublico(id, offset);
+  },
+  guardarApariencia: async () => {
+    const adapter = await asegurarConexionSalasVersus();
+    if (!adapter.guardarApariencia) throw new Error("Tu apariencia se guardó en este dispositivo. Conectate para compartirla.");
+    return adapter.guardarApariencia(PlayerAvatar.obtener());
+  },
   nombrePersonaje: (key) => personajesVersus[key]?.nombre || "Personaje",
+  imagenPersonaje: (key) => personajesVersus[key]?.base || personajesVersus.explorador.base,
 });
 
 async function cargarRankingPublico() {
@@ -2235,7 +2253,15 @@ async function cargarRankingPublico() {
     for (const fila of filas) {
       const item = document.createElement("p");
       item.classList.toggle("ranking-propio", fila.me);
-      item.textContent = `${fila.position}. ${fila.alias}${fila.me ? " (vos)" : ""} · ${fila.points} puntos · ${fila.wins} victorias · ${fila.played} partidas`;
+      item.textContent = `${fila.position}. ${VersusRoom.aliasVisible(fila.alias)}${fila.me ? " (vos)" : ""} · ${fila.points} puntos · ${fila.wins} victorias · ${fila.played} partidas`;
+      if (fila.user_id) {
+        const ver = document.createElement("button");
+        ver.type = "button"; ver.className = "enlace-perfil-jugador";
+        ver.textContent = "Ver perfil";
+        ver.setAttribute("aria-label", `Ver perfil de ${VersusRoom.aliasVisible(fila.alias)}`);
+        ver.addEventListener("click", () => PublicPlayerProfile.abrir(fila.user_id));
+        item.append(ver);
+      }
       lista.appendChild(item);
     }
   } catch (error) { lista.textContent = error.message; }
@@ -2309,6 +2335,14 @@ btnPista.addEventListener("click", () => {
 });
 
 function continuarAventura() {
+  if (globalThis.AventuraMapa?.repeticion && (AventuraMapa.repeticion.completa
+      || (escenarioActual === 1 && mundoDosCompletado)
+      || (escenarioActual === 2 && mundoTresCompletado)
+      || (escenarioActual === 3 && mundoCuatroCompletado)
+      || (escenarioActual === 4 && estadoFinalAzrak === "completo"))) {
+    mostrarPantalla(pantallaMenu);
+    return;
+  }
   btnSiguiente.classList.add("oculto");
   limpiarCinematicaSantuario();
 
@@ -2414,7 +2448,7 @@ function personajeDisponibleVersus(personaje) {
 }
 
 function guardarPersonajeDesbloqueado(personaje) {
-  if (modoPruebasActivo) return;
+  if (modoPruebasActivo || globalThis.AventuraMapa?.repeticion) return;
   try {
     const personajes = JSON.parse(
       localStorage.getItem(clavePersonajesDesbloqueados) || "[]",
@@ -3449,7 +3483,12 @@ btnContinuarHistoria.addEventListener("click", async () => {
   }
 });
 
-btnJugar.addEventListener("click", async () => {
+btnJugar.addEventListener("click", abrirMapaAventura);
+
+async function continuarDesdeMapa() {
+  document.getElementById("mapaAventura").close();
+  if (modoPruebasActivo) actualizarModoPruebas(false);
+  cargarProgreso();
   reproducirSonidoComenzarAventura();
   solicitarOrientacion("portrait");
 
@@ -3459,13 +3498,17 @@ btnJugar.addEventListener("click", async () => {
     return;
   }
 
+  if ((escenarioActual === 1 && mundoDosCompletado) || (escenarioActual === 2 && mundoTresCompletado) || (escenarioActual === 3 && mundoCuatroCompletado)) {
+    continuarAventura();
+    return;
+  }
   const debePresentarMision = desafiosCompletados === 0;
   await iniciarMisionAventura({ presentarMision: debePresentarMision });
 
   if (debePresentarMision) {
     mostrarHistoriaMision({ misionYaCargada: true });
   }
-});
+}
 
 btnComenzarPrologo.addEventListener("click", async () => {
   if (btnComenzarPrologo.disabled || transicionPrologoActiva) return;
@@ -3667,10 +3710,14 @@ btnNuevaAventura.addEventListener("click", () => {
 
   if (!confirmar) return;
 
+  document.getElementById("mapaAventura").close();
+  if (modoPruebasActivo) actualizarModoPruebas(false);
   cerrarConfiguracion();
   reproducirSonidoComenzarAventura();
   localStorage.removeItem("progresoAventuraGA");
+  localStorage.removeItem("mapaMundoVistoGA");
   reiniciarEstadoAventura();
+  actualizarMenuPrincipal();
   mostrarPrologo();
 });
 
@@ -3927,6 +3974,10 @@ function actualizarOrientacionPantalla(pantallaSeleccionada) {
 }
 
 function mostrarPantalla(pantallaSeleccionada) {
+  if (pantallaSeleccionada === pantallaMenu && globalThis.AventuraMapa?.repeticion) {
+    finalizarRepeticionAventura();
+    queueMicrotask(abrirMapaAventura);
+  }
   document.querySelectorAll(".pantalla").forEach((pantalla) => {
     pantalla.classList.remove("activa");
   });
@@ -9688,6 +9739,10 @@ function iniciarMisionSeleccionadaPruebas() {
     return;
   }
 
+  prepararMisionElegida(mundoSeleccionado, misionSeleccionada);
+}
+
+function prepararMisionElegida(mundoSeleccionado, misionSeleccionada) {
   cancelarSecuenciaNarrativaActual();
   detenerSonidos();
   escenarioActual = mundoSeleccionado;
@@ -9715,8 +9770,12 @@ function iniciarMisionSeleccionadaPruebas() {
     cristalesObtenidos = Math.max(cristalesObtenidos, 2);
   }
 
+  hombreLoboDescubierto = escenarioActual > 0 || misionActual > 5;
+  muralSantuarioCompletado = escenarioActual > 0 || misionActual > 8;
   actualizarJugador();
+  const repeticion = AventuraMapa.repeticion;
   void iniciarMisionAventura().then(() => {
+    if (AventuraMapa.repeticion !== repeticion || escenarioActual !== mundoSeleccionado || misionActual !== misionSeleccionada) return;
     mostrarHistoriaMision({ misionYaCargada: true });
   });
 }
@@ -9739,7 +9798,7 @@ function actualizarCabeceraMision() {
       ? "🌲 Tema: palabras del Bosque Encantado"
       : `Tema: palabras de ${escenario.nombre}`;
   detalleMision.textContent =
-    `Misión ${misionActual + 1} · Desafío ${desafioActual} de ${obtenerCantidadDesafiosMision()}`;
+    `${AventuraMapa.repeticion ? "Volviendo a jugar · " : ""}Misión ${misionActual + 1} · Desafío ${desafioActual} de ${obtenerCantidadDesafiosMision()}`;
 }
 
 function actualizarVistaMisionDev() {
@@ -11478,6 +11537,12 @@ function avanzarMision() {
   detenerPresenciaBosque();
   detenerAranaBosque();
 
+  if (globalThis.AventuraMapa?.repeticion) {
+    AventuraMapa.repeticion.completa = true;
+    historiaMisionPendiente = false;
+    return "";
+  }
+
   misionActual++;
   mensajePersonaje.textContent = "🏆 ¡Misión completada!";
   let sonidoNarrativo =
@@ -11568,7 +11633,7 @@ function actualizarPanelCristales() {
 }
 
 function guardarProgreso() {
-  if (modoPruebasActivo) return;
+  if (modoPruebasActivo || globalThis.AventuraMapa?.repeticion) return;
 
   const progreso = {
     historialPalabrasAventura,
@@ -11704,14 +11769,14 @@ function actualizarMenuPrincipal() {
   const progresoGuardado = localStorage.getItem("progresoAventuraGA");
 
   if (!progresoGuardado) {
-    btnJugar.textContent = "🆕 Nueva aventura";
+    btnJugar.textContent = "🗺️ Aventura";
 
     btnNuevaAventura.classList.add("oculto");
 
     return;
   }
 
-  btnJugar.textContent = "▶️ Continuar aventura";
+  btnJugar.textContent = "🗺️ Aventura";
 
   btnNuevaAventura.classList.remove("oculto");
 }
@@ -13113,6 +13178,10 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
     destello.remove();
 
     detenerMusicaCinematica(musicaCaminaPortal, 0.62);
+    if (globalThis.AventuraMapa?.repeticion) {
+      mostrarPantalla(pantallaMenu);
+      return;
+    }
     await mostrarIntroduccionMundoDos();
     await iniciarMisionAventura({ presentarMision: true });
     mostrarHistoriaMision({ misionYaCargada: true });
@@ -16672,5 +16741,171 @@ function precargarRecursosCinematicaSantuario() {
     "cristal-sabiduria-esmeralda.png",
   ].forEach((nombre) => {
     void precargarImagen(`assets/images/elements/${nombre}`);
+  });
+}
+
+// Mapa de aventura. Las repeticiones nunca escriben sobre la partida principal.
+function obtenerProgresoMapa() {
+  let progreso = {};
+  try { progreso = JSON.parse(localStorage.getItem("progresoAventuraGA") || "{}") || {}; } catch { /* Partida nueva. */ }
+  const mundo = Math.min(aventura.length - 1, Math.max(0, Number(progreso.escenarioActual) || 0));
+  const mision = Math.min(obtenerCantidadMisiones(mundo) - 1, Math.max(0, Number(progreso.misionActual) || 0));
+  return { progreso, mundo, mision, ultimo: Math.min(aventura.length - 1,
+    Math.max(mundo, Number(progreso.maximoEscenarioDesbloqueado) || 0)) };
+}
+
+function estadoMisionMapa(mundo, mision, datos = obtenerProgresoMapa()) {
+  if (mundo > datos.ultimo) return "bloqueada";
+  const finales = [false, datos.progreso.mundoDosCompletado, datos.progreso.mundoTresCompletado,
+    datos.progreso.mundoCuatroCompletado, datos.progreso.estadoFinalAzrak === "completo"];
+  if (mundo < datos.mundo || mundo < datos.ultimo || finales[mundo]
+      || (mundo === datos.mundo && mision < datos.mision)) return "completada";
+  return mundo === datos.mundo && mision === datos.mision ? "actual" : "bloqueada";
+}
+
+function abrirMapaAventura() {
+  const mapa = document.getElementById("mapaAventura");
+  const datos = obtenerProgresoMapa();
+  const guardado = Boolean(localStorage.getItem("progresoAventuraGA"));
+  const terminado = datos.progreso.estadoFinalAzrak === "completo";
+  const continuar = document.getElementById("continuarMapaAventura");
+  continuar.textContent = terminado ? "Aventura completada · Elegí una misión" : guardado ? "▶ Continuar aventura" : "✦ Comenzar aventura";
+  continuar.disabled = terminado;
+  document.getElementById("nuevaDesdeMapa").hidden = !guardado;
+  const visto = Number(localStorage.getItem("mapaMundoVistoGA") || 0);
+  document.getElementById("estadoMapaAventura").textContent = terminado
+    ? "Los cinco cristales están a salvo. ¡Podés recorrer la historia otra vez!"
+    : datos.ultimo > visto ? `¡Nuevo mundo desbloqueado! Aren llegó a ${aventura[datos.ultimo].nombre}.`
+    : `Tu próximo destino: ${aventura[datos.mundo].nombre} · Misión ${datos.mision + 1}`;
+  const camino = document.getElementById("caminoMapaAventura");
+  camino.replaceChildren();
+  aventura.forEach((mundo, indice) => {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = `mapa-mundo mapa-mundo-${indice}`;
+    boton.dataset.mundo = indice;
+    boton.disabled = indice > datos.ultimo;
+    boton.setAttribute("aria-controls", "misionesMapaAventura");
+    const numero = document.createElement("span");
+    numero.className = "mapa-numero";
+    numero.textContent = boton.disabled ? "🔒" : String(indice + 1).padStart(2, "0");
+    const titulo = document.createElement("strong");
+    titulo.textContent = mundo.nombre;
+    const estado = document.createElement("small");
+    const completadas = Array.from({length: obtenerCantidadMisiones(indice)}, (_, m) => estadoMisionMapa(indice, m, datos)).filter(e => e === "completada").length;
+    estado.textContent = boton.disabled ? "Completá el mundo anterior para desbloquear" : `${completadas} de ${obtenerCantidadMisiones(indice)} misiones completadas`;
+    boton.append(numero, titulo, estado);
+    if (indice === datos.mundo) {
+      const aren = document.createElement("img");
+      aren.src = "assets/images/personajes/explorador-feliz.png";
+      aren.alt = "Aren está aquí";
+      aren.className = datos.ultimo > visto ? "mapa-aren mapa-aren-llegando" : "mapa-aren";
+      boton.append(aren);
+      boton.setAttribute("aria-current", "location");
+    }
+    if (indice === datos.ultimo && datos.ultimo > visto) boton.classList.add("mapa-recien-abierto");
+    boton.addEventListener("click", () => mostrarMisionesMapa(indice, true));
+    camino.append(boton);
+  });
+  mostrarMisionesMapa(datos.mundo);
+  if (!mapa.open) mapa.showModal();
+  mapa.scrollTop = 0;
+  localStorage.setItem("mapaMundoVistoGA", String(datos.ultimo));
+}
+
+function mostrarMisionesMapa(mundo, desplazar = false) {
+  const datos = obtenerProgresoMapa();
+  if (mundo > datos.ultimo) return;
+  const panel = document.getElementById("misionesMapaAventura");
+  panel.replaceChildren();
+  document.querySelectorAll(".mapa-mundo").forEach(b => b.setAttribute("aria-expanded", String(Number(b.dataset.mundo) === mundo)));
+  const titulo = document.createElement("h3");
+  titulo.id = "tituloMisionesMapa";
+  titulo.tabIndex = -1;
+  titulo.textContent = aventura[mundo].nombre;
+  panel.append(titulo);
+  const historias = [historiaBosque, historiaDesierto, historiaCumbres, historiaHielo, historiaAzrak];
+  historias[mundo].forEach((historia, mision) => {
+    const estado = estadoMisionMapa(mundo, mision, datos);
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "mapa-mision";
+    boton.dataset.mision = mision;
+    boton.disabled = estado === "bloqueada";
+    const nombre = document.createElement("strong");
+    nombre.textContent = `${mision + 1}. ${historia.titulo}`;
+    const accion = document.createElement("span");
+    accion.textContent = estado === "completada" ? "✓ Completada · Volver a jugar" : estado === "actual" ? "▶ Continuar" : "🔒 Pendiente";
+    boton.append(nombre, accion);
+    boton.addEventListener("click", () => seleccionarMisionMapa(mundo, mision));
+    panel.append(boton);
+  });
+  if (desplazar) { titulo.focus({preventScroll:true}); panel.scrollIntoView({block:"start", behavior:"smooth"}); }
+}
+
+async function seleccionarMisionMapa(mundo, mision) {
+  if (AventuraMapa.iniciando) return;
+  const estado = estadoMisionMapa(mundo, mision);
+  if (estado === "bloqueada") return;
+  AventuraMapa.iniciando = true;
+  try {
+    const destino = document.querySelector(`.mapa-mundo[data-mundo="${mundo}"]`);
+    const aren = document.querySelector(".mapa-aren");
+    if (destino && aren && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      destino.scrollIntoView({block:"center"});
+      destino.append(aren);
+      await aren.animate([{transform:"translate(-45px, 12px)",opacity:0},{transform:"translate(0, 0)",opacity:1}], {duration:550,easing:"ease-out"}).finished;
+    }
+    // Cerrar el mapa mientras Aren camina cancela la selección.
+    if (!document.getElementById("mapaAventura").open) return;
+    if (estado === "actual") { await continuarDesdeMapa(); return; }
+    if (modoPruebasActivo) actualizarModoPruebas(false);
+    reiniciarEstadoAventura();
+    AventuraMapa.repeticion = { mundo, mision, completa: false };
+    document.getElementById("mapaAventura").close();
+    cristalesObtenidos = mundo;
+    if (mundo === 0 && mision === 9) cristalesObtenidos = 1;
+    prepararMisionElegida(mundo, mision);
+  } finally { AventuraMapa.iniciando = false; }
+}
+
+function finalizarRepeticionAventura() {
+  cancelarSecuenciaNarrativaActual();
+  ocultarMensajeDesafioSuperado();
+  detenerSonidos();
+  reiniciarEstadoAventura();
+  AventuraMapa.repeticion = null;
+  cargarPersonajesDesbloqueados();
+  cargarProgreso();
+  actualizarDisponibilidadPersonajesVersus();
+}
+
+document.getElementById("cerrarMapaAventura").addEventListener("click", () => document.getElementById("mapaAventura").close());
+document.getElementById("continuarMapaAventura").addEventListener("click", () => {
+  const datos = obtenerProgresoMapa();
+  if (AventuraMapa.iniciando) return;
+  if (estadoMisionMapa(datos.mundo, datos.mision, datos) === "completada") {
+    void continuarDesdeMapa();
+  } else {
+    void seleccionarMisionMapa(datos.mundo, datos.mision);
+  }
+});
+document.getElementById("nuevaDesdeMapa").addEventListener("click", () => btnNuevaAventura.click());
+
+for (const campo of [aliasSalaVersus, aliasPerfilVersus]) {
+  campo.addEventListener("input", () => {
+    const mensaje = VersusRoom.aliasInapropiado(campo.value) ? "Elegí otro nombre: no se permiten malas palabras ni insultos." : "";
+    campo.setCustomValidity(mensaje);
+    campo.setAttribute("aria-invalid", String(Boolean(mensaje)));
+    let aviso = document.getElementById(campo.id + "Moderacion");
+    if (!aviso) {
+      aviso = document.createElement("p");
+      aviso.id = campo.id + "Moderacion";
+      aviso.setAttribute("aria-live", "polite");
+      aviso.style.cssText = "color:#ffd6a0;font-size:13px;line-height:1.4";
+      campo.insertAdjacentElement("afterend", aviso);
+      campo.setAttribute("aria-describedby", [campo.getAttribute("aria-describedby"), aviso.id].filter(Boolean).join(" "));
+    }
+    aviso.textContent = mensaje;
   });
 }

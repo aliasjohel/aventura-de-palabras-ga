@@ -81,3 +81,41 @@
 .tienda-futuro { margin-top: 20px; padding: 16px; border: 1px solid #a993d344; border-radius: 12px; background: #a993d30a; }
 .tienda-futuro strong { color: #dac8f5; }
 @media (max-width: 540px) { .tienda-vista { flex-direction: column; gap: 10px; text-align: center; padding: 16px; } #tiendaAvatarPreview .player-avatar { width: 120px; height: 120px; } .tienda-marcos .player-avatar { width: 76px; height: 76px; } }
+
+/* El camino de los cinco cristales. */
+.mapa-aventura { width: min(690px, calc(100vw - 24px)); background: radial-gradient(ellipse at 20% 25%,#234d3b88,transparent 60%),#101e22; }
+.mapa-intro, .mapa-estado { color: #d5dcca; line-height: 1.6; margin: 12px 0; }
+.mapa-aventura #continuarMapaAventura { width: 100%; min-height: 50px; margin: 6px 0; border: 1px solid #dcca80; border-radius: 12px; color: #19261b; background: linear-gradient(135deg,#f2df99,#c5ab64); font-size: 16px; }
+.mapa-estado { font-size: 13px; min-height: 40px; }
+.mapa-camino { position: relative; display: grid; gap: 36px; padding: 24px 0 30px; }
+.mapa-camino::before { content: ''; position: absolute; top: 25px; bottom: 25px; left: 50%; border-left: 4px dashed #bfa97966; }
+.mapa-aventura .mapa-mundo { position: relative; display: grid; gap: 7px; width: 87%; min-height: 120px; margin: 0; padding: 22px 65px 22px 22px; overflow: visible; text-align: left; color: #fff8de; border: 1px solid #b9a577; border-radius: 18px; background: linear-gradient(100deg,#10251dec,#10251d99),url('../assets/images/fondos/menu-inicio-aventura.png') center/cover; box-shadow: 0 8px 20px #0005; }
+.mapa-aventura .mapa-mundo:nth-child(even) { justify-self: end; }
+.mapa-aventura .mapa-mundo-1 { background-image: linear-gradient(100deg,#39240dec,#39240d88),url('../assets/images/fondos/desierto-1.png'); }
+.mapa-aventura .mapa-mundo-2 { background-image: linear-gradient(100deg,#152f49ec,#152f4988),url('../assets/images/fondos/cumbres-1.png'); }
+.mapa-aventura .mapa-mundo-3 { background-image: linear-gradient(100deg,#252c4dec,#252c4d88),url('../assets/images/fondos/hielo-1.png'); }
+.mapa-aventura .mapa-mundo-4 { background-image: linear-gradient(100deg,#2e173eec,#2e173e88),url('../assets/images/fondos/reino-azrak/entrada-v1.png'); }
+.mapa-numero { font: 700 11px/1.2 system-ui,sans-serif; letter-spacing: .15em; color: #e1c782; }
+.mapa-mundo strong { font: 700 19px/1.25 Georgia,serif; }
+.mapa-mundo small { font: 12px/1.4 system-ui,sans-serif; }
+.mapa-aventura .mapa-mundo:disabled { opacity: .65; filter: saturate(.25); cursor: not-allowed; }
+.mapa-aventura .mapa-mundo[aria-expanded="true"] { outline: 2px solid #ffe2a0; outline-offset: 4px; }
+.mapa-aren { position: absolute; right: -16px; bottom: 4px; width: 90px; height: 112px; object-fit: contain; filter: drop-shadow(0 5px 7px #0008); pointer-events: none; }
+.mapa-recien-abierto { animation: mapa-desbloqueo 1.3s ease-out 2; }
+@keyframes mapa-desbloqueo { 0% { box-shadow: 0 0 0 0 #ffe1a0aa; } 100% { box-shadow: 0 0 0 15px #ffe1a000; } }
+.mapa-misiones { scroll-margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+.mapa-misiones h3 { grid-column: 1 / -1; margin: 0 0 10px; font: 700 23px/1.3 Georgia,serif; color: #f6e2ad; }
+.mapa-aventura .mapa-mision { width: 100%; min-height: 85px; margin: 0; padding: 14px; border: 1px solid #ac936a66; border-radius: 12px; color: #f8efd9; background: #ffffff08; text-align: left; box-shadow: none; }
+.mapa-mision strong, .mapa-mision span { display: block; font: 600 14px/1.5 system-ui,sans-serif; }
+.mapa-mision span { margin-top: 6px; font-size: 11px; color: #d4c399; }
+.mapa-aventura .mapa-mision:disabled { opacity: .48; cursor: not-allowed; }
+.mapa-pie { margin-top: 24px; padding-top: 16px; border-top: 1px solid #c9b68444; }
+.mapa-pie p { font-size: 12px; line-height: 1.6; color: #bcc8bf; }
+.mapa-aventura #nuevaDesdeMapa { width: 100%; margin: 12px 0 0; padding: 12px; border: 1px solid #d2b59166; border-radius: 10px; background: transparent; color: #e5d4b4; font-size: 13px; box-shadow: none; }
+.mapa-aventura [hidden] { display: none !important; }
+.mapa-aventura button:focus-visible { outline: 3px solid #fff0ad; outline-offset: 3px; }
+@media (max-width: 420px) { .mapa-aventura { padding: 18px; } .mapa-misiones { grid-template-columns: 1fr; } .mapa-mundo strong { font-size: 17px; } }
+@media (prefers-reduced-motion: reduce) { .mapa-recien-abierto { animation: none; } }
+@keyframes mapa-viaje { from { transform: translate(-35px,-120px); opacity: 0; } to { transform: translate(0,0); opacity: 1; } }
+.mapa-aren-llegando { animation: mapa-viaje 1s ease-out both; }
+@media(prefers-reduced-motion:reduce) { .mapa-aren-llegando { animation: none; } }
