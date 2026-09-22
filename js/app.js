@@ -395,7 +395,7 @@ const sonidos = {
   versusAtaqueDos: new Audio("assets/sounds/ataque-2.mp3"),
   versusFight: new Audio("assets/sounds/fight.mp3"),
   versusFinish: new Audio("assets/sounds/finish.mp3"),
-  avisoCinematica: new Audio("assets/sounds/golpe-cinematica-v1.wav"),
+  avisoCinematica: new Audio("assets/sounds/trueno-cinematica-v2.wav"),
 };
 
 const claveVibracionAtaques = "vibracionAtaquesAventuraGA";
@@ -530,6 +530,7 @@ musicaCinematicaFinalMundo3.preload = "auto";
 Object.values(sonidos).forEach((sonido) => {
   sonido.preload = "none";
 });
+sonidos.avisoCinematica.preload = "auto";
 sonidoComenzarAventura.preload = "auto";
 sonidoSeleccionPersonaje.preload = "auto";
 
@@ -8643,7 +8644,31 @@ function obtenerReproductorFinalVersus(personajeGanador, personajeVictima) {
   return () => reproducirTrampaSelvaticaVersus(personajeVictima);
 }
 
+let objetivoRelampagoFinal = null;
+let temporizadorTruenoFinal = null;
+function posicionarRelampagoFinalVersus() {
+  if (!objetivoRelampagoFinal) return;
+  const marco = anuncioFinVersus.getBoundingClientRect();
+  const personaje = objetivoRelampagoFinal.getBoundingClientRect();
+  if (!marco.width || !marco.height) return;
+  const x = Math.max(24, Math.min(marco.width-24, personaje.left+personaje.width*.5-marco.left));
+  const y = Math.max(80, Math.min(marco.height-24, personaje.top+personaje.height*.46-marco.top));
+  const svg = document.getElementById('relampagoFinalVersus');
+  svg.setAttribute('viewBox', `0 0 ${marco.width} ${marco.height}`);
+  const ancho = Math.min(65, marco.width*.075);
+  const rayo = `M ${x-ancho*.4} -12 L ${x+ancho*.25} ${y*.23} L ${x-ancho*.65} ${y*.4} L ${x+ancho*.45} ${y*.38} L ${x-ancho*.3} ${y*.7} L ${x+ancho*.2} ${y*.67} L ${x} ${y}`;
+  svg.querySelector('.relampago-aura').setAttribute('d', rayo);
+  svg.querySelector('.relampago-nucleo').setAttribute('d', rayo);
+  svg.querySelector('.relampago-ramas').setAttribute('d', `M ${x+ancho*.25} ${y*.23} l ${ancho} ${y*.05} l ${-ancho*.15} ${y*.13} M ${x-ancho*.3} ${y*.7} l ${-ancho} ${-y*.06} l ${-ancho*.4} ${y*.1}`);
+  anuncioFinVersus.style.setProperty('--rayo-x', `${x/marco.width*100}%`);
+  anuncioFinVersus.style.setProperty('--rayo-y', `${y/marco.height*100}%`);
+}
 function ocultarAnuncioFinVersus() {
+  clearTimeout(temporizadorTruenoFinal);
+  temporizadorTruenoFinal = null;
+  objetivoRelampagoFinal?.classList.remove('impacto-relampago-final');
+  objetivoRelampagoFinal = null;
+  window.removeEventListener('resize', posicionarRelampagoFinalVersus);
   if (demoVersus.temporizadorAnuncioFin) {
     clearTimeout(demoVersus.temporizadorAnuncioFin);
     demoVersus.temporizadorAnuncioFin = null;
@@ -8656,18 +8681,27 @@ function ocultarAnuncioFinVersus() {
   palabraFinalVersus.textContent = "";
 }
 
-function mostrarAnuncioFinVersus(palabraPerdida = "", anticipacion = false) {
+function mostrarAnuncioFinVersus(palabraPerdida = "", anticipacion = false, ganador = "jugador") {
   ocultarAnuncioFinVersus();
   if (anticipacion) {
     anuncioFinVersus.classList.add("aviso-cinematica");
     anuncioFinVersus.setAttribute("aria-hidden", "true");
-    reproducirSonidoVersus("avisoCinematica", 0.7);
+    objetivoRelampagoFinal = ganador === 'jugador' ? personajeVersusDos : personajeVersusUno;
   }
   if (palabraPerdida) {
     palabraFinalVersus.textContent = `LA PALABRA ERA: ${palabraPerdida}`;
     palabraFinalVersus.hidden = false;
   }
   anuncioFinVersus.classList.remove("oculto");
+  if (anticipacion) {
+    posicionarRelampagoFinalVersus();
+    window.addEventListener('resize', posicionarRelampagoFinalVersus);
+    temporizadorTruenoFinal = setTimeout(() => {
+      temporizadorTruenoFinal = null;
+      objetivoRelampagoFinal?.classList.add('impacto-relampago-final');
+      reproducirSonidoVersus('avisoCinematica', .85);
+    }, 180);
+  }
   void anuncioFinVersus.offsetWidth;
   anuncioFinVersus.classList.add("activo");
 
@@ -8678,7 +8712,7 @@ function mostrarAnuncioFinVersus(palabraPerdida = "", anticipacion = false) {
       const resolver = demoVersus.resolverAnuncioFin;
       ocultarAnuncioFinVersus();
       resolver?.();
-    }, anticipacion ? 650 : movimientoReducido ? 1200 : 2800);
+    }, anticipacion ? 1300 : movimientoReducido ? 1200 : 2800);
   });
 }
 
@@ -8688,7 +8722,7 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
     return;
   }
   if (dueloAventuraActivo) {
-    await mostrarAnuncioFinVersus("", true);
+    await mostrarAnuncioFinVersus("", ganador !== "empate", ganador);
     if (ganador === "jugador" && ["shadow_primero", "shadow_final", "azrak_final"].includes(dueloAventuraActivo?.tipo)) {
       dueloAventuraActivo.resultado = ganador;
       await completarDueloAventura();
@@ -8703,7 +8737,7 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
     return;
   }
 
-  await mostrarAnuncioFinVersus("", true);
+  await mostrarAnuncioFinVersus("", true, ganador);
 
   const personajeGanador = ganador === "jugador"
     ? personajeJugadorVersus

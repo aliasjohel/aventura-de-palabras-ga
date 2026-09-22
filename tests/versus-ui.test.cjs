@@ -26,7 +26,7 @@ assert.match(app, /function mostrarRevelacionPalabraVersus\(/);
 assert.match(app, /La palabra era/);
 assert.match(html, /id="anuncioFinVersus"[\s\S]+FIN DEL DUELO[\s\S]+id="palabraFinalVersus"/);
 assert.match(estilos, /\.anuncio-fin-versus[\s\S]+@keyframes entradaAnuncioFinVersus/);
-assert.match(app, /function mostrarAnuncioFinVersus\(palabraPerdida = "", anticipacion = false\)/);
+assert.match(app, /function mostrarAnuncioFinVersus\(palabraPerdida = "", anticipacion = false, ganador = "jugador"\)/);
 assert.match(app, /LA PALABRA ERA: \$\{palabraPerdida\}/);
 assert.match(app, /await mostrarAnuncioFinVersus\(palabraPerdida\)/);
 assert.match(app, /const palabraActivaJugador = obtenerPalabraActualJugadorVersus\(\)/);

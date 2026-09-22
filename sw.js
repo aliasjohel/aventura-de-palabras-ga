@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v295`;
+const CACHE_NAME = `${CACHE_PREFIX}v296`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -203,6 +203,7 @@ const RECURSOS_MODOS_LOCALES = [
 ];
 const CORE_ASSETS = [
   "./js/vendor/supabase-2.116.0.js",
+  "./assets/sounds/trueno-cinematica-v2.wav",
   "./assets/sounds/golpe-cinematica-v1.wav",
   "./js/versus-ranks.js",
   "./css/versus-ranks.css",
@@ -606,7 +607,7 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-  "./assets/sounds/golpe-cinematica-v1.wav": "20260922-cierre-2",
+  "./assets/sounds/trueno-cinematica-v2.wav": "20260922-relampago-1",
   "./js/vendor/supabase-2.116.0.js": "2.116.0",
   "./js/versus-ranks.js": "20260922-medallas-3",
   "./css/versus-ranks.css": "20260922-medallas-3",
@@ -625,14 +626,14 @@ const ASSET_REVISIONS = {
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
   "./": "20260922-alias-1",
-  "./index.html": "20260922-medallas-3",
+  "./index.html": "20260922-relampago-1",
   "./js/prologue-cinematic.js": "20260921-tienda-1",
   "./css/player-avatar.css": "20260921-social-mapa-1",
   "./js/player-avatar.js": "20260922-medallas-3",
   "./css/versus-identity.css": "20260915-social-1",
   "./js/versus-identity.js": "20260915-social-1",
-  "./css/styles.css": "20260922-cierre-2",
-  "./js/app.js": "20260922-medallas-3",
+  "./css/styles.css": "20260922-relampago-1",
+  "./js/app.js": "20260922-relampago-1",
   "./js/versus-room.js": "20260922-alias-1",
   "./js/public-player-profile.js": "20260922-medallas-3",
   "./js/azrak-world.js": "20260913-shadow-runas-2",

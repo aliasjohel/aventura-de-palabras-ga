@@ -17762,11 +17762,28 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
 .preparacion-imagenes-combate { position:absolute; inset:0; z-index:100; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; background:#120e20ed; color:#fff1d9; text-align:center; padding:20px; }
 .preparacion-imagenes-combate button { min-height:44px; padding:10px 20px; border:2px solid #dab57a; border-radius:12px; background:#322144; color:#fff1d9; font:inherit; cursor:pointer; }
 .preparacion-imagenes-combate button[hidden] { display:none; }
-.anuncio-fin-versus.aviso-cinematica{position:fixed;z-index:20001;padding:0;box-shadow:none;background:#d6eaff;pointer-events:auto}
+.anuncio-fin-versus.aviso-cinematica{position:fixed;z-index:20001;padding:0;box-shadow:none;background:#02071466;pointer-events:auto}
 .anuncio-fin-versus.aviso-cinematica::before,.anuncio-fin-versus.aviso-cinematica::after,.anuncio-fin-versus.aviso-cinematica .anuncio-fin-versus-contenido{display:none}
-.anuncio-fin-versus.aviso-cinematica.activo{animation:destello-previo-cinematica .65s ease-out both}
-@keyframes destello-previo-cinematica{0%{opacity:0}12%{opacity:.7}55%,100%{opacity:0}}
-@media(prefers-reduced-motion:reduce){.anuncio-fin-versus.aviso-cinematica.activo{background:#07111b;animation:fundido-previo-cinematica .65s ease-out both}@keyframes fundido-previo-cinematica{0%,100%{opacity:0}50%{opacity:.45}}}
+.anuncio-fin-versus.aviso-cinematica.activo{animation:none}
+.relampago-final-versus,.relampago-impacto,.relampago-destello{display:none;pointer-events:none}
+.aviso-cinematica .relampago-final-versus{display:block;position:absolute;inset:0;width:100%;height:100%;overflow:visible;opacity:0;animation:caida-relampago-final 1.3s linear both}
+.relampago-final-versus path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.relampago-aura{stroke:#68caff;stroke-width:17;filter:drop-shadow(0 0 13px #25aaff) drop-shadow(0 0 28px #87dfff)}
+.relampago-nucleo{stroke:#fff;stroke-width:5}
+.relampago-ramas{stroke:#c5f3ff;stroke-width:3;filter:drop-shadow(0 0 8px #5acbff)}
+.aviso-cinematica .relampago-impacto{display:block;position:absolute;left:var(--rayo-x);top:var(--rayo-y);width:clamp(100px,19vw,250px);aspect-ratio:1;translate:-50% -50%;border-radius:50%;background:radial-gradient(circle,#fff 0 7%,#beeeffb8 15%,#47adff55 35%,transparent 68%);box-shadow:0 0 35px #70d6ff55;opacity:0;animation:impacto-rayo-final 1.3s ease-out both}
+.aviso-cinematica .relampago-destello{display:block;position:absolute;inset:0;background:#e4f5ff;opacity:0;animation:destello-rayo-final 1.3s ease-out both}
+.impacto-relampago-final{animation:personaje-rayo-final 1.12s ease-out both!important}
+@keyframes caida-relampago-final{0%,13%{opacity:0;clip-path:inset(0 0 100% 0)}18%{opacity:1;clip-path:inset(0)}45%{opacity:1}80%,100%{opacity:0;clip-path:inset(0)}}
+@keyframes impacto-rayo-final{0%,13%{opacity:0;scale:.3}21%{opacity:1;scale:1}55%{opacity:.65;scale:1.5}100%{opacity:0;scale:1.9}}
+@keyframes destello-rayo-final{0%,13%{opacity:0}19%{opacity:.82}43%,100%{opacity:0}}
+@keyframes personaje-rayo-final{0%{filter:brightness(2.7) drop-shadow(0 0 22px #8eeaff);translate:0 0}12%{translate:-7px 0}24%{translate:5px 0}38%{translate:-3px 0}55%{translate:0 0;filter:brightness(1.2)}100%{translate:0 5px;filter:brightness(.65) saturate(.65)}}
+@media(prefers-reduced-motion:reduce){
+ .aviso-cinematica .relampago-destello{display:none}
+ .aviso-cinematica .relampago-final-versus,.aviso-cinematica .relampago-impacto{animation:rayo-final-reducido 1.3s ease both}
+ .impacto-relampago-final{animation:none!important;filter:brightness(.8)}
+ @keyframes rayo-final-reducido{0%{opacity:0}30%,65%{opacity:.7}100%{opacity:0}}
+}
 /* Altura visible equivalente en las tres edades, compensando el margen del arte. */
 .siglos-en-un-segundo.kairos-victima-mago{--kairos-escala-base:.952;--kairos-escala-media:.924;--kairos-escala-final:.885}
 .siglos-en-un-segundo.kairos-victima-mago .kairos-final-invocador,

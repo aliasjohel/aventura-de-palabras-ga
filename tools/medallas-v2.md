@@ -14,6 +14,6 @@ Prompt común: single centered front-facing fantasy game shield badge, painterly
 
 Las divisiones V, IV, III, II e I dividen en cinco partes el intervalo de puntos de cada rango entre Bronce y Diamante. Novato y Leyenda no llevan divisiones. Los puntos y el emparejamiento del servidor conservan sus reglas.
 
-El golpe previo a la cinemática es audio PCM sintetizado original: tambor grave descendente con ataque breve y cola de 620 ms, sin grabaciones de terceros.
+El aviso previo a la cinemática usa un relámpago sobre el personaje derrotado y audio PCM sintetizado original de trueno: chasquido, ruido filtrado y retumbo grave de 1,12 segundos, sin grabaciones de terceros. El generador reproducible está en `tools/generar-trueno-cinematica.cjs`.
 
 Validación: pruebas del proyecto y navegador a 320×740, 390×844, 844×390 y 1365×900; ranking propio fuera de los primeros 50, error de conexión, ascenso de división, descenso, cambio de medalla, Leyenda, puntos cero y movimiento reducido. Alturas visibles de Kairós/Zafir medidas sobre el canal alfa con diferencia inferior al 3%.
