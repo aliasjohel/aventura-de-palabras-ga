@@ -14,3 +14,4 @@
 #medallasRanking{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}#medallasRanking>.rango-jugador{padding:10px;border-radius:10px;background:#20314988}
 #resultadoRangoVersus .puntos-animados{font-variant-numeric:tabular-nums;font-size:22px;color:#ffe1a0}
 @media(max-width:380px){.ranking-resumen{padding:12px}.ranking-resumen .rango-escudo{width:80px;height:90px}}
+#pantallaMenu #btnRankingMenu{border-color:#dbb966aa;background:linear-gradient(160deg,#795829aa,#302519bb);color:#fff2c7}
