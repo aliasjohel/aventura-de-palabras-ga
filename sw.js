@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v292`;
+const CACHE_NAME = `${CACHE_PREFIX}v293`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -202,6 +202,7 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/elementos/estela-escarcha-nivor.png",
 ];
 const CORE_ASSETS = [
+  "./js/vendor/supabase-2.116.0.js",
   "./js/versus-ranks.js",
   "./css/versus-ranks.css",
   "./assets/images/rangos/novato.svg",
@@ -604,6 +605,7 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
+  "./js/vendor/supabase-2.116.0.js": "2.116.0",
   "./js/versus-ranks.js": "20260922-ranked-1",
   "./css/versus-ranks.css": "20260922-ranked-1",
   "./assets/images/rangos/novato.svg": "20260922-ranked-1",
@@ -647,7 +649,7 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/versus/mano-abismo-atrapa-t-shadow.png": "20260902-personajes-chibi-1",
   "./assets/images/personajes/versus/mano-abismo-atrapa-guardian-alba.png": "20260902-personajes-chibi-1",
   "./js/pwa.js": "20260827-modos-locales-offline-1",
-  "./js/supabase-loader.js": "20260827-supabase-diferido-1",
+  "./js/supabase-loader.js": "20260922-local-sdk-1",
   "./assets/images/ui/presentacion-mision-cumbres-v2.png": "20260908-isla-cumbres-1",
   "./assets/images/ui/presentacion-mision-hielo-v1.png": "20260831-soporte-hielo-1",
   "./assets/images/fondos/cumbres-1.png": "20260826-cumbres-1",

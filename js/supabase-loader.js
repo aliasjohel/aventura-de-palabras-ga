@@ -1,7 +1,7 @@
 (function iniciarCargadorOnline(raiz) {
   "use strict";
 
-  const URL_SUPABASE = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js";
+  const URL_SUPABASE = "js/vendor/supabase-2.116.0.js";
   let promesaCarga = null;
 
   function clienteDisponible() {
