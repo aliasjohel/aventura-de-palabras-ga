@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v291`;
+const CACHE_NAME = `${CACHE_PREFIX}v292`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -202,6 +202,15 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/elementos/estela-escarcha-nivor.png",
 ];
 const CORE_ASSETS = [
+  "./js/versus-ranks.js",
+  "./css/versus-ranks.css",
+  "./assets/images/rangos/novato.svg",
+  "./assets/images/rangos/bronce.svg",
+  "./assets/images/rangos/plata.svg",
+  "./assets/images/rangos/oro.svg",
+  "./assets/images/rangos/platino.svg",
+  "./assets/images/rangos/diamante.svg",
+  "./assets/images/rangos/leyenda.svg",
   "./css/menu-navigation.css",
   "./assets/images/perfil/marco-clasico-v1.png",
   "./assets/images/perfil/marco-bosque-v1.png",
@@ -595,6 +604,15 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
+  "./js/versus-ranks.js": "20260922-ranked-1",
+  "./css/versus-ranks.css": "20260922-ranked-1",
+  "./assets/images/rangos/novato.svg": "20260922-ranked-1",
+  "./assets/images/rangos/bronce.svg": "20260922-ranked-1",
+  "./assets/images/rangos/plata.svg": "20260922-ranked-1",
+  "./assets/images/rangos/oro.svg": "20260922-ranked-1",
+  "./assets/images/rangos/platino.svg": "20260922-ranked-1",
+  "./assets/images/rangos/diamante.svg": "20260922-ranked-1",
+  "./assets/images/rangos/leyenda.svg": "20260922-ranked-1",
   "./css/menu-navigation.css": "20260921-social-mapa-1",
   "./assets/images/puzzles/lume-camara-verdadera-v1.png": "20260914-siete-diferencias-1",
   "./assets/images/puzzles/lume-camara-alterada-v1.png": "20260914-siete-diferencias-1",
@@ -606,13 +624,13 @@ const ASSET_REVISIONS = {
   "./index.html": "20260922-alias-1",
   "./js/prologue-cinematic.js": "20260921-tienda-1",
   "./css/player-avatar.css": "20260921-social-mapa-1",
-  "./js/player-avatar.js": "20260921-social-mapa-1",
+  "./js/player-avatar.js": "20260922-ranked-1",
   "./css/versus-identity.css": "20260915-social-1",
   "./js/versus-identity.js": "20260915-social-1",
   "./css/styles.css": "20260920-kairos-cinematica-1",
-  "./js/app.js": "20260921-social-mapa-1",
+  "./js/app.js": "20260922-ranked-1",
   "./js/versus-room.js": "20260922-alias-1",
-  "./js/public-player-profile.js": "20260921-social-mapa-1",
+  "./js/public-player-profile.js": "20260922-ranked-1",
   "./js/azrak-world.js": "20260913-shadow-runas-2",
   "./css/azrak-world.css": "20260913-runas-viento-captura-1",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260915-shadow-kairos-1",
@@ -776,7 +794,7 @@ const ASSET_REVISIONS = {
   "./js/adventure-puzzles.js": "20260827-puzzles-cumbres-1",
   "./js/versus-engine.js": "20260817-versus-recuperacion-1",
   "./js/supabase-client.js": "20260817-amigos-cuentas-1",
-  "./js/versus-room-supabase.js": "20260921-social-mapa-1",
+  "./js/versus-room-supabase.js": "20260922-ranked-1",
   "./assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png": "20260905-final-hielo-musica-1",
 };
 

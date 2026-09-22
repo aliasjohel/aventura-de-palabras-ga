@@ -2144,6 +2144,24 @@ function actualizarPartidaOnline(partida) {
   actualizarIdentidadMultijugador();
 }
 
+function modoOnlineSeleccionado() {
+  return document.querySelector('input[name="modoOnline"]:checked')?.value || 'classic';
+}
+function actualizarReglasModoOnline() {
+  document.getElementById('reglasModoOnline').textContent = modoOnlineSeleccionado() === 'ranked'
+    ? 'Victoria +3 · Empate +1 · Derrota −1 (Novato no pierde puntos). Abandonar un duelo empezado cuenta como derrota.'
+    : 'Jugá sin cambiar tus puntos. Las partidas se guardan en tu historial.';
+}
+async function cargarRangoSala() {
+  const nodo = document.getElementById('rangoSalaVersus');
+  try {
+    const rango = await adaptadorSalasVersus.obtenerRango();
+    nodo.replaceChildren(VersusRanks.badge(rango.points, true));
+  } catch (_) { nodo.textContent = 'Conectate para consultar tu rango.'; }
+}
+for (const input of document.querySelectorAll('input[name="modoOnline"]')) input.addEventListener('change', actualizarReglasModoOnline);
+document.getElementById('catalogoRangos').replaceChildren(...VersusRanks.tiers.map(t => VersusRanks.badge(t.min)));
+actualizarReglasModoOnline();
 let busquedaPublicaActiva = false;
 let peticionBusqueda = null;
 let temporizadorBusqueda = null;
@@ -2153,6 +2171,7 @@ const estadoBusqueda = document.getElementById("estadoBusqueda");
 
 function mostrarBusquedaActiva(activa) {
   busquedaPublicaActiva = activa;
+  for (const input of document.querySelectorAll('input[name="modoOnline"]')) input.disabled = activa;
   btnBuscarPartida.disabled = activa;
   btnCancelarBusqueda.classList.toggle("oculto", !activa);
   btnCrearSalaVersus.disabled = activa;
@@ -2164,9 +2183,15 @@ async function consultarBusquedaPublica() {
   if (!busquedaPublicaActiva || peticionBusqueda) return;
   let encontro = false;
   try {
-    peticionBusqueda = adaptadorSalasVersus.buscarPartida({ alias: aliasSalaVersus.value });
+    peticionBusqueda = adaptadorSalasVersus.buscarPartida({ alias: aliasSalaVersus.value, modo: modoOnlineSeleccionado() });
     const resultado = await peticionBusqueda;
     encontro = Boolean(resultado?.room_id);
+    if (!encontro && busquedaPublicaActiva) {
+      estadoBusqueda.textContent = modoOnlineSeleccionado() === 'ranked'
+        ? (resultado?.expanded ? 'Buscando en tu rango y rangos vecinos, con puntos cercanos…' : 'Buscando un rival de tu rango y con puntos parecidos…')
+        : 'Buscando rival para Clásico… Podés esperar o cancelar.';
+      if (resultado?.points != null) document.getElementById('rangoSalaVersus').replaceChildren(VersusRanks.badge(resultado.points, true));
+    }
     if (encontro && busquedaPublicaActiva) {
       mostrarBusquedaActiva(false);
       estadoBusqueda.textContent = "¡Rival encontrado! Elegí tu personaje.";
@@ -2190,7 +2215,7 @@ async function cancelarBusquedaPublica() {
   clearTimeout(temporizadorBusqueda);
   try {
     const enCurso = await peticionBusqueda;
-    const resultado = await adaptadorSalasVersus.buscarPartida({ alias: aliasSalaVersus.value, cancelar: true });
+    const resultado = await adaptadorSalasVersus.buscarPartida({ alias: aliasSalaVersus.value, cancelar: true, modo: modoOnlineSeleccionado() });
     if (resultado?.room_id || enCurso?.room_id) await adaptadorSalasVersus.salirSala();
     estadoBusqueda.textContent = "Búsqueda cancelada.";
   } catch (_) {
@@ -2249,7 +2274,7 @@ async function cargarRankingPublico() {
     if (!adaptadorSalasVersus.obtenerRanking) throw new Error("Conectate a internet para ver el ranking.");
     const filas = await adaptadorSalasVersus.obtenerRanking();
     lista.replaceChildren();
-    if (!filas.length) lista.textContent = "Todavía no hay resultados. ¡Jugá una partida pública para inaugurar el ranking!";
+    if (!filas.length) lista.textContent = "Todavía no hay resultados. ¡Jugá Clasificatorio para inaugurar el ranking!";
     for (const fila of filas) {
       const item = document.createElement("p");
       item.classList.toggle("ranking-propio", fila.me);
@@ -2262,6 +2287,7 @@ async function cargarRankingPublico() {
         ver.addEventListener("click", () => PublicPlayerProfile.abrir(fila.user_id));
         item.append(ver);
       }
+      item.append(VersusRanks.badge(fila.points));
       lista.appendChild(item);
     }
   } catch (error) { lista.textContent = error.message; }
@@ -2281,6 +2307,7 @@ async function abrirSalaVersus() {
   try {
     await asegurarConexionSalasVersus();
     actualizarSalaVersus(adaptadorSalasVersus.obtenerSala());
+    void cargarRangoSala();
   } catch (error) {
     estadoCuentaVersus.textContent = "Sin conexión";
     mostrarErrorSalaVersus(error.message || "No pudimos conectarnos con Supabase.");
@@ -8663,7 +8690,24 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
   mostrarResultadoPartidaVersus(ganador, detalle);
 }
 
+async function mostrarResultadoRango(matchId) {
+  const nodo = document.getElementById('resultadoRangoVersus');
+  nodo.hidden = false;
+  nodo.textContent = 'Cargando puntos…';
+  try {
+    const estado = await adaptadorSalasVersus.obtenerRango(matchId);
+    if (partidaOnlineVersus?.matchId !== matchId) return;
+    const cambio = estado.result;
+    const texto = document.createElement('p');
+    texto.textContent = cambio ? (cambio.delta > 0 ? '+' : '') + cambio.delta + ' puntos' : 'Clásico · Tus puntos no cambian';
+    const ascenso = cambio && cambio.rank.index > cambio.previous_rank.index;
+    if (ascenso) texto.textContent += ' · ¡Ascendiste a ' + cambio.rank.name + '!';
+    nodo.classList.toggle('ascenso-rango', Boolean(ascenso));
+    nodo.replaceChildren(texto, VersusRanks.badge(estado.points, true));
+  } catch (_) { if (partidaOnlineVersus?.matchId === matchId) nodo.textContent = 'Podés consultar tus puntos en tu perfil cuando vuelva la conexión.'; }
+}
 function mostrarResultadoPartidaVersus(ganador, detalle) {
+  document.getElementById('resultadoRangoVersus').hidden = true;
 
   reproducirSonidoVersus(ganador === "jugador" ? "victoria" : "derrota", 0.72);
 
@@ -8743,7 +8787,10 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
   btnRevanchaVersus.textContent = esOnline ? "Pedir revancha" : "Jugar de nuevo";
   btnMenuResultadoVersus.textContent = "Volver al menú";
   resultadoRondaVersus.classList.remove("oculto");
-  if (esOnline) actualizarEstadoRevanchaVersus(adaptadorSalasVersus.obtenerSala());
+  if (esOnline) {
+    actualizarEstadoRevanchaVersus(adaptadorSalasVersus.obtenerSala());
+    if (partidaOnlineVersus?.matchId) void mostrarResultadoRango(partidaOnlineVersus.matchId);
+  }
 }
 
 function crearParticulasEclipseVersus() {

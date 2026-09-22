@@ -1,0 +1,44 @@
+-- All fixtures and queue isolation are rolled back by the test runner.
+DO $$
+declare a uuid:=gen_random_uuid(); b uuid:=gen_random_uuid(); c uuid:=gen_random_uuid(); j jsonb; k jsonb; rid uuid; mid uuid;
+begin
+ delete from versus_private.search_queue;
+ insert into auth.users(id) values(a),(b),(c);
+ perform set_config('request.jwt.claim.sub',a::text,true);
+ j:=public.find_versus_opponent_mode('Prueba Uno',false,'classic');
+ assert (j->>'waiting')::boolean, 'first classic waits';
+ perform set_config('request.jwt.claim.sub',b::text,true);
+ j:=public.find_versus_opponent_mode('Prueba Dos',false,'ranked');
+ assert (j->>'waiting')::boolean, 'modes must not mix';
+ j:=public.find_versus_opponent_mode('Prueba Dos',false,'classic');
+ rid:=(j->>'room_id')::uuid; assert rid is not null,'classic pairing';
+ assert not exists(select 1 from versus_private.ranked_rooms where room_id=rid),'classic not ranked';
+ insert into public.versus_matches(room_id,started_at,deadline_at) values(rid,now(),now()+interval '5 minutes') returning id into mid;
+ update public.versus_matches set status='finished',winner_id=a where id=mid;
+ assert not exists(select 1 from versus_private.ranked_results where match_id=mid),'classic no points';
+ perform public.leave_versus_room(rid);
+ insert into versus_private.ranked_results(match_id,user_id,alias,points,win,draw) values(gen_random_uuid(),a,'Prueba Uno',9,true,false),(gen_random_uuid(),c,'Prueba Tres',480,true,false);
+ perform set_config('request.jwt.claim.sub',a::text,true);
+ j:=public.find_versus_opponent_mode('Prueba Uno',false,'ranked');
+ perform set_config('request.jwt.claim.sub',c::text,true);
+ j:=public.find_versus_opponent_mode('Prueba Tres',false,'ranked');
+ assert (j->>'waiting')::boolean, 'Novato cannot match Leyenda';
+ perform set_config('request.jwt.claim.sub',b::text,true);
+ insert into versus_private.ranked_results(match_id,user_id,alias,points,win,draw) values(gen_random_uuid(),b,'Prueba Dos',10,true,false);
+ j:=public.find_versus_opponent_mode('Prueba Dos',false,'ranked');
+ assert (j->>'waiting')::boolean, 'adjacent ranks initially wait';
+ update versus_private.search_queue set queued_at=now()-interval '31 seconds' where user_id in(a,b);
+ j:=public.find_versus_opponent_mode('Prueba Dos',false,'ranked');
+ rid:=(j->>'room_id')::uuid; assert rid is not null,'nearby ranks expand';
+ assert (select count(*)=2 from public.versus_players where room_id=rid),'two players only';
+ insert into public.versus_matches(room_id,started_at,deadline_at) values(rid,now(),now()+interval '5 minutes') returning id into mid;
+ perform public.leave_versus_room(rid);
+ j:=public.get_versus_rank_status(mid);
+ assert (j->>'points')::int=9,'forfeit loses one point';
+ perform set_config('request.jwt.claim.sub',a::text,true);
+ j:=public.get_versus_rank_status(mid);
+ assert (j->>'points')::int=12,'winner gets three';
+ assert j#>>'{result,previous_rank,key}'='novato' and j#>>'{result,rank,key}'='bronce','promotion persists after room deletion';
+ assert (select count(*)=2 from versus_private.ranked_results where match_id=mid),'one result per player';
+ assert not has_function_privilege('anon','public.find_versus_opponent_mode(text,boolean,text)','EXECUTE'),'anonymous cannot queue';
+end $$;

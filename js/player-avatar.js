@@ -68,6 +68,7 @@
     el("perfilId").textContent = "Conectando…";
     el("perfilEstado").textContent = "Cargando tu historial…";
     el("perfilRanking").textContent = "";
+    el("rangoPerfilPropio").replaceChildren();
     el("perfilFavoritos").replaceChildren();
     el("reintentarPerfil").hidden = true;
     ["Jugadas", "Victorias", "Derrotas", "Empates"].forEach(key => { el(`perfil${key}`).textContent = "—"; });
@@ -82,7 +83,8 @@
       el("perfilEstado").textContent = profile.guest
         ? "Perfil de invitado. Vinculá tu cuenta desde Multijugador para conservar el historial al cambiar de dispositivo."
         : "Tu historial está vinculado a tu cuenta.";
-      el("perfilRanking").textContent = `${profile.points || 0} puntos de ranking · ${profile.ranked_played || 0} partidas públicas`;
+      el("perfilRanking").textContent = `${profile.points || 0} puntos de ranking · ${profile.ranked_played || 0} partidas clasificatorias`;
+      el("rangoPerfilPropio").replaceChildren(VersusRanks.badge(profile.points, true));
       for (const favorite of profile.favorites || []) {
         const card = document.createElement("div");
         const name = document.createElement("strong");

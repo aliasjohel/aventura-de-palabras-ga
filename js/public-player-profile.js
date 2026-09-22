@@ -17,6 +17,7 @@
       const frames = {clasico:"Clásico",bosque:"Bosque",hielo:"Hielo",fuego:"Fuego",arcano:"Arcano",real:"Real"};
       el("aparienciaPerfilPublico").textContent = `Marco ${frames[profile.frame] || "Clásico"}`;
       el("rankingPerfilPublico").textContent = `${profile.position ? `Puesto #${profile.position}` : "Sin puesto todavía"} · ${profile.points || 0} puntos`;
+      el("rangoPerfilPublico").replaceChildren(VersusRanks.badge(profile.points, true));
       el("estadisticasPerfilPublico").replaceChildren();
       for (const [key,label] of [["played","Partidas"],["wins","Victorias"],["losses","Derrotas"],["draws","Empates"]]) {
         const tile = document.createElement("div"); tile.append(text("dd",profile[key] || 0),text("dt",label)); el("estadisticasPerfilPublico").append(tile);
@@ -41,7 +42,7 @@
       row.dataset.resultado = match.win ? "victoria" : match.draw ? "empate" : "derrota";
       const info = document.createElement("div"); info.append(text("strong",outcome));
       const date = match.finished_at ? new Date(match.finished_at).toLocaleDateString("es-AR") : "Partida anterior";
-      info.append(text("small",`${date} · ${match.ranked ? "Con ranking" : "Duelo amistoso"}`));
+      info.append(text("small",`${date} · ${match.ranked ? "Clasificatorio" : "Clásico"}`));
       const rival = document.createElement("button"); rival.type = "button"; rival.className = "enlace-perfil-jugador";
       rival.textContent = `${VersusRoom.aliasVisible(match.opponent_alias) || "Rival no disponible"}${match.opponent_id ? " ›" : ""}`;
       rival.disabled = !match.opponent_id;

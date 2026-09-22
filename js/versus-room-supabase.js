@@ -229,7 +229,7 @@
     async function cargarSala(roomId) {
       const versionCarga = versionCanalSala;
       const [{ data: sala, error: errorSala }, { data: jugadores, error: errorJugadores }] = await Promise.all([
-        cliente.from("versus_rooms").select("id, code, status, host_id, created_at, updated_at").eq("id", roomId).maybeSingle(),
+        cliente.from("versus_rooms").select("id, code, status, host_id, created_at, updated_at, queue_mode").eq("id", roomId).maybeSingle(),
         cliente.from("versus_players").select("id, user_id, alias, slot, ready, character_key, theme_key, preparation_ready, rematch_ready, joined_at, avatar_key, frame_key, quick_message_key, quick_message_at").eq("room_id", roomId).order("slot"),
       ]);
 
@@ -262,6 +262,7 @@
       salaActual = {
         id: sala.id,
         codigo: sala.code,
+        modo: sala.queue_mode,
         estado: sala.status,
         creadaEn: sala.created_at,
         actualizadaEn: sala.updated_at,
@@ -356,16 +357,22 @@
       return salaActual;
     }
 
-    async function buscarPartida({ alias, cancelar = false }) {
-      await inicializar();
-      const { data, error } = await cliente.rpc("find_versus_opponent", {
-        p_alias: cancelar ? raiz.VersusRoom.limpiarAlias(alias) : raiz.VersusRoom.validarAlias(alias), p_cancel: cancelar,
+    async function buscarPartida({ alias, cancelar = false, modo = "classic" }) {
+      if (!usuarioId) await inicializar();
+      const { data, error } = await cliente.rpc("find_versus_opponent_mode", {
+        p_alias: cancelar ? raiz.VersusRoom.limpiarAlias(alias) : raiz.VersusRoom.validarAlias(alias), p_cancel: cancelar, p_mode: modo,
       });
       if (error) throw traducirError(error, "No pudimos buscar un rival.");
       if (data?.room_id) {
         await cargarSala(data.room_id);
         await escucharSala(data.room_id);
       }
+      return data;
+    }
+
+    async function obtenerRango(matchId = null) {
+      const { data, error } = await cliente.rpc("get_versus_rank_status", { p_match_id: matchId });
+      if (error) throw traducirError(error, "No pudimos cargar tu rango.");
       return data;
     }
 
@@ -597,6 +604,7 @@
       crearSala,
       buscarPartida,
       obtenerRanking,
+      obtenerRango,
       obtenerPerfilJugador,
       obtenerPerfilPublico,
       guardarApariencia,

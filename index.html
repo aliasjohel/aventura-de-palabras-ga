@@ -29,6 +29,7 @@
         }
     </style>
     <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/versus-ranks.css?v=20260922-ranked-1">
     <link rel="stylesheet" href="css/player-avatar.css?v=20260921-social-mapa-1">
     <link rel="stylesheet" href="css/versus-identity.css?v=20260915-social-1">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
@@ -516,19 +517,26 @@
 
                     <section class="opcion-sala-versus" aria-label="Partidas públicas">
                         <h3>Buscar partida</h3>
-                        <p>Encontrá un rival online. Después eligen sus personajes y preparan el duelo.</p>
+                        <p>Elegí cómo querés jugar. Después preparan el duelo en la sala.</p>
+                        <fieldset class="modos-online"><legend>Modo de juego</legend>
+                          <label class="modo-online"><input type="radio" name="modoOnline" value="classic" checked><span><strong>Clásico</strong><small>Jugá por diversión, sin cambiar tus puntos.</small></span></label>
+                          <label class="modo-online"><input type="radio" name="modoOnline" value="ranked"><span><strong>Clasificatorio</strong><small>Rivales de nivel cercano. Ganá puntos y subí de rango.</small></span></label>
+                        </fieldset>
+                        <div id="rangoSalaVersus" aria-live="polite"></div>
+                        <p id="reglasModoOnline">Las victorias y los personajes usados se guardan en tu historial.</p>
+                        <details><summary>Rangos y títulos</summary><div id="catalogoRangos" class="rangos-catalogo"></div></details>
                         <button id="btnBuscarPartida" type="button">Buscar rival</button>
                         <button id="btnCancelarBusqueda" type="button" class="oculto">Cancelar búsqueda</button>
                         <p id="estadoBusqueda" role="status" aria-live="polite"></p>
                         <details id="panelRanking">
                             <summary>Ranking online</summary>
-                            <p>Partidas de Buscar rival: victoria 3 puntos · empate 1 punto.</p>
+                            <p>Solo Clasificatorio: victoria +3 · empate +1 · derrota −1. En Novato no perdés puntos.</p>
                             <button id="btnActualizarRanking" type="button">Actualizar ranking</button>
                             <div id="listaRanking" aria-live="polite"></div>
                         </details>
                     </section>
                     <details class="salas-manuales-versus">
-                        <summary>Jugar con c&oacute;digo de sala</summary>
+                        <summary>Clásico con código de sala</summary>
                         <div class="acciones-sala-versus">
                             <article class="opcion-sala-versus">
                                 <span class="icono-opcion-sala" aria-hidden="true">&#10022;</span>
@@ -1359,6 +1367,7 @@
                         <p id="etiquetaResultadoVersus">RONDA 1</p>
                         <h2 id="tituloResultadoVersus">¡Ganaste la ronda!</h2>
                         <p id="detalleResultadoVersus">Completaste la palabra antes que tu rival.</p>
+                        <div id="resultadoRangoVersus" role="status" hidden></div>
                         <button id="btnRevanchaVersus" class="oculto" type="button">Jugar revancha</button>
                         <button id="verPerfilRival" class="secundario" type="button" hidden>Ver perfil del rival</button>
                         <button id="btnMenuResultadoVersus" class="secundario" type="button">Volver al menú</button>
@@ -1491,6 +1500,7 @@
                 <div><dd id="perfilDerrotas">—</dd><dt>Derrotas</dt></div>
                 <div><dd id="perfilEmpates">—</dd><dt>Empates</dt></div>
             </dl>
+            <div id="rangoPerfilPropio"></div>
             <p id="perfilRanking" class="perfil-ranking"></p>
             <button id="verHistorialRivales" class="secundario" type="button">Ver mis partidas y rivales</button>
             <h4>Personajes favoritos</h4><div id="perfilFavoritos" class="perfil-favoritos"></div>
@@ -1508,6 +1518,7 @@
       <button id="volverPerfilPublico" class="enlace-perfil-jugador" type="button" hidden>← Volver al perfil anterior</button>
       <p id="estadoPerfilPublico" role="status" aria-live="polite"></p>
       <div id="contenidoPerfilPublico" hidden>
+        <div id="rangoPerfilPublico"></div>
         <div class="perfil-publico-identidad"><span id="avatarPerfilPublico"></span><div><p id="rankingPerfilPublico" class="perfil-ranking"></p><p id="aparienciaPerfilPublico"></p></div></div>
         <dl id="estadisticasPerfilPublico" class="perfil-estadisticas"></dl>
         <h3>Trofeos</h3><div id="trofeosPerfilPublico" class="perfil-publico-trofeos"></div>
@@ -1518,7 +1529,8 @@
       </div>
       <button id="reintentarPerfilPublico" class="secundario" type="button" hidden>Reintentar</button>
     </dialog>
-    <script src="js/player-avatar.js?v=20260921-social-mapa-1"></script>
+    <script src="js/versus-ranks.js?v=20260922-ranked-1"></script>
+    <script src="js/player-avatar.js?v=20260922-ranked-1"></script>
     <script src="js/versus-identity.js?v=20260915-social-1"></script>
     <script src="js/intro.js?v=20260805-musica-menu-4"></script>
     <script src="js/supabase-loader.js?v=20260827-supabase-diferido-1"></script>
@@ -1526,7 +1538,7 @@
     <script src="js/supabase-client.js?v=20260817-amigos-cuentas-1"></script>
     <script src="js/versus-engine.js?v=20260817-versus-recuperacion-1"></script>
     <script src="js/versus-room.js?v=20260922-alias-1"></script>
-    <script src="js/versus-room-supabase.js?v=20260921-social-mapa-1"></script>
+    <script src="js/versus-room-supabase.js?v=20260922-ranked-1"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
     <script src="js/azrak-world.js?v=20260914-busqueda-ranking"></script>
     <script src="js/prologue-cinematic.js?v=20260921-tienda-1"></script>
@@ -1535,8 +1547,8 @@
     <script src="js/kairos-forest.js?v=20260909-musica-continua-1"></script>
     <script src="js/kalamo-desert.js?v=20260909-arco-aren-1"></script>
     <script src="js/world-word-hazards.js?v=20260914-jaula-fuego"></script>
-    <script src="js/app.js?v=20260921-social-mapa-1"></script>
-    <script src="js/public-player-profile.js?v=20260921-social-mapa-1"></script>
+    <script src="js/app.js?v=20260922-ranked-1"></script>
+    <script src="js/public-player-profile.js?v=20260922-ranked-1"></script>
     <script src="js/pwa.js?v=20260909-recuperar-actualizacion-1"></script>
 </body>
 

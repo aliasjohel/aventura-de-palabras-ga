@@ -29,7 +29,7 @@ begin
   for i in 1..24 loop
     mid:=gen_random_uuid();
     insert into versus_private.player_history values(a,mid,'Jugador QA','mago',true,false,true,now()+i*interval '1 second'),(b,mid,'Rival QA','dragon',false,false,true,now()+i*interval '1 second');
-    insert into versus_private.ranked_results values(mid,a,'Jugador QA',3,true,false),(mid,b,'Rival QA',0,false,false);
+    insert into versus_private.ranked_results(match_id,user_id,alias,points,win,draw) values(mid,a,'Jugador QA',3,true,false),(mid,b,'Rival QA',0,false,false);
   end loop;
   perform set_config('request.jwt.claim.sub',b::text,true);
   p:=public.get_versus_public_profile(a);
