@@ -25,7 +25,7 @@
     return [base, base.replace(/\d+$/g, "")].some(value => {
       const normal = value.replace(/[034157@$!]/g, c => ({0:"o",3:"e",4:"a",1:"i",5:"s",7:"t","@":"a","$":"s","!":"i"}[c]));
       const compact = normal.replace(/[^a-z]/g, "").replace(/(.)\1+/g, "$1");
-      const largos = new RegExp("(boludo|boluda|pelotudo|pelotuda|mierda|carajo|hijodeputa|hijadeputa|hdp|putamadre|conchadetumadre|conchatumadre|pendejo|pendeja|cabron|cabrona|maricon|gilipolas|culero|culera|fuck|shit|bitch|ashole)");
+      const largos = new RegExp("(pingudo|pinguda|boludo|boluda|pelotudo|pelotuda|mierda|carajo|hijodeputa|hijadeputa|hdp|putamadre|conchadetumadre|conchatumadre|pendejo|pendeja|cabron|cabrona|maricon|gilipolas|culero|culera|fuck|shit|bitch|ashole)");
       const cortos = new RegExp("^(el|la|soy|un|una)?(puto|puta|culo|pija|pito|cono|foro|fora|marica|verga)(s|123|pro|gamer|xd)?$");
       return largos.test(compact) || cortos.test(compact)
         || normal.split(/[^a-z]+/).some(p => cortos.test(p.replace(/(.)\1+/g, "$1")));
