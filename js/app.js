@@ -395,6 +395,7 @@ const sonidos = {
   versusAtaqueDos: new Audio("assets/sounds/ataque-2.mp3"),
   versusFight: new Audio("assets/sounds/fight.mp3"),
   versusFinish: new Audio("assets/sounds/finish.mp3"),
+  avisoCinematica: new Audio("assets/sounds/golpe-cinematica-v1.wav"),
 };
 
 const claveVibracionAtaques = "vibracionAtaquesAventuraGA";
@@ -2269,10 +2270,23 @@ async function cargarRankingPublico() {
   if (boton.disabled) return;
   boton.disabled = true;
   lista.textContent = "Cargando ranking…";
+  const propio = document.getElementById("miRanking");
+  propio.textContent = "Consultando tu puesto…";
   try {
     await asegurarConexionSalasVersus();
     if (!adaptadorSalasVersus.obtenerRanking) throw new Error("Conectate a internet para ver el ranking.");
     const filas = await adaptadorSalasVersus.obtenerRanking();
+    const miFila = filas.find(fila => fila.me);
+    propio.replaceChildren();
+    const puesto = document.createElement("p");
+    puesto.className = "ranking-puesto";
+    puesto.textContent = miFila ? `Puesto ${miFila.position} · ${miFila.points} puntos` : "Todavía no tenés un puesto";
+    propio.append(puesto, VersusRanks.badge(miFila?.points || 0, true));
+    if (!miFila) {
+      const ayuda = document.createElement("p");
+      ayuda.textContent = "Jugá tu primer duelo Clasificatorio para entrar al ranking.";
+      propio.append(ayuda);
+    }
     lista.replaceChildren();
     if (!filas.length) lista.textContent = "Todavía no hay resultados. ¡Jugá Clasificatorio para inaugurar el ranking!";
     for (const fila of filas) {
@@ -2290,13 +2304,22 @@ async function cargarRankingPublico() {
       item.append(VersusRanks.badge(fila.points));
       lista.appendChild(item);
     }
-  } catch (error) { lista.textContent = error.message; }
+  } catch (error) {
+    lista.textContent = error.message;
+    propio.textContent = "Conectate para consultar tu puesto y tus puntos. Podés explorar las medallas mientras tanto.";
+  }
   finally { boton.disabled = false; }
 }
 document.getElementById("btnActualizarRanking").addEventListener("click", cargarRankingPublico);
-document.getElementById("panelRanking").addEventListener("toggle", (event) => {
-  if (event.target.open) void cargarRankingPublico();
-});
+const rankingMenu = document.getElementById("rankingMenu");
+function abrirRankingMenu() {
+  if (!rankingMenu.open) rankingMenu.showModal();
+  void cargarRankingPublico();
+}
+document.getElementById("btnRankingMenu").addEventListener("click", abrirRankingMenu);
+document.getElementById("btnRankingSala").addEventListener("click", abrirRankingMenu);
+document.getElementById("cerrarRankingMenu").addEventListener("click", () => rankingMenu.close());
+document.getElementById("medallasRanking").replaceChildren(...VersusRanks.tiers.map(t => VersusRanks.badge(t.min, true)));
 
 async function abrirSalaVersus() {
   mostrarErrorSalaVersus();
@@ -8626,14 +8649,20 @@ function ocultarAnuncioFinVersus() {
     demoVersus.temporizadorAnuncioFin = null;
   }
   demoVersus.resolverAnuncioFin = null;
-  anuncioFinVersus.classList.remove("activo");
+  anuncioFinVersus.classList.remove("activo", "aviso-cinematica");
+  anuncioFinVersus.removeAttribute("aria-hidden");
   anuncioFinVersus.classList.add("oculto");
   palabraFinalVersus.hidden = true;
   palabraFinalVersus.textContent = "";
 }
 
-function mostrarAnuncioFinVersus(palabraPerdida = "") {
+function mostrarAnuncioFinVersus(palabraPerdida = "", anticipacion = false) {
   ocultarAnuncioFinVersus();
+  if (anticipacion) {
+    anuncioFinVersus.classList.add("aviso-cinematica");
+    anuncioFinVersus.setAttribute("aria-hidden", "true");
+    reproducirSonidoVersus("avisoCinematica", 0.7);
+  }
   if (palabraPerdida) {
     palabraFinalVersus.textContent = `LA PALABRA ERA: ${palabraPerdida}`;
     palabraFinalVersus.hidden = false;
@@ -8649,7 +8678,7 @@ function mostrarAnuncioFinVersus(palabraPerdida = "") {
       const resolver = demoVersus.resolverAnuncioFin;
       ocultarAnuncioFinVersus();
       resolver?.();
-    }, movimientoReducido ? 1200 : 2800);
+    }, anticipacion ? 650 : movimientoReducido ? 1200 : 2800);
   });
 }
 
@@ -8659,7 +8688,7 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
     return;
   }
   if (dueloAventuraActivo) {
-    await mostrarAnuncioFinVersus(palabraPerdida);
+    await mostrarAnuncioFinVersus("", true);
     if (ganador === "jugador" && ["shadow_primero", "shadow_final", "azrak_final"].includes(dueloAventuraActivo?.tipo)) {
       dueloAventuraActivo.resultado = ganador;
       await completarDueloAventura();
@@ -8674,7 +8703,7 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
     return;
   }
 
-  await mostrarAnuncioFinVersus(palabraPerdida);
+  await mostrarAnuncioFinVersus("", true);
 
   const personajeGanador = ganador === "jugador"
     ? personajeJugadorVersus
@@ -8687,26 +8716,55 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
     personajeVictima,
   );
   await reproducirFinal();
+  await mostrarAnuncioFinVersus(palabraPerdida);
   mostrarResultadoPartidaVersus(ganador, detalle);
 }
 
+let animacionResultadoRango = 0;
 async function mostrarResultadoRango(matchId) {
+  const version = ++animacionResultadoRango;
   const nodo = document.getElementById('resultadoRangoVersus');
   nodo.hidden = false;
   nodo.textContent = 'Cargando puntos…';
   try {
     const estado = await adaptadorSalasVersus.obtenerRango(matchId);
-    if (partidaOnlineVersus?.matchId !== matchId) return;
+    if (partidaOnlineVersus?.matchId !== matchId || version !== animacionResultadoRango) return;
     const cambio = estado.result;
+    const puntosFinales = VersusRanks.points(estado.points);
+    const puntosIniciales = cambio ? VersusRanks.points(cambio.before ?? puntosFinales-cambio.delta) : puntosFinales;
+    const anterior = VersusRanks.division(puntosIniciales);
+    const siguiente = VersusRanks.division(puntosFinales);
     const texto = document.createElement('p');
     texto.textContent = cambio ? (cambio.delta > 0 ? '+' : '') + cambio.delta + ' puntos' : 'Clásico · Tus puntos no cambian';
-    const ascenso = cambio && cambio.rank.index > cambio.previous_rank.index;
-    if (ascenso) texto.textContent += ' · ¡Ascendiste a ' + cambio.rank.name + '!';
-    nodo.classList.toggle('ascenso-rango', Boolean(ascenso));
-    nodo.replaceChildren(texto, VersusRanks.badge(estado.points, true));
+    const ascenso = cambio && puntosFinales>puntosIniciales && anterior.name!==siguiente.name;
+    const contador = document.createElement('p');contador.className='puntos-animados';
+    const medalla = document.createElement('div');
+    nodo.classList.remove('ascenso-rango');
+    nodo.replaceChildren(texto, contador, medalla);
+    let ultimo = -1;
+    const inicio = performance.now();
+    const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const render = (ahora) => {
+      if (version!==animacionResultadoRango || partidaOnlineVersus?.matchId!==matchId || nodo.hidden) return;
+      const progreso = reducido || puntosIniciales===puntosFinales ? 1 : Math.min(1,(ahora-inicio)/1200);
+      const interpolado = puntosIniciales+(puntosFinales-puntosIniciales)*progreso;
+      const puntos = progreso===1 ? puntosFinales : puntosFinales>puntosIniciales ? Math.floor(interpolado) : Math.ceil(interpolado);
+      if (puntos!==ultimo) {
+        contador.textContent=puntos+' puntos';
+        medalla.replaceChildren(VersusRanks.badge(puntos,true));
+        if (ultimo!==-1 && !reducido) reproducirPulsacionTeclaVersus(puntosFinales>puntosIniciales?'jugador':'rival');
+        ultimo=puntos;
+      }
+      const barra = medalla.querySelector('progress');
+      if (barra) barra.value = Math.max(0, interpolado-VersusRanks.division(puntos).min);
+      if(progreso<1) requestAnimationFrame(render);
+      else if(ascenso){texto.textContent+=' · ¡Ascendiste a '+siguiente.name+'!';nodo.classList.add('ascenso-rango');}
+    };
+    render(inicio);
   } catch (_) { if (partidaOnlineVersus?.matchId === matchId) nodo.textContent = 'Podés consultar tus puntos en tu perfil cuando vuelva la conexión.'; }
 }
 function mostrarResultadoPartidaVersus(ganador, detalle) {
+  ++animacionResultadoRango;
   document.getElementById('resultadoRangoVersus').hidden = true;
 
   reproducirSonidoVersus(ganador === "jugador" ? "victoria" : "derrota", 0.72);

@@ -16906,7 +16906,7 @@ button:disabled {
    márgenes transparentes de las ilustraciones. Nimbus es la excepción:
    crece de forma deliberada en cada salto temporal. */
 .siglos-en-un-segundo.kairos-victima-explorador { --kairos-escala-base: 1.05; --kairos-escala-media: 1.05; --kairos-escala-final: 1.04; }
-.siglos-en-un-segundo.kairos-victima-mago { --kairos-escala-base: 2.4; --kairos-escala-media: 1.5; --kairos-escala-final: 1.43; }
+.siglos-en-un-segundo.kairos-victima-mago { --kairos-escala-base: 1; --kairos-escala-media: 1; --kairos-escala-final: 1; }
 .siglos-en-un-segundo.kairos-victima-guardiana { --kairos-escala-base: 1; --kairos-escala-media: 1; --kairos-escala-final: .95; }
 .siglos-en-un-segundo.kairos-victima-dragon { --kairos-escala-base: 1.12; --kairos-escala-media: .95; --kairos-escala-final: 1.27; }
 .siglos-en-un-segundo.kairos-victima-hombre_lobo { --kairos-escala-base: 1.11; --kairos-escala-media: 1.1; --kairos-escala-final: 1.11; }
@@ -17762,3 +17762,13 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
 .preparacion-imagenes-combate { position:absolute; inset:0; z-index:100; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; background:#120e20ed; color:#fff1d9; text-align:center; padding:20px; }
 .preparacion-imagenes-combate button { min-height:44px; padding:10px 20px; border:2px solid #dab57a; border-radius:12px; background:#322144; color:#fff1d9; font:inherit; cursor:pointer; }
 .preparacion-imagenes-combate button[hidden] { display:none; }
+.anuncio-fin-versus.aviso-cinematica{position:fixed;z-index:20001;padding:0;box-shadow:none;background:#d6eaff;pointer-events:auto}
+.anuncio-fin-versus.aviso-cinematica::before,.anuncio-fin-versus.aviso-cinematica::after,.anuncio-fin-versus.aviso-cinematica .anuncio-fin-versus-contenido{display:none}
+.anuncio-fin-versus.aviso-cinematica.activo{animation:destello-previo-cinematica .65s ease-out both}
+@keyframes destello-previo-cinematica{0%{opacity:0}12%{opacity:.7}55%,100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.anuncio-fin-versus.aviso-cinematica.activo{background:#07111b;animation:fundido-previo-cinematica .65s ease-out both}@keyframes fundido-previo-cinematica{0%,100%{opacity:0}50%{opacity:.45}}}
+/* Altura visible equivalente en las tres edades, compensando el margen del arte. */
+.siglos-en-un-segundo.kairos-victima-mago{--kairos-escala-base:.952;--kairos-escala-media:.924;--kairos-escala-final:.885}
+.siglos-en-un-segundo.kairos-victima-mago .kairos-final-invocador,
+.siglos-en-un-segundo.kairos-victima-mago .kairos-final-victima{height:min(70vh,46vw,510px);width:auto;max-height:none;max-width:none;bottom:0}
+.siglos-en-un-segundo.kairos-victima-mago .kairos-final-victima{right:1%}
