@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v296`;
+const CACHE_NAME = `${CACHE_PREFIX}v297`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -202,6 +202,37 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/elementos/estela-escarcha-nivor.png",
 ];
 const CORE_ASSETS = [
+  "./js/cosmetic-store.js",
+  "./js/cosmetic-shop.js",
+  "./css/cosmetic-shop.css",
+  "./assets/images/trajes/aren-bosque-anciano-v1.png",
+  "./assets/images/trajes/aren-bosque-ataque-v1.png",
+  "./assets/images/trajes/aren-bosque-base-v1.png",
+  "./assets/images/trajes/aren-bosque-envejecido-v1.png",
+  "./assets/images/trajes/aren-bosque-final-v1.png",
+  "./assets/images/trajes/aren-bosque-habilidad-v1.png",
+  "./assets/images/trajes/aren-bosque-impacto-v1.png",
+  "./assets/images/trajes/aren-bosque-mano-v1.png",
+  "./assets/images/trajes/aren-bosque-planta-v1.png",
+  "./assets/images/trajes/aren-bosque-preparacion-v1.png",
+  "./assets/images/trajes/aren-bosque-vidrio-v1.png",
+  "./assets/images/trajes/kairos-real-anciano-v1.png",
+  "./assets/images/trajes/kairos-real-ataque-v1.png",
+  "./assets/images/trajes/kairos-real-base-v1.png",
+  "./assets/images/trajes/kairos-real-envejecido-v1.png",
+  "./assets/images/trajes/kairos-real-impacto-v1.png",
+  "./assets/images/trajes/kairos-real-mano-v1.png",
+  "./assets/images/trajes/kairos-real-planta-v1.png",
+  "./assets/images/trajes/kairos-real-vidrio-v1.png",
+  "./assets/images/trajes/zafir-celestial-anciano-v1.png",
+  "./assets/images/trajes/zafir-celestial-ataque-v1.png",
+  "./assets/images/trajes/zafir-celestial-base-v1.png",
+  "./assets/images/trajes/zafir-celestial-envejecido-v1.png",
+  "./assets/images/trajes/zafir-celestial-final-v1.png",
+  "./assets/images/trajes/zafir-celestial-impacto-v1.png",
+  "./assets/images/trajes/zafir-celestial-mano-v1.png",
+  "./assets/images/trajes/zafir-celestial-planta-v1.png",
+  "./assets/images/trajes/zafir-celestial-vidrio-v1.png",
   "./js/vendor/supabase-2.116.0.js",
   "./assets/sounds/trueno-cinematica-v2.wav",
   "./assets/sounds/golpe-cinematica-v1.wav",
@@ -799,7 +830,7 @@ const ASSET_REVISIONS = {
   "./js/adventure-puzzles.js": "20260827-puzzles-cumbres-1",
   "./js/versus-engine.js": "20260817-versus-recuperacion-1",
   "./js/supabase-client.js": "20260817-amigos-cuentas-1",
-  "./js/versus-room-supabase.js": "20260922-medallas-3",
+  "./js/versus-room-supabase.js": "20260923-trajes-1",
   "./assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png": "20260905-final-hielo-musica-1",
 };
 

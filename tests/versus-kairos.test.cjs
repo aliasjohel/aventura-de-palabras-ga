@@ -55,13 +55,13 @@ const entradaKairos = app.slice(
   app.indexOf("function programarEntradaKairosVersus"),
   app.indexOf("function limpiarEntradaDueloVersus"),
 );
-assert.match(entradaKairos, /elemento\.src = srcKairosBaseVersus/);
+assert.match(entradaKairos, /elemento\.src = spriteTrajeVersus\(elemento, "kairos", srcKairosBaseVersus\)/);
 assert.doesNotMatch(entradaKairos, /srcKairosAtaqueVersus/);
 assert.match(app, /function reproducirSiglosEnUnSegundoVersus\(/);
 assert.match(app, /const imagenesEdadKairosVersus = Object\.freeze\(/);
 assert.match(app, /kairos:\s*Object\.freeze\(\{\s*intermedia: "assets\/images\/personajes\/versus\/kairos-envejecido-kairos-v1\.png",\s*anciana: "assets\/images\/personajes\/versus\/kairos-anciano-kairos-v1\.png"/);
 assert.match(app, /dragon:\s*Object\.freeze\(\{\s*intermedia: "assets\/images\/personajes\/versus\/dragon-adulto-kairos-v1\.png",\s*anciana: "assets\/images\/personajes\/versus\/dragon-anciano-kairos-v1\.png"/);
-assert.match(app, /victimaKairosAncianaVersus\.src = imagenesEdad\.anciana/);
+assert.match(app, /victimaKairosAncianaVersus\.src = imagenTrajeFinalVersus\(victimaFinal,'anciano',imagenesEdad\.anciana\)/);
 assert.match(app, /kairosFinalMontajeVersus\.id = "kairosFinalMontajeVersus"/);
 assert.match(app, /const imagenesFinalKairosVersus = Object\.freeze\(/);
 assert.match(app, /kairos: "assets\/images\/personajes\/versus\/kairos-final-kairos-v1\.png"/);

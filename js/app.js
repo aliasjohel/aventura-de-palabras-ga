@@ -1253,6 +1253,26 @@ let intentos = 6;
 let escenarioActual = 0;
 let misionActual = 0;
 let monedas = 0;
+function saldoTiendaOMonedas(respaldo = monedas) {
+  try { return globalThis.CosmeticStore?.read().coins ?? respaldo; }
+  catch (_) { return respaldo; }
+}
+monedas = saldoTiendaOMonedas();
+globalThis.AventuraShop = Object.freeze({
+  tryOn: (character) => {
+    if(partidaOnlineVersus)throw Error('Terminá el duelo en línea antes de probar un traje.');
+    actualizarModoPruebas(true);
+    iniciarPruebaVersusLocal();
+    personajeJugadorVersus=character;personajeRivalVersus=character==='mago'?'explorador':'mago';
+    document.getElementById('trajePruebaAtacante').value='nuevo';
+    document.getElementById('trajePruebaVictima').value='nuevo';
+    victimaPruebaFaucesVersus.value=character;
+    prepararDueloVersus({comenzarRonda:false});
+    mostrarPantalla(pantallaVersus);
+  },
+  testing: () => modoPruebasActivo || Boolean(globalThis.AventuraMapa?.repeticion),
+  sync: () => { if (!modoPruebasActivo && !globalThis.AventuraMapa?.repeticion) { monedas=saldoTiendaOMonedas();actualizarJugador(); } },
+});
 const claveRecompensasMonedasPendientes = "recompensasMonedasPendientesAventuraGA";
 
 function leerRecompensasMonedasPendientes() {
@@ -1285,8 +1305,8 @@ function crearIdRecompensaMonedas() {
 function otorgarMonedas(cantidad, origen) {
   const valor = Math.max(0, Math.trunc(Number(cantidad) || 0));
   if (!valor) return;
-  monedas += valor;
-  if (modoPruebasActivo || globalThis.AventuraMapa?.repeticion) return;
+  if (modoPruebasActivo || globalThis.AventuraMapa?.repeticion) { monedas += valor; return; }
+  monedas = globalThis.CosmeticStore ? CosmeticStore.earn(valor) : monedas + valor;
 
   const recompensas = leerRecompensasMonedasPendientes();
   recompensas.push({
@@ -2294,6 +2314,9 @@ async function cargarRankingPublico() {
       const item = document.createElement("p");
       item.classList.toggle("ranking-propio", fila.me);
       item.textContent = `${fila.position}. ${VersusRoom.aliasVisible(fila.alias)}${fila.me ? " (vos)" : ""} · ${fila.points} puntos · ${fila.wins} victorias · ${fila.played} partidas`;
+      if (Number(fila.position) === 1) {
+        const corona=document.createElement('span');corona.className='corona-lider';corona.textContent='👑 Líder del ranking';item.prepend(corona);
+      }
       if (fila.user_id) {
         const ver = document.createElement("button");
         ver.type = "button"; ver.className = "enlace-perfil-jugador";
@@ -6815,10 +6838,69 @@ const victimasFaucesVersus = {
 };
 
 const posesCombateVersus = new WeakMap();
+let ladoGanadorCinematicaVersus = 'jugador';
+function pruebasTrajesActivas() { return modoPruebasActivo && !partidaOnlineVersus; }
+function trajePersonajeVersus(elemento, personaje) {
+  if (!globalThis.CosmeticStore) return null;
+  if (pruebasTrajesActivas()) {
+    const seleccion=document.getElementById(elemento===personajeVersusUno?'trajePruebaAtacante':'trajePruebaVictima')?.value;
+    if(seleccion==='nuevo')return CosmeticStore.catalog.find(item=>item.character===personaje)?.id||null;
+    if(seleccion==='original')return null;
+    try { return CosmeticStore.read().equipped[personaje]||null; } catch(_) {return null;}
+  }
+  if (elemento===personajeVersusUno) {
+    try { return CosmeticStore.read().equipped[personaje] || null; } catch (_) { return null; }
+  }
+  return adaptadorSalasVersus.obtenerTrajesRival?.()[personaje] || null;
+}
+function spriteTrajeVersus(elemento, personaje, src, herido=false) {
+  const traje=trajePersonajeVersus(elemento,personaje);
+  if(!traje)return src;
+  const pose=herido?'impacto':src===srcExploradorLupaVersus?'habilidad':src===srcExploradorPreparaBumeran?'preparacion':[srcExploradorLanzaBumeran,srcMagoAtaqueVersus,srcKairosAtaqueVersus].includes(src)?'ataque':'base';
+  return CosmeticStore.asset(traje,pose)||src;
+}
+function trajeFinalVersus(personaje, victima=true) {
+  const lado=victima?(ladoGanadorCinematicaVersus==='jugador'?'rival':'jugador'):ladoGanadorCinematicaVersus;
+  return trajePersonajeVersus(lado==='jugador'?personajeVersusUno:personajeVersusDos,personaje);
+}
+function imagenTrajeFinalVersus(personaje,pose,original,victima=true) {
+  return CosmeticStore.asset(trajeFinalVersus(personaje,victima),pose)||original;
+}
+function prepararTrajesFinalVersus(ganador) {
+  const actores=[['.cinematica-mago-eclipse','mago','final'],['.cinematica-explorador-trampa','explorador','final'],['.kairos-final-invocador','kairos','ataque'],['.kairos-final-victoria','kairos','base']];
+  for(const [selector,personaje,pose] of actores){
+    const img=cinematicaFinalVersus.querySelector(selector);if(!img)continue;
+    img.dataset.original ||= img.getAttribute('src');
+    img.src=imagenTrajeFinalVersus(personaje,pose,img.dataset.original,false);
+  }
+  const celestial=ganador==='mago'&&trajeFinalVersus('mago',false)==='zafir-celestial';
+  cinematicaFinalVersus.classList.toggle('zafir-celestial',celestial);
+  for(const img of cinematicaFinalVersus.querySelectorAll('.cinematica-remolino-arcano img')){
+    img.dataset.original ||= img.getAttribute('src');
+    img.src=img.dataset.original;
+  }
+}
+function refrescarTrajesVersus() {
+  for(const [img,actor] of [[proyectilMagoJugadorVersus,personajeVersusUno],[proyectilMagoVersus,personajeVersusDos]]){
+    const celestial=trajePersonajeVersus(actor,'mago')==='zafir-celestial';
+    img.src='assets/images/personajes/versus/bola-fuego-mago.png';
+    img.classList.toggle('zafir-celestial',celestial);
+  }
+  actualizarPoseCombateVersus(personajeVersusUno);
+  actualizarPoseCombateVersus(personajeVersusDos);
+  for(const button of document.querySelectorAll('button[data-personaje]')) {
+    const img=button.querySelector('img'),character=button.dataset.personaje;
+    if(img&&personajesVersus[character])img.src=spriteTrajeVersus(personajeVersusUno,character,personajesVersus[character].base);
+  }
+}
+for(const id of ['trajePruebaAtacante','trajePruebaVictima'])document.getElementById(id)?.addEventListener('change',()=>{cancelarCinematicaFinalVersus();refrescarTrajesVersus();});
+window.addEventListener('costume-equipped',refrescarTrajesVersus);
+window.addEventListener('rival-costume-updated',refrescarTrajesVersus);
 function actualizarPoseCombateVersus(elemento, personaje = elemento === personajeVersusUno ? personajeJugadorVersus : personajeRivalVersus) {
   const poses = posesCombateVersus.get(elemento) || {};
   const herido = elemento.classList.contains("recibiendo-dano") || elemento.classList.contains("recibiendo-dano-magico");
-  const src = poses.habilidad || poses.ataque || (herido && posesDanoPersonajeVersus[personaje]) || personajesVersus[personaje]?.base;
+  const original = poses.habilidad || poses.ataque || (herido && posesDanoPersonajeVersus[personaje]) || personajesVersus[personaje]?.base;
+  const src = spriteTrajeVersus(elemento,personaje,original,herido);
   if (src && !elemento.src.endsWith(src)) elemento.src = src;
 }
 function establecerPoseCombateVersus(elemento, tipo, src) {
@@ -6839,7 +6921,9 @@ function recursosPersonajeCombate(personaje) {
     dragon_hielo: [srcDragonHieloDescensoAltoVersus, srcDragonHieloDescensoBajoVersus, srcDragonHieloAtaqueVersus, srcDragonHieloVueloVersus],
     azrak: [srcAzrakAtaqueVersus], kalamo: [srcKalamoAtaqueVersus, srcKalamoHabilidadVersus], kairos: [srcKairosAtaqueVersus],
   };
-  return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || [])].filter(Boolean);
+  const trajes=[trajePersonajeVersus(personajeVersusUno,personaje),trajePersonajeVersus(personajeVersusDos,personaje)].filter(Boolean);
+  const extras=trajes.flatMap(id=>CosmeticStore.find(id).poses.map(pose=>CosmeticStore.asset(id,pose)));
+  return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || []),...extras].filter(Boolean);
 }
 async function prepararImagenesCombate(personajes) {
   // Retain decoded frames for this pair only, instead of all fighters on mobile.
@@ -6875,12 +6959,12 @@ function observarPoseDanoPersonajeVersus(elemento, obtenerPersonaje) {
   new MutationObserver(() => {
     const personaje = obtenerPersonaje();
     const pose = posesDanoPersonajeVersus[personaje];
-    if (!pose) return;
+    if (!pose && !trajePersonajeVersus(elemento,personaje)) return;
     const recibiendoDano = elemento.classList.contains("recibiendo-dano")
       || elemento.classList.contains("recibiendo-dano-magico");
     if (recibiendoDano) {
       actualizarPoseCombateVersus(elemento, personaje);
-    } else if (elemento.src.endsWith(pose)) {
+    } else if ((pose && elemento.src.endsWith(pose)) || elemento.src.includes('/trajes/')) {
       actualizarPoseCombateVersus(elemento, personaje);
     }
   }).observe(elemento, { attributes: true, attributeFilter: ["class"] });
@@ -7038,10 +7122,11 @@ function limpiarAnimacionAtaqueVersus() {
 }
 
 function configurarPersonajesCombateVersus() {
+  refrescarTrajesVersus();
   posesCombateVersus.delete(personajeVersusUno);
   posesCombateVersus.delete(personajeVersusDos);
   const personaje = personajesVersus[personajeJugadorVersus];
-  personajeVersusUno.src = personaje.base;
+  personajeVersusUno.src = spriteTrajeVersus(personajeVersusUno,personajeJugadorVersus,personaje.base);
   personajeVersusUno.alt = `${personaje.nombre} del jugador 1`;
   personajeVersusUno.classList.remove(
     "personaje-explorador",
@@ -7058,7 +7143,7 @@ function configurarPersonajesCombateVersus() {
   );
   personajeVersusUno.classList.add(`personaje-${personajeJugadorVersus}`);
   const personajeRival = personajesVersus[personajeRivalVersus] || personajesVersus.mago;
-  personajeVersusDos.src = personajeRival.base;
+  personajeVersusDos.src = spriteTrajeVersus(personajeVersusDos,personajeRivalVersus,personajeRival.base);
   personajeVersusDos.alt = `${personajeRival.nombre} del jugador 2`;
   personajeVersusDos.classList.remove(
     "personaje-explorador",
@@ -7122,7 +7207,7 @@ function programarTransformacionEntradaHombreLobo(elemento) {
 }
 
 function programarEntradaKairosVersus(elemento) {
-  elemento.src = srcKairosBaseVersus;
+  elemento.src = spriteTrajeVersus(elemento, "kairos", srcKairosBaseVersus);
 }
 
 function limpiarEntradaDueloVersus() {
@@ -7275,11 +7360,11 @@ async function iniciarEntradaDueloVersus() {
 
   if (!movimientoReducido && personajeJugadorVersus === "explorador") {
     programarPasoEntradaVersus(() => {
-      personajeVersusUno.src = srcExploradorPreparaBumeran;
+      personajeVersusUno.src = spriteTrajeVersus(personajeVersusUno,'explorador',srcExploradorPreparaBumeran);
       bumeranVersus.classList.add("mostrando-entrada");
     }, 1280);
     programarPasoEntradaVersus(() => {
-      personajeVersusUno.src = srcExploradorBaseVersus;
+      personajeVersusUno.src = spriteTrajeVersus(personajeVersusUno,'explorador',srcExploradorBaseVersus);
       bumeranVersus.classList.remove("mostrando-entrada");
     }, 2180);
   }
@@ -8745,6 +8830,7 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
   const personajeVictima = ganador === "jugador"
     ? personajeRivalVersus
     : personajeJugadorVersus;
+  ladoGanadorCinematicaVersus = ganador;
   const reproducirFinal = obtenerReproductorFinalVersus(
     personajeGanador,
     personajeVictima,
@@ -8927,7 +9013,7 @@ const pantallasRotasKalamoVersus = {
 function configurarVictimaFinalVersus(elemento, personaje) {
   const clave = personaje in personajesVersus ? personaje : "mago";
   const victima = personajesVersus[clave];
-  elemento.src = victima.base;
+  elemento.src = imagenTrajeFinalVersus(clave,'base',victima.base);
   elemento.alt = `${victima.nombre}, objetivo de la técnica final`;
   elemento.classList.remove("reaccion-final-activa");
   elemento.classList.remove(
@@ -8950,7 +9036,7 @@ function configurarVictimaFinalVersus(elemento, personaje) {
 function programarReaccionVictimaFinalVersus(elemento, personaje, demora) {
   const clave = configurarVictimaFinalVersus(elemento, personaje);
   demoVersus.temporizadorReaccionCinematica = setTimeout(() => {
-    elemento.src = posesReaccionVictimaVersus[clave];
+    elemento.src = imagenTrajeFinalVersus(clave,'impacto',posesReaccionVictimaVersus[clave]);
     elemento.classList.add("reaccion-final-activa");
     demoVersus.temporizadorReaccionCinematica = null;
   }, demora);
@@ -8975,12 +9061,13 @@ function prepararParticulasRemolinoZafir() {
 
 function reproducirEclipseVioletaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
+  prepararTrajesFinalVersus('mago');
   prepararParticulasRemolinoZafir();
   crearParticulasEclipseVersus();
   programarReaccionVictimaFinalVersus(victimaEclipseVersus, victima, 2150);
   fondoCinematicaVersus.src = fondoVersus.src;
   etiquetaCinematicaVersus.textContent = "GOLPE LEGENDARIO";
-  tituloCinematicaVersus.textContent = "ECLIPSE VIOLETA";
+  tituloCinematicaVersus.textContent = trajeFinalVersus('mago',false)==='zafir-celestial'?'ECLIPSE CELESTIAL':'ECLIPSE VIOLETA';
   cinematicaFinalVersus.classList.remove("trampa-selvatica");
   cinematicaFinalVersus.classList.add("eclipse-violeta");
   cinematicaFinalVersus.classList.remove("oculto");
@@ -9000,6 +9087,7 @@ function reproducirEclipseVioletaVersus(victima = personajeRivalVersus) {
 
 function reproducirTrampaSelvaticaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
+  prepararTrajesFinalVersus('explorador');
   crearParticulasEclipseVersus();
   programarReaccionVictimaFinalVersus(victimaTrampaVersus, victima, 2200);
   fondoCinematicaVersus.src = fondoVersus.src;
@@ -9024,8 +9112,8 @@ function reproducirTrampaSelvaticaVersus(victima = personajeRivalVersus) {
 
 function configurarVictimaFaucesVersus(personaje = personajeRivalVersus) {
   const victima = victimasFaucesVersus[personaje] || victimasFaucesVersus.mago;
-  victimaFaucesVersus.src = victima.imagen;
-  carnivoraDevorandoVersus.src = victima.imagenAtrapado;
+  victimaFaucesVersus.src = imagenTrajeFinalVersus(personaje,'base',victima.imagen);
+  carnivoraDevorandoVersus.src = imagenTrajeFinalVersus(personaje,'planta',victima.imagenAtrapado);
   victimaFaucesVersus.alt = `${victima.nombre} atrapado por Fauces Esmeralda`;
   victimaFaucesVersus.classList.remove(
     "victima-fauces-explorador",
@@ -9045,6 +9133,7 @@ function configurarVictimaFaucesVersus(personaje = personajeRivalVersus) {
 
 function reproducirPrisionEsmeraldaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
+  prepararTrajesFinalVersus('guardiana');
   crearParticulasEclipseVersus();
   configurarVictimaFaucesVersus(victima);
   fondoCinematicaVersus.src = fondoVersus.src;
@@ -9069,6 +9158,7 @@ function reproducirPrisionEsmeraldaVersus(victima = personajeRivalVersus) {
 
 function reproducirLlamadoMatriarcaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
+  prepararTrajesFinalVersus('dragon');
   crearParticulasEclipseVersus();
   fondoCinematicaVersus.src = fondoVersus.src;
   programarReaccionVictimaFinalVersus(rivalCinematicaMatriarca, victima, 2700);
@@ -9097,6 +9187,7 @@ function reproducirLlamadoMatriarcaVersus(victima = personajeRivalVersus) {
 
 function reproducirCaceriaLunaLlenaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
+  prepararTrajesFinalVersus('hombre_lobo');
   crearParticulasEclipseVersus();
   fondoCinematicaVersus.src = fondoVersus.src;
   programarReaccionVictimaFinalVersus(victimaCaceriaVersus, victima, 3050);
@@ -9126,6 +9217,7 @@ function reproducirCaceriaLunaLlenaVersus(victima = personajeRivalVersus) {
 
 function reproducirLegionUmbriaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
+  prepararTrajesFinalVersus('t_shadow');
   fondoCinematicaVersus.src = fondoVersus.src;
   programarReaccionVictimaFinalVersus(victimaShadowVersus, victima, 2350);
   etiquetaCinematicaVersus.textContent = "TÉCNICA PROHIBIDA";
@@ -9191,6 +9283,7 @@ function seguirRayoManoAlba() {
 
 function reproducirJuicioAmanecerVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
+  prepararTrajesFinalVersus('guardian_alba');
   fondoCinematicaVersus.src = fondoVersus.src;
   crearParticulasEclipseVersus();
   programarReaccionVictimaFinalVersus(victimaGuardianAlbaVersus, victima, 3650);
@@ -9212,6 +9305,7 @@ function reproducirJuicioAmanecerVersus(victima = personajeRivalVersus) {
 
 function reproducirCeroAbsolutoVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
+  prepararTrajesFinalVersus('dragon_hielo');
   fondoCinematicaVersus.src = fondoVersus.src;
   programarReaccionVictimaFinalVersus(victimaNivorVersus, victima, 2650);
   etiquetaCinematicaVersus.textContent = "CATACLISMO BOREAL";
@@ -9231,12 +9325,14 @@ function reproducirCeroAbsolutoVersus(victima = personajeRivalVersus) {
 
 function reproducirEclipseInfernalVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
+  prepararTrajesFinalVersus('azrak');
   fondoCinematicaVersus.src = fondoVersus.src;
   const victimaFinal = victima in personajesVersus ? victima : "mago";
   programarReaccionVictimaFinalVersus(victimaPortalAzrakVersus, victimaFinal, 2850);
   manoVictimaAzrakVersus.src = victimaFinal === "kairos"
     ? "assets/images/personajes/versus/mano-abismo-atrapa-kairos-escena-v1.png"
     : `assets/images/personajes/versus/mano-abismo-atrapa-${victimaFinal.replaceAll("_", "-")}.png`;
+  manoVictimaAzrakVersus.src = imagenTrajeFinalVersus(victimaFinal,'mano',manoVictimaAzrakVersus.getAttribute('src'));
   manoVictimaAzrakVersus.classList.toggle("captura-kairos-escena", victimaFinal === "kairos");
   manoVictimaAzrakVersus.alt = `${personajesVersus[victimaFinal].nombre}, atrapado por la Mano del Abismo`;
   etiquetaCinematicaVersus.textContent = "RITO DEL ABISMO";
@@ -9256,17 +9352,18 @@ function reproducirEclipseInfernalVersus(victima = personajeRivalVersus) {
 
 function reproducirLibroPalabrasPerdidasVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
+  prepararTrajesFinalVersus('kalamo');
   fondoCinematicaVersus.src = fondoVersus.src;
   crearParticulasEclipseVersus();
   const victimaFinal = victima in personajesVersus ? victima : "mago";
   programarReaccionVictimaFinalVersus(victimaLibroKalamoVersus, victimaFinal, 4100);
-  pantallaRotaKalamoVersus.src = pantallasRotasKalamoVersus[victimaFinal];
+  pantallaRotaKalamoVersus.src = imagenTrajeFinalVersus(victimaFinal,'vidrio',pantallasRotasKalamoVersus[victimaFinal]);
   pantallaRotaKalamoVersus.alt = `${personajesVersus[victimaFinal].nombre}, estampado contra la pantalla por Kalamo`;
   etiquetaCinematicaVersus.textContent = "GRAN CALIGRAFÍA";
   tituloCinematicaVersus.textContent = "EL LIBRO DE LAS PALABRAS PERDIDAS";
   cinematicaFinalVersus.classList.add("libro-palabras-perdidas");
   cinematicaFinalVersus.classList.add("kalamo-final-remate-pantalla");
-  cinematicaFinalVersus.classList.toggle("kalamo-victima-explorador", victimaFinal === "explorador");
+  cinematicaFinalVersus.classList.toggle("kalamo-victima-explorador", victimaFinal === "explorador" && !trajeFinalVersus(victimaFinal));
   cinematicaFinalVersus.classList.toggle("kalamo-impacto-frontal", ["kairos", "guardian_alba", "t_shadow"].includes(victimaFinal));
   cinematicaFinalVersus.classList.remove("oculto");
   void cinematicaFinalVersus.offsetWidth;
@@ -9283,17 +9380,22 @@ function reproducirLibroPalabrasPerdidasVersus(victima = personajeRivalVersus) {
 function configurarVictimaKairosVersus(personaje = personajeRivalVersus) {
   const victimaFinal = personaje in personajesVersus ? personaje : "explorador";
   const nombre = personajesVersus[victimaFinal].nombre;
-  const imagenBase = personajesVersus[victimaFinal].base;
+  const imagenBase = imagenTrajeFinalVersus(victimaFinal,'base',personajesVersus[victimaFinal].base);
   const imagenesEdad = imagenesEdadKairosVersus[victimaFinal] || { intermedia: imagenBase, anciana: imagenBase };
   victimaKairosVersus.src = imagenBase;
   victimaKairosVersus.alt = `${nombre}, antes de que Kairós adelante su tiempo`;
-  victimaKairosEnvejecidaVersus.src = imagenesEdad.intermedia;
+  victimaKairosEnvejecidaVersus.src = imagenTrajeFinalVersus(victimaFinal,'envejecido',imagenesEdad.intermedia);
   victimaKairosEnvejecidaVersus.alt = `${nombre}, envejeciendo por el poder de Kairós`;
-  victimaKairosAncianaVersus.src = imagenesEdad.anciana;
+  victimaKairosAncianaVersus.src = imagenTrajeFinalVersus(victimaFinal,'anciano',imagenesEdad.anciana);
   victimaKairosAncianaVersus.alt = `${nombre}, anciano, agotado y debilitado por los años`;
   kairosFinalMontajeVersus.src = imagenesFinalKairosVersus[victimaFinal]
     || imagenesFinalKairosVersus.explorador;
   kairosFinalMontajeVersus.alt = `Las tres edades de ${nombre}: original, envejecido y anciano`;
+  const trajeEnEscena=Boolean(trajeFinalVersus(victimaFinal)||trajeFinalVersus('kairos',false));
+  cinematicaFinalVersus.classList.toggle('kairos-trajes',trajeEnEscena);
+  let montaje=cinematicaFinalVersus.querySelector('.kairos-edades-trajes');
+  if(!montaje){montaje=document.createElement('div');montaje.className='kairos-edades-trajes';montaje.setAttribute('aria-hidden','true');cinematicaFinalVersus.append(montaje);}
+  montaje.replaceChildren(...[victimaKairosVersus,victimaKairosEnvejecidaVersus,victimaKairosAncianaVersus].map(original=>{const img=document.createElement('img');img.src=original.src;img.alt='';return img;}));
   kairosFinalConceptoVersus.alt = victimaFinal === "explorador"
     ? "Kairós adelanta el tiempo de Aren hasta volverlo anciano"
     : "";
@@ -9303,6 +9405,7 @@ function configurarVictimaKairosVersus(personaje = personajeRivalVersus) {
 
 function reproducirSiglosEnUnSegundoVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
+  prepararTrajesFinalVersus('kairos');
   fondoCinematicaVersus.src = fondoVersus.src;
   configurarVictimaKairosVersus(victima);
   etiquetaCinematicaVersus.textContent = "CRONOCASTIGO";
@@ -9395,6 +9498,7 @@ btnSaltarCinematicaVersus.addEventListener("click", completarCinematicaFinalVers
 
 function probarCinematicaVersus(personaje) {
   if (!modoPruebasActivo || demoVersus.partidaFinalizada) return;
+  ladoGanadorCinematicaVersus='jugador';
   if (personaje === "guardiana") {
     void reproducirPrisionEsmeraldaVersus(victimaPruebaFaucesVersus.value);
     return;
@@ -9789,6 +9893,7 @@ function actualizarModoPruebas(activar, { restaurarProgreso = true } = {}) {
 
   actualizarControlesDev();
   actualizarDisponibilidadPersonajesVersus();
+  window.dispatchEvent(new Event('costume-equipped'));
 }
 
 function actualizarSelectoresPruebas() {
@@ -10038,7 +10143,7 @@ function reiniciarEstadoAventura() {
   intentos = 6;
   escenarioActual = 0;
   misionActual = 0;
-  monedas = 0;
+  monedas = saldoTiendaOMonedas(0);
   experiencia = 0;
   cristalesObtenidos = 0;
   mundoDosCompletado = false;
@@ -11847,7 +11952,7 @@ function cargarProgreso() {
     obtenerCantidadDesafiosMision() - 1,
   );
   desafioActual = desafiosCompletados + 1;
-  monedas = progreso.monedas ?? 0;
+  monedas = typeof saldoTiendaOMonedas === 'function' ? saldoTiendaOMonedas(progreso.monedas ?? 0) : progreso.monedas ?? 0;
   experiencia = progreso.experiencia ?? 0;
   cristalesObtenidos = Math.min(
     Math.max(progreso.cristalesObtenidos ?? 0, 0),

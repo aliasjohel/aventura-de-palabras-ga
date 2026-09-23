@@ -20,6 +20,16 @@
     let salaActual = null;
     let partidaActual = null;
     let canalSala = null;
+    let canalTrajes = null;
+    let trajesRival = {};
+    let propietarioTrajesRival = null;
+    let rivalTrajesSolicitado = null;
+    function enviarTrajes() {
+      if(!canalTrajes||!usuarioId||!raiz.CosmeticStore)return;
+      try { void canalTrajes.send({type:'broadcast',event:'outfit',payload:{player:usuarioId,skins:raiz.CosmeticStore.read().equipped}}).catch(()=>{}); }
+      catch(_) { /* La apariencia local sigue disponible sin conexión. */ }
+    }
+    raiz.addEventListener?.('costume-equipped',enviarTrajes);
     let canalSocial = null;
     let suscripcionAuth = null;
     let ultimaSalaInvitada = null;
@@ -281,6 +291,12 @@
           revanchaLista: jugador.rematch_ready,
         })),
       };
+      const rivalActual=salaActual.jugadores.find(player=>player.id!==usuarioId)?.id||null;
+      if(rivalActual!==rivalTrajesSolicitado){
+        rivalTrajesSolicitado=rivalActual;trajesRival={};propietarioTrajesRival=null;
+        if(canalTrajes&&rivalActual){enviarTrajes();void canalTrajes.send({type:'broadcast',event:'outfit-request',payload:{}}).catch(()=>{});}
+        raiz.dispatchEvent?.(new Event('rival-costume-updated'));
+      }
       recordarSala(salaActual.id);
       emitir(salaActual);
       if (["playing", "finished"].includes(salaActual.estado)) {
@@ -310,6 +326,8 @@
     }
 
     async function detenerCanal() {
+      if(canalTrajes){const anterior=canalTrajes;canalTrajes=null;await cliente.removeChannel(anterior);}
+      trajesRival={};propietarioTrajesRival=null;rivalTrajesSolicitado=null;
       versionCanalSala += 1;
       if (intervaloVerificacionSala) clearInterval(intervaloVerificacionSala);
       intervaloVerificacionSala = null;
@@ -321,6 +339,22 @@
 
     async function escucharSala(roomId) {
       await detenerCanal();
+      if(raiz.CosmeticStore){
+        // Sólo se intercambian IDs visuales del catálogo; nunca saldo, propiedad ni puntos.
+        const canal=cliente.channel(`versus-outfits-${roomId}`);
+        canalTrajes=canal;
+        canal.on('broadcast',{event:'outfit'},({payload})=>{
+          if(canalTrajes!==canal||salaActual?.id!==roomId||payload?.player===usuarioId)return;
+          if(!salaActual.jugadores.some(player=>player.id===payload?.player))return;
+          trajesRival=raiz.CosmeticStore.normalizeSkins(payload.skins);
+          propietarioTrajesRival=payload.player;
+          raiz.dispatchEvent(new Event('rival-costume-updated'));
+        }).on('broadcast',{event:'outfit-request'},()=>enviarTrajes()).subscribe(status=>{
+          if(status==='SUBSCRIBED'&&canalTrajes===canal){
+            enviarTrajes();void canal.send({type:'broadcast',event:'outfit-request',payload:{}}).catch(()=>{});
+          }
+        });
+      }
       canalSala = cliente
         .channel(`versus-room-${roomId}-${usuarioId}`)
         .on("postgres_changes", {
@@ -634,6 +668,7 @@
       cancelarInvitacion,
       responderInvitacion,
       obtenerSala: () => salaActual,
+      obtenerTrajesRival: () => salaActual?.jugadores.some(player=>player.id===propietarioTrajesRival&&player.id!==usuarioId) ? {...trajesRival} : {},
       obtenerPartida: () => partidaActual,
       obtenerUsuarioId: () => usuarioId,
       obtenerUsuario: () => usuarioActual,
