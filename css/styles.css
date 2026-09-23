@@ -5182,7 +5182,7 @@ button:disabled {
 .proyectil-mago-versus {
     position: absolute;
     z-index: 4;
-    top: 43%;
+    top: var(--mago-altura, 43%);
     right: 22%;
     width: clamp(92px, 13vw, 156px);
     opacity: 0;
@@ -5318,7 +5318,7 @@ button:disabled {
 
 @keyframes vueloProyectilMagoVersus {
     0% {
-        right: 22%;
+        right: var(--mago-inicio, 22%);
         opacity: 0;
         transform: translate(50%, -50%) scale(0.55) rotate(3deg);
     }
@@ -5342,7 +5342,7 @@ button:disabled {
 
 @keyframes vueloProyectilMagoJugadorVersus {
     0% {
-        left: 22%;
+        left: var(--mago-inicio, 22%);
         opacity: 0;
         transform: translate(-50%, -50%) scaleX(-1) scale(0.55) rotate(-3deg);
     }

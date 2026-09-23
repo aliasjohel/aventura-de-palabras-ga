@@ -6,6 +6,14 @@
 @media(orientation:landscape) and (max-height:500px){.tienda-traje-escena{min-height:200px}.tienda-traje-escena img{height:220px}}
 .herramientas-pruebas-versus label { display: inline-flex; align-items: center; flex-wrap: wrap; gap: .3rem; }
 .herramientas-pruebas-versus select { max-width: 180px; }
+[hidden] { display: none !important; }
+#selectorTrajesDuelo { margin: 16px 0; border: 1px solid #d6bb7166; border-radius: 12px; color: #ffe4a5; }
+#opcionesTrajesDuelo { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+#opcionesTrajesDuelo button { display: grid; justify-items: center; width: 145px; max-width: 42%; padding: 8px; margin: 0; border: 2px solid transparent; border-radius: 10px; background: #182b40; color: #fff0c9; }
+#opcionesTrajesDuelo button[aria-pressed=true] { border-color: #f4d17a; background: #354761; }
+#opcionesTrajesDuelo img { width: 100%; height: 100px; object-fit: contain; }
+.tienda-trajes-catalogo [data-skin="zafir-celestial"] img,
+.tienda-traje-escena img.retrato-zafir { object-fit: cover; object-position: center; }
 .proyectil-mago-versus.zafir-celestial { filter: hue-rotate(-70deg) drop-shadow(0 0 8px #a8f2ff) drop-shadow(0 0 16px #42baff); }
 .zafir-celestial .cinematica-remolino-arcano img { filter: hue-rotate(-70deg) drop-shadow(0 0 12px #8ce7ff) drop-shadow(0 0 28px #40aaff); }
 .zafir-celestial .zafir-mota { fill: #d3f7ff; filter: drop-shadow(0 0 5px #6ccfff); }

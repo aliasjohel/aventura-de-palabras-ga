@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v297`;
+const CACHE_NAME = `${CACHE_PREFIX}v298`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -654,6 +654,8 @@ const ASSET_REVISIONS = {
   "./assets/images/puzzles/lume-camara-alterada-v1.png": "20260914-siete-diferencias-1",
   "./assets/images/ui/juramentos-medallones-v1.png": "20260914-juramentos-ilustrados-1",
   "./assets/images/personajes/versus/mago-ataque.png": "20260914-zafir-mano-abierta-1",
+  "./assets/images/trajes/zafir-celestial-ataque-v1.png": "20260923-trajes-2",
+  "./assets/images/trajes/kairos-real-ataque-v1.png": "20260923-trajes-2",
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
   "./": "20260922-alias-1",

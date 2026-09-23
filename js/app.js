@@ -1258,8 +1258,14 @@ function saldoTiendaOMonedas(respaldo = monedas) {
   catch (_) { return respaldo; }
 }
 monedas = saldoTiendaOMonedas();
+// Las herramientas de autor solo están disponibles en una copia local.
+const herramientasAutorDisponibles = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) || location.protocol === 'file:';
+for (const selector of ['#btnAbrirPruebasMenu', '.control-modo-pruebas']) {
+  document.querySelector(selector)?.toggleAttribute('hidden', !herramientasAutorDisponibles);
+}
 globalThis.AventuraShop = Object.freeze({
   tryOn: (character) => {
+    if (!herramientasAutorDisponibles) throw Error('Las pruebas solo están disponibles en desarrollo local.');
     if(partidaOnlineVersus)throw Error('Terminá el duelo en línea antes de probar un traje.');
     actualizarModoPruebas(true);
     iniciarPruebaVersusLocal();
@@ -1689,6 +1695,7 @@ function actualizarSeleccionPersonajeRemota(sala) {
   const rivalListo = Boolean(jugadorRival?.listo);
   actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada: propioListo });
   btnConfirmarPersonajeVersus.disabled = propioListo;
+  actualizarSelectorTrajeVersus();
 
   estadoPersonajePropioVersus.className = propioListo ? "listo" : "";
   estadoPersonajePropioVersus.textContent = propioListo
@@ -2493,7 +2500,44 @@ function seleccionarPersonajeVersus(personaje) {
     tarjeta.setAttribute("aria-checked", `${seleccionada}`);
   });
   btnConfirmarPersonajeVersus.textContent = `Luchar con ${personajesVersus[personaje].nombre}`;
+  actualizarSelectorTrajeVersus();
 }
+
+function actualizarSelectorTrajeVersus() {
+  const panel = document.getElementById('selectorTrajesDuelo');
+  if (!panel || !globalThis.CosmeticStore) return;
+  const opciones = document.getElementById('opcionesTrajesDuelo');
+  try {
+    const state = CosmeticStore.read();
+    const disponibles = CosmeticStore.catalog.filter(item => item.character === personajeJugadorVersus && state.owned.includes(item.id));
+    panel.hidden = disponibles.length === 0;
+    const trajes = [{id: null, name: 'Original'}, ...disponibles];
+    opciones.replaceChildren(...trajes.map(item => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.disabled = btnConfirmarPersonajeVersus.disabled;
+      button.setAttribute('aria-pressed', String((state.equipped[personajeJugadorVersus] || null) === item.id));
+      const img = document.createElement('img');
+      img.src = item.id ? CosmeticStore.asset(item.id) : personajesVersus[personajeJugadorVersus].base;
+      img.alt = '';
+      const nombre = document.createElement('span');
+      nombre.textContent = item.name;
+      button.append(img, nombre);
+      button.addEventListener('click', () => {
+        if (btnConfirmarPersonajeVersus.disabled) return;
+        try {
+          CosmeticStore.equip(personajeJugadorVersus, item.id);
+          window.dispatchEvent(new Event('costume-equipped'));
+        } catch (error) { estadoPersonajePropioVersus.textContent = error.message; }
+      });
+      return button;
+    }));
+  } catch (error) {
+    panel.hidden = true;
+    estadoPersonajePropioVersus.textContent = error.message;
+  }
+}
+window.addEventListener('costume-equipped', actualizarSelectorTrajeVersus);
 
 function cargarPersonajesDesbloqueados() {
   try {
@@ -2597,6 +2641,7 @@ function abrirSeleccionPersonajeVersus() {
   if (modoArcadeActivo) {
     btnConfirmarPersonajeVersus.disabled = false;
     actualizarDisponibilidadPersonajesVersus();
+    actualizarSelectorTrajeVersus();
     estadoPersonajePropioVersus.className = "";
     estadoPersonajePropioVersus.textContent = "Elegí con quién subirás la torre.";
     estadoPersonajeRivalVersus.className = "listo";
@@ -3139,6 +3184,7 @@ btnConfirmarPersonajeVersus.addEventListener("click", async () => {
 
   btnConfirmarPersonajeVersus.disabled = true;
   tarjetasPersonajesVersus.forEach((tarjeta) => { tarjeta.disabled = true; });
+  actualizarSelectorTrajeVersus();
   estadoPersonajePropioVersus.className = "";
   estadoPersonajePropioVersus.textContent = "Guardando tu elección…";
   try {
@@ -3152,6 +3198,7 @@ btnConfirmarPersonajeVersus.addEventListener("click", async () => {
     estadoPersonajePropioVersus.textContent = error.message || "No pudimos guardar tu personaje.";
     btnConfirmarPersonajeVersus.disabled = false;
     actualizarDisponibilidadPersonajesVersus();
+    actualizarSelectorTrajeVersus();
   }
 });
 
@@ -7439,6 +7486,19 @@ function reproducirAtaqueBumeranVersus() {
   programarPasoAtaqueVersus(limpiarAnimacionAtaqueJugadorVersus, 1510, "jugador");
 }
 
+function alinearPoderCelestial(actor, proyectil, jugador) {
+  proyectil.style.removeProperty('--mago-inicio');
+  proyectil.style.removeProperty('--mago-altura');
+  if (trajePersonajeVersus(actor, 'mago') !== 'zafir-celestial') return;
+  const rect = actor.getBoundingClientRect(), marco = proyectil.offsetParent.getBoundingClientRect();
+  // La imagen de ataque es horizontal (3:2); el cristal está al frente del báculo.
+  const ancho = Math.min(rect.width, rect.height * 1.5), alto = ancho / 1.5;
+  const x = rect.left + (rect.width - ancho) / 2 + ancho * (jugador ? .96 : .04);
+  const y = rect.bottom - alto + alto * .27;
+  proyectil.style.setProperty('--mago-inicio', `${100 * (jugador ? x - marco.left : marco.right - x) / marco.width}%`);
+  proyectil.style.setProperty('--mago-altura', `${100 * (y - marco.top) / marco.height}%`);
+}
+
 function reproducirAtaqueMagoJugadorVersus() {
   limpiarAnimacionAtaqueJugadorVersus();
   herramientasPruebasVersus.classList.add("ataque-en-curso");
@@ -7461,6 +7521,7 @@ function reproducirAtaqueMagoJugadorVersus() {
     establecerPoseCombateVersus(personajeVersusUno, "ataque", srcMagoAtaqueVersus);
     personajeVersusUno.classList.remove("concentrando-hechizo");
     personajeVersusUno.classList.add("lanzando-hechizo");
+    alinearPoderCelestial(personajeVersusUno, proyectilMagoJugadorVersus, true);
     void proyectilMagoJugadorVersus.offsetWidth;
     proyectilMagoJugadorVersus.classList.add("volando");
     reproducirSonidoVersus("versusAtaqueUno", 0.72);
@@ -7780,6 +7841,7 @@ function reproducirAtaqueMagoVersus() {
     establecerPoseCombateVersus(personajeVersusDos, "ataque", srcMagoAtaqueVersus);
     personajeVersusDos.classList.remove("concentrando-hechizo");
     personajeVersusDos.classList.add("lanzando-hechizo");
+    alinearPoderCelestial(personajeVersusDos, proyectilMagoVersus, false);
     void proyectilMagoVersus.offsetWidth;
     proyectilMagoVersus.classList.add("volando");
     reproducirSonidoVersus("versusAtaqueUno", 0.72);
@@ -9873,7 +9935,7 @@ function actualizarControlesDev() {
 }
 
 function actualizarModoPruebas(activar, { restaurarProgreso = true } = {}) {
-  modoPruebasActivo = Boolean(activar);
+  modoPruebasActivo = herramientasAutorDisponibles && Boolean(activar);
   modoPruebas.checked = modoPruebasActivo;
   panelModoPruebas.classList.toggle("oculto", !modoPruebasActivo);
   btnCompletarPalabrasPruebasVersus.classList.toggle("oculto", !modoPruebasActivo);

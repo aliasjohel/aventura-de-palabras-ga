@@ -36,9 +36,9 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20260922-relampago-1">
+    <link rel="stylesheet" href="css/styles.css?v=20260923-trajes-2">
     <link rel="stylesheet" href="css/menu-navigation.css?v=20260921-social-mapa-1">
-    <link rel="stylesheet" href="css/cosmetic-shop.css?v=20260923-trajes-1">
+    <link rel="stylesheet" href="css/cosmetic-shop.css?v=20260923-trajes-2">
     <link rel="stylesheet" href="css/azrak-world.css?v=20260913-runas-viento-captura-1">
     <link rel="stylesheet" href="css/kairos-forest.css?v=20260908-cinematicas-1">
     <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
@@ -86,7 +86,7 @@
                 <h2 class="studio">GA Games</h2>
                 <h1 class="titulo">Aventura de Palabras</h1>
                 <p class="subtitulo">Explorá mundos resolviendo palabras</p>
-                <div class="menu-perfil"><button id="btnMiAvatar" type="button" aria-label="Abrir mi perfil"><span id="avatarMenu"></span><span>Mi perfil <span aria-hidden="true">›</span></span></button><button id="btnAbrirPruebasMenu" type="button" aria-haspopup="dialog" aria-controls="modalConfiguracion">Modo prueba</button></div>
+                <div class="menu-perfil"><button id="btnMiAvatar" type="button" aria-label="Abrir mi perfil"><span id="avatarMenu"></span><span>Mi perfil <span aria-hidden="true">›</span></span></button><button id="btnAbrirPruebasMenu" hidden type="button" aria-haspopup="dialog" aria-controls="modalConfiguracion">Modo prueba</button></div>
 
                 <button id="btnJugar" type="button" aria-haspopup="dialog" aria-controls="mapaAventura">🗺️ Aventura</button>
                 <button id="btnModosJuego" type="button" aria-haspopup="dialog">⚔️ Modos de juego</button>
@@ -124,7 +124,7 @@
                     </label>
                     <p id="estadoVibracion" class="estado-vibracion" aria-live="polite"></p>
                     <button id="btnNuevaAventura" class="secundario oculto" type="button">Empezar una nueva aventura</button>
-                    <label class="control-modo-pruebas" for="modoPruebas">
+                    <label class="control-modo-pruebas" hidden for="modoPruebas">
                         <input id="modoPruebas" type="checkbox">
                         <span>Modo Pruebas</span>
                     </label>
@@ -686,6 +686,10 @@
                     </button>
                 </div>
 
+                <fieldset id="selectorTrajesDuelo" hidden>
+                    <legend>Elegí tu traje</legend>
+                    <div id="opcionesTrajesDuelo"></div>
+                </fieldset>
                 <div class="estado-personajes-remotos" aria-live="polite">
                     <span id="estadoPersonajePropioVersus">Eleg&iacute; tu personaje.</span>
                     <span id="estadoPersonajeRivalVersus">Tu rival est&aacute; eligiendo&hellip;</span>
@@ -1495,9 +1499,9 @@
         <div id="tiendaTrajesCatalogo" class="tienda-trajes-catalogo" aria-label="Elegí un traje para verlo"></div>
         <section class="tienda-traje-vista" aria-labelledby="tiendaTrajeNombre">
           <div class="tienda-traje-escena"><img id="tiendaTrajeImagen" alt="Vista previa del traje"></div>
-          <div class="tienda-traje-ficha"><small id="tiendaTrajeHeroe"></small><h3 id="tiendaTrajeNombre"></h3><p id="tiendaTrajeDetalle"></p><div id="tiendaTrajePoses" class="tienda-traje-poses" aria-label="Probar las poses del traje"></div><p class="avatar-note">Apariencia para los duelos. No cambia las habilidades ni el poder del personaje.</p><button id="comprarTraje" type="button">Comprar traje</button><button id="equiparTraje" type="button" hidden>Equipar traje</button><button id="restaurarTraje" class="secundario" type="button" hidden>Usar traje original</button></div>
+          <div class="tienda-traje-ficha"><small id="tiendaTrajeHeroe"></small><h3 id="tiendaTrajeNombre"></h3><p id="tiendaTrajeDetalle"></p><p class="avatar-note">Nueva apariencia.</p><button id="comprarTraje" type="button">Comprar traje</button><button id="equiparTraje" type="button" hidden>Equipar traje</button><button id="restaurarTraje" class="secundario" type="button" hidden>Usar traje original</button></div>
         </section>
-        <button id="probarTrajeGratis" type="button">Probar gratis en combate y cinemáticas</button><p id="tiendaTrajesEstado" role="status" aria-live="polite"></p>
+        <p id="tiendaTrajesEstado" role="status" aria-live="polite"></p>
         <p class="avatar-note">Las monedas y los trajes se conservan en este dispositivo, incluso al empezar otra aventura.</p>
         <section class="tienda-vista" aria-labelledby="tiendaMarcoNombre"><span id="tiendaAvatarPreview"></span><div><small>VISTA PREVIA</small><h3 id="tiendaMarcoNombre"></h3><p id="tiendaMarcoDetalle"></p><button id="tiendaAplicarMarco" type="button">Usar marco gratis</button></div></section>
         <h3 class="tienda-seccion">Colección de marcos · Gratis</h3>
@@ -1551,7 +1555,7 @@
       </div>
       <button id="reintentarPerfilPublico" class="secundario" type="button" hidden>Reintentar</button>
     </dialog>
-    <script src="js/cosmetic-store.js?v=20260923-trajes-1"></script>
+    <script src="js/cosmetic-store.js?v=20260923-trajes-2"></script>
     <script src="js/versus-ranks.js?v=20260922-medallas-3"></script>
     <script src="js/player-avatar.js?v=20260922-medallas-3"></script>
     <script src="js/versus-identity.js?v=20260915-social-1"></script>
@@ -1561,7 +1565,7 @@
     <script src="js/supabase-client.js?v=20260817-amigos-cuentas-1"></script>
     <script src="js/versus-engine.js?v=20260817-versus-recuperacion-1"></script>
     <script src="js/versus-room.js?v=20260922-alias-1"></script>
-    <script src="js/versus-room-supabase.js?v=20260923-trajes-1"></script>
+    <script src="js/versus-room-supabase.js?v=20260923-trajes-2"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
     <script src="js/azrak-world.js?v=20260914-busqueda-ranking"></script>
     <script src="js/prologue-cinematic.js?v=20260921-tienda-1"></script>
@@ -1570,8 +1574,8 @@
     <script src="js/kairos-forest.js?v=20260909-musica-continua-1"></script>
     <script src="js/kalamo-desert.js?v=20260909-arco-aren-1"></script>
     <script src="js/world-word-hazards.js?v=20260914-jaula-fuego"></script>
-    <script src="js/app.js?v=20260923-trajes-1"></script>
-    <script src="js/cosmetic-shop.js?v=20260923-trajes-1"></script>
+    <script src="js/app.js?v=20260923-trajes-2"></script>
+    <script src="js/cosmetic-shop.js?v=20260923-trajes-2"></script>
     <script src="js/public-player-profile.js?v=20260922-medallas-3"></script>
     <script src="js/pwa.js?v=20260909-recuperar-actualizacion-1"></script>
 </body>
