@@ -2494,6 +2494,7 @@ btnSiguiente.addEventListener("click", continuarAventura);
 function seleccionarPersonajeVersus(personaje) {
   if (!personajesVersus[personaje] || !personajeDisponibleVersus(personaje)) return;
   personajeJugadorVersus = personaje;
+  document.getElementById('seleccionAleatoriaEstado').textContent = '';
   tarjetasPersonajesVersus.forEach((tarjeta) => {
     const seleccionada = tarjeta.dataset.personaje === personaje;
     tarjeta.classList.toggle("seleccionada", seleccionada);
@@ -2504,6 +2505,7 @@ function seleccionarPersonajeVersus(personaje) {
 }
 
 function actualizarSelectorTrajeVersus() {
+  document.getElementById('btnPersonajeAleatorio').disabled = btnConfirmarPersonajeVersus.disabled;
   const panel = document.getElementById('selectorTrajesDuelo');
   if (!panel || !globalThis.CosmeticStore) return;
   const opciones = document.getElementById('opcionesTrajesDuelo');
@@ -3162,6 +3164,18 @@ btnRivalPruebaVersus.addEventListener("click", () => ejecutarAccionSalaVersus(()
 btnContinuarSalaVersus.addEventListener("click", abrirSeleccionPersonajeVersus);
 btnSalirSalaVersus.addEventListener("click", salirDeSalaVersus);
 btnSalirSalaVersusVertical.addEventListener("click", salirDeSalaVersus);
+
+document.getElementById('btnPersonajeAleatorio').addEventListener('click', () => {
+  if (btnConfirmarPersonajeVersus.disabled) return;
+  const disponibles = tarjetasPersonajesVersus
+    .filter(tarjeta => !tarjeta.disabled && personajeDisponibleVersus(tarjeta.dataset.personaje))
+    .map(tarjeta => tarjeta.dataset.personaje);
+  if (!disponibles.length) return;
+  const personaje = disponibles[Math.floor(Math.random() * disponibles.length)];
+  reproducirSonidoSeleccionPersonaje();
+  seleccionarPersonajeVersus(personaje);
+  document.getElementById('seleccionAleatoriaEstado').textContent = `Salió ${personajesVersus[personaje].nombre}. Podés confirmar o cambiar tu elección.`;
+});
 
 tarjetasPersonajesVersus.forEach((tarjeta) => {
   tarjeta.addEventListener("click", () => {

@@ -35,8 +35,20 @@ const assert=require('node:assert/strict');
       assert.equal(await p.evaluate(()=>CosmeticStore.read().equipped.mago),undefined);
       await p.evaluate(()=>seleccionarPersonajeVersus('kairos'));
       assert.equal(await p.locator('#selectorTrajesDuelo').isVisible(),false);
+      const randomSelection=await p.evaluate(()=>{
+        const available=tarjetasPersonajesVersus.filter(t=>!t.disabled&&personajeDisponibleVersus(t.dataset.personaje)).map(t=>t.dataset.personaje);
+        const seen=[],originalRandom=Math.random;
+        try {for(let i=0;i<available.length;i++){
+          Math.random=()=>(i+.5)/available.length;
+          document.getElementById('btnPersonajeAleatorio').click();seen.push(personajeJugadorVersus);
+        }} finally {Math.random=originalRandom;}
+        return {available,seen,selectionOpen:pantallaSeleccionPersonajeVersus.classList.contains('activa')};
+      });
+      assert.deepEqual(randomSelection.seen,randomSelection.available);
+      assert.equal(randomSelection.selectionOpen,true);
       await p.evaluate(()=>{seleccionarPersonajeVersus('mago');btnConfirmarPersonajeVersus.disabled=true;actualizarSelectorTrajeVersus();});
       assert.equal(await p.locator('#opcionesTrajesDuelo button:disabled').count(),2);
+      assert.equal(await p.locator('#btnPersonajeAleatorio').isDisabled(),true);
       await p.evaluate(()=>actualizarModoPruebas(true));
       assert.equal(await p.evaluate(()=>modoPruebasActivo),!publicSite);
       if(publicSite) {
