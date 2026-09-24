@@ -1,0 +1,567 @@
+{
+  "baselineCommit": "66f3ba3b37355ef5a2ddae7ae72e85ad3c32be80",
+  "before": {
+    "assetBytes": 946655362,
+    "offlineMediaBytes": 856108089
+  },
+  "removed": [
+    {
+      "path": "assets/images/ambiente/desierto/lagartija-corriendo-2.png",
+      "bytes": 141157,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/ambiente/desierto/lagartija-corriendo.png",
+      "bytes": 144869,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/ambiente/reino-azrak/cancerbero-acecho-v1.png",
+      "bytes": 219101,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/ambiente/reino-azrak/demonio-paso-1-v1.png",
+      "bytes": 147272,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/ambiente/reino-azrak/demonio-paso-2-v1.png",
+      "bytes": 120106,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/cinematicas/cumbres-final/02-aren-sube-aeralis-v1.png",
+      "bytes": 2733818,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/cinematicas/reino-azrak/abrazo-guardianes-v2.png",
+      "bytes": 2886791,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/cinematicas/reino-azrak/amanecer-v1.png",
+      "bytes": 2462608,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/cinematicas/reino-azrak/azrak-sellado-v1.png",
+      "bytes": 2466845,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/cinematicas/reino-azrak/eleccion-v1.png",
+      "bytes": 2553231,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/elementos/rama-bloqueo-bosque.png",
+      "bytes": 405296,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/elementos/rama-frondosa-bosque-1.png",
+      "bytes": 671400,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/elementos/rama-frondosa-bosque-2.png",
+      "bytes": 652362,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/elementos/rama-frondosa-bosque-3.png",
+      "bytes": 767773,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/fondos/bosque-3.png",
+      "bytes": 3338837,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/fondos/hielo-1-yeti-paso-1-v2.png",
+      "bytes": 2674259,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/fondos/hielo-1-yeti-paso-2-v2.png",
+      "bytes": 2758885,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/fondos/hielo-3-zorro-paso-1-v2.png",
+      "bytes": 2491474,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/fondos/hielo-3-zorro-paso-2-v2.png",
+      "bytes": 2430725,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/fondos/hielo-4.png",
+      "bytes": 2625706,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/fondos/reino-azrak/puente-runas-ocultas-v1.png",
+      "bytes": 3428727,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/coleccion/guardiana-bosque-dano.png",
+      "bytes": 1284470,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/coleccion/guardiana-bosque-preparacion.png",
+      "bytes": 1356148,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/conceptos/a-lumen-estilo-aventura-concepto-v1.png",
+      "bytes": 2149204,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/conceptos/explorador-anciano-concepto-v1.png",
+      "bytes": 1871039,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/conceptos/explorador-envejecido-concepto-v1.png",
+      "bytes": 1793388,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/conceptos/explorador-transformacion-tiempo-concepto-v1.png",
+      "bytes": 2931910,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/conceptos/kairos-estilo-aventura-concepto-v1.png",
+      "bytes": 2261227,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/conceptos/kairos-ladron-instantes-concepto-v1.png",
+      "bytes": 2052716,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/conceptos/t-shadow-estilo-aventura-concepto-v1.png",
+      "bytes": 2135813,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/conceptos/trio-shadow-lumen-kairos-referencia-v1.png",
+      "bytes": 2499375,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/carnivora-devorando-hombre-lobo.png",
+      "bytes": 1130935,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/dragon-hielo-ataque.png",
+      "bytes": 1321772,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/dragon-hielo-descenso-alto.png",
+      "bytes": 1240252,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/dragon-hielo-descenso-bajo.png",
+      "bytes": 1150781,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/dragon-hielo-descenso-lateral-alto-v1.png",
+      "bytes": 980439,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/dragon-hielo-descenso-lateral-bajo-v1.png",
+      "bytes": 966205,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/esfera-viento-hojas.png",
+      "bytes": 1347659,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/explorador-ataque.png",
+      "bytes": 1097953,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/guardian-alba-final-carga.png",
+      "bytes": 1631433,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/guardian-alba-pantalla-rota-kalamo-v1.png",
+      "bytes": 1878280,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/hombre-lobo-impacto.png",
+      "bytes": 1102095,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/kairos-ataque-v1.png",
+      "bytes": 2154916,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/kalamo-final-golpe-armas.png",
+      "bytes": 2439297,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/libro-armas-kalamo.png",
+      "bytes": 2870721,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/proyectil-mago.png",
+      "bytes": 429663,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/t-shadow-pantalla-rota-kalamo-v1.png",
+      "bytes": 1689127,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/tinta-vortice-teclado-kalamo.png",
+      "bytes": 1741108,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/puzzles/cumbres/campana-celeste-v1.png",
+      "bytes": 1379178,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/puzzles/cumbres/campana-celeste-v2.png",
+      "bytes": 1608675,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/puzzles/cumbres/chispa-celeste-v1.png",
+      "bytes": 734633,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/puzzles/cumbres/chispa-celeste-v2.png",
+      "bytes": 587873,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/rangos/bronce.svg",
+      "bytes": 629,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/rangos/diamante.svg",
+      "bytes": 1007,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/rangos/leyenda.svg",
+      "bytes": 1102,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/rangos/novato.svg",
+      "bytes": 633,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/rangos/oro.svg",
+      "bytes": 833,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/rangos/plata.svg",
+      "bytes": 785,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/rangos/platino.svg",
+      "bytes": 936,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/ui/presentacion-mision-cumbres-v1.png",
+      "bytes": 2215012,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/ui/presentacion-mision-piedra-desierto-v1.png",
+      "bytes": 2483247,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/prologo/cartel-prologo.png",
+      "bytes": 2095476,
+      "cached": false,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/sounds/golpe-cinematica-v1.wav",
+      "bytes": 54728,
+      "cached": true,
+      "tracked": true,
+      "references": [],
+      "dynamic": null
+    }
+  ],
+  "localDrafts": [
+    {
+      "path": "assets/images/cinematicas/reino-azrak/abrazo-guardianes-v1.png",
+      "bytes": 2944644,
+      "cached": false,
+      "tracked": false,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/cinematicas/reino-azrak/abrazo-shadow-orgulloso-v1.png",
+      "bytes": 2912579,
+      "cached": false,
+      "tracked": false,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/cinematicas/reino-azrak/aren-normalidad-v1.png",
+      "bytes": 2852674,
+      "cached": false,
+      "tracked": false,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/cinematicas/reino-azrak/aren-transformacion-v1.png",
+      "bytes": 3100368,
+      "cached": false,
+      "tracked": false,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/cinematicas/reino-azrak/calamo-llegada-sonrisa-v1.png",
+      "bytes": 2738987,
+      "cached": false,
+      "tracked": false,
+      "references": [],
+      "dynamic": null
+    },
+    {
+      "path": "assets/images/personajes/versus/mago-ataque-corregido-borrador.png",
+      "bytes": 2493107,
+      "cached": false,
+      "tracked": false,
+      "references": [],
+      "dynamic": null
+    }
+  ],
+  "after": {
+    "assetBytes": 836819088,
+    "offlineMediaBytes": 834736692
+  }
+}
