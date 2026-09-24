@@ -2,7 +2,7 @@
   'use strict';
   const key = 'aventuraAccesoDesarrolladorV1';
   const expectedHash = '425638c83a8fdbb0920472d04e2ef5f11897e6d69839c360231144c8a4fe7e2a';
-  const expectedCodeHash = 'fcae6b31e45bbbc149fe5789532e9cd8c355d98366ee077921e76bf4168cd2dc';
+  const expectedCodeHash = '41c991eb6a66242c0454191244278183ce58cf4a6bcd372f799e4b9cc01886af';
   const local = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) || location.protocol === 'file:';
   let enabled = local;
   function normalize(value) {
