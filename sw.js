@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v299`;
+const CACHE_NAME = `${CACHE_PREFIX}v300`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -202,6 +202,7 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/elementos/estela-escarcha-nivor.png",
 ];
 const CORE_ASSETS = [
+  "./js/developer-access.js",
   "./js/cosmetic-store.js",
   "./js/cosmetic-shop.js",
   "./css/cosmetic-shop.css",
@@ -832,7 +833,7 @@ const ASSET_REVISIONS = {
   "./js/adventure-puzzles.js": "20260827-puzzles-cumbres-1",
   "./js/versus-engine.js": "20260817-versus-recuperacion-1",
   "./js/supabase-client.js": "20260817-amigos-cuentas-1",
-  "./js/versus-room-supabase.js": "20260923-trajes-1",
+  "./js/versus-room-supabase.js": "20260923-trajes-3",
   "./assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png": "20260905-final-hielo-musica-1",
 };
 

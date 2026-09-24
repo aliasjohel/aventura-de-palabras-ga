@@ -53,7 +53,7 @@ const assert=require('node:assert/strict');
       assert.equal(await p.evaluate(()=>modoPruebasActivo),!publicSite);
       if(publicSite) {
         assert.equal(await p.locator('#btnAbrirPruebasMenu').isVisible(),false);
-        assert.match(await p.evaluate(()=>{try{AventuraShop.tryOn('mago');return '';}catch(e){return e.message;}}),/desarrollo local/);
+        assert.match(await p.evaluate(()=>{try{AventuraShop.tryOn('mago');return '';}catch(e){return e.message;}}),/acceso de desarrollador/);
       }
       assert.deepEqual(errors,[]);
       console.log(publicSite?'Public player: shop, ownership, selection lock and author gate OK':'Local author: shop, ownership, costume selection and testing OK');

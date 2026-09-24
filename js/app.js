@@ -1258,14 +1258,19 @@ function saldoTiendaOMonedas(respaldo = monedas) {
   catch (_) { return respaldo; }
 }
 monedas = saldoTiendaOMonedas();
-// Las herramientas de autor solo están disponibles en una copia local.
-const herramientasAutorDisponibles = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) || location.protocol === 'file:';
-for (const selector of ['#btnAbrirPruebasMenu', '.control-modo-pruebas']) {
-  document.querySelector(selector)?.toggleAttribute('hidden', !herramientasAutorDisponibles);
+// Acceso local o activación del dispositivo mediante el enlace privado de autor.
+let herramientasAutorDisponibles = Boolean(globalThis.AventuraDeveloper?.enabled);
+function actualizarAccesoHerramientasAutor() {
+  herramientasAutorDisponibles = Boolean(globalThis.AventuraDeveloper?.enabled);
+  for (const selector of ['#btnAbrirPruebasMenu', '.control-modo-pruebas']) {
+    document.querySelector(selector)?.toggleAttribute('hidden', !herramientasAutorDisponibles);
+  }
 }
+actualizarAccesoHerramientasAutor();
+globalThis.AventuraDeveloper?.ready.then(actualizarAccesoHerramientasAutor);
 globalThis.AventuraShop = Object.freeze({
   tryOn: (character) => {
-    if (!herramientasAutorDisponibles) throw Error('Las pruebas solo están disponibles en desarrollo local.');
+    if (!herramientasAutorDisponibles) throw Error('Las pruebas requieren acceso de desarrollador.');
     if(partidaOnlineVersus)throw Error('Terminá el duelo en línea antes de probar un traje.');
     actualizarModoPruebas(true);
     iniciarPruebaVersusLocal();
@@ -12137,10 +12142,16 @@ function obtenerPalabraAleatoria() {
 
 cargarPersonajesDesbloqueados();
 cargarProgreso();
+const restaurarPruebasDeAutor = localStorage.getItem("modoPruebasAventuraGA") === "activo";
 actualizarModoPruebas(
-  localStorage.getItem("modoPruebasAventuraGA") === "activo",
+  restaurarPruebasDeAutor,
   { restaurarProgreso: false },
 );
+globalThis.AventuraDeveloper?.ready.then(autorizado => {
+  if (autorizado && restaurarPruebasDeAutor && !modoPruebasActivo) {
+    actualizarModoPruebas(true, { restaurarProgreso: false });
+  }
+});
 actualizarControlesDev();
 crearTecladoVersus();
 actualizarOrientacionPantalla(pantallaMenu);
