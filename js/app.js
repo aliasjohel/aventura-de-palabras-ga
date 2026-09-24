@@ -1268,6 +1268,25 @@ function actualizarAccesoHerramientasAutor() {
 }
 actualizarAccesoHerramientasAutor();
 globalThis.AventuraDeveloper?.ready.then(actualizarAccesoHerramientasAutor);
+window.addEventListener('developer-access-changed', actualizarAccesoHerramientasAutor);
+globalThis.AventuraDeveloper?.ready.then(() => {
+  if (herramientasAutorDisponibles) document.getElementById('estadoAccesoDesarrollador').textContent = 'Acceso de desarrollador habilitado.';
+});
+document.getElementById('formActivarDesarrollador').addEventListener('submit', async event => {
+  event.preventDefault();
+  const button = document.getElementById('btnActivarDesarrollador');
+  const input = document.getElementById('codigoDesarrollador');
+  const status = document.getElementById('estadoAccesoDesarrollador');
+  if (button.disabled) return;
+  button.disabled = true;
+  try {
+    const result = await globalThis.AventuraDeveloper.activate(input.value);
+    input.value = '';
+    status.textContent = result.persisted ? 'Acceso habilitado en este dispositivo. Ya podés usar Modo Pruebas.' : 'Acceso habilitado solo por esta sesión: el dispositivo no permitió guardarlo.';
+    modoPruebas.focus();
+  } catch (error) { status.textContent = error.message || 'No pudimos activar el acceso. Intentá nuevamente.'; }
+  finally { button.disabled = false; }
+});
 globalThis.AventuraShop = Object.freeze({
   tryOn: (character) => {
     if (!herramientasAutorDisponibles) throw Error('Las pruebas requieren acceso de desarrollador.');

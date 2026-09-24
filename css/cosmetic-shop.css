@@ -7,6 +7,11 @@
 .herramientas-pruebas-versus label { display: inline-flex; align-items: center; flex-wrap: wrap; gap: .3rem; }
 .herramientas-pruebas-versus select { max-width: 180px; }
 [hidden] { display: none !important; }
+.acceso-desarrollador { margin: 16px 0; padding: 12px; border: 1px solid #d6bb7166; border-radius: 10px; text-align: left; }
+.acceso-desarrollador summary { cursor: pointer; min-height: 32px; }
+#formActivarDesarrollador { display: grid; gap: 10px; margin-top: 12px; }
+#codigoDesarrollador { box-sizing: border-box; width: 100%; min-width: 0; padding: 12px; font-size: 16px; }
+#estadoAccesoDesarrollador { font-size: 14px; line-height: 1.4; }
 #selectorTrajesDuelo { margin: 16px 0; border: 1px solid #d6bb7166; border-radius: 12px; color: #ffe4a5; }
 #btnPersonajeAleatorio { min-height: 44px; padding: 10px 24px; border: 1px solid #ebce80; border-radius: 12px; color: #ffe4a5; background: #253b56; }
 #seleccionAleatoriaEstado { color: #ffe4a5; font-size: 14px; }
