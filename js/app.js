@@ -1474,6 +1474,7 @@ let temporizadorVistaImpactoRivalVersus = null;
 let pasoActualTutorialVersus = 0;
 let accionPosteriorTutorialVersus = null;
 let modoArcadeActivo = false;
+const trajesPruebaArcade = {};
 let rivalesTorreArcade = [];
 let pisoActualArcade = 0;
 let pisoCombateArcade = 0;
@@ -2535,14 +2536,18 @@ function actualizarSelectorTrajeVersus() {
   const opciones = document.getElementById('opcionesTrajesDuelo');
   try {
     const state = CosmeticStore.read();
-    const disponibles = CosmeticStore.catalog.filter(item => item.character === personajeJugadorVersus && state.owned.includes(item.id));
+    const pruebaAutor = modoArcadeActivo && modoPruebasActivo && herramientasAutorDisponibles;
+    const disponibles = CosmeticStore.catalog.filter(item => item.character === personajeJugadorVersus && (state.owned.includes(item.id) || pruebaAutor));
+    const elegido = pruebaAutor && Object.hasOwn(trajesPruebaArcade, personajeJugadorVersus)
+      ? trajesPruebaArcade[personajeJugadorVersus] : state.equipped[personajeJugadorVersus] || null;
+    panel.querySelector('legend').textContent = pruebaAutor ? 'Elegí tu traje · Prueba de desarrollador' : modoArcadeActivo ? 'Elegí tu traje para la torre' : 'Elegí tu traje';
     panel.hidden = disponibles.length === 0;
     const trajes = [{id: null, name: 'Original'}, ...disponibles];
     opciones.replaceChildren(...trajes.map(item => {
       const button = document.createElement('button');
       button.type = 'button';
       button.disabled = btnConfirmarPersonajeVersus.disabled;
-      button.setAttribute('aria-pressed', String((state.equipped[personajeJugadorVersus] || null) === item.id));
+      button.setAttribute('aria-pressed', String(elegido === item.id));
       const img = document.createElement('img');
       img.src = item.id ? CosmeticStore.asset(item.id) : personajesVersus[personajeJugadorVersus].base;
       img.alt = '';
@@ -2552,7 +2557,8 @@ function actualizarSelectorTrajeVersus() {
       button.addEventListener('click', () => {
         if (btnConfirmarPersonajeVersus.disabled) return;
         try {
-          CosmeticStore.equip(personajeJugadorVersus, item.id);
+          if (pruebaAutor) trajesPruebaArcade[personajeJugadorVersus] = item.id;
+          else CosmeticStore.equip(personajeJugadorVersus, item.id);
           window.dispatchEvent(new Event('costume-equipped'));
         } catch (error) { estadoPersonajePropioVersus.textContent = error.message; }
       });
@@ -3205,6 +3211,8 @@ tarjetasPersonajesVersus.forEach((tarjeta) => {
   tarjeta.addEventListener("click", () => {
     reproducirSonidoSeleccionPersonaje();
     seleccionarPersonajeVersus(tarjeta.dataset.personaje);
+    const trajes = document.getElementById('selectorTrajesDuelo');
+    if (!trajes.hidden) trajes.scrollIntoView({block:'nearest', behavior:'smooth'});
   });
 });
 
@@ -6927,6 +6935,11 @@ let ladoGanadorCinematicaVersus = 'jugador';
 function pruebasTrajesActivas() { return modoPruebasActivo && !partidaOnlineVersus; }
 function trajePersonajeVersus(elemento, personaje) {
   if (!globalThis.CosmeticStore) return null;
+  if (modoArcadeActivo) {
+    if (elemento !== personajeVersusUno) return null;
+    if (modoPruebasActivo && herramientasAutorDisponibles && Object.hasOwn(trajesPruebaArcade, personaje)) return trajesPruebaArcade[personaje];
+    try { return CosmeticStore.read().equipped[personaje] || null; } catch (_) { return null; }
+  }
   if (pruebasTrajesActivas()) {
     const seleccion=document.getElementById(elemento===personajeVersusUno?'trajePruebaAtacante':'trajePruebaVictima')?.value;
     if(seleccion==='nuevo')return CosmeticStore.catalog.find(item=>item.character===personaje)?.id||null;
