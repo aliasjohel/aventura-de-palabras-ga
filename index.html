@@ -1389,6 +1389,7 @@
                         <h2 id="tituloResultadoVersus">¡Ganaste la ronda!</h2>
                         <p id="detalleResultadoVersus">Completaste la palabra antes que tu rival.</p>
                         <div id="resultadoRangoVersus" role="status" hidden></div>
+                        <p id="resultadoMonedasVersus" role="status" hidden></p>
                         <button id="btnRevanchaVersus" class="oculto" type="button">Jugar revancha</button>
                         <button id="verPerfilRival" class="secundario" type="button" hidden>Ver perfil del rival</button>
                         <button id="btnMenuResultadoVersus" class="secundario" type="button">Volver al menú</button>
@@ -1519,7 +1520,7 @@
           <div class="tienda-traje-ficha"><small id="tiendaTrajeHeroe"></small><h3 id="tiendaTrajeNombre"></h3><p id="tiendaTrajeDetalle"></p><p class="avatar-note">Nueva apariencia.</p><button id="comprarTraje" type="button">Comprar traje</button><button id="equiparTraje" type="button" hidden>Equipar traje</button><button id="restaurarTraje" class="secundario" type="button" hidden>Usar traje original</button></div>
         </section>
         <p id="tiendaTrajesEstado" role="status" aria-live="polite"></p>
-        <p class="avatar-note">Las monedas y los trajes se conservan en este dispositivo, incluso al empezar otra aventura.</p>
+        <p class="avatar-note">Al conectarte, tus monedas y trajes se sincronizan con tu cuenta de jugador. Conservás las recompensas de Aventura sin conexión; las compras necesitan internet después de sincronizar.</p>
         <section class="tienda-vista" aria-labelledby="tiendaMarcoNombre"><span id="tiendaAvatarPreview"></span><div><small>VISTA PREVIA</small><h3 id="tiendaMarcoNombre"></h3><p id="tiendaMarcoDetalle"></p><button id="tiendaAplicarMarco" type="button">Usar marco gratis</button></div></section>
         <h3 class="tienda-seccion">Colección de marcos · Gratis</h3>
         <div id="tiendaMarcos" class="tienda-marcos" aria-label="Marcos disponibles"></div>
@@ -1572,7 +1573,8 @@
       </div>
       <button id="reintentarPerfilPublico" class="secundario" type="button" hidden>Reintentar</button>
     </dialog>
-    <script src="js/cosmetic-store.js?v=20260923-trajes-3"></script>
+    <script src="js/cosmetic-store.js?v=20260924-premios-1"></script>
+    <script src="js/game-wallet.js?v=20260924-premios-1"></script>
     <script src="js/versus-ranks.js?v=20260922-medallas-3"></script>
     <script src="js/player-avatar.js?v=20260922-medallas-3"></script>
     <script src="js/versus-identity.js?v=20260915-social-1"></script>
@@ -1582,7 +1584,7 @@
     <script src="js/supabase-client.js?v=20260817-amigos-cuentas-1"></script>
     <script src="js/versus-engine.js?v=20260817-versus-recuperacion-1"></script>
     <script src="js/versus-room.js?v=20260922-alias-1"></script>
-    <script src="js/versus-room-supabase.js?v=20260923-trajes-3"></script>
+    <script src="js/versus-room-supabase.js?v=20260924-premios-1"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
     <script src="js/azrak-world.js?v=20260914-busqueda-ranking"></script>
     <script src="js/prologue-cinematic.js?v=20260921-tienda-1"></script>
@@ -1592,8 +1594,8 @@
     <script src="js/kalamo-desert.js?v=20260909-arco-aren-1"></script>
     <script src="js/world-word-hazards.js?v=20260914-jaula-fuego"></script>
     <script src="js/developer-access.js?v=20260923-autor-3"></script>
-    <script src="js/app.js?v=20260924-trajes-seleccion-1"></script>
-    <script src="js/cosmetic-shop.js?v=20260923-trajes-3"></script>
+    <script src="js/app.js?v=20260924-premios-1"></script>
+    <script src="js/cosmetic-shop.js?v=20260924-premios-1"></script>
     <script src="js/public-player-profile.js?v=20260922-medallas-3"></script>
     <script src="js/pwa.js?v=20260909-recuperar-actualizacion-1"></script>
 </body>

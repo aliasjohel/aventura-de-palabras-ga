@@ -86,6 +86,7 @@
       sesionActual = sesion || null;
       usuarioActual = sesionActual?.user || null;
       usuarioId = usuarioActual?.id || null;
+      raiz.GameWallet?.connect(cliente, usuarioId);
     }
 
     function esCuentaPermanente() {

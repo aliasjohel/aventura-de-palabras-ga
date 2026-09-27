@@ -24,8 +24,8 @@
   async function action(callback){
     if(busy)return;busy=true;render();
     try {
-      const execute=()=>{const result=callback();globalThis.AventuraShop?.sync();window.dispatchEvent(new Event('costume-equipped'));return result;};
-      const message=navigator.locks?await navigator.locks.request('aventura-tienda',execute):execute();
+      const execute=async()=>{const result=await callback();globalThis.AventuraShop?.sync();window.dispatchEvent(new Event('costume-equipped'));return result;};
+      const message=navigator.locks?await navigator.locks.request('aventura-tienda',execute):await execute();
       announce(message);
     } catch(error){announce(error.message||'No pudimos guardar la compra. Reintentá.');}
     finally{busy=false;render();}
@@ -38,10 +38,17 @@
     b.append(img,hero,title,document.createElement('small'));
     b.addEventListener('click',()=>{selected=item.id;announce('');render();});el('tiendaTrajesCatalogo').append(b);
   }
-  el('comprarTraje').addEventListener('click',()=>{const id=selected;void action(()=>{if(globalThis.AventuraShop?.testing())throw Error('Las monedas de prueba no se pueden gastar.');store.purchase(id);return '¡Traje comprado! Ya podés equiparlo.';});});
+  el('comprarTraje').addEventListener('click',()=>{const id=selected;void action(async()=>{if(globalThis.AventuraShop?.testing())throw Error('Las monedas de prueba no se pueden gastar.');await store.purchase(id);return '¡Traje comprado! Ya podés equiparlo.';});});
   el('equiparTraje').addEventListener('click',()=>{const item=store.find(selected);void action(()=>{store.equip(item.character,item.id);return `¡${item.hero} lleva ${item.name}!`;});});
   el('restaurarTraje').addEventListener('click',()=>{const item=store.find(selected);void action(()=>{store.equip(item.character,null);return `${item.hero} volvió a su traje original.`;});});
-  el('btnTienda').addEventListener('click',()=>{announce('');render();});
+  el('btnTienda').addEventListener('click',()=>{
+    announce('');render();
+    if(navigator.onLine&&!globalThis.AventuraShop?.testing()){
+      void globalThis.AventuraShop?.connect().catch(()=>announce('No pudimos sincronizar tu cuenta. Tus monedas guardadas se conservan; reintentá al volver a abrir la tienda.'));
+    }
+  });
+  window.addEventListener('wallet-updated',()=>{globalThis.AventuraShop?.sync();window.dispatchEvent(new Event('costume-equipped'));render();});
+  window.addEventListener('wallet-sync-pending',()=>{if(el('tiendaMenu').open)announce('Tu saldo guardado sigue disponible. Las compras necesitan conexión; volveremos a sincronizar al reconectar.');});
   window.addEventListener('storage',event=>{if(event.key===store.key){globalThis.AventuraShop?.sync();window.dispatchEvent(new Event('costume-equipped'));if(el('tiendaMenu').open)render();}});
   window.dispatchEvent(new Event('costume-equipped'));
 })();

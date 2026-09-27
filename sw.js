@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v305`;
+const CACHE_NAME = `${CACHE_PREFIX}v306`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -204,6 +204,7 @@ const RECURSOS_MODOS_LOCALES = [
 const CORE_ASSETS = [
   "./js/developer-access.js",
   "./js/cosmetic-store.js",
+  "./js/game-wallet.js",
   "./js/cosmetic-shop.js",
   "./css/cosmetic-shop.css",
   "./assets/images/trajes/aren-bosque-anciano-v1.png",
@@ -645,15 +646,18 @@ const ASSET_REVISIONS = {
   "./assets/images/trajes/kairos-real-ataque-v1.png": "20260923-trajes-2",
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
-  "./": "20260922-alias-1",
-  "./index.html": "20260922-relampago-1",
+  "./": "20260924-premios-1",
+  "./index.html": "20260924-premios-1",
+  "./js/cosmetic-store.js": "20260924-premios-1",
+  "./js/cosmetic-shop.js": "20260924-premios-1",
+  "./js/game-wallet.js": "20260924-premios-1",
   "./js/prologue-cinematic.js": "20260921-tienda-1",
   "./css/player-avatar.css": "20260921-social-mapa-1",
   "./js/player-avatar.js": "20260922-medallas-3",
   "./css/versus-identity.css": "20260915-social-1",
   "./js/versus-identity.js": "20260915-social-1",
   "./css/styles.css": "20260922-relampago-1",
-  "./js/app.js": "20260922-relampago-1",
+  "./js/app.js": "20260924-premios-1",
   "./js/versus-room.js": "20260922-alias-1",
   "./js/public-player-profile.js": "20260922-medallas-3",
   "./js/azrak-world.js": "20260913-shadow-runas-2",
@@ -814,7 +818,7 @@ const ASSET_REVISIONS = {
   "./js/adventure-puzzles.js": "20260827-puzzles-cumbres-1",
   "./js/versus-engine.js": "20260817-versus-recuperacion-1",
   "./js/supabase-client.js": "20260817-amigos-cuentas-1",
-  "./js/versus-room-supabase.js": "20260923-trajes-3",
+  "./js/versus-room-supabase.js": "20260924-premios-1",
   "./assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png": "20260905-final-hielo-musica-1",
 };
 

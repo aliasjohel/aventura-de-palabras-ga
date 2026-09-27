@@ -24,6 +24,8 @@
     return `assets/images/trajes/${id}-${item.poses.includes(pose)||cinemaPoses.includes(pose)?pose:'base'}-v1.png`;
   }
   function create(storage){
+    let purchaseHandler=null;
+    const changed=()=>globalThis.dispatchEvent?.(new Event('wallet-local-changed'));
     function read(){
       const raw=storage.getItem(key);
       if(!raw){
@@ -36,13 +38,33 @@
       const owned=[...new Set((Array.isArray(value.owned)?value.owned:[]).filter(id=>find(id)))];
       const equipped=normalizeSkins(value.equipped);
       for(const char of Object.keys(equipped)) if(!owned.includes(equipped[char]))delete equipped[char];
-      return {coins:integer(value.coins),owned,equipped};
+      const state={coins:integer(value.coins),owned,equipped};
+      if(typeof value.accountId==='string')Object.assign(state,{accountId:value.accountId,revision:Number.isSafeInteger(value.revision)?value.revision:-1,
+        pending:Array.isArray(value.pending)?value.pending:[],legacy:value.legacy||null,equipmentVersion:integer(value.equipmentVersion),equipmentDirty:Boolean(value.equipmentDirty)});
+      return state;
     }
-    function save(state){storage.setItem(key,JSON.stringify(state));return state;}
+    function save(state){storage.setItem(key,JSON.stringify(state));if(state.accountId)storage.setItem(key+':account:'+state.accountId,JSON.stringify(state));return state;}
+    function beginAccount(id){
+      const previous=read();if(previous.accountId===id)return previous;
+      const cached=storage.getItem(key+':account:'+id);
+      if(cached){storage.setItem(key,cached);return read();}
+      const legacy=previous.accountId?null:{deviceId:globalThis.crypto.randomUUID(),coins:previous.coins,owned:previous.owned,equipped:previous.equipped};
+      if(legacy)storage.setItem(key+':legacy-backup',JSON.stringify(legacy));
+      return save({coins:legacy?.coins||0,owned:legacy?.owned||[],equipped:legacy?.equipped||{},accountId:id,revision:-1,pending:[],legacy,equipmentVersion:0,equipmentDirty:false});
+    }
+    function applyAccount(result,sentEquipmentVersion){
+      const state=read();if(state.accountId!==result.userId||result.revision<state.revision)return state;
+      const acknowledged=new Set(result.acknowledged||[]);
+      const pending=state.pending.filter(e=>!acknowledged.has(e.id));
+      const dirty=state.equipmentDirty&&state.equipmentVersion!==sentEquipmentVersion;
+      return save({...state,coins:integer(result.coins)+pending.reduce((sum,e)=>sum+e.amount,0),owned:result.owned.filter(id=>find(id)),
+        equipped:normalizeSkins(dirty?state.equipped:result.equipped),pending,revision:result.revision,legacy:null,equipmentDirty:dirty});
+    }
     function purchase(id){
       const item=find(id);if(!item)throw Error('Este traje no está disponible.');
       const state=read();
       if(state.owned.includes(id))return state;
+      if(state.accountId){if(!purchaseHandler)throw Error('Conectate para comprar con las monedas de tu cuenta.');return purchaseHandler(id);}
       if(state.coins<item.price)throw Error(`Te faltan ${item.price-state.coins} monedas.`);
       state.coins-=item.price;state.owned.push(id);return save(state);
     }
@@ -50,14 +72,16 @@
       const state=read();
       if(id){const item=find(id);if(!item||item.character!==character||!state.owned.includes(id))throw Error('Primero conseguí este traje.');state.equipped[character]=id;}
       else delete state.equipped[character];
-      return save(state);
+      if(state.accountId){state.equipmentDirty=true;state.equipmentVersion+=1;}
+      save(state);changed();return state;
     }
-    function earn(amount){
+    function earn(amount,origin){
       if(!Number.isSafeInteger(amount)||amount<=0)throw Error('Cantidad de monedas inválida.');
       const state=read();if(!Number.isSafeInteger(state.coins+amount))throw Error('Saldo fuera de rango.');
-      state.coins+=amount;return save(state).coins;
+      if(state.accountId){if(![10,30].includes(amount)||!/^aventura:[a-zA-Z0-9_:]+$/.test(origin||''))throw Error('Recompensa de aventura inválida.');state.pending.push({id:globalThis.crypto.randomUUID(),amount,origin});}
+      state.coins+=amount;save(state);changed();return state.coins;
     }
-    return Object.freeze({key,catalog,find,asset,normalizeSkins,read,purchase,equip,earn});
+    return Object.freeze({key,catalog,find,asset,normalizeSkins,read,purchase,equip,earn,beginAccount,applyAccount,setPurchaseHandler:handler=>{purchaseHandler=handler;}});
   }
   return {key,catalog,find,asset,normalizeSkins,create};
 });

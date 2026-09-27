@@ -1288,6 +1288,10 @@ document.getElementById('formActivarDesarrollador').addEventListener('submit', a
   finally { button.disabled = false; }
 });
 globalThis.AventuraShop = Object.freeze({
+  connect: async () => {
+    const adapter=await asegurarConexionSalasVersus();
+    if(adapter.proveedor==='supabase')await GameWallet.sync();
+  },
   tryOn: (character) => {
     if (!herramientasAutorDisponibles) throw Error('Las pruebas requieren acceso de desarrollador.');
     if(partidaOnlineVersus)throw Error('Terminá el duelo en línea antes de probar un traje.');
@@ -1336,7 +1340,7 @@ function otorgarMonedas(cantidad, origen) {
   const valor = Math.max(0, Math.trunc(Number(cantidad) || 0));
   if (!valor) return;
   if (modoPruebasActivo || globalThis.AventuraMapa?.repeticion) { monedas += valor; return; }
-  monedas = globalThis.CosmeticStore ? CosmeticStore.earn(valor) : monedas + valor;
+  monedas = globalThis.CosmeticStore ? CosmeticStore.earn(valor, origen) : monedas + valor;
 
   const recompensas = leerRecompensasMonedasPendientes();
   recompensas.push({
@@ -8962,6 +8966,22 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
 }
 
 let animacionResultadoRango = 0;
+let versionPremioVersus = 0;
+async function mostrarPremioVersus(matchId) {
+  const version=++versionPremioVersus;
+  const nodo=document.getElementById('resultadoMonedasVersus');
+  nodo.hidden=false;nodo.textContent='Consultando premio…';
+  try {
+    const estado=await GameWallet.sync(matchId);
+    if(version!==versionPremioVersus||partidaOnlineVersus?.matchId!==matchId)return;
+    nodo.textContent=estado.reward?`🪙 +${estado.reward.amount} monedas · Saldo: ${CosmeticStore.read().coins}`:'Este duelo no otorgó monedas.';
+  } catch (_) {
+    if(version!==versionPremioVersus||partidaOnlineVersus?.matchId!==matchId)return;
+    nodo.textContent='No pudimos consultar el premio. ';
+    const boton=document.createElement('button');boton.type='button';boton.textContent='Reintentar';
+    boton.addEventListener('click',()=>void mostrarPremioVersus(matchId));nodo.append(boton);
+  }
+}
 async function mostrarResultadoRango(matchId) {
   const version = ++animacionResultadoRango;
   const nodo = document.getElementById('resultadoRangoVersus');
@@ -9005,6 +9025,8 @@ async function mostrarResultadoRango(matchId) {
   } catch (_) { if (partidaOnlineVersus?.matchId === matchId) nodo.textContent = 'Podés consultar tus puntos en tu perfil cuando vuelva la conexión.'; }
 }
 function mostrarResultadoPartidaVersus(ganador, detalle) {
+  ++versionPremioVersus;
+  document.getElementById('resultadoMonedasVersus').hidden = true;
   ++animacionResultadoRango;
   document.getElementById('resultadoRangoVersus').hidden = true;
 
@@ -9088,7 +9110,10 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
   resultadoRondaVersus.classList.remove("oculto");
   if (esOnline) {
     actualizarEstadoRevanchaVersus(adaptadorSalasVersus.obtenerSala());
-    if (partidaOnlineVersus?.matchId) void mostrarResultadoRango(partidaOnlineVersus.matchId);
+    if (partidaOnlineVersus?.matchId) {
+      void mostrarResultadoRango(partidaOnlineVersus.matchId);
+      void mostrarPremioVersus(partidaOnlineVersus.matchId);
+    }
   }
 }
 
