@@ -6777,6 +6777,7 @@ button:disabled {
     inset: 0;
     z-index: 20;
     display: grid;
+    grid-template-rows: minmax(0, 1fr);
     place-items: center;
     padding: 18px;
     background: rgba(5, 9, 14, 0.82);
@@ -7978,6 +7979,11 @@ button:disabled {
 
 .tarjeta-resultado-versus {
     width: min(92%, 520px);
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    overflow-wrap: anywhere;
     padding: clamp(20px, 4vw, 34px);
     border: 2px solid #9b672c;
     border-radius: 10px;
@@ -8030,6 +8036,20 @@ button:disabled {
     border: 1px solid rgba(230, 199, 143, 0.25);
     background: #18222d;
     box-shadow: 0 3px 0 #080d12;
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .resultado-ronda-versus { padding: 8px; }
+    .tarjeta-resultado-versus { width: min(100%, 640px); padding: 10px 16px; }
+    .icono-resultado-versus { font-size: 1.5rem; margin: 0; }
+    .tarjeta-resultado-versus h2 { font-size: 1.2rem; margin: 3px 0; }
+    .tarjeta-resultado-versus > p { margin: 4px 0; font-size: .8rem; }
+    .tarjeta-resultado-versus > p:last-of-type { margin-bottom: 6px; }
+    .tarjeta-resultado-versus button { min-height: 44px; margin: 2px; padding: 7px 10px; }
+    .tarjeta-resultado-versus #resultadoRangoVersus { margin: 6px auto; padding: 6px 10px; }
+    .tarjeta-resultado-versus #resultadoRangoVersus .rango-escudo { width: 52px; height: 58px; }
+    .tarjeta-resultado-versus #resultadoRangoVersus .puntos-animados { font-size: 18px; }
+    .tarjeta-resultado-versus #resultadoRangoVersus p { margin: 2px 0; }
 }
 
 @keyframes aparecerResultadoVersus {
