@@ -6966,7 +6966,7 @@ function trajePersonajeVersus(elemento, personaje) {
 function spriteTrajeVersus(elemento, personaje, src, herido=false) {
   const traje=trajePersonajeVersus(elemento,personaje);
   if(!traje)return src;
-  const pose=herido?'impacto':src===srcExploradorLupaVersus?'habilidad':src===srcExploradorPreparaBumeran?'preparacion':[srcExploradorLanzaBumeran,srcMagoAtaqueVersus,srcKairosAtaqueVersus].includes(src)?'ataque':'base';
+  const pose=herido?'impacto':[srcExploradorLupaVersus,srcGuardianAlbaHabilidadVersus].includes(src)?'habilidad':src===srcExploradorPreparaBumeran?'preparacion':[srcExploradorLanzaBumeran,srcMagoAtaqueVersus,srcKairosAtaqueVersus,srcGuardianaAtaqueVersus,srcShadowAtaqueVersus,srcGuardianAlbaAtaqueVersus].includes(src)?'ataque':'base';
   return CosmeticStore.asset(traje,pose)||src;
 }
 function trajeFinalVersus(personaje, victima=true) {
@@ -6977,11 +6977,12 @@ function imagenTrajeFinalVersus(personaje,pose,original,victima=true) {
   return CosmeticStore.asset(trajeFinalVersus(personaje,victima),pose)||original;
 }
 function prepararTrajesFinalVersus(ganador) {
-  const actores=[['.cinematica-mago-eclipse','mago','final'],['.cinematica-explorador-trampa','explorador','final'],['.kairos-final-invocador','kairos','ataque'],['.kairos-final-victoria','kairos','base']];
+  const actores=[['.cinematica-mago-eclipse','mago','final'],['.cinematica-explorador-trampa','explorador','final'],['.kairos-final-invocador','kairos','ataque'],['.kairos-final-victoria','kairos','base'],['.cinematica-guardiana-ataque','guardiana','ataque'],['.cinematica-guardiana-victoria','guardiana','final'],['.cinematica-shadow-clon','t_shadow','ataque'],['.cinematica-shadow-victoria','t_shadow','final'],['.cinematica-alba-ataque','guardian_alba','carga'],['.cinematica-alba-victoria','guardian_alba','final']];
   for(const [selector,personaje,pose] of actores){
-    const img=cinematicaFinalVersus.querySelector(selector);if(!img)continue;
-    img.dataset.original ||= img.getAttribute('src');
-    img.src=imagenTrajeFinalVersus(personaje,pose,img.dataset.original,false);
+    for(const img of cinematicaFinalVersus.querySelectorAll(selector)){
+      img.dataset.original ||= img.getAttribute('src');
+      img.src=imagenTrajeFinalVersus(personaje,pose,img.dataset.original,false);
+    }
   }
   const celestial=ganador==='mago'&&trajeFinalVersus('mago',false)==='zafir-celestial';
   cinematicaFinalVersus.classList.toggle('zafir-celestial',celestial);

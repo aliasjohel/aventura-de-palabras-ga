@@ -1,7 +1,21 @@
 (() => {
   'use strict';
   const el=id=>document.getElementById(id),store=CosmeticStore;
-  let selected=store.catalog[0].id,busy=false;
+  let selected=store.catalog[0].id,selectedPose='base',busy=false;
+  const poseLabels={base:'De pie',preparacion:'Preparación',ataque:'Ataque',habilidad:'Habilidad',carga:'Técnica final',impacto:'Impacto',final:'Victoria',planta:'Planta',mano:'Azrak',vidrio:'Kálamo',envejecido:'Envejecido',anciano:'Anciano'};
+  const posePicker=document.createElement('div');posePicker.className='tienda-traje-poses';
+  posePicker.setAttribute('role','group');posePicker.setAttribute('aria-label','Vista previa del traje');
+  el('tiendaTrajeDetalle').after(posePicker);
+  function renderPoses(item){
+    const poses=[...new Set([...item.poses,'final','planta','mano','vidrio','envejecido','anciano'])];
+    if(!poses.includes(selectedPose))selectedPose='base';
+    if(posePicker.dataset.skin!==item.id){
+      posePicker.dataset.skin=item.id;posePicker.replaceChildren();
+      for(const pose of poses){const button=document.createElement('button');button.type='button';button.dataset.pose=pose;button.textContent=poseLabels[pose]||pose;
+        button.addEventListener('click',()=>{selectedPose=pose;render();});posePicker.append(button);}
+    }
+    for(const button of posePicker.children)button.setAttribute('aria-pressed',String(button.dataset.pose===selectedPose));
+  }
   function announce(message){el('tiendaTrajesEstado').textContent=message;}
   function render(){
     try {
@@ -10,9 +24,10 @@
       el('tiendaTrajeHeroe').textContent=item.hero;
       el('tiendaTrajeNombre').textContent=item.name;
       el('tiendaTrajeDetalle').textContent=item.description;
-      el('tiendaTrajeImagen').src=store.asset(item.id);
-      el('tiendaTrajeImagen').alt=`${item.hero} · ${item.name}`;
-      el('tiendaTrajeImagen').classList.toggle('retrato-zafir', item.character === 'mago');
+      renderPoses(item);
+      el('tiendaTrajeImagen').src=store.asset(item.id,selectedPose);
+      el('tiendaTrajeImagen').alt=`${item.hero} · ${item.name} · ${poseLabels[selectedPose]||selectedPose}`;
+      el('tiendaTrajeImagen').classList.toggle('retrato-zafir', item.character === 'mago' && selectedPose==='base');
       const testing=globalThis.AventuraShop?.testing();
       const buy=el('comprarTraje');buy.hidden=owned;buy.disabled=busy||testing||state.coins<item.price;
       buy.textContent=testing?'Volvé del modo de prueba para comprar':state.coins<item.price?`Te faltan ${item.price-state.coins} monedas`:`Comprar por ${item.price} monedas`;
@@ -36,7 +51,7 @@
     const hero=document.createElement('span');hero.textContent=item.hero;
     const title=document.createElement('strong');title.textContent=item.name;
     b.append(img,hero,title,document.createElement('small'));
-    b.addEventListener('click',()=>{selected=item.id;announce('');render();});el('tiendaTrajesCatalogo').append(b);
+    b.addEventListener('click',()=>{selected=item.id;selectedPose='base';announce('');render();});el('tiendaTrajesCatalogo').append(b);
   }
   el('comprarTraje').addEventListener('click',()=>{const id=selected;void action(async()=>{if(globalThis.AventuraShop?.testing())throw Error('Las monedas de prueba no se pueden gastar.');await store.purchase(id);return '¡Traje comprado! Ya podés equiparlo.';});});
   el('equiparTraje').addEventListener('click',()=>{const item=store.find(selected);void action(()=>{store.equip(item.character,item.id);return `¡${item.hero} lleva ${item.name}!`;});});

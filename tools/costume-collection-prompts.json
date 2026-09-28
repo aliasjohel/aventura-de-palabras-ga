@@ -1,0 +1,99 @@
+{
+  "method": "Built-in image_gen; original outputs copied unchanged to assets/images/trajes.",
+  "notes": "Base and attack prompts are summarized below; exact remaining pose prompts preserved in entries.",
+  "baseAndAttackSummary": "For each original character create its alternate costume in the same fantasy sprite style with transparent alpha. Guardiana de Otoño: copper leaves, burgundy cape, leather, amber staff. Alba Lunar: silver and midnight blue moon armor, lunar sword and shield. Sombra Carmesí: crimson hood/cape, obsidian armor, silver trim, red daggers. Attack edits retain the original attack composition and new outfit.",
+  "entries": [
+    {
+      "asset": "assets/images/trajes/guardiana-otono-impacto-v1.png",
+      "prompt": "Create one production fantasy game sprite. Reference is exact character identity and costume to preserve. New pose: Recoiling backward from a harmless magical hit, feet grounded, shocked expression, weapons lowered but retained, no wounds or blood. Match proportions, clothing details, materials, weapon designs and colors from reference. Full body facing right, centered inside frame with generous margin, no cropped extremities. Clean transparent alpha background, no scene, no text, no checkerboard, no backdrop glow. Same polished stylized fantasy illustration."
+    },
+    {
+      "asset": "assets/images/trajes/alba-lunar-impacto-v1.png",
+      "prompt": "Create one production fantasy game sprite. Reference is exact character identity and costume to preserve. New pose: Recoiling backward from a harmless magical hit, feet grounded, shocked expression, weapons lowered but retained, no wounds or blood. Match proportions, clothing details, materials, weapon designs and colors from reference. Full body facing right, centered inside frame with generous margin, no cropped extremities. Clean transparent alpha background, no scene, no text, no checkerboard, no backdrop glow. Same polished stylized fantasy illustration."
+    },
+    {
+      "asset": "assets/images/trajes/shadow-carmesi-impacto-v1.png",
+      "prompt": "Create one production fantasy game sprite. Reference is exact character identity and costume to preserve. New pose: Recoiling backward from a harmless magical hit, feet grounded, shocked expression, weapons lowered but retained, no wounds or blood. Match proportions, clothing details, materials, weapon designs and colors from reference. Full body facing right, centered inside frame with generous margin, no cropped extremities. Clean transparent alpha background, no scene, no text, no checkerboard, no backdrop glow. Same polished stylized fantasy illustration."
+    },
+    {
+      "asset": "assets/images/trajes/guardiana-otono-planta-v1.png",
+      "prompt": "Edit ONLY the clothing of the trapped guardian in image 1 (cinematic game asset). Image 2 is her NEW AUTUMN COSTUME reference. Preserve image 1 entire carnivorous green plant exactly: shape, size, orientation, leaves, green color, mouth placement, whole canvas framing, and guardian face/pose and relative size. Replace the guardian's visible green clothing with the exact copper orange and burgundy maple leaf cloak, brown leather, brass clasps, amber gems and acorn details from image 2. Preserve character expression and reaching hand. Do not change the plant into autumn colors. Preserve transparent alpha background. No text or new objects. Output landscape composition same as image 1, sprite cutout."
+    },
+    {
+      "asset": "assets/images/trajes/guardiana-otono-mano-v1.png",
+      "prompt": "Edit image 1 only: this is the existing cinematic pose. Image 2 is the new autumn costume reference. Replace ONLY the guardian's outfit and staff palette/design with image 2 copper orange and burgundy maple-leaf cloak, brown leather, amber gems, brass/acorn details. Preserve EXACT pose, face expression, age and hair greying if present, orientation, proportions, original framing, and all cinematic props (lava hand, cracked glass) from image 1. Do not change hands, plant, magic or glass colors. Elderly remains elderly, middle aged remains middle aged. Full composition with transparent alpha background. No backdrop glow, no checkerboard, no writing."
+    },
+    {
+      "asset": "assets/images/trajes/guardiana-otono-vidrio-v1.png",
+      "prompt": "Edit image 1 only: this is the existing cinematic pose. Image 2 is the new autumn costume reference. Replace ONLY the guardian's outfit and staff palette/design with image 2 copper orange and burgundy maple-leaf cloak, brown leather, amber gems, brass/acorn details. Preserve EXACT pose, face expression, age and hair greying if present, orientation, proportions, original framing, and all cinematic props (lava hand, cracked glass) from image 1. Do not change hands, plant, magic or glass colors. Elderly remains elderly, middle aged remains middle aged. Full composition with transparent alpha background. No backdrop glow, no checkerboard, no writing."
+    },
+    {
+      "asset": "assets/images/trajes/guardiana-otono-envejecido-v1.png",
+      "prompt": "Edit image 1 only: this is the existing cinematic pose. Image 2 is the new autumn costume reference. Replace ONLY the guardian's outfit and staff palette/design with image 2 copper orange and burgundy maple-leaf cloak, brown leather, amber gems, brass/acorn details. Preserve EXACT pose, face expression, age and hair greying if present, orientation, proportions, original framing, and all cinematic props (lava hand, cracked glass) from image 1. Do not change hands, plant, magic or glass colors. Elderly remains elderly, middle aged remains middle aged. Full composition with transparent alpha background. No backdrop glow, no checkerboard, no writing."
+    },
+    {
+      "asset": "assets/images/trajes/guardiana-otono-anciano-v1.png",
+      "prompt": "Edit image 1 only: this is the existing cinematic pose. Image 2 is the new autumn costume reference. Replace ONLY the guardian's outfit and staff palette/design with image 2 copper orange and burgundy maple-leaf cloak, brown leather, amber gems, brass/acorn details. Preserve EXACT pose, face expression, age and hair greying if present, orientation, proportions, original framing, and all cinematic props (lava hand, cracked glass) from image 1. Do not change hands, plant, magic or glass colors. Elderly remains elderly, middle aged remains middle aged. Full composition with transparent alpha background. No backdrop glow, no checkerboard, no writing."
+    },
+    {
+      "asset": "assets/images/trajes/guardiana-otono-final-v1.png",
+      "prompt": "Edit image 1 only: this is the existing cinematic pose. Image 2 is the new autumn costume reference. Replace ONLY the guardian's outfit and staff palette/design with image 2 copper orange and burgundy maple-leaf cloak, brown leather, amber gems, brass/acorn details. Preserve EXACT pose, face expression, age and hair greying if present, orientation, proportions, original framing, and all cinematic props (lava hand, cracked glass) from image 1. Do not change hands, plant, magic or glass colors. Elderly remains elderly, middle aged remains middle aged. Full composition with transparent alpha background. No backdrop glow, no checkerboard, no writing."
+    },
+    {
+      "asset": "assets/images/trajes/alba-lunar-planta-v1.png",
+      "prompt": "Edit image 1 existing game cinematic pose. Image 2 is exact ALBA LUNAR costume reference. Replace only character armor, cape, sword and shield designs with silver and midnight blue moon-themed armor, crescent emblems and moonstone gems from image 2. Preserve EXACT image 1 face identity, expression, pose, hair greying and age (if aged), props and framing. Keep surrounding plant green, lava hand unchanged, glass unchanged. Sword/shield magical energy becomes icy blue. Do not add a shield if image 1 has no shield; charging pose must keep empty outstretched hand and no emitted ray. Maintain transparent alpha background. No text, no checkerboard or backdrop."
+    },
+    {
+      "asset": "assets/images/trajes/alba-lunar-mano-v1.png",
+      "prompt": "Edit image 1 existing game cinematic pose. Image 2 is exact ALBA LUNAR costume reference. Replace only character armor, cape, sword and shield designs with silver and midnight blue moon-themed armor, crescent emblems and moonstone gems from image 2. Preserve EXACT image 1 face identity, expression, pose, hair greying and age (if aged), props and framing. Keep surrounding plant green, lava hand unchanged, glass unchanged. Sword/shield magical energy becomes icy blue. Do not add a shield if image 1 has no shield; charging pose must keep empty outstretched hand and no emitted ray. Maintain transparent alpha background. No text, no checkerboard or backdrop."
+    },
+    {
+      "asset": "assets/images/trajes/alba-lunar-vidrio-v1.png",
+      "prompt": "Edit image 1 existing game cinematic pose. Image 2 is exact ALBA LUNAR costume reference. Replace only character armor, cape, sword and shield designs with silver and midnight blue moon-themed armor, crescent emblems and moonstone gems from image 2. Preserve EXACT image 1 face identity, expression, pose, hair greying and age (if aged), props and framing. Keep surrounding plant green, lava hand unchanged, glass unchanged. Sword/shield magical energy becomes icy blue. Do not add a shield if image 1 has no shield; charging pose must keep empty outstretched hand and no emitted ray. Maintain transparent alpha background. No text, no checkerboard or backdrop."
+    },
+    {
+      "asset": "assets/images/trajes/alba-lunar-envejecido-v1.png",
+      "prompt": "Edit image 1 existing game cinematic pose. Image 2 is exact ALBA LUNAR costume reference. Replace only character armor, cape, sword and shield designs with silver and midnight blue moon-themed armor, crescent emblems and moonstone gems from image 2. Preserve EXACT image 1 face identity, expression, pose, hair greying and age (if aged), props and framing. Keep surrounding plant green, lava hand unchanged, glass unchanged. Sword/shield magical energy becomes icy blue. Do not add a shield if image 1 has no shield; charging pose must keep empty outstretched hand and no emitted ray. Maintain transparent alpha background. No text, no checkerboard or backdrop."
+    },
+    {
+      "asset": "assets/images/trajes/alba-lunar-anciano-v1.png",
+      "prompt": "Edit image 1 existing game cinematic pose. Image 2 is exact ALBA LUNAR costume reference. Replace only character armor, cape, sword and shield designs with silver and midnight blue moon-themed armor, crescent emblems and moonstone gems from image 2. Preserve EXACT image 1 face identity, expression, pose, hair greying and age (if aged), props and framing. Keep surrounding plant green, lava hand unchanged, glass unchanged. Sword/shield magical energy becomes icy blue. Do not add a shield if image 1 has no shield; charging pose must keep empty outstretched hand and no emitted ray. Maintain transparent alpha background. No text, no checkerboard or backdrop."
+    },
+    {
+      "asset": "assets/images/trajes/alba-lunar-final-v1.png",
+      "prompt": "Edit image 1 existing game cinematic pose. Image 2 is exact ALBA LUNAR costume reference. Replace only character armor, cape, sword and shield designs with silver and midnight blue moon-themed armor, crescent emblems and moonstone gems from image 2. Preserve EXACT image 1 face identity, expression, pose, hair greying and age (if aged), props and framing. Keep surrounding plant green, lava hand unchanged, glass unchanged. Sword/shield magical energy becomes icy blue. Do not add a shield if image 1 has no shield; charging pose must keep empty outstretched hand and no emitted ray. Maintain transparent alpha background. No text, no checkerboard or backdrop."
+    },
+    {
+      "asset": "assets/images/trajes/alba-lunar-habilidad-v1.png",
+      "prompt": "Edit image 1 existing game cinematic pose. Image 2 is exact ALBA LUNAR costume reference. Replace only character armor, cape, sword and shield designs with silver and midnight blue moon-themed armor, crescent emblems and moonstone gems from image 2. Preserve EXACT image 1 face identity, expression, pose, hair greying and age (if aged), props and framing. Keep surrounding plant green, lava hand unchanged, glass unchanged. Sword/shield magical energy becomes icy blue. Do not add a shield if image 1 has no shield; charging pose must keep empty outstretched hand and no emitted ray. Maintain transparent alpha background. No text, no checkerboard or backdrop."
+    },
+    {
+      "asset": "assets/images/trajes/alba-lunar-carga-v1.png",
+      "prompt": "Edit image 1 existing game cinematic pose. Image 2 is exact ALBA LUNAR costume reference. Replace only character armor, cape, sword and shield designs with silver and midnight blue moon-themed armor, crescent emblems and moonstone gems from image 2. Preserve EXACT image 1 face identity, expression, pose, hair greying and age (if aged), props and framing. Keep surrounding plant green, lava hand unchanged, glass unchanged. Sword/shield magical energy becomes icy blue. Do not add a shield if image 1 has no shield; charging pose must keep empty outstretched hand and no emitted ray. Maintain transparent alpha background. No text, no checkerboard or backdrop."
+    },
+    {
+      "asset": "assets/images/trajes/shadow-carmesi-planta-v1.png",
+      "prompt": "Edit image 1, the existing game cinematic pose. Image 2 is the exact SOMBRA CARMESÍ costume reference. Replace ONLY the character's outfit with this crimson hood and cape, obsidian armor, silver trim and crimson daggers. Preserve image 1's exact pose, expression, anatomy, age and grey/white hair where present, framing and all props. Keep the green carnivorous plant, lava hand or glass unchanged when present. For old age keep the bent posture and cane. Victory keeps both daggers raised overhead. Same polished fantasy game sprite style. True transparent alpha background, no backdrop, no text, no checkerboard. Entire subject uncropped."
+    },
+    {
+      "asset": "assets/images/trajes/shadow-carmesi-mano-v1.png",
+      "prompt": "Edit image 1, the existing game cinematic pose. Image 2 is the exact SOMBRA CARMESÍ costume reference. Replace ONLY the character's outfit with this crimson hood and cape, obsidian armor, silver trim and crimson daggers. Preserve image 1's exact pose, expression, anatomy, age and grey/white hair where present, framing and all props. Keep the green carnivorous plant, lava hand or glass unchanged when present. For old age keep the bent posture and cane. Victory keeps both daggers raised overhead. Same polished fantasy game sprite style. True transparent alpha background, no backdrop, no text, no checkerboard. Entire subject uncropped."
+    },
+    {
+      "asset": "assets/images/trajes/shadow-carmesi-vidrio-v1.png",
+      "prompt": "Edit image 1, the existing game cinematic pose. Image 2 is the exact SOMBRA CARMESÍ costume reference. Replace ONLY the character's outfit with this crimson hood and cape, obsidian armor, silver trim and crimson daggers. Preserve image 1's exact pose, expression, anatomy, age and grey/white hair where present, framing and all props. Keep the green carnivorous plant, lava hand or glass unchanged when present. For old age keep the bent posture and cane. Victory keeps both daggers raised overhead. Same polished fantasy game sprite style. True transparent alpha background, no backdrop, no text, no checkerboard. Entire subject uncropped."
+    },
+    {
+      "asset": "assets/images/trajes/shadow-carmesi-envejecido-v1.png",
+      "prompt": "Edit image 1, the existing game cinematic pose. Image 2 is the exact SOMBRA CARMESÍ costume reference. Replace ONLY the character's outfit with this crimson hood and cape, obsidian armor, silver trim and crimson daggers. Preserve image 1's exact pose, expression, anatomy, age and grey/white hair where present, framing and all props. Keep the green carnivorous plant, lava hand or glass unchanged when present. For old age keep the bent posture and cane. Victory keeps both daggers raised overhead. Same polished fantasy game sprite style. True transparent alpha background, no backdrop, no text, no checkerboard. Entire subject uncropped."
+    },
+    {
+      "asset": "assets/images/trajes/shadow-carmesi-anciano-v1.png",
+      "prompt": "Edit image 1, the existing game cinematic pose. Image 2 is the exact SOMBRA CARMESÍ costume reference. Replace ONLY the character's outfit with this crimson hood and cape, obsidian armor, silver trim and crimson daggers. Preserve image 1's exact pose, expression, anatomy, age and grey/white hair where present, framing and all props. Keep the green carnivorous plant, lava hand or glass unchanged when present. For old age keep the bent posture and cane. Victory keeps both daggers raised overhead. Same polished fantasy game sprite style. True transparent alpha background, no backdrop, no text, no checkerboard. Entire subject uncropped."
+    },
+    {
+      "asset": "assets/images/trajes/shadow-carmesi-final-v1.png",
+      "prompt": "Edit image 1, the existing game cinematic pose. Image 2 is the exact SOMBRA CARMESÍ costume reference. Replace ONLY the character's outfit with this crimson hood and cape, obsidian armor, silver trim and crimson daggers. Preserve image 1's exact pose, expression, anatomy, age and grey/white hair where present, framing and all props. Keep the green carnivorous plant, lava hand or glass unchanged when present. For old age keep the bent posture and cane. Victory keeps both daggers raised overhead. Same polished fantasy game sprite style. True transparent alpha background, no backdrop, no text, no checkerboard. Entire subject uncropped."
+    }
+  ]
+}

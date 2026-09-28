@@ -9,6 +9,9 @@
     Object.freeze({id:'aren-bosque',character:'explorador',hero:'Aren',name:'Guardián del Bosque',price:200,description:'Cuero esmeralda, hojas de bronce y espíritu de explorador.',poses:['base','preparacion','ataque','habilidad','impacto']}),
     Object.freeze({id:'zafir-celestial',character:'mago',hero:'Zafir',name:'Celestial',price:250,description:'Una túnica de estrellas y un báculo de luz azul.',poses:['base','ataque','impacto']}),
     Object.freeze({id:'kairos-real',character:'kairos',hero:'Kairós',name:'Relojero Real',price:300,description:'Engranajes dorados y un abrigo digno del guardián del tiempo.',poses:['base','ataque','impacto']}),
+    Object.freeze({id:'guardiana-otono',character:'guardiana',hero:'Guardiana',name:'Guardiana de Otoño',price:150,description:'Hojas cobrizas, una capa carmesí y un báculo de ámbar. Se consigue con las monedas que ganás jugando.',poses:['base','ataque','impacto']}),
+    Object.freeze({id:'alba-lunar',character:'guardian_alba',hero:'A. Lumen',name:'Alba Lunar',price:200,description:'Armadura de plata, capa azul y una espada de luz lunar. Se consigue con las monedas que ganás jugando.',poses:['base','ataque','habilidad','carga','impacto']}),
+    Object.freeze({id:'shadow-carmesi',character:'t_shadow',hero:'T. Shadow',name:'Sombra Carmesí',price:250,description:'Capucha carmesí, armadura de obsidiana y dagas rojas. Se consigue con las monedas que ganás jugando.',poses:['base','ataque','impacto']}),
   ]);
   const find=id=>catalog.find(item=>item.id===id);
   const cinemaPoses=Object.freeze(['planta','mano','vidrio','envejecido','anciano','final']);
