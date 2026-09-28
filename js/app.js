@@ -1300,6 +1300,8 @@ globalThis.AventuraShop = Object.freeze({
     personajeJugadorVersus=character;personajeRivalVersus=character==='mago'?'explorador':'mago';
     document.getElementById('trajePruebaAtacante').value='nuevo';
     document.getElementById('trajePruebaVictima').value='nuevo';
+    trajesPruebaVersus.jugador[character]='nuevo';
+    trajesPruebaVersus.rival[character]='nuevo';
     victimaPruebaFaucesVersus.value=character;
     prepararDueloVersus({comenzarRonda:false});
     mostrarPantalla(pantallaVersus);
@@ -1479,6 +1481,7 @@ let pasoActualTutorialVersus = 0;
 let accionPosteriorTutorialVersus = null;
 let modoArcadeActivo = false;
 const trajesPruebaArcade = {};
+const trajesPruebaVersus = {jugador:{},rival:{}};
 let rivalesTorreArcade = [];
 let pisoActualArcade = 0;
 let pisoCombateArcade = 0;
@@ -2534,6 +2537,7 @@ function seleccionarPersonajeVersus(personaje) {
 }
 
 function actualizarSelectorTrajeVersus() {
+  document.getElementById('trajePruebaAtacante').value = trajesPruebaVersus.jugador[personajeJugadorVersus] || 'equipado';
   document.getElementById('btnPersonajeAleatorio').disabled = btnConfirmarPersonajeVersus.disabled;
   const panel = document.getElementById('selectorTrajesDuelo');
   if (!panel || !globalThis.CosmeticStore) return;
@@ -2563,7 +2567,7 @@ function actualizarSelectorTrajeVersus() {
         if (btnConfirmarPersonajeVersus.disabled) return;
         try {
           if (pruebaAutor && modoArcadeActivo) trajesPruebaArcade[personajeJugadorVersus] = item.id;
-          else if (pruebaAutor) document.getElementById('trajePruebaAtacante').value = item.id ? 'nuevo' : 'original';
+          else if (pruebaAutor) trajesPruebaVersus.jugador[personajeJugadorVersus] = item.id ? 'nuevo' : 'original';
           else CosmeticStore.equip(personajeJugadorVersus, item.id);
           window.dispatchEvent(new Event('costume-equipped'));
         } catch (error) { estadoPersonajePropioVersus.textContent = error.message; }
@@ -6953,7 +6957,7 @@ function trajePersonajeVersus(elemento, personaje) {
     try { return CosmeticStore.read().equipped[personaje] || null; } catch (_) { return null; }
   }
   if (pruebasTrajesActivas()) {
-    const seleccion=document.getElementById(elemento===personajeVersusUno?'trajePruebaAtacante':'trajePruebaVictima')?.value;
+    const seleccion=trajesPruebaVersus[elemento===personajeVersusUno?'jugador':'rival'][personaje] || 'equipado';
     if(seleccion==='nuevo')return CosmeticStore.catalog.find(item=>item.character===personaje)?.id||null;
     if(seleccion==='original')return null;
     try { return CosmeticStore.read().equipped[personaje]||null; } catch(_) {return null;}
@@ -7004,7 +7008,15 @@ function refrescarTrajesVersus() {
     if(img&&personajesVersus[character])img.src=spriteTrajeVersus(personajeVersusUno,character,personajesVersus[character].base);
   }
 }
-for(const id of ['trajePruebaAtacante','trajePruebaVictima'])document.getElementById(id)?.addEventListener('change',()=>{cancelarCinematicaFinalVersus();refrescarTrajesVersus();});
+for(const id of ['trajePruebaAtacante','trajePruebaVictima'])document.getElementById(id)?.addEventListener('change',()=>{
+  const atacante=id==='trajePruebaAtacante';
+  const personaje=atacante?personajeJugadorVersus:victimaPruebaFaucesVersus.value;
+  trajesPruebaVersus[atacante?'jugador':'rival'][personaje]=document.getElementById(id).value;
+  cancelarCinematicaFinalVersus();refrescarTrajesVersus();actualizarSelectorTrajeVersus();
+});
+victimaPruebaFaucesVersus.addEventListener('change',()=>{
+  document.getElementById('trajePruebaVictima').value=trajesPruebaVersus.rival[victimaPruebaFaucesVersus.value] || 'equipado';
+});
 window.addEventListener('costume-equipped',refrescarTrajesVersus);
 window.addEventListener('rival-costume-updated',refrescarTrajesVersus);
 function actualizarPoseCombateVersus(elemento, personaje = elemento === personajeVersusUno ? personajeJugadorVersus : personajeRivalVersus) {

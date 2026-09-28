@@ -80,6 +80,20 @@ const scenes=[
       await page.evaluate(()=>{CosmeticStore.equip('t_shadow',null);prepararTrajesFinalVersus('t_shadow');});
       for(const src of await page.locator('.cinematica-shadow-clon').evaluateAll(imgs=>imgs.map(img=>img.src)))assert.doesNotMatch(src,/trajes/);
       assert.equal(await page.evaluate(()=>CosmeticStore.read().coins),400);
+      const isolated=await page.evaluate(()=>{
+        modoPruebasActivo=true;herramientasAutorDisponibles=true;btnConfirmarPersonajeVersus.disabled=false;
+        seleccionarPersonajeVersus('mago');
+        document.querySelector('#opcionesTrajesDuelo button:last-child').click();
+        const mago=trajePersonajeVersus(personajeVersusUno,'mago');
+        seleccionarPersonajeVersus('explorador');
+        const explorador=trajePersonajeVersus(personajeVersusUno,'explorador');
+        const control=document.getElementById('trajePruebaAtacante').value;
+        seleccionarPersonajeVersus('mago');
+        const retained=trajePersonajeVersus(personajeVersusUno,'mago');
+        document.querySelector('#opcionesTrajesDuelo button:first-child').click();
+        return {mago,explorador,control,retained,restored:trajePersonajeVersus(personajeVersusUno,'mago')};
+      });
+      assert.deepEqual(isolated,{mago:'zafir-celestial',explorador:null,control:'equipado',retained:'zafir-celestial',restored:null});
       assert.deepEqual(errors,[]);console.log('PASS collection: 29 previews, 33 victim scenes, winners/clones, originals restored, wallet unchanged',viewport);
       await page.close();
     }

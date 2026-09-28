@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v308`;
+const CACHE_NAME = `${CACHE_PREFIX}v309`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -675,8 +675,8 @@ const ASSET_REVISIONS = {
   "./assets/images/trajes/kairos-real-ataque-v1.png": "20260923-trajes-2",
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
-  "./": "20260928-coleccion-1",
-  "./index.html": "20260928-coleccion-1",
+  "./": "20260928-traje-individual-1",
+  "./index.html": "20260928-traje-individual-1",
   "./js/cosmetic-store.js": "20260928-coleccion-1",
   "./js/cosmetic-shop.js": "20260928-coleccion-1",
   "./css/cosmetic-shop.css": "20260928-coleccion-1",
@@ -687,7 +687,7 @@ const ASSET_REVISIONS = {
   "./css/versus-identity.css": "20260915-social-1",
   "./js/versus-identity.js": "20260915-social-1",
   "./css/styles.css": "20260927-resultados-1",
-  "./js/app.js": "20260928-coleccion-1",
+  "./js/app.js": "20260928-traje-individual-1",
   "./js/versus-room.js": "20260922-alias-1",
   "./js/public-player-profile.js": "20260922-medallas-3",
   "./js/azrak-world.js": "20260913-shadow-runas-2",
