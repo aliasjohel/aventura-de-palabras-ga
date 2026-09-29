@@ -1,0 +1,180 @@
+{
+  "method": "Built-in image_gen. Original generated PNGs copied without alteration, preserving alpha.",
+  "entries": [
+    {
+      "asset": "assets/images/trajes/lobo-lunar-base-v1.png",
+      "prompt": "Alternate costume preserving original identity, exact standing pose and fantasy sprite style. Hombre Lobo: silver moon armor and navy leather/trousers. Nimbus: brown aviator harness, ivory scarf and brass goggles. Nivor: sapphire armor, silver filigree, aurora gemstone. Full figure and transparent alpha.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/lobo-lunar-ataque-v1.png",
+      "prompt": "Edit original attack sprite using new base costume reference, changing only clothing and accessories; retain original attack pose, expression, anatomy and composition. Transparent background.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/lobo-lunar-impacto-v1.png",
+      "prompt": "Edit original impact sprite using new base costume reference, changing only clothing and accessories; retain recoiling pose, expression, anatomy and composition. Transparent background.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/lobo-lunar-planta-v1.png",
+      "prompt": "Edit only trapped character outfit to new base reference. Preserve entire carnivorous plant, colors, teeth, roots, character placement, pose and wide canvas. Transparent alpha.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/lobo-lunar-mano-v1.png",
+      "prompt": "Edit only captured character outfit to new base reference. Preserve lava hand, portal, magic, pose, expression and landscape composition. Transparent alpha.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/lobo-lunar-vidrio-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Preserve cracked glass shards and character pressed against screen. The checkerboard is NOT artwork: replace it with actual transparent alpha.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/lobo-lunar-envejecido-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. This is middle-aged/adult transformation by time magic: retain the older face, greying fur or more mature dragon proportions of image 1. Any holes inside the subject are alpha defects: restore solid opaque fur/scales/armor there.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/lobo-lunar-anciano-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. This is the very elderly version aged by time magic. Retain old hunched posture, weary face, grey fur or weathered old scales and lowered wings. Adapt costume to elderly body. Repair any unintended transparent holes inside body; retain intact subject.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/lobo-lunar-humano-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Replace checkerboard if present with real alpha. Costume is navy torn trousers and navy harness, silver moon-engraved shoulder armor and bracers. Keep transformation stage of image 1 exactly: human / half wolf / fully wolf as shown.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/lobo-lunar-transformacion-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Replace checkerboard if present with real alpha. Costume is navy torn trousers and navy harness, silver moon-engraved shoulder armor and bracers. Keep transformation stage of image 1 exactly: human / half wolf / fully wolf as shown.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/lobo-lunar-aullido-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Replace checkerboard if present with real alpha. Costume is navy torn trousers and navy harness, silver moon-engraved shoulder armor and bracers. Keep transformation stage of image 1 exactly: human / half wolf / fully wolf as shown.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/lobo-lunar-salto-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Replace checkerboard if present with real alpha. Costume is navy torn trousers and navy harness, silver moon-engraved shoulder armor and bracers. Keep transformation stage of image 1 exactly: human / half wolf / fully wolf as shown.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/nimbus-aviador-base-v1.png",
+      "prompt": "Alternate costume preserving original identity, exact standing pose and fantasy sprite style. Hombre Lobo: silver moon armor and navy leather/trousers. Nimbus: brown aviator harness, ivory scarf and brass goggles. Nivor: sapphire armor, silver filigree, aurora gemstone. Full figure and transparent alpha.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/nimbus-aviador-ataque-v1.png",
+      "prompt": "Edit original attack sprite using new base costume reference, changing only clothing and accessories; retain original attack pose, expression, anatomy and composition. Transparent background.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/nimbus-aviador-impacto-v1.png",
+      "prompt": "Edit original impact sprite using new base costume reference, changing only clothing and accessories; retain recoiling pose, expression, anatomy and composition. Transparent background.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/nimbus-aviador-planta-v1.png",
+      "prompt": "Edit only trapped character outfit to new base reference. Preserve entire carnivorous plant, colors, teeth, roots, character placement, pose and wide canvas. Transparent alpha.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/nimbus-aviador-mano-v1.png",
+      "prompt": "Edit only captured character outfit to new base reference. Preserve lava hand, portal, magic, pose, expression and landscape composition. Transparent alpha.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/nimbus-aviador-vidrio-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Preserve cracked glass shards and character pressed against screen. The checkerboard is NOT artwork: replace it with actual transparent alpha.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/nimbus-aviador-envejecido-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. This is middle-aged/adult transformation by time magic: retain the older face, greying fur or more mature dragon proportions of image 1. Any holes inside the subject are alpha defects: restore solid opaque fur/scales/armor there.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/nimbus-aviador-anciano-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. This is the very elderly version aged by time magic. Retain old hunched posture, weary face, grey fur or weathered old scales and lowered wings. Adapt costume to elderly body. Repair any unintended transparent holes inside body; retain intact subject.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/nimbus-aviador-llamado-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Preserve entire wings and tail, exact original canvas aspect ratio. Costume must leave wings unobstructed.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/nimbus-aviador-final-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Preserve entire wings and tail, exact original canvas aspect ratio. Costume must leave wings unobstructed.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/nivor-boreal-base-v1.png",
+      "prompt": "Alternate costume preserving original identity, exact standing pose and fantasy sprite style. Hombre Lobo: silver moon armor and navy leather/trousers. Nimbus: brown aviator harness, ivory scarf and brass goggles. Nivor: sapphire armor, silver filigree, aurora gemstone. Full figure and transparent alpha.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/nivor-boreal-ataque-v1.png",
+      "prompt": "Edit original attack sprite using new base costume reference, changing only clothing and accessories; retain original attack pose, expression, anatomy and composition. Transparent background.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/nivor-boreal-impacto-v1.png",
+      "prompt": "Edit original impact sprite using new base costume reference, changing only clothing and accessories; retain recoiling pose, expression, anatomy and composition. Transparent background.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/nivor-boreal-planta-v1.png",
+      "prompt": "Edit only trapped character outfit to new base reference. Preserve entire carnivorous plant, colors, teeth, roots, character placement, pose and wide canvas. Transparent alpha.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/nivor-boreal-mano-v1.png",
+      "prompt": "Edit only captured character outfit to new base reference. Preserve lava hand, portal, magic, pose, expression and landscape composition. Transparent alpha.",
+      "promptType": "summary"
+    },
+    {
+      "asset": "assets/images/trajes/nivor-boreal-vidrio-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Preserve cracked glass shards and character pressed against screen. The checkerboard is NOT artwork: replace it with actual transparent alpha.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/nivor-boreal-envejecido-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. This is middle-aged/adult transformation by time magic: retain the older face, greying fur or more mature dragon proportions of image 1. Any holes inside the subject are alpha defects: restore solid opaque fur/scales/armor there.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/nivor-boreal-anciano-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. This is the very elderly version aged by time magic. Retain old hunched posture, weary face, grey fur or weathered old scales and lowered wings. Adapt costume to elderly body. Repair any unintended transparent holes inside body; retain intact subject.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/nivor-boreal-vuelo-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Preserve entire wings and tail, exact original canvas aspect ratio. Costume must leave wings unobstructed.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/nivor-boreal-frontal-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Preserve entire wings and tail, exact original canvas aspect ratio. Costume must leave wings unobstructed.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/nivor-boreal-descenso-alto-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Preserve the precise canvas framing, relative body scale, wing tips and feet location, since these are animation frames. Repair accidental holes inside scales/armor. Do not crop or recenter the subject differently.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/nivor-boreal-descenso-bajo-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Preserve the precise canvas framing, relative body scale, wing tips and feet location, since these are animation frames. Repair accidental holes inside scales/armor. Do not crop or recenter the subject differently.",
+      "promptType": "exact"
+    },
+    {
+      "asset": "assets/images/trajes/nivor-boreal-final-v1.png",
+      "prompt": "Use case: identity-preserve. Image 1 is the EDIT TARGET original game sprite pose. Image 2 is ONLY new costume reference. Change ONLY clothing, armor and accessories of the character in image 1 to precisely match image 2. Preserve image 1 exact pose, facing, expression, proportions, composition, framing, age and all surrounding props and effects. Elderly stays elderly, adult stays adult, human stays human (no wolf face on human). Do NOT replace target pose with the standing reference. Keep original complete canvas and real transparent alpha background, with no added backdrop, aura, text or glow. Polished fantasy sprite. Preserve the precise canvas framing, relative body scale, wing tips and feet location, since these are animation frames. Repair accidental holes inside scales/armor. Do not crop or recenter the subject differently.",
+      "promptType": "exact"
+    }
+  ]
+}

@@ -6970,6 +6970,19 @@ function trajePersonajeVersus(elemento, personaje) {
 function spriteTrajeVersus(elemento, personaje, src, herido=false) {
   const traje=trajePersonajeVersus(elemento,personaje);
   if(!traje)return src;
+  const posesCriaturas = {
+    [srcDragonAtaqueVersus]:'ataque',
+    [srcHombreLoboHumanoVersus]:'humano',
+    [srcHombreLoboTransformacionVersus]:'transformacion',
+    [srcHombreLoboAullidoVersus]:'aullido',
+    [srcHombreLoboZarpazoVersus]:'ataque',
+    [srcHombreLoboSaltoVersus]:'salto',
+    [srcDragonHieloAtaqueVersus]:'ataque',
+    [srcDragonHieloVueloVersus]:'vuelo',
+    [srcDragonHieloDescensoAltoVersus]:'descenso-alto',
+    [srcDragonHieloDescensoBajoVersus]:'descenso-bajo',
+  };
+  if(!herido&&posesCriaturas[src])return CosmeticStore.asset(traje,posesCriaturas[src])||src;
   const pose=herido?'impacto':[srcExploradorLupaVersus,srcGuardianAlbaHabilidadVersus].includes(src)?'habilidad':src===srcExploradorPreparaBumeran?'preparacion':[srcExploradorLanzaBumeran,srcMagoAtaqueVersus,srcKairosAtaqueVersus,srcGuardianaAtaqueVersus,srcShadowAtaqueVersus,srcGuardianAlbaAtaqueVersus].includes(src)?'ataque':'base';
   return CosmeticStore.asset(traje,pose)||src;
 }
@@ -6982,6 +6995,7 @@ function imagenTrajeFinalVersus(personaje,pose,original,victima=true) {
 }
 function prepararTrajesFinalVersus(ganador) {
   const actores=[['.cinematica-mago-eclipse','mago','final'],['.cinematica-explorador-trampa','explorador','final'],['.kairos-final-invocador','kairos','ataque'],['.kairos-final-victoria','kairos','base'],['.cinematica-guardiana-ataque','guardiana','ataque'],['.cinematica-guardiana-victoria','guardiana','final'],['.cinematica-shadow-clon','t_shadow','ataque'],['.cinematica-shadow-victoria','t_shadow','final'],['.cinematica-alba-ataque','guardian_alba','carga'],['.cinematica-alba-victoria','guardian_alba','final']];
+  actores.push(['.cinematica-dragon-llamando','dragon','llamado'],['.cinematica-dragon-victoria','dragon','final'],['.cinematica-lobo-salto','hombre_lobo','salto'],['.cinematica-nivor-ataque-final','dragon_hielo','ataque'],['.nivor-final-astro img','dragon_hielo','frontal'],['.cinematica-nivor-victoria','dragon_hielo','final']);
   for(const [selector,personaje,pose] of actores){
     for(const img of cinematicaFinalVersus.querySelectorAll(selector)){
       img.dataset.original ||= img.getAttribute('src');
@@ -7303,29 +7317,29 @@ function programarAleteoEntradaNivor(elemento) {
     srcDragonHieloDescensoBajoVersus,
   ];
   elemento.classList.add("nivor-aleteando");
-  elemento.src = cuadros[0];
+  elemento.src = spriteTrajeVersus(elemento, 'dragon_hielo', cuadros[0]);
   for (let paso = 1; paso <= 11; paso += 1) {
     programarPasoEntradaVersus(() => {
-      elemento.src = cuadros[paso % cuadros.length];
+      elemento.src = spriteTrajeVersus(elemento, 'dragon_hielo', cuadros[paso % cuadros.length]);
     }, paso * 210);
   }
 }
 
 function programarTransformacionEntradaHombreLobo(elemento) {
-  elemento.src = srcHombreLoboHumanoVersus;
+  elemento.src = spriteTrajeVersus(elemento, 'hombre_lobo', srcHombreLoboHumanoVersus);
 
   programarPasoEntradaVersus(() => {
-    elemento.src = srcHombreLoboTransformacionVersus;
+    elemento.src = spriteTrajeVersus(elemento, 'hombre_lobo', srcHombreLoboTransformacionVersus);
     reproducirSonidoVersus("versusAtaqueUno", 0.52);
   }, 760);
 
   programarPasoEntradaVersus(() => {
-    elemento.src = srcHombreLoboAullidoVersus;
+    elemento.src = spriteTrajeVersus(elemento, 'hombre_lobo', srcHombreLoboAullidoVersus);
     reproducirSonidoVersus("lobos", 0.72);
   }, 1510);
 
   programarPasoEntradaVersus(() => {
-    elemento.src = srcHombreLoboBaseVersus;
+    elemento.src = spriteTrajeVersus(elemento, 'hombre_lobo', srcHombreLoboBaseVersus);
   }, 2520);
 }
 
@@ -7493,11 +7507,11 @@ async function iniciarEntradaDueloVersus() {
   }
   if (!movimientoReducido && personajeJugadorVersus === "dragon_hielo") {
     programarAleteoEntradaNivor(personajeVersusUno);
-    programarPasoEntradaVersus(() => { personajeVersusUno.src = srcDragonHieloBaseVersus; personajeVersusUno.classList.remove("nivor-aleteando"); }, 3180);
+    programarPasoEntradaVersus(() => { personajeVersusUno.src = spriteTrajeVersus(personajeVersusUno, 'dragon_hielo', srcDragonHieloBaseVersus); personajeVersusUno.classList.remove("nivor-aleteando"); }, 3180);
   }
   if (!movimientoReducido && personajeRivalVersus === "dragon_hielo") {
     programarAleteoEntradaNivor(personajeVersusDos);
-    programarPasoEntradaVersus(() => { personajeVersusDos.src = srcDragonHieloBaseVersus; personajeVersusDos.classList.remove("nivor-aleteando"); }, 3180);
+    programarPasoEntradaVersus(() => { personajeVersusDos.src = spriteTrajeVersus(personajeVersusDos, 'dragon_hielo', srcDragonHieloBaseVersus); personajeVersusDos.classList.remove("nivor-aleteando"); }, 3180);
   }
   if (!movimientoReducido && personajeJugadorVersus === "hombre_lobo") {
     programarTransformacionEntradaHombreLobo(personajeVersusUno);

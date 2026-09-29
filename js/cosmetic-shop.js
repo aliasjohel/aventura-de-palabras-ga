@@ -2,11 +2,14 @@
   'use strict';
   const el=id=>document.getElementById(id),store=CosmeticStore;
   let selected=store.catalog[0].id,selectedPose='base',busy=false;
-  const poseLabels={base:'De pie',preparacion:'Preparación',ataque:'Ataque',habilidad:'Habilidad',carga:'Técnica final',impacto:'Impacto',final:'Victoria',planta:'Planta',mano:'Azrak',vidrio:'Kálamo',envejecido:'Envejecido',anciano:'Anciano'};
+  const poseLabels={humano:'Humano',transformacion:'Transformación',aullido:'Aullido',salto:'Salto lunar',llamado:'Llamado',vuelo:'Vuelo','descenso-alto':'Alas arriba','descenso-bajo':'Alas abajo',frontal:'Vuelo frontal',base:'De pie',preparacion:'Preparación',ataque:'Ataque',habilidad:'Habilidad',carga:'Técnica final',impacto:'Impacto',final:'Victoria',planta:'Planta',mano:'Azrak',vidrio:'Kálamo',envejecido:'Envejecido',anciano:'Anciano'};
   const posePicker=document.createElement('div');posePicker.className='tienda-traje-poses';
   posePicker.setAttribute('role','group');posePicker.setAttribute('aria-label','Vista previa del traje');
   el('tiendaTrajeDetalle').after(posePicker);
   function renderPoses(item){
+    const testing=Boolean(globalThis.AventuraShop?.testing());
+    posePicker.hidden=!testing;
+    if(!testing){selectedPose='base';posePicker.replaceChildren();delete posePicker.dataset.skin;return;}
     const poses=[...new Set([...item.poses,'final','planta','mano','vidrio','envejecido','anciano'])];
     if(!poses.includes(selectedPose))selectedPose='base';
     if(posePicker.dataset.skin!==item.id){

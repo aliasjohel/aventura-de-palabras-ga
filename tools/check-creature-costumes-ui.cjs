@@ -7,7 +7,7 @@ const server=http.createServer((req,res)=>{
   fs.readFile(file,(error,data)=>{if(error){res.writeHead(404).end();return;}
     res.setHeader('Content-Type',({'.html':'text/html','.js':'application/javascript','.css':'text/css','.png':'image/png','.svg':'image/svg+xml'})[path.extname(file)]||'application/octet-stream');res.end(data);});
 });
-const costumes=[['guardiana','guardiana-otono'],['guardian_alba','alba-lunar'],['t_shadow','shadow-carmesi']];
+const costumes=[['hombre_lobo','lobo-lunar'],['dragon','nimbus-aviador'],['dragon_hielo','nivor-boreal']];
 const scenes=[
   ['reproducirEclipseVioletaVersus','#victimaEclipseVersus','base'],
   ['reproducirTrampaSelvaticaVersus','#victimaTrampaVersus','base'],
@@ -41,19 +41,20 @@ const scenes=[
         assert.equal(await page.locator('.tienda-traje-poses button').count(),0);
         assert.match(await page.locator('#tiendaTrajeImagen').getAttribute('src'),new RegExp(skin+'-base'));
         await page.locator('#tiendaTrajeImagen').evaluate(img=>img.decode());
+        if(viewport.width===844)await page.screenshot({path:path.join(root,`tools/.shop-${skin}.png`)});
       }
       assert(await page.locator('#tiendaMenu').evaluate(e=>e.scrollWidth<=e.clientWidth));
       assert.equal(await page.evaluate(()=>localStorage.getItem('aventuraTiendaV1')),before);
       await page.evaluate(()=>{modoPruebasActivo=true;document.querySelector('#btnTienda').click();});
       await page.locator('[data-pose="ataque"]').click();
-      assert.match(await page.locator('#tiendaTrajeImagen').getAttribute('src'),/shadow-carmesi-ataque/);
+      assert.match(await page.locator('#tiendaTrajeImagen').getAttribute('src'),/nivor-boreal-ataque/);
       await page.evaluate(()=>{modoPruebasActivo=false;document.querySelector('#btnTienda').click();});
       assert.equal(await page.locator('.tienda-traje-poses').isVisible(),false);
       assert.equal(await page.locator('.tienda-traje-poses button').count(),0);
-      assert.match(await page.locator('#tiendaTrajeImagen').getAttribute('src'),/shadow-carmesi-base/);
+      assert.match(await page.locator('#tiendaTrajeImagen').getAttribute('src'),/nivor-boreal-base/);
       await page.evaluate(()=>{
         CosmeticStore.earn(1000);
-        for(const item of CosmeticStore.catalog.filter(item=>['guardiana','guardian_alba','t_shadow'].includes(item.character))){CosmeticStore.purchase(item.id);CosmeticStore.equip(item.character,item.id);}
+        for(const item of CosmeticStore.catalog.filter(item=>['hombre_lobo','dragon','dragon_hielo'].includes(item.character))){CosmeticStore.purchase(item.id);CosmeticStore.equip(item.character,item.id);}
         document.querySelector('#tiendaMenu').close();mostrarPantalla(pantallaVersus);
       });
       const purchased=await page.evaluate(()=>localStorage.getItem('aventuraTiendaV1'));
@@ -72,18 +73,34 @@ const scenes=[
         }
       }
       for(const [character,selector,pose,skin] of [
-        ['guardiana','.cinematica-guardiana-victoria','final','guardiana-otono'],
-        ['guardian_alba','.cinematica-alba-ataque','carga','alba-lunar'],
-        ['t_shadow','.cinematica-shadow-clon','ataque','shadow-carmesi']
+        ['dragon','.cinematica-dragon-llamando','llamado','nimbus-aviador'],
+        ['dragon','.cinematica-dragon-victoria','final','nimbus-aviador'],
+        ['hombre_lobo','.cinematica-lobo-salto','salto','lobo-lunar'],
+        ['dragon_hielo','.cinematica-nivor-ataque-final','ataque','nivor-boreal'],
+        ['dragon_hielo','.nivor-final-astro img','frontal','nivor-boreal'],
+        ['dragon_hielo','.cinematica-nivor-victoria','final','nivor-boreal']
       ]){
         await page.evaluate(c=>{ladoGanadorCinematicaVersus='jugador';prepararTrajesFinalVersus(c);},character);
-        const images=await page.locator(selector).evaluateAll(imgs=>imgs.map(img=>img.getAttribute('src')));
-        assert(images.length>0);for(const src of images)assert.match(src,new RegExp(skin+'-'+pose));
+        assert.match(await page.locator(selector).getAttribute('src'),new RegExp(skin+'-'+pose));
+        await page.locator(selector).evaluate(img=>img.decode());
       }
       assert.equal(await page.evaluate(()=>localStorage.getItem('aventuraTiendaV1')),purchased);
       await page.evaluate(()=>{CosmeticStore.equip('t_shadow',null);prepararTrajesFinalVersus('t_shadow');});
       for(const src of await page.locator('.cinematica-shadow-clon').evaluateAll(imgs=>imgs.map(img=>img.src)))assert.doesNotMatch(src,/trajes/);
       assert.equal(await page.evaluate(()=>CosmeticStore.read().coins),400);
+      const poseRoutes=await page.evaluate(()=>{
+        return [[srcDragonAtaqueVersus,'dragon','ataque'],[srcHombreLoboHumanoVersus,'hombre_lobo','humano'],[srcHombreLoboTransformacionVersus,'hombre_lobo','transformacion'],[srcHombreLoboAullidoVersus,'hombre_lobo','aullido'],[srcHombreLoboZarpazoVersus,'hombre_lobo','ataque'],[srcHombreLoboSaltoVersus,'hombre_lobo','salto'],[srcDragonHieloAtaqueVersus,'dragon_hielo','ataque'],[srcDragonHieloVueloVersus,'dragon_hielo','vuelo'],[srcDragonHieloDescensoAltoVersus,'dragon_hielo','descenso-alto'],[srcDragonHieloDescensoBajoVersus,'dragon_hielo','descenso-bajo']].map(([src,c,pose])=>({pose,src:spriteTrajeVersus(personajeVersusUno,c,src)}));
+      });
+      for(const {pose,src} of poseRoutes)assert(src.endsWith('-'+pose+'-v1.png'),src);
+      const entrance=await page.evaluate(()=>{
+        const original=programarPasoEntradaVersus,frames=[];
+        programarPasoEntradaVersus=fn=>{fn();frames.push(personajeVersusUno.getAttribute('src'));};
+        try {programarTransformacionEntradaHombreLobo(personajeVersusUno);programarAleteoEntradaNivor(personajeVersusUno);}finally{programarPasoEntradaVersus=original;}
+        return frames;
+      });
+      assert(entrance.length>10);for(const src of entrance)assert.match(src,/trajes\/(lobo-lunar|nivor-boreal)-/);
+      await page.evaluate(()=>{CosmeticStore.equip('dragon_hielo',null);prepararTrajesFinalVersus('dragon_hielo');});
+      assert.doesNotMatch(await page.locator('.cinematica-nivor-victoria').getAttribute('src'),/trajes/);
       const isolated=await page.evaluate(()=>{
         modoPruebasActivo=true;herramientasAutorDisponibles=true;btnConfirmarPersonajeVersus.disabled=false;
         seleccionarPersonajeVersus('mago');
@@ -98,7 +115,7 @@ const scenes=[
         return {mago,explorador,control,retained,restored:trajePersonajeVersus(personajeVersusUno,'mago')};
       });
       assert.deepEqual(isolated,{mago:'zafir-celestial',explorador:null,control:'equipado',retained:'zafir-celestial',restored:null});
-      assert.deepEqual(errors,[]);console.log('PASS collection: base-only shop previews, 33 victim scenes, winners/clones, originals restored, wallet unchanged',viewport);
+      assert.deepEqual(errors,[]);console.log('PASS creature collection: base-only shop previews, 33 victim scenes, winners/clones, originals restored, wallet unchanged',viewport);
       await page.close();
     }
   }finally{await browser.close();server.close();}

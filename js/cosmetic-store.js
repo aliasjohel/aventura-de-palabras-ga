@@ -12,6 +12,9 @@
     Object.freeze({id:'guardiana-otono',character:'guardiana',hero:'Guardiana',name:'Guardiana de Otoño',price:150,description:'Hojas cobrizas, una capa carmesí y un báculo de ámbar. Se consigue con las monedas que ganás jugando.',poses:['base','ataque','impacto']}),
     Object.freeze({id:'alba-lunar',character:'guardian_alba',hero:'A. Lumen',name:'Alba Lunar',price:200,description:'Armadura de plata, capa azul y una espada de luz lunar. Se consigue con las monedas que ganás jugando.',poses:['base','ataque','habilidad','carga','impacto']}),
     Object.freeze({id:'shadow-carmesi',character:'t_shadow',hero:'T. Shadow',name:'Sombra Carmesí',price:250,description:'Capucha carmesí, armadura de obsidiana y dagas rojas. Se consigue con las monedas que ganás jugando.',poses:['base','ataque','impacto']}),
+    Object.freeze({id:'lobo-lunar',character:'hombre_lobo',hero:'Hombre Lobo',name:'Centinela Lunar',price:200,description:'Armadura de plata lunar, cuero azul y garras listas para la cacería.',poses:['base','ataque','impacto','humano','transformacion','aullido','salto']}),
+    Object.freeze({id:'nimbus-aviador',character:'dragon',hero:'Nimbus',name:'Aviador de las Cumbres',price:150,description:'Gafas de aviador, bufanda marfil y un arnés para explorar las cumbres.',poses:['base','ataque','impacto','llamado']}),
+    Object.freeze({id:'nivor-boreal',character:'dragon_hielo',hero:'Nivor',name:'Soberano Boreal',price:250,description:'Armadura de zafiro, filigranas de plata y una gema de aurora sobre el hielo.',poses:['base','ataque','impacto','vuelo','descenso-alto','descenso-bajo','frontal']}),
   ]);
   const find=id=>catalog.find(item=>item.id===id);
   const cinemaPoses=Object.freeze(['planta','mano','vidrio','envejecido','anciano','final']);
@@ -24,6 +27,7 @@
   function asset(id,pose='base'){
     const item=find(id);if(!item)return null;
     if(id==='kairos-real'&&pose==='final')pose='ataque';
+    if(id==='lobo-lunar'&&pose==='final')pose='salto';
     return `assets/images/trajes/${id}-${item.poses.includes(pose)||cinemaPoses.includes(pose)?pose:'base'}-v1.png`;
   }
   function create(storage){

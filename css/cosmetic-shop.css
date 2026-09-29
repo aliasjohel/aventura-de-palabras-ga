@@ -46,3 +46,5 @@
 @media(prefers-reduced-motion: reduce) {
   .siglos-en-un-segundo.kairos-trajes .kairos-edades-trajes { animation-duration: .3s; }
 }
+
+.tienda-traje-poses[hidden]{display:none}
