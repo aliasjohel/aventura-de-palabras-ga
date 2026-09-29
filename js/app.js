@@ -6971,6 +6971,9 @@ function spriteTrajeVersus(elemento, personaje, src, herido=false) {
   const traje=trajePersonajeVersus(elemento,personaje);
   if(!traje)return src;
   const posesCriaturas = {
+    [srcAzrakAtaqueVersus]:'ataque',
+    [srcKalamoAtaqueVersus]:'ataque',
+    [srcKalamoHabilidadVersus]:'habilidad',
     [srcDragonAtaqueVersus]:'ataque',
     [srcHombreLoboHumanoVersus]:'humano',
     [srcHombreLoboTransformacionVersus]:'transformacion',
@@ -6996,6 +6999,7 @@ function imagenTrajeFinalVersus(personaje,pose,original,victima=true) {
 function prepararTrajesFinalVersus(ganador) {
   const actores=[['.cinematica-mago-eclipse','mago','final'],['.cinematica-explorador-trampa','explorador','final'],['.kairos-final-invocador','kairos','ataque'],['.kairos-final-victoria','kairos','base'],['.cinematica-guardiana-ataque','guardiana','ataque'],['.cinematica-guardiana-victoria','guardiana','final'],['.cinematica-shadow-clon','t_shadow','ataque'],['.cinematica-shadow-victoria','t_shadow','final'],['.cinematica-alba-ataque','guardian_alba','carga'],['.cinematica-alba-victoria','guardian_alba','final']];
   actores.push(['.cinematica-dragon-llamando','dragon','llamado'],['.cinematica-dragon-victoria','dragon','final'],['.cinematica-lobo-salto','hombre_lobo','salto'],['.cinematica-nivor-ataque-final','dragon_hielo','ataque'],['.nivor-final-astro img','dragon_hielo','frontal'],['.cinematica-nivor-victoria','dragon_hielo','final']);
+  actores.push(['.cinematica-azrak-invocacion','azrak','invocacion'],['.cinematica-azrak-victoria','azrak','final'],['.kalamo-final-alcanza','kalamo','alcanza'],['.kalamo-final-extrae','kalamo','extrae'],['.kalamo-final-prepara','kalamo','prepara'],['.kalamo-final-lanza-explorador','kalamo','lanza'],['.kalamo-final-golpea','kalamo','golpea'],['.cinematica-kalamo-victoria','kalamo','final']);
   for(const [selector,personaje,pose] of actores){
     for(const img of cinematicaFinalVersus.querySelectorAll(selector)){
       img.dataset.original ||= img.getAttribute('src');
@@ -7447,8 +7451,21 @@ function finalizarEntradaDueloVersus() {
   comenzarRondaVersus();
 }
 
+function prepararTrajeEntradaKalamo() {
+  for (const [lado, elemento] of [['uno', personajeVersusUno], ['dos', personajeVersusDos]]) {
+    const traje = trajePersonajeVersus(elemento, 'kalamo');
+    for (let fase = 1; fase <= 3; fase += 1) {
+      const img = marcoVersus.querySelector(`.entrada-tinta-${lado} .entrada-formacion-kalamo-${fase}`);
+      if (!img) continue;
+      img.dataset.original ||= img.getAttribute('src');
+      img.src = traje ? CosmeticStore.asset(traje, `formacion-${fase}`) : img.dataset.original;
+    }
+  }
+}
+
 async function iniciarEntradaDueloVersus() {
   if (demoVersus.partidaFinalizada || demoVersus.entradaActiva) return;
+  prepararTrajeEntradaKalamo();
   demoVersus.entradaActiva = true;
   preparandoImagenesCombate = true;
   const sequence = ++secuenciaPreparacionCombate;

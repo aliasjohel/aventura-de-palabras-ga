@@ -1,0 +1,201 @@
+{
+  "method": "built-in image_gen; transparent_background true; original alpha preserved",
+  "assets": [
+    {
+      "skin": "azrak-eclipse",
+      "pose": "base",
+      "reference": "assets/images/personajes/versus/azrak-base.png",
+      "output": "assets/images/trajes/azrak-eclipse-base-v1.png",
+      "prompt": "Use case: identity-preserve. Create one transparent game character costume sprite. Image 1 is original character: preserve EXACT standing pose, proportions, framing, character identity, face, hands, appendages and fantasy painted 3D style. Change only clothing and weapon styling to obsidian plate armor with polished silver edges, violet glowing chest rune, dark violet cloth panels, sword with violet magical flame instead of orange; keep red skin, original face, black hair, horn shapes and tail unchanged. Full body, no cropping. Genuine transparent alpha background, no solid magenta or black backing, no ground, no text, no watermark. Name for reference only: Señor del Eclipse."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "base",
+      "reference": "assets/images/personajes/versus/kalamo-base.png",
+      "output": "assets/images/trajes/kalamo-astral-base-v1.png",
+      "prompt": "Use case: identity-preserve. Create one transparent game character costume sprite. Image 1 is original character: preserve EXACT standing pose, proportions, framing, character identity, face, hands, appendages and fantasy painted 3D style. Change only clothing and weapon styling to midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack. Full body, no cropping. Genuine transparent alpha background, no solid magenta or black backing, no ground, no text, no watermark. Name for reference only: Escriba Astral."
+    },
+    {
+      "skin": "azrak-eclipse",
+      "pose": "ataque",
+      "reference": "assets/images/personajes/versus/azrak-ataque.png",
+      "output": "assets/images/trajes/azrak-eclipse-ataque-v1.png",
+      "prompt": "Use case: identity-preserve. Transparent game sprite costume edit. Image 1 defines exact action pose, expression, silhouette, camera, proportions and all props; image 2 defines approved costume. Change ONLY Azrak's costume to match image 2: obsidian plate armor with polished silver edges, violet glowing chest rune, dark violet cloth panels, sword with violet magical flame instead of orange; keep red skin, original face, black hair, horn shapes and tail unchanged. Preserve image 1 pose exactly (ataque), red face, horns and tail; preserve full body and complete weapon. Transparent alpha background, no backdrop or floor or text. Do not substitute the standing pose of image 2."
+    },
+    {
+      "skin": "azrak-eclipse",
+      "pose": "impacto",
+      "reference": "assets/images/personajes/versus/azrak-impacto.png",
+      "output": "assets/images/trajes/azrak-eclipse-impacto-v1.png",
+      "prompt": "Use case: identity-preserve. Transparent game sprite costume edit. Image 1 defines exact action pose, expression, silhouette, camera, proportions and all props; image 2 defines approved costume. Change ONLY Azrak's costume to match image 2: obsidian plate armor with polished silver edges, violet glowing chest rune, dark violet cloth panels, sword with violet magical flame instead of orange; keep red skin, original face, black hair, horn shapes and tail unchanged. Preserve image 1 pose exactly (impacto), red face, horns and tail; preserve full body and complete weapon. Transparent alpha background, no backdrop or floor or text. Do not substitute the standing pose of image 2."
+    },
+    {
+      "skin": "azrak-eclipse",
+      "pose": "invocacion",
+      "reference": "assets/images/personajes/versus/azrak-invocacion-portal.png",
+      "output": "assets/images/trajes/azrak-eclipse-invocacion-v1.png",
+      "prompt": "Use case: identity-preserve. Transparent game sprite costume edit. Image 1 defines exact action pose, expression, silhouette, camera, proportions and all props; image 2 defines approved costume. Change ONLY Azrak's costume to match image 2: obsidian plate armor with polished silver edges, violet glowing chest rune, dark violet cloth panels, sword with violet magical flame instead of orange; keep red skin, original face, black hair, horn shapes and tail unchanged. Preserve image 1 pose exactly (invocacion), red face, horns and tail; preserve full body and complete weapon. Transparent alpha background, no backdrop or floor or text. Do not substitute the standing pose of image 2."
+    },
+    {
+      "skin": "azrak-eclipse",
+      "pose": "final",
+      "reference": "assets/images/personajes/versus/azrak-victoria.png",
+      "output": "assets/images/trajes/azrak-eclipse-final-v1.png",
+      "prompt": "Use case: identity-preserve. Transparent game sprite costume edit. Image 1 defines exact action pose, expression, silhouette, camera, proportions and all props; image 2 defines approved costume. Change ONLY Azrak's costume to match image 2: obsidian plate armor with polished silver edges, violet glowing chest rune, dark violet cloth panels, sword with violet magical flame instead of orange; keep red skin, original face, black hair, horn shapes and tail unchanged. Preserve image 1 pose exactly (final), red face, horns and tail; preserve full body and complete weapon. Transparent alpha background, no backdrop or floor or text. Do not substitute the standing pose of image 2."
+    },
+    {
+      "skin": "azrak-eclipse",
+      "pose": "planta",
+      "reference": "assets/images/personajes/versus/carnivora-devorando-azrak.png",
+      "output": "assets/images/trajes/azrak-eclipse-planta-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 exact cinematic composition, using image 2 ONLY for costume reference. Change ONLY the clothing/armor and weapon of the red demon Azrak in image 1 into the obsidian/silver/violet outfit shown in image 2 (obsidian plate armor with polished silver edges, violet glowing chest rune, dark violet cloth panels, sword with violet magical flame instead of orange; keep red skin, original face, black hair, horn shapes and tail unchanged). Preserve exact original planta pose, facial expression, age, silhouette, scale and placement. Preserve ALL other elements unchanged: plant, giant hand, portal, ink and glass if present. For elderly versions preserve wrinkles, gray hair and bent posture of image 1. True transparent background, no painted checkerboard or black background. Keep complete composition and original aspect ratio, no extra characters, no text."
+    },
+    {
+      "skin": "azrak-eclipse",
+      "pose": "mano",
+      "reference": "assets/images/personajes/versus/mano-abismo-atrapa-azrak.png",
+      "output": "assets/images/trajes/azrak-eclipse-mano-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 exact cinematic composition, using image 2 ONLY for costume reference. Change ONLY the clothing/armor and weapon of the red demon Azrak in image 1 into the obsidian/silver/violet outfit shown in image 2 (obsidian plate armor with polished silver edges, violet glowing chest rune, dark violet cloth panels, sword with violet magical flame instead of orange; keep red skin, original face, black hair, horn shapes and tail unchanged). Preserve exact original mano pose, facial expression, age, silhouette, scale and placement. Preserve ALL other elements unchanged: plant, giant hand, portal, ink and glass if present. For elderly versions preserve wrinkles, gray hair and bent posture of image 1. True transparent background, no painted checkerboard or black background. Keep complete composition and original aspect ratio, no extra characters, no text."
+    },
+    {
+      "skin": "azrak-eclipse",
+      "pose": "vidrio",
+      "reference": "assets/images/personajes/versus/azrak-pantalla-rota-kalamo-v1.png",
+      "output": "assets/images/trajes/azrak-eclipse-vidrio-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 exact cinematic composition, using image 2 ONLY for costume reference. Change ONLY the clothing/armor and weapon of the red demon Azrak in image 1 into the obsidian/silver/violet outfit shown in image 2 (obsidian plate armor with polished silver edges, violet glowing chest rune, dark violet cloth panels, sword with violet magical flame instead of orange; keep red skin, original face, black hair, horn shapes and tail unchanged). Preserve exact original vidrio pose, facial expression, age, silhouette, scale and placement. Preserve ALL other elements unchanged: plant, giant hand, portal, ink and glass if present. For elderly versions preserve wrinkles, gray hair and bent posture of image 1. True transparent background, no painted checkerboard or black background. Keep complete composition and original aspect ratio, no extra characters, no text."
+    },
+    {
+      "skin": "azrak-eclipse",
+      "pose": "envejecido",
+      "reference": "assets/images/personajes/versus/azrak-envejecido-kairos-v1.png",
+      "output": "assets/images/trajes/azrak-eclipse-envejecido-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 exact cinematic composition, using image 2 ONLY for costume reference. Change ONLY the clothing/armor and weapon of the red demon Azrak in image 1 into the obsidian/silver/violet outfit shown in image 2 (obsidian plate armor with polished silver edges, violet glowing chest rune, dark violet cloth panels, sword with violet magical flame instead of orange; keep red skin, original face, black hair, horn shapes and tail unchanged). Preserve exact original envejecido pose, facial expression, age, silhouette, scale and placement. Preserve ALL other elements unchanged: plant, giant hand, portal, ink and glass if present. For elderly versions preserve wrinkles, gray hair and bent posture of image 1. True transparent background, no painted checkerboard or black background. Keep complete composition and original aspect ratio, no extra characters, no text."
+    },
+    {
+      "skin": "azrak-eclipse",
+      "pose": "anciano",
+      "reference": "assets/images/personajes/versus/azrak-anciano-kairos-v1.png",
+      "output": "assets/images/trajes/azrak-eclipse-anciano-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 exact cinematic composition, using image 2 ONLY for costume reference. Change ONLY the clothing/armor and weapon of the red demon Azrak in image 1 into the obsidian/silver/violet outfit shown in image 2 (obsidian plate armor with polished silver edges, violet glowing chest rune, dark violet cloth panels, sword with violet magical flame instead of orange; keep red skin, original face, black hair, horn shapes and tail unchanged). Preserve exact original anciano pose, facial expression, age, silhouette, scale and placement. Preserve ALL other elements unchanged: plant, giant hand, portal, ink and glass if present. For elderly versions preserve wrinkles, gray hair and bent posture of image 1. True transparent background, no painted checkerboard or black background. Keep complete composition and original aspect ratio, no extra characters, no text."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "ataque",
+      "reference": "assets/images/personajes/versus/kalamo-ataque.png",
+      "output": "assets/images/trajes/kalamo-astral-ataque-v1.png",
+      "prompt": "Use case: identity-preserve. Transparent game sprite costume edit. Image 1 defines exact action pose, expression, framing, silhouette and all props; image 2 defines approved costume. Change ONLY Kalamo's costume to match image 2: midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack. Preserve image 1 pose exactly (ataque), face, mask, hands, ink tendril positions and backpack; preserve complete subject without cropping. True transparent alpha background, remove solid magenta entirely, no backdrop/floor/text. Do not substitute image 2 standing pose."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "impacto",
+      "reference": "assets/images/personajes/versus/kalamo-impacto.png",
+      "output": "assets/images/trajes/kalamo-astral-impacto-v1.png",
+      "prompt": "Use case: identity-preserve. Transparent game sprite costume edit. Image 1 defines exact action pose, expression, framing, silhouette and all props; image 2 defines approved costume. Change ONLY Kalamo's costume to match image 2: midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack. Preserve image 1 pose exactly (impacto), face, mask, hands, ink tendril positions and backpack; preserve complete subject without cropping. True transparent alpha background, remove solid magenta entirely, no backdrop/floor/text. Do not substitute image 2 standing pose."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "habilidad",
+      "reference": "assets/images/personajes/versus/kalamo-habilidad.png",
+      "output": "assets/images/trajes/kalamo-astral-habilidad-v1.png",
+      "prompt": "Use case: identity-preserve. Transparent game sprite costume edit. Image 1 defines exact action pose, expression, framing, silhouette and all props; image 2 defines approved costume. Change ONLY Kalamo's costume to match image 2: midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack. Preserve image 1 pose exactly (habilidad), face, mask, hands, ink tendril positions and backpack; preserve complete subject without cropping. True transparent alpha background, remove solid magenta entirely, no backdrop/floor/text. Do not substitute image 2 standing pose."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "final",
+      "reference": "assets/images/personajes/versus/kalamo-victoria.png",
+      "output": "assets/images/trajes/kalamo-astral-final-v1.png",
+      "prompt": "Use case: identity-preserve. Transparent game sprite costume edit. Image 1 defines exact action pose, expression, framing, silhouette and all props; image 2 defines approved costume. Change ONLY Kalamo's costume to match image 2: midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack. Preserve image 1 pose exactly (final), face, mask, hands, ink tendril positions and backpack; preserve complete subject without cropping. True transparent alpha background, remove solid magenta entirely, no backdrop/floor/text. Do not substitute image 2 standing pose."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "planta",
+      "reference": "assets/images/personajes/versus/carnivora-devorando-kalamo.png",
+      "output": "assets/images/trajes/kalamo-astral-planta-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 cinematic composition; image 2 ONLY costume design reference. Change ONLY Kalamo's outfit into the navy/silver star-map costume in image 2 (midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack). Keep original planta pose, face expression, age, silhouette, scale, position, ink tendril positions. Keep all other elements unchanged (plant, giant hand, portal, glass fragments). For aged versions preserve original gray hair, wrinkles, bent posture, worn costume. Preserve full composition and original aspect ratio. True alpha transparency, no magenta, no painted checkerboard or background, no extra characters, no text."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "mano",
+      "reference": "assets/images/personajes/versus/mano-abismo-atrapa-kalamo.png",
+      "output": "assets/images/trajes/kalamo-astral-mano-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 cinematic composition; image 2 ONLY costume design reference. Change ONLY Kalamo's outfit into the navy/silver star-map costume in image 2 (midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack). Keep original mano pose, face expression, age, silhouette, scale, position, ink tendril positions. Keep all other elements unchanged (plant, giant hand, portal, glass fragments). For aged versions preserve original gray hair, wrinkles, bent posture, worn costume. Preserve full composition and original aspect ratio. True alpha transparency, no magenta, no painted checkerboard or background, no extra characters, no text."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "vidrio",
+      "reference": "assets/images/personajes/versus/kalamo-pantalla-rota-kalamo-v1.png",
+      "output": "assets/images/trajes/kalamo-astral-vidrio-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 cinematic composition; image 2 ONLY costume design reference. Change ONLY Kalamo's outfit into the navy/silver star-map costume in image 2 (midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack). Keep original vidrio pose, face expression, age, silhouette, scale, position, ink tendril positions. Keep all other elements unchanged (plant, giant hand, portal, glass fragments). For aged versions preserve original gray hair, wrinkles, bent posture, worn costume. Preserve full composition and original aspect ratio. True alpha transparency, no magenta, no painted checkerboard or background, no extra characters, no text."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "envejecido",
+      "reference": "assets/images/personajes/versus/kalamo-envejecido-kairos-v1.png",
+      "output": "assets/images/trajes/kalamo-astral-envejecido-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 cinematic composition; image 2 ONLY costume design reference. Change ONLY Kalamo's outfit into the navy/silver star-map costume in image 2 (midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack). Keep original envejecido pose, face expression, age, silhouette, scale, position, ink tendril positions. Keep all other elements unchanged (plant, giant hand, portal, glass fragments). For aged versions preserve original gray hair, wrinkles, bent posture, worn costume. Preserve full composition and original aspect ratio. True alpha transparency, no magenta, no painted checkerboard or background, no extra characters, no text."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "anciano",
+      "reference": "assets/images/personajes/versus/kalamo-anciano-kairos-v1.png",
+      "output": "assets/images/trajes/kalamo-astral-anciano-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 cinematic composition; image 2 ONLY costume design reference. Change ONLY Kalamo's outfit into the navy/silver star-map costume in image 2 (midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack). Keep original anciano pose, face expression, age, silhouette, scale, position, ink tendril positions. Keep all other elements unchanged (plant, giant hand, portal, glass fragments). For aged versions preserve original gray hair, wrinkles, bent posture, worn costume. Preserve full composition and original aspect ratio. True alpha transparency, no magenta, no painted checkerboard or background, no extra characters, no text."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "alcanza",
+      "reference": "assets/images/personajes/versus/kalamo-final-alcanza-libro.png",
+      "output": "assets/images/trajes/kalamo-astral-alcanza-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 exact cinematic composition. Image 2 is ONLY costume reference for Kalamo, the small masked mage with folded hat. Change only Kalamo's costume to midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack, matching image 2. Preserve image 1 action pose (alcanza), exact camera, character scale and placement, book, weapons, ink splash effects and ALL other characters untouched. If explorer is present, keep him unchanged. Full composition original landscape aspect ratio. Transparent alpha background, no drawn checkerboard, white or magenta backdrop. Do not add standing character, text or watermark."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "extrae",
+      "reference": "assets/images/personajes/versus/kalamo-final-extrae-armas.png",
+      "output": "assets/images/trajes/kalamo-astral-extrae-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 exact cinematic composition. Image 2 is ONLY costume reference for Kalamo, the small masked mage with folded hat. Change only Kalamo's costume to midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack, matching image 2. Preserve image 1 action pose (extrae), exact camera, character scale and placement, book, weapons, ink splash effects and ALL other characters untouched. If explorer is present, keep him unchanged. Full composition original landscape aspect ratio. Transparent alpha background, no drawn checkerboard, white or magenta backdrop. Do not add standing character, text or watermark."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "prepara",
+      "reference": "assets/images/personajes/versus/kalamo-final-prepara-golpe-v1.png",
+      "output": "assets/images/trajes/kalamo-astral-prepara-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 exact cinematic composition. Image 2 is ONLY costume reference for Kalamo, the small masked mage with folded hat. Change only Kalamo's costume to midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack, matching image 2. Preserve image 1 action pose (prepara), exact camera, character scale and placement, book, weapons, ink splash effects and ALL other characters untouched. If explorer is present, keep him unchanged. Full composition original landscape aspect ratio. Transparent alpha background, no drawn checkerboard, white or magenta backdrop. Do not add standing character, text or watermark."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "lanza",
+      "reference": "assets/images/personajes/versus/kalamo-final-lanza-explorador-v1.png",
+      "output": "assets/images/trajes/kalamo-astral-lanza-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 exact cinematic composition. Image 2 is ONLY costume reference for Kalamo, the small masked mage with folded hat. Change only Kalamo's costume to midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack, matching image 2. Preserve image 1 action pose (lanza), exact camera, character scale and placement, book, weapons, ink splash effects and ALL other characters untouched. If explorer is present, keep him unchanged. Full composition original landscape aspect ratio. Transparent alpha background, no drawn checkerboard, white or magenta backdrop. Do not add standing character, text or watermark."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "golpea",
+      "reference": "assets/images/personajes/versus/kalamo-final-golpe-impulso.png",
+      "output": "assets/images/trajes/kalamo-astral-golpea-v1.png",
+      "prompt": "Use case: identity-preserve. Edit image 1 exact cinematic composition. Image 2 is ONLY costume reference for Kalamo, the small masked mage with folded hat. Change only Kalamo's costume to midnight navy layered parchment coat and folded wizard hat covered with sparse silver star-map motifs, silver clasps and nibs, pale blue and violet starry ink tendrils, preserve face, dark hair, amber eyes, original silhouette and ink backpack, matching image 2. Preserve image 1 action pose (golpea), exact camera, character scale and placement, book, weapons, ink splash effects and ALL other characters untouched. If explorer is present, keep him unchanged. Full composition original landscape aspect ratio. Transparent alpha background, no drawn checkerboard, white or magenta backdrop. Do not add standing character, text or watermark."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "formacion-1",
+      "reference": "assets/images/personajes/versus/kalamo-entrada-formacion-1.png",
+      "output": "assets/images/trajes/kalamo-astral-formacion-1-v1.png",
+      "prompt": "Use case: identity-preserve. Game entrance sprite formacion-1. Image 1 controls exact pose, partial formation stage from liquid ink, silhouette, framing, puddle and all transparency holes; image 2 is only costume reference. Adapt the visible pieces of Kalamo's clothing to the midnight navy star-map outfit, silver trim, blue-violet starry ink in image 2. Preserve how incomplete/complete the body and face are in image 1. Do NOT replace with a fully formed standing character. Preserve original full composition. True alpha transparency including surrounding background and gaps. No painted checkerboard, white background, text, floor or watermark."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "formacion-2",
+      "reference": "assets/images/personajes/versus/kalamo-entrada-formacion-2.png",
+      "output": "assets/images/trajes/kalamo-astral-formacion-2-v1.png",
+      "prompt": "Use case: identity-preserve. Game entrance sprite formacion-2. Image 1 controls exact pose, partial formation stage from liquid ink, silhouette, framing, puddle and all transparency holes; image 2 is only costume reference. Adapt the visible pieces of Kalamo's clothing to the midnight navy star-map outfit, silver trim, blue-violet starry ink in image 2. Preserve how incomplete/complete the body and face are in image 1. Do NOT replace with a fully formed standing character. Preserve original full composition. True alpha transparency including surrounding background and gaps. No painted checkerboard, white background, text, floor or watermark."
+    },
+    {
+      "skin": "kalamo-astral",
+      "pose": "formacion-3",
+      "reference": "assets/images/personajes/versus/kalamo-entrada-formacion-3.png",
+      "output": "assets/images/trajes/kalamo-astral-formacion-3-v1.png",
+      "prompt": "Use case: identity-preserve. Game entrance sprite formacion-3. Image 1 controls exact pose, partial formation stage from liquid ink, silhouette, framing, puddle and all transparency holes; image 2 is only costume reference. Adapt the visible pieces of Kalamo's clothing to the midnight navy star-map outfit, silver trim, blue-violet starry ink in image 2. Preserve how incomplete/complete the body and face are in image 1. Do NOT replace with a fully formed standing character. Preserve original full composition. True alpha transparency including surrounding background and gaps. No painted checkerboard, white background, text, floor or watermark."
+    }
+  ]
+}
