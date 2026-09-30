@@ -1,0 +1,8 @@
+{
+  "prompt": "Create a replacement full-body game reaction sprite. Reference 1 is AZRAK identity and outfit: preserve exact red youthful demon face, black hair, horns, armor, tail, sword and costume colors. Reference 2 is ONLY a BODY POSE guide (Kalamo); do not copy his costume, face, paper, ink tentacles or magenta background. Azrak is being sucked head-first toward an offscreen mouth to the LEFT. Strongly curl his torso forward at waist, round shoulders, tuck both bent knees toward abdomen, feet trailing to the RIGHT. Compact curved C-shaped fetal crouch silhouette suspended in air, face and horns at upper LEFT, hips at center RIGHT, knees below torso. Alarmed wide eyes and open mouth looking LEFT, free hand reaching LEFT toward mouth, sword kept close alongside bent legs and trailing RIGHT. NOT standing upright, NOT leaning backward with chest out, NOT wide spread limbs, NOT a flying superhero. Entire body, horns, sword, feet and tail visible with margin. Same polished fantasy 3D painted rendering. One isolated character, transparent alpha background, no plant, no background, no text, no checkerboard. Match Kalamo's compact bent knees and hunched startled body, but more clearly folded toward the LEFT.",
+  "poseReference": "assets/images/personajes/versus/kalamo-impacto.png",
+  "outputs": [
+    "assets/images/personajes/versus/azrak-susto-v1.png",
+    "assets/images/trajes/azrak-eclipse-susto-v1.png"
+  ]
+}

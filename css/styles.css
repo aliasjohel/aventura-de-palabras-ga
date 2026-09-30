@@ -7265,11 +7265,6 @@ button:disabled {
     --direccion-victima-fauces: -1;
 }
 
-.cinematica-victima-fauces.victima-fauces-azrak.reaccion-fauces-activa {
-    --direccion-victima-fauces: -1;
-    --giro-victima-fauces: -1;
-}
-
 .cinematica-carnivora {
     left: 22%;
     bottom: -7%;
