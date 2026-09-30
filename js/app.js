@@ -9330,11 +9330,9 @@ function reproducirPrisionEsmeraldaVersus(victima = personajeRivalVersus) {
   crearParticulasEclipseVersus();
   configurarVictimaFaucesVersus(victima);
   const claveVictima = victima in victimasFaucesVersus ? victima : 'mago';
-  const poseSusto = claveVictima === 'azrak' ? 'susto' : 'impacto';
+  const poseSusto = 'impacto';
   const imagenSusto = imagenTrajeFinalVersus(claveVictima, poseSusto,
-    claveVictima === 'azrak'
-      ? 'assets/images/personajes/versus/azrak-susto-v1.png'
-      : claveVictima === 'kairos'
+    claveVictima === 'kairos'
         ? 'assets/images/personajes/versus/kairos-susto-v1.png'
         : posesReaccionVictimaVersus[claveVictima]);
   // Load the reaction before the mouth opens so the pose changes without a flash.
@@ -9516,7 +9514,7 @@ function reproducirCeroAbsolutoVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   prepararTrajesFinalVersus('dragon_hielo');
   fondoCinematicaVersus.src = fondoVersus.src;
-  programarReaccionVictimaFinalVersus(victimaNivorVersus, victima, 2650);
+  configurarVictimaFinalVersus(victimaNivorVersus, victima);
   etiquetaCinematicaVersus.textContent = "CATACLISMO BOREAL";
   tituloCinematicaVersus.textContent = "CERO ABSOLUTO";
   cinematicaFinalVersus.classList.add("cero-absoluto");

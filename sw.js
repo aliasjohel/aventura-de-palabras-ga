@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v316`;
+const CACHE_NAME = `${CACHE_PREFIX}v318`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -742,10 +742,10 @@ const ASSET_REVISIONS = {
   "./assets/images/trajes/kairos-real-ataque-v1.png": "20260923-trajes-2",
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
-  "./": "20260929-fauces-4",
-  "./index.html": "20260929-fauces-4",
-  "./js/cosmetic-store.js": "20260929-fauces-4",
-  "./js/cosmetic-shop.js": "20260929-fauces-4",
+  "./": "20260930-hielo-inmovil-1",
+  "./index.html": "20260930-hielo-inmovil-1",
+  "./js/cosmetic-store.js": "20260930-hielo-inmovil-1",
+  "./js/cosmetic-shop.js": "20260930-hielo-inmovil-1",
   "./css/cosmetic-shop.css": "20260929-finales-1",
   "./js/game-wallet.js": "20260924-premios-1",
   "./js/prologue-cinematic.js": "20260921-tienda-1",
@@ -753,8 +753,8 @@ const ASSET_REVISIONS = {
   "./js/player-avatar.js": "20260922-medallas-3",
   "./css/versus-identity.css": "20260915-social-1",
   "./js/versus-identity.js": "20260915-social-1",
-  "./css/styles.css": "20260929-fauces-4",
-  "./js/app.js": "20260929-fauces-4",
+  "./css/styles.css": "20260930-hielo-inmovil-1",
+  "./js/app.js": "20260930-hielo-inmovil-1",
   "./js/versus-room.js": "20260922-alias-1",
   "./js/public-player-profile.js": "20260922-medallas-3",
   "./js/azrak-world.js": "20260913-shadow-runas-2",

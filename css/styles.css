@@ -15872,7 +15872,7 @@ button:disabled {
 @keyframes victimaCeroAbsolutoV4 {
   0%,10%{transform:translateX(-50%);opacity:1}
   18%,57%{transform:translateX(-50%) scale(.96);opacity:1;filter:brightness(1.6) saturate(.25) hue-rotate(145deg)}
-  63%,100%{transform:translateX(-50%) scale(.92);opacity:0}
+  63%,100%{transform:translateX(-50%) scale(.96);opacity:0}
 }
 @keyframes prisionCeroAbsolutoV4 {
   0%,12%{opacity:0;transform:scale(.08) translateY(35%)}
