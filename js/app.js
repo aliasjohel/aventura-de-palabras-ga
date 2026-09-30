@@ -7779,6 +7779,7 @@ function reproducirAtaqueAzrakVersus() {
   establecerPoseCombateVersus(personajeVersusUno, "ataque", srcAzrakAtaqueVersus);
   personajeVersusUno.classList.add("cortando-infernal");
   corteInfernalVersus.classList.remove("desde-rival");
+  corteInfernalVersus.classList.toggle('corte-eclipse', trajePersonajeVersus(personajeVersusUno, 'azrak') === 'azrak-eclipse');
   void corteInfernalVersus.offsetWidth;
   corteInfernalVersus.classList.add("volando");
   reproducirSonidoVersus("versusAtaqueUno", 0.8);
@@ -8058,6 +8059,7 @@ function reproducirAtaqueAzrakRivalVersus() {
   establecerPoseCombateVersus(personajeVersusDos, "ataque", srcAzrakAtaqueVersus);
   personajeVersusDos.classList.add("cortando-infernal");
   corteInfernalVersus.classList.add("desde-rival");
+  corteInfernalVersus.classList.toggle('corte-eclipse', trajePersonajeVersus(personajeVersusDos, 'azrak') === 'azrak-eclipse');
   void corteInfernalVersus.offsetWidth;
   corteInfernalVersus.classList.add("volando");
   reproducirSonidoVersus("versusAtaqueUno", 0.8);
@@ -9326,6 +9328,21 @@ function reproducirPrisionEsmeraldaVersus(victima = personajeRivalVersus) {
   prepararTrajesFinalVersus('guardiana');
   crearParticulasEclipseVersus();
   configurarVictimaFaucesVersus(victima);
+  const claveVictima = victima in victimasFaucesVersus ? victima : 'mago';
+  const poseSusto = claveVictima === 'azrak' ? 'susto' : 'impacto';
+  const imagenSusto = imagenTrajeFinalVersus(claveVictima, poseSusto,
+    claveVictima === 'azrak'
+      ? 'assets/images/personajes/versus/azrak-susto-v1.png'
+      : claveVictima === 'kairos'
+        ? 'assets/images/personajes/versus/kairos-susto-v1.png'
+        : posesReaccionVictimaVersus[claveVictima]);
+  // Load the reaction before the mouth opens so the pose changes without a flash.
+  const precargaSusto = new Image();
+  precargaSusto.src = imagenSusto;
+  demoVersus.temporizadorReaccionCinematica = setTimeout(() => {
+    victimaFaucesVersus.src = imagenSusto;
+    demoVersus.temporizadorReaccionCinematica = null;
+  }, 1800);
   fondoCinematicaVersus.src = fondoVersus.src;
   etiquetaCinematicaVersus.textContent = "TÉCNICA ANCESTRAL";
   tituloCinematicaVersus.textContent = "FAUCES ESMERALDA";

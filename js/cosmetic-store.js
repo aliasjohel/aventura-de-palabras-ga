@@ -15,7 +15,7 @@
     Object.freeze({id:'lobo-lunar',character:'hombre_lobo',hero:'Hombre Lobo',name:'Centinela Lunar',price:200,description:'Armadura de plata lunar, cuero azul y garras listas para la cacería.',poses:['base','ataque','impacto','humano','transformacion','aullido','salto']}),
     Object.freeze({id:'nimbus-aviador',character:'dragon',hero:'Nimbus',name:'Aviador de las Cumbres',price:150,description:'Gafas de aviador, bufanda marfil y un arnés para explorar las cumbres.',poses:['base','ataque','impacto','llamado']}),
     Object.freeze({id:'nivor-boreal',character:'dragon_hielo',hero:'Nivor',name:'Soberano Boreal',price:250,description:'Armadura de zafiro, filigranas de plata y una gema de aurora sobre el hielo.',poses:['base','ataque','impacto','vuelo','descenso-alto','descenso-bajo','frontal']}),
-    Object.freeze({id:'azrak-eclipse',character:'azrak',hero:'Azrak',name:'Señor del Eclipse',price:250,description:'Armadura de obsidiana, filos de plata y una espada de fuego violeta.',poses:['base','ataque','impacto','invocacion']}),
+    Object.freeze({id:'azrak-eclipse',character:'azrak',hero:'Azrak',name:'Señor del Eclipse',price:250,description:'Armadura de obsidiana, filos de plata y una espada de fuego violeta.',poses:['base','ataque','impacto','invocacion','susto']}),
     Object.freeze({id:'kalamo-astral',character:'kalamo',hero:'Kálamo',name:'Escriba Astral',price:200,description:'Pergaminos azul noche, constelaciones de plata y tinta estelar.',poses:['base','ataque','habilidad','impacto','alcanza','extrae','prepara','lanza','golpea','formacion-1','formacion-2','formacion-3']}),
   ]);
   const find=id=>catalog.find(item=>item.id===id);

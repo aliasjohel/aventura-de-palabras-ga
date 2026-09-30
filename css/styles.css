@@ -7735,10 +7735,12 @@ button:disabled {
 
 @keyframes presaFaucesEsmeraldaVersus {
     0%, 10% { opacity: 0; transform: translateX(18%) scale(0.88) scaleX(var(--direccion-victima-fauces)); }
-    18%, 42% { opacity: 1; transform: translate(0, 0) scale(1) scaleX(var(--direccion-victima-fauces)) rotate(0deg); }
-    47% { opacity: 1; transform: translate(-3vw, -5vh) scale(0.9) scaleX(var(--direccion-victima-fauces)) rotate(-2deg); }
-    53% { opacity: 1; transform: translate(-7vw, -14vh) scale(0.64) scaleX(var(--direccion-victima-fauces)) rotate(-5deg); }
-    58%, 100% { opacity: 0; transform: translate(-11vw, -18vh) scale(0.28) scaleX(var(--direccion-victima-fauces)) rotate(-9deg); filter: brightness(1.55) blur(0.7px); }
+    18%, 34% { opacity: 1; transform: translate(0, 0) scale(1) scaleX(var(--direccion-victima-fauces)) rotate(0deg); }
+    39% { opacity: 1; transform: translate(2vw, -1vh) scale(1) scaleX(var(--direccion-victima-fauces)) rotate(8deg); }
+    44% { opacity: 1; transform: translate(1vw, -2vh) scale(1) scaleX(var(--direccion-victima-fauces)) rotate(3deg); }
+    49% { opacity: 1; transform: translate(-3vw, -7vh) scale(0.94) scaleX(var(--direccion-victima-fauces)) rotate(-12deg); }
+    54% { opacity: 1; transform: translate(-8vw, -15vh) scale(0.82) scaleX(var(--direccion-victima-fauces)) rotate(-26deg); }
+    58%, 100% { opacity: 0; transform: translate(-11vw, -18vh) scale(0.68) scaleX(var(--direccion-victima-fauces)) rotate(-38deg); filter: brightness(1.55) blur(0.7px); }
 }
 
 @keyframes broteFaucesEsmeraldaVersus {
@@ -16016,13 +16018,14 @@ button:disabled {
 
 .corte-infernal-versus {
   display:none;position:absolute;z-index:9;left:24%;top:31%;width:clamp(105px,17vw,235px);
-  pointer-events:none;filter:drop-shadow(0 0 10px #ffbe55) drop-shadow(0 0 22px #f3310b);
+  pointer-events:none;filter:drop-shadow(0 0 10px #ffbe55) drop-shadow(0 0 22px #f3310b) hue-rotate(var(--corte-tono, 0deg));
 }
+.corte-infernal-versus.corte-eclipse { --corte-tono:255deg; }
 .corte-infernal-versus.volando { display:block;animation:corteInfernalJugador .82s cubic-bezier(.2,.76,.2,1) both; }
 .corte-infernal-versus.desde-rival { left:auto;right:24%; }
 .corte-infernal-versus.desde-rival.volando { animation-name:corteInfernalRival; }
-@keyframes corteInfernalJugador { 0%{opacity:0;transform:translateX(-3vw) scaleX(-1) scale(.28) rotate(-16deg)} 18%{opacity:1} 68%{opacity:1;transform:translateX(39vw) scaleX(-1) scale(1) rotate(8deg)} 100%{opacity:0;transform:translateX(43vw) scaleX(-1) scale(1.35) rotate(14deg);filter:brightness(2.4)} }
-@keyframes corteInfernalRival { 0%{opacity:0;transform:translateX(3vw) scale(.28) rotate(-16deg)} 18%{opacity:1} 68%{opacity:1;transform:translateX(-39vw) scale(1) rotate(8deg)} 100%{opacity:0;transform:translateX(-43vw) scale(1.35) rotate(14deg);filter:brightness(2.4)} }
+@keyframes corteInfernalJugador { 0%{opacity:0;transform:translateX(-3vw) scaleX(-1) scale(.28) rotate(-16deg)} 18%{opacity:1} 68%{opacity:1;transform:translateX(39vw) scaleX(-1) scale(1) rotate(8deg)} 100%{opacity:0;transform:translateX(43vw) scaleX(-1) scale(1.35) rotate(14deg);filter:brightness(2.4) hue-rotate(var(--corte-tono, 0deg))} }
+@keyframes corteInfernalRival { 0%{opacity:0;transform:translateX(3vw) scale(.28) rotate(-16deg)} 18%{opacity:1} 68%{opacity:1;transform:translateX(-39vw) scale(1) rotate(8deg)} 100%{opacity:0;transform:translateX(-43vw) scale(1.35) rotate(14deg);filter:brightness(2.4) hue-rotate(var(--corte-tono, 0deg))} }
 
 .habilidad-azrak-versus { display:none;position:absolute;inset:0;z-index:20;overflow:hidden;pointer-events:none; }
 .animacion-habilidad-versus.habilidad-azrak .habilidad-azrak-versus { display:block; }

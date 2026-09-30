@@ -4,7 +4,7 @@
   let selected=store.catalog[0].id,selectedPose='base',busy=false;
   const poseLabels={humano:'Humano',transformacion:'Transformación',aullido:'Aullido',salto:'Salto lunar',llamado:'Llamado',vuelo:'Vuelo','descenso-alto':'Alas arriba','descenso-bajo':'Alas abajo',frontal:'Vuelo frontal',base:'De pie',preparacion:'Preparación',ataque:'Ataque',habilidad:'Habilidad',carga:'Técnica final',impacto:'Impacto',final:'Victoria',planta:'Planta',mano:'Azrak',vidrio:'Kálamo',envejecido:'Envejecido',anciano:'Anciano'};
   const posePicker=document.createElement('div');posePicker.className='tienda-traje-poses';
-  Object.assign(poseLabels,{invocacion:'Invocación',alcanza:'Libro',extrae:'Armas de tinta',prepara:'Preparación final',lanza:'Lanzamiento',golpea:'Golpe final','formacion-1':'Formación inicial','formacion-2':'Formación media','formacion-3':'Formación completa'});
+  Object.assign(poseLabels,{susto:'Susto',invocacion:'Invocación',alcanza:'Libro',extrae:'Armas de tinta',prepara:'Preparación final',lanza:'Lanzamiento',golpea:'Golpe final','formacion-1':'Formación inicial','formacion-2':'Formación media','formacion-3':'Formación completa'});
   posePicker.setAttribute('role','group');posePicker.setAttribute('aria-label','Vista previa del traje');
   el('tiendaTrajeDetalle').after(posePicker);
   function renderPoses(item){

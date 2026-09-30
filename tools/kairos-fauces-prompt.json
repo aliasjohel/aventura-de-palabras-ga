@@ -1,0 +1,5 @@
+{
+  "prompt": "Identity preserve game sprite edit. Preserve exact Kairos boy character and original ivory/navy/gold clockwork outfit from reference, blue eyes, brown hair, chest hourglass, curved clock blade. Change full body pose to startled and scared: wide eyes open mouth, leaning back and struggling as pulled toward left, raised defensive free hand, bent knees and one raised foot. Single full body character with all extremities and blade inside frame with margins. Transparent alpha background, no scenery, no text, no plant, no checkerboard. Same polished fantasy rendering.",
+  "input": "assets/images/personajes/versus/kairos-combate-v1.png",
+  "output": "assets/images/personajes/versus/kairos-susto-v1.png"
+}

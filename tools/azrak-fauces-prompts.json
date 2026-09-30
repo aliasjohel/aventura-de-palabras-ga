@@ -1,0 +1,11 @@
+{
+  "prompt": "Use case: identity-preserve. Create a new full-body startled reaction sprite of Azrak from the reference for a fantasy game. Preserve EXACT character identity, youthful red demon face, black hair, curved horns, tail, armor design and sword colors. Change pose: visibly terrified wide eyes, open mouth, leaning back away from danger on his left, knees bent and one foot lifting as he loses balance, free hand raised defensively with clear readable fingers, sword held down and away from face. Dynamic struggling silhouette, not standing calmly, no injury or gore. Same detailed painted 3D fantasy style and full-body scale. Entire horns, sword, feet and tail visible with margins. One character only; no plant, no other objects, no text, no scenery. Genuine transparent alpha background.",
+  "outputs": [
+    "assets/images/personajes/versus/azrak-susto-v1.png",
+    "assets/images/trajes/azrak-eclipse-susto-v1.png"
+  ],
+  "inputs": [
+    "assets/images/personajes/versus/azrak-base.png",
+    "assets/images/trajes/azrak-eclipse-base-v1.png"
+  ]
+}

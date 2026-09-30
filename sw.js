@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v312`;
+const CACHE_NAME = `${CACHE_PREFIX}v313`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -267,6 +267,9 @@ const CORE_ASSETS = [
   "./assets/images/trajes/nivor-boreal-planta-v1.png",
   "./assets/images/trajes/nivor-boreal-vidrio-v1.png",
   "./assets/images/trajes/nivor-boreal-vuelo-v1.png",
+  "./assets/images/trajes/azrak-eclipse-susto-v1.png",
+  "./assets/images/personajes/versus/azrak-susto-v1.png",
+  "./assets/images/personajes/versus/kairos-susto-v1.png",
   "./assets/images/trajes/azrak-eclipse-base-v1.png",
   "./assets/images/trajes/kalamo-astral-base-v1.png",
   "./assets/images/trajes/azrak-eclipse-ataque-v1.png",
@@ -738,10 +741,10 @@ const ASSET_REVISIONS = {
   "./assets/images/trajes/kairos-real-ataque-v1.png": "20260923-trajes-2",
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
-  "./": "20260929-finales-1",
-  "./index.html": "20260929-finales-1",
-  "./js/cosmetic-store.js": "20260929-finales-1",
-  "./js/cosmetic-shop.js": "20260929-finales-1",
+  "./": "20260929-fauces-1",
+  "./index.html": "20260929-fauces-1",
+  "./js/cosmetic-store.js": "20260929-fauces-1",
+  "./js/cosmetic-shop.js": "20260929-fauces-1",
   "./css/cosmetic-shop.css": "20260929-finales-1",
   "./js/game-wallet.js": "20260924-premios-1",
   "./js/prologue-cinematic.js": "20260921-tienda-1",
@@ -749,8 +752,8 @@ const ASSET_REVISIONS = {
   "./js/player-avatar.js": "20260922-medallas-3",
   "./css/versus-identity.css": "20260915-social-1",
   "./js/versus-identity.js": "20260915-social-1",
-  "./css/styles.css": "20260927-resultados-1",
-  "./js/app.js": "20260929-finales-1",
+  "./css/styles.css": "20260929-fauces-1",
+  "./js/app.js": "20260929-fauces-1",
   "./js/versus-room.js": "20260922-alias-1",
   "./js/public-player-profile.js": "20260922-medallas-3",
   "./js/azrak-world.js": "20260913-shadow-runas-2",
