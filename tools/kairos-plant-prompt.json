@@ -1,0 +1,8 @@
+{
+  "prompt": "Edit first image only: preserve EXACT composition, entire green carnivorous plant, gold veins, roots, leaves, mouth shape, scale, placement and transparent background. Change ONLY the outfit of Kairos trapped struggling inside its mouth from royal crimson to his original ivory, navy blue and gold clockwork outfit shown in second reference. Preserve brown hair, blue eyes, youthful face, alarmed expression, reaching hand, chest blue hourglass. He remains partially inside the mouth, frightened, no standing or victory pose. No blood or gore. Keep wide landscape canvas matching reference, complete plant visible with margins, transparent alpha, no scene background, no text.",
+  "output": "assets/images/personajes/versus/carnivora-devorando-kairos-v1.png",
+  "inputs": [
+    "assets/images/trajes/kairos-real-planta-v1.png",
+    "assets/images/personajes/versus/kairos-combate-v1.png"
+  ]
+}

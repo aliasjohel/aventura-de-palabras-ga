@@ -7231,6 +7231,7 @@ button:disabled {
 
 .cinematica-victima-fauces {
     --direccion-victima-fauces: 1;
+    --giro-victima-fauces: 1;
     right: 8%;
     bottom: 2%;
     width: min(32vw, 380px);
@@ -7262,6 +7263,11 @@ button:disabled {
 
 .cinematica-victima-fauces.victima-fauces-dragon {
     --direccion-victima-fauces: -1;
+}
+
+.cinematica-victima-fauces.victima-fauces-azrak.reaccion-fauces-activa {
+    --direccion-victima-fauces: -1;
+    --giro-victima-fauces: -1;
 }
 
 .cinematica-carnivora {
@@ -7735,12 +7741,12 @@ button:disabled {
 
 @keyframes presaFaucesEsmeraldaVersus {
     0%, 10% { opacity: 0; transform: translateX(18%) scale(0.88) scaleX(var(--direccion-victima-fauces)); }
-    18%, 34% { opacity: 1; transform: translate(0, 0) scale(1) scaleX(var(--direccion-victima-fauces)) rotate(0deg); }
-    39% { opacity: 1; transform: translate(2vw, -1vh) scale(1) scaleX(var(--direccion-victima-fauces)) rotate(8deg); }
-    44% { opacity: 1; transform: translate(1vw, -2vh) scale(1) scaleX(var(--direccion-victima-fauces)) rotate(3deg); }
-    49% { opacity: 1; transform: translate(-3vw, -7vh) scale(0.94) scaleX(var(--direccion-victima-fauces)) rotate(-12deg); }
-    54% { opacity: 1; transform: translate(-8vw, -15vh) scale(0.82) scaleX(var(--direccion-victima-fauces)) rotate(-26deg); }
-    58%, 100% { opacity: 0; transform: translate(-11vw, -18vh) scale(0.68) scaleX(var(--direccion-victima-fauces)) rotate(-38deg); filter: brightness(1.55) blur(0.7px); }
+    18%, 34% { opacity: 1; transform: translate(0, 0) scale(1) scaleX(var(--direccion-victima-fauces)) rotate(calc(0deg * var(--giro-victima-fauces))); }
+    39% { opacity: 1; transform: translate(2vw, -1vh) scale(1) scaleX(var(--direccion-victima-fauces)) rotate(calc(8deg * var(--giro-victima-fauces))); }
+    44% { opacity: 1; transform: translate(1vw, -2vh) scale(1) scaleX(var(--direccion-victima-fauces)) rotate(calc(3deg * var(--giro-victima-fauces))); }
+    49% { opacity: 1; transform: translate(-3vw, -7vh) scale(0.94) scaleX(var(--direccion-victima-fauces)) rotate(calc(-12deg * var(--giro-victima-fauces))); }
+    54% { opacity: 1; transform: translate(-8vw, -15vh) scale(0.82) scaleX(var(--direccion-victima-fauces)) rotate(calc(-26deg * var(--giro-victima-fauces))); }
+    58%, 100% { opacity: 0; transform: translate(-11vw, -18vh) scale(0.68) scaleX(var(--direccion-victima-fauces)) rotate(calc(-38deg * var(--giro-victima-fauces))); filter: brightness(1.55) blur(0.7px); }
 }
 
 @keyframes broteFaucesEsmeraldaVersus {

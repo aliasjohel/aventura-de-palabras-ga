@@ -6942,7 +6942,7 @@ const victimasFaucesVersus = {
   kairos: {
     nombre: "Kairós",
     imagen: srcKairosBaseVersus,
-    imagenAtrapado: "assets/images/trajes/kairos-real-planta-v1.png",
+    imagenAtrapado: "assets/images/personajes/versus/carnivora-devorando-kairos-v1.png",
   },
 };
 
@@ -9308,6 +9308,7 @@ function configurarVictimaFaucesVersus(personaje = personajeRivalVersus) {
   carnivoraDevorandoVersus.src = imagenTrajeFinalVersus(personaje,'planta',victima.imagenAtrapado);
   victimaFaucesVersus.alt = `${victima.nombre} atrapado por Fauces Esmeralda`;
   victimaFaucesVersus.classList.remove(
+    "reaccion-fauces-activa",
     "victima-fauces-explorador",
     "victima-fauces-mago",
     "victima-fauces-guardiana",
@@ -9341,6 +9342,7 @@ function reproducirPrisionEsmeraldaVersus(victima = personajeRivalVersus) {
   precargaSusto.src = imagenSusto;
   demoVersus.temporizadorReaccionCinematica = setTimeout(() => {
     victimaFaucesVersus.src = imagenSusto;
+    victimaFaucesVersus.classList.add('reaccion-fauces-activa');
     demoVersus.temporizadorReaccionCinematica = null;
   }, 1800);
   fondoCinematicaVersus.src = fondoVersus.src;
