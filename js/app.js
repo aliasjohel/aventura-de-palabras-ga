@@ -6942,7 +6942,7 @@ const victimasFaucesVersus = {
   kairos: {
     nombre: "Kairós",
     imagen: srcKairosBaseVersus,
-    imagenAtrapado: srcKairosBaseVersus,
+    imagenAtrapado: "assets/images/trajes/kairos-real-planta-v1.png",
   },
 };
 

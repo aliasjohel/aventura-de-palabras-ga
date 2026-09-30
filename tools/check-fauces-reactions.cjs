@@ -12,6 +12,7 @@ const server=http.createServer((req,res)=>{
 const characters=await page.evaluate(()=>Object.keys(victimasFaucesVersus));
 for(const character of characters)for(const costume of ['original','nuevo']){
 await page.evaluate(({character,costume})=>{modoPruebasActivo=true;personajeJugadorVersus='guardiana';personajeRivalVersus=character;trajesPruebaVersus.rival[character]=costume;reproducirPrisionEsmeraldaVersus(character);},{character,costume});
+const bite=await page.locator('#carnivoraDevorandoVersus').getAttribute('src');assert(bite.includes('planta')||bite.includes('carnivora-devorando'));
 const before=await page.locator('#victimaFaucesVersus').getAttribute('src');await page.clock.runFor(1850);
 const result=await page.evaluate(()=>({src:victimaFaucesVersus.getAttribute('src'),timer:demoVersus.temporizadorReaccionCinematica}));assert.notEqual(result.src,before);assert.equal(result.timer,null);if(character==='azrak')assert(result.src.includes('susto-v1'));await page.locator('#victimaFaucesVersus').evaluate(img=>img.decode());
 }
