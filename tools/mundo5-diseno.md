@@ -4,6 +4,12 @@ Diez misiones. La misión 8 tiene cuatro palabras, una por portal; las demás co
 
 El estado persistido `estadoFinalAzrak` distingue `shadow`, `traicion`, `azrak`, `final` y `completo`. Recargar durante una cinemática vuelve a reproducirla; saltarla continúa la historia. El quinto cristal se concede después del desenlace. El modo de pruebas no modifica la partida guardada.
 
+## Regla de desbloqueo de Azrak
+
+Decisión del usuario, 30/09/2026: Azrak se desbloquea como personaje jugable al completar el Mundo 5, después del desenlace y la entrega del quinto cristal. Comprar su traje no desbloquea al personaje. Modo Pruebas puede mantenerlo disponible para revisión.
+
+Implementado: Azrak permanece bloqueado hasta terminar el desenlace. Al cargar una partida con estadoFinalAzrak completo se recupera el desbloqueo. La tienda muestra el requisito del Mundo 5 y bloquea la compra antes de descontar monedas o enviar la petición de cuenta. El traje cuesta 250 monedas después del desbloqueo; las compras anteriores se conservan.
+
 ## Puzzles
 
 - Puente de runas: recordar tres secuencias de longitud creciente, con repetición disponible y sin penalización de vidas.

@@ -33,8 +33,8 @@
       el('tiendaTrajeImagen').alt=`${item.hero} · ${item.name} · ${poseLabels[selectedPose]||selectedPose}`;
       el('tiendaTrajeImagen').classList.toggle('retrato-zafir', item.character === 'mago' && selectedPose==='base');
       const testing=globalThis.AventuraShop?.testing();
-      const buy=el('comprarTraje');buy.hidden=owned;buy.disabled=busy||testing||state.coins<item.price;
-      buy.textContent=testing?'Volvé del modo de prueba para comprar':state.coins<item.price?`Te faltan ${item.price-state.coins} monedas`:`Comprar por ${item.price} monedas`;
+      const buy=el('comprarTraje');buy.hidden=owned;buy.disabled=busy||testing||!store.canPurchase(item.id)||state.coins<item.price;
+      buy.textContent=!store.canPurchase(item.id)?'Completá el Mundo 5 para desbloquear a Azrak':testing?'Volvé del modo de prueba para comprar':state.coins<item.price?`Te faltan ${item.price-state.coins} monedas`:`Comprar por ${item.price} monedas`;
       const equip=el('equiparTraje');equip.hidden=!owned;equip.disabled=busy||equipped;equip.textContent=equipped?'Traje equipado':'Equipar traje';
       el('restaurarTraje').hidden=!state.equipped[item.character];el('restaurarTraje').disabled=busy;
       for(const button of el('tiendaTrajesCatalogo').children){const data=store.find(button.dataset.skin);button.setAttribute('aria-pressed',String(data.id===selected));button.querySelector('small').textContent=state.equipped[data.character]===data.id?'Equipado':state.owned.includes(data.id)?'En tu colección':`${data.price} monedas`;}

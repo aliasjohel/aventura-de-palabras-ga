@@ -1457,6 +1457,7 @@ let guardianaDesbloqueada = false;
 let magoDesbloqueado = false;
 let dragonDesbloqueado = false;
 let nivorDesbloqueado = false;
+let azrakDesbloqueado = false;
 let hombreLoboDescubierto = false;
 let estadoPruebaKairos = "pendiente";
 let secuenciaKairosActiva = false;
@@ -2596,11 +2597,13 @@ function cargarPersonajesDesbloqueados() {
     magoDesbloqueado = Array.isArray(personajes) && personajes.includes("mago");
     dragonDesbloqueado = Array.isArray(personajes) && personajes.includes("dragon");
     nivorDesbloqueado = Array.isArray(personajes) && personajes.includes("dragon_hielo");
+    azrakDesbloqueado = Array.isArray(personajes) && personajes.includes("azrak");
   } catch {
     guardianaDesbloqueada = false;
     magoDesbloqueado = false;
     dragonDesbloqueado = false;
     nivorDesbloqueado = false;
+    azrakDesbloqueado = false;
   }
 }
 
@@ -2610,6 +2613,7 @@ function personajeDisponibleVersus(personaje) {
   if (personaje === "mago") return magoDesbloqueado;
   if (personaje === "dragon") return dragonDesbloqueado;
   if (personaje === "dragon_hielo") return nivorDesbloqueado;
+  if (personaje === "azrak") return azrakDesbloqueado;
   return true;
 }
 
@@ -2640,6 +2644,12 @@ function guardarDesbloqueoMago() {
   guardarPersonajeDesbloqueado("mago");
 }
 
+function guardarDesbloqueoAzrak() {
+  if (modoPruebasActivo || globalThis.AventuraMapa?.repeticion) return;
+  azrakDesbloqueado = true;
+  guardarPersonajeDesbloqueado("azrak");
+}
+
 function guardarDesbloqueoNivor() {
   nivorDesbloqueado = true;
   guardarPersonajeDesbloqueado("dragon_hielo");
@@ -2653,7 +2663,9 @@ function actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada = false }
     tarjeta.disabled = seleccionBloqueada || !disponible;
     tarjeta.setAttribute("aria-disabled", `${seleccionBloqueada || !disponible}`);
     if (estado) {
-      const mundoRequerido = tarjeta.dataset.personaje === "dragon_hielo"
+      const mundoRequerido = tarjeta.dataset.personaje === "azrak"
+        ? 5
+        : tarjeta.dataset.personaje === "dragon_hielo"
         ? 4
         : tarjeta.dataset.personaje === "dragon"
           ? 3
@@ -6494,6 +6506,7 @@ async function continuarFinalMundoCinco() {
       await AzrakWorld.playCinematic("final", options);
       estadoFinalAzrak = "completo";
       cristalesObtenidos = 5;
+      guardarDesbloqueoAzrak();
       actualizarJugador();
       desafiosCompletados = desafiosPorMision;
       guardarProgreso();
@@ -12211,6 +12224,8 @@ function cargarProgreso() {
   if (mundoCuatroCompletado) {
     guardarDesbloqueoNivor();
   }
+
+  if (estadoFinalAzrak === "completo") guardarDesbloqueoAzrak();
 
   actualizarJugador();
   actualizarMenuPrincipal();

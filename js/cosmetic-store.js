@@ -69,10 +69,19 @@
       return save({...state,coins:integer(result.coins)+pending.reduce((sum,e)=>sum+e.amount,0),owned:result.owned.filter(id=>find(id)),
         equipped:normalizeSkins(dirty?state.equipped:result.equipped),pending,revision:result.revision,legacy:null,equipmentDirty:dirty});
     }
+    function canPurchase(id){
+      if(find(id)?.character!=='azrak')return true;
+      try {
+        const unlocked=JSON.parse(storage.getItem('personajesDesbloqueadosAventuraGA')||'[]');
+        const progress=JSON.parse(storage.getItem('progresoAventuraGA')||'{}');
+        return (Array.isArray(unlocked)&&unlocked.includes('azrak'))||progress.estadoFinalAzrak==='completo';
+      } catch { return false; }
+    }
     function purchase(id){
       const item=find(id);if(!item)throw Error('Este traje no está disponible.');
       const state=read();
       if(state.owned.includes(id))return state;
+      if(!canPurchase(id))throw Error('Completá el Mundo 5 para desbloquear a Azrak y comprar su traje.');
       if(state.accountId){if(!purchaseHandler)throw Error('Conectate para comprar con las monedas de tu cuenta.');return purchaseHandler(id);}
       if(state.coins<item.price)throw Error(`Te faltan ${item.price-state.coins} monedas.`);
       state.coins-=item.price;state.owned.push(id);return save(state);
@@ -90,7 +99,7 @@
       if(state.accountId){if(![10,30].includes(amount)||!/^aventura:[a-zA-Z0-9_:]+$/.test(origin||''))throw Error('Recompensa de aventura inválida.');state.pending.push({id:globalThis.crypto.randomUUID(),amount,origin});}
       state.coins+=amount;save(state);changed();return state.coins;
     }
-    return Object.freeze({key,catalog,find,asset,normalizeSkins,read,purchase,equip,earn,beginAccount,applyAccount,setPurchaseHandler:handler=>{purchaseHandler=handler;}});
+    return Object.freeze({key,catalog,find,asset,normalizeSkins,read,canPurchase,purchase,equip,earn,beginAccount,applyAccount,setPurchaseHandler:handler=>{purchaseHandler=handler;}});
   }
   return {key,catalog,find,asset,normalizeSkins,create};
 });

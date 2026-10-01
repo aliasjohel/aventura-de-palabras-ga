@@ -53,6 +53,7 @@ const scenes=[
       assert.equal(await page.locator('.tienda-traje-poses button').count(),0);
       assert.match(await page.locator('#tiendaTrajeImagen').getAttribute('src'),/kalamo-astral-base/);
       await page.evaluate(()=>{
+        guardarDesbloqueoAzrak();
         CosmeticStore.earn(1000);
         for(const item of CosmeticStore.catalog.filter(item=>['azrak','kalamo'].includes(item.character))){CosmeticStore.purchase(item.id);CosmeticStore.equip(item.character,item.id);}
         document.querySelector('#tiendaMenu').close();mostrarPantalla(pantallaVersus);
