@@ -9348,6 +9348,7 @@ function reproducirJuicioCristalesVersus(victima) {
   frame.src='prueba-aren-union.html?integrado=1&victima='+encodeURIComponent(sprite);
   cinematicaFinalVersus.append(frame);
   cinematicaFinalVersus.classList.add('juicio-cristales','activa');cinematicaFinalVersus.classList.remove('oculto');
+  reproducirSonidoVersus('versusFinish', 0.82);
   btnSaltarCinematicaVersus.focus();
   return new Promise(resolve=>{demoVersus.resolverCinematica=resolve;});
 }
