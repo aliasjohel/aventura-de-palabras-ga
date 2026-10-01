@@ -3,3 +3,5 @@
 @media(orientation:landscape) and (max-height:600px){body{padding:8px}header{margin-bottom:6px}header p,header span{display:none}h1{font-size:18px;margin:2px}.escena{height:calc(100dvh - 116px);min-height:190px;aspect-ratio:auto}nav{margin-top:7px;gap:5px}button{padding:7px 10px;font-size:12px}#estado{font-size:11px;margin:7px 0;min-height:0}.aren{width:30%;left:18%}.rival{width:22%;left:68%}.victoria .aren,.entrada .aren{width:35%;left:32%}}
 
 body.integrada{padding:0;background:transparent}body.integrada header,body.integrada nav,body.integrada #estado{display:none}body.integrada main{max-width:none;height:100dvh}body.integrada .escena{height:100dvh;width:100%;border:0;border-radius:0;aspect-ratio:auto}
+
+.aren.pose-invocacion .cuerpo{inset:auto;left:-21%;bottom:0;width:142%;height:142%;max-width:none}

@@ -9707,6 +9707,8 @@ function reproducirSiglosEnUnSegundoVersus(victima = personajeRivalVersus) {
 }
 
 function completarCinematicaFinalVersus() {
+  cinematicaFinalVersus.querySelector(".aren-union-final-integrado")?.remove();
+  cinematicaFinalVersus.classList.remove("juicio-cristales");
   detenerSeguimientoRayoAlba();
   if (demoVersus.temporizadorReaccionCinematica) {
     clearTimeout(demoVersus.temporizadorReaccionCinematica);

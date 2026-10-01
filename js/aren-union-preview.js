@@ -8,6 +8,8 @@
   heroes.forEach(([src,x,y],i)=>{const img=new Image();img.src=src;img.style.cssText=`--x:${x}%;--y:${y}%;--color:${colors[i]}`;$('guardianes').append(img);const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',`M${(x+10)*10} ${(y+18)*6} Q${(x+15)*10} 350 350 340`);path.setAttribute('stroke',colors[i]);$('rayos').append(path);});
   const gems=colors.map((color,i)=>{const el=document.createElement('i');el.className='gema';el.style.setProperty('--color',color);$('cristales').append(el);return el;});
   for(let i=0;i<25;i++){const el=document.createElement('i');const a=i*2.399;el.style.cssText=`--color:${colors[i%5]};--dx:${Math.cos(a)*(110+i*5)}px;--dy:${Math.sin(a)*(100+i*4)}px;animation-delay:${i%4*.04}s`;$('fragmentos').append(el);}
+  function alignPose(){ $('aren').classList.toggle('pose-invocacion',body.getAttribute('src').includes('invocacion')); }
+  new MutationObserver(alignPose).observe(body,{attributes:true,attributeFilter:['src']});
   const preloads=['base','invocacion','victoria','capa'].map(p=>{const img=new Image();img.src=dir+p+'-v1.png';return img.decode();});
   let steps=[],timer=null,remaining=0,due=0,paused=false,version=0,pending=null;
   function orbit(){gems.forEach((g,i)=>{g.style.left=[18,30,43,14,45][i]+'%';g.style.top=[37,22,38,59,60][i]+'%';g.style.opacity='1';g.style.transform='scale(1)';});}
