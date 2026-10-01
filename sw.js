@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v320`;
+const CACHE_NAME = `${CACHE_PREFIX}v321`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -202,6 +202,14 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/elementos/estela-escarcha-nivor.png",
 ];
 const CORE_ASSETS = [
+"./prueba-aren-union.html",
+"./js/aren-union-preview.js",
+"./css/aren-union-preview.css",
+"./js/aren-union-duel.js",
+"./assets/images/trajes/aren-union-base-v1.png",
+"./assets/images/trajes/aren-union-capa-v1.png",
+"./assets/images/trajes/aren-union-invocacion-v1.png",
+"./assets/images/trajes/aren-union-victoria-v1.png",
   "./assets/images/trajes/alba-lunar-anciano-v1.png",
   "./assets/images/trajes/alba-lunar-ataque-v1.png",
   "./assets/images/trajes/alba-lunar-base-v1.png",
@@ -722,6 +730,14 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
+"./prueba-aren-union.html": "20260930-aren-duelo-1",
+"./js/aren-union-preview.js": "20260930-aren-duelo-1",
+"./css/aren-union-preview.css": "20260930-aren-duelo-1",
+"./js/aren-union-duel.js": "20260930-aren-duelo-1",
+"./assets/images/trajes/aren-union-base-v1.png": "20260930-aren-duelo-1",
+"./assets/images/trajes/aren-union-capa-v1.png": "20260930-aren-duelo-1",
+"./assets/images/trajes/aren-union-invocacion-v1.png": "20260930-aren-duelo-1",
+"./assets/images/trajes/aren-union-victoria-v1.png": "20260930-aren-duelo-1",
   "./assets/sounds/trueno-cinematica-v2.wav": "20260922-relampago-1",
   "./js/vendor/supabase-2.116.0.js": "2.116.0",
   "./js/versus-ranks.js": "20260922-medallas-3",
@@ -742,10 +758,10 @@ const ASSET_REVISIONS = {
   "./assets/images/trajes/kairos-real-ataque-v1.png": "20260923-trajes-2",
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
-  "./": "20260930-aren-union-1",
-  "./index.html": "20260930-aren-union-1",
-  "./js/cosmetic-store.js": "20260930-aren-union-1",
-  "./js/cosmetic-shop.js": "20260930-aren-union-1",
+  "./": "20260930-aren-duelo-1",
+  "./index.html": "20260930-aren-duelo-1",
+  "./js/cosmetic-store.js": "20260930-aren-duelo-1",
+  "./js/cosmetic-shop.js": "20260930-aren-duelo-1",
   "./css/cosmetic-shop.css": "20260929-finales-1",
   "./js/game-wallet.js": "20260924-premios-1",
   "./js/prologue-cinematic.js": "20260921-tienda-1",
@@ -753,8 +769,8 @@ const ASSET_REVISIONS = {
   "./js/player-avatar.js": "20260922-medallas-3",
   "./css/versus-identity.css": "20260915-social-1",
   "./js/versus-identity.js": "20260915-social-1",
-  "./css/styles.css": "20260930-aren-union-1",
-  "./js/app.js": "20260930-aren-union-1",
+  "./css/styles.css": "20260930-aren-duelo-1",
+  "./js/app.js": "20260930-aren-duelo-1",
   "./js/versus-room.js": "20260922-alias-1",
   "./js/public-player-profile.js": "20260922-medallas-3",
   "./js/azrak-world.js": "20260913-shadow-runas-2",

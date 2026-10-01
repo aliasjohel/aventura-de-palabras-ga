@@ -1938,7 +1938,7 @@ function actualizarTecladoPartidaOnline(partida) {
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = jugadaOnlineEnCurso
       || efectoBloqueoActivo
-      || tecladoVersus.classList.contains("efecto-calavera-azrak") || tecladoVersus.classList.contains("efecto-reloj-kairos")
+      || tecladoVersus.classList.contains("efecto-calavera-azrak") || tecladoVersus.classList.contains("efecto-descarga-union") || tecladoVersus.classList.contains("efecto-reloj-kairos")
       || partida.status !== "playing"
       || !comenzo
       || partida.me?.finished
@@ -2547,6 +2547,7 @@ function actualizarSelectorTrajeVersus() {
     const state = CosmeticStore.read();
     const pruebaAutor = modoPruebasActivo && herramientasAutorDisponibles && (modoArcadeActivo || adaptadorSalasVersus.proveedor !== 'supabase');
     const disponibles = CosmeticStore.catalog.filter(item => item.character === personajeJugadorVersus && (state.owned.includes(item.id) || pruebaAutor));
+    if (pruebaAutor && personajeJugadorVersus === 'explorador') disponibles.push({id:'aren-union',name:'Guardián de los Cinco Cristales · Prueba'});
     const elegido = pruebaAutor ? trajePersonajeVersus(personajeVersusUno, personajeJugadorVersus) : state.equipped[personajeJugadorVersus] || null;
     panel.querySelector('legend').textContent = pruebaAutor ? 'Elegí tu traje · Prueba de desarrollador' : modoArcadeActivo ? 'Elegí tu traje para la torre' : 'Elegí tu traje';
     panel.hidden = disponibles.length === 0;
@@ -2568,7 +2569,7 @@ function actualizarSelectorTrajeVersus() {
         if (btnConfirmarPersonajeVersus.disabled) return;
         try {
           if (pruebaAutor && modoArcadeActivo) trajesPruebaArcade[personajeJugadorVersus] = item.id;
-          else if (pruebaAutor) trajesPruebaVersus.jugador[personajeJugadorVersus] = item.id ? 'nuevo' : 'original';
+          else if (pruebaAutor) trajesPruebaVersus.jugador[personajeJugadorVersus] = item.id === 'aren-union' ? 'union' : item.id ? 'nuevo' : 'original';
           else CosmeticStore.equip(personajeJugadorVersus, item.id);
           window.dispatchEvent(new Event('costume-equipped'));
         } catch (error) { estadoPersonajePropioVersus.textContent = error.message; }
@@ -4504,6 +4505,22 @@ function reproducirAnimacionHabilidadVersus(
   programarPasoHabilidadVersus(() => limpiarAnimacionHabilidadVersus({ conservarImpactos: true }), movimientoReducido ? 180 : demoraLimpieza);
 }
 
+let temporizadorDescargaUnion = null;
+function limpiarDescargaUnionVersus() {
+  clearTimeout(temporizadorDescargaUnion);temporizadorDescargaUnion=null;
+  tecladoVersus.classList.remove('efecto-descarga-union');sincronizarTecladoDemoVersus();
+}
+function aplicarDescargaUnionVersus(desdeRival=false) {
+  if(desdeRival){
+    clearTimeout(temporizadorDescargaUnion);tecladoVersus.classList.add('efecto-descarga-union');sincronizarTecladoDemoVersus();
+    temporizadorDescargaUnion=setTimeout(limpiarDescargaUnionVersus,2000);
+  }else{
+    demoVersus.efectoRival='roots';demoVersus.efectoRivalHasta=Math.max(demoVersus.efectoRivalHasta||0,Date.now()+2000);
+    mostrarVistaImpactoRivalVersus('explorador');
+    mostrarAvisoAvanceVersus('¡Destello de la Unión! Teclado rival bloqueado por 2 segundos.','acierto');
+  }
+}
+function usaUnionVersus(desdeRival=false){return trajePersonajeVersus(desdeRival?personajeVersusDos:personajeVersusUno,'explorador')==='aren-union';}
 function sincronizarTecladoDemoVersus() {
   const bloqueado = demoVersus.finalizadoJugador
     || demoVersus.partidaFinalizada
@@ -4511,7 +4528,7 @@ function sincronizarTecladoDemoVersus() {
     || tecladoVersus.classList.contains("efecto-agujero-negro")
     || tecladoVersus.classList.contains("efecto-teclas-rotas")
     || tecladoVersus.classList.contains("efecto-congelado")
-    || tecladoVersus.classList.contains("efecto-calavera-azrak") || tecladoVersus.classList.contains("efecto-reloj-kairos");
+    || tecladoVersus.classList.contains("efecto-calavera-azrak") || tecladoVersus.classList.contains("efecto-descarga-union") || tecladoVersus.classList.contains("efecto-reloj-kairos");
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = bloqueado
       || demoVersus.teclasRobadasJugador.has(boton.textContent)
@@ -4521,6 +4538,7 @@ function sincronizarTecladoDemoVersus() {
 }
 
 function limpiarEfectoVisualHabilidadVersus() {
+  limpiarDescargaUnionVersus();
   if (demoVersus.temporizadorEfectoHabilidad) clearTimeout(demoVersus.temporizadorEfectoHabilidad);
   demoVersus.temporizadorEfectoHabilidad = null;
   detenerCaosContinuoTecladoVersus();
@@ -5024,6 +5042,7 @@ function activarHabilidadLocalVersus() {
       alImpactar: () => {
         actualizarPanelHabilidadVersus(0, pista);
         mostrarAvisoAvanceVersus(`La lupa señaló la letra ${pista}.`, "acierto");
+        if (usaUnionVersus()) aplicarDescargaUnionVersus(false);
       },
     });
   } else if (habilidad.efecto === "time_steal") {
@@ -5068,7 +5087,7 @@ function activarHabilidadRivalLocalVersus() {
     );
     if (!pista) return;
     demoVersus.pistaLupaRival = pista;
-    reproducirAnimacionHabilidadVersus(personajeRivalVersus, { desdeRival: true });
+    reproducirAnimacionHabilidadVersus(personajeRivalVersus, { desdeRival: true, alImpactar: () => { if (usaUnionVersus(true)) aplicarDescargaUnionVersus(true); } });
   } else if (habilidad.efecto === "time_steal") {
     reproducirAnimacionHabilidadVersus(personajeRivalVersus, {
       desdeRival: true,
@@ -6971,6 +6990,7 @@ function trajePersonajeVersus(elemento, personaje) {
   }
   if (pruebasTrajesActivas()) {
     const seleccion=trajesPruebaVersus[elemento===personajeVersusUno?'jugador':'rival'][personaje] || 'equipado';
+    if(seleccion==='union' && personaje==='explorador' && herramientasAutorDisponibles)return 'aren-union';
     if(seleccion==='nuevo')return CosmeticStore.catalog.find(item=>item.character===personaje)?.id||null;
     if(seleccion==='original')return null;
     try { return CosmeticStore.read().equipped[personaje]||null; } catch(_) {return null;}
@@ -7076,7 +7096,7 @@ function recursosPersonajeCombate(personaje) {
     azrak: [srcAzrakAtaqueVersus], kalamo: [srcKalamoAtaqueVersus, srcKalamoHabilidadVersus], kairos: [srcKairosAtaqueVersus],
   };
   const trajes=[trajePersonajeVersus(personajeVersusUno,personaje),trajePersonajeVersus(personajeVersusDos,personaje)].filter(Boolean);
-  const extras=trajes.flatMap(id=>CosmeticStore.find(id).poses.map(pose=>CosmeticStore.asset(id,pose)));
+  const extras=trajes.flatMap(id=>(id==='aren-union'?['base','invocacion','victoria','capa']:CosmeticStore.find(id).poses).map(pose=>CosmeticStore.asset(id,pose)));
   return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || []),...extras].filter(Boolean);
 }
 async function prepararImagenesCombate(personajes) {
@@ -7200,6 +7220,8 @@ function restaurarPoseBasePersonajeVersus(elemento, personaje) {
 }
 
 function limpiarAnimacionAtaqueJugadorVersus() {
+  personajeVersusUno.classList.remove("espada-union-atacando");
+  personajeVersusUno.parentElement.querySelector(".arco-espada-union:not(.desde-rival)")?.remove();
   demoVersus.temporizadoresAtaqueJugador.forEach(clearTimeout);
   demoVersus.temporizadoresAtaqueJugador = [];
   establecerPoseCombateVersus(personajeVersusUno, "ataque", null);
@@ -7236,6 +7258,8 @@ function limpiarAnimacionAtaqueJugadorVersus() {
 }
 
 function limpiarAnimacionAtaqueRivalVersus() {
+  personajeVersusDos.classList.remove("espada-union-atacando");
+  personajeVersusDos.parentElement.querySelector(".arco-espada-union.desde-rival")?.remove();
   demoVersus.temporizadoresAtaqueRival.forEach(clearTimeout);
   demoVersus.temporizadoresAtaqueRival = [];
   establecerPoseCombateVersus(personajeVersusDos, "ataque", null);
@@ -7371,6 +7395,8 @@ function limpiarEntradaDueloVersus() {
   demoVersus.temporizadoresEntrada.forEach(clearTimeout);
   demoVersus.temporizadoresEntrada = [];
   demoVersus.entradaActiva = false;
+  if (personajeVersusUno.classList.contains("entrada-union")) { posesCombateVersus.delete(personajeVersusUno); actualizarPoseCombateVersus(personajeVersusUno); }
+  personajeVersusUno.classList.remove("entrada-union");
   personajeVersusUno.classList.remove("nivor-aleteando");
   personajeVersusDos.classList.remove("nivor-aleteando");
   marcoVersus.classList.remove("duelo-en-introduccion");
@@ -7525,7 +7551,12 @@ async function iniciarEntradaDueloVersus() {
     "Preparándose...",
   );
 
-  if (!movimientoReducido && personajeJugadorVersus === "explorador") {
+  if (!movimientoReducido && personajeJugadorVersus === 'explorador' && trajePersonajeVersus(personajeVersusUno,'explorador') === 'aren-union') {
+    personajeVersusUno.src = CosmeticStore.asset('aren-union');
+    personajeVersusUno.classList.add('entrada-union');
+    programarPasoEntradaVersus(() => { posesCombateVersus.delete(personajeVersusUno); actualizarPoseCombateVersus(personajeVersusUno); personajeVersusUno.classList.remove('entrada-union'); }, 2180);
+  }
+  if (!movimientoReducido && personajeJugadorVersus === "explorador" && trajePersonajeVersus(personajeVersusUno,'explorador') !== 'aren-union') {
     programarPasoEntradaVersus(() => {
       personajeVersusUno.src = spriteTrajeVersus(personajeVersusUno,'explorador',srcExploradorPreparaBumeran);
       bumeranVersus.classList.add("mostrando-entrada");
@@ -7563,7 +7594,20 @@ async function iniciarEntradaDueloVersus() {
   programarPasoEntradaVersus(finalizarEntradaDueloVersus, duracion);
 }
 
+function reproducirEspadaUnionVersus(lado) {
+  const jugador=lado==='jugador',actor=jugador?personajeVersusUno:personajeVersusDos,rival=jugador?personajeVersusDos:personajeVersusUno;
+  if(jugador)limpiarAnimacionAtaqueJugadorVersus();else limpiarAnimacionAtaqueRivalVersus();
+  establecerPoseCombateVersus(actor,'ataque',srcExploradorPreparaBumeran);
+  actor.classList.add('espada-union-atacando');
+  const arco=document.createElement('div');arco.className='arco-espada-union '+(jugador?'':'desde-rival');actor.parentElement.append(arco);
+  arco.addEventListener('animationend',()=>arco.remove(),{once:true});
+  reproducirSonidoVersus('versusAtaqueUno',.72);
+  programarPasoAtaqueVersus(()=>{rival.classList.add('recibiendo-dano');reproducirSonidoVersus('versusAtaqueDos',.76);},380,lado);
+  programarPasoAtaqueVersus(()=>{rival.classList.remove('recibiendo-dano');actor.classList.remove('espada-union-atacando');arco.remove();if(jugador)limpiarAnimacionAtaqueJugadorVersus();else limpiarAnimacionAtaqueRivalVersus();},950,lado);
+}
+
 function reproducirAtaqueBumeranVersus() {
+  if (trajePersonajeVersus(personajeVersusUno,'explorador')==='aren-union') return reproducirEspadaUnionVersus('jugador');
   limpiarAnimacionAtaqueJugadorVersus();
   herramientasPruebasVersus.classList.add("ataque-en-curso");
 
@@ -7984,6 +8028,7 @@ function reproducirAtaqueMagoVersus() {
 }
 
 function reproducirAtaqueExploradorRivalVersus() {
+  if (trajePersonajeVersus(personajeVersusDos,'explorador')==='aren-union') return reproducirEspadaUnionVersus('rival');
   limpiarAnimacionAtaqueRivalVersus();
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -8258,7 +8303,7 @@ function habilitarTecladoVersus() {
     || tecladoVersus.classList.contains("efecto-agujero-negro")
     || tecladoVersus.classList.contains("efecto-teclas-rotas")
     || tecladoVersus.classList.contains("efecto-congelado")
-    || tecladoVersus.classList.contains("efecto-calavera-azrak") || tecladoVersus.classList.contains("efecto-reloj-kairos");
+    || tecladoVersus.classList.contains("efecto-calavera-azrak") || tecladoVersus.classList.contains("efecto-descarga-union") || tecladoVersus.classList.contains("efecto-reloj-kairos");
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     boton.disabled = bloqueadoPorRaices;
   });
@@ -9290,7 +9335,25 @@ function reproducirEclipseVioletaVersus(victima = personajeRivalVersus) {
   });
 }
 
+function reproducirJuicioCristalesVersus(victima) {
+  cancelarCinematicaFinalVersus();
+  const frame=document.createElement('iframe');
+  frame.className='aren-union-final-integrado';frame.title='Juicio de los Cinco Cristales';
+  const clave=personajesVersus[victima]?victima:'mago';
+  const sprite=imagenTrajeFinalVersus(clave,'base',personajesVersus[clave].base);
+  frame.src='prueba-aren-union.html?integrado=1&victima='+encodeURIComponent(sprite);
+  cinematicaFinalVersus.append(frame);
+  cinematicaFinalVersus.classList.add('juicio-cristales','activa');cinematicaFinalVersus.classList.remove('oculto');
+  btnSaltarCinematicaVersus.focus();
+  return new Promise(resolve=>{demoVersus.resolverCinematica=resolve;});
+}
+window.addEventListener('message',event=>{
+  const frame=cinematicaFinalVersus.querySelector('.aren-union-final-integrado');
+  if(frame&&event.origin===location.origin&&event.source===frame.contentWindow&&event.data==='aren-union-final-listo')completarCinematicaFinalVersus();
+});
+
 function reproducirTrampaSelvaticaVersus(victima = personajeRivalVersus) {
+  if (trajeFinalVersus('explorador',false)==='aren-union') return reproducirJuicioCristalesVersus(victima);
   cancelarCinematicaFinalVersus();
   prepararTrajesFinalVersus('explorador');
   crearParticulasEclipseVersus();
@@ -9680,6 +9743,8 @@ function completarCinematicaFinalVersus() {
 }
 
 function cancelarCinematicaFinalVersus() {
+  cinematicaFinalVersus.querySelector(".aren-union-final-integrado")?.remove();
+  cinematicaFinalVersus.classList.remove("juicio-cristales");
   detenerSeguimientoRayoAlba();
   ocultarAnuncioFinVersus();
   if (demoVersus.temporizadorReaccionCinematica) {
@@ -9829,6 +9894,7 @@ function probarHabilidadEspecialVersus(personaje) {
         const tecla = teclasDisponibles[Math.floor(Math.random() * teclasDisponibles.length)]
           || tecladoVersus.querySelector("button");
         actualizarPistaLupaVersus(tecla?.textContent || "A");
+        if (usaUnionVersus(desdeRival)) aplicarDescargaUnionVersus(desdeRival);
       } else if (habilidad.efecto === "forced_miss") {
         const letra = obtenerLetraIncorrectaDisponibleVersus(
           desdeRival ? obtenerPalabraActualJugadorVersus() : obtenerPalabraActualRivalVersus(),

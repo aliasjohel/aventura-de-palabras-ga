@@ -27,6 +27,7 @@
     return result;
   }
   function asset(id,pose='base'){
+    if(id==='aren-union')return `assets/images/trajes/aren-union-${['invocacion','victoria','capa'].includes(pose)?pose:pose==='final'?'victoria':pose==='ataque'||pose==='preparacion'||pose==='habilidad'?'invocacion':'base'}-v1.png`;
     const item=find(id);if(!item)return null;
     if(id==='kairos-real'&&pose==='final')pose='ataque';
     if(id==='lobo-lunar'&&pose==='final')pose='salto';
