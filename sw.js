@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v322`;
+const CACHE_NAME = `${CACHE_PREFIX}v323`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -202,6 +202,11 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/elementos/estela-escarcha-nivor.png",
 ];
 const CORE_ASSETS = [
+"./assets/images/trajes/aren-union-guardianes-v2.png",
+"./assets/images/trajes/aren-union-rayo-v2.png",
+"./assets/images/trajes/aren-union-prision-v2.png",
+"./assets/images/trajes/aren-union-disparo-v2.png",
+"./assets/images/trajes/aren-union-concepto-v1.png",
 "./prueba-aren-union.html",
 "./js/aren-union-preview.js",
 "./css/aren-union-preview.css",
@@ -730,14 +735,19 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-"./prueba-aren-union.html": "20260930-aren-capa-2",
-"./js/aren-union-preview.js": "20260930-aren-capa-2",
-"./css/aren-union-preview.css": "20260930-aren-capa-2",
-"./js/aren-union-duel.js": "20260930-aren-capa-2",
-"./assets/images/trajes/aren-union-base-v1.png": "20260930-aren-capa-2",
-"./assets/images/trajes/aren-union-capa-v1.png": "20260930-aren-capa-2",
-"./assets/images/trajes/aren-union-invocacion-v1.png": "20260930-aren-capa-2",
-"./assets/images/trajes/aren-union-victoria-v1.png": "20260930-aren-capa-2",
+"./assets/images/trajes/aren-union-guardianes-v2.png": "20261001-aren-seleccion-1",
+"./assets/images/trajes/aren-union-rayo-v2.png": "20261001-aren-seleccion-1",
+"./assets/images/trajes/aren-union-prision-v2.png": "20261001-aren-seleccion-1",
+"./assets/images/trajes/aren-union-disparo-v2.png": "20261001-aren-seleccion-1",
+"./assets/images/trajes/aren-union-concepto-v1.png": "20261001-aren-seleccion-1",
+"./prueba-aren-union.html": "20261001-aren-seleccion-1",
+"./js/aren-union-preview.js": "20261001-aren-seleccion-1",
+"./css/aren-union-preview.css": "20261001-aren-seleccion-1",
+"./js/aren-union-duel.js": "20261001-aren-seleccion-1",
+"./assets/images/trajes/aren-union-base-v1.png": "20261001-aren-seleccion-1",
+"./assets/images/trajes/aren-union-capa-v1.png": "20261001-aren-seleccion-1",
+"./assets/images/trajes/aren-union-invocacion-v1.png": "20261001-aren-seleccion-1",
+"./assets/images/trajes/aren-union-victoria-v1.png": "20261001-aren-seleccion-1",
   "./assets/sounds/trueno-cinematica-v2.wav": "20260922-relampago-1",
   "./js/vendor/supabase-2.116.0.js": "2.116.0",
   "./js/versus-ranks.js": "20260922-medallas-3",
@@ -758,10 +768,10 @@ const ASSET_REVISIONS = {
   "./assets/images/trajes/kairos-real-ataque-v1.png": "20260923-trajes-2",
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
-  "./": "20260930-aren-capa-2",
-  "./index.html": "20260930-aren-capa-2",
-  "./js/cosmetic-store.js": "20260930-aren-capa-2",
-  "./js/cosmetic-shop.js": "20260930-aren-capa-2",
+  "./": "20261001-aren-seleccion-1",
+  "./index.html": "20261001-aren-seleccion-1",
+  "./js/cosmetic-store.js": "20261001-aren-seleccion-1",
+  "./js/cosmetic-shop.js": "20261001-aren-seleccion-1",
   "./css/cosmetic-shop.css": "20260929-finales-1",
   "./js/game-wallet.js": "20260924-premios-1",
   "./js/prologue-cinematic.js": "20260921-tienda-1",
@@ -769,8 +779,8 @@ const ASSET_REVISIONS = {
   "./js/player-avatar.js": "20260922-medallas-3",
   "./css/versus-identity.css": "20260915-social-1",
   "./js/versus-identity.js": "20260915-social-1",
-  "./css/styles.css": "20260930-aren-capa-2",
-  "./js/app.js": "20260930-aren-capa-2",
+  "./css/styles.css": "20261001-aren-seleccion-1",
+  "./js/app.js": "20261001-aren-seleccion-1",
   "./js/versus-room.js": "20260922-alias-1",
   "./js/public-player-profile.js": "20260922-medallas-3",
   "./js/azrak-world.js": "20260913-shadow-runas-2",

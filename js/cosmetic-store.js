@@ -33,6 +33,9 @@
     if(id==='lobo-lunar'&&pose==='final')pose='salto';
     return `assets/images/trajes/${id}-${item.poses.includes(pose)||cinemaPoses.includes(pose)?pose:'base'}-v1.png`;
   }
+  function previewAsset(id,pose='base'){
+    return id==='aren-union'&&pose==='base'?'assets/images/trajes/aren-union-concepto-v1.png':asset(id,pose);
+  }
   function create(storage){
     let purchaseHandler=null;
     const changed=()=>globalThis.dispatchEvent?.(new Event('wallet-local-changed'));
@@ -100,7 +103,7 @@
       if(state.accountId){if(![10,30].includes(amount)||!/^aventura:[a-zA-Z0-9_:]+$/.test(origin||''))throw Error('Recompensa de aventura inválida.');state.pending.push({id:globalThis.crypto.randomUUID(),amount,origin});}
       state.coins+=amount;save(state);changed();return state.coins;
     }
-    return Object.freeze({key,catalog,find,asset,normalizeSkins,read,canPurchase,purchase,equip,earn,beginAccount,applyAccount,setPurchaseHandler:handler=>{purchaseHandler=handler;}});
+    return Object.freeze({key,catalog,find,asset,previewAsset,normalizeSkins,read,canPurchase,purchase,equip,earn,beginAccount,applyAccount,setPurchaseHandler:handler=>{purchaseHandler=handler;}});
   }
-  return {key,catalog,find,asset,normalizeSkins,create};
+  return {key,catalog,find,asset,previewAsset,normalizeSkins,create};
 });

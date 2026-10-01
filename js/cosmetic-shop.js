@@ -29,7 +29,7 @@
       el('tiendaTrajeNombre').textContent=item.name;
       el('tiendaTrajeDetalle').textContent=item.description;
       renderPoses(item);
-      el('tiendaTrajeImagen').src=store.asset(item.id,selectedPose);
+      el('tiendaTrajeImagen').src=store.previewAsset(item.id,selectedPose);
       el('tiendaTrajeImagen').alt=`${item.hero} · ${item.name} · ${poseLabels[selectedPose]||selectedPose}`;
       el('tiendaTrajeImagen').classList.toggle('retrato-zafir', item.character === 'mago' && selectedPose==='base');
       const testing=globalThis.AventuraShop?.testing();

@@ -2560,7 +2560,7 @@ function actualizarSelectorTrajeVersus() {
       button.disabled = btnConfirmarPersonajeVersus.disabled;
       button.setAttribute('aria-pressed', String(elegido === item.id));
       const img = document.createElement('img');
-      img.src = item.id ? CosmeticStore.asset(item.id) : personajesVersus[personajeJugadorVersus].base;
+      img.src = item.id ? CosmeticStore.previewAsset(item.id) : personajesVersus[personajeJugadorVersus].base;
       img.alt = '';
       const nombre = document.createElement('span');
       nombre.textContent = item.name;
@@ -4284,13 +4284,14 @@ function prepararMiniaturaHabilidadRival(efecto) {
 function ocultarVistaImpactoRivalVersus() {
   if (temporizadorVistaImpactoRivalVersus) clearTimeout(temporizadorVistaImpactoRivalVersus);
   temporizadorVistaImpactoRivalVersus = null;
-  vistaImpactoRivalVersus.classList.remove("visible");
+  miniTecladoRivalVersus.classList.remove("efecto-descarga-union");
+  vistaImpactoRivalVersus.classList.remove("visible", "descarga-union");
   vistaImpactoRivalVersus.setAttribute("aria-hidden", "true");
 }
 
-function mostrarVistaImpactoRivalVersus(personaje, letraForzada = "") {
+function mostrarVistaImpactoRivalVersus(personaje, letraForzada = "", descargaUnion = false) {
   const habilidad = habilidadesVersus[personaje] || habilidadesVersus.explorador;
-  if (habilidad.efecto === "hint") return;
+  if (habilidad.efecto === "hint" && !descargaUnion) return;
   crearMiniTecladoRivalVersus();
   ocultarVistaImpactoRivalVersus();
 
@@ -4308,19 +4309,20 @@ function mostrarVistaImpactoRivalVersus(personaje, letraForzada = "") {
       : "La calavera obligó al rival a cometer un error.",
     time_steal: "El rival pierde 20 segundos y su teclado se detiene durante 2 segundos.",
   };
-  nombreImpactoRivalVersus.textContent = `${habilidad.icono} ${habilidad.nombre}`;
-  detalleImpactoRivalVersus.textContent = detallesPorEfecto[habilidad.efecto]
+  nombreImpactoRivalVersus.textContent = descargaUnion ? "⚡ Destello de la Unión" : `${habilidad.icono} ${habilidad.nombre}`;
+  detalleImpactoRivalVersus.textContent = descargaUnion ? "Teclado electrificado y bloqueado durante 2 segundos." : detallesPorEfecto[habilidad.efecto]
     || "El rival recibió tu ataque.";
-  miniTecladoRivalVersus.className = `mini-teclado-rival-versus efecto-${habilidad.efecto}`;
+  miniTecladoRivalVersus.className = descargaUnion ? "mini-teclado-rival-versus efecto-descarga-union" : `mini-teclado-rival-versus efecto-${habilidad.efecto}`;
   prepararMiniaturaHabilidadRival(habilidad.efecto);
   miniTecladoRivalVersus.querySelectorAll("i").forEach((tecla) => {
     tecla.classList.toggle("tecla-forzada", Boolean(letraForzada) && tecla.dataset.letra === letraForzada);
   });
+  vistaImpactoRivalVersus.classList.toggle("descarga-union", descargaUnion);
   vistaImpactoRivalVersus.classList.add("visible");
   vistaImpactoRivalVersus.setAttribute("aria-hidden", "false");
   temporizadorVistaImpactoRivalVersus = setTimeout(
     ocultarVistaImpactoRivalVersus,
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1800 : 3000,
+    descargaUnion ? 2000 : window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1800 : 3000,
   );
 }
 
@@ -4516,7 +4518,7 @@ function aplicarDescargaUnionVersus(desdeRival=false) {
     temporizadorDescargaUnion=setTimeout(limpiarDescargaUnionVersus,2000);
   }else{
     demoVersus.efectoRival='roots';demoVersus.efectoRivalHasta=Math.max(demoVersus.efectoRivalHasta||0,Date.now()+2000);
-    mostrarVistaImpactoRivalVersus('explorador');
+    mostrarVistaImpactoRivalVersus('explorador', '', true);
     mostrarAvisoAvanceVersus('¡Destello de la Unión! Teclado rival bloqueado por 2 segundos.','acierto');
   }
 }
@@ -7056,7 +7058,7 @@ function refrescarTrajesVersus() {
   actualizarPoseCombateVersus(personajeVersusDos);
   for(const button of document.querySelectorAll('button[data-personaje]')) {
     const img=button.querySelector('img'),character=button.dataset.personaje;
-    if(img&&personajesVersus[character])img.src=spriteTrajeVersus(personajeVersusUno,character,personajesVersus[character].base);
+    if(img&&personajesVersus[character])img.src=trajePersonajeVersus(personajeVersusUno,character)==='aren-union'?CosmeticStore.previewAsset('aren-union'):spriteTrajeVersus(personajeVersusUno,character,personajesVersus[character].base);
   }
 }
 for(const id of ['trajePruebaAtacante','trajePruebaVictima'])document.getElementById(id)?.addEventListener('change',()=>{
@@ -7553,6 +7555,8 @@ async function iniciarEntradaDueloVersus() {
 
   if (!movimientoReducido && personajeJugadorVersus === 'explorador' && trajePersonajeVersus(personajeVersusUno,'explorador') === 'aren-union') {
     personajeVersusUno.src = CosmeticStore.asset('aren-union');
+    // Union forms in place; never leave the lateral entrance queued underneath.
+    personajeVersusUno.classList.remove('entrada-explorador');
     personajeVersusUno.classList.add('entrada-union');
     programarPasoEntradaVersus(() => { posesCombateVersus.delete(personajeVersusUno); actualizarPoseCombateVersus(personajeVersusUno); personajeVersusUno.classList.remove('entrada-union'); }, 2180);
   }
