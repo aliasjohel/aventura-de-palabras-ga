@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v326`;
+const CACHE_NAME = `${CACHE_PREFIX}v327`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -203,6 +203,7 @@ const RECURSOS_MODOS_LOCALES = [
 ];
 const CORE_ASSETS = [
 "./assets/images/trajes/aren-union-guardianes-v2.png",
+"./assets/images/trajes/aren-union-guardianes-solos-v3.png",
 "./assets/images/trajes/aren-union-rayo-v2.png",
 "./assets/images/trajes/aren-union-prision-v2.png",
 "./assets/images/trajes/aren-union-disparo-v2.png",
@@ -735,14 +736,15 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
+"./assets/images/trajes/aren-union-guardianes-solos-v3.png": "20261002-guardianes-solos-1",
 "./assets/images/trajes/aren-union-guardianes-v2.png": "20261002-admin-union-1",
 "./assets/images/trajes/aren-union-rayo-v2.png": "20261002-admin-union-1",
 "./assets/images/trajes/aren-union-prision-v2.png": "20261002-admin-union-1",
 "./assets/images/trajes/aren-union-disparo-v2.png": "20261002-admin-union-1",
 "./assets/images/trajes/aren-union-concepto-v1.png": "20261002-admin-union-1",
-"./prueba-aren-union.html": "20261002-admin-union-1",
-"./js/aren-union-preview.js": "20261002-admin-union-1",
-"./css/aren-union-preview.css": "20261002-admin-union-1",
+"./prueba-aren-union.html": "20261002-guardianes-solos-1",
+"./js/aren-union-preview.js": "20261002-guardianes-solos-1",
+"./css/aren-union-preview.css": "20261002-guardianes-solos-1",
 "./js/aren-union-duel.js": "20261002-admin-union-1",
 "./assets/images/trajes/aren-union-base-v1.png": "20261002-admin-union-1",
 "./assets/images/trajes/aren-union-capa-v1.png": "20261002-admin-union-1",
