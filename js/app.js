@@ -9920,6 +9920,9 @@ btnProbarAtaqueElegido.addEventListener("click", () => {
 function probarHabilidadEspecialVersus(personaje) {
   if (!modoPruebasActivo || demoVersus.partidaFinalizada || !habilidadesVersus[personaje]) return;
   const desdeRival = origenHabilidadPruebaVersus.value === "rival";
+  // The test view can show the selected player's Union attack landing on this keyboard.
+  const descargaUnion = personaje === 'explorador' && (usaUnionVersus(desdeRival)
+    || (desdeRival && personajeJugadorVersus === 'explorador' && usaUnionVersus(false)));
   actualizarPistaLupaVersus();
   aplicarEfectoVisualHabilidadVersus("", 0);
 
@@ -9935,7 +9938,7 @@ function probarHabilidadEspecialVersus(personaje) {
         const tecla = teclasDisponibles[Math.floor(Math.random() * teclasDisponibles.length)]
           || tecladoVersus.querySelector("button");
         actualizarPistaLupaVersus(tecla?.textContent || "A");
-        if (usaUnionVersus(desdeRival)) aplicarDescargaUnionVersus(desdeRival);
+        if (descargaUnion) aplicarDescargaUnionVersus(desdeRival);
       } else if (habilidad.efecto === "forced_miss") {
         const letra = obtenerLetraIncorrectaDisponibleVersus(
           desdeRival ? obtenerPalabraActualJugadorVersus() : obtenerPalabraActualRivalVersus(),
