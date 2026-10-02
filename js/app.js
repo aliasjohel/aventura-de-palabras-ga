@@ -1265,7 +1265,28 @@ function actualizarAccesoHerramientasAutor() {
   for (const selector of ['#btnAbrirPruebasMenu', '.control-modo-pruebas']) {
     document.querySelector(selector)?.toggleAttribute('hidden', !herramientasAutorDisponibles);
   }
+  actualizarAccesoUnionOnline();
 }
+function actualizarAccesoUnionOnline() {
+  let state;try { state=globalThis.CosmeticStore?.read(); } catch(_) {}
+  document.getElementById('accesoUnionOnline').hidden=!herramientasAutorDisponibles&&!state?.admin;
+  document.getElementById('btnUnionOnline').textContent=state?.adminUnion?'Desactivar Aren Unión online':'Activar Aren Unión online';
+}
+window.addEventListener('wallet-updated',actualizarAccesoUnionOnline);
+document.getElementById('btnUnionOnline').addEventListener('click',async()=>{
+  const button=document.getElementById('btnUnionOnline'),status=document.getElementById('estadoUnionOnline');
+  if(button.disabled)return;
+  button.disabled=true;
+  try {
+    if(partidaOnlineVersus?.status==='playing')throw Error('Terminá el duelo antes de cambiar el acceso a Aren Unión.');
+    await globalThis.AventuraShop.connect();
+    const state=CosmeticStore.read();
+    const result=state.admin?await GameWallet.setAdminUnion(!state.adminUnion):await AventuraDeveloper.activateOnline();
+    window.dispatchEvent(new Event('costume-equipped'));
+    status.textContent=result.adminUnion?'Aren Unión está habilitado y equipado. Salí del Modo Pruebas y elegí a Aren en un duelo online. Guardá tu cuenta para conservar el acceso en otros dispositivos.':'Aren Unión está desactivado. Podés volver a habilitarlo cuando quieras.';
+  } catch(error) { status.textContent=error.message||'No pudimos activar Aren Unión. Reintentá con conexión.'; }
+  finally { button.disabled=false;actualizarAccesoUnionOnline(); }
+});
 actualizarAccesoHerramientasAutor();
 globalThis.AventuraDeveloper?.ready.then(actualizarAccesoHerramientasAutor);
 window.addEventListener('developer-access-changed', actualizarAccesoHerramientasAutor);
@@ -1830,6 +1851,7 @@ function actualizarEstadoMultijugador(sala) {
 }
 
 function actualizarEstadoRevanchaVersus(sala) {
+  if(!sala?.jugadores){btnRevanchaVersus.classList.add('oculto');return;}
   const usuarioId = adaptadorSalasVersus.obtenerUsuarioId?.();
   const propio = sala.jugadores.find((jugador) => jugador.id === usuarioId);
   const rival = sala.jugadores.find((jugador) => jugador.id !== usuarioId);
@@ -2086,6 +2108,7 @@ function procesarEventoPartidaOnline(partida) {
         alImpactar: () => {
           if (evento.character === "explorador") {
             actualizarPistaLupaVersus(partida.me?.abilityHint || "");
+            if(evento.costume==='aren-union')mostrarVistaImpactoRivalVersus('explorador','',true);
           } else {
             if (evento.character === "kairos") {
               animarRoboTiempoKairosVersus(false, evento.seconds || 20);
@@ -2097,7 +2120,7 @@ function procesarEventoPartidaOnline(partida) {
           }
         },
       });
-    } else if (evento.character === "explorador") {
+    } else if (evento.character === "explorador" && evento.costume!=='aren-union') {
       reproducirAnimacionHabilidadVersus("explorador", { desdeRival: true });
     } else if (evento.character === "kairos") {
       reproducirAnimacionHabilidadVersus("kairos", {
@@ -2547,7 +2570,6 @@ function actualizarSelectorTrajeVersus() {
     const state = CosmeticStore.read();
     const pruebaAutor = modoPruebasActivo && herramientasAutorDisponibles && (modoArcadeActivo || adaptadorSalasVersus.proveedor !== 'supabase');
     const disponibles = CosmeticStore.catalog.filter(item => item.character === personajeJugadorVersus && (state.owned.includes(item.id) || pruebaAutor));
-    if (pruebaAutor && personajeJugadorVersus === 'explorador') disponibles.push({id:'aren-union',name:'Guardián de los Cinco Cristales · Prueba'});
     const elegido = pruebaAutor ? trajePersonajeVersus(personajeVersusUno, personajeJugadorVersus) : state.equipped[personajeJugadorVersus] || null;
     panel.querySelector('legend').textContent = pruebaAutor ? 'Elegí tu traje · Prueba de desarrollador' : modoArcadeActivo ? 'Elegí tu traje para la torre' : 'Elegí tu traje';
     panel.hidden = disponibles.length === 0;
@@ -4754,8 +4776,11 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
   }
 
   if (efecto === "roots") {
-    tecladoVersus.classList.add("efecto-raices");
-    desafioJugadorVersus.classList.add("efecto-raices-desafio");
+    if(partidaOnlineVersus && usaUnionVersus(true))tecladoVersus.classList.add('efecto-descarga-union');
+    else {
+      tecladoVersus.classList.add("efecto-raices");
+      desafioJugadorVersus.classList.add("efecto-raices-desafio");
+    }
   }
   if (efecto === "roar") {
     tecladoVersus.classList.add("efecto-rugido");
@@ -4800,6 +4825,7 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
     demoVersus.temporizadorEfectoHabilidad = null;
     const restaurarConAnimacion = tecladoVersus.classList.contains("efecto-caos");
     detenerCaosContinuoTecladoVersus();
+    tecladoVersus.classList.remove('efecto-descarga-union');
     tecladoVersus.classList.remove("efecto-raices", "efecto-rugido", "efecto-caos", "efecto-agujero-negro", "efecto-teclas-rotas", "efecto-congelado", "efecto-hurto-teclas");
     tecladoVersus.style.removeProperty("--duracion-agujero-negro");
     desafioJugadorVersus.classList.remove(
@@ -7399,6 +7425,8 @@ function limpiarEntradaDueloVersus() {
   demoVersus.entradaActiva = false;
   if (personajeVersusUno.classList.contains("entrada-union")) { posesCombateVersus.delete(personajeVersusUno); actualizarPoseCombateVersus(personajeVersusUno); }
   personajeVersusUno.classList.remove("entrada-union");
+  if(personajeVersusDos.classList.contains('entrada-union')){posesCombateVersus.delete(personajeVersusDos);actualizarPoseCombateVersus(personajeVersusDos);}
+  personajeVersusDos.classList.remove('entrada-union');
   personajeVersusUno.classList.remove("nivor-aleteando");
   personajeVersusDos.classList.remove("nivor-aleteando");
   marcoVersus.classList.remove("duelo-en-introduccion");
@@ -7559,6 +7587,12 @@ async function iniciarEntradaDueloVersus() {
     personajeVersusUno.classList.remove('entrada-explorador');
     personajeVersusUno.classList.add('entrada-union');
     programarPasoEntradaVersus(() => { posesCombateVersus.delete(personajeVersusUno); actualizarPoseCombateVersus(personajeVersusUno); personajeVersusUno.classList.remove('entrada-union'); }, 2180);
+  }
+  if (!movimientoReducido && personajeRivalVersus === 'explorador' && trajePersonajeVersus(personajeVersusDos,'explorador') === 'aren-union') {
+    personajeVersusDos.src=CosmeticStore.asset('aren-union');
+    personajeVersusDos.classList.remove('entrada-explorador-rival');
+    personajeVersusDos.classList.add('entrada-union');
+    programarPasoEntradaVersus(()=>{posesCombateVersus.delete(personajeVersusDos);actualizarPoseCombateVersus(personajeVersusDos);personajeVersusDos.classList.remove('entrada-union');},2180);
   }
   if (!movimientoReducido && personajeJugadorVersus === "explorador" && trajePersonajeVersus(personajeVersusUno,'explorador') !== 'aren-union') {
     programarPasoEntradaVersus(() => {

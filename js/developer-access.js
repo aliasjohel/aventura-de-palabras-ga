@@ -5,6 +5,7 @@
   const expectedCodeHash = '41c991eb6a66242c0454191244278183ce58cf4a6bcd372f799e4b9cc01886af';
   const local = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) || location.protocol === 'file:';
   let enabled = local;
+  let credential = '';
   function normalize(value) {
     const text = String(value || '').trim();
     if (/^https?:\/\//i.test(text)) {
@@ -23,6 +24,7 @@
     await ready;
     const token = normalize(value);
     if (!await valid(token)) throw Error('Código incorrecto. Revisalo e intentá nuevamente.');
+    credential = token;
     let persisted = true;
     try { localStorage.setItem(key, token); } catch (_) { persisted = false; }
     enabled = true;
@@ -35,6 +37,7 @@
     try {
       const token = supplied || localStorage.getItem(key);
       if (await valid(normalize(token))) {
+        credential = normalize(token);
         enabled = true;
         if (supplied) localStorage.setItem(key, supplied);
       }
@@ -49,5 +52,10 @@
     }
     return enabled;
   })();
-  globalThis.AventuraDeveloper = Object.freeze({get enabled() { return enabled; }, ready, activate});
+  async function activateOnline() {
+    await ready;
+    if (!credential) throw Error('Ingresá tu código personal en Acceso de desarrollador antes de activar Aren Unión online.');
+    return globalThis.GameWallet.activateAdmin(credential);
+  }
+  globalThis.AventuraDeveloper = Object.freeze({get enabled() { return enabled; }, ready, activate, activateOnline});
 })();

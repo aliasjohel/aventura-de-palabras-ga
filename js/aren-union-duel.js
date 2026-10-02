@@ -1,6 +1,7 @@
 (() => {
   document.getElementById('btnProbarUnionIntegrado').addEventListener('click',()=>{if(!modoPruebasActivo||!herramientasAutorDisponibles)return;ladoGanadorCinematicaVersus='jugador';void reproducirJuicioCristalesVersus(victimaPruebaFaucesVersus.value);});
-  const actor=document.getElementById('personajeVersusUno'),arena=actor.parentElement;
+  function prepararCapaUnion(actor){
+  const arena=actor.parentElement;
   const layer=document.createElement('div');layer.className='aren-union-duelo-capa';layer.hidden=true;layer.setAttribute('aria-hidden','true');
   const cape=new Image();cape.src='assets/images/trajes/aren-union-capa-v1.png';layer.append(cape);
   const gems=Array.from({length:5},(_,i)=>{
@@ -12,7 +13,7 @@
   arena.insertBefore(layer,actor);
   let follow=null;
   function update(){
-    const active=modoPruebasActivo&&herramientasAutorDisponibles&&actor.getAttribute('src')?.includes('/aren-union-');
+    const active=actor.getAttribute('src')?.includes('/aren-union-');
     layer.hidden=!active;if(!active){gems.forEach(gem=>gem.hidden=true);entranceStart=null;if(follow!==null)cancelAnimationFrame(follow);follow=null;return;}
     const style=getComputedStyle(actor),w=actor.offsetWidth,h=actor.offsetHeight;
     const ratio=(actor.naturalWidth||1152)/(actor.naturalHeight||1536);
@@ -46,4 +47,7 @@
   new MutationObserver(update).observe(actor,{attributes:true,attributeFilter:['src','class','style']});
   new ResizeObserver(update).observe(arena);
   window.addEventListener('costume-equipped',update);actor.addEventListener('load',update);
+  }
+  prepararCapaUnion(document.getElementById('personajeVersusUno'));
+  prepararCapaUnion(document.getElementById('personajeVersusDos'));
 })();

@@ -9,6 +9,10 @@
 [hidden] { display: none !important; }
 .acceso-desarrollador { margin: 16px 0; padding: 12px; border: 1px solid #d6bb7166; border-radius: 10px; text-align: left; }
 .acceso-desarrollador summary { cursor: pointer; min-height: 32px; }
+.tienda-trajes-catalogo button[hidden], #accesoUnionOnline[hidden] { display: none; }
+#accesoUnionOnline p { margin: 12px 0; font-size: 14px; line-height: 1.4; }
+#btnUnionOnline { width: 100%; min-height: 44px; }
+#estadoUnionOnline { overflow-wrap: anywhere; }
 #formActivarDesarrollador { display: grid; gap: 10px; margin-top: 12px; }
 #codigoDesarrollador { box-sizing: border-box; width: 100%; min-width: 0; padding: 12px; font-size: 16px; }
 #estadoAccesoDesarrollador { font-size: 14px; line-height: 1.4; }

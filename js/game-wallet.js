@@ -19,6 +19,7 @@
       const {data,error}=await client.rpc(name,args);
       check(id);
       if(error)throw Error(error.message||'No pudimos sincronizar las monedas. Reintentá con conexión.');
+      if(data?.activationError)throw Error(data.activationError);
       if(data?.userId!==id)throw Error('No pudimos verificar el saldo de tu cuenta.');
       return data;
     }
@@ -35,6 +36,13 @@
       return result;
     }
     const sync=matchId=>enqueue(id=>syncNow(id,matchId));
+    const adminAction=(name,args)=>enqueue(async id=>{
+      await syncNow(id);
+      const result=await rpc(id,name,args);
+      store.applyAccount(result);notify();return store.read();
+    });
+    const activateAdmin=code=>adminAction('activate_game_admin',{p_code:code});
+    const setAdminUnion=enabled=>adminAction('set_admin_union_access',{p_enabled:Boolean(enabled)});
     function schedule(){
       if(!userId)return;
       root.clearTimeout(timer);
@@ -58,7 +66,7 @@
     root.addEventListener?.('online',schedule);
     root.addEventListener?.('focus',schedule);
     root.document?.addEventListener('visibilitychange',()=>{if(!root.document.hidden)schedule();});
-    return Object.freeze({connect,sync});
+    return Object.freeze({connect,sync,activateAdmin,setAdminUnion});
   }
   return {create};
 });

@@ -17,6 +17,7 @@
     Object.freeze({id:'nivor-boreal',character:'dragon_hielo',hero:'Nivor',name:'Soberano Boreal',price:250,description:'Armadura de zafiro, filigranas de plata y una gema de aurora sobre el hielo.',poses:['base','ataque','impacto','vuelo','descenso-alto','descenso-bajo','frontal']}),
     Object.freeze({id:'azrak-eclipse',character:'azrak',hero:'Azrak',name:'Señor del Eclipse',price:250,description:'Armadura de obsidiana, filos de plata y una espada de fuego violeta.',poses:['base','ataque','impacto','invocacion','susto']}),
     Object.freeze({id:'kalamo-astral',character:'kalamo',hero:'Kálamo',name:'Escriba Astral',price:200,description:'Pergaminos azul noche, constelaciones de plata y tinta estelar.',poses:['base','ataque','habilidad','impacto','alcanza','extrae','prepara','lanza','golpea','formacion-1','formacion-2','formacion-3']}),
+    Object.freeze({id:'aren-union',character:'explorador',hero:'Aren',name:'Guardián de los Cinco Cristales',price:null,adminOnly:true,description:'Aren Unión. Acceso de administrador para probar duelos online.',poses:['base','invocacion','victoria']}),
   ]);
   const find=id=>catalog.find(item=>item.id===id);
   const cinemaPoses=Object.freeze(['planta','mano','vidrio','envejecido','anciano','final']);
@@ -48,12 +49,12 @@
       }
       let value;try{value=JSON.parse(raw);}catch(_){throw Error('No pudimos leer tus compras. No se cobró ninguna moneda.');}
       if(!value||typeof value!=='object')throw Error('No pudimos leer tus compras. No se cobró ninguna moneda.');
-      const owned=[...new Set((Array.isArray(value.owned)?value.owned:[]).filter(id=>find(id)))];
+      const owned=[...new Set((Array.isArray(value.owned)?value.owned:[]).filter(id=>find(id)&&(!find(id).adminOnly||(value.accountId&&value.adminUnion===true))))];
       const equipped=normalizeSkins(value.equipped);
       for(const char of Object.keys(equipped)) if(!owned.includes(equipped[char]))delete equipped[char];
       const state={coins:integer(value.coins),owned,equipped};
       if(typeof value.accountId==='string')Object.assign(state,{accountId:value.accountId,revision:Number.isSafeInteger(value.revision)?value.revision:-1,
-        pending:Array.isArray(value.pending)?value.pending:[],legacy:value.legacy||null,equipmentVersion:integer(value.equipmentVersion),equipmentDirty:Boolean(value.equipmentDirty)});
+        pending:Array.isArray(value.pending)?value.pending:[],legacy:value.legacy||null,equipmentVersion:integer(value.equipmentVersion),equipmentDirty:Boolean(value.equipmentDirty),admin:value.admin===true,adminUnion:value.adminUnion===true});
       return state;
     }
     function save(state){storage.setItem(key,JSON.stringify(state));if(state.accountId)storage.setItem(key+':account:'+state.accountId,JSON.stringify(state));return state;}
@@ -70,10 +71,14 @@
       const acknowledged=new Set(result.acknowledged||[]);
       const pending=state.pending.filter(e=>!acknowledged.has(e.id));
       const dirty=state.equipmentDirty&&state.equipmentVersion!==sentEquipmentVersion;
-      return save({...state,coins:integer(result.coins)+pending.reduce((sum,e)=>sum+e.amount,0),owned:result.owned.filter(id=>find(id)),
-        equipped:normalizeSkins(dirty?state.equipped:result.equipped),pending,revision:result.revision,legacy:null,equipmentDirty:dirty});
+      const owned=result.owned.filter(id=>find(id)&&(!find(id).adminOnly||result.adminUnion===true));
+      const equipped=normalizeSkins(dirty?state.equipped:result.equipped);
+      for(const character of Object.keys(equipped))if(!owned.includes(equipped[character]))delete equipped[character];
+      return save({...state,coins:integer(result.coins)+pending.reduce((sum,e)=>sum+e.amount,0),owned,
+        equipped,pending,revision:result.revision,legacy:null,equipmentDirty:dirty,admin:result.admin===true,adminUnion:result.adminUnion===true});
     }
     function canPurchase(id){
+      if(find(id)?.adminOnly)return false;
       if(find(id)?.character!=='azrak')return true;
       try {
         const unlocked=JSON.parse(storage.getItem('personajesDesbloqueadosAventuraGA')||'[]');
@@ -85,6 +90,7 @@
       const item=find(id);if(!item)throw Error('Este traje no está disponible.');
       const state=read();
       if(state.owned.includes(id))return state;
+      if(item.adminOnly)throw Error('Aren Unión requiere un desbloqueo de administrador.');
       if(!canPurchase(id))throw Error('Completá el Mundo 5 para desbloquear a Azrak y comprar su traje.');
       if(state.accountId){if(!purchaseHandler)throw Error('Conectate para comprar con las monedas de tu cuenta.');return purchaseHandler(id);}
       if(state.coins<item.price)throw Error(`Te faltan ${item.price-state.coins} monedas.`);

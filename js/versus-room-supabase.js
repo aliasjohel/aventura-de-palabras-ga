@@ -26,10 +26,22 @@
     let rivalTrajesSolicitado = null;
     function enviarTrajes() {
       if(!canalTrajes||!usuarioId||!raiz.CosmeticStore)return;
-      try { void canalTrajes.send({type:'broadcast',event:'outfit',payload:{player:usuarioId,skins:raiz.CosmeticStore.read().equipped}}).catch(()=>{}); }
+      try { void canalTrajes.send({type:'broadcast',event:'outfit',payload:{player:usuarioId}}).catch(()=>{}); }
       catch(_) { /* La apariencia local sigue disponible sin conexión. */ }
     }
     raiz.addEventListener?.('costume-equipped',enviarTrajes);
+    raiz.addEventListener?.('wallet-updated',enviarTrajes);
+    async function cargarTrajesSala() {
+      const roomId=salaActual?.id;
+      const rival=salaActual?.jugadores.find(player=>player.id!==usuarioId)?.id;
+      if(!roomId||!rival)return;
+      const {data,error}=await cliente.rpc('get_versus_room_costumes',{p_room_id:roomId});
+      if(error||salaActual?.id!==roomId||!salaActual.jugadores.some(player=>player.id===rival))return;
+      const next=raiz.CosmeticStore.normalizeSkins(data?.[rival]);
+      if(propietarioTrajesRival===rival&&JSON.stringify(next)===JSON.stringify(trajesRival))return;
+      trajesRival=next;propietarioTrajesRival=rival;
+      raiz.dispatchEvent?.(new Event('rival-costume-updated'));
+    }
     let canalSocial = null;
     let suscripcionAuth = null;
     let ultimaSalaInvitada = null;
@@ -299,6 +311,7 @@
         raiz.dispatchEvent?.(new Event('rival-costume-updated'));
       }
       recordarSala(salaActual.id);
+      if(raiz.CosmeticStore)await cargarTrajesSala();
       emitir(salaActual);
       if (["playing", "finished"].includes(salaActual.estado)) {
         await cargarPartida();
@@ -341,15 +354,13 @@
     async function escucharSala(roomId) {
       await detenerCanal();
       if(raiz.CosmeticStore){
-        // Sólo se intercambian IDs visuales del catálogo; nunca saldo, propiedad ni puntos.
+        // Broadcasts only request a refresh. Ownership and equipment come from the server.
         const canal=cliente.channel(`versus-outfits-${roomId}`);
         canalTrajes=canal;
         canal.on('broadcast',{event:'outfit'},({payload})=>{
           if(canalTrajes!==canal||salaActual?.id!==roomId||payload?.player===usuarioId)return;
           if(!salaActual.jugadores.some(player=>player.id===payload?.player))return;
-          trajesRival=raiz.CosmeticStore.normalizeSkins(payload.skins);
-          propietarioTrajesRival=payload.player;
-          raiz.dispatchEvent(new Event('rival-costume-updated'));
+          void cargarTrajesSala().catch(()=>{});
         }).on('broadcast',{event:'outfit-request'},()=>enviarTrajes()).subscribe(status=>{
           if(status==='SUBSCRIBED'&&canalTrajes===canal){
             enviarTrajes();void canal.send({type:'broadcast',event:'outfit-request',payload:{}}).catch(()=>{});
@@ -454,6 +465,8 @@
 
     async function actualizarPersonaje({ personaje, listo = true }) {
       if (!salaActual?.id) throw new Error("No hay una sala activa.");
+      if(raiz.GameWallet)await raiz.GameWallet.sync();
+      enviarTrajes();
       const { data, error } = await cliente.rpc("set_versus_character", {
         p_room_id: salaActual.id,
         p_character_key: personaje,
