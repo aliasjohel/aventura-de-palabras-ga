@@ -17840,3 +17840,6 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
 .union-corriente{position:absolute;left:0;top:0;z-index:20;overflow:visible;pointer-events:none;filter:drop-shadow(0 0 3px #38bfff)}
 .union-corriente path{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .union-corriente-halo{stroke:#51caff;stroke-width:4;opacity:.75}.union-corriente-nucleo{stroke:#f1fdff;stroke-width:1.4}.union-corriente-chispa{stroke:#ffe8a1;stroke-width:1.5}
+
+/* Size Zafir by cinematic height; the wide transparent canvas must not shrink him. */
+.cinematica-mago-eclipse{width:auto;max-width:none;height:110%;aspect-ratio:3/2;right:-12%;bottom:-6%}

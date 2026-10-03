@@ -13,7 +13,24 @@
   const gems=colors.map((color,i)=>{const el=new Image();el.src='assets/images/elements/cristal-sabiduria-esmeralda.png';el.alt='';el.className='gema';el.style.setProperty('--tono',i*65+'deg');el.style.setProperty('--orbita',i*72+'deg');el.style.setProperty('--color',color);$('cristales').append(el);return el;});
   for(let i=0;i<25;i++){const el=document.createElement('i');const a=i*2.399;el.style.cssText=`--color:${colors[i%5]};--dx:${Math.cos(a)*(110+i*5)}px;--dy:${Math.sin(a)*(100+i*4)}px;animation-delay:${i%4*.04}s`;$('fragmentos').append(el);}
   function alignPose(){ const src=body.getAttribute('src');$('aren').classList.toggle('pose-invocacion',src.includes('invocacion'));$('aren').classList.toggle('pose-disparo',src.includes('disparo')); }
-  new MutationObserver(alignPose).observe(body,{attributes:true,attributeFilter:['src']});
+  const cape=document.querySelector('.capa');
+  function alignCape(){
+    if(!body.naturalWidth||!body.naturalHeight)return;
+    const ratio=body.naturalWidth/body.naturalHeight;
+    const h=Math.min(body.offsetHeight,body.offsetWidth/ratio),w=h*ratio;
+    const src=body.getAttribute('src');
+    // Image-space shoulder anchors include the transparent margins of each pose.
+    const [sx,sy]=src.includes('invocacion')?[.46,.49]:src.includes('victoria')?[.42,.28]:[.56,.31];
+    const x=body.offsetLeft+(body.offsetWidth-w)/2+w*sx;
+    const y=body.offsetTop+(body.offsetHeight-h)/2+h*sy;
+    const ch=h*.52,cw=ch*1.5;
+    cape.style.width=cw+'px';cape.style.height=ch+'px';
+    cape.style.left=(x-cw*.87)+'px';cape.style.top=(y-ch*.24)+'px';
+  }
+  new MutationObserver(()=>{alignPose();alignCape();}).observe(body,{attributes:true,attributeFilter:['src']});
+  new ResizeObserver(alignCape).observe(body);
+  body.addEventListener('load',alignCape);
+  alignPose();alignCape();
   const preloads=['base-v1','invocacion-v1','victoria-v1','capa-v1','guardianes-solos-v3','rayo-v2','prision-v2','disparo-v2'].map(p=>{const img=new Image();img.src=dir+p+'.png';return img.decode();});
   let steps=[],timer=null,remaining=0,due=0,paused=false,version=0,pending=null;
   function orbit(){gems.forEach((g,i)=>{g.style.left=[18,30,43,14,45][i]+'%';g.style.top=[37,22,38,59,60][i]+'%';g.style.opacity='1';g.style.transform='scale(1)';});}

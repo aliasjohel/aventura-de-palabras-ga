@@ -25,3 +25,6 @@ body.integrada{padding:0;background:transparent}body.integrada header,body.integ
 @keyframes aparecerGuardian{from{opacity:0;filter:brightness(2) drop-shadow(0 0 18px var(--color))}to{opacity:.85;filter:brightness(1) drop-shadow(0 0 8px var(--color))}}
 @media(max-width:560px){.guardianes{inset:auto;left:0;top:20%;width:100%;height:auto;aspect-ratio:2.56;max-width:none;transform:none}.guardianes img{width:100%;height:100%}.union-reunion .aren{left:18%;width:66%;height:63%}}
 @media(prefers-reduced-motion:reduce){.guardianes img.presente{animation:none;opacity:.85}}
+
+/* Keep the cape fastened at the current sprite shoulder as Aren moves or changes pose. */
+.capa{object-fit:fill;transform-origin:87% 24%}
