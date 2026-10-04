@@ -14,7 +14,7 @@ body.integrada{padding:0;background:transparent}body.integrada header,body.integ
 
 .escena[data-mode=remate]{background:linear-gradient(#09061240,#09061260),url('../assets/images/fondos/reino-azrak/trono-v1.png') center/cover}.escena[data-mode=remate] .suelo{display:none}.encerrado:not(.estallido) .prision{opacity:.86}.encerrado .rival{filter:brightness(1.15) saturate(.55);height:53%;bottom:16%;width:20%;left:70%}.escena[data-mode=remate] .rotulo{background:linear-gradient(transparent,#100816a0,transparent);padding:4px}.escena[data-mode=remate] .rotulo strong{font-size:clamp(15px,2.7vw,25px)}@media(max-width:560px){.encerrado .rival{height:40%;bottom:16%;width:25%;left:69%}.union-rayo{left:35%;top:45%;width:48%;height:20%}}
 
-.aren.pose-disparo .capa{display:none}.aren.pose-disparo .cuerpo{inset:0;width:100%;height:100%;object-fit:contain}
+.aren.pose-disparo .cuerpo{inset:0;width:100%;height:100%;object-fit:contain}
 
 .union-rayo{left:41%;top:41%;width:43%;height:24%}@media(max-width:560px){.union-rayo{left:45%;top:47%;width:39%;height:18%}}
 

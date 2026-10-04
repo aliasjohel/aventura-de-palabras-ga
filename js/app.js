@@ -7124,7 +7124,7 @@ function recursosPersonajeCombate(personaje) {
     azrak: [srcAzrakAtaqueVersus], kalamo: [srcKalamoAtaqueVersus, srcKalamoHabilidadVersus], kairos: [srcKairosAtaqueVersus],
   };
   const trajes=[trajePersonajeVersus(personajeVersusUno,personaje),trajePersonajeVersus(personajeVersusDos,personaje)].filter(Boolean);
-  const extras=trajes.flatMap(id=>(id==='aren-union'?['base','invocacion','victoria','capa']:CosmeticStore.find(id).poses).map(pose=>CosmeticStore.asset(id,pose)));
+  const extras=trajes.flatMap(id=>(id==='aren-union'?['base','ataque','invocacion','victoria','capa']:CosmeticStore.find(id).poses).map(pose=>CosmeticStore.asset(id,pose)));
   return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || []),...extras].filter(Boolean);
 }
 async function prepararImagenesCombate(personajes) {
@@ -7635,7 +7635,7 @@ async function iniciarEntradaDueloVersus() {
 function reproducirEspadaUnionVersus(lado) {
   const jugador=lado==='jugador',actor=jugador?personajeVersusUno:personajeVersusDos,rival=jugador?personajeVersusDos:personajeVersusUno;
   if(jugador)limpiarAnimacionAtaqueJugadorVersus();else limpiarAnimacionAtaqueRivalVersus();
-  establecerPoseCombateVersus(actor,'ataque',srcExploradorPreparaBumeran);
+  establecerPoseCombateVersus(actor,'ataque',srcExploradorLanzaBumeran);
   actor.classList.add('espada-union-atacando');
   const arco=document.createElement('div');arco.className='arco-espada-union '+(jugador?'':'desde-rival');actor.parentElement.append(arco);
   arco.addEventListener('animationend',()=>arco.remove(),{once:true});

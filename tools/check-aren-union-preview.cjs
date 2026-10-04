@@ -29,7 +29,7 @@ await page.clock.runFor(1100);assert(await page.locator('#escena').evaluate(el=>
 const height=await page.locator('#rival').evaluate(el=>el.getBoundingClientRect().height/innerHeight);assert(height>(viewport.width<560?.4:.5));
 await page.screenshot({path:path.join(root,'tools/union-sello-'+viewport.width+'-'+(victim.includes('celestial')?'celestial':'zafir')+'.png'),animations:'disabled'});
 await page.clock.runFor(1700);assert.match(await page.locator('#cuerpo').getAttribute('src'),/disparo/);assert(await page.locator('#escena').evaluate(el=>el.classList.contains('disparando')&&!el.classList.contains('estallido')));
-await page.clock.runFor(300);assert(await page.locator('#escena').evaluate(el=>el.classList.contains('estallido')));assert.match(await page.locator('#cuerpo').getAttribute('src'),/disparo/);
+await page.locator('#cuerpo').evaluate(img=>img.decode());await assertCapeAttached(page);assert.notEqual(await page.locator('.capa').evaluate(el=>getComputedStyle(el).display),'none');await page.clock.runFor(300);assert(await page.locator('#escena').evaluate(el=>el.classList.contains('estallido')));assert.match(await page.locator('#cuerpo').getAttribute('src'),/disparo/);
 await page.screenshot({path:path.join(root,'tools/union-destruccion-'+viewport.width+'.png'),animations:'disabled'});
 await page.clock.runFor(1900);assert(await page.locator('#escena').evaluate(el=>el.classList.contains('victoria')));await assertCapeAttached(page);assert.deepEqual(errors,[]);await page.close();
 }console.log('PASS: Zafir original/celestial scale, orbit centered on Aren, crystal seal without beam, single shot with extended arms, shatter and victory in both orientations');
