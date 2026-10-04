@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v330`;
+const CACHE_NAME = `${CACHE_PREFIX}v331`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -736,15 +736,15 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
-"./assets/images/trajes/aren-union-guardianes-solos-v3.png": "20261002-union-capa-1",
+"./assets/images/trajes/aren-union-guardianes-solos-v3.png": "20261004-union-sello-1",
 "./assets/images/trajes/aren-union-guardianes-v2.png": "20261002-cinematicas-escala-1",
 "./assets/images/trajes/aren-union-rayo-v2.png": "20261002-cinematicas-escala-1",
 "./assets/images/trajes/aren-union-prision-v2.png": "20261002-cinematicas-escala-1",
 "./assets/images/trajes/aren-union-disparo-v2.png": "20261002-cinematicas-escala-1",
 "./assets/images/trajes/aren-union-concepto-v1.png": "20261002-cinematicas-escala-1",
-"./prueba-aren-union.html": "20261002-union-capa-1",
-"./js/aren-union-preview.js": "20261002-union-capa-1",
-"./css/aren-union-preview.css": "20261002-union-capa-1",
+"./prueba-aren-union.html": "20261004-union-sello-1",
+"./js/aren-union-preview.js": "20261004-union-sello-1",
+"./css/aren-union-preview.css": "20261004-union-sello-1",
 "./js/aren-union-duel.js": "20261002-cinematicas-escala-1",
 "./assets/images/trajes/aren-union-base-v1.png": "20261002-cinematicas-escala-1",
 "./assets/images/trajes/aren-union-capa-v1.png": "20261002-cinematicas-escala-1",

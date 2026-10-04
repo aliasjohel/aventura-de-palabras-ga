@@ -10,7 +10,7 @@ body.integrada{padding:0;background:transparent}body.integrada header,body.integ
 .union-rayo{position:absolute;pointer-events:none;opacity:0}.union-rayo{left:34%;top:34%;width:51%;height:30%;object-fit:fill;z-index:7}.disparando .union-rayo{opacity:1;animation:rayoUnion 1.1s ease-out both}.prision{object-fit:fill;filter:drop-shadow(0 0 16px #be77ff)}.estallido .prision{animation:romperSelloUnion .9s ease-in both}.fragmentos i{background:url('../assets/images/trajes/aren-union-prision-v2.png') center/cover;filter:drop-shadow(0 0 4px #cd9dff);width:3%;height:8%}.gema{background:none;clip-path:none;object-fit:contain;filter:hue-rotate(var(--tono)) drop-shadow(0 0 8px var(--color))}.gema:after{display:none}.guardianes-activos:not(.estallido) .gema{left:31%!important;top:47%!important;animation:orbitarCristalesUnion 1.8s linear infinite;}.escena[data-mode=remate] .suelo{opacity:.3}
 @keyframes orbitarCristalesUnion{from{transform:rotate(var(--orbita)) translateX(clamp(45px,10vw,110px)) rotate(calc(-1 * var(--orbita)))}to{transform:rotate(calc(var(--orbita) + 360deg)) translateX(clamp(45px,10vw,110px)) rotate(calc(-1 * var(--orbita) - 360deg))}}@keyframes rayoUnion{0%{opacity:0;clip-path:inset(0 100% 0 0)}25%,80%{opacity:1;clip-path:inset(0);filter:brightness(1.4)}100%{opacity:0;clip-path:inset(0)}}@keyframes romperSelloUnion{0%{opacity:1;transform:scale(1);filter:brightness(1)}30%{opacity:1;transform:scale(1.04);filter:brightness(3)}100%{opacity:0;transform:scale(1.45);filter:brightness(4)}}@media(prefers-reduced-motion:reduce){.union-rayo,.gema,.estallido .prision{animation:none!important}.disparando .union-rayo{opacity:1}}
 
-.rompiendo .union-rayo{opacity:1;animation:rayoUnion .85s ease-out both}
+
 
 .escena[data-mode=remate]{background:linear-gradient(#09061240,#09061260),url('../assets/images/fondos/reino-azrak/trono-v1.png') center/cover}.escena[data-mode=remate] .suelo{display:none}.encerrado:not(.estallido) .prision{opacity:.86}.encerrado .rival{filter:brightness(1.15) saturate(.55);height:53%;bottom:16%;width:20%;left:70%}.escena[data-mode=remate] .rotulo{background:linear-gradient(transparent,#100816a0,transparent);padding:4px}.escena[data-mode=remate] .rotulo strong{font-size:clamp(15px,2.7vw,25px)}@media(max-width:560px){.encerrado .rival{height:40%;bottom:16%;width:25%;left:69%}.union-rayo{left:35%;top:45%;width:48%;height:20%}}
 
@@ -28,3 +28,11 @@ body.integrada{padding:0;background:transparent}body.integrada header,body.integ
 
 /* Keep the cape fastened at the current sprite shoulder as Aren moves or changes pose. */
 .capa{object-fit:fill;transform-origin:87% 24%}
+
+/* The orbit follows Aren's center; the crystals travel to seal the rival before the single shot. */
+.guardianes-activos.union-reunion .gema{left:49%!important;top:55%!important}
+.guardianes-activos:not(.union-reunion):not(.estallido) .gema{left:78%!important;top:49%!important;animation:orbitarCristalesUnion 1.8s linear infinite}
+.cristales-sellando .gema{filter:hue-rotate(var(--tono)) brightness(1.6) drop-shadow(0 0 14px var(--color))}
+.rival,.encerrado .rival{left:80%;bottom:12%;height:60%;width:auto;max-width:32%;object-fit:contain;transform:translateX(-50%) scaleX(-1)}
+.encerrado .rival{height:55%;bottom:16%}
+@media(max-width:560px){.rival{height:48%;bottom:10%;max-width:34%}.encerrado .rival{height:44%;bottom:15%}}
