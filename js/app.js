@@ -7103,7 +7103,14 @@ function actualizarPoseCombateVersus(elemento, personaje = elemento === personaj
   const herido = elemento.classList.contains("recibiendo-dano") || elemento.classList.contains("recibiendo-dano-magico");
   const original = poses.habilidad || poses.ataque || (herido && posesDanoPersonajeVersus[personaje]) || personajesVersus[personaje]?.base;
   const src = spriteTrajeVersus(elemento,personaje,original,herido);
-  if (src && !elemento.src.endsWith(src)) elemento.src = src;
+  if (src && !elemento.src.endsWith(src)) {
+    const union=src.includes('/aren-union-')||elemento.getAttribute('src')?.includes('/aren-union-');
+    if(union)elemento.setAttribute('data-cambiando-pose','');
+    elemento.src=src;
+    if(union)elemento.decode().then(()=>{
+      if(elemento.getAttribute('src')===src)elemento.removeAttribute('data-cambiando-pose');
+    }).catch(()=>{if(elemento.getAttribute('src')===src)elemento.removeAttribute('data-cambiando-pose');});
+  }
 }
 function establecerPoseCombateVersus(elemento, tipo, src) {
   const poses = posesCombateVersus.get(elemento) || {};
@@ -9393,6 +9400,8 @@ function reproducirJuicioCristalesVersus(victima) {
   const clave=personajesVersus[victima]?victima:'mago';
   const sprite=imagenTrajeFinalVersus(clave,'base',personajesVersus[clave].base);
   frame.src='prueba-aren-union.html?integrado=1&victima='+encodeURIComponent(sprite);
+  personajeVersusUno.parentElement.classList.add('union-cinematica-activa');
+  limpiarAnimacionAtaqueJugadorVersus();limpiarAnimacionAtaqueRivalVersus();
   cinematicaFinalVersus.append(frame);
   cinematicaFinalVersus.classList.add('juicio-cristales','activa');cinematicaFinalVersus.classList.remove('oculto');
   reproducirSonidoVersus('versusFinish', 0.82);
@@ -9761,6 +9770,7 @@ function reproducirSiglosEnUnSegundoVersus(victima = personajeRivalVersus) {
 function completarCinematicaFinalVersus() {
   cinematicaFinalVersus.querySelector(".aren-union-final-integrado")?.remove();
   cinematicaFinalVersus.classList.remove("juicio-cristales");
+  personajeVersusUno.parentElement.classList.remove("union-cinematica-activa");
   detenerSeguimientoRayoAlba();
   if (demoVersus.temporizadorReaccionCinematica) {
     clearTimeout(demoVersus.temporizadorReaccionCinematica);
@@ -9799,6 +9809,7 @@ function completarCinematicaFinalVersus() {
 function cancelarCinematicaFinalVersus() {
   cinematicaFinalVersus.querySelector(".aren-union-final-integrado")?.remove();
   cinematicaFinalVersus.classList.remove("juicio-cristales");
+  personajeVersusUno.parentElement.classList.remove("union-cinematica-activa");
   detenerSeguimientoRayoAlba();
   ocultarAnuncioFinVersus();
   if (demoVersus.temporizadorReaccionCinematica) {

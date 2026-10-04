@@ -14,7 +14,7 @@
   let follow=null;
   function update(){
     const active=actor.getAttribute('src')?.includes('/aren-union-');
-    layer.hidden=!active;if(!active){gems.forEach(gem=>gem.hidden=true);entranceStart=null;if(follow!==null)cancelAnimationFrame(follow);follow=null;return;}
+    layer.hidden=!active||actor.hasAttribute('data-cambiando-pose');if(!active){gems.forEach(gem=>gem.hidden=true);entranceStart=null;if(follow!==null)cancelAnimationFrame(follow);follow=null;return;}
     const style=getComputedStyle(actor),w=actor.offsetWidth,h=actor.offsetHeight;
     const ratio=(actor.naturalWidth||1152)/(actor.naturalHeight||1536);
     const ih=Math.min(h,w/ratio),iw=ih*ratio;
@@ -44,7 +44,7 @@
     if(follow===null)follow=requestAnimationFrame(tick);
   }
   function tick(){follow=null;update();}
-  new MutationObserver(update).observe(actor,{attributes:true,attributeFilter:['src','class','style']});
+  new MutationObserver(update).observe(actor,{attributes:true,attributeFilter:['src','class','style','data-cambiando-pose']});
   new ResizeObserver(update).observe(arena);
   window.addEventListener('costume-equipped',update);actor.addEventListener('load',update);
   }

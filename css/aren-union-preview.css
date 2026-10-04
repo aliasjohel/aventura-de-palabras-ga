@@ -38,3 +38,5 @@ body.integrada{padding:0;background:transparent}body.integrada header,body.integ
 @media(max-width:560px){.rival{height:48%;bottom:10%;max-width:34%}.encerrado .rival{height:44%;bottom:15%}}
 
 .ataque .union-rayo{left:var(--mano-x);top:var(--mano-y);width:var(--rayo-ancho);height:12%;transform:translateY(-50%);opacity:1;animation:rayoUnion .7s ease-out both}
+
+.aren.pose-cambiando .cuerpo,.aren.pose-cambiando .capa{visibility:hidden}

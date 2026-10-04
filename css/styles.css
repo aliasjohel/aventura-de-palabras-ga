@@ -17850,3 +17850,7 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
 @media(prefers-reduced-motion:reduce){.rayo-union-atacando{animation:none!important}.rayo-basico-union{animation:none;opacity:1}}
 
 .versus-personaje-dos.rayo-union-atacando{transform:scaleX(-1)}
+
+.versus-personaje[data-cambiando-pose]{visibility:hidden}
+.union-cinematica-activa>.versus-personaje,.union-cinematica-activa>.aren-union-duelo-capa,.union-cinematica-activa>.aren-union-cristal-entrada{visibility:hidden}
+.cinematica-final-versus.juicio-cristales>:not(.aren-union-final-integrado):not(#btnSaltarCinematicaVersus){visibility:hidden}

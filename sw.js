@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v334`;
+const CACHE_NAME = `${CACHE_PREFIX}v335`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -745,9 +745,9 @@ const ASSET_REVISIONS = {
 "./assets/images/trajes/aren-union-disparo-v2.png": "20261002-cinematicas-escala-1",
 "./assets/images/trajes/aren-union-concepto-v1.png": "20261002-cinematicas-escala-1",
 "./prueba-aren-union.html": "20261004-union-sello-1",
-"./js/aren-union-preview.js": "20261004-union-rayo-basico-1",
-"./css/aren-union-preview.css": "20261004-union-rayo-basico-1",
-"./js/aren-union-duel.js": "20261002-cinematicas-escala-1",
+"./js/aren-union-preview.js": "20261004-union-pose-unica-1",
+"./css/aren-union-preview.css": "20261004-union-pose-unica-1",
+"./js/aren-union-duel.js": "20261004-union-pose-unica-1",
 "./assets/images/trajes/aren-union-base-v1.png": "20261002-cinematicas-escala-1",
 "./assets/images/trajes/aren-union-capa-v1.png": "20261002-cinematicas-escala-1",
 "./assets/images/trajes/aren-union-invocacion-v1.png": "20261002-cinematicas-escala-1",
@@ -783,8 +783,8 @@ const ASSET_REVISIONS = {
   "./js/player-avatar.js": "20260922-medallas-3",
   "./css/versus-identity.css": "20260915-social-1",
   "./js/versus-identity.js": "20260915-social-1",
-  "./css/styles.css": "20261004-union-rayo-basico-1",
-  "./js/app.js": "20261004-union-rayo-basico-1",
+  "./css/styles.css": "20261004-union-pose-unica-1",
+  "./js/app.js": "20261004-union-pose-unica-1",
   "./js/versus-room.js": "20260922-alias-1",
   "./js/public-player-profile.js": "20260922-medallas-3",
   "./js/azrak-world.js": "20260913-shadow-runas-2",
