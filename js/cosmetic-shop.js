@@ -53,7 +53,7 @@
   }
   for(const item of store.catalog){
     const b=document.createElement('button');b.type='button';b.dataset.skin=item.id;
-    const img=document.createElement('img');img.src=store.asset(item.id);img.alt='';img.loading='lazy';
+    const img=document.createElement('img');img.src=store.previewAsset(item.id);img.alt='';img.loading='lazy';
     const hero=document.createElement('span');hero.textContent=item.hero;
     const title=document.createElement('strong');title.textContent=item.name;
     b.append(img,hero,title,document.createElement('small'));

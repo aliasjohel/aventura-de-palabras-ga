@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v331`;
+const CACHE_NAME = `${CACHE_PREFIX}v332`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -773,7 +773,7 @@ const ASSET_REVISIONS = {
   "./": "20261002-cinematicas-escala-1",
   "./index.html": "20261002-cinematicas-escala-1",
   "./js/cosmetic-store.js": "20261002-cinematicas-escala-1",
-  "./js/cosmetic-shop.js": "20261002-cinematicas-escala-1",
+  "./js/cosmetic-shop.js": "20261004-tienda-capa-1",
   "./css/cosmetic-shop.css": "20261002-cinematicas-escala-1",
   "./js/game-wallet.js": "20261002-cinematicas-escala-1",
   "./js/prologue-cinematic.js": "20260921-tienda-1",
