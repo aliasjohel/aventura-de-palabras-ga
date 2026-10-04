@@ -7248,8 +7248,8 @@ function restaurarPoseBasePersonajeVersus(elemento, personaje) {
 }
 
 function limpiarAnimacionAtaqueJugadorVersus() {
-  personajeVersusUno.classList.remove("espada-union-atacando");
-  personajeVersusUno.parentElement.querySelector(".arco-espada-union:not(.desde-rival)")?.remove();
+  personajeVersusUno.classList.remove("rayo-union-atacando");
+  personajeVersusUno.parentElement.querySelector(".rayo-basico-union:not(.desde-rival)")?.remove();
   demoVersus.temporizadoresAtaqueJugador.forEach(clearTimeout);
   demoVersus.temporizadoresAtaqueJugador = [];
   establecerPoseCombateVersus(personajeVersusUno, "ataque", null);
@@ -7286,8 +7286,8 @@ function limpiarAnimacionAtaqueJugadorVersus() {
 }
 
 function limpiarAnimacionAtaqueRivalVersus() {
-  personajeVersusDos.classList.remove("espada-union-atacando");
-  personajeVersusDos.parentElement.querySelector(".arco-espada-union.desde-rival")?.remove();
+  personajeVersusDos.classList.remove("rayo-union-atacando");
+  personajeVersusDos.parentElement.querySelector(".rayo-basico-union.desde-rival")?.remove();
   demoVersus.temporizadoresAtaqueRival.forEach(clearTimeout);
   demoVersus.temporizadoresAtaqueRival = [];
   establecerPoseCombateVersus(personajeVersusDos, "ataque", null);
@@ -7632,20 +7632,33 @@ async function iniciarEntradaDueloVersus() {
   programarPasoEntradaVersus(finalizarEntradaDueloVersus, duracion);
 }
 
-function reproducirEspadaUnionVersus(lado) {
+function reproducirRayoUnionVersus(lado) {
   const jugador=lado==='jugador',actor=jugador?personajeVersusUno:personajeVersusDos,rival=jugador?personajeVersusDos:personajeVersusUno;
   if(jugador)limpiarAnimacionAtaqueJugadorVersus();else limpiarAnimacionAtaqueRivalVersus();
   establecerPoseCombateVersus(actor,'ataque',srcExploradorLanzaBumeran);
-  actor.classList.add('espada-union-atacando');
-  const arco=document.createElement('div');arco.className='arco-espada-union '+(jugador?'':'desde-rival');actor.parentElement.append(arco);
-  arco.addEventListener('animationend',()=>arco.remove(),{once:true});
+  actor.classList.add('rayo-union-atacando');
+  const arco=new Image();arco.className='rayo-basico-union '+(jugador?'':'desde-rival');
+  arco.src='assets/images/trajes/aren-union-rayo-v2.png';arco.alt='';arco.setAttribute('aria-hidden','true');actor.parentElement.append(arco);
+  function alinearRayo(){
+    if(!arco.isConnected)return;
+    const arena=actor.parentElement.getBoundingClientRect(),a=actor.getBoundingClientRect(),b=rival.getBoundingClientRect();
+    const ratio=(actor.naturalWidth||1152)/(actor.naturalHeight||1536),h=Math.min(a.height,a.width/ratio),w=h*ratio;
+    const flip=new DOMMatrixReadOnly(getComputedStyle(actor).transform).a<0;
+    const x=a.left+(a.width-w)/2+w*(flip?1-.95:.95),y=a.bottom-h+h*.334;
+    const tx=b.left+b.width*.5,ty=b.top+b.height*.48,dx=tx-x,dy=ty-y;
+    arco.style.left=(x-arena.left)+'px';arco.style.top=(y-arena.top)+'px';
+    arco.style.width=Math.hypot(dx,dy)+'px';arco.style.height=Math.max(28,h*.19)+'px';
+    arco.style.transform='translateY(-50%) rotate('+Math.atan2(dy,dx)+'rad)';
+    requestAnimationFrame(alinearRayo);
+  }
+  alinearRayo();
   reproducirSonidoVersus('versusAtaqueUno',.72);
   programarPasoAtaqueVersus(()=>{rival.classList.add('recibiendo-dano');reproducirSonidoVersus('versusAtaqueDos',.76);},380,lado);
-  programarPasoAtaqueVersus(()=>{rival.classList.remove('recibiendo-dano');actor.classList.remove('espada-union-atacando');arco.remove();if(jugador)limpiarAnimacionAtaqueJugadorVersus();else limpiarAnimacionAtaqueRivalVersus();},950,lado);
+  programarPasoAtaqueVersus(()=>{rival.classList.remove('recibiendo-dano');actor.classList.remove('rayo-union-atacando');arco.remove();if(jugador)limpiarAnimacionAtaqueJugadorVersus();else limpiarAnimacionAtaqueRivalVersus();},950,lado);
 }
 
 function reproducirAtaqueBumeranVersus() {
-  if (trajePersonajeVersus(personajeVersusUno,'explorador')==='aren-union') return reproducirEspadaUnionVersus('jugador');
+  if (trajePersonajeVersus(personajeVersusUno,'explorador')==='aren-union') return reproducirRayoUnionVersus('jugador');
   limpiarAnimacionAtaqueJugadorVersus();
   herramientasPruebasVersus.classList.add("ataque-en-curso");
 
@@ -8066,7 +8079,7 @@ function reproducirAtaqueMagoVersus() {
 }
 
 function reproducirAtaqueExploradorRivalVersus() {
-  if (trajePersonajeVersus(personajeVersusDos,'explorador')==='aren-union') return reproducirEspadaUnionVersus('rival');
+  if (trajePersonajeVersus(personajeVersusDos,'explorador')==='aren-union') return reproducirRayoUnionVersus('rival');
   limpiarAnimacionAtaqueRivalVersus();
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

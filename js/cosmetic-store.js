@@ -28,7 +28,7 @@
     return result;
   }
   function asset(id,pose='base'){
-    if(id==='aren-union'&&pose==='ataque')return 'assets/images/trajes/aren-union-ataque-v1.png';
+    if(id==='aren-union'&&pose==='ataque')return 'assets/images/trajes/aren-union-ataque-rayo-v2.png';
     if(id==='aren-union')return `assets/images/trajes/aren-union-${['invocacion','victoria','capa'].includes(pose)?pose:pose==='final'?'victoria':'base'}-v1.png`;
     const item=find(id);if(!item)return null;
     if(id==='kairos-real'&&pose==='final')pose='ataque';

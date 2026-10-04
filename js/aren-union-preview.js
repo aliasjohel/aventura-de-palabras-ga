@@ -44,7 +44,16 @@
   new ResizeObserver(alignCape).observe(body);
   body.addEventListener('load',alignCape);
   alignPose();alignCape();
-  const preloads=['base-v1','invocacion-v1','victoria-v1','capa-v1','guardianes-solos-v3','rayo-v2','prision-v2','disparo-v2','ataque-v1'].map(p=>{const img=new Image();img.src=dir+p+'.png';return img.decode();});
+  function alignBasicRay(){
+    const bounds=scene.getBoundingClientRect(),a=body.getBoundingClientRect(),ratio=body.naturalWidth/body.naturalHeight;
+    if(!ratio)return;const h=Math.min(a.height,a.width/ratio),w=h*ratio;
+    const x=a.left+(a.width-w)/2+w*.95,y=a.top+(a.height-h)/2+h*.334;
+    scene.style.setProperty('--mano-x',((x-bounds.left)/bounds.width*100)+'%');
+    scene.style.setProperty('--mano-y',((y-bounds.top)/bounds.height*100)+'%');
+    scene.style.setProperty('--rayo-ancho',Math.max(0,bounds.width*.8-(x-bounds.left))+'px');
+  }
+  body.addEventListener('load',alignBasicRay);new ResizeObserver(alignBasicRay).observe(scene);
+  const preloads=['base-v1','invocacion-v1','victoria-v1','capa-v1','guardianes-solos-v3','rayo-v2','prision-v2','disparo-v2','ataque-rayo-v2'].map(p=>{const img=new Image();img.src=dir+p+'.png';return img.decode();});
   let steps=[],timer=null,remaining=0,due=0,paused=false,version=0,pending=null;
   function orbit(){gems.forEach((g,i)=>{g.style.left=[18,30,43,14,45][i]+'%';g.style.top=[37,22,38,59,60][i]+'%';g.style.opacity='1';g.style.transform='scale(1)';});}
   function title(t,label){$('titulo').textContent=t;$('fase').textContent=label;}
@@ -53,7 +62,7 @@
   function resume(){if(pending){const fn=pending;pending=null;fn();next();}}
   async function start(mode){const token=++version;stop();await Promise.all([...preloads,rivalReady]);if(token!==version)return;scene.dataset.mode=mode;title('Aren y su capa de energía','EL PODER DE LA UNIÓN');$('estado').textContent='Prueba visual · sin compras ni cambios en tu partida.';
     if(mode==='duelo'){gems.forEach(g=>g.style.opacity='.35');return;}
-    if(mode==='ataque'){scene.classList.add('ataque');body.src=dir+'ataque-v1.png';steps=[[700,()=>{scene.classList.remove('ataque');body.src=dir+'base-v1.png';}]];next();return;}
+    if(mode==='ataque'){scene.classList.add('ataque');body.src=dir+'ataque-rayo-v2.png';steps=[[700,()=>{scene.classList.remove('ataque');body.src=dir+'base-v1.png';}]];next();return;}
     if(mode==='entrada'){scene.classList.add('entrada');title('El poder de los cinco cristales','ENTRADA DE AREN');steps=[[800,()=>{body.src=dir+'invocacion-v1.png';}],[1200,()=>{gems.forEach(g=>{g.style.left='49%';g.style.top='55%';g.style.transform='scale(.3)';});}],[1000,()=>{body.src=dir+'base-v1.png';gems.forEach(g=>g.style.opacity='0');title('Guardián de los Cinco Cristales','LISTO PARA EL DUELO');}]];next();return;}
     title('Aren reúne su poder','JUICIO DE LOS CINCO CRISTALES');scene.classList.add('aren-solo','union-reunion');
     steps=[[1800,()=>{scene.classList.remove('aren-solo');scene.classList.add('guardianes-activos');alignEnergy();revealGuardian(0);title('Los guardianes responden','EL PODER DE LA UNIÓN');}],[400,()=>revealGuardian(1)],[400,()=>revealGuardian(2)],[400,()=>revealGuardian(3)],[400,()=>revealGuardian(4)],[300,()=>{body.src=dir+'invocacion-v1.png';title('La unión concentra su energía','LOS CINCO GUARDIANES');}],[1700,()=>{scene.classList.remove('union-reunion');scene.classList.add('cristales-sellando');body.src=dir+'invocacion-v1.png';title('Los cristales rodean al rival','PRISIÓN DE LOS CINCO CRISTALES');}],[1100,()=>{scene.classList.remove('cristales-sellando');scene.classList.add('encerrado');title('Prisión de cristal','EL RIVAL QUEDA SELLADO');}],[1700,()=>{scene.classList.add('disparando');body.src=dir+'disparo-v2.png';title('Aren quiebra el sello','RAYO DE LA UNIÓN');}],[300,()=>{scene.classList.add('estallido');title('El cristal se rompe','JUICIO DE LA UNIÓN');}],[800,()=>{scene.classList.remove('guardianes-activos','disparando');body.src=dir+'victoria-v1.png';gems.forEach(g=>{g.style.left='32%';g.style.top='56%';});title('La energía regresa a Aren','LOS CRISTALES VUELVEN');}],[1100,()=>{scene.classList.add('victoria');gems.forEach(g=>{g.style.left='49%';g.style.opacity='0';g.style.transform='scale(.2)';});title('Guardián de los Cinco Cristales','VICTORIA');if(embedded)steps.push([1200,()=>parent.postMessage('aren-union-final-listo',location.origin)]);}]];next();

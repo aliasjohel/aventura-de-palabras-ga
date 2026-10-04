@@ -36,3 +36,5 @@ body.integrada{padding:0;background:transparent}body.integrada header,body.integ
 .rival,.encerrado .rival{left:80%;bottom:12%;height:60%;width:auto;max-width:32%;object-fit:contain;transform:translateX(-50%) scaleX(-1)}
 .encerrado .rival{height:55%;bottom:16%}
 @media(max-width:560px){.rival{height:48%;bottom:10%;max-width:34%}.encerrado .rival{height:44%;bottom:15%}}
+
+.ataque .union-rayo{left:var(--mano-x);top:var(--mano-y);width:var(--rayo-ancho);height:12%;transform:translateY(-50%);opacity:1;animation:rayoUnion .7s ease-out both}
