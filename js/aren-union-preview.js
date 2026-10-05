@@ -34,7 +34,7 @@
       alignCape();alignBasicRay();$('aren').classList.remove('pose-cambiando');
     }).catch(()=>{if(body.getAttribute('src')===src)$('aren').classList.remove('pose-cambiando');});
   }
-  function alignPose(){ const src=body.getAttribute('src');$('aren').classList.toggle('pose-invocacion',src.includes('invocacion'));$('aren').classList.toggle('pose-disparo',src.includes('disparo')); }
+  function alignPose(){ const src=body.getAttribute('src');$('aren').classList.toggle('capa-integrada',/aren-union-(disparo-v2|ataque-rayo-v2|concepto-v1)\.png$/.test(src));$('aren').classList.toggle('pose-invocacion',src.includes('invocacion'));$('aren').classList.toggle('pose-disparo',src.includes('disparo')); }
   const cape=document.querySelector('.capa');
   function alignCape(){
     if(!body.naturalWidth||!body.naturalHeight)return;

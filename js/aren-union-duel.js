@@ -14,7 +14,8 @@
   let follow=null;
   function update(){
     const active=actor.getAttribute('src')?.includes('/aren-union-');
-    layer.hidden=!active||actor.hasAttribute('data-cambiando-pose');if(!active){gems.forEach(gem=>gem.hidden=true);entranceStart=null;if(follow!==null)cancelAnimationFrame(follow);follow=null;return;}
+    const capeIncluded=/aren-union-(disparo-v2|ataque-rayo-v2|ataque-v1|concepto-v1)\.png$/.test(actor.getAttribute('src')||'');
+    layer.hidden=!active||capeIncluded||actor.hasAttribute('data-cambiando-pose');if(!active){gems.forEach(gem=>gem.hidden=true);entranceStart=null;if(follow!==null)cancelAnimationFrame(follow);follow=null;return;}
     const style=getComputedStyle(actor),w=actor.offsetWidth,h=actor.offsetHeight;
     const ratio=(actor.naturalWidth||1152)/(actor.naturalHeight||1536);
     const ih=Math.min(h,w/ratio),iw=ih*ratio;

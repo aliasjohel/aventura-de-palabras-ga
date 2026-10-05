@@ -40,3 +40,6 @@ body.integrada{padding:0;background:transparent}body.integrada header,body.integ
 .ataque .union-rayo{left:var(--mano-x);top:var(--mano-y);width:var(--rayo-ancho);height:12%;transform:translateY(-50%);opacity:1;animation:rayoUnion .7s ease-out both}
 
 .aren.pose-cambiando .cuerpo,.aren.pose-cambiando .capa{visibility:hidden}
+
+/* Casting sprites already contain their cape; keep only that cape in those poses. */
+.aren.capa-integrada .capa{display:none}
