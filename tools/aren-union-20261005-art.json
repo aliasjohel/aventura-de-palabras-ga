@@ -1,0 +1,41 @@
+{
+  "method": "built-in image_gen; transparent_background true; original alpha preserved; no external API",
+  "date": "2026-10-05",
+  "ability": {
+    "asset": "assets/images/trajes/aren-union-habilidad-v1.png",
+    "prompt": "Edit target: the supplied transparent Aren Union game sprite. Make a new ability pose: same exact young boy, face, brown explorer hat, blue scarf, brown gold rune clothes, golden flowing cape and lowered crystal sword. Full body facing RIGHT, entire character with margins, same proportions and framing. Change casting hand from open palm to pointing INDEX FINGER extended to the RIGHT and slightly downward, other fingers curled naturally. Arm extended toward keyboard below/right. Tiny golden white spark precisely at index fingertip, NO long beam (animated in code). Determined but friendly expression. Preserve polished cartoon painting and true transparent alpha background. No keyboard, text, floor or background. Entire boots hat cape and finger visible."
+  },
+  "cinematics": [
+    {
+      "pose": "vidrio",
+      "asset": "assets/images/trajes/aren-union-vidrio-v1.png",
+      "reference": "assets/images/personajes/versus/explorador-pantalla-rota-kalamo-v1.png",
+      "prompt": "Edit target IMAGE 1: existing cinematic sprite. IMAGE 2: Aren Union costume identity reference ONLY. Replace only Aren clothing with reference 2 brown outfit traced in glowing gold geometric runes, chest crystal, blue scarf, brown hat and golden luminous cape. Preserve IMAGE 1 exact scene, pose, proportions, expression and props. Preserve exact frontal pressed-against-glass composition, squashed cheek, open palms, boot soles, shocked face and cracked glass shards. Render costume runes on visible gloves and chest, golden cape behind body. Preserve full wide landscape frame. Same polished painted fantasy game style. Output true transparent alpha background, no checkerboard, no opaque background, no floor, no text. All props and limbs in frame with margin.",
+      "finalEditPrompt": "Edit this exact image. Preserve Aren in the golden Five Crystals costume, squashed face, every hand and boot, golden cape and all cracked glass lines and shards. REMOVE the gray blue solid background and all checkerboard patches in glass shards to TRUE TRANSPARENT ALPHA. No colored background, no checkerboard pixels. Glass must be clear transparent with only thin blue white crack edges and shard outlines. Do not change composition, size, character or outfit. This is an overlay sprite to composite over an existing game scene. Fully transparent all space outside the character, cape and thin glass outlines."
+    },
+    {
+      "pose": "mano",
+      "asset": "assets/images/trajes/aren-union-mano-v1.png",
+      "reference": "assets/images/personajes/versus/mano-abismo-atrapa-explorador.png",
+      "prompt": "Edit target IMAGE 1: existing cinematic sprite. IMAGE 2: Aren Union costume identity reference ONLY. Replace only Aren clothing with reference 2 brown outfit traced in glowing gold geometric runes, chest crystal, blue scarf, brown hat and golden luminous cape. Preserve IMAGE 1 exact scene, pose, proportions, expression and props. Preserve exact giant red-black lava claw hand holding Aren, all five fingers, purple portal at bottom, character reaching outward. Only change Aren costume; giant hand and portal remain exactly red black violet. No blood or wounds. Preserve landscape canvas. Same polished painted fantasy game style. Output true transparent alpha background, no checkerboard, no opaque background, no floor, no text. All props and limbs in frame with margin."
+    },
+    {
+      "pose": "planta",
+      "asset": "assets/images/trajes/aren-union-planta-v1.png",
+      "reference": "assets/images/personajes/versus/carnivora-devorando-explorador.png",
+      "prompt": "Edit target IMAGE 1: existing cinematic sprite. IMAGE 2: Aren Union costume identity reference ONLY. Replace only Aren clothing with reference 2 brown outfit traced in glowing gold geometric runes, chest crystal, blue scarf, brown hat and golden luminous cape. Preserve IMAGE 1 exact scene, pose, proportions, expression and props. Preserve exact green fantasy carnivorous plant holding Aren inside open mouth, roots lower left, head upper right, Aren reaching outward. Only change Aren costume; keep plant exactly green, same entire landscape framing. No blood or wounds. Same polished painted fantasy game style. Output true transparent alpha background, no checkerboard, no opaque background, no floor, no text. All props and limbs in frame with margin."
+    },
+    {
+      "pose": "envejecido",
+      "asset": "assets/images/trajes/aren-union-envejecido-v1.png",
+      "reference": "assets/images/personajes/versus/explorador-envejecido-kairos-v2.png",
+      "prompt": "Edit target IMAGE 1: existing cinematic sprite. IMAGE 2: Aren Union costume identity reference ONLY. Replace only Aren clothing with reference 2 brown outfit traced in glowing gold geometric runes, chest crystal, blue scarf, brown hat and golden luminous cape. Preserve IMAGE 1 exact scene, pose, proportions, expression and props. Preserve exact middle-aged Aren facial age, gray hair, stubble, expression and standing pose. Apply new golden rune costume and golden cape. Preserve adult age, do NOT rejuvenate. No sword necessary because original fists are empty. Full portrait full body. Same polished painted fantasy game style. Output true transparent alpha background, no checkerboard, no opaque background, no floor, no text. All props and limbs in frame with margin."
+    },
+    {
+      "pose": "anciano",
+      "asset": "assets/images/trajes/aren-union-anciano-v1.png",
+      "reference": "assets/images/personajes/versus/explorador-anciano-kairos-v2.png",
+      "prompt": "Edit target IMAGE 1: existing cinematic sprite. IMAGE 2: Aren Union costume identity reference ONLY. Replace only Aren clothing with reference 2 brown outfit traced in glowing gold geometric runes, chest crystal, blue scarf, brown hat and golden luminous cape. Preserve IMAGE 1 exact scene, pose, proportions, expression and props. Preserve exact very elderly Aren facial wrinkles, white hair, beard, hunched pose leaning on staff made from boomerang. Apply new golden rune costume and golden cape. Preserve old age, do NOT rejuvenate. Keep wooden walking support. Full portrait full body. Same polished painted fantasy game style. Output true transparent alpha background, no checkerboard, no opaque background, no floor, no text. All props and limbs in frame with margin."
+    }
+  ]
+}

@@ -17850,6 +17850,12 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
 @media(prefers-reduced-motion:reduce){.rayo-union-atacando{animation:none!important}.rayo-basico-union{animation:none;opacity:1}}
 
 .versus-personaje-dos.rayo-union-atacando{transform:scaleX(-1)}
+.destello-union-rayo{position:fixed;inset:0;width:100vw;height:100vh;z-index:65;pointer-events:none;overflow:visible;filter:drop-shadow(0 0 5px #ffbd35)}
+.destello-union-rayo path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.destello-union-halo{stroke:#ffb52c;stroke-width:7;opacity:.65}
+.destello-union-nucleo{stroke:#fff4c4;stroke-width:2}
+.animacion-habilidad-versus.habilidad-union .habilidad-lupa-versus,.animacion-habilidad-versus.habilidad-union .impacto-habilidad-versus{display:none}
+.versus-personaje-dos.destello-union-apuntando{transform:scaleX(-1)}
 
 .versus-personaje[data-cambiando-pose]{visibility:hidden}
 .union-cinematica-activa>.versus-personaje,.union-cinematica-activa>.aren-union-duelo-capa,.union-cinematica-activa>.aren-union-cristal-entrada{visibility:hidden}

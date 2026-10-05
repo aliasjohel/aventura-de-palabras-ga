@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v336`;
+const CACHE_NAME = `${CACHE_PREFIX}v337`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -209,6 +209,12 @@ const CORE_ASSETS = [
 "./assets/images/trajes/aren-union-disparo-v2.png",
 "./assets/images/trajes/aren-union-ataque-v1.png",
 "./assets/images/trajes/aren-union-ataque-rayo-v2.png",
+"./assets/images/trajes/aren-union-habilidad-v1.png",
+"./assets/images/trajes/aren-union-vidrio-v1.png",
+"./assets/images/trajes/aren-union-mano-v1.png",
+"./assets/images/trajes/aren-union-planta-v1.png",
+"./assets/images/trajes/aren-union-envejecido-v1.png",
+"./assets/images/trajes/aren-union-anciano-v1.png",
 "./assets/images/trajes/aren-union-concepto-v1.png",
 "./prueba-aren-union.html",
 "./js/aren-union-preview.js",

@@ -2102,9 +2102,10 @@ function procesarEventoPartidaOnline(partida) {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 260 : 1300,
     );
   } else if (evento.type === "ability_used") {
-    const habilidad = habilidadesVersus[evento.character] || habilidadesVersus.explorador;
+    const habilidad = descripcionHabilidadVersus(evento.character, !propio);
     if (propio) {
       reproducirAnimacionHabilidadVersus(evento.character || personajeJugadorVersus, {
+        pista: partida.me?.abilityHint || "",
         alImpactar: () => {
           if (evento.character === "explorador") {
             actualizarPistaLupaVersus(partida.me?.abilityHint || "");
@@ -2120,7 +2121,7 @@ function procesarEventoPartidaOnline(partida) {
           }
         },
       });
-    } else if (evento.character === "explorador" && evento.costume!=='aren-union') {
+    } else if (evento.character === "explorador") {
       reproducirAnimacionHabilidadVersus("explorador", { desdeRival: true });
     } else if (evento.character === "kairos") {
       reproducirAnimacionHabilidadVersus("kairos", {
@@ -4331,7 +4332,7 @@ function mostrarVistaImpactoRivalVersus(personaje, letraForzada = "", descargaUn
       : "La calavera obligó al rival a cometer un error.",
     time_steal: "El rival pierde 20 segundos y su teclado se detiene durante 2 segundos.",
   };
-  nombreImpactoRivalVersus.textContent = descargaUnion ? "⚡ Destello de la Unión" : `${habilidad.icono} ${habilidad.nombre}`;
+  nombreImpactoRivalVersus.textContent = descargaUnion ? "💎 Destello de Sabiduría" : `${habilidad.icono} ${habilidad.nombre}`;
   detalleImpactoRivalVersus.textContent = descargaUnion ? "Teclado electrificado y bloqueado durante 2 segundos." : detallesPorEfecto[habilidad.efecto]
     || "El rival recibió tu ataque.";
   miniTecladoRivalVersus.className = descargaUnion ? "mini-teclado-rival-versus efecto-descarga-union" : `mini-teclado-rival-versus efecto-${habilidad.efecto}`;
@@ -4422,7 +4423,59 @@ function actualizarPistaLupaVersus(letra = "") {
   });
 }
 
+let destelloUnionVersus = null;
+function limpiarDestelloUnionVersus() {
+  if (!destelloUnionVersus) return;
+  cancelAnimationFrame(destelloUnionVersus.frame);
+  destelloUnionVersus.svg.remove();
+  destelloUnionVersus.actor.classList.remove('destello-union-apuntando');
+  destelloUnionVersus = null;
+}
+function iniciarDestelloUnionVersus(actor, desdeRival, pista, reducido) {
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.classList.add('destello-union-rayo');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('focusable', 'false');
+  const paths = ['halo', 'nucleo'].map(tipo => {
+    const path = document.createElementNS(ns, 'path');
+    path.classList.add(`destello-union-${tipo}`);svg.append(path);return path;
+  });
+  document.body.append(svg);
+  actor.classList.add('destello-union-apuntando');
+  const state = {svg, actor, frame: null, start: performance.now()};
+  destelloUnionVersus = state;
+  function pintar(time) {
+    if (destelloUnionVersus !== state) return;
+    const transcurrido = time - state.start;
+    const letra = pista || demoVersus.pistaLupaJugador;
+    const tecla = [...tecladoVersus.querySelectorAll('button')].find(b => b.textContent === letra);
+    const rivalVisible = vistaImpactoRivalVersus.classList.contains('visible');
+    const destino = !desdeRival && transcurrido >= 600 && rivalVisible
+      ? miniTecladoRivalVersus : !desdeRival && tecla ? tecla : tecladoVersus;
+    const a = actor.getBoundingClientRect(), b = destino.getBoundingClientRect();
+    const ratio = (actor.naturalWidth || 1152) / (actor.naturalHeight || 1536);
+    const h = Math.min(a.height, a.width / ratio), w = h * ratio;
+    // Finger coordinates in the transparent ability sprite; rival pose is mirrored.
+    const x = a.left + (a.width - w) / 2 + w * (desdeRival ? .033 : .967);
+    const y = a.bottom - h + h * .395;
+    const ex = b.left + b.width / 2, ey = b.top + b.height / 2;
+    const dx = ex - x, dy = ey - y, length = Math.hypot(dx, dy) || 1;
+    const progress = reducido ? 1 : Math.min(1, Math.max(0, (transcurrido - 100) / 350));
+    const points = Array.from({length: 13}, (_, i) => {
+      const t = i / 12 * progress;
+      const jitter = i === 0 || i === 12 ? 0 : Math.sin(i * 9.3 + (reducido ? 0 : Math.floor(time / 65))) * 4;
+      return `${x + dx * t - dy / length * jitter},${y + dy * t + dx / length * jitter}`;
+    });
+    paths.forEach(path => path.setAttribute('d', 'M' + points.join(' L')));
+    svg.setAttribute('viewBox', `0 0 ${innerWidth} ${innerHeight}`);
+    svg.style.visibility = actor.hasAttribute('data-cambiando-pose') || !b.width ? 'hidden' : 'visible';
+    state.frame = requestAnimationFrame(pintar);
+  }
+  state.frame = requestAnimationFrame(pintar);
+}
 function limpiarAnimacionHabilidadVersus({ conservarImpactos = false } = {}) {
+  limpiarDestelloUnionVersus();
   if (!conservarImpactos) {
     demoVersus.temporizadoresImpactoHabilidad.forEach(clearTimeout);
     demoVersus.temporizadoresImpactoHabilidad = [];
@@ -4483,7 +4536,7 @@ function prepararTrayectoriaTintaKalamo(atacante) {
 
 function reproducirAnimacionHabilidadVersus(
   personaje,
-  { desdeRival = false, alImpactar = () => {} } = {},
+  { desdeRival = false, alImpactar = () => {}, pista = "" } = {},
 ) {
   limpiarAnimacionHabilidadVersus({ conservarImpactos: true });
   herramientasHabilidadesPruebasVersus.classList.add("ataque-en-curso");
@@ -4516,6 +4569,10 @@ function reproducirAnimacionHabilidadVersus(
   if (personaje === "kalamo") prepararTrayectoriaTintaKalamo(atacante);
   void animacionHabilidadVersus.offsetWidth;
   animacionHabilidadVersus.classList.add("activa");
+  if (personaje === "explorador" && usaUnionVersus(desdeRival)) {
+    animacionHabilidadVersus.classList.add("habilidad-union");
+    iniciarDestelloUnionVersus(atacante, desdeRival, pista, movimientoReducido);
+  }
   reproducirSonidoVersus(desdeRival ? "versusAtaqueDos" : "versusAtaqueUno", 0.5);
 
   const demoraImpacto = personaje === "dragon_hielo" ? 140 : personaje === "azrak" ? 620 : personaje === "kalamo" ? 720 : personaje === "kairos" ? 700 : 560;
@@ -4541,10 +4598,15 @@ function aplicarDescargaUnionVersus(desdeRival=false) {
   }else{
     demoVersus.efectoRival='roots';demoVersus.efectoRivalHasta=Math.max(demoVersus.efectoRivalHasta||0,Date.now()+2000);
     mostrarVistaImpactoRivalVersus('explorador', '', true);
-    mostrarAvisoAvanceVersus('¡Destello de la Unión! Teclado rival bloqueado por 2 segundos.','acierto');
+    mostrarAvisoAvanceVersus('¡Destello de Sabiduría! Letra revelada y teclado rival bloqueado por 2 segundos.','acierto');
   }
 }
 function usaUnionVersus(desdeRival=false){return trajePersonajeVersus(desdeRival?personajeVersusDos:personajeVersusUno,'explorador')==='aren-union';}
+function descripcionHabilidadVersus(personaje, desdeRival = false) {
+  return personaje === 'explorador' && usaUnionVersus(desdeRival)
+    ? { ...habilidadesVersus.explorador, nombre: 'Destello de Sabiduría', icono: '💎' }
+    : habilidadesVersus[personaje] || habilidadesVersus.explorador;
+}
 function sincronizarTecladoDemoVersus() {
   const bloqueado = demoVersus.finalizadoJugador
     || demoVersus.partidaFinalizada
@@ -4979,7 +5041,7 @@ function aplicarFalloForzadoJugadorLocalVersus(presentar = true) {
 }
 
 function actualizarPanelHabilidadVersus(carga = demoVersus.cargaHabilidadJugador, pista = "") {
-  const habilidad = habilidadesVersus[personajeJugadorVersus] || habilidadesVersus.explorador;
+  const habilidad = descripcionHabilidadVersus(personajeJugadorVersus);
   const lista = carga >= letrasParaHabilidadVersus;
   iconoHabilidadVersus.textContent = habilidad.icono;
   nombreHabilidadVersus.textContent = habilidad.nombre;
@@ -5067,9 +5129,10 @@ function activarHabilidadLocalVersus() {
     demoVersus.pistaLupaJugador = pista;
     actualizarPanelHabilidadVersus(0);
     reproducirAnimacionHabilidadVersus(personajeJugadorVersus, {
+      pista,
       alImpactar: () => {
         actualizarPanelHabilidadVersus(0, pista);
-        mostrarAvisoAvanceVersus(`La lupa señaló la letra ${pista}.`, "acierto");
+        mostrarAvisoAvanceVersus(usaUnionVersus() ? `El destello reveló la letra ${pista}.` : `La lupa señaló la letra ${pista}.`, "acierto");
         if (usaUnionVersus()) aplicarDescargaUnionVersus(false);
       },
     });
@@ -5133,7 +5196,7 @@ function activarHabilidadRivalLocalVersus() {
     });
   }
   demoVersus.cargaHabilidadRival = 0;
-  mostrarAvisoAvanceVersus(`El rival activó ${habilidad.nombre}.`, "error");
+  mostrarAvisoAvanceVersus(`El rival activó ${descripcionHabilidadVersus(personajeRivalVersus, true).nombre}.`, "error");
 }
 
 async function activarHabilidadVersus() {
@@ -7131,7 +7194,7 @@ function recursosPersonajeCombate(personaje) {
     azrak: [srcAzrakAtaqueVersus], kalamo: [srcKalamoAtaqueVersus, srcKalamoHabilidadVersus], kairos: [srcKairosAtaqueVersus],
   };
   const trajes=[trajePersonajeVersus(personajeVersusUno,personaje),trajePersonajeVersus(personajeVersusDos,personaje)].filter(Boolean);
-  const extras=trajes.flatMap(id=>(id==='aren-union'?['base','ataque','invocacion','victoria','capa']:CosmeticStore.find(id).poses).map(pose=>CosmeticStore.asset(id,pose)));
+  const extras=trajes.flatMap(id=>(id==='aren-union'?['base','ataque','habilidad','invocacion','victoria','capa','vidrio','mano','planta','envejecido','anciano']:CosmeticStore.find(id).poses).map(pose=>CosmeticStore.asset(id,pose)));
   return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || []),...extras].filter(Boolean);
 }
 async function prepararImagenesCombate(personajes) {
@@ -9708,7 +9771,8 @@ function reproducirLibroPalabrasPerdidasVersus(victima = personajeRivalVersus) {
   cinematicaFinalVersus.classList.add("libro-palabras-perdidas");
   cinematicaFinalVersus.classList.add("kalamo-final-remate-pantalla");
   cinematicaFinalVersus.classList.toggle("kalamo-victima-explorador", victimaFinal === "explorador" && !trajeFinalVersus(victimaFinal));
-  cinematicaFinalVersus.classList.toggle("kalamo-impacto-frontal", ["kairos", "guardian_alba", "t_shadow"].includes(victimaFinal));
+  cinematicaFinalVersus.classList.toggle("kalamo-impacto-frontal", ["kairos", "guardian_alba", "t_shadow"].includes(victimaFinal)
+    || (victimaFinal === "explorador" && trajeFinalVersus(victimaFinal) === "aren-union"));
   cinematicaFinalVersus.classList.remove("oculto");
   void cinematicaFinalVersus.offsetWidth;
   cinematicaFinalVersus.classList.add("activa");
