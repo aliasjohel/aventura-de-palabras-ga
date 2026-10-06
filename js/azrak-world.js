@@ -684,6 +684,11 @@
     const [pause, mute, skip] = layer.querySelectorAll('button');
     const focusBefore = document.activeElement;
     let skipped = false, paused = false, currentTrack = null, muted = false, musicReady = false, closed = false;
+    let musicAction = 'mute';
+    const showMusicAction = (activate) => {
+      musicAction = activate ? 'activate' : 'mute';
+      mute.textContent = activate ? 'Activar música' : 'Silenciar';
+    };
     let viewing = { waiting: false, destroy() {} };
     const controlsSuspended = () => paused || document.hidden || viewing.waiting;
     const musicWaiting = () => Boolean(currentTrack && !muted && !musicReady);
@@ -703,7 +708,7 @@
       const audio = new Audio(spec.src); audio.preload = 'auto'; audio.volume = .65; audio.loop = Boolean(spec.loop);
       audio.addEventListener('playing', () => {
         if (closed || currentTrack !== audio) return;
-        musicReady = true; mute.textContent = muted ? 'Activar música' : 'Silenciar'; updateMusicState();
+        musicReady = true; showMusicAction(muted); updateMusicState();
       });
       audio.addEventListener('waiting', () => {
         if (closed || currentTrack !== audio) return;
@@ -721,7 +726,7 @@
       if (!audio || closed) return;
       audio.play().catch(error => {
         if (closed || currentTrack !== audio || controlsSuspended() || error.name === 'AbortError') return;
-        musicReady = false; mute.textContent = 'Activar música';
+        musicReady = false; showMusicAction(true);
         musicStatus.textContent = error.name === 'NotAllowedError'
           ? 'Tocá Activar música para comenzar con sonido.'
           : 'No se pudo reproducir la música. Podés reintentar o continuar sin ella.';
@@ -745,12 +750,12 @@
     withoutMusic.onclick = () => {
       muted = true;
       Object.values(tracks).forEach(audio => { audio.muted = true; });
-      mute.textContent = 'Activar música'; updateMusicState();
+      showMusicAction(true); updateMusicState();
     };
     mute.onclick = () => {
-      muted = mute.textContent === 'Activar música' ? false : !muted;
+      muted = musicAction === 'activate' ? false : !muted;
       Object.values(tracks).forEach(audio => { audio.muted = muted; });
-      mute.textContent = muted ? 'Activar música' : 'Silenciar';
+      showMusicAction(muted);
       updateMusicState();
       if (!controlsSuspended()) playMusic();
     };

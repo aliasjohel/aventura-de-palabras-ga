@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v337`;
+const CACHE_NAME = `${CACHE_PREFIX}v339`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -202,6 +202,19 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/elementos/estela-escarcha-nivor.png",
 ];
 const CORE_ASSETS = [
+  "./js/i18n.js",
+  "./locales/languages.json",
+  "./locales/es/common.json",
+  "./locales/es/menu.json",
+  "./locales/es/profile.json",
+  "./locales/es/shop.json",
+  "./locales/es/characters.json",
+  "./locales/es/adventure.json",
+  "./locales/es/puzzles.json",
+  "./locales/es/cinematics.json",
+  "./locales/es/multiplayer.json",
+  "./locales/es/economy.json",
+  "./locales/es/errors.json",
 "./assets/images/trajes/aren-union-guardianes-v2.png",
 "./assets/images/trajes/aren-union-guardianes-solos-v3.png",
 "./assets/images/trajes/aren-union-rayo-v2.png",
@@ -744,6 +757,19 @@ const CORE_ASSETS = [
  * copian localmente durante la migración, sin volver a descargarlos.
  */
 const ASSET_REVISIONS = {
+  "./js/i18n.js": "20261006-i18n-base-1",
+  "./locales/languages.json": "20261006-i18n-base-1",
+  "./locales/es/common.json": "20261006-i18n-base-1",
+  "./locales/es/menu.json": "20261006-i18n-base-1",
+  "./locales/es/profile.json": "20261006-i18n-base-1",
+  "./locales/es/shop.json": "20261006-i18n-base-1",
+  "./locales/es/characters.json": "20261006-i18n-base-1",
+  "./locales/es/adventure.json": "20261006-i18n-base-1",
+  "./locales/es/puzzles.json": "20261006-i18n-base-1",
+  "./locales/es/cinematics.json": "20261006-i18n-base-1",
+  "./locales/es/multiplayer.json": "20261006-i18n-base-1",
+  "./locales/es/economy.json": "20261006-i18n-base-1",
+  "./locales/es/errors.json": "20261006-i18n-base-1",
 "./assets/images/trajes/aren-union-guardianes-solos-v3.png": "20261004-union-sello-1",
 "./assets/images/trajes/aren-union-guardianes-v2.png": "20261002-cinematicas-escala-1",
 "./assets/images/trajes/aren-union-rayo-v2.png": "20261002-cinematicas-escala-1",
@@ -779,7 +805,7 @@ const ASSET_REVISIONS = {
   "./css/world-word-hazards.css": "20260914-jaula-fuego",
   "./js/world-word-hazards.js": "20260914-jaula-fuego",
   "./": "20261002-cinematicas-escala-1",
-  "./index.html": "20261002-cinematicas-escala-1",
+  "./index.html": "20261006-i18n-base-1",
   "./js/cosmetic-store.js": "20261004-union-rayo-basico-1",
   "./js/cosmetic-shop.js": "20261004-tienda-capa-1",
   "./css/cosmetic-shop.css": "20261002-cinematicas-escala-1",
@@ -793,7 +819,7 @@ const ASSET_REVISIONS = {
   "./js/app.js": "20261004-union-pose-unica-1",
   "./js/versus-room.js": "20260922-alias-1",
   "./js/public-player-profile.js": "20260922-medallas-3",
-  "./js/azrak-world.js": "20260913-shadow-runas-2",
+  "./js/azrak-world.js": "20261006-i18n-base-1",
   "./css/azrak-world.css": "20260913-runas-viento-captura-1",
   "./assets/images/personajes/versus/t-shadow-base.png": "20260915-shadow-kairos-1",
   "./assets/images/personajes/versus/t-shadow-ataque.png": "20260902-personajes-chibi-1",
@@ -965,7 +991,7 @@ for (const path of Object.keys(ASSET_REVISIONS)) {
 // El código y los estilos se instalan juntos en cada versión. Nunca heredar
 // sus revisiones manuales: eso podía anunciar una actualización con código viejo.
 for (const path of CORE_ASSETS) {
-  if (path === './' || /\.(?:html|css|js)$/.test(path)) {
+  if (path === './' || /\.(?:html|css|js)$/.test(path) || path.startsWith('./locales/')) {
     ASSET_REVISIONS[path] = CACHE_NAME;
   }
 }

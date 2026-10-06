@@ -84,15 +84,15 @@
 
             <div class="menu-contenido">
                 <h2 class="studio">GA Games</h2>
-                <h1 class="titulo">Aventura de Palabras</h1>
-                <p class="subtitulo">Explorá mundos resolviendo palabras</p>
+                <h1 class="titulo" data-i18n="menu.title">Aventura de Palabras</h1>
+                <p class="subtitulo" data-i18n="menu.subtitle">Explorá mundos resolviendo palabras</p>
                 <div class="menu-perfil"><button id="btnMiAvatar" type="button" aria-label="Abrir mi perfil"><span id="avatarMenu"></span><span>Mi perfil <span aria-hidden="true">›</span></span></button><button id="btnAbrirPruebasMenu" hidden type="button" aria-haspopup="dialog" aria-controls="modalConfiguracion">Modo prueba</button></div>
 
-                <button id="btnJugar" type="button" aria-haspopup="dialog" aria-controls="mapaAventura">🗺️ Aventura</button>
-                <button id="btnModosJuego" type="button" aria-haspopup="dialog">⚔️ Modos de juego</button>
-                <button id="btnRankingMenu" type="button" aria-haspopup="dialog" aria-controls="rankingMenu">🏆 Ranking</button>
-                <button id="btnTienda" type="button" aria-haspopup="dialog">✦ Tienda</button>
-                <button id="btnConfiguracion" type="button">Configuración</button>
+                <button id="btnJugar" data-i18n="menu.adventure" type="button" aria-haspopup="dialog" aria-controls="mapaAventura">🗺️ Aventura</button>
+                <button id="btnModosJuego" data-i18n="menu.modes" type="button" aria-haspopup="dialog">⚔️ Modos de juego</button>
+                <button id="btnRankingMenu" data-i18n="menu.ranking" type="button" aria-haspopup="dialog" aria-controls="rankingMenu">🏆 Ranking</button>
+                <button id="btnTienda" data-i18n="menu.shop" type="button" aria-haspopup="dialog">✦ Tienda</button>
+                <button id="btnConfiguracion" data-i18n="menu.configuration" type="button">Configuración</button>
 
                 <p id="estadoOfflineJuego" class="estado-offline-juego" role="status" aria-live="polite">
                     Preparando los modos sin conexión…
@@ -113,8 +113,8 @@
             <div id="modalConfiguracion" class="modal-configuracion oculto" role="dialog" aria-modal="true"
                 aria-labelledby="tituloConfiguracion">
                 <div class="panel-configuracion">
-                    <span class="etiqueta-configuracion">AJUSTES</span>
-                    <h2 id="tituloConfiguracion">Configuración</h2>
+                    <span class="etiqueta-configuracion" data-i18n="common.settings">AJUSTES</span>
+                    <h2 id="tituloConfiguracion" data-i18n="menu.configuration">Configuración</h2>
                     <label class="opcion-configuracion" for="vibracionAtaques">
                         <span>
                             <strong>Vibración en ataques</strong>
@@ -152,7 +152,7 @@
 
                         <button id="btnIniciarMisionPruebas" type="button">Iniciar misión</button>
                     </div>
-                    <button id="btnCerrarConfiguracion" type="button">Listo</button>
+                    <button id="btnCerrarConfiguracion" data-i18n="common.done" type="button">Listo</button>
                 </div>
             </div>
 
@@ -1579,6 +1579,7 @@
       </div>
       <button id="reintentarPerfilPublico" class="secundario" type="button" hidden>Reintentar</button>
     </dialog>
+    <script src="js/i18n.js?v=20261006-i18n-base-1"></script>
     <script src="js/cosmetic-store.js?v=20261005-destello-sabiduria-1"></script>
     <script src="js/game-wallet.js?v=20261002-cinematicas-escala-1"></script>
     <script src="js/versus-ranks.js?v=20260922-medallas-3"></script>
@@ -1592,7 +1593,7 @@
     <script src="js/versus-room.js?v=20260922-alias-1"></script>
     <script src="js/versus-room-supabase.js?v=20261002-cinematicas-escala-1"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
-    <script src="js/azrak-world.js?v=20260914-busqueda-ranking"></script>
+    <script src="js/azrak-world.js?v=20261006-i18n-base-1"></script>
     <script src="js/prologue-cinematic.js?v=20260921-tienda-1"></script>
     <script src="js/forest-root-trap.js?v=20260907-1"></script>
     <script src="js/desert-sand-trap.js?v=20260907-1"></script>

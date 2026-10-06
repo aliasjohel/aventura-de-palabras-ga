@@ -1,0 +1,7 @@
+{
+  "defaultLanguage": "es",
+  "fallbackLanguage": "es",
+  "formatLocale": "es-AR",
+  "languages": [{ "id": "es", "name": "Español" }],
+  "namespaces": ["common", "menu", "profile", "shop", "characters", "adventure", "puzzles", "cinematics", "multiplayer", "economy", "errors"]
+}
