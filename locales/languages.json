@@ -2,6 +2,10 @@
   "defaultLanguage": "es",
   "fallbackLanguage": "es",
   "formatLocale": "es-AR",
-  "languages": [{ "id": "es", "name": "Español" }],
+  "languages": [
+    { "id": "es", "name": "Español", "locale": "es-AR", "matches": ["es"] },
+    { "id": "en", "name": "English", "locale": "en", "matches": ["en"] },
+    { "id": "pt-BR", "name": "Português", "locale": "pt-BR", "matches": ["pt"] }
+  ],
   "namespaces": ["common", "menu", "profile", "shop", "characters", "adventure", "puzzles", "cinematics", "multiplayer", "economy", "errors"]
 }

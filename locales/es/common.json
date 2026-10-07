@@ -1,4 +1,9 @@
 {
   "settings": "AJUSTES",
-  "done": "Listo"
+  "done": "Listo",
+  "language": "Idioma",
+  "automatic": "Automático",
+  "languageSample": "Por ahora, el cambio de idioma se aplica al menú principal y a estos controles. El resto del juego sigue en español.",
+  "languageUnsaved": "El idioma cambió, pero no pudimos guardar tu elección en este dispositivo.",
+  "languageUnavailable": "No pudimos cargar los idiomas. Podés seguir jugando en español."
 }

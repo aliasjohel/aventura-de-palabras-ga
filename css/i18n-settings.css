@@ -1,0 +1,5 @@
+.idioma-configuracion { display: grid; gap: 8px; margin: 16px 0; }
+.idioma-configuracion select { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #62888c; border-radius: 9px; background: #102a31; color: #edf8fa; font: inherit; }
+.idioma-configuracion select:focus-visible { outline: 2px solid #a0eaff; outline-offset: 3px; }
+.idioma-configuracion small, #estadoIdioma { font-size: .83rem; line-height: 1.4; color: #deeff3; }
+#estadoIdioma:empty { display: none; }

@@ -1,0 +1,9 @@
+{
+  "settings": "SETTINGS",
+  "done": "Done",
+  "language": "Language",
+  "automatic": "Automatic",
+  "languageSample": "For now, language changes apply to the main menu and these controls. The rest of the game remains in Spanish.",
+  "languageUnsaved": "The language changed, but we could not save your choice on this device.",
+  "languageUnavailable": "We could not load the languages. You can keep playing in Spanish."
+}

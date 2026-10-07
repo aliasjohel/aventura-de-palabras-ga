@@ -1,0 +1,9 @@
+{
+  "settings": "CONFIGURAÇÕES",
+  "done": "Pronto",
+  "language": "Idioma",
+  "automatic": "Automático",
+  "languageSample": "Por enquanto, a mudança de idioma se aplica ao menu principal e a estes controles. O restante do jogo continua em espanhol.",
+  "languageUnsaved": "O idioma mudou, mas não foi possível salvar sua escolha neste dispositivo.",
+  "languageUnavailable": "Não foi possível carregar os idiomas. Você pode continuar jogando em espanhol."
+}
