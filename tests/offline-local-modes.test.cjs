@@ -21,7 +21,8 @@ assert.match(loader, /Aventura, Modo Pruebas y Torre siguen disponibles sin cone
 assert.match(app, /await globalThis\.AventuraOnline\?\.cargarSupabase\?\.\(\)/);
 
 assert.match(html, /id="estadoOfflineJuego"/);
-assert.match(pwa, /Aventura, Pruebas y Torre disponibles sin conexión/);
+assert.match(pwa, /common\.pwa\.ready/);
+assert.equal(JSON.parse(fs.readFileSync(path.join(root,'locales/es/common.json'))).pwa.ready, 'Aventura, Pruebas y Torre disponibles sin conexión');
 assert.match(pwa, /window\.addEventListener\("offline"/);
 assert.match(pwa, /navigator\.storage\.persist\(\)/);
 assert.match(sw, /\.\.\.RECURSOS_MODOS_LOCALES/);

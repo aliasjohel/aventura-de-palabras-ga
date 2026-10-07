@@ -1,1 +1,121 @@
-{}
+{
+  "identity": "Identidad del jugador",
+  "player": "JUGADOR",
+  "adventurer": "Aventurero",
+  "friendCode": "Código de amigo:",
+  "connecting": "Conectando…",
+  "history": "Historial multijugador",
+  "loadingHistory": "Cargando tu historial…",
+  "played": "Partidas",
+  "wins": "Victorias",
+  "losses": "Derrotas",
+  "draws": "Empates",
+  "matchesRivals": "Ver mis partidas y rivales",
+  "favorites": "Personajes favoritos",
+  "favoritesHelp": "Tus favoritos son los personajes que más usás en partidas multijugador terminadas.",
+  "retryConnection": "Reintentar conexión",
+  "chooseAvatar": "Elegí tu avatar",
+  "chooseFrame": "Elegí tu marco",
+  "savedHere": "Tu elección se guarda en este dispositivo.",
+  "cancel": "Cancelar",
+  "saveAppearance": "Guardar apariencia",
+  "community": "COMUNIDAD DE AVENTUREROS",
+  "title": "Perfil del jugador",
+  "close": "Cerrar perfil",
+  "previous": "← Volver al perfil anterior",
+  "trophies": "Trofeos",
+  "favorite": "Personaje favorito",
+  "matchHistory": "Historial de partidas",
+  "visitHelp": "Tocá un rival para visitar su perfil. Los resultados se conservan al cerrar la sala.",
+  "moreMatches": "Ver más partidas",
+  "retry": "Reintentar",
+  "view": "Ver perfil",
+  "viewAlias": "Ver perfil de {alias}",
+  "frame": "Marco {frame}",
+  "appearance": "{avatar} · Marco {frame}",
+  "friendCodeHelp": "Creá tu perfil de Amigos desde Multijugador para obtenerlo.",
+  "guest": "Perfil de invitado. Vinculá tu cuenta desde Multijugador para conservar el historial al cambiar de dispositivo.",
+  "linked": "Tu historial está vinculado a tu cuenta.",
+  "ranking": "{points} puntos de ranking · {played} partidas clasificatorias",
+  "favoriteStats": "{played} partidas · {wins} victorias",
+  "noFavorites": "Jugá una partida multijugador para descubrir tus favoritos.",
+  "legacy": "Tus resultados anteriores cuentan; sus personajes no quedaron registrados.",
+  "offline": "Sin conexión",
+  "position": "Puesto #{position}",
+  "noPosition": "Sin puesto todavía",
+  "publicRanking": "{position} · {points} puntos",
+  "firstWin": "🏆 Primera victoria",
+  "winTrophy": "🏆 {wins} victorias",
+  "noTrophies": "Su primer trofeo llegará con una victoria.",
+  "noCharacterMatches": "Todavía no hay partidas con un personaje registrado.",
+  "win": "Victoria",
+  "draw": "Empate",
+  "loss": "Derrota",
+  "previousMatch": "Partida anterior",
+  "ranked": "Clasificatorio",
+  "classic": "Clásico",
+  "matchDetail": "{date} · {mode}",
+  "unavailableRival": "Rival no disponible",
+  "rival": "rival",
+  "rivalLink": "{alias}{arrow}",
+  "noMatches": "Todavía no tiene partidas terminadas.",
+  "loadingMore": "Cargando más partidas…",
+  "loading": "Cargando perfil…",
+  "appearanceShared": "Apariencia guardada y visible para los demás.",
+  "appearanceLocal": "Guardada en este dispositivo. Se compartirá cuando vuelvas a conectarte.",
+  "rankDivision": "{rank}{division}",
+  "rankBadge": "Insignia {rank}",
+  "rankMaximum": "{points} puntos · Rango máximo",
+  "rankProgress": "{points} / {next} puntos · Próximo: {rank}",
+  "rankProgressLabel": "Progreso hacia {rank}",
+  "frames": {
+    "clasico": "Clásico",
+    "bosque": "Bosque",
+    "hielo": "Hielo",
+    "fuego": "Fuego",
+    "arcano": "Arcano",
+    "real": "Real",
+    "bronce": "Bronce",
+    "plata": "Plata",
+    "oro": "Oro",
+    "platino": "Platino",
+    "diamante": "Diamante",
+    "leyenda": "Leyenda"
+  },
+  "ranks": {
+    "novato": {
+      "name": "Novato",
+      "title": "Aprendiz"
+    },
+    "bronce": {
+      "name": "Bronce",
+      "title": "Aventurero"
+    },
+    "plata": {
+      "name": "Plata",
+      "title": "Explorador"
+    },
+    "oro": {
+      "name": "Oro",
+      "title": "Guardián"
+    },
+    "platino": {
+      "name": "Platino",
+      "title": "Maestro de Palabras"
+    },
+    "diamante": {
+      "name": "Diamante",
+      "title": "Campeón"
+    },
+    "leyenda": {
+      "name": "Leyenda",
+      "title": "Leyenda de los Cinco Mundos"
+    }
+  },
+  "rewards": {
+    "unlocked": "Desbloqueado",
+    "world": "Completá el mundo {world}",
+    "rank": "Alcanzá el rango {rank}",
+    "gift": "🎁 Marcos desbloqueados: {frames}. Elegilos en Mi perfil."
+  }
+}

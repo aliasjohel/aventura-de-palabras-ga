@@ -1,14 +1,30 @@
 (() => {
   "use strict";
   const key = "aventuraPalabrasIdentidadV1";
+  const U=GameUI, K=U.key;
   const avatars = [
-    ["explorador", "Explorador"], ["mago", "Mago"],
-    ["guardian-alba", "Guardián del Alba"], ["t-shadow", "T. Shadow"],
-    ["kalamo", "Cálamo"], ["dragon", "Dragón"],
-    ["dragon-hielo", "Dragón de hielo"], ["hombre-lobo", "Hombre lobo"],
-    ["azrak", "Azrak"],
+    ["explorador", K("characters.avatars.explorador")], ["mago", K("characters.avatars.mago")],
+    ["guardian-alba", K("characters.avatars.guardian-alba")], ["t-shadow", K("characters.avatars.t-shadow")],
+    ["kalamo", K("characters.avatars.kalamo")], ["dragon", K("characters.avatars.dragon")],
+    ["dragon-hielo", K("characters.avatars.dragon-hielo")], ["hombre-lobo", K("characters.avatars.hombre-lobo")],
+    ["azrak", K("characters.avatars.azrak")],
   ];
-  const frames = [["clasico", "Clásico"], ["bosque", "Bosque"], ["hielo", "Hielo"], ["fuego", "Fuego"], ["arcano", "Arcano"], ["real", "Real"]];
+  const frames = AvatarRewards.catalog.map(frame=>[frame.id,K('profile.frames.'+frame.id)]);
+  const rewardKey='aventuraMarcosDesbloqueadosV1';
+  const unlocked=new Set(['clasico']);
+  function readRewards(){
+    try { const ids=JSON.parse(localStorage.getItem(rewardKey));if(Array.isArray(ids))ids.forEach(id=>{if(frames.some(([known])=>known===id))unlocked.add(id);}); }catch(_){}
+  }
+  function updateRewards(progress,points=0){
+    readRewards();
+    if(!progress){try{progress=JSON.parse(localStorage.getItem('progresoAventuraGA'))||{};}catch(_){progress={};}}
+    const added=AvatarRewards.earned(progress,points).filter(id=>!unlocked.has(id));
+    added.forEach(id=>unlocked.add(id));
+    try{localStorage.setItem(rewardKey,JSON.stringify([...unlocked]));}catch(_){}
+    renderPreview();
+    return added;
+  }
+  readRewards();
   const defaults = { avatar: "explorador", frame: "clasico" };
   function normalize(value) {
     return {
@@ -18,6 +34,8 @@
   }
   let saved = { ...defaults };
   try { saved = normalize(JSON.parse(localStorage.getItem(key))); } catch (_) { /* Invalid or unavailable storage uses defaults. */ }
+  // Preserve a frame already equipped before rewards were introduced.
+  if(['clasico','bosque','hielo','fuego','arcano','real'].includes(saved.frame))unlocked.add(saved.frame);
   let draft = { ...saved };
   const el = (id) => document.getElementById(id);
   const dialog = el("editorAvatar");
@@ -30,9 +48,11 @@
     img.src = `assets/images/personajes/versus/${avatar}-base.png`;
     img.alt = "";
     face.append(img);
-    const ornament = document.createElement("img");
+    const ranked=AvatarRewards.catalog.find(item=>item.id===frame)?.rank;
+    const ornament = document.createElement(ranked?"span":"img");
     ornament.className = "player-avatar-frame";
-    ornament.src = `assets/images/perfil/marco-${frame}-v1.png`;
+    if(ranked){ornament.classList.add('rank-frame');ornament.dataset.symbol={bronce:'★',plata:'✦',oro:'★',platino:'✧',diamante:'◆',leyenda:'♛'}[frame];}
+    else ornament.src = `assets/images/perfil/marco-${frame}-v1.png`;
     ornament.alt = "";
     ornament.setAttribute("aria-hidden", "true");
     badge.append(face, ornament);
@@ -43,6 +63,8 @@
   }
   // Shared by the room adapter and multiplayer UI. Only catalog IDs reach the DOM.
   globalThis.PlayerAvatar = Object.freeze({
+    desbloquear:updateRewards,
+    nombreMarco:id=>U.resolve(K('profile.frames.'+id)),
     obtener: () => {
       try { return normalize(JSON.parse(localStorage.getItem(key))); }
       catch (_) { return { ...saved }; }
@@ -55,18 +77,23 @@
   });
   function renderPreview() {
     el("avatarPreview").replaceChildren(portrait(draft.avatar, draft.frame));
-    el("avatarDescripcion").textContent = `${avatars.find(([id]) => id === draft.avatar)[1]} · Marco ${frames.find(([id]) => id === draft.frame)[1]}`;
+    GameUI.text(el("avatarDescripcion"), GameUI.key('profile.appearance', {avatar:avatars.find(([id]) => id === draft.avatar)[1],frame:frames.find(([id]) => id === draft.frame)[1]}));
     dialog.querySelectorAll("[data-choice]").forEach((button) => {
       const selected = draft[button.dataset.choice] === button.dataset.value;
       button.setAttribute("aria-pressed", String(selected));
+      if(button.dataset.choice==='frame'){
+        const owned=unlocked.has(button.dataset.value),reward=AvatarRewards.catalog.find(frame=>frame.id===button.dataset.value);
+        button.disabled=!owned;
+        U.text(button.querySelector('small'),owned?K('profile.rewards.unlocked'):reward.world?K('profile.rewards.world',{world:reward.world}):K('profile.rewards.rank',{rank:K('profile.frames.'+reward.id)}));
+      }
     });
   }
   let profileRequest = 0;
   async function loadProfile() {
     const request = ++profileRequest;
-    el("perfilNombre").textContent = "Aventurero";
-    el("perfilId").textContent = "Conectando…";
-    el("perfilEstado").textContent = "Cargando tu historial…";
+    GameUI.text(el("perfilNombre"), GameUI.key('profile.adventurer'));
+    GameUI.text(el("perfilId"), GameUI.key('profile.connecting'));
+    GameUI.text(el("perfilEstado"), GameUI.key('profile.loadingHistory'));
     el("perfilRanking").textContent = "";
     el("rangoPerfilPropio").replaceChildren();
     el("perfilFavoritos").replaceChildren();
@@ -75,35 +102,34 @@
     try {
       const profile = await globalThis.PlayerProfile.cargar();
       if (request !== profileRequest || !dialog.open) return;
-      el("perfilNombre").textContent = profile.alias || "Aventurero";
-      el("perfilId").textContent = profile.friend_code || "Creá tu perfil de Amigos desde Multijugador para obtenerlo.";
+      updateRewards(null,profile.points);
+      U.text(el("perfilNombre"), profile.aliasIsFallback ? K("profile.adventurer") : profile.alias || K("profile.adventurer"));
+      U.text(el("perfilId"), profile.friend_code || K("profile.friendCodeHelp"));
       for (const [id, key] of [["Jugadas", "played"], ["Victorias", "wins"], ["Derrotas", "losses"], ["Empates", "draws"]]) {
         el(`perfil${id}`).textContent = String(profile[key] || 0);
       }
-      el("perfilEstado").textContent = profile.guest
-        ? "Perfil de invitado. Vinculá tu cuenta desde Multijugador para conservar el historial al cambiar de dispositivo."
-        : "Tu historial está vinculado a tu cuenta.";
-      el("perfilRanking").textContent = `${profile.points || 0} puntos de ranking · ${profile.ranked_played || 0} partidas clasificatorias`;
-      el("rangoPerfilPropio").replaceChildren(VersusRanks.badge(profile.points, true));
+      U.text(el("perfilEstado"), K(profile.guest?"profile.guest":"profile.linked"));
+      GameUI.text(el("perfilRanking"), GameUI.key('profile.ranking', {points:profile.points||0,played:profile.ranked_played||0}));
+      el("rangoPerfilPropio").replaceChildren(U.rankBadge(profile.points, true));
       for (const favorite of profile.favorites || []) {
         const card = document.createElement("div");
         const name = document.createElement("strong");
         name.textContent = globalThis.PlayerProfile.nombrePersonaje(favorite.character);
         const detail = document.createElement("span");
-        detail.textContent = `${favorite.played} partidas · ${favorite.wins} victorias`;
+        GameUI.text(detail, GameUI.key('profile.favoriteStats', {played:favorite.played,wins:favorite.wins}));
         card.append(name, detail);
         el("perfilFavoritos").append(card);
       }
-      if (!profile.favorites?.length) el("perfilFavoritos").textContent = "Jugá una partida multijugador para descubrir tus favoritos.";
+      if (!profile.favorites?.length) GameUI.text(el("perfilFavoritos"), GameUI.key('profile.noFavorites'));
       if (profile.legacy_played) {
         const note = document.createElement("small");
-        note.textContent = "Tus resultados anteriores cuentan; sus personajes no quedaron registrados.";
+        GameUI.text(note, GameUI.key('profile.legacy'));
         el("perfilFavoritos").append(note);
       }
     } catch (_) {
       if (request !== profileRequest || !dialog.open) return;
-      el("perfilId").textContent = "Sin conexión";
-      el("perfilEstado").textContent = "No pudimos cargar tu perfil. Podés elegir tu apariencia y reintentar la conexión.";
+      GameUI.text(el("perfilId"), GameUI.key('profile.offline'));
+      GameUI.text(el("perfilEstado"), GameUI.key('errors.profileLoad'));
       el("reintentarPerfil").hidden = false;
     }
   }
@@ -116,12 +142,14 @@
       button.dataset.choice = property;
       button.dataset.value = id;
       button.className = "avatar-choice";
-      button.setAttribute("aria-label", label);
+      U.attribute(button,"aria-label",label);
       button.append(portrait(property === "avatar" ? id : "explorador", property === "frame" ? id : "clasico"));
       const name = document.createElement("span");
-      name.textContent = label;
+      U.text(name,label);
       button.append(name);
+      if(property==='frame')button.append(document.createElement('small'));
       button.addEventListener("click", () => {
+        if(property==='frame'&&!unlocked.has(id))return;
         draft[property] = id;
         el("estadoAvatar").textContent = "";
         renderPreview();
@@ -132,6 +160,7 @@
   choices("opcionesAvatar", avatars, "avatar");
   choices("opcionesMarco", frames, "frame");
   el("btnMiAvatar").addEventListener("click", () => {
+    updateRewards();
     draft = { ...saved };
     el("estadoAvatar").textContent = "";
     renderPreview();
@@ -140,9 +169,10 @@
   });
   ["cerrarAvatar", "cancelarAvatar"].forEach((id) => el(id).addEventListener("click", () => dialog.close()));
   el("guardarAvatar").addEventListener("click", () => {
+    if(!unlocked.has(draft.frame))return;
     try { localStorage.setItem(key, JSON.stringify(draft)); }
     catch (_) {
-      el("estadoAvatar").textContent = "No pudimos guardar tu avatar. Revisá que el navegador permita guardar datos y volvé a intentar.";
+      GameUI.text(el("estadoAvatar"), GameUI.key('errors.avatarSave'));
       return;
     }
     saved = { ...draft };
@@ -151,59 +181,6 @@
     dialog.close();
   });
   renderMenu();
-  // The first shop collection uses the existing free cosmetics and identity save.
-  const descriptions = {
-    clasico: "La insignia de quien comienza una gran aventura.",
-    bosque: "Llevá la magia del bosque a cada encuentro.",
-    hielo: "El brillo de los reinos helados acompaña tu camino.",
-    fuego: "Una chispa de valentía para tus próximos desafíos.",
-    arcano: "Un halo de misterio para los amantes de la magia.",
-    real: "Un acabado majestuoso para tu retrato.",
-  };
-  let shopFrame = saved.frame;
-  function renderShop() {
-    el("tiendaAvatarPreview").replaceChildren(portrait(saved.avatar, shopFrame));
-    el("tiendaMarcoNombre").textContent = `Marco ${frames.find(([id]) => id === shopFrame)[1]}`;
-    el("tiendaMarcoDetalle").textContent = descriptions[shopFrame];
-    const equipped = shopFrame === saved.frame;
-    el("tiendaAplicarMarco").disabled = equipped;
-    el("tiendaAplicarMarco").textContent = equipped ? "Marco equipado" : "Usar marco gratis";
-    el("tiendaMarcos").querySelectorAll("button").forEach(button => {
-      button.setAttribute("aria-pressed", String(button.dataset.frame === shopFrame));
-    });
-  }
-  frames.forEach(([id, label]) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.dataset.frame = id;
-    button.setAttribute("aria-label", `Probar marco ${label}`);
-    button.append(portrait("explorador", id));
-    const name = document.createElement("span");
-    name.textContent = label;
-    button.append(name);
-    button.addEventListener("click", () => {
-      shopFrame = id;
-      el("tiendaEstado").textContent = "";
-      renderShop();
-    });
-    el("tiendaMarcos").append(button);
-  });
-  el("btnTienda").addEventListener("click", () => {
-    shopFrame = saved.frame;
-    el("tiendaEstado").textContent = "";
-    renderShop();
-  });
-  el("tiendaAplicarMarco").addEventListener("click", () => {
-    const next = { ...saved, frame: shopFrame };
-    try { localStorage.setItem(key, JSON.stringify(next)); }
-    catch (_) {
-      el("tiendaEstado").textContent = "No pudimos guardar el marco. Volvé a intentarlo.";
-      return;
-    }
-    saved = next;
-    window.dispatchEvent(new CustomEvent("player-appearance-saved", { detail: { source: "shop" } }));
-    renderMenu();
-    renderShop();
-    el("tiendaEstado").textContent = "¡Marco equipado! Ya podés verlo en tu perfil.";
-  });
+  window.addEventListener('storage',event=>{if(event.key==='progresoAventuraGA'||event.key===rewardKey)updateRewards();});
+  updateRewards();
 })();

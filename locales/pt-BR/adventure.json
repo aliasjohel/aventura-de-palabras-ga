@@ -1,1 +1,40 @@
-{}
+{
+  "controls": {
+    "towerTag": "TORRE DOS CAMPEÕES",
+    "tower": "Torre",
+    "intro": "Derrote todos os adversários e chegue ao topo.",
+    "floors": "Andares da torre",
+    "floor": "ANDAR {floor} DE {total}",
+    "floorLabel": "Andar {floor}: {name}{locked}",
+    "locked": ", bloqueado",
+    "rival": "{name}, adversário do andar {floor}",
+    "ability": "Habilidade: {name}",
+    "difficulty": "DIFICULDADE",
+    "rotate": "Gire o celular",
+    "landscape": "Jogue a Torre na horizontal.",
+    "menu": "Menu",
+    "back": "Voltar ao menu",
+    "backArrow": "← Voltar ao menu",
+    "hint": "💡 Dica",
+    "nextMission": "▶️ Próxima missão",
+    "retryMission": "🔄 Tentar missão novamente",
+    "previousMission": "◀ Missão anterior",
+    "nextTest": "➡️ Próximo desafio",
+    "nextMissionArrow": "➡️ Próxima missão",
+    "completed": "🏆 Aventura concluída",
+    "success": "✨ Desafio concluído! ✨",
+    "defeat": "Você não conseguiu. Tente de novo!",
+    "towerDone": "Torre concluída! Escolha qualquer adversário para lutar novamente.",
+    "progress": "Progresso: {done} de {total} adversários derrotados. Você pode enfrentar um adversário anterior sem perder seu progresso.",
+    "fightAgain": "Lutar novamente",
+    "fight": "Entrar na batalha",
+    "tiers": {
+      "apprentice": "APRENDIZ",
+      "warrior": "GUERREIRO",
+      "elite": "ELITE",
+      "boss": "CHEFE FINAL",
+      "cleared": "CONCLUÍDO"
+    },
+    "nextMissionDev": "▶ Próxima missão"
+  }
+}

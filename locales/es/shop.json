@@ -1,1 +1,131 @@
-{}
+{
+  "bazaar": "EL BAZAR DE LOS REINOS",
+  "title": "Tienda",
+  "intro": "Vestí a tus héroes con las monedas de tu aventura.",
+  "balance": "🪙 {coins} monedas",
+  "earnCoins": "Conseguí monedas completando desafíos y misiones.",
+  "outfitCollection": "Trajes · Colección de los reinos",
+  "choosePreview": "Elegí un traje para verlo",
+  "preview": "Vista previa del traje",
+  "newLook": "Nueva apariencia.",
+  "buy": "Comprar traje",
+  "equip": "Equipar traje",
+  "restore": "Usar traje original",
+  "syncHelp": "Al conectarte, tus monedas y trajes se sincronizan con tu cuenta de jugador. Conservás las recompensas de Aventura sin conexión; las compras necesitan internet después de sincronizar.",
+  "previewTag": "VISTA PREVIA",
+  "freeFrame": "Usar marco gratis",
+  "frameCollection": "Colección de marcos · Gratis",
+  "availableFrames": "Marcos disponibles",
+  "freeFramesHelp": "Estos marcos son gratuitos. Tu elección se guarda en este dispositivo.",
+  "goProfile": "Ir a Mi perfil",
+  "frameEquipped": "Marco equipado",
+  "tryFrame": "Probar marco {frame}",
+  "frameSaved": "¡Marco equipado! Ya podés verlo en tu perfil.",
+  "adminAccess": "Acceso de administrador",
+  "unlockAzrak": "Completá el Mundo 5 para desbloquear a Azrak",
+  "leaveTest": "Volvé del modo de prueba para comprar",
+  "missingCoins": "Te faltan {coins} monedas",
+  "buyPrice": "Comprar por {coins} monedas",
+  "equippedOutfit": "Traje equipado",
+  "equipped": "Equipado",
+  "owned": "En tu colección",
+  "price": "{coins} monedas",
+  "previewAlt": "{hero} · {outfit} · {pose}",
+  "purchased": "¡Traje comprado! Ya podés equiparlo.",
+  "outfitSaved": "¡{hero} lleva {outfit}!",
+  "originalSaved": "{hero} volvió a su traje original.",
+  "syncPending": "Tu saldo guardado sigue disponible. Las compras necesitan conexión; volveremos a sincronizar al reconectar.",
+  "frameDescriptions": {
+    "clasico": "La insignia de quien comienza una gran aventura.",
+    "bosque": "Llevá la magia del bosque a cada encuentro.",
+    "hielo": "El brillo de los reinos helados acompaña tu camino.",
+    "fuego": "Una chispa de valentía para tus próximos desafíos.",
+    "arcano": "Un halo de misterio para los amantes de la magia.",
+    "real": "Un acabado majestuoso para tu retrato."
+  },
+  "poses": {
+    "humano": "Humano",
+    "transformacion": "Transformación",
+    "aullido": "Aullido",
+    "salto": "Salto lunar",
+    "llamado": "Llamado",
+    "vuelo": "Vuelo",
+    "descenso-alto": "Alas arriba",
+    "descenso-bajo": "Alas abajo",
+    "frontal": "Vuelo frontal",
+    "base": "De pie",
+    "preparacion": "Preparación",
+    "ataque": "Ataque",
+    "habilidad": "Habilidad",
+    "carga": "Técnica final",
+    "impacto": "Impacto",
+    "final": "Victoria",
+    "planta": "Planta",
+    "mano": "Azrak",
+    "vidrio": "Kálamo",
+    "envejecido": "Envejecido",
+    "anciano": "Anciano",
+    "susto": "Susto",
+    "invocacion": "Invocación",
+    "alcanza": "Libro",
+    "extrae": "Armas de tinta",
+    "prepara": "Preparación final",
+    "lanza": "Lanzamiento",
+    "golpea": "Golpe final",
+    "formacion-1": "Formación inicial",
+    "formacion-2": "Formación media",
+    "formacion-3": "Formación completa",
+    "victoria": "victoria"
+  },
+  "skins": {
+    "aren-bosque": {
+      "name": "Guardián del Bosque",
+      "description": "Cuero esmeralda, hojas de bronce y espíritu de explorador."
+    },
+    "zafir-celestial": {
+      "name": "Celestial",
+      "description": "Una túnica de estrellas y un báculo de luz azul."
+    },
+    "kairos-real": {
+      "name": "Relojero Real",
+      "description": "Engranajes dorados y un abrigo digno del guardián del tiempo."
+    },
+    "guardiana-otono": {
+      "name": "Guardiana de Otoño",
+      "description": "Hojas cobrizas, una capa carmesí y un báculo de ámbar. Se consigue con las monedas que ganás jugando."
+    },
+    "alba-lunar": {
+      "name": "Alba Lunar",
+      "description": "Armadura de plata, capa azul y una espada de luz lunar. Se consigue con las monedas que ganás jugando."
+    },
+    "shadow-carmesi": {
+      "name": "Sombra Carmesí",
+      "description": "Capucha carmesí, armadura de obsidiana y dagas rojas. Se consigue con las monedas que ganás jugando."
+    },
+    "lobo-lunar": {
+      "name": "Centinela Lunar",
+      "description": "Armadura de plata lunar, cuero azul y garras listas para la cacería."
+    },
+    "nimbus-aviador": {
+      "name": "Aviador de las Cumbres",
+      "description": "Gafas de aviador, bufanda marfil y un arnés para explorar las cumbres."
+    },
+    "nivor-boreal": {
+      "name": "Soberano Boreal",
+      "description": "Armadura de zafiro, filigranas de plata y una gema de aurora sobre el hielo."
+    },
+    "azrak-eclipse": {
+      "name": "Señor del Eclipse",
+      "description": "Armadura de obsidiana, filos de plata y una espada de fuego violeta."
+    },
+    "kalamo-astral": {
+      "name": "Escriba Astral",
+      "description": "Pergaminos azul noche, constelaciones de plata y tinta estelar."
+    },
+    "aren-union": {
+      "name": "Guardián de los Cinco Cristales",
+      "description": "Aren Unión. Acceso de administrador para probar duelos online."
+    }
+  },
+  "rewardFramesHelp": "Los marcos se consiguen completando mundos de Aventura y subiendo de rango. Elegilos desde Mi perfil."
+}

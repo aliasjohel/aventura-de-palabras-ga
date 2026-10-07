@@ -421,9 +421,7 @@ function actualizarControlVibracion() {
   if (!vibracionAtaques || !estadoVibracion) return;
   const activa = vibracionAtaquesActiva();
   vibracionAtaques.checked = activa;
-  estadoVibracion.textContent = typeof navigator.vibrate === "function"
-    ? (activa ? "Vibración activada" : "Vibración desactivada")
-    : "Este navegador no admite vibración";
+  GameUI.text(estadoVibracion,GameUI.key(typeof navigator.vibrate === "function"?(activa?"common.vibrationOn":"common.vibrationOff"):"common.vibrationUnavailable"));
 }
 
 function abrirConfiguracion() {
@@ -1270,7 +1268,7 @@ function actualizarAccesoHerramientasAutor() {
 function actualizarAccesoUnionOnline() {
   let state;try { state=globalThis.CosmeticStore?.read(); } catch(_) {}
   document.getElementById('accesoUnionOnline').hidden=!herramientasAutorDisponibles&&!state?.admin;
-  document.getElementById('btnUnionOnline').textContent=state?.adminUnion?'Desactivar Aren Unión online':'Activar Aren Unión online';
+  GameUI.text(document.getElementById('btnUnionOnline'),GameUI.key(state?.adminUnion?'common.disableUnion':'common.enableUnion'));
 }
 window.addEventListener('wallet-updated',actualizarAccesoUnionOnline);
 document.getElementById('btnUnionOnline').addEventListener('click',async()=>{
@@ -1283,15 +1281,15 @@ document.getElementById('btnUnionOnline').addEventListener('click',async()=>{
     const state=CosmeticStore.read();
     const result=state.admin?await GameWallet.setAdminUnion(!state.adminUnion):await AventuraDeveloper.activateOnline();
     window.dispatchEvent(new Event('costume-equipped'));
-    status.textContent=result.adminUnion?'Aren Unión está habilitado y equipado. Salí del Modo Pruebas y elegí a Aren en un duelo online. Guardá tu cuenta para conservar el acceso en otros dispositivos.':'Aren Unión está desactivado. Podés volver a habilitarlo cuando quieras.';
-  } catch(error) { status.textContent=error.message||'No pudimos activar Aren Unión. Reintentá con conexión.'; }
+    GameUI.text(status,GameUI.key(result.adminUnion?'common.unionEnabled':'common.unionDisabled'));
+  } catch(error) { GameUI.text(status,GameUI.error(error,'errors.unionFailure')); }
   finally { button.disabled=false;actualizarAccesoUnionOnline(); }
 });
 actualizarAccesoHerramientasAutor();
 globalThis.AventuraDeveloper?.ready.then(actualizarAccesoHerramientasAutor);
 window.addEventListener('developer-access-changed', actualizarAccesoHerramientasAutor);
 globalThis.AventuraDeveloper?.ready.then(() => {
-  if (herramientasAutorDisponibles) document.getElementById('estadoAccesoDesarrollador').textContent = 'Acceso de desarrollador habilitado.';
+  if (herramientasAutorDisponibles) GameUI.text(document.getElementById('estadoAccesoDesarrollador'), GameUI.key('common.accessEnabled'));
 });
 document.getElementById('formActivarDesarrollador').addEventListener('submit', async event => {
   event.preventDefault();
@@ -1303,9 +1301,9 @@ document.getElementById('formActivarDesarrollador').addEventListener('submit', a
   try {
     const result = await globalThis.AventuraDeveloper.activate(input.value);
     input.value = '';
-    status.textContent = result.persisted ? 'Acceso habilitado en este dispositivo. Ya podés usar Modo Pruebas.' : 'Acceso habilitado solo por esta sesión: el dispositivo no permitió guardarlo.';
+    GameUI.text(status,GameUI.key(result.persisted?'common.accessSaved':'common.accessSession'));
     modoPruebas.focus();
-  } catch (error) { status.textContent = error.message || 'No pudimos activar el acceso. Intentá nuevamente.'; }
+  } catch (error) { GameUI.text(status,GameUI.error(error,'errors.accessFailure')); }
   finally { button.disabled = false; }
 });
 globalThis.AventuraShop = Object.freeze({
@@ -2242,6 +2240,7 @@ async function cargarRangoSala() {
   const nodo = document.getElementById('rangoSalaVersus');
   try {
     const rango = await adaptadorSalasVersus.obtenerRango();
+    globalThis.PlayerAvatar?.desbloquear(null,rango.points);
     nodo.replaceChildren(VersusRanks.badge(rango.points, true));
   } catch (_) { nodo.textContent = 'Conectate para consultar tu rango.'; }
 }
@@ -2333,7 +2332,8 @@ globalThis.PlayerProfile = Object.freeze({
     const adapter = await asegurarConexionSalasVersus();
     if (!adapter.obtenerPerfilJugador) throw new Error("Sin conexión");
     const profile = await adapter.obtenerPerfilJugador();
-    return { ...profile, alias: profile.alias || aliasSalaVersus.value.trim() || "Aventurero" };
+    // Presentation-only metadata; an actual alias named "Aventurero" remains literal.
+    return { ...profile, aliasIsFallback: !profile.alias && !aliasSalaVersus.value.trim(), alias: profile.alias || aliasSalaVersus.value.trim() || "Aventurero" };
   },
   cargarPublico: async (id = null, offset = 0) => {
     const adapter = await asegurarConexionSalasVersus();
@@ -2354,9 +2354,9 @@ async function cargarRankingPublico() {
   const boton = document.getElementById("btnActualizarRanking");
   if (boton.disabled) return;
   boton.disabled = true;
-  lista.textContent = "Cargando ranking…";
+  GameUI.text(lista, GameUI.key('menu.loadingRanking'));
   const propio = document.getElementById("miRanking");
-  propio.textContent = "Consultando tu puesto…";
+  GameUI.text(propio, GameUI.key('menu.loadingPosition'));
   try {
     await asegurarConexionSalasVersus();
     if (!adaptadorSalasVersus.obtenerRanking) throw new Error("Conectate a internet para ver el ranking.");
@@ -2365,36 +2365,36 @@ async function cargarRankingPublico() {
     propio.replaceChildren();
     const puesto = document.createElement("p");
     puesto.className = "ranking-puesto";
-    puesto.textContent = miFila ? `Puesto ${miFila.position} · ${miFila.points} puntos` : "Todavía no tenés un puesto";
-    propio.append(puesto, VersusRanks.badge(miFila?.points || 0, true));
+    GameUI.text(puesto,miFila?GameUI.key('menu.position', {position:miFila.position,points:miFila.points}):GameUI.key('menu.noPosition'));
+    propio.append(puesto, GameUI.rankBadge(miFila?.points || 0, true));
     if (!miFila) {
       const ayuda = document.createElement("p");
-      ayuda.textContent = "Jugá tu primer duelo Clasificatorio para entrar al ranking.";
+      GameUI.text(ayuda, GameUI.key('menu.firstRanked'));
       propio.append(ayuda);
     }
     lista.replaceChildren();
-    if (!filas.length) lista.textContent = "Todavía no hay resultados. ¡Jugá Clasificatorio para inaugurar el ranking!";
+    if (!filas.length) GameUI.text(lista, GameUI.key('menu.noRanking'));
     for (const fila of filas) {
       const item = document.createElement("p");
       item.classList.toggle("ranking-propio", fila.me);
-      item.textContent = `${fila.position}. ${VersusRoom.aliasVisible(fila.alias)}${fila.me ? " (vos)" : ""} · ${fila.points} puntos · ${fila.wins} victorias · ${fila.played} partidas`;
+      GameUI.text(item, GameUI.key('menu.rankingRow', {position:fila.position,alias:VersusRoom.aliasVisible(fila.alias),you:fila.me?GameUI.key("menu.you"):"",points:fila.points,wins:fila.wins,played:fila.played}));
       if (Number(fila.position) === 1) {
-        const corona=document.createElement('span');corona.className='corona-lider';corona.textContent='👑 Líder del ranking';item.prepend(corona);
+        const corona=document.createElement('span');corona.className='corona-lider';GameUI.text(corona, GameUI.key('menu.leader'));item.prepend(corona);
       }
       if (fila.user_id) {
         const ver = document.createElement("button");
         ver.type = "button"; ver.className = "enlace-perfil-jugador";
-        ver.textContent = "Ver perfil";
-        ver.setAttribute("aria-label", `Ver perfil de ${VersusRoom.aliasVisible(fila.alias)}`);
+        GameUI.text(ver, GameUI.key('profile.view'));
+        GameUI.attribute(ver,"aria-label",GameUI.key('profile.viewAlias', {alias:VersusRoom.aliasVisible(fila.alias)}));
         ver.addEventListener("click", () => PublicPlayerProfile.abrir(fila.user_id));
         item.append(ver);
       }
-      item.append(VersusRanks.badge(fila.points));
+      item.append(GameUI.rankBadge(fila.points));
       lista.appendChild(item);
     }
   } catch (error) {
-    lista.textContent = error.message;
-    propio.textContent = "Conectate para consultar tu puesto y tus puntos. Podés explorar las medallas mientras tanto.";
+    GameUI.text(lista,GameUI.error(error,'errors.rankingOnline'));
+    GameUI.text(propio, GameUI.key('menu.rankingOffline'));
   }
   finally { boton.disabled = false; }
 }
@@ -2407,7 +2407,7 @@ function abrirRankingMenu() {
 document.getElementById("btnRankingMenu").addEventListener("click", abrirRankingMenu);
 document.getElementById("btnRankingSala").addEventListener("click", abrirRankingMenu);
 document.getElementById("cerrarRankingMenu").addEventListener("click", () => rankingMenu.close());
-document.getElementById("medallasRanking").replaceChildren(...VersusRanks.tiers.map(t => VersusRanks.badge(t.min, true)));
+document.getElementById("medallasRanking").replaceChildren(...VersusRanks.tiers.map(t => GameUI.rankBadge(t.min, true)));
 
 async function abrirSalaVersus() {
   mostrarErrorSalaVersus();
@@ -2787,7 +2787,7 @@ function renderizarTorreArcade() {
     piso.tabIndex = disponible ? 0 : -1;
     piso.setAttribute("aria-disabled", String(!disponible));
     piso.setAttribute("aria-pressed", String(indice === pisoActualArcade));
-    piso.setAttribute("aria-label", `Piso ${indice + 1}: ${rival.nombre}${disponible ? "" : ", bloqueado"}`);
+    GameUI.attribute(piso,"aria-label",GameUI.key("adventure.controls.floorLabel",{floor:indice+1,name:rival.nombre,locked:disponible?"":GameUI.key("adventure.controls.locked")}));
     const seleccionar = () => {
       if (!disponible) return;
       pisoActualArcade = indice;
@@ -2806,24 +2806,21 @@ function renderizarTorreArcade() {
       <strong>${rival.nombre}</strong>
       <small>${indice < pisosDesbloqueadosArcade ? "SUPERADO" : obtenerDificultadArcade(indice)}</small>
     `;
+    GameUI.text(piso.querySelector("small"),GameUI.key("adventure.controls.tiers."+(indice<pisosDesbloqueadosArcade?"cleared":indice===total-1?"boss":indice>=5?"elite":indice>=2?"warrior":"apprentice")));
     pisosArcade.appendChild(piso);
   });
 
   const personajeRival = rivalesTorreArcade[pisoActualArcade];
   const rival = personajesVersus[personajeRival];
   const habilidad = habilidadesVersus[personajeRival];
-  etiquetaPisoArcade.textContent = `PISO ${pisoActualArcade + 1} DE ${total}`;
+  GameUI.text(etiquetaPisoArcade,GameUI.key("adventure.controls.floor",{floor:pisoActualArcade+1,total}));
   imagenRivalArcade.src = rival.base;
-  imagenRivalArcade.alt = `${rival.nombre}, rival del piso ${pisoActualArcade + 1}`;
+  GameUI.attribute(imagenRivalArcade,"alt",GameUI.key("adventure.controls.rival",{name:rival.nombre,floor:pisoActualArcade+1}));
   nombreRivalArcade.textContent = rival.nombre;
-  habilidadRivalArcade.textContent = `Habilidad: ${habilidad.nombre}`;
-  dificultadArcade.textContent = obtenerDificultadArcade(pisoActualArcade);
-  estadoArcade.textContent = torreCompletada
-    ? "¡Torre completada! Elegí cualquier rival para volver a luchar."
-    : `Progreso: ${pisosDesbloqueadosArcade} de ${total} rivales superados. Podés elegir un rival anterior sin perder tu avance.`;
-  btnCombatirArcade.textContent = pisoActualArcade < pisosDesbloqueadosArcade
-    ? "Volver a luchar"
-    : "Entrar al combate";
+  GameUI.text(habilidadRivalArcade,GameUI.key("adventure.controls.ability",{name:habilidad.nombre}));
+  GameUI.text(dificultadArcade,GameUI.key("adventure.controls.tiers."+(pisoActualArcade===total-1?"boss":pisoActualArcade>=5?"elite":pisoActualArcade>=2?"warrior":"apprentice")));
+  GameUI.text(estadoArcade,GameUI.key(torreCompletada?"adventure.controls.towerDone":"adventure.controls.progress",{done:pisosDesbloqueadosArcade,total}));
+  GameUI.text(btnCombatirArcade,GameUI.key(pisoActualArcade<pisosDesbloqueadosArcade?"adventure.controls.fightAgain":"adventure.controls.fight"));
 }
 
 function abrirTorreArcade() {
@@ -3924,7 +3921,7 @@ btnReintentar.addEventListener("click", () => {
 
 btnNuevaAventura.addEventListener("click", () => {
   const confirmar = confirm(
-    "Ya tenés una aventura guardada.\n\n¿Querés comenzar una nueva aventura?\nSe perderá el progreso actual.",
+    GameUI.resolve(GameUI.key("common.newAdventureConfirm")),
   );
 
   if (!confirmar) return;
@@ -4093,7 +4090,7 @@ function verificarEstado() {
       reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
       bloquearTeclado();
       btnPista.disabled = true;
-      btnSiguiente.textContent = "🏆 Aventura completada";
+      GameUI.text(btnSiguiente,GameUI.key("adventure.controls.completed"));
       btnSiguiente.classList.add("oculto");
       contenedorEscenario.classList.add("final-desierto-activo");
       guardarProgreso();
@@ -4137,7 +4134,7 @@ function verificarEstado() {
     cancelarRetornoEstadoBaseExplorador();
     cambiarPersonaje("triste");
     animarPersonajeTemporal("reaccion-derrota");
-    mensajePersonaje.textContent = "No lo lograste. ¡Intentá otra vez!";
+    GameUI.text(mensajePersonaje,GameUI.key("adventure.controls.defeat"));
     if (window.ForestRootTrap.message() || window.DesertSandTrap.message() || window.WorldWordHazards.message()) {
       mensajePersonaje.textContent = window.ForestRootTrap.message() || window.DesertSandTrap.message() || window.WorldWordHazards.message();
     }
@@ -6503,7 +6500,7 @@ async function completarDueloAventura() {
     await ejecutarEncuentroHombreLoboMision("victoria");
     desafiosCompletados = desafiosPorMision - 1;
     sonidoNarrativoPendiente = avanzarMision();
-    btnSiguiente.textContent = "➡️ Siguiente misión";
+    GameUI.text(btnSiguiente,GameUI.key("adventure.controls.nextMissionArrow"));
     guardarProgreso();
     const mensajeCompleto = await mostrarMensajeDesafioSuperado();
     if (mensajeCompleto) continuarAventura();
@@ -9217,6 +9214,7 @@ async function mostrarResultadoRango(matchId) {
     if (partidaOnlineVersus?.matchId !== matchId || version !== animacionResultadoRango) return;
     const cambio = estado.result;
     const puntosFinales = VersusRanks.points(estado.points);
+    const marcosNuevos=globalThis.PlayerAvatar?.desbloquear(null,puntosFinales)||[];
     const puntosIniciales = cambio ? VersusRanks.points(cambio.before ?? puntosFinales-cambio.delta) : puntosFinales;
     const anterior = VersusRanks.division(puntosIniciales);
     const siguiente = VersusRanks.division(puntosFinales);
@@ -9227,6 +9225,7 @@ async function mostrarResultadoRango(matchId) {
     const medalla = document.createElement('div');
     nodo.classList.remove('ascenso-rango');
     nodo.replaceChildren(texto, contador, medalla);
+    if(marcosNuevos.length){const regalo=document.createElement("p");GameUI.text(regalo,GameUI.key("profile.rewards.gift",{frames:marcosNuevos.map(id=>PlayerAvatar.nombreMarco(id)).join(", ")}));nodo.append(regalo);}
     let ultimo = -1;
     const inicio = performance.now();
     const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -10787,7 +10786,7 @@ function mostrarMensajeDesafioSuperado() {
 
   mensajeDesafioSuperado.classList.remove("visible");
   void mensajeDesafioSuperado.offsetWidth;
-  mensajeDesafioSuperado.textContent = "✨ ¡Desafío superado! ✨";
+  GameUI.text(mensajeDesafioSuperado,GameUI.key("adventure.controls.success"));
   mensajeDesafioSuperado.classList.add("visible");
 
   return new Promise((resolve) => {
@@ -12321,6 +12320,7 @@ function guardarProgreso() {
   };
 
   localStorage.setItem("progresoAventuraGA", JSON.stringify(progreso));
+  globalThis.PlayerAvatar?.desbloquear(progreso);
 
   actualizarMenuPrincipal();
 }
@@ -12433,14 +12433,14 @@ function actualizarMenuPrincipal() {
   const progresoGuardado = localStorage.getItem("progresoAventuraGA");
 
   if (!progresoGuardado) {
-    btnJugar.textContent = "🗺️ Aventura";
+    GameUI.text(btnJugar, GameUI.key('menu.adventure'));
 
     btnNuevaAventura.classList.add("oculto");
 
     return;
   }
 
-  btnJugar.textContent = "🗺️ Aventura";
+  GameUI.text(btnJugar, GameUI.key('menu.adventure'));
 
   btnNuevaAventura.classList.remove("oculto");
 }

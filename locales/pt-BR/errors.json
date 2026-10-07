@@ -1,1 +1,26 @@
-{}
+{
+  "interfaceFailure": "Não foi possível concluir a ação. Tente novamente.",
+  "profileLoad": "Não foi possível carregar seu perfil. Você ainda pode escolher sua aparência e tentar conectar novamente.",
+  "avatarSave": "Não foi possível salvar seu avatar. Verifique se o navegador permite salvar dados e tente novamente.",
+  "frameSave": "Não foi possível salvar a moldura. Tente novamente.",
+  "publicProfile": "Não foi possível carregar este perfil.",
+  "shopSave": "Não foi possível salvar a compra. Tente novamente.",
+  "shopSync": "Não foi possível sincronizar sua conta. Suas moedas salvas foram mantidas; abra a loja novamente para tentar de novo.",
+  "readPurchases": "Não foi possível carregar suas compras. Nenhuma moeda foi cobrada.",
+  "outfitUnavailable": "Este traje não está disponível.",
+  "unionAdmin": "Aren Unión precisa ser desbloqueado por um administrador.",
+  "unlockAzrak": "Conclua o Mundo 5 para desbloquear Azrak e comprar o traje dele.",
+  "onlinePurchase": "Conecte-se para comprar com as moedas da sua conta.",
+  "missingCoins": {
+    "one": "Falta {coins} moeda.",
+    "other": "Faltam {coins} moedas."
+  },
+  "notOwned": "Obtenha este traje primeiro.",
+  "testCoins": "As moedas de teste não podem ser gastas.",
+  "rankingOnline": "Conecte-se à internet para ver o ranking.",
+  "wrongCode": "Código incorreto. Verifique e tente novamente.",
+  "accessFailure": "Não foi possível ativar o acesso. Tente novamente.",
+  "unionFailure": "Não foi possível ativar Aren Unión. Conecte-se e tente novamente.",
+  "unionPlaying": "Termine o duelo antes de alterar o acesso a Aren Unión.",
+  "unionCode": "Digite seu código pessoal em Acesso de desenvolvedor antes de ativar Aren Unión online."
+}

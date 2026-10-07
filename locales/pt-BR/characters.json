@@ -1,1 +1,13 @@
-{}
+{
+  "avatars": {
+    "explorador": "Explorador",
+    "mago": "Mago",
+    "guardian-alba": "Guardião da Alvorada",
+    "t-shadow": "T. Shadow",
+    "kalamo": "Cálamo",
+    "dragon": "Dragão",
+    "dragon-hielo": "Dragão de gelo",
+    "hombre-lobo": "Lobisomem",
+    "azrak": "Azrak"
+  }
+}

@@ -1,1 +1,26 @@
-{}
+{
+  "interfaceFailure": "We could not complete the action. Please try again.",
+  "profileLoad": "We could not load your profile. You can still choose your appearance and retry the connection.",
+  "avatarSave": "We could not save your avatar. Check that your browser allows data storage and try again.",
+  "frameSave": "We could not save the frame. Please try again.",
+  "publicProfile": "We could not load this profile.",
+  "shopSave": "We could not save the purchase. Please try again.",
+  "shopSync": "We could not sync your account. Your saved coins are safe; reopen the shop to try again.",
+  "readPurchases": "We could not load your purchases. No coins were charged.",
+  "outfitUnavailable": "This outfit is not available.",
+  "unionAdmin": "Aren Unión requires an administrator unlock.",
+  "unlockAzrak": "Complete World 5 to unlock Azrak and buy his outfit.",
+  "onlinePurchase": "Go online to buy with your account’s coins.",
+  "missingCoins": {
+    "one": "You need {coins} more coin.",
+    "other": "You need {coins} more coins."
+  },
+  "notOwned": "Get this outfit first.",
+  "testCoins": "Test coins cannot be spent.",
+  "rankingOnline": "Go online to view the leaderboard.",
+  "wrongCode": "Incorrect code. Check it and try again.",
+  "accessFailure": "We could not activate access. Please try again.",
+  "unionFailure": "We could not enable Aren Unión. Go online and try again.",
+  "unionPlaying": "Finish the duel before changing access to Aren Unión.",
+  "unionCode": "Enter your personal code under Developer access before enabling Aren Unión online."
+}

@@ -1,6 +1,7 @@
 (() => {
   "use strict";
   const el = id => document.getElementById(id);
+  const U=GameUI, K=U.key;
   const dialog = el("perfilPublico");
   let generation = 0;
   let currentId = null;
@@ -8,48 +9,48 @@
   let nextOffset = 0;
   let history = [];
   let loading = false;
-  function text(tag, value) { const node = document.createElement(tag); node.textContent = value; return node; }
+  function text(tag, value) { const node = document.createElement(tag); U.text(node,value); return node; }
   function render(profile, append) {
     currentId = profile.id;
     if (!append) {
-      el("nombrePerfilPublico").textContent = VersusRoom.aliasVisible(profile.alias) || "Aventurero";
+      U.text(el("nombrePerfilPublico"), VersusRoom.aliasVisible(profile.alias) || K("profile.adventurer"));
       el("avatarPerfilPublico").replaceChildren(PlayerAvatar.crear(profile));
-      const frames = {clasico:"Clásico",bosque:"Bosque",hielo:"Hielo",fuego:"Fuego",arcano:"Arcano",real:"Real"};
-      el("aparienciaPerfilPublico").textContent = `Marco ${frames[profile.frame] || "Clásico"}`;
-      el("rankingPerfilPublico").textContent = `${profile.position ? `Puesto #${profile.position}` : "Sin puesto todavía"} · ${profile.points || 0} puntos`;
-      el("rangoPerfilPublico").replaceChildren(VersusRanks.badge(profile.points, true));
+      const frames = new Set(AvatarRewards.catalog.map(frame=>frame.id));
+      GameUI.text(el("aparienciaPerfilPublico"), GameUI.key('profile.frame', {frame:K("profile.frames."+(frames.has(profile.frame)?profile.frame:"clasico"))}));
+      GameUI.text(el("rankingPerfilPublico"), GameUI.key('profile.publicRanking', {position:profile.position?K("profile.position",{position:profile.position}):K("profile.noPosition"),points:profile.points||0}));
+      el("rangoPerfilPublico").replaceChildren(U.rankBadge(profile.points, true));
       el("estadisticasPerfilPublico").replaceChildren();
-      for (const [key,label] of [["played","Partidas"],["wins","Victorias"],["losses","Derrotas"],["draws","Empates"]]) {
+      for (const [key,label] of [["played",K("profile.played")],["wins",K("profile.wins")],["losses",K("profile.losses")],["draws",K("profile.draws")]]) {
         const tile = document.createElement("div"); tile.append(text("dd",profile[key] || 0),text("dt",label)); el("estadisticasPerfilPublico").append(tile);
       }
       const trophies = el("trofeosPerfilPublico"); trophies.replaceChildren();
-      for (const [needed,label] of [[1,"Primera victoria"],[10,"10 victorias"],[50,"50 victorias"],[100,"100 victorias"]]) {
-        if (profile.wins >= needed) trophies.append(text("span",`🏆 ${label}`));
+      for (const needed of [1,10,50,100]) {
+        if (profile.wins >= needed) trophies.append(text("span",needed===1?K("profile.firstWin"):K("profile.winTrophy",{wins:needed})));
       }
-      if (!trophies.children.length) trophies.append(text("p","Su primer trofeo llegará con una victoria."));
+      if (!trophies.children.length) trophies.append(text("p",K("profile.noTrophies")));
       const favorite = el("favoritoPerfilPublico"); favorite.replaceChildren();
       const first = profile.favorites?.[0];
       if (first) {
         const portrait = document.createElement("img"); portrait.src = PlayerProfile.imagenPersonaje(first.character); portrait.alt = PlayerProfile.nombrePersonaje(first.character);
-        const detail = document.createElement("div"); detail.append(text("strong",portrait.alt),text("p",`${first.played} partidas · ${first.wins} victorias`)); favorite.append(portrait,detail);
-      } else favorite.append(text("p","Todavía no hay partidas con un personaje registrado."));
+        const detail = document.createElement("div"); detail.append(text("strong",portrait.alt),text("p",K("profile.favoriteStats",{played:first.played,wins:first.wins}))); favorite.append(portrait,detail);
+      } else favorite.append(text("p",K("profile.noCharacterMatches")));
       el("partidasPerfilPublico").replaceChildren();
     }
     const matches = el("partidasPerfilPublico");
     for (const match of profile.recent || []) {
       const row = document.createElement("article");
-      const outcome = match.win ? "Victoria" : match.draw ? "Empate" : "Derrota";
+      const outcome = K(match.win?"profile.win":match.draw?"profile.draw":"profile.loss");
       row.dataset.resultado = match.win ? "victoria" : match.draw ? "empate" : "derrota";
       const info = document.createElement("div"); info.append(text("strong",outcome));
-      const date = match.finished_at ? new Date(match.finished_at).toLocaleDateString("es-AR") : "Partida anterior";
-      info.append(text("small",`${date} · ${match.ranked ? "Clasificatorio" : "Clásico"}`));
+      const date = match.finished_at ? {i18nDate:match.finished_at} : K("profile.previousMatch");
+      info.append(text("small",K("profile.matchDetail",{date,mode:K(match.ranked?"profile.ranked":"profile.classic")})));
       const rival = document.createElement("button"); rival.type = "button"; rival.className = "enlace-perfil-jugador";
-      rival.textContent = `${VersusRoom.aliasVisible(match.opponent_alias) || "Rival no disponible"}${match.opponent_id ? " ›" : ""}`;
+      GameUI.text(rival, GameUI.key('profile.rivalLink', {alias:VersusRoom.aliasVisible(match.opponent_alias)||K("profile.unavailableRival"),arrow:match.opponent_id?" ›":""}));
       rival.disabled = !match.opponent_id;
-      rival.setAttribute("aria-label",`Ver perfil de ${VersusRoom.aliasVisible(match.opponent_alias) || "rival"}`);
+      U.attribute(rival,"aria-label",K("profile.viewAlias",{alias:VersusRoom.aliasVisible(match.opponent_alias)||K("profile.rival")}));
       rival.addEventListener("click",()=>abrir(match.opponent_id,true)); row.append(info,rival); matches.append(row);
     }
-    if (!matches.children.length) matches.append(text("p","Todavía no tiene partidas terminadas."));
+    if (!matches.children.length) matches.append(text("p",K("profile.noMatches")));
     el("masPartidasPerfil").hidden = !profile.has_more;
     el("contenidoPerfilPublico").hidden = false;
   }
@@ -58,7 +59,7 @@
     loading = true;
     el("masPartidasPerfil").disabled = true;
     el("reintentarPerfilPublico").hidden = true;
-    el("estadoPerfilPublico").textContent = append ? "Cargando más partidas…" : "Cargando perfil…";
+    U.text(el("estadoPerfilPublico"),K(append?"profile.loadingMore":"profile.loading"));
     if (!append) el("contenidoPerfilPublico").hidden = true;
     try {
       const profile = await PlayerProfile.cargarPublico(currentId,append ? nextOffset : 0);
@@ -68,7 +69,7 @@
       el("estadoPerfilPublico").textContent = "";
     } catch (error) {
       if (request !== generation || !dialog.open) return;
-      el("estadoPerfilPublico").textContent = error.message || "No pudimos cargar este perfil.";
+      U.text(el("estadoPerfilPublico"),U.error(error,"errors.publicProfile"));
       el("reintentarPerfilPublico").hidden = false;
       el("reintentarPerfilPublico").dataset.append = String(append);
     } finally {
@@ -78,7 +79,7 @@
   function abrir(id = null, nested = false) {
     if (nested && currentId) history.push(currentId); else history = [];
     currentId = id; offset = 0; nextOffset = 0;
-    el("nombrePerfilPublico").textContent = "Perfil del jugador";
+    GameUI.text(el("nombrePerfilPublico"), GameUI.key('profile.title'));
     el("volverPerfilPublico").hidden = !history.length;
     if (!dialog.open) dialog.showModal();
     dialog.scrollTop = 0;
@@ -96,8 +97,8 @@
   for (const id of ["verPerfilRival","avatarDueloRival"]) el(id).addEventListener("click",()=>{ const user=el(id).dataset.userId; if(user) void abrir(user); });
   // Local appearance remains usable offline; retry sharing it when connectivity returns.
   async function shareAppearance(status) {
-    try { await PlayerProfile.guardarApariencia(); if (status) status.textContent="Apariencia guardada y visible para los demás."; }
-    catch (_) { if (status) status.textContent="Guardada en este dispositivo. Se compartirá cuando vuelvas a conectarte."; }
+    try { await PlayerProfile.guardarApariencia(); if (status) U.text(status,K("profile.appearanceShared")); }
+    catch (_) { if (status) U.text(status,K("profile.appearanceLocal")); }
   }
   window.addEventListener("player-appearance-saved", event => { void shareAppearance(el(event.detail.source === "shop" ? "tiendaEstado" : "estadoAvatar")); });
   window.addEventListener("online",()=>{ if(localStorage.getItem("aventuraPalabrasIdentidadV1")) void shareAppearance(); });

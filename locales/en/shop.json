@@ -1,1 +1,143 @@
-{}
+{
+  "bazaar": "THE REALMS’ BAZAAR",
+  "title": "Shop",
+  "intro": "Dress your heroes with coins earned on your adventure.",
+  "balance": {
+    "one": "🪙 {coins} coin",
+    "other": "🪙 {coins} coins"
+  },
+  "earnCoins": "Earn coins by completing challenges and missions.",
+  "outfitCollection": "Outfits · Realms collection",
+  "choosePreview": "Choose an outfit to preview",
+  "preview": "Outfit preview",
+  "newLook": "A new look.",
+  "buy": "Buy outfit",
+  "equip": "Equip outfit",
+  "restore": "Use original outfit",
+  "syncHelp": "Your coins and outfits sync with your player account when you go online. Offline Adventure rewards are kept; purchases require an internet connection after syncing.",
+  "previewTag": "PREVIEW",
+  "freeFrame": "Use free frame",
+  "frameCollection": "Frame collection · Free",
+  "availableFrames": "Available frames",
+  "freeFramesHelp": "These frames are free. Your choice is saved on this device.",
+  "goProfile": "Go to My profile",
+  "frameEquipped": "Frame equipped",
+  "tryFrame": "Preview {frame} frame",
+  "frameSaved": "Frame equipped! You can now see it in your profile.",
+  "adminAccess": "Administrator access",
+  "unlockAzrak": "Complete World 5 to unlock Azrak",
+  "leaveTest": "Leave Test mode to buy",
+  "missingCoins": {
+    "one": "You need {coins} more coin",
+    "other": "You need {coins} more coins"
+  },
+  "buyPrice": {
+    "one": "Buy for {coins} coin",
+    "other": "Buy for {coins} coins"
+  },
+  "equippedOutfit": "Outfit equipped",
+  "equipped": "Equipped",
+  "owned": "In your collection",
+  "price": {
+    "one": "{coins} coin",
+    "other": "{coins} coins"
+  },
+  "previewAlt": "{hero} · {outfit} · {pose}",
+  "purchased": "Outfit purchased! You can equip it now.",
+  "outfitSaved": "{hero} is wearing {outfit}!",
+  "originalSaved": "{hero} is back in their original outfit.",
+  "syncPending": "Your saved balance is still available. Purchases require a connection; syncing will resume when you go online.",
+  "frameDescriptions": {
+    "clasico": "The badge of someone setting out on a grand adventure.",
+    "bosque": "Bring the magic of the forest to every encounter.",
+    "hielo": "Let the shimmer of the frozen realms light your path.",
+    "fuego": "A spark of courage for the challenges ahead.",
+    "arcano": "An aura of mystery for those who love magic.",
+    "real": "A majestic finishing touch for your portrait."
+  },
+  "poses": {
+    "humano": "Human",
+    "transformacion": "Transformation",
+    "aullido": "Howl",
+    "salto": "Lunar leap",
+    "llamado": "Call",
+    "vuelo": "Flight",
+    "descenso-alto": "Wings up",
+    "descenso-bajo": "Wings down",
+    "frontal": "Front-facing flight",
+    "base": "Standing",
+    "preparacion": "Windup",
+    "ataque": "Attack",
+    "habilidad": "Ability",
+    "carga": "Finisher",
+    "impacto": "Impact",
+    "final": "Victory",
+    "planta": "Plant",
+    "mano": "Azrak",
+    "vidrio": "Kálamo",
+    "envejecido": "Aged",
+    "anciano": "Elder",
+    "susto": "Fright",
+    "invocacion": "Summon",
+    "alcanza": "Book",
+    "extrae": "Ink weapons",
+    "prepara": "Finisher windup",
+    "lanza": "Throw",
+    "golpea": "Final strike",
+    "formacion-1": "Initial formation",
+    "formacion-2": "Mid formation",
+    "formacion-3": "Full formation",
+    "victoria": "Victory"
+  },
+  "skins": {
+    "aren-bosque": {
+      "name": "Forest Guardian",
+      "description": "Emerald leather, bronze leaves, and an explorer’s spirit."
+    },
+    "zafir-celestial": {
+      "name": "Celestial",
+      "description": "A robe of stars and a staff of blue light."
+    },
+    "kairos-real": {
+      "name": "Royal Clockmaker",
+      "description": "Golden gears and a coat worthy of the guardian of time."
+    },
+    "guardiana-otono": {
+      "name": "Autumn Guardian",
+      "description": "Copper leaves, a crimson cape, and an amber staff. Earn it with the coins you collect by playing."
+    },
+    "alba-lunar": {
+      "name": "Moonlit Dawn",
+      "description": "Silver armor, a blue cape, and a sword of moonlight. Earn it with the coins you collect by playing."
+    },
+    "shadow-carmesi": {
+      "name": "Crimson Shadow",
+      "description": "A crimson hood, obsidian armor, and red daggers. Earn it with the coins you collect by playing."
+    },
+    "lobo-lunar": {
+      "name": "Lunar Sentinel",
+      "description": "Moon-silver armor, blue leather, and claws ready for the hunt."
+    },
+    "nimbus-aviador": {
+      "name": "Summit Aviator",
+      "description": "Aviator goggles, an ivory scarf, and a harness for exploring the peaks."
+    },
+    "nivor-boreal": {
+      "name": "Boreal Sovereign",
+      "description": "Sapphire armor, silver filigree, and an aurora gem set above the ice."
+    },
+    "azrak-eclipse": {
+      "name": "Lord of the Eclipse",
+      "description": "Obsidian armor, silver edges, and a sword of violet fire."
+    },
+    "kalamo-astral": {
+      "name": "Astral Scribe",
+      "description": "Midnight-blue scrolls, silver constellations, and starlit ink."
+    },
+    "aren-union": {
+      "name": "Guardian of the Five Crystals",
+      "description": "Aren Unión. Administrator access for testing online duels."
+    }
+  },
+  "rewardFramesHelp": "Earn frames by completing Adventure worlds and climbing the ranks. Choose them in My Profile."
+}

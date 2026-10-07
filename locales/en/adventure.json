@@ -1,1 +1,40 @@
-{}
+{
+  "controls": {
+    "towerTag": "TOWER OF CHAMPIONS",
+    "tower": "Tower",
+    "intro": "Defeat every opponent and reach the top.",
+    "floors": "Tower floors",
+    "floor": "FLOOR {floor} OF {total}",
+    "floorLabel": "Floor {floor}: {name}{locked}",
+    "locked": ", locked",
+    "rival": "{name}, opponent on floor {floor}",
+    "ability": "Ability: {name}",
+    "difficulty": "DIFFICULTY",
+    "rotate": "Rotate your phone",
+    "landscape": "Play the Tower in landscape mode.",
+    "menu": "Menu",
+    "back": "Back to menu",
+    "backArrow": "← Back to menu",
+    "hint": "💡 Hint",
+    "nextMission": "▶️ Next mission",
+    "retryMission": "🔄 Retry mission",
+    "previousMission": "◀ Previous mission",
+    "nextTest": "➡️ Next challenge",
+    "nextMissionArrow": "➡️ Next mission",
+    "completed": "🏆 Adventure complete",
+    "success": "✨ Challenge complete! ✨",
+    "defeat": "You didn’t make it. Try again!",
+    "towerDone": "Tower complete! Choose any opponent to fight again.",
+    "progress": "Progress: {done} of {total} opponents defeated. You can replay an earlier opponent without losing progress.",
+    "fightAgain": "Fight again",
+    "fight": "Enter battle",
+    "tiers": {
+      "apprentice": "APPRENTICE",
+      "warrior": "WARRIOR",
+      "elite": "ELITE",
+      "boss": "FINAL BOSS",
+      "cleared": "CLEARED"
+    },
+    "nextMissionDev": "▶ Next mission"
+  }
+}

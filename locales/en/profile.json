@@ -1,1 +1,121 @@
-{}
+{
+  "identity": "Player identity",
+  "player": "PLAYER",
+  "adventurer": "Adventurer",
+  "friendCode": "Friend code:",
+  "connecting": "Connecting…",
+  "history": "Multiplayer history",
+  "loadingHistory": "Loading your history…",
+  "played": "Matches",
+  "wins": "Wins",
+  "losses": "Losses",
+  "draws": "Draws",
+  "matchesRivals": "View my matches and opponents",
+  "favorites": "Favorite characters",
+  "favoritesHelp": "Your favorites are the characters you use most in completed multiplayer matches.",
+  "retryConnection": "Retry connection",
+  "chooseAvatar": "Choose your avatar",
+  "chooseFrame": "Choose your frame",
+  "savedHere": "Your choice is saved on this device.",
+  "cancel": "Cancel",
+  "saveAppearance": "Save appearance",
+  "community": "ADVENTURER COMMUNITY",
+  "title": "Player profile",
+  "close": "Close profile",
+  "previous": "← Back to previous profile",
+  "trophies": "Trophies",
+  "favorite": "Favorite character",
+  "matchHistory": "Match history",
+  "visitHelp": "Tap an opponent to visit their profile. Results are kept after the room closes.",
+  "moreMatches": "View more matches",
+  "retry": "Retry",
+  "view": "View profile",
+  "viewAlias": "View {alias}’s profile",
+  "frame": "{frame} frame",
+  "appearance": "{avatar} · {frame} frame",
+  "friendCodeHelp": "Create your Friends profile in Multiplayer to get your code.",
+  "guest": "Guest profile. Link your account in Multiplayer to keep your history when switching devices.",
+  "linked": "Your history is linked to your account.",
+  "ranking": "Ranking points: {points} · Ranked matches: {played}",
+  "favoriteStats": "Matches: {played} · Wins: {wins}",
+  "noFavorites": "Play a multiplayer match to discover your favorites.",
+  "legacy": "Your earlier results count, but the characters used were not recorded.",
+  "offline": "Offline",
+  "position": "Position #{position}",
+  "noPosition": "Not ranked yet",
+  "publicRanking": "{position} · Points: {points}",
+  "firstWin": "🏆 First win",
+  "winTrophy": "🏆 {wins} wins",
+  "noTrophies": "Their first trophy awaits their first win.",
+  "noCharacterMatches": "No matches with a recorded character yet.",
+  "win": "Win",
+  "draw": "Draw",
+  "loss": "Loss",
+  "previousMatch": "Earlier match",
+  "ranked": "Ranked",
+  "classic": "Classic",
+  "matchDetail": "{date} · {mode}",
+  "unavailableRival": "Opponent unavailable",
+  "rival": "opponent",
+  "rivalLink": "{alias}{arrow}",
+  "noMatches": "No completed matches yet.",
+  "loadingMore": "Loading more matches…",
+  "loading": "Loading profile…",
+  "appearanceShared": "Appearance saved and visible to other players.",
+  "appearanceLocal": "Saved on this device. It will be shared when you go online again.",
+  "rankDivision": "{rank}{division}",
+  "rankBadge": "{rank} badge",
+  "rankMaximum": "Points: {points} · Maximum rank",
+  "rankProgress": "{points} / {next} points · Next: {rank}",
+  "rankProgressLabel": "Progress toward {rank}",
+  "frames": {
+    "clasico": "Classic",
+    "bosque": "Forest",
+    "hielo": "Ice",
+    "fuego": "Fire",
+    "arcano": "Arcane",
+    "real": "Royal",
+    "bronce": "Bronze",
+    "plata": "Silver",
+    "oro": "Gold",
+    "platino": "Platinum",
+    "diamante": "Diamond",
+    "leyenda": "Legend"
+  },
+  "ranks": {
+    "novato": {
+      "name": "Rookie",
+      "title": "Apprentice"
+    },
+    "bronce": {
+      "name": "Bronze",
+      "title": "Adventurer"
+    },
+    "plata": {
+      "name": "Silver",
+      "title": "Explorer"
+    },
+    "oro": {
+      "name": "Gold",
+      "title": "Guardian"
+    },
+    "platino": {
+      "name": "Platinum",
+      "title": "Word Master"
+    },
+    "diamante": {
+      "name": "Diamond",
+      "title": "Champion"
+    },
+    "leyenda": {
+      "name": "Legend",
+      "title": "Legend of the Five Worlds"
+    }
+  },
+  "rewards": {
+    "unlocked": "Unlocked",
+    "world": "Complete World {world}",
+    "rank": "Reach {rank} rank",
+    "gift": "🎁 Frames unlocked: {frames}. Choose them in My Profile."
+  }
+}

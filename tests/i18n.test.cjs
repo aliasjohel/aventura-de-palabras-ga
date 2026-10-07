@@ -10,8 +10,8 @@ test('Spanish catalog preserves all sample HTML bindings exactly',async()=>{
   const api=create({loadJson});await api.init();
   const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
   const entries=[...html.matchAll(/data-i18n="([^"]+)"[^>]*>([^<]*)</g)];
-  assert.equal(entries.length,13);
-  entries.forEach(([,key,original])=>assert.equal(api.t(key),original));
+  assert(entries.length>70);
+  entries.forEach(([,key,original])=>assert.equal(api.t(key).trim(),original.trim()));
   assert.equal(api.language,'es');assert.equal(api.fallbackLanguage,'es');
 });
 test('parameters, plurals and missing keys are handled without interpreting HTML',async()=>{
@@ -53,7 +53,7 @@ test('all language resources have explicit cache revisions; gameplay storage is 
   vm.runInContext(worker+'\n globalThis.assets=CORE_ASSETS;globalThis.revisions=ASSET_REVISIONS;',context);
   const registry=await loadJson('languages.json');
   for(const asset of ['./js/i18n.js','./locales/languages.json',...registry.namespaces.map(name=>`./locales/es/${name}.json`)]){
-    assert(context.assets.includes(asset));assert.equal(context.revisions[asset],'aventura-palabras-runtime-v340');
+    assert(context.assets.includes(asset));assert.equal(context.revisions[asset],'aventura-palabras-runtime-v342');
   }
   const code=fs.readFileSync(path.join(root,'js/i18n.js'),'utf8');
   const module={exports:{}};

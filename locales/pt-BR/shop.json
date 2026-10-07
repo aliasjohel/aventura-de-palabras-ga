@@ -1,1 +1,143 @@
-{}
+{
+  "bazaar": "O BAZAR DOS REINOS",
+  "title": "Loja",
+  "intro": "Vista seus heróis com as moedas da sua aventura.",
+  "balance": {
+    "one": "🪙 {coins} moeda",
+    "other": "🪙 {coins} moedas"
+  },
+  "earnCoins": "Ganhe moedas completando desafios e missões.",
+  "outfitCollection": "Trajes · Coleção dos reinos",
+  "choosePreview": "Escolha um traje para visualizar",
+  "preview": "Prévia do traje",
+  "newLook": "Um novo visual.",
+  "buy": "Comprar traje",
+  "equip": "Equipar traje",
+  "restore": "Usar traje original",
+  "syncHelp": "Suas moedas e seus trajes são sincronizados com sua conta de jogador ao se conectar. As recompensas da Aventura offline são mantidas; compras precisam de internet após a sincronização.",
+  "previewTag": "PRÉVIA",
+  "freeFrame": "Usar moldura grátis",
+  "frameCollection": "Coleção de molduras · Grátis",
+  "availableFrames": "Molduras disponíveis",
+  "freeFramesHelp": "Estas molduras são gratuitas. Sua escolha fica salva neste dispositivo.",
+  "goProfile": "Ir para Meu perfil",
+  "frameEquipped": "Moldura equipada",
+  "tryFrame": "Visualizar moldura {frame}",
+  "frameSaved": "Moldura equipada! Você já pode vê-la no seu perfil.",
+  "adminAccess": "Acesso de administrador",
+  "unlockAzrak": "Conclua o Mundo 5 para desbloquear Azrak",
+  "leaveTest": "Saia do Modo de teste para comprar",
+  "missingCoins": {
+    "one": "Falta {coins} moeda",
+    "other": "Faltam {coins} moedas"
+  },
+  "buyPrice": {
+    "one": "Comprar por {coins} moeda",
+    "other": "Comprar por {coins} moedas"
+  },
+  "equippedOutfit": "Traje equipado",
+  "equipped": "Equipado",
+  "owned": "Na sua coleção",
+  "price": {
+    "one": "{coins} moeda",
+    "other": "{coins} moedas"
+  },
+  "previewAlt": "{hero} · {outfit} · {pose}",
+  "purchased": "Traje comprado! Você já pode equipá-lo.",
+  "outfitSaved": "{hero} está usando {outfit}!",
+  "originalSaved": "{hero} voltou ao traje original.",
+  "syncPending": "Seu saldo salvo continua disponível. As compras precisam de conexão; a sincronização será retomada ao se conectar.",
+  "frameDescriptions": {
+    "clasico": "A insígnia de quem começa uma grande aventura.",
+    "bosque": "Leve a magia da floresta a cada encontro.",
+    "hielo": "O brilho dos reinos gelados acompanha seu caminho.",
+    "fuego": "Uma centelha de coragem para seus próximos desafios.",
+    "arcano": "Uma aura de mistério para quem ama magia.",
+    "real": "Um acabamento majestoso para seu retrato."
+  },
+  "poses": {
+    "humano": "Humano",
+    "transformacion": "Transformação",
+    "aullido": "Uivo",
+    "salto": "Salto lunar",
+    "llamado": "Chamado",
+    "vuelo": "Voo",
+    "descenso-alto": "Asas para cima",
+    "descenso-bajo": "Asas para baixo",
+    "frontal": "Voo de frente",
+    "base": "Em pé",
+    "preparacion": "Preparação",
+    "ataque": "Ataque",
+    "habilidad": "Habilidade",
+    "carga": "Golpe final",
+    "impacto": "Impacto",
+    "final": "Vitória",
+    "planta": "Planta",
+    "mano": "Azrak",
+    "vidrio": "Kálamo",
+    "envejecido": "Envelhecido",
+    "anciano": "Ancião",
+    "susto": "Susto",
+    "invocacion": "Invocação",
+    "alcanza": "Livro",
+    "extrae": "Armas de tinta",
+    "prepara": "Preparação final",
+    "lanza": "Lançamento",
+    "golpea": "Golpe final",
+    "formacion-1": "Formação inicial",
+    "formacion-2": "Formação intermediária",
+    "formacion-3": "Formação completa",
+    "victoria": "Vitória"
+  },
+  "skins": {
+    "aren-bosque": {
+      "name": "Guardião da Floresta",
+      "description": "Couro esmeralda, folhas de bronze e espírito de explorador."
+    },
+    "zafir-celestial": {
+      "name": "Celestial",
+      "description": "Uma túnica de estrelas e um cajado de luz azul."
+    },
+    "kairos-real": {
+      "name": "Relojoeiro Real",
+      "description": "Engrenagens douradas e um casaco digno do guardião do tempo."
+    },
+    "guardiana-otono": {
+      "name": "Guardiã do Outono",
+      "description": "Folhas acobreadas, uma capa carmesim e um cajado de âmbar. Obtenha com as moedas que você ganha jogando."
+    },
+    "alba-lunar": {
+      "name": "Alvorada Lunar",
+      "description": "Armadura de prata, capa azul e uma espada de luz lunar. Obtenha com as moedas que você ganha jogando."
+    },
+    "shadow-carmesi": {
+      "name": "Sombra Carmesim",
+      "description": "Capuz carmesim, armadura de obsidiana e adagas vermelhas. Obtenha com as moedas que você ganha jogando."
+    },
+    "lobo-lunar": {
+      "name": "Sentinela Lunar",
+      "description": "Armadura de prata lunar, couro azul e garras prontas para a caçada."
+    },
+    "nimbus-aviador": {
+      "name": "Aviador dos Picos",
+      "description": "Óculos de aviador, cachecol marfim e um arnês para explorar os picos."
+    },
+    "nivor-boreal": {
+      "name": "Soberano Boreal",
+      "description": "Armadura de safira, filigranas de prata e uma gema de aurora sobre o gelo."
+    },
+    "azrak-eclipse": {
+      "name": "Senhor do Eclipse",
+      "description": "Armadura de obsidiana, lâminas de prata e uma espada de fogo violeta."
+    },
+    "kalamo-astral": {
+      "name": "Escriba Astral",
+      "description": "Pergaminhos azul-noite, constelações de prata e tinta estelar."
+    },
+    "aren-union": {
+      "name": "Guardião dos Cinco Cristais",
+      "description": "Aren Unión. Acesso de administrador para testar duelos online."
+    }
+  },
+  "rewardFramesHelp": "Ganhe molduras ao concluir mundos da Aventura e subir de rank. Escolha em Meu perfil."
+}

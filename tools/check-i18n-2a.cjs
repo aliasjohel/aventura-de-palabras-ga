@@ -39,7 +39,7 @@ const server=http.createServer((req,res)=>{
     await page.evaluate(()=>{document.getElementById('introOficial')?.remove();document.body.classList.remove('intro-pendiente');document.getElementById('btnConfiguracion').click();});
     await page.setViewportSize({width:320,height:740});await page.evaluate(()=>I18n.setPreference('pt-BR'));
     assert(await page.locator('.panel-configuracion').evaluate(panel=>panel.scrollWidth<=panel.clientWidth));
-    await page.screenshot({path:path.join(root,'tools/i18n-2a-mobile.png')});
+    await page.screenshot({path:path.join(root,'tools/i18n-2b-settings-320.png')});
    }
    assert.deepEqual(errors,[]);await context.close();
   }
@@ -51,15 +51,21 @@ const server=http.createServer((req,res)=>{
   await page.goto(url,{waitUntil:'domcontentloaded'});await page.evaluate(()=>I18n.ready);
   await page.waitForFunction(async()=>{
    const registration=await navigator.serviceWorker.getRegistration();if(!registration?.active)return false;
-   const cache=await caches.open('aventura-palabras-runtime-v340');return !!(await cache.match('./locales/pt-BR/menu.json',{ignoreSearch:true}));
+   const cache=await caches.open('aventura-palabras-runtime-v342');return !!(await cache.match('./locales/pt-BR/menu.json',{ignoreSearch:true}));
   },null,{timeout:60000});
   await page.reload({waitUntil:'domcontentloaded'});await page.evaluate(()=>I18n.ready);
   await page.waitForFunction(()=>!!navigator.serviceWorker.controller);
   await context.setOffline(true);
   await page.evaluate(()=>I18n.setPreference('en'));assert.equal(await page.locator('#btnConfiguracion').textContent(),'Settings');
+  await page.evaluate(()=>{document.getElementById('introOficial')?.remove();document.body.classList.remove('intro-pendiente');document.getElementById('btnTienda').click();});
+  assert.equal(await page.locator('#tituloTiendaMenu').textContent(),'Shop');assert.equal(await page.locator('#tiendaTrajeNombre').textContent(),'Forest Guardian');
+  await page.evaluate(()=>I18n.setPreference('pt-BR'));assert.equal(await page.locator('#tiendaTrajeNombre').textContent(),'Guardião da Floresta');
+  await page.evaluate(()=>document.getElementById('cerrarTiendaMenu').click());
   await page.evaluate(()=>I18n.setPreference('pt-BR'));assert.equal(await page.locator('#btnConfiguracion').textContent(),'Configurações');
   await page.reload({waitUntil:'domcontentloaded'});await page.evaluate(()=>I18n.ready);assert.equal(await page.evaluate(()=>I18n.language),'pt-BR');
   await page.evaluate(()=>I18n.setPreference('es'));assert.equal(await page.locator('#btnConfiguracion').textContent(),'Configuración');
+  await page.goto(url+'/actualizar.html',{waitUntil:'domcontentloaded'});await page.evaluate(()=>I18n.ready);assert.equal(await page.locator('h1').textContent(),'Actualizar el juego');
+  await page.evaluate(()=>I18n.setPreference('en'));assert.equal(await page.locator('h1').textContent(),'Update the game');
   await context.close();console.log('PASS real PWA installation, three-language switching and preference persistence on offline reload');
  }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);server.close();process.exitCode=1;});

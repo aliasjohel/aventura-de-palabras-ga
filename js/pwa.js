@@ -5,7 +5,7 @@ async function registrarAplicacionInstalable() {
     const estadoOffline = document.getElementById("estadoOfflineJuego");
     if (estadoOffline) {
       estadoOffline.dataset.estado = "error";
-      estadoOffline.textContent = "Este navegador no permite instalar los modos sin conexión";
+      GameUI.text(estadoOffline, GameUI.key('common.pwa.unsupported'));
     }
     return;
   }
@@ -32,15 +32,15 @@ async function registrarAplicacionInstalable() {
   const mostrarEstadoOffline = (estado, texto) => {
     if (!estadoOfflineJuego) return;
     estadoOfflineJuego.dataset.estado = estado;
-    estadoOfflineJuego.textContent = texto;
+    GameUI.text(estadoOfflineJuego, texto);
   };
 
   const mostrarModosLocalesDisponibles = () => {
     mostrarEstadoOffline(
       navigator.onLine ? "listo" : "sin-red",
       navigator.onLine
-        ? "Aventura, Pruebas y Torre disponibles sin conexión"
-        : "Sin conexión · Aventura, Pruebas y Torre disponibles",
+        ? GameUI.key('common.pwa.ready')
+        : GameUI.key('common.pwa.offline'),
     );
   };
 
@@ -75,19 +75,18 @@ async function registrarAplicacionInstalable() {
     mostrarEstadoOffline(
       estado === "completa" ? "listo" : "descargando",
       estado === "completa"
-        ? "Aventura, Pruebas y Torre disponibles sin conexión"
-        : `Guardando modos locales para jugar sin conexión · ${valor}%`,
+        ? GameUI.key('common.pwa.ready')
+        : GameUI.key('common.pwa.saving', {percent:valor}),
     );
     barraActualizacion.value = valor;
     barraActualizacion.textContent = `${valor}%`;
     porcentajeActualizacion.textContent = `${valor}%`;
-    detalleProgreso.textContent = estado === "iniciando"
-      ? "Comparando archivos guardados…"
-      : `${completados} de ${total} listos · ${reutilizados} reutilizados · ${descargados} descargados`;
+    GameUI.text(detalleProgreso, estado === "iniciando"
+      ? GameUI.key('common.pwa.comparing')
+      : GameUI.key('common.pwa.fileProgress', {completed:completados,total,reused:reutilizados,downloaded:descargados}));
     iconoActualizacion.textContent = "↓";
-    tituloActualizacion.textContent = "Preparando actualización";
-    textoActualizacion.textContent =
-      "Se conservarán las imágenes y sonidos que no hayan cambiado.";
+    GameUI.text(tituloActualizacion, GameUI.key('common.pwa.preparing'));
+    GameUI.text(textoActualizacion, GameUI.key('common.pwa.reuseMedia'));
     progresoActualizacion.hidden = false;
     accionesActualizacion.hidden = true;
     avisoPendiente = !menuPrincipalPwa.classList.contains("activa");
@@ -98,16 +97,15 @@ async function registrarAplicacionInstalable() {
     errorInstalacion = true;
     progresoInstalacion = null;
     iconoActualizacion.textContent = "!";
-    tituloActualizacion.textContent = "No se completó la actualización";
-    textoActualizacion.textContent =
-      "Revisá tu conexión. El juego volverá a intentar la descarga automáticamente.";
+    GameUI.text(tituloActualizacion, GameUI.key('common.pwa.failed'));
+    GameUI.text(textoActualizacion, GameUI.key('common.pwa.retryDownload'));
     progresoActualizacion.hidden = true;
     accionesActualizacion.hidden = true;
     avisoPendiente = !menuPrincipalPwa.classList.contains("activa");
     avisoActualizacion.hidden = avisoPendiente;
     mostrarEstadoOffline(
       "error",
-      "La descarga offline quedó incompleta · conectate para reintentar",
+      GameUI.key('common.pwa.incomplete'),
     );
   };
 
@@ -115,14 +113,14 @@ async function registrarAplicacionInstalable() {
     if (!workerEnEspera) return;
     avisoPendiente = false;
     iconoActualizacion.textContent = "↻";
-    tituloActualizacion.textContent = "Actualización disponible";
-    textoActualizacion.textContent = "La actualización está lista. Ya podés instalar la nueva versión.";
+    GameUI.text(tituloActualizacion, GameUI.key('common.pwa.available'));
+    GameUI.text(textoActualizacion, GameUI.key('common.pwa.readyToUpdate'));
     barraActualizacion.value = 100;
     barraActualizacion.textContent = "100%";
     porcentajeActualizacion.textContent = "100%";
-    detalleProgreso.textContent = progresoInstalacion?.total
-      ? `${progresoInstalacion.reutilizados} reutilizados · ${progresoInstalacion.descargados} descargados`
-      : "Todos los archivos están listos";
+    GameUI.text(detalleProgreso, progresoInstalacion?.total
+      ? GameUI.key('common.pwa.fileSummary', {reused:progresoInstalacion.reutilizados,downloaded:progresoInstalacion.descargados})
+      : GameUI.key('common.pwa.allReady'));
     progresoActualizacion.hidden = false;
     accionesActualizacion.hidden = false;
     avisoActualizacion.hidden = false;
@@ -175,7 +173,7 @@ async function registrarAplicacionInstalable() {
     recargandoPorActualizacion = true;
     btnActualizar.disabled = true;
     btnPosponer.disabled = true;
-    btnActualizar.textContent = "Actualizando...";
+    GameUI.text(btnActualizar, GameUI.key('common.pwa.updating'));
     workerEnEspera.postMessage({ type: "SKIP_WAITING" });
   });
 
@@ -207,8 +205,8 @@ async function registrarAplicacionInstalable() {
   if (sessionStorage.getItem("actualizacionPwaAplicada") === "si") {
     sessionStorage.removeItem("actualizacionPwaAplicada");
     iconoActualizacion.textContent = "✓";
-    tituloActualizacion.textContent = "Aplicación actualizada";
-    textoActualizacion.textContent = "Ya estás usando la última versión.";
+    GameUI.text(tituloActualizacion, GameUI.key('common.pwa.updated'));
+    GameUI.text(textoActualizacion, GameUI.key('common.pwa.latest'));
     progresoActualizacion.hidden = true;
     accionesActualizacion.hidden = true;
     avisoActualizacion.hidden = false;
@@ -246,7 +244,7 @@ async function registrarAplicacionInstalable() {
     });
   } catch (error) {
     document.documentElement.dataset.pwa = "error";
-    mostrarEstadoOffline("error", "Este navegador no pudo activar el modo sin conexión");
+    mostrarEstadoOffline("error", GameUI.key('common.pwa.activationFailure'));
     console.warn("No se pudo activar el modo instalable.", error);
   }
 }
@@ -255,7 +253,7 @@ window.addEventListener("online", () => {
   const estado = document.getElementById("estadoOfflineJuego");
   if (estado?.dataset.estado === "sin-red") {
     estado.dataset.estado = "listo";
-    estado.textContent = "Aventura, Pruebas y Torre disponibles sin conexión";
+    GameUI.text(estado, GameUI.key('common.pwa.ready'));
   }
 });
 
@@ -263,7 +261,7 @@ window.addEventListener("offline", () => {
   const estado = document.getElementById("estadoOfflineJuego");
   if (estado?.dataset.estado === "listo") {
     estado.dataset.estado = "sin-red";
-    estado.textContent = "Sin conexión · Aventura, Pruebas y Torre disponibles";
+    GameUI.text(estado, GameUI.key('common.pwa.offline'));
   }
 });
 

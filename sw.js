@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v340`;
+const CACHE_NAME = `${CACHE_PREFIX}v342`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -203,6 +203,9 @@ const RECURSOS_MODOS_LOCALES = [
 ];
 const CORE_ASSETS = [
   "./js/i18n-settings.js",
+  "./js/i18n-es-fallback.js",
+  "./js/i18n-ui.js",
+  "./actualizar.html",
   "./css/i18n-settings.css",
   "./locales/en/common.json",
   "./locales/en/menu.json",
@@ -411,6 +414,7 @@ const CORE_ASSETS = [
   "./css/versus-identity.css",
   "./js/versus-identity.js",
   "./css/player-avatar.css",
+  "./js/avatar-rewards.js",
   "./js/player-avatar.js",
   "./js/public-player-profile.js",
   "./",
@@ -782,6 +786,9 @@ const CORE_ASSETS = [
  */
 const ASSET_REVISIONS = {
   "./js/i18n-settings.js": "20261006-i18n-2a-1",
+  "./js/i18n-es-fallback.js": "20261006-i18n-2b-1",
+  "./js/i18n-ui.js": "20261006-i18n-2b-1",
+  "./actualizar.html": "20261006-i18n-2b-1",
   "./css/i18n-settings.css": "20261006-i18n-2a-1",
   "./locales/en/common.json": "20261006-i18n-2a-1",
   "./locales/en/menu.json": "20261006-i18n-2a-1",

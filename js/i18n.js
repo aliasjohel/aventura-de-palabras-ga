@@ -85,7 +85,7 @@
       await loadLanguage('es');if(language!=='es')await loadLanguage(language);initialized=true;notify();
     }
     function init(){if(!initialization)initialization=initialize().catch(error=>{initialization=null;throw error;});return initialization;}
-    return {init,t,apply,setPreference,subscribe:listener=>{listeners.add(listener);return ()=>listeners.delete(listener);},
+    return {init,t,resolve:translation,apply,setPreference,subscribe:listener=>{listeners.add(listener);return ()=>listeners.delete(listener);},
       get language(){return language;},get preference(){return preference;},get fallbackLanguage(){return registry?.fallbackLanguage||'es';},
       get languages(){return registry?.languages.map(item=>({...item}))||[];},
       number:(value,options)=>new Intl.NumberFormat(formatLocale(language),options).format(value),

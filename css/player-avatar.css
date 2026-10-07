@@ -2,6 +2,21 @@
 .player-avatar-portrait { position: absolute; inset: 13%; display: grid; place-items: center; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 50% 30%, #3c5873, #0a1424 80%); }
 .player-avatar-portrait img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.25); transform-origin: center 30%; }
 .player-avatar > .player-avatar-frame { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 1; pointer-events: none; filter: drop-shadow(0 3px 3px #0008); }
+.player-avatar:has(.rank-frame) { --metal: #cf8950; --shine: #ffe1ac; --cut: 18%; }
+.player-avatar > .rank-frame { inset: 6%; width: 88%; height: 88%; box-sizing: border-box; border: 5px solid var(--metal); border-radius: var(--cut); box-shadow: inset 0 0 0 2px var(--shine), 0 0 0 2px #172334, 0 0 12px var(--metal); background: linear-gradient(135deg, #fff6, transparent 25%, transparent 75%, #fff3); }
+.rank-frame::before, .rank-frame::after { content: attr(data-symbol); position: absolute; left: 50%; transform: translateX(-50%); color: var(--shine); background: #111f32; border: 1px solid var(--metal); border-radius: 4px; font-size: 15px; line-height: 1; padding: 1px 5px; }
+.rank-frame::before { top: -10px; }
+.rank-frame::after { bottom: -10px; font-size: 11px; }
+.player-avatar:has(.rank-frame) .player-avatar-portrait { border-radius: 15%; inset: 16%; }
+.frame-plata { --metal: #a6bdd7 !important; --shine: #f1fbff !important; --cut: 5% !important; }
+.frame-oro { --metal: #e3ae35 !important; --shine: #fff0a0 !important; --cut: 12% !important; }
+.frame-platino { --metal: #58cbbd !important; --shine: #d2fff3 !important; --cut: 25% !important; }
+.frame-diamante { --metal: #75cfff !important; --shine: #eefaff !important; --cut: 2% !important; }
+.frame-diamante > .rank-frame { border-style: double; border-width: 7px; }
+.frame-leyenda { --metal: #bc7bff !important; --shine: #ffe0a0 !important; --cut: 22% !important; }
+.frame-leyenda > .rank-frame { border-color: #ddb450 #ad79f2; box-shadow: inset 0 0 0 2px var(--shine), 0 0 18px #aa68e580; }
+#editorAvatar .avatar-choice:disabled { opacity: .6; cursor: default; }
+#editorAvatar .avatar-choice small { font-size: 10px; line-height: 1.4; color: #b7cadc; padding: 0 4px; }
 #btnMiAvatar { display: flex; align-items: center; justify-content: center; gap: 14px; }
 #avatarMenu { display: flex; }
 #avatarMenu .player-avatar { width: 46px; height: 46px; }

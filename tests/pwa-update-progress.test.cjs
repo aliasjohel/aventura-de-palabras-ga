@@ -14,7 +14,7 @@ assert.match(html, /id="barraActualizacionPwa"[\s\S]+max="100"/);
 assert.match(html, /id="porcentajeActualizacionPwa"/);
 assert.match(pwa, /PWA_INSTALL_PROGRESS/);
 assert.match(pwa, /actualizarBarraDescarga/);
-assert.match(pwa, /Todos los archivos están listos/);
+assert.match(pwa, /common\.pwa\.allReady/);
 assert.match(pwa, /descargados/);
 assert.match(pwa, /reutilizados/);
 assert.match(worker, /function instalarRecursosConProgreso/);
@@ -42,6 +42,13 @@ test("volver al menú recupera el aviso de una descarga o un error pendientes", 
     return elementos.get(id);
   };
   const contexto = {
+    GameUI: {
+      key: (name,params={}) => ({name,params}),
+      text: (node,value) => {
+        const catalog=JSON.parse(fs.readFileSync(path.join(root,'locales/es/common.json'))).pwa;
+        node.textContent=typeof value==='string'?value:catalog[value.name.split('.').at(-1)].replace(/\{(\w+)\}/g,(_,key)=>String(value.params[key]));
+      },
+    },
     navigator: { onLine: true, serviceWorker: {
       controller: {}, addEventListener: (tipo, fn) => { eventos[tipo] = fn; },
       register: async () => ({ update: async () => {}, addEventListener() {} }),
