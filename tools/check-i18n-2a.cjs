@@ -51,7 +51,7 @@ const server=http.createServer((req,res)=>{
   await page.goto(url,{waitUntil:'domcontentloaded'});await page.evaluate(()=>I18n.ready);
   await page.waitForFunction(async()=>{
    const registration=await navigator.serviceWorker.getRegistration();if(!registration?.active)return false;
-   const cache=await caches.open('aventura-palabras-runtime-v342');return !!(await cache.match('./locales/pt-BR/menu.json',{ignoreSearch:true}));
+   const cache=await caches.open('aventura-palabras-runtime-v343');return !!(await cache.match('./locales/pt-BR/menu.json',{ignoreSearch:true}));
   },null,{timeout:60000});
   await page.reload({waitUntil:'domcontentloaded'});await page.evaluate(()=>I18n.ready);
   await page.waitForFunction(()=>!!navigator.serviceWorker.controller);

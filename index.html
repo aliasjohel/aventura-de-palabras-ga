@@ -37,7 +37,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
     <link rel="preload" as="audio" href="assets/sounds/melodia-menu.mp3" type="audio/mpeg">
     <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
-    <link rel="stylesheet" href="css/styles.css?v=20261005-destello-sabiduria-1">
+    <link rel="stylesheet" href="css/styles.css?v=20261007-i18n-2c-1">
     <link rel="stylesheet" href="css/menu-navigation.css?v=20260921-social-mapa-1">
     <link rel="stylesheet" href="css/cosmetic-shop.css?v=20261002-cinematicas-escala-1">
     <link rel="stylesheet" href="css/azrak-world.css?v=20260913-runas-viento-captura-1">
@@ -604,9 +604,9 @@
 
             <div class="versus-aviso-orientacion" role="status">
                 <span aria-hidden="true">&#8635;</span>
-                <strong>Gir&aacute; tu celular</strong>
+                <strong>Girá tu celular</strong>
                 <small>La sala multijugador se disfruta en horizontal.</small>
-                <button id="btnSalirSalaVersusVertical" type="button">Volver al men&uacute;</button>
+                <button id="btnSalirSalaVersusVertical" type="button">Volver al menú</button>
             </div>
         </section>
 
@@ -725,9 +725,9 @@
 
             <div class="versus-aviso-orientacion" role="status">
                 <span>&#8635;</span>
-                <strong>Gir&aacute; el celular</strong>
-                <p>El modo versus se juega en horizontal.</p>
-                <button id="btnSalirSeleccionPersonajeVersusVertical" type="button">Volver al men&uacute;</button>
+                <strong data-i18n="adventure.combat.rotate">Girá el celular</strong>
+                <p data-i18n="adventure.combat.landscape">El modo versus se juega en horizontal.</p>
+                <button id="btnSalirSeleccionPersonajeVersusVertical" type="button">Volver al menú</button>
             </div>
         </section>
 
@@ -859,9 +859,9 @@
 
             <div class="versus-aviso-orientacion" role="status">
                 <span>↻</span>
-                <strong>Gir&aacute; el celular</strong>
-                <p>El modo versus se juega en horizontal.</p>
-                <button id="btnSalirPreparacionVersusVertical" type="button">Volver al men&uacute;</button>
+                <strong data-i18n="adventure.combat.rotate">Girá el celular</strong>
+                <p data-i18n="adventure.combat.landscape">El modo versus se juega en horizontal.</p>
+                <button id="btnSalirPreparacionVersusVertical" type="button">Volver al menú</button>
             </div>
         </section>
 
@@ -876,12 +876,12 @@
                         </div>
                         <div id="tiempoVersusUno" class="versus-tiempo-personal"
                             aria-label="Tiempo del jugador 1: 4 minutos">
-                            <span>TIEMPO</span><strong id="textoTiempoVersusUno">04:00</strong>
+                            <span data-i18n="adventure.combat.time">TIEMPO</span><strong id="textoTiempoVersusUno">04:00</strong>
                         </div>
                     </div>
 
-                    <div class="versus-tiempo versus-estado-combate" aria-label="Duelo en curso">
-                        <span>DUELO</span>
+                    <div class="versus-tiempo versus-estado-combate" aria-label="Duelo en curso" data-i18n-aria-label="adventure.combat.ongoing">
+                        <span data-i18n="adventure.combat.duel">DUELO</span>
                         <strong>VS</strong>
                         <div id="chatRapidoVersus" hidden>
                             <button id="abrirMensajesVersus" type="button" aria-expanded="false" aria-controls="panelMensajesVersus">💬 Mensajes</button>
@@ -901,7 +901,7 @@
                         </div>
                         <div id="tiempoVersusDos" class="versus-tiempo-personal"
                             aria-label="Tiempo del jugador 2: 4 minutos">
-                            <span>TIEMPO</span><strong id="textoTiempoVersusDos">04:00</strong>
+                            <span data-i18n="adventure.combat.time">TIEMPO</span><strong id="textoTiempoVersusDos">04:00</strong>
                         </div>
                     </div>
                 </header>
@@ -982,17 +982,17 @@
                             src="assets/images/personajes/versus/halcon-espiritual-guardiana.png" alt=""
                             aria-hidden="true">
                         <div class="entrada-anuncio-versus">
-                            <small>PREP&Aacute;RATE</small>
-                            <strong>&iexcl;DUELO!</strong>
+                            <small data-i18n="adventure.combat.prepare">PREPÁRATE</small>
+                            <strong data-i18n="adventure.combat.duelStart">¡DUELO!</strong>
                         </div>
-                        <button id="btnSaltarEntradaVersus" class="btn-saltar-entrada-versus" type="button">
+                        <button id="btnSaltarEntradaVersus" class="btn-saltar-entrada-versus" type="button" data-i18n="adventure.combat.skipIntro">
                             Saltar entrada
                         </button>
                     </div>
 
-                    <div class="versus-insignia" aria-hidden="true">VS</div>
+                    <div class="versus-insignia" aria-hidden="true" hidden>VS</div>
 
-                    <div class="versus-progresos" aria-label="Progreso de ambos jugadores">
+                    <div class="versus-progresos" aria-label="Progreso de ambos jugadores" data-i18n-aria-label="adventure.combat.bothProgress">
                         <section id="desafioJugadorVersus" class="versus-palabra versus-palabra-uno"
                             aria-labelledby="tituloProgresoUno">
                             <div class="versus-palabra-cabecera">
@@ -1082,7 +1082,7 @@
                     <div class="versus-panel-accion">
                         <div class="versus-turno">
                             <span>⚔️</span>
-                            <p id="mensajeRondaVersus">Cada error gasta un intento</p>
+                            <p id="mensajeRondaVersus" data-i18n="adventure.combat.errorAttempt">Cada error gasta un intento</p>
                         </div>
                         <button id="btnHabilidadVersus" class="btn-habilidad-versus" type="button" disabled>
                             <span id="iconoHabilidadVersus" aria-hidden="true">🔍</span>
@@ -1094,10 +1094,10 @@
                                     id="progresoHabilidadVersus"></b></i>
                         </button>
                     </div>
-                    <div id="tecladoVersus" class="teclado-versus" aria-label="Teclado de combate"></div>
+                    <div id="tecladoVersus" class="teclado-versus" aria-label="Teclado de combate" data-i18n-aria-label="adventure.combat.keyboard"></div>
                 </div>
 
-                <button id="btnSalirVersus" class="versus-volver" type="button">← Volver</button>
+                <button id="btnSalirVersus" class="versus-volver" type="button" data-i18n="adventure.combat.back">← Volver</button>
                 <p id="tituloVersus" class="versus-prototipo">J1 0/5 · J2 0/5</p>
 
                 <div id="herramientasPruebasVersus" class="herramientas-pruebas-versus oculto"
@@ -1180,7 +1180,7 @@
                     <div class="relampago-destello" aria-hidden="true"></div>
                     <div class="anuncio-fin-versus-contenido">
                         <span>EL DUELO HA TERMINADO</span>
-                        <strong>FIN DEL DUELO</strong>
+                        <strong data-i18n="adventure.combat.finish">FIN DEL DUELO</strong>
                         <p id="palabraFinalVersus" hidden></p>
                     </div>
                 </div>
@@ -1389,7 +1389,7 @@
                         <span id="etiquetaCinematicaVersus">GOLPE LEGENDARIO</span>
                         <h2 id="tituloCinematicaVersus">ECLIPSE VIOLETA</h2>
                     </div>
-                    <button id="btnSaltarCinematicaVersus" class="saltar-cinematica-versus" type="button">
+                    <button id="btnSaltarCinematicaVersus" class="saltar-cinematica-versus" type="button" data-i18n="adventure.combat.skipFinal">
                         Saltar
                     </button>
                 </div>
@@ -1405,16 +1405,16 @@
                         <p id="resultadoMonedasVersus" role="status" hidden></p>
                         <button id="btnRevanchaVersus" class="oculto" type="button">Jugar revancha</button>
                         <button id="verPerfilRival" class="secundario" type="button" hidden>Ver perfil del rival</button>
-                        <button id="btnMenuResultadoVersus" class="secundario" type="button">Volver al menú</button>
+                        <button id="btnMenuResultadoVersus" class="secundario" type="button" data-i18n="adventure.combat.backMenu">Volver al menú</button>
                     </div>
                 </div>
             </div>
 
             <div class="versus-aviso-orientacion" role="status">
                 <span>↻</span>
-                <strong>Gir&aacute; el celular</strong>
-                <p>El modo versus se juega en horizontal.</p>
-                <button id="btnSalirVersusVertical" type="button">Volver al men&uacute;</button>
+                <strong data-i18n="adventure.combat.rotate">Girá el celular</strong>
+                <p data-i18n="adventure.combat.landscape">El modo versus se juega en horizontal.</p>
+                <button id="btnSalirVersusVertical" type="button" data-i18n="adventure.combat.backMenu">Volver al menú</button>
             </div>
         </section>
 
@@ -1583,7 +1583,7 @@
       <button id="reintentarPerfilPublico" class="secundario" type="button" hidden data-i18n="profile.retry">Reintentar</button>
     </dialog>
     <script src="js/i18n.js?v=20261006-i18n-2b-1"></script>
-    <script src="js/i18n-es-fallback.js?v=20261006-i18n-2b-1"></script>
+    <script src="js/i18n-es-fallback.js?v=20261007-i18n-2c-1"></script>
     <script src="js/i18n-ui.js?v=20261006-i18n-2b-1"></script>
     <script src="js/i18n-settings.js?v=20261006-i18n-2a-1"></script>
     <script src="js/cosmetic-store.js?v=20261005-destello-sabiduria-1"></script>
@@ -1608,7 +1608,8 @@
     <script src="js/kalamo-desert.js?v=20260909-arco-aren-1"></script>
     <script src="js/world-word-hazards.js?v=20260914-jaula-fuego"></script>
     <script src="js/developer-access.js?v=20261002-cinematicas-escala-1"></script>
-    <script src="js/app.js?v=20261006-i18n-2b-1"></script>
+    <script src="js/i18n-combat.js?v=20261007-i18n-2c-1"></script>
+    <script src="js/app.js?v=20261007-i18n-2c-1"></script>
     <script src="js/cosmetic-shop.js?v=20261006-i18n-2b-1"></script>
     <script src="js/public-player-profile.js?v=20261006-i18n-2b-1"></script>
     <script src="js/pwa.js?v=20261006-i18n-2b-1"></script>

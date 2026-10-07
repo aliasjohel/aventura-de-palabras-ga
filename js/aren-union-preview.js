@@ -2,7 +2,7 @@
   'use strict';
   const $=id=>document.getElementById(id),scene=$('escena'),body=$('cuerpo');
   const params=new URLSearchParams(location.search),embedded=params.get('integrado')==='1';
-  if(embedded){document.body.classList.add('integrada');const victim=params.get('victima');if(victim&&/^assets\/images\/[a-zA-Z0-9_/-]+\.png$/.test(victim))$('rival').src=victim;}
+  if(embedded){$('fase').hidden=true;$('titulo').textContent='Juicio de los Cinco Cristales';document.body.classList.add('integrada');const victim=params.get('victima');if(victim&&/^assets\/images\/[a-zA-Z0-9_/-]+\.png$/.test(victim))$('rival').src=victim;}
   // Frame the visible actor rather than the transparent margins of its sprite.
   const rival=$('rival');
   const rivalReady=rival.decode().then(()=>{
@@ -65,7 +65,7 @@
   const preloads=['base-v1','invocacion-v1','victoria-v1','capa-v1','guardianes-solos-v3','rayo-v2','prision-v2','disparo-v2','ataque-rayo-v2'].map(p=>{const img=new Image();img.src=dir+p+'.png';return img.decode();});
   let steps=[],timer=null,remaining=0,due=0,paused=false,version=0,pending=null;
   function orbit(){gems.forEach((g,i)=>{g.style.left=[18,30,43,14,45][i]+'%';g.style.top=[37,22,38,59,60][i]+'%';g.style.opacity='1';g.style.transform='scale(1)';});}
-  function title(t,label){$('titulo').textContent=t;$('fase').textContent=label;}
+  function title(t,label){if(embedded){$('fase').hidden=true;return;}$('titulo').textContent=t;$('fase').textContent=label;}
   function stop(){clearTimeout(timer);timer=null;pending=null;steps=[];paused=false;scene.className='escena';guardians.forEach(el=>el.classList.remove('presente'));rays.forEach(el=>el.classList.remove('presente'));$('pausa').textContent='Pausar';$('pausa').setAttribute('aria-pressed','false');setPose(dir+'base-v1.png');orbit();}
   function next(){if(!steps.length){timer=null;pending=null;return;}const [delay,fn]=steps.shift();pending=fn;remaining=delay;due=performance.now()+delay;timer=setTimeout(resume,delay);}
   function resume(){if(pending){const fn=pending;pending=null;fn();next();}}

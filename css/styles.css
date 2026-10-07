@@ -4889,8 +4889,7 @@ button:disabled {
     transition: opacity 180ms ease, transform 260ms ease;
 }
 
-.duelo-en-introduccion .versus-progresos,
-.duelo-en-introduccion .versus-insignia {
+.duelo-en-introduccion .versus-progresos {
     opacity: 0.18;
     transition: opacity 240ms ease;
 }

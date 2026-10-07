@@ -2024,28 +2024,23 @@ function renderizarPartidaOnline(partida) {
     lupaPropiaRecienActivada ? "" : (propio.abilityHint || ""),
   );
 
-  tituloProgresoUno.textContent = propio.finished
+  CombatUI.text(tituloProgresoUno, propio.finished
     ? "TU RECORRIDO TERMINÓ"
-    : `TU DESAFÍO · ${obtenerNombreTemaVersus(propio.theme).toUpperCase()} ${VersusEngine.obtenerEtiquetaRonda(propio.wordIndex)}`;
-  tituloProgresoDos.textContent = rival.finished
+    : `TU DESAFÍO · ${obtenerNombreTemaVersus(propio.theme).toUpperCase()} ${VersusEngine.obtenerEtiquetaRonda(propio.wordIndex)}`);
+  CombatUI.text(tituloProgresoDos, rival.finished
     ? "EL RIVAL TERMINÓ"
-    : `RIVAL · ${obtenerNombreTemaVersus(rival.theme).toUpperCase()} ${VersusEngine.obtenerEtiquetaRonda(rival.wordIndex)}`;
-  tituloVersus.textContent = `J1 ${propio.completedWords}/${maximoPalabrasVersus} · J2 ${rival.completedWords}/${maximoPalabrasVersus}`;
+    : `RIVAL · ${obtenerNombreTemaVersus(rival.theme).toUpperCase()} ${VersusEngine.obtenerEtiquetaRonda(rival.wordIndex)}`);
+  CombatUI.text(tituloVersus, `J1 ${propio.completedWords}/${maximoPalabrasVersus} · J2 ${rival.completedWords}/${maximoPalabrasVersus}`);
 
   const palabraPropia = document.getElementById("palabraVersusUno");
   const palabraRival = document.getElementById("palabraVersusDos");
-  palabraPropia.textContent = propio.finished
-    ? (propio.finishReason === "lives"
-      ? "SIN CORAZONES"
-      : propio.finishReason === "time" ? "TIEMPO AGOTADO" : `✓ ${propio.completedWords} PALABRAS`)
-    : (propio.progress || []).join(" ");
-  palabraRival.textContent = rival.finished
-    ? (rival.finishReason === "lives"
-      ? "SIN CORAZONES"
-      : rival.finishReason === "time" ? "TIEMPO AGOTADO" : `✓ ${rival.completedWords} PALABRAS`)
-    : (rival.progress || []).join(" ");
-  palabraPropia.setAttribute("aria-label", `Tu progreso: ${palabraPropia.textContent}`);
-  palabraRival.setAttribute("aria-label", `Progreso rival: ${palabraRival.textContent}`);
+  const progresoVisible = player => player.finished
+    ? GameUI.key(player.finishReason === "lives" ? "adventure.combat.noHeartsCaps" : player.finishReason === "time" ? "adventure.combat.timeoutCaps" : "adventure.combat.words", {count: player.completedWords})
+    : (player.progress || []).join(" ");
+  const progresoPropio = progresoVisible(propio), progresoRival = progresoVisible(rival);
+  GameUI.text(palabraPropia, progresoPropio);GameUI.text(palabraRival, progresoRival);
+  GameUI.attribute(palabraPropia, "aria-label", GameUI.key("adventure.combat.progress", {progress: progresoPropio}));
+  GameUI.attribute(palabraRival, "aria-label", GameUI.key("adventure.combat.opponentProgress", {progress: progresoRival}));
   ajustarPalabraLargaVersus(palabraPropia, propio.wordLength || 0);
   ajustarPalabraLargaVersus(palabraRival, rival.wordLength || 0);
   actualizarIntentosVersus(document.getElementById("intentosVersusUno"), propio.errors, "Jugador 1");
@@ -3988,7 +3983,7 @@ function elegirLetra(letra, boton) {
     boton.classList.add("correcta");
     personaje.textContent = "😁";
     mostrarReaccionExplorador("acierto", "reaccion-acierto");
-    mensajePersonaje.textContent = "¡Bien! Esa letra está.";
+    GameUI.text(mensajePersonaje, GameUI.key("adventure.combat.adventureCorrect"));
 
     if (!palabraCompleta()) {
       reproducirSonido("acertar");
@@ -4005,7 +4000,7 @@ function elegirLetra(letra, boton) {
 
     personaje.textContent = intentos <= 2 ? "😨" : "😕";
     mostrarReaccionExplorador("desanimado", "reaccion-error");
-    mensajePersonaje.textContent = "Uy... esa letra no está.";
+    GameUI.text(mensajePersonaje, GameUI.key("adventure.combat.adventureMiss"));
     if (window.ForestRootTrap.message() || window.DesertSandTrap.message() || window.WorldWordHazards.message()) {
       mensajePersonaje.textContent = window.ForestRootTrap.message() || window.DesertSandTrap.message() || window.WorldWordHazards.message();
     }
@@ -4222,7 +4217,7 @@ function crearTecladoVersus() {
       botonLetra.type = "button";
       botonLetra.textContent = letra;
       botonLetra.className = "letra-versus";
-      botonLetra.setAttribute("aria-label", `Letra ${letra}`);
+      CombatUI.attribute(botonLetra, "aria-label", `Letra ${letra}`);
       botonLetra.style.setProperty("--demora-agujero", `${indiceTecla * 30}ms`);
       botonLetra.style.setProperty("--giro-agujero", `${(indiceTecla % 2 ? -1 : 1) * (180 + (indiceTecla % 5) * 36)}deg`);
       botonLetra.addEventListener("click", () => jugarLetraVersus(letra, botonLetra));
@@ -4329,9 +4324,9 @@ function mostrarVistaImpactoRivalVersus(personaje, letraForzada = "", descargaUn
       : "La calavera obligó al rival a cometer un error.",
     time_steal: "El rival pierde 20 segundos y su teclado se detiene durante 2 segundos.",
   };
-  nombreImpactoRivalVersus.textContent = descargaUnion ? "💎 Destello de Sabiduría" : `${habilidad.icono} ${habilidad.nombre}`;
-  detalleImpactoRivalVersus.textContent = descargaUnion ? "Teclado electrificado y bloqueado durante 2 segundos." : detallesPorEfecto[habilidad.efecto]
-    || "El rival recibió tu ataque.";
+  CombatUI.text(nombreImpactoRivalVersus, descargaUnion ? "💎 Destello de Sabiduría" : `${habilidad.icono} ${habilidad.nombre}`);
+  CombatUI.text(detalleImpactoRivalVersus, descargaUnion ? "Teclado electrificado y bloqueado durante 2 segundos." : detallesPorEfecto[habilidad.efecto]
+    || "El rival recibió tu ataque.");
   miniTecladoRivalVersus.className = descargaUnion ? "mini-teclado-rival-versus efecto-descarga-union" : `mini-teclado-rival-versus efecto-${habilidad.efecto}`;
   prepararMiniaturaHabilidadRival(habilidad.efecto);
   miniTecladoRivalVersus.querySelectorAll("i").forEach((tecla) => {
@@ -5040,16 +5035,13 @@ function aplicarFalloForzadoJugadorLocalVersus(presentar = true) {
 function actualizarPanelHabilidadVersus(carga = demoVersus.cargaHabilidadJugador, pista = "") {
   const habilidad = descripcionHabilidadVersus(personajeJugadorVersus);
   const lista = carga >= letrasParaHabilidadVersus;
-  iconoHabilidadVersus.textContent = habilidad.icono;
-  nombreHabilidadVersus.textContent = habilidad.nombre;
-  cargaHabilidadVersus.textContent = lista ? "¡Lista para usar!" : `${carga}/${letrasParaHabilidadVersus} letras`;
+  CombatUI.text(iconoHabilidadVersus, habilidad.icono);
+  CombatUI.text(nombreHabilidadVersus, habilidad.nombre);
+  CombatUI.text(cargaHabilidadVersus, lista ? "¡Lista para usar!" : `${carga}/${letrasParaHabilidadVersus} letras`);
   progresoHabilidadVersus.style.width = `${Math.min(100, (carga / letrasParaHabilidadVersus) * 100)}%`;
   btnHabilidadVersus.classList.toggle("lista", lista);
   btnHabilidadVersus.disabled = !lista || demoVersus.partidaFinalizada || jugadaOnlineEnCurso;
-  btnHabilidadVersus.setAttribute(
-    "aria-label",
-    lista ? `${habilidad.nombre}: lista para usar` : `${habilidad.nombre}: ${carga} de ${letrasParaHabilidadVersus} letras`,
-  );
+  CombatUI.attribute(btnHabilidadVersus, "aria-label", lista ? `${habilidad.nombre}: lista para usar` : `${habilidad.nombre}: ${carga} de ${letrasParaHabilidadVersus} letras`,);
   actualizarPistaLupaVersus(pista);
 }
 
@@ -5062,7 +5054,7 @@ function limpiarRelojKairosVersus() {
   bloqueoRivalKairosHasta = 0;
   tecladoVersus.querySelector(".arena-reloj-kairos")?.remove();
   tecladoVersus.classList.remove("efecto-reloj-kairos");
-  tecladoVersus.setAttribute("aria-label", "Teclado de combate");
+  CombatUI.attribute(tecladoVersus, "aria-label", "Teclado de combate");
 }
 
 function mostrarRelojKairosVersus() {
@@ -5075,13 +5067,13 @@ function mostrarRelojKairosVersus() {
   arena.className = "arena-reloj-kairos";
   arena.setAttribute("aria-hidden", "true");
   tecladoVersus.append(arena);
-  tecladoVersus.setAttribute("aria-label", "Kairós envejeció el teclado: teclas bloqueadas durante 2 segundos");
+  CombatUI.attribute(tecladoVersus, "aria-label", "Kairós envejeció el teclado: teclas bloqueadas durante 2 segundos");
   bloquearTecladoDemoVersus();
   temporizadorRelojKairos = setTimeout(() => {
     temporizadorRelojKairos = null;
     tecladoVersus.querySelector(".arena-reloj-kairos")?.remove();
     tecladoVersus.classList.remove("efecto-reloj-kairos");
-    tecladoVersus.setAttribute("aria-label", "Teclado de combate");
+    CombatUI.attribute(tecladoVersus, "aria-label", "Teclado de combate");
     if (adaptadorSalasVersus.proveedor === "supabase" && partidaOnlineVersus) {
       actualizarTecladoPartidaOnline(partidaOnlineVersus);
     } else {
@@ -6401,18 +6393,17 @@ function iniciarDueloAventura(tipo) {
 
   prepararDueloVersus({ comenzarRonda: false });
   fondoVersus.src = configuracion.arena;
-  fondoVersus.alt = configuracion.altArena;
-  document.querySelector(".versus-jugador-uno .versus-etiqueta").textContent = "EXPLORADOR";
-  document.querySelector(".versus-jugador-dos .versus-etiqueta").textContent =
-    personajesVersus[configuracion.rival].nombre.toUpperCase();
-  mensajeRondaVersus.textContent = configuracion.etiqueta;
+  CombatUI.attribute(fondoVersus, 'alt', configuracion.altArena);
+  CombatUI.text(document.querySelector(".versus-jugador-uno .versus-etiqueta"), "EXPLORADOR");
+  CombatUI.text(document.querySelector(".versus-jugador-dos .versus-etiqueta"), personajesVersus[configuracion.rival].nombre.toUpperCase());
+  CombatUI.text(mensajeRondaVersus, configuracion.etiqueta);
   pantallaVersus.classList.add("duelo-aventura");
   pantallaVersus.querySelector(".probar-victoria-aventura")?.remove();
   if (modoPruebasActivo) {
     const probarVictoria = document.createElement("button");
     probarVictoria.type = "button";
     probarVictoria.className = "probar-victoria-aventura";
-    probarVictoria.textContent = "🧪 Probar victoria";
+    CombatUI.text(probarVictoria, "🧪 Probar victoria");
     probarVictoria.addEventListener("click", () => {
       if (!modoPruebasActivo || !dueloAventuraActivo || demoVersus.partidaFinalizada) return;
       demoVersus.vidasRival = 0;
@@ -6421,8 +6412,8 @@ function iniciarDueloAventura(tipo) {
     });
     pantallaVersus.append(probarVictoria);
   }
-  btnSalirVersus.textContent = "← Abandonar prueba";
-  btnSalirVersusVertical.textContent = "Abandonar prueba";
+  CombatUI.text(btnSalirVersus, "← Abandonar prueba");
+  CombatUI.text(btnSalirVersusVertical, "Abandonar prueba");
   mostrarPantalla(pantallaVersus);
   requestAnimationFrame(iniciarEntradaDueloVersus);
 }
@@ -6430,8 +6421,8 @@ function iniciarDueloAventura(tipo) {
 function limpiarInterfazDueloAventura() {
   pantallaVersus.querySelector(".probar-victoria-aventura")?.remove();
   pantallaVersus.classList.remove("duelo-aventura");
-  btnSalirVersus.textContent = "← Volver";
-  btnSalirVersusVertical.textContent = "Volver al menú";
+  CombatUI.text(btnSalirVersus, "← Volver");
+  CombatUI.text(btnSalirVersusVertical, "Volver al menú");
   resultadoRondaVersus.classList.add("oculto");
   btnRevanchaVersus.classList.add("oculto");
   mensajeRondaVersus.textContent = "Cada error gasta un intento";
@@ -7400,7 +7391,7 @@ function configurarPersonajesCombateVersus() {
   posesCombateVersus.delete(personajeVersusDos);
   const personaje = personajesVersus[personajeJugadorVersus];
   personajeVersusUno.src = spriteTrajeVersus(personajeVersusUno,personajeJugadorVersus,personaje.base);
-  personajeVersusUno.alt = `${personaje.nombre} del jugador 1`;
+  CombatUI.attribute(personajeVersusUno, 'alt', `${personaje.nombre} del jugador 1`);
   personajeVersusUno.classList.remove(
     "personaje-explorador",
     "personaje-mago",
@@ -7417,7 +7408,7 @@ function configurarPersonajesCombateVersus() {
   personajeVersusUno.classList.add(`personaje-${personajeJugadorVersus}`);
   const personajeRival = personajesVersus[personajeRivalVersus] || personajesVersus.mago;
   personajeVersusDos.src = spriteTrajeVersus(personajeVersusDos,personajeRivalVersus,personajeRival.base);
-  personajeVersusDos.alt = `${personajeRival.nombre} del jugador 2`;
+  CombatUI.attribute(personajeVersusDos, 'alt', `${personajeRival.nombre} del jugador 2`);
   personajeVersusDos.classList.remove(
     "personaje-explorador",
     "personaje-mago",
@@ -7530,6 +7521,7 @@ function limpiarEntradaDueloVersus() {
 }
 
 function comenzarRondaVersus() {
+  document.querySelector(".versus-insignia").hidden = true;
   if (tutorialCombateVersus.activo) return;
   if (dueloAventuraActivo?.tipo === "calamo_desierto") iniciarTemaCalamo();
   mostrarEstadoProgresoVersus(
@@ -7600,6 +7592,7 @@ function prepararTrajeEntradaKalamo() {
 }
 
 async function iniciarEntradaDueloVersus() {
+  document.querySelector(".versus-insignia").hidden = false;
   if (demoVersus.partidaFinalizada || demoVersus.entradaActiva) return;
   prepararTrajeEntradaKalamo();
   demoVersus.entradaActiva = true;
@@ -7608,7 +7601,8 @@ async function iniciarEntradaDueloVersus() {
   const pair = [personajeJugadorVersus, personajeRivalVersus];
   bloquearTecladoDemoVersus();
   const notice = document.createElement('div'); notice.className = 'preparacion-imagenes-combate';
-  notice.innerHTML = '<p role="status">Preparando a los luchadores…</p><button type="button" hidden>Reintentar</button>';
+  notice.innerHTML = '<p role="status"></p><button type="button" hidden></button>';
+  CombatUI.text(notice.querySelector('p'), 'Preparando a los luchadores…');CombatUI.text(notice.querySelector('button'), 'Reintentar');
   marcoVersus.querySelector('.preparacion-imagenes-combate')?.remove(); marcoVersus.append(notice);
   imagenesCombateListas = [];
   try {
@@ -7618,7 +7612,7 @@ async function iniciarEntradaDueloVersus() {
     imagenesCombateListas = images;
   } catch (error) {
     if (sequence !== secuenciaPreparacionCombate) return;
-    notice.querySelector('p').textContent = 'No se pudieron preparar las imágenes. Reintentá para comenzar.';
+    CombatUI.text(notice.querySelector('p'), 'No se pudieron preparar las imágenes. Reintentá para comenzar.');
     const retry = notice.querySelector('button'); retry.hidden = false;
     retry.onclick = () => { limpiarEntradaDueloVersus(); void iniciarEntradaDueloVersus(); };
     return;
@@ -8357,7 +8351,7 @@ function reproducirAtaqueRivalVersus() {
 }
 
 function mostrarEstadoProgresoVersus(elemento, mensaje, tipo = "") {
-  elemento.textContent = mensaje;
+  CombatUI.text(elemento, mensaje);
   elemento.className = tipo;
 }
 
@@ -8365,7 +8359,7 @@ function ocultarRevelacionPalabraVersus(elemento, claveTemporizador) {
   if (demoVersus[claveTemporizador]) clearTimeout(demoVersus[claveTemporizador]);
   demoVersus[claveTemporizador] = null;
   elemento.hidden = true;
-  elemento.textContent = "";
+  CombatUI.text(elemento, "");
 }
 
 function mostrarRevelacionPalabraVersus(elemento, palabra, tematica, claveTemporizador) {
@@ -8373,17 +8367,17 @@ function mostrarRevelacionPalabraVersus(elemento, palabra, tematica, claveTempor
   ocultarRevelacionPalabraVersus(elemento, claveTemporizador);
   const etiqueta = document.createElement("span");
   const respuesta = document.createElement("strong");
-  etiqueta.textContent = "La palabra era ";
-  respuesta.textContent = palabra;
+  CombatUI.text(etiqueta, "La palabra era ");
+  GameUI.text(respuesta, palabra);
   elemento.append(
     etiqueta,
     respuesta,
-    document.createTextNode(` · Tema: ${obtenerNombreTemaVersus(tematica).toLowerCase()}`),
+    (() => { const node = document.createElement("span"); GameUI.text(node, GameUI.key("adventure.combat.theme", {topic: CombatUI.value(obtenerNombreTemaVersus(tematica).toUpperCase())})); return node; })(),
   );
   elemento.hidden = false;
   demoVersus[claveTemporizador] = setTimeout(() => {
     elemento.hidden = true;
-    elemento.textContent = "";
+    CombatUI.text(elemento, "");
     demoVersus[claveTemporizador] = null;
   }, 4200);
 }
@@ -8404,10 +8398,7 @@ function actualizarIntentosVersus(contenedor, errores, nombreJugador) {
   [...contenedor.children].forEach((intento, indice) => {
     intento.classList.toggle("agotado", indice >= restantes);
   });
-  contenedor.setAttribute(
-    "aria-label",
-    `${nombreJugador} ${restantes === 1 ? "tiene un intento" : `tiene ${restantes} intentos`}`
-  );
+  CombatUI.attribute(contenedor, "aria-label", `${nombreJugador} ${restantes === 1 ? "tiene un intento" : `tiene ${restantes} intentos`}`);
 }
 
 function bloquearTecladoDemoVersus() {
@@ -8455,8 +8446,8 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
   limpiarAnimacionAtaqueVersus();
   configurarPersonajesCombateVersus();
   if (!modoArcadeActivo) {
-    document.querySelector(".versus-jugador-uno .versus-etiqueta").textContent = "JUGADOR 1";
-    document.querySelector(".versus-jugador-dos .versus-etiqueta").textContent = "JUGADOR 2";
+    CombatUI.text(document.querySelector(".versus-jugador-uno .versus-etiqueta"), "JUGADOR 1");
+    CombatUI.text(document.querySelector(".versus-jugador-dos .versus-etiqueta"), "JUGADOR 2");
   }
   const tematicasDisponibles = Object.keys(bancosPalabrasVersus);
   demoVersus.tematicaParaRival = tematicaVersus.value;
@@ -8497,7 +8488,7 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
   demoVersus.partidaFinalizada = false;
   const arena = arenasVersus[Math.floor(Math.random() * arenasVersus.length)];
   fondoVersus.src = arena.src;
-  fondoVersus.alt = arena.alt;
+  CombatUI.attribute(fondoVersus, 'alt', arena.alt);
   resultadoRondaVersus.classList.add("oculto");
   avisoAvanceVersus.classList.add("oculto");
   actualizarVidasVersus();
@@ -8526,9 +8517,9 @@ function iniciarCombateArcade() {
   prepararDueloVersus({ comenzarRonda: false });
   const arena = arenasVersus[pisoCombateArcade % arenasVersus.length];
   fondoVersus.src = arena.src;
-  fondoVersus.alt = arena.alt;
-  document.querySelector(".versus-jugador-uno .versus-etiqueta").textContent = "VOS";
-  document.querySelector(".versus-jugador-dos .versus-etiqueta").textContent = `PISO ${pisoCombateArcade + 1}`;
+  CombatUI.attribute(fondoVersus, 'alt', arena.alt);
+  CombatUI.text(document.querySelector(".versus-jugador-uno .versus-etiqueta"), "VOS");
+  CombatUI.text(document.querySelector(".versus-jugador-dos .versus-etiqueta"), `PISO ${pisoCombateArcade + 1}`);
   mostrarPantalla(pantallaVersus);
   requestAnimationFrame(iniciarEntradaDueloVersus);
 }
@@ -8715,36 +8706,37 @@ function actualizarProgresosVersus() {
   const temaJugador = nombresTematicasVersus[demoVersus.tematicaParaJugador];
   const temaRival = nombresTematicasVersus[demoVersus.tematicaParaRival];
 
-  tituloProgresoUno.textContent = demoVersus.finalizadoJugador
+  CombatUI.text(tituloProgresoUno, demoVersus.finalizadoJugador
     ? "TU RECORRIDO TERMINÓ"
-    : `TU DESAFÍO · ${temaJugador.toUpperCase()} ${VersusEngine.obtenerEtiquetaRonda(demoVersus.indiceJugador)}`;
-  tituloProgresoDos.textContent = demoVersus.finalizadoRival
+    : `TU DESAFÍO · ${temaJugador.toUpperCase()} ${VersusEngine.obtenerEtiquetaRonda(demoVersus.indiceJugador)}`);
+  CombatUI.text(tituloProgresoDos, demoVersus.finalizadoRival
     ? "EL RIVAL TERMINÓ"
-    : `RIVAL · ${temaRival.toUpperCase()} ${VersusEngine.obtenerEtiquetaRonda(demoVersus.indiceRival)}`;
-  tituloVersus.textContent = `J1 ${demoVersus.palabrasCompletadasJugador}/${maximoPalabrasVersus} · J2 ${demoVersus.palabrasCompletadasRival}/${maximoPalabrasVersus}`;
+    : `RIVAL · ${temaRival.toUpperCase()} ${VersusEngine.obtenerEtiquetaRonda(demoVersus.indiceRival)}`);
+  CombatUI.text(tituloVersus, `J1 ${demoVersus.palabrasCompletadasJugador}/${maximoPalabrasVersus} · J2 ${demoVersus.palabrasCompletadasRival}/${maximoPalabrasVersus}`);
 
   if (demoVersus.finalizadoJugador) {
-    palabraJugador.textContent = demoVersus.motivoFinalJugador === "tiempo"
+    CombatUI.text(palabraJugador, demoVersus.motivoFinalJugador === "tiempo"
       ? "TIEMPO AGOTADO"
-      : `✓ ${demoVersus.palabrasCompletadasJugador} PALABRAS`;
+      : `✓ ${demoVersus.palabrasCompletadasJugador} PALABRAS`);
   } else {
-    palabraJugador.textContent = progresoJugador.join(" ");
+    GameUI.text(palabraJugador, progresoJugador.join(" "));
   }
-  palabraJugador.setAttribute("aria-label", `Tu progreso: ${palabraJugador.textContent}`);
+  GameUI.attribute(palabraJugador, "aria-label", GameUI.key("adventure.combat.progress", {
+    progress: demoVersus.finalizadoJugador
+      ? GameUI.key(demoVersus.motivoFinalJugador === "tiempo" ? "adventure.combat.timeoutCaps" : "adventure.combat.words", {count: demoVersus.palabrasCompletadasJugador})
+      : progresoJugador.join(" ")
+  }));
 
   if (demoVersus.finalizadoRival) {
-    palabraRival.textContent = demoVersus.motivoFinalRival === "tiempo"
+    CombatUI.text(palabraRival, demoVersus.motivoFinalRival === "tiempo"
       ? "TIEMPO AGOTADO"
-      : `✓ ${demoVersus.palabrasCompletadasRival} PALABRAS`;
+      : `✓ ${demoVersus.palabrasCompletadasRival} PALABRAS`);
   } else {
-    palabraRival.textContent = progresoRival.join(" ");
+    GameUI.text(palabraRival, progresoRival.join(" "));
   }
-  palabraRival.setAttribute(
-    "aria-label",
-    demoVersus.finalizadoRival
-      ? palabraRival.textContent
-      : `El rival descubrió ${contarLetrasDescubiertasVersus(objetivoRival, demoVersus.letrasRival)} de ${objetivoRival.length} letras`,
-  );
+  GameUI.attribute(palabraRival, "aria-label", demoVersus.finalizadoRival
+    ? GameUI.key(demoVersus.motivoFinalRival === "tiempo" ? "adventure.combat.timeoutCaps" : "adventure.combat.words", {count: demoVersus.palabrasCompletadasRival})
+    : GameUI.key("adventure.combat.rivalProgress", {count: contarLetrasDescubiertasVersus(objetivoRival, demoVersus.letrasRival), total: objetivoRival.length}));
   ajustarPalabraLargaVersus(palabraJugador, objetivoJugador.length);
   ajustarPalabraLargaVersus(palabraRival, objetivoRival.length);
 }
@@ -8806,8 +8798,8 @@ function actualizarTiemposVersus() {
 function actualizarTiempoPersonalVersus(panel, texto, segundos, nombre, finalizado) {
   const minutos = Math.floor(segundos / 60);
   const resto = segundos % 60;
-  texto.textContent = `${String(minutos).padStart(2, "0")}:${String(resto).padStart(2, "0")}`;
-  panel.setAttribute("aria-label", `Tiempo de ${nombre}: ${minutos} minutos y ${resto} segundos`);
+  CombatUI.text(texto, `${String(minutos).padStart(2, "0")}:${String(resto).padStart(2, "0")}`);
+  CombatUI.attribute(panel, "aria-label", `Tiempo de ${nombre}: ${minutos} minutos y ${resto} segundos`);
   panel.classList.toggle("urgente", !finalizado && segundos <= 15);
 }
 
@@ -8820,7 +8812,7 @@ function actualizarCorazonesVersus(elemento, vidasActuales, nombre) {
   elemento.innerHTML = Array.from({ length: vidasInicialesVersus }, (_, indice) => (
     `<span class="${indice < vidasActuales ? "" : "perdido"}">♥</span>`
   )).join(" ");
-  elemento.setAttribute("aria-label", `${nombre}: ${vidasActuales} vidas`);
+  CombatUI.attribute(elemento, "aria-label", `${nombre}: ${vidasActuales} vidas`);
 }
 
 function mostrarAvisoAvanceVersus(mensaje, tipo = "", demora = 0) {
@@ -8828,7 +8820,7 @@ function mostrarAvisoAvanceVersus(mensaje, tipo = "", demora = 0) {
   avisoAvanceVersus.classList.add("oculto");
 
   const mostrarAviso = () => {
-    avisoAvanceVersus.textContent = mensaje;
+    CombatUI.text(avisoAvanceVersus, mensaje);
     avisoAvanceVersus.className = `aviso-avance-versus${tipo ? ` ${tipo}` : ""}`;
     demoVersus.temporizadorAviso = setTimeout(() => {
       avisoAvanceVersus.classList.add("oculto");
@@ -9121,7 +9113,7 @@ function mostrarAnuncioFinVersus(palabraPerdida = "", anticipacion = false, gana
     objetivoRelampagoFinal = ganador === 'jugador' ? personajeVersusDos : personajeVersusUno;
   }
   if (palabraPerdida) {
-    palabraFinalVersus.textContent = `LA PALABRA ERA: ${palabraPerdida}`;
+    CombatUI.text(palabraFinalVersus, `LA PALABRA ERA: ${palabraPerdida}`);
     palabraFinalVersus.hidden = false;
   }
   anuncioFinVersus.classList.remove("oculto");
@@ -9192,15 +9184,15 @@ let versionPremioVersus = 0;
 async function mostrarPremioVersus(matchId) {
   const version=++versionPremioVersus;
   const nodo=document.getElementById('resultadoMonedasVersus');
-  nodo.hidden=false;nodo.textContent='Consultando premio…';
+  nodo.hidden=false;CombatUI.text(nodo, 'Consultando premio…');
   try {
     const estado=await GameWallet.sync(matchId);
     if(version!==versionPremioVersus||partidaOnlineVersus?.matchId!==matchId)return;
-    nodo.textContent=estado.reward?`🪙 +${estado.reward.amount} monedas · Saldo: ${CosmeticStore.read().coins}`:'Este duelo no otorgó monedas.';
+    CombatUI.text(nodo, estado.reward?`🪙 +${estado.reward.amount} monedas · Saldo: ${CosmeticStore.read().coins}`:'Este duelo no otorgó monedas.');
   } catch (_) {
     if(version!==versionPremioVersus||partidaOnlineVersus?.matchId!==matchId)return;
-    nodo.textContent='No pudimos consultar el premio. ';
-    const boton=document.createElement('button');boton.type='button';boton.textContent='Reintentar';
+    CombatUI.text(nodo, 'No pudimos consultar el premio. ');
+    const boton=document.createElement('button');boton.type='button';CombatUI.text(boton, 'Reintentar');
     boton.addEventListener('click',()=>void mostrarPremioVersus(matchId));nodo.append(boton);
   }
 }
@@ -9208,7 +9200,7 @@ async function mostrarResultadoRango(matchId) {
   const version = ++animacionResultadoRango;
   const nodo = document.getElementById('resultadoRangoVersus');
   nodo.hidden = false;
-  nodo.textContent = 'Cargando puntos…';
+  CombatUI.text(nodo, 'Cargando puntos…');
   try {
     const estado = await adaptadorSalasVersus.obtenerRango(matchId);
     if (partidaOnlineVersus?.matchId !== matchId || version !== animacionResultadoRango) return;
@@ -9219,7 +9211,7 @@ async function mostrarResultadoRango(matchId) {
     const anterior = VersusRanks.division(puntosIniciales);
     const siguiente = VersusRanks.division(puntosFinales);
     const texto = document.createElement('p');
-    texto.textContent = cambio ? (cambio.delta > 0 ? '+' : '') + cambio.delta + ' puntos' : 'Clásico · Tus puntos no cambian';
+    CombatUI.text(texto, cambio ? (cambio.delta > 0 ? '+' : '') + cambio.delta + ' puntos' : 'Clásico · Tus puntos no cambian');
     const ascenso = cambio && puntosFinales>puntosIniciales && anterior.name!==siguiente.name;
     const contador = document.createElement('p');contador.className='puntos-animados';
     const medalla = document.createElement('div');
@@ -9235,18 +9227,18 @@ async function mostrarResultadoRango(matchId) {
       const interpolado = puntosIniciales+(puntosFinales-puntosIniciales)*progreso;
       const puntos = progreso===1 ? puntosFinales : puntosFinales>puntosIniciales ? Math.floor(interpolado) : Math.ceil(interpolado);
       if (puntos!==ultimo) {
-        contador.textContent=puntos+' puntos';
-        medalla.replaceChildren(VersusRanks.badge(puntos,true));
+        CombatUI.text(contador, puntos+' puntos');
+        medalla.replaceChildren(GameUI.rankBadge(puntos,true));
         if (ultimo!==-1 && !reducido) reproducirPulsacionTeclaVersus(puntosFinales>puntosIniciales?'jugador':'rival');
         ultimo=puntos;
       }
       const barra = medalla.querySelector('progress');
       if (barra) barra.value = Math.max(0, interpolado-VersusRanks.division(puntos).min);
       if(progreso<1) requestAnimationFrame(render);
-      else if(ascenso){texto.textContent+=' · ¡Ascendiste a '+siguiente.name+'!';nodo.classList.add('ascenso-rango');}
+      else if(ascenso){GameUI.text(texto,GameUI.key('adventure.combat.rankUp',{detail:CombatUI.value((cambio.delta>0?'+':'')+cambio.delta+' puntos'),rank:GameUI.key('profile.rankDivision',{rank:GameUI.key('profile.ranks.'+siguiente.rank.key+'.name'),division:siguiente.number?' '+siguiente.number:''})}));nodo.classList.add('ascenso-rango');}
     };
     render(inicio);
-  } catch (_) { if (partidaOnlineVersus?.matchId === matchId) nodo.textContent = 'Podés consultar tus puntos en tu perfil cuando vuelva la conexión.'; }
+  } catch (_) { if (partidaOnlineVersus?.matchId === matchId) CombatUI.text(nodo, 'Podés consultar tus puntos en tu perfil cuando vuelva la conexión.'); }
 }
 function mostrarResultadoPartidaVersus(ganador, detalle) {
   ++versionPremioVersus;
@@ -9259,22 +9251,22 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
   if (dueloAventuraActivo) {
     const rival = personajesVersus[dueloAventuraActivo.rival];
     dueloAventuraActivo.resultado = ganador;
-    iconoResultadoVersus.textContent = ganador === "jugador" ? "🏆" : "🌲";
-    etiquetaResultadoVersus.textContent = dueloAventuraActivo.etiqueta;
-    tituloResultadoVersus.textContent = ganador === "jugador"
+    CombatUI.text(iconoResultadoVersus, ganador === "jugador" ? "🏆" : "🌲");
+    CombatUI.text(etiquetaResultadoVersus, dueloAventuraActivo.etiqueta);
+    CombatUI.text(tituloResultadoVersus, ganador === "jugador"
       ? `¡Superaste a ${rival.nombre}!`
       : ganador === "empate"
         ? "La prueba terminó empatada"
-        : `${rival.nombre} ganó la prueba`;
-    detalleResultadoVersus.textContent = ganador === "jugador"
+        : `${rival.nombre} ganó la prueba`);
+    CombatUI.text(detalleResultadoVersus, ganador === "jugador"
       ? "Demostraste tu valor. La historia continuará desde este encuentro."
-      : `${detalle} Podés volver a intentarlo sin repetir los desafíos anteriores.`;
+      : `${detalle} Podés volver a intentarlo sin repetir los desafíos anteriores.`);
     btnRevanchaVersus.classList.remove("oculto");
     btnRevanchaVersus.disabled = false;
-    btnRevanchaVersus.textContent = ganador === "jugador"
+    CombatUI.text(btnRevanchaVersus, ganador === "jugador"
       ? "Continuar aventura"
-      : "Reintentar prueba";
-    btnMenuResultadoVersus.textContent = "Volver al menú";
+      : "Reintentar prueba");
+    CombatUI.text(btnMenuResultadoVersus, "Volver al menú");
     resultadoRondaVersus.classList.remove("oculto");
     return;
   }
@@ -9283,54 +9275,54 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
     const total = rivalesTorreArcade.length;
     const rival = personajesVersus[rivalesTorreArcade[pisoCombateArcade]];
     ultimoResultadoArcade = ganador;
-    iconoResultadoVersus.textContent = ganador === "jugador" ? "🏆" : "🏰";
-    etiquetaResultadoVersus.textContent = `PISO ${pisoCombateArcade + 1} DE ${total}`;
+    CombatUI.text(iconoResultadoVersus, ganador === "jugador" ? "🏆" : "🏰");
+    CombatUI.text(etiquetaResultadoVersus, `PISO ${pisoCombateArcade + 1} DE ${total}`);
     if (ganador === "jugador") {
       const repeticion = pisoCombateArcade < pisosDesbloqueadosArcade;
       guardarProgresoArcade(pisoCombateArcade + 1);
       const completoLaTorre = pisoCombateArcade >= total - 1;
       pisoActualArcade = completoLaTorre ? total - 1 : pisoCombateArcade + 1;
-      tituloResultadoVersus.textContent = completoLaTorre
+      CombatUI.text(tituloResultadoVersus, completoLaTorre
         ? "¡Campeón de la torre!"
-        : `¡Superaste a ${rival.nombre}!`;
-      detalleResultadoVersus.textContent = completoLaTorre
+        : `¡Superaste a ${rival.nombre}!`);
+      CombatUI.text(detalleResultadoVersus, completoLaTorre
         ? "Venciste a todos los rivales del modo Arcade. La cima es tuya."
-        : `${detalle} El siguiente piso ya está desbloqueado.`;
-      btnRevanchaVersus.textContent = completoLaTorre ? "Ver torre completada" : "Continuar la torre";
+        : `${detalle} El siguiente piso ya está desbloqueado.`);
+      CombatUI.text(btnRevanchaVersus, completoLaTorre ? "Ver torre completada" : "Continuar la torre");
       if (repeticion) {
         pisoActualArcade = Math.min(pisosDesbloqueadosArcade, total - 1);
-        tituloResultadoVersus.textContent = `¡Volviste a vencer a ${rival.nombre}!`;
-        detalleResultadoVersus.textContent = "Tu avance en la torre se conserva. Podés continuar desde donde llegaste o elegir otro rival.";
-        btnRevanchaVersus.textContent = "Volver a la torre";
+        CombatUI.text(tituloResultadoVersus, `¡Volviste a vencer a ${rival.nombre}!`);
+        CombatUI.text(detalleResultadoVersus, "Tu avance en la torre se conserva. Podés continuar desde donde llegaste o elegir otro rival.");
+        CombatUI.text(btnRevanchaVersus, "Volver a la torre");
       }
     } else {
       pisoActualArcade = pisoCombateArcade;
-      tituloResultadoVersus.textContent = ganador === "empate"
+      CombatUI.text(tituloResultadoVersus, ganador === "empate"
         ? "El piso terminó empatado"
-        : `${rival.nombre} defendió la torre`;
-      detalleResultadoVersus.textContent = `${detalle} Podés volver a intentar este piso.`;
-      btnRevanchaVersus.textContent = "Reintentar piso";
+        : `${rival.nombre} defendió la torre`);
+      CombatUI.text(detalleResultadoVersus, `${detalle} Podés volver a intentar este piso.`);
+      CombatUI.text(btnRevanchaVersus, "Reintentar piso");
     }
     btnRevanchaVersus.classList.remove("oculto");
     btnRevanchaVersus.disabled = false;
-    btnMenuResultadoVersus.textContent = "Abandonar torre";
+    CombatUI.text(btnMenuResultadoVersus, "Abandonar torre");
     resultadoRondaVersus.classList.remove("oculto");
     return;
   }
 
-  iconoResultadoVersus.textContent = ganador === "jugador" ? "🏆" : ganador === "rival" ? "🛡️" : "⚔️";
-  etiquetaResultadoVersus.textContent = ganador === "empate" ? "DUELO EMPATADO" : "DUELO FINALIZADO";
+  CombatUI.text(iconoResultadoVersus, ganador === "jugador" ? "🏆" : ganador === "rival" ? "🛡️" : "⚔️");
+  CombatUI.text(etiquetaResultadoVersus, ganador === "empate" ? "DUELO EMPATADO" : "DUELO FINALIZADO");
   const esOnline = adaptadorSalasVersus.proveedor === "supabase";
-  tituloResultadoVersus.textContent = ganador === "jugador"
+  CombatUI.text(tituloResultadoVersus, ganador === "jugador"
     ? (esOnline ? "¡Ganaste el duelo!" : "¡Victoria del Jugador 1!")
     : ganador === "rival"
       ? (esOnline ? "Victoria de tu rival" : "Victoria del Jugador 2")
-      : "¡Duelo empatado!";
-  detalleResultadoVersus.textContent = detalle;
+      : "¡Duelo empatado!");
+  CombatUI.text(detalleResultadoVersus, detalle);
   btnRevanchaVersus.classList.remove("oculto");
   btnRevanchaVersus.disabled = false;
-  btnRevanchaVersus.textContent = esOnline ? "Pedir revancha" : "Jugar de nuevo";
-  btnMenuResultadoVersus.textContent = "Volver al menú";
+  CombatUI.text(btnRevanchaVersus, esOnline ? "Pedir revancha" : "Jugar de nuevo");
+  CombatUI.text(btnMenuResultadoVersus, "Volver al menú");
   resultadoRondaVersus.classList.remove("oculto");
   if (esOnline) {
     actualizarEstadoRevanchaVersus(adaptadorSalasVersus.obtenerSala());
@@ -9458,10 +9450,12 @@ function reproducirEclipseVioletaVersus(victima = personajeRivalVersus) {
 function reproducirJuicioCristalesVersus(victima) {
   cancelarCinematicaFinalVersus();
   const frame=document.createElement('iframe');
-  frame.className='aren-union-final-integrado';frame.title='Juicio de los Cinco Cristales';
+  frame.className='aren-union-final-integrado';GameUI.attribute(frame,'title',GameUI.key('adventure.combat.finalCrystals'));
   const clave=personajesVersus[victima]?victima:'mago';
   const sprite=imagenTrajeFinalVersus(clave,'base',personajesVersus[clave].base);
   frame.src='prueba-aren-union.html?integrado=1&victima='+encodeURIComponent(sprite);
+  const syncTitle=()=>{if(frame.isConnected&&frame.contentDocument){const title=frame.contentDocument.getElementById('titulo');if(title)GameUI.text(title,GameUI.key('adventure.combat.finalCrystals'));}};
+  frame.cleanupTitle=I18n.subscribe(syncTitle);frame.addEventListener('load',syncTitle);
   personajeVersusUno.parentElement.classList.add('union-cinematica-activa');
   limpiarAnimacionAtaqueJugadorVersus();limpiarAnimacionAtaqueRivalVersus();
   cinematicaFinalVersus.append(frame);
@@ -9831,7 +9825,8 @@ function reproducirSiglosEnUnSegundoVersus(victima = personajeRivalVersus) {
 }
 
 function completarCinematicaFinalVersus() {
-  cinematicaFinalVersus.querySelector(".aren-union-final-integrado")?.remove();
+  const frameUnion=cinematicaFinalVersus.querySelector(".aren-union-final-integrado");
+  frameUnion?.cleanupTitle?.();frameUnion?.remove();
   cinematicaFinalVersus.classList.remove("juicio-cristales");
   personajeVersusUno.parentElement.classList.remove("union-cinematica-activa");
   detenerSeguimientoRayoAlba();
@@ -9870,7 +9865,8 @@ function completarCinematicaFinalVersus() {
 }
 
 function cancelarCinematicaFinalVersus() {
-  cinematicaFinalVersus.querySelector(".aren-union-final-integrado")?.remove();
+  const frameUnion=cinematicaFinalVersus.querySelector(".aren-union-final-integrado");
+  frameUnion?.cleanupTitle?.();frameUnion?.remove();
   cinematicaFinalVersus.classList.remove("juicio-cristales");
   personajeVersusUno.parentElement.classList.remove("union-cinematica-activa");
   detenerSeguimientoRayoAlba();
@@ -10458,8 +10454,7 @@ function actualizarCabeceraMision() {
     escenarioActual === 0
       ? "🌲 Tema: palabras del Bosque Encantado"
       : `Tema: palabras de ${escenario.nombre}`;
-  detalleMision.textContent =
-    `${AventuraMapa.repeticion ? "Volviendo a jugar · " : ""}Misión ${misionActual + 1} · Desafío ${desafioActual} de ${obtenerCantidadDesafiosMision()}`;
+  GameUI.text(detalleMision, GameUI.key("adventure.combat.missionProgress", {replay: AventuraMapa.repeticion ? GameUI.key("adventure.combat.replayPrefix") : "", mission: misionActual + 1, challenge: desafioActual, total: obtenerCantidadDesafiosMision()}));
 }
 
 function actualizarVistaMisionDev() {
@@ -10834,6 +10829,7 @@ function bloquearTeclado() {
 
 function actualizarVidas() {
   vidas.textContent = "❤️".repeat(intentos) + "🤍".repeat(6 - intentos);
+  GameUI.attribute(vidas, "aria-label", GameUI.key("adventure.combat.lives", {subject: GameUI.key("adventure.combat.playerOne"), count: intentos}));
   window.ForestRootTrap.update(escenarioActual, misionActual, intentos);
   window.DesertSandTrap.update(escenarioActual, misionActual, intentos);
   window.WorldWordHazards.update(escenarioActual, misionActual, intentos);

@@ -53,7 +53,7 @@ test('all language resources have explicit cache revisions; gameplay storage is 
   vm.runInContext(worker+'\n globalThis.assets=CORE_ASSETS;globalThis.revisions=ASSET_REVISIONS;',context);
   const registry=await loadJson('languages.json');
   for(const asset of ['./js/i18n.js','./locales/languages.json',...registry.namespaces.map(name=>`./locales/es/${name}.json`)]){
-    assert(context.assets.includes(asset));assert.equal(context.revisions[asset],'aventura-palabras-runtime-v342');
+    assert(context.assets.includes(asset));assert.equal(context.revisions[asset],'aventura-palabras-runtime-v343');
   }
   const code=fs.readFileSync(path.join(root,'js/i18n.js'),'utf8');
   const module={exports:{}};

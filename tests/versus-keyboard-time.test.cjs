@@ -13,6 +13,7 @@ function harness() {
   const buttons = ['A', 'B'].map(textContent => ({ textContent, disabled: false }));
   let id = 0, now = 0, sand;
   const ctx = vm.createContext({
+    CombatUI: { attribute(node, name, value) { node.setAttribute(name, value); } },
     tecladoVersus: {
       classList: { add: name => classes.add(name), remove: name => classes.delete(name), contains: name => classes.has(name) },
       querySelector: () => sand,

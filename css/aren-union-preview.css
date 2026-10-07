@@ -43,3 +43,4 @@ body.integrada{padding:0;background:transparent}body.integrada header,body.integ
 
 /* Casting sprites already contain their cape; keep only that cape in those poses. */
 .aren.capa-integrada .capa{display:none}
+.integrada .rotulo small { display: none; }
