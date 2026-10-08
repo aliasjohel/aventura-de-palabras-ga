@@ -56,6 +56,6 @@ test('all catalog files are installed with this release and available from cache
  caches:{open:async()=>({match:async request=>new Response(fs.readFileSync(path.join(root,new URL(request.url).pathname),'utf8'))})},fetch:async()=>{network++;throw Error('offline');}});
  vm.runInContext(worker+'\nglobalThis.assets=CORE_ASSETS;globalThis.revisions=ASSET_REVISIONS;globalThis.respond=responderRecursoEstatico;',context);
  const registry=await loadJson('languages.json');
- for(const id of ['es','en','pt-BR'])for(const ns of registry.namespaces){const resource=`./locales/${id}/${ns}.json`;assert(context.assets.includes(resource));assert.equal(context.revisions[resource],'aventura-palabras-runtime-v343');const response=await context.respond({request:new Request('https://test.local/'+resource.slice(2))});assert.deepEqual(await response.json(),await loadJson(`${id}/${ns}.json`));}
+ for(const id of ['es','en','pt-BR'])for(const ns of registry.namespaces){const resource=`./locales/${id}/${ns}.json`;assert(context.assets.includes(resource));assert.equal(context.revisions[resource],'aventura-palabras-runtime-v344');const response=await context.respond({request:new Request('https://test.local/'+resource.slice(2))});assert.deepEqual(await response.json(),await loadJson(`${id}/${ns}.json`));}
  assert.equal(network,0);
 });

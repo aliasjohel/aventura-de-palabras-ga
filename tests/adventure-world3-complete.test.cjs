@@ -8,7 +8,7 @@ const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const css = fs.readFileSync(path.join(root, "css", "styles.css"), "utf8");
 const sw = fs.readFileSync(path.join(root, "sw.js"), "utf8");
 
-assert.match(app, /nombre: "☁️ Cumbres Celestes"/);
+assert.equal(require('../js/word-banks-es.js').adventure[2].nombre, "☁️ Cumbres Celestes");
 assert.match(app, /const historiaCumbres = \[/);
 assert.equal((app.match(/fondos: \["cumbres-\d+\.png"\]/g) || []).length, 10);
 assert.match(app, /"sopa-celeste"/);

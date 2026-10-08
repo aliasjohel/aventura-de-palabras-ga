@@ -4,8 +4,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const app = fs.readFileSync(path.join(__dirname, '../js/app.js'), 'utf8');
 const AzrakWorld = require('../js/azrak-world.js');
-const code = app.slice(app.indexOf('const aventura = ['), app.indexOf('\nconst historiaBosque'));
-const aventura = Function(code + '; return aventura;')();
+const aventura = require('../js/word-banks-es.js').adventure.map(mundo => ({ ...mundo }));
 aventura.push({ nombre: 'Azrak', palabras: AzrakWorld.words });
 for (const mundo of aventura) {
   assert.equal(mundo.palabras.length, 50, mundo.nombre);
@@ -28,6 +27,7 @@ const ctx = { aventura, AzrakWorld, Math, Set, JSON, Number,
   maximoEscenarioDesbloqueado: 0, obtenerCantidadDesafiosMision: () => 3,
   localStorage: { getItem: k => storage.get(k) ?? null, setItem: (k,v) => storage.set(k,v), removeItem: k => storage.delete(k) },
   btnJugar: {}, btnNuevaAventura: { classList: { add() {}, remove() {} } },
+  GameUI: { text() {}, key: value => value },
   actualizarJugador() {}, guardarDesbloqueoGuardiana() {}, guardarDesbloqueoMago() {},
   guardarDesbloqueoNimbus() {}, guardarDesbloqueoNivor() {},
 };

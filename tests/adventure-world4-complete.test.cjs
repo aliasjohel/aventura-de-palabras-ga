@@ -8,7 +8,7 @@ const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const css = fs.readFileSync(path.join(root, "css", "styles.css"), "utf8");
 const sw = fs.readFileSync(path.join(root, "sw.js"), "utf8");
 
-assert.match(app, /nombre: "❄️ Reino del Invierno Eterno"/);
+assert.equal(require('../js/word-banks-es.js').adventure[3].nombre, "❄️ Reino del Invierno Eterno");
 assert.match(app, /const historiaHielo = \[/);
 assert.match(app, /if \(escenarioActual === 3\) \{[\s\S]*?return historiaHielo\[misionActual\]/);
 const fondosMundoHielo = [

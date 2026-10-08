@@ -5,14 +5,7 @@ const engine = require("../js/versus-engine.js");
 
 const appPath = path.join(__dirname, "../js/app.js");
 const app = fs.readFileSync(appPath, "utf8");
-const inicio = app.indexOf("const palabrasAdicionalesVersus = ");
-const fin = app.indexOf("\nconst clavesBancosPalabrasVersus", inicio);
-
-assert.notEqual(inicio, -1, "Debe existir el diccionario temático");
-assert.notEqual(fin, -1, "Debe existir el índice normalizado del diccionario");
-
-const codigoBancos = app.slice(inicio, fin);
-const bancos = Function(`"use strict"; ${codigoBancos}; return bancosPalabrasVersus;`)();
+const bancos = require('../js/word-banks-es.js').versus;
 
 assert.equal(Object.keys(bancos).length, 10, "Deben existir diez temáticas");
 const cantidades = { paises: 100, frutas: 100, animales: 250, comidas: 200,

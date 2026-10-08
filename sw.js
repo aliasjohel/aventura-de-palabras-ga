@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v343`;
+const CACHE_NAME = `${CACHE_PREFIX}v344`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -202,6 +202,7 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/elementos/estela-escarcha-nivor.png",
 ];
 const CORE_ASSETS = [
+  "./js/word-banks-es.js",
   "./js/i18n-settings.js",
   "./js/i18n-es-fallback.js",
   "./js/i18n-ui.js",

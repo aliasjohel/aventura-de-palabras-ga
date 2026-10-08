@@ -4,7 +4,7 @@ const root=process.cwd(), world=require('../js/azrak-world.js');
 const audioFiles=Object.values(world.finalMusic).map(s=>s.src);
 const server=http.createServer((req,res)=>{
  const name=new URL(req.url,'http://localhost').pathname;
- if(name==='/test.html'){res.setHeader('Content-Type','text/html');return res.end('<meta charset=utf-8><link rel="stylesheet" href="css/azrak-world.css"><button id="start" onclick="window.done=AzrakWorld.playCinematic(\'final\')">Start</button><script src="js/azrak-world.js"></script>');}
+ if(name==='/test.html'){res.setHeader('Content-Type','text/html');return res.end('<meta charset=utf-8><link rel="stylesheet" href="css/azrak-world.css"><button id="start" onclick="window.done=AzrakWorld.playCinematic(\'final\')">Start</button><script src="js/word-banks-es.js"></script><script src="js/azrak-world.js"></script>');}
  if(name==='/test-sw.js'){res.setHeader('Content-Type','text/javascript');return res.end(fs.readFileSync('sw.js','utf8')+'\ninstalarRecursosConProgreso = async () => {const c=await caches.open(CACHE_NAME); await c.addAll('+JSON.stringify(audioFiles)+'); await self.skipWaiting();};');}
  fs.readFile(path.join(root,name),(e,d)=>{if(e){res.writeHead(404);return res.end();}res.setHeader('Content-Type',({'.js':'text/javascript','.css':'text/css','.png':'image/png','.mp3':'audio/mpeg'})[path.extname(name)]||'application/octet-stream');res.end(d);});
 });
