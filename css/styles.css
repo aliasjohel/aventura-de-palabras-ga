@@ -17859,3 +17859,9 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
 .versus-personaje[data-cambiando-pose]{visibility:hidden}
 .union-cinematica-activa>.versus-personaje,.union-cinematica-activa>.aren-union-duelo-capa,.union-cinematica-activa>.aren-union-cristal-entrada{visibility:hidden}
 .cinematica-final-versus.juicio-cristales>:not(.aren-union-final-integrado):not(#btnSaltarCinematicaVersus){visibility:hidden}
+
+/* Aren enters the first forest mission using the existing walking sprites. */
+.personaje-imagen.llegada-bosque-preparada { visibility: hidden; }
+.personaje-imagen.llegada-bosque-activa { visibility: visible; animation: llegadaInicialBosque 1.2s linear forwards; }
+@keyframes llegadaInicialBosque { from { left: calc(-1 * clamp(170px, 22vw, 260px)); transform: translateY(0); } to { left: var(--posicion-inicial-explorador); transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .personaje-imagen.llegada-bosque-activa { animation: none; } }

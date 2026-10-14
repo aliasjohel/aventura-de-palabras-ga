@@ -3388,6 +3388,7 @@ btnContinuarHistoria.addEventListener("click", async () => {
       if (debeMostrarLlegadaDesierto) {
         requestAnimationFrame(activarLlegadaDesiertoMision);
       }
+      await ejecutarLlegadaBosqueInicial();
       activarEmergenciaDevoradunas();
       return;
     }
@@ -3445,6 +3446,7 @@ btnContinuarHistoria.addEventListener("click", async () => {
     }
 
     await esperarFadeEscenarioEntrada();
+    await ejecutarLlegadaBosqueInicial();
   } finally {
     contenedorEscenario.classList.remove(
       "cambiando-escena",
@@ -9229,6 +9231,7 @@ function esperarAnimacionNarrativa(animacion) {
 
 function mostrarHistoriaMision({ misionYaCargada = false } = {}) {
   const historia = obtenerHistoriaMision();
+  personajeImagen.classList.toggle("llegada-bosque-preparada", escenarioActual === 0 && misionActual === 0 && desafiosCompletados === 0);
   secuenciaPresentacionMision += 1;
   const esHistoriaDesierto = escenarioActual === 1;
   const esHistoriaCumbres = escenarioActual === 2;
@@ -10055,6 +10058,7 @@ function desvanecerMusicaPrologo(duracion) {
 }
 
 function detenerSonidos() {
+  personajeImagen.classList.remove("llegada-bosque-preparada", "llegada-bosque-activa");
   ForestWildlife.stop();
   detenerTemaCalamo();
   detenerMusicaCinematica(musicaCinematicaFinalMundo4, 0.58);
@@ -16262,6 +16266,28 @@ function obtenerSpritesCaminata(
       : spritesCaminataPorEscenario;
 
   return spritesPorEscenario[escenario] || [];
+}
+
+async function ejecutarLlegadaBosqueInicial() {
+  if (!personajeImagen.classList.contains("llegada-bosque-preparada")) return;
+  personajeImagen.classList.remove("llegada-bosque-preparada");
+  if (escenarioActual !== 0 || misionActual !== 0 || desafiosCompletados !== 0 || !pantallaJuego.classList.contains("activa")) return;
+  const controles = [...teclado.querySelectorAll("button"), btnPista];
+  const estados = controles.map(control => control.disabled);
+  controles.forEach(control => { control.disabled = true; });
+  try {
+    if (!prefiereReducirMovimiento.matches) {
+      personajeImagen.classList.add("llegada-bosque-activa");
+      iniciarCicloCaminata(0);
+      await esperarMovimiento(duracionCaminataExplorador);
+    }
+  } finally {
+    detenerCicloCaminata();
+    personajeImagen.classList.remove("llegada-bosque-activa");
+    if (escenarioActual === 0 && misionActual === 0 && pantallaJuego.classList.contains("activa")) {
+      controles.forEach((control, indice) => { control.disabled = estados[indice]; });
+    }
+  }
 }
 
 function iniciarCicloCaminata(
