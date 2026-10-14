@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v348`;
+const CACHE_NAME = `${CACHE_PREFIX}v349`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1078,7 +1078,7 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/explorador-brazo-arena-v1.png": "sha256-4c2db838858591bf6870d0598895146acb757c773da3c0f765f01e33d8268823",
   "./css/forest-root-trap.css": "sha256-0ae41c5356bb805e0672bb9cf9f66415b1cb1180c285353f191de5cce2373ca1",
   "./js/forest-root-trap.js": "sha256-a71fecacd5cfe6f7f2226c438540d9184fff458b3519db7cb77f2595faeeb085",
-  "./js/forest-wildlife.js": "sha256-4e4b5d7fab14683652491ec27f53bbd30c290c3e13014f1855c9466c877ec811",
+  "./js/forest-wildlife.js": "sha256-3ff0d53fcd15efbfe2d798a680e267906d3002bca5b129e6ce6a1c0ebef90ac0",
   "./css/forest-wildlife.css": "sha256-a33b868ed44ddc9643a0d3bfdd3071a8bbb91d529114d3702ae756bf17dd7b56",
   "./assets/images/elementos/pajaro-bosque-aleteo-v1.png": "sha256-cd7b0ed6fbc3ff00fea61d5e5d5a2b22d1dac72356549f888076eab17637bbf7",
   "./assets/images/elementos/ardilla-bosque-carrera-v1.png": "sha256-bc5f433b65a95883f99f22599767fe24bf56852c2083774243797cb9e8e89283",
@@ -1729,7 +1729,6 @@ const LEGACY_RESOURCE_REVISIONS = {
   "./assets/images/personajes/explorador-brazo-arena-v1.png": "legacy-v93-v95",
   "./css/forest-root-trap.css": "aventura-palabras-runtime-v347",
   "./js/forest-root-trap.js": "aventura-palabras-runtime-v347",
-  "./js/forest-wildlife.js": "aventura-palabras-runtime-v347",
   "./css/forest-wildlife.css": "aventura-palabras-runtime-v347",
   "./assets/images/elementos/pajaro-bosque-aleteo-v1.png": "legacy-v93-v95",
   "./assets/images/elementos/ardilla-bosque-carrera-v1.png": "legacy-v93-v95",

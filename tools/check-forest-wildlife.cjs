@@ -12,10 +12,10 @@ assert.equal(await page.locator('.forest-visitor').evaluate(n=>getComputedStyle(
 await page.evaluate(()=>modalHistoria.classList.remove('oculto'));await page.clock.runFor(100);assert.equal(await page.locator('.forest-visitor').count(),0);
 await page.clock.runFor(45000);assert.equal(await page.locator('.forest-visitor').count(),0);
 await page.evaluate(()=>{modalHistoria.classList.add('oculto');misionActual=2;actualizarEscenaPorMision();});await page.clock.runFor(10500);assert.equal(await page.locator('.forest-visitor-squirrel').count(),1);
+await page.evaluate(()=>{misionActual=3;actualizarEscenaPorMision();});await page.clock.runFor(100);assert.equal(await page.locator('.forest-visitor').count(),0);await page.clock.runFor(90000);assert.equal(await page.locator('.forest-visitor').count(),0);
 await page.evaluate(()=>mostrarPantalla(pantallaMenu));await page.clock.runFor(100);assert.equal(await page.locator('.forest-visitor').count(),0);
 await page.evaluate(()=>{escenarioActual=4;actualizarCabeceraMision();actualizarEscenaPorMision();mostrarPantalla(pantallaJuego);});assert.equal(await page.locator('#categoriaActual').textContent(),'🔥 Tema: fuego, luz y esperanza');await page.clock.runFor(45000);assert.equal(await page.locator('.forest-visitor').count(),0);
 for(const lang of ['en','pt-BR','es']){await page.evaluate(l=>I18n.setPreference(l),lang);assert(!(await page.locator('#categoriaActual').textContent()).includes('adventure.combat'));}
 await page.emulateMedia({reducedMotion:'reduce'});await page.evaluate(()=>{escenarioActual=0;misionActual=0;actualizarEscenaPorMision();});await page.clock.runFor(10500);assert.equal(await page.locator('.forest-visitor').count(),0);
 assert.deepEqual(errors,[]);console.log('PASS: mobile forest visit, animated wings, squirrel, dialog/menu cleanup, other worlds, reduced motion, themes in 3 languages; no browser errors.');
 }finally{await browser.close();server.close();}})().catch(e=>{console.error(e);process.exitCode=1;server.close();});
-

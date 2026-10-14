@@ -3,6 +3,7 @@ const {chromium}=require('C:/Users/User/.cache/codex-runtimes/codex-primary-runt
 const root=path.resolve(__dirname,'..');
 const files=['./css/forest-wildlife.css','./assets/sounds/seleccion-personaje.mp3','./assets/images/elementos/pajaro-bosque-aleteo-v1.png'];
 const current=fs.readFileSync(path.join(root,'sw.js'),'utf8');
+const nextVersion=Number(current.match(/CACHE_PREFIX}v(\d+)/)[1])+1;
 const old=cp.execFileSync('git',['show','58aa6a9:sw.js'],{cwd:root,encoding:'utf8'});
 const css=fs.readFileSync(path.join(root,files[0]),'utf8').replace(/\r\n/g,'\n');
 const updated=css+'\n.cache-probe { color: rgb(123, 45, 67); }\n';
@@ -15,7 +16,7 @@ const server=http.createServer((req,res)=>{
   if(name==='/sw.js'){
     res.setHeader('Content-Type','text/javascript');
     let script=phase===0?old:current;
-    if(phase>=2)script=script.replace(/const CACHE_NAME = .*;/,'const CACHE_NAME = "aventura-palabras-runtime-v349";');
+    if(phase>=2)script=script.replace(/const CACHE_NAME = .*;/,'const CACHE_NAME = "aventura-palabras-runtime-v'+nextVersion+'";');
     script+='\nCORE_ASSETS.splice(0,CORE_ASSETS.length,...'+JSON.stringify(files)+');';
     if(phase>=2)script+='\nASSET_REVISIONS["'+files[0]+'"]="'+revision+'";REVISIONES_ACTUALES["'+files[0]+'"]="'+revision+'";delete LEGACY_RESOURCE_REVISIONS["'+files[0]+'"];';
     return res.end(script);

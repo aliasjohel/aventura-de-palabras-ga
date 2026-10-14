@@ -51,17 +51,24 @@ function fixture() {
   return {stores, caches, puts, downloads, messages, worker, network: files => {network = new Map(Object.entries(files));}, fail: file => {failed = file;}};
 }
 
-test('migration from v347 retains every existing resource in place and only writes metadata', async () => {
+test('migration from v347 retains unchanged resources in place and only downloads modified files', async () => {
   const f = fixture(), w = f.worker('aventura-palabras-runtime-v348');
   const cache = await f.caches.open('aventura-palabras-runtime-v347');
   for (const file of w.config.assets) await cache.put(new URL(file, scope), new Response('original:' + file));
-  await cache.put(new URL('./__revisiones-recursos__.json', scope), new Response(JSON.stringify(w.config.legacy)));
+  const baseline = JSON.parse(fs.readFileSync(path.join(root, 'tools/cache-legacy-v347.json'), 'utf8'));
+  await cache.put(new URL('./__revisiones-recursos__.json', scope), new Response(JSON.stringify(Object.fromEntries(Object.entries(baseline).map(([file, record]) => [file, record.revision])))));
+  const modified = Array.from(w.config.assets).filter(file => !w.config.legacy[file]);
+  f.network(Object.fromEntries(modified.map(file => {
+    const filename = file === './' ? 'index.html' : file.slice(2);
+    const body = fs.readFileSync(path.join(root, filename));
+    return [file, /\.(html|css|js|json|svg|txt|xml|webmanifest)$/.test(filename) ? body.toString().replace(/\r\n/g, '\n') : body];
+  })));
   f.puts.length = 0; await w.install(); await w.activate();
-  assert.equal(f.downloads.length, 0);
-  assert.equal(f.puts.length, 2, 'only revisions and references, no audio/image copying');
+  assert.deepEqual(f.downloads, modified);
+  assert.equal(f.puts.length, 2 + modified.length, 'only modified files and metadata, no copying of existing resources');
   assert(f.stores.has('aventura-palabras-runtime-v347'), 'referenced original cache is preserved');
   assert.equal(await (await w.read('./js/app.js?v=new')).text(), 'original:./js/app.js');
-  assert.equal(f.messages.at(-1).reutilizados, w.config.assets.length);
+  assert.equal(f.messages.at(-1).reutilizados, w.config.assets.length - modified.length);
 });
 
 test('a CSS-only update downloads one file; unchanged code and media are neither copied nor downloaded', async () => {

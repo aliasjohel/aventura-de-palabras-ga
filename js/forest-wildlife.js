@@ -5,7 +5,7 @@
   const voices = new Set();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   function eligible() {
-    return world === 0 && [0, 2, 3].includes(mission) && !document.hidden
+    return world === 0 && [0, 2].includes(mission) && !document.hidden
       && screen?.classList.contains('activa')
       && ![...document.querySelectorAll('[aria-modal="true"]')].some(node => node.getClientRects().length && getComputedStyle(node).visibility !== 'hidden');
   }
@@ -40,7 +40,7 @@
   }
   function visit() {
     if (!eligible()) return;
-    const kind = mission === 0 ? 'bird' : mission === 2 ? 'squirrel' : (Math.random() < .5 ? 'bird' : 'squirrel');
+    const kind = mission === 0 ? 'bird' : 'squirrel';
     call(kind);
     if (reduced.matches) return;
     visitor = document.createElement('div');
