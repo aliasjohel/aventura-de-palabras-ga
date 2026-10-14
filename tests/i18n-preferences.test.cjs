@@ -53,9 +53,9 @@ test('new locale registration uses the same selection logic',async()=>{
 test('all catalog files are installed with this release and available from cache offline',async()=>{
  const worker=fs.readFileSync(path.join(root,'sw.js'),'utf8');let network=0;
  const context=vm.createContext({URL,Headers,Request,Response,console,self:{addEventListener(){},registration:{scope:'https://test.local/'}},
- caches:{open:async()=>({match:async request=>new Response(fs.readFileSync(path.join(root,new URL(request.url).pathname),'utf8'))})},fetch:async()=>{network++;throw Error('offline');}});
+ caches:{open:async()=>({match:async request=>{const file=path.join(root,new URL(request.url||request).pathname);return fs.existsSync(file)?new Response(fs.readFileSync(file,'utf8')):undefined;}})},fetch:async()=>{network++;throw Error('offline');}});
  vm.runInContext(worker+'\nglobalThis.assets=CORE_ASSETS;globalThis.revisions=ASSET_REVISIONS;globalThis.respond=responderRecursoEstatico;',context);
  const registry=await loadJson('languages.json');
- for(const id of ['es','en','pt-BR'])for(const ns of registry.namespaces){const resource=`./locales/${id}/${ns}.json`;assert(context.assets.includes(resource));assert.equal(context.revisions[resource],'aventura-palabras-runtime-v347');const response=await context.respond({request:new Request('https://test.local/'+resource.slice(2))});assert.deepEqual(await response.json(),await loadJson(`${id}/${ns}.json`));}
+ for(const id of ['es','en','pt-BR'])for(const ns of registry.namespaces){const resource=`./locales/${id}/${ns}.json`;assert(context.assets.includes(resource));assert.match(context.revisions[resource],/^sha256-[a-f0-9]{64}$/);const response=await context.respond({request:new Request('https://test.local/'+resource.slice(2))});assert.deepEqual(await response.json(),await loadJson(`${id}/${ns}.json`));}
  assert.equal(network,0);
 });

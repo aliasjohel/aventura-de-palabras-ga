@@ -64,7 +64,8 @@ assert.match(hardening, /select public\.is_permanent_versus_user\(\)/);
 assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v\d+`/);
 const revisionAdaptador = html.match(/js\/versus-room-supabase\.js\?v=([^" ]+)/)?.[1];
 assert.ok(revisionAdaptador, "El adaptador online tiene una revisión para la caché.");
-assert.ok(sw.includes(`"./js/versus-room-supabase.js": "${revisionAdaptador}"`),
-  "La caché y el HTML deben instalar la misma revisión del adaptador.");
+const hashAdaptador = require('node:crypto').createHash('sha256').update(adapter.replace(/\r\n/g, '\n')).digest('hex');
+assert.ok(sw.includes(`"./js/versus-room-supabase.js": "sha256-${hashAdaptador}"`),
+  "La revisión de caché debe corresponder al contenido publicado del adaptador.");
 
 console.log("versus-social: comprobaciones correctas");
