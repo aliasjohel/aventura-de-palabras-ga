@@ -1,0 +1,7 @@
+Built-in image_gen, transparent_background=true.
+
+Bird:
+Use case: stylized-concept. Asset type: transparent horizontal sprite sheet for a forest adventure browser game. Generate one small warm blue-and-russet woodland bird flying toward the RIGHT in exactly FOUR animation frames, evenly spaced in a single horizontal row of four equal square cells. Same bird, same body center, same scale in every cell, side view: wings raised, wings halfway down, wings fully down, wings halfway up. Painterly storybook fantasy game art, detailed feathers, natural proportions, readable silhouette at small size. Entire bird within each cell with ample padding. Actual transparent background, no scenery, no text, no grid lines, no shadows outside bird. The four wing poses must be clearly different for flapping animation.
+
+Squirrel:
+Use case: stylized-concept. Asset type: transparent sprite sheet for forest adventure browser game. One natural reddish brown woodland squirrel running RIGHT, exactly FOUR sequential running poses in a single horizontal row with equal sized cells, identical body center and scale in each cell. Frame 1 reaching forward, frame 2 landing, frame 3 pushing off, frame 4 small bounding leap; fluffy curled tail following movement. Painterly fantasy storybook game illustration, natural squirrel anatomy, detailed warm fur, clear silhouette readable at small size. Entire squirrel and tail inside each cell, generous transparent padding. Truly transparent background. No text, scenery, grid, ground, or external shadow.

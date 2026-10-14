@@ -9477,10 +9477,11 @@ function restaurarPartidaTrasPruebas() {
 
 function actualizarCabeceraMision() {
   const escenario = aventura[escenarioActual];
-  categoriaActual.textContent =
-    escenarioActual === 0
-      ? "🌲 Tema: palabras del Bosque Encantado"
-      : `Tema: palabras de ${escenario.nombre}`;
+  if (escenarioActual === 0 || escenarioActual === 4) {
+    GameUI.text(categoriaActual, GameUI.key(escenarioActual === 0 ? "adventure.combat.forestWordsTheme" : "adventure.combat.azrakWordsTheme"));
+  } else {
+    GameUI.text(categoriaActual, `Tema: palabras de ${escenario.nombre}`);
+  }
   GameUI.text(detalleMision, GameUI.key("adventure.combat.missionProgress", {replay: AventuraMapa.repeticion ? GameUI.key("adventure.combat.replayPrefix") : "", mission: misionActual + 1, challenge: desafioActual, total: obtenerCantidadDesafiosMision()}));
 }
 
@@ -10054,6 +10055,7 @@ function desvanecerMusicaPrologo(duracion) {
 }
 
 function detenerSonidos() {
+  ForestWildlife.stop();
   detenerTemaCalamo();
   detenerMusicaCinematica(musicaCinematicaFinalMundo4, 0.58);
   detenerMusicaCinematica(musicaMuralDragon, 0.58);
@@ -11561,6 +11563,7 @@ function obtenerNombreFondoMision(
 }
 
 function actualizarEscenaPorMision() {
+  ForestWildlife.configure({scene: contenedorEscenario, screen: pantallaJuego, world: escenarioActual, mission: misionActual});
   const escena = obtenerEscenaMision();
   const nombreFondo = obtenerNombreFondoMision(
     escenarioActual,

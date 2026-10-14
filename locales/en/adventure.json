@@ -222,6 +222,8 @@
     "points": "{count} points",
     "classicPoints": "Classic · Your points stay the same",
     "rankOffline": "Check your points in your profile when the connection returns.",
-    "rankUp": "{detail} · Promoted to {rank}!"
+    "rankUp": "{detail} · Promoted to {rank}!",
+    "forestWordsTheme": "🌲 Theme: forest words",
+    "azrakWordsTheme": "🔥 Theme: fire, light and hope"
   }
 }

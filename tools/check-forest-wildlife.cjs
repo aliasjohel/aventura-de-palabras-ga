@@ -1,0 +1,21 @@
+const fs=require('fs'),http=require('http'),path=require('path'),assert=require('assert/strict');
+const {chromium}=require('C:/Users/User/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const root=path.resolve(__dirname,'..');
+const server=http.createServer((req,res)=>{const f=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname.replace(/\/$/,'/index.html'));if(!f.startsWith(root+path.sep)){res.writeHead(403);return res.end();}fs.readFile(f,(err,data)=>{if(err){res.writeHead(404);return res.end();}res.setHeader('Content-Type',({'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png'})[path.extname(f)]||'application/octet-stream');res.end(data);});});
+(async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({channel:'msedge',headless:true});try{const page=await browser.newPage({viewport:{width:390,height:844},serviceWorkers:'block'});await page.route('https://**/*',r=>r.abort());const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.clock.install();await page.goto('http://127.0.0.1:'+server.address().port);await page.evaluate(()=>I18n.ready);
+await page.evaluate(()=>{document.getElementById('introOficial')?.remove();document.body.classList.remove('intro-pendiente');document.querySelectorAll('[aria-modal="true"]').forEach(n=>n.classList.add('oculto'));escenarioActual=0;misionActual=0;actualizarCabeceraMision();actualizarEscenaPorMision();mostrarPantalla(pantallaJuego);});
+assert.equal(await page.locator('#categoriaActual').textContent(),'🌲 Tema: palabras del bosque');
+await page.clock.runFor(10500);assert.equal(await page.locator('.forest-visitor-bird').count(),1);
+await page.waitForTimeout(2800);await page.screenshot({path:path.join(root,'tools/forest-wildlife-preview.png')});
+const positions=[];for(let i=0;i<4;i++){positions.push(await page.locator('.forest-visitor-sprite').evaluate(n=>getComputedStyle(n).backgroundPositionX));await page.waitForTimeout(135);}assert(new Set(positions).size>=3,'wings animate');
+assert.equal(await page.locator('.forest-visitor').evaluate(n=>getComputedStyle(n).pointerEvents),'none');
+await page.evaluate(()=>modalHistoria.classList.remove('oculto'));await page.clock.runFor(100);assert.equal(await page.locator('.forest-visitor').count(),0);
+await page.clock.runFor(45000);assert.equal(await page.locator('.forest-visitor').count(),0);
+await page.evaluate(()=>{modalHistoria.classList.add('oculto');misionActual=2;actualizarEscenaPorMision();});await page.clock.runFor(10500);assert.equal(await page.locator('.forest-visitor-squirrel').count(),1);
+await page.evaluate(()=>mostrarPantalla(pantallaMenu));await page.clock.runFor(100);assert.equal(await page.locator('.forest-visitor').count(),0);
+await page.evaluate(()=>{escenarioActual=4;actualizarCabeceraMision();actualizarEscenaPorMision();mostrarPantalla(pantallaJuego);});assert.equal(await page.locator('#categoriaActual').textContent(),'🔥 Tema: fuego, luz y esperanza');await page.clock.runFor(45000);assert.equal(await page.locator('.forest-visitor').count(),0);
+for(const lang of ['en','pt-BR','es']){await page.evaluate(l=>I18n.setPreference(l),lang);assert(!(await page.locator('#categoriaActual').textContent()).includes('adventure.combat'));}
+await page.emulateMedia({reducedMotion:'reduce'});await page.evaluate(()=>{escenarioActual=0;misionActual=0;actualizarEscenaPorMision();});await page.clock.runFor(10500);assert.equal(await page.locator('.forest-visitor').count(),0);
+assert.deepEqual(errors,[]);console.log('PASS: mobile forest visit, animated wings, squirrel, dialog/menu cleanup, other worlds, reduced motion, themes in 3 languages; no browser errors.');
+}finally{await browser.close();server.close();}})().catch(e=>{console.error(e);process.exitCode=1;server.close();});
+
