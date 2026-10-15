@@ -13,9 +13,11 @@
     ],
   };
   let active = null;
-  function play(kind, { reduced = false, shots = scenes[kind], assetRoot = root, label = "La prueba de Kairós", heading = "BOSQUE ENCANTADO", onPauseChange = () => {} } = {}) {
+  function play(kind, { reduced = false, shots = scenes[kind], assetRoot = root, label = "La prueba de Kairós", heading = "BOSQUE ENCANTADO", onPauseChange = () => {}, character = shots === scenes[kind] ? 'kairos' : null } = {}) {
     if (active) return active;
     if (!shots) return Promise.resolve();
+    const theme = character ? globalThis.CharacterMusic?.startScene(character) : null;
+    const notifyPause = value => { theme?.pause(value); onPauseChange(value); };
     active = new Promise(resolve => {
       const previous = document.activeElement;
       const siblings = [...document.body.children].map(el => [el, el.inert]);
@@ -57,6 +59,7 @@
         siblings.forEach(([el, inert]) => { el.inert = inert; });
         previous?.focus?.();
         active = null;
+        theme?.close();
         onPauseChange(false);
         resolve();
       }
@@ -70,7 +73,7 @@
         }
       }
       function visibility() { last = performance.now(); }
-      buttons[0].onclick = () => { paused = !paused; buttons[0].textContent = paused ? "▶ Reanudar" : "Ⅱ Pausar"; buttons[0].setAttribute("aria-pressed", String(paused)); last = performance.now(); onPauseChange(paused); };
+      buttons[0].onclick = () => { paused = !paused; buttons[0].textContent = paused ? "▶ Reanudar" : "Ⅱ Pausar"; buttons[0].setAttribute("aria-pressed", String(paused)); last = performance.now(); notifyPause(paused); };
       buttons[1].onclick = next;
       buttons[2].onclick = finish;
       document.addEventListener("keydown", keydown, true);
@@ -82,7 +85,7 @@
         if (elapsed >= Math.max(11000, shots[index].text.length * 55)) next();
       }, 100);
       render();
-      onPauseChange(paused);
+      notifyPause(paused);
       buttons[0].focus();
     });
     return active;

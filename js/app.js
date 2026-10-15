@@ -459,33 +459,30 @@ document.addEventListener("keydown", (evento) => {
 });
 
 const musicaPrologo = new Audio("assets/sounds/prologo.mp3");
-const musicaDueloCalamo = new Audio("assets/sounds/azrak-batalla-final-musiclfiles.mp3");
-musicaDueloCalamo.preload = "auto";
-musicaDueloCalamo.volume = 0.55;
-musicaDueloCalamo.loop = true;
+const musicaDueloCalamo = CharacterMusic.audioFor("kalamo");
 let temaCalamoActivo = false;
 let temaCalamoPausado = false;
+let escenaMusicalCalamo = null;
 
 function sincronizarTemaCalamo(pausado = temaCalamoPausado) {
   temaCalamoPausado = pausado;
   if (!temaCalamoActivo) return;
-  if (pausado || document.hidden) musicaDueloCalamo.pause();
-  else musicaDueloCalamo.play().catch(() => {});
+  escenaMusicalCalamo?.pause(pausado);
 }
 
 function iniciarTemaCalamo() {
   if (temaCalamoActivo) return;
   temaCalamoActivo = true;
   temaCalamoPausado = false;
-  musicaDueloCalamo.currentTime = 0;
+  escenaMusicalCalamo = CharacterMusic.startScene("kalamo");
   sincronizarTemaCalamo();
 }
 
 function detenerTemaCalamo() {
   temaCalamoActivo = false;
   temaCalamoPausado = false;
-  musicaDueloCalamo.pause();
-  musicaDueloCalamo.currentTime = 0;
+  escenaMusicalCalamo?.close();
+  escenaMusicalCalamo = null;
 }
 musicaPrologo.loop = false;
 musicaPrologo.volume = 0.25;
@@ -3970,6 +3967,7 @@ function mostrarPantalla(pantallaSeleccionada) {
 
   pantallaSeleccionada.classList.add("activa");
   WorldMusic.sync();
+  CharacterMusic.sync();
   actualizarIdentidadMultijugador();
   actualizarOrientacionPantalla(pantallaSeleccionada);
 
@@ -5302,6 +5300,7 @@ async function presentarDueloAventura(tipo) {
       await esperarCierreHistoriaMision();
       if (escenarioActual !== 4 || misionActual !== 2) return;
       await StoryCinematic.play("entrada", {
+        character: "t_shadow",
         reduced: prefiereReducirMovimiento.matches, assetRoot: "assets/images/",
         label: "La sombra del centinela", heading: "REINO DE AZRAK",
         shots: [{ image:"fondos/reino-azrak/torre-centinela-v1.png", actor:"personajes/versus/t-shadow-base.png", actorName:"Shadow", title:"Nadie cruza mi torre", text:"Shadow aparece frente a Aren. «No darás un paso más». El explorador sostiene su mapa: «Los mundos necesitan sus cristales. No voy a volver atrás». ¡Comienza el duelo!" }],
@@ -5317,6 +5316,7 @@ async function presentarDueloAventura(tipo) {
       await esperarCierreHistoriaMision();
       if (escenarioActual !== 3 || misionActual !== 5) return;
       await StoryCinematic.play("entrada", {
+        character: "dragon_hielo",
         reduced: prefiereReducirMovimiento.matches,
         assetRoot: "assets/images/",
         label: "El desafío de Nivor", heading: "REINO DEL INVIERNO ETERNO",
@@ -5679,6 +5679,7 @@ async function completarRescatePrimerShadow() {
   primerEncuentroShadowEnCurso = true;
   try {
     await StoryCinematic.play("rescate", {
+      character: "t_shadow",
       reduced: prefiereReducirMovimiento.matches,
       assetRoot: "assets/images/cinematicas/reino-azrak/",
       label: "El rescate de la quinta guardiana", heading: "REINO DE AZRAK",
@@ -12492,6 +12493,7 @@ const escenasDesafioGuardianaBosque = Object.freeze([
 
 async function presentarDesafioGuardianaBosque() {
   if (escenarioActual !== 0 || misionActual !== 9 || portalAbierto) return;
+  const tema = CharacterMusic.startScene("guardiana");
 
   const capa = document.createElement("div");
   const imagen = document.createElement("img");
@@ -12558,11 +12560,13 @@ async function presentarDesafioGuardianaBosque() {
     await esperarMovimiento(prefiereReducirMovimiento.matches ? 100 : 450);
   } finally {
     capa.remove();
+    tema.close();
   }
 }
 
 async function presentarDesafioMagoDesierto() {
   if (escenarioActual !== 1 || misionActual !== 9 || mundoDosCompletado) return;
+  const tema = CharacterMusic.startScene("mago");
 
   const capa = document.createElement("div");
   const mago = document.createElement("img");
@@ -12590,6 +12594,7 @@ async function presentarDesafioMagoDesierto() {
     await esperarMovimiento(prefiereReducirMovimiento.matches ? 120 : 650);
   } finally {
     capa.remove();
+    tema.close();
   }
 }
 
@@ -14794,6 +14799,7 @@ function actualizarProgresoMemoriaLobos() {
 
 async function ejecutarEncuentroHombreLoboMision(fase = "desafio") {
   if (escenarioActual !== 0 || misionActual !== 5) return;
+  const tema = CharacterMusic.startScene("hombre_lobo");
 
   const capa = document.createElement("div");
   const luna = document.createElement("span");
@@ -14850,6 +14856,7 @@ async function ejecutarEncuentroHombreLoboMision(fase = "desafio") {
     await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 120 : 520);
   } finally {
     capa.remove();
+    tema.close();
   }
 }
 
@@ -16638,3 +16645,11 @@ for (const campo of [aliasSalaVersus, aliasPerfilVersus]) {
     aviso.textContent = mensaje;
   });
 }
+
+CharacterMusic.configure(() => ({
+  opponent: personajeRivalVersus,
+  duel: pantallaVersus.classList.contains("activa")
+    && resultadoRondaVersus.classList.contains("oculto")
+    && !tutorialCombateVersus.activo,
+  sceneAllowed: pantallaJuego.classList.contains("activa") || pantallaVersus.classList.contains("activa"),
+}));

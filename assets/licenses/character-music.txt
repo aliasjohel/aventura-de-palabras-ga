@@ -1,0 +1,57 @@
+AVENTURA DE PALABRAS — CHARACTER THEMES
+Sources checked 2026-10-14. Audio normalized and transcoded to MP3, 112 kbps.
+
+Azrak: Goliath — Scott Buckley
+https://www.scottbuckley.com.au/library/goliath/
+Original: sb_goliath.mp3
+Goliath by Scott Buckley — released under CC-BY 4.0.
+www.scottbuckley.com.au
+https://creativecommons.org/licenses/by/4.0/
+Changes: loudness normalization and MP3 conversion. Composition unmodified.
+The attribution is also displayed in the game's Settings / Music credits.
+
+The following newly added tracks are published under CC0 1.0 Universal:
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Aren: A Legend Will Rise (Orchestral) — CodeManu
+https://opengameart.org/content/a-legend-will-rise-orchestral
+Original: A Legend Will Rise.mp3
+
+Zafir: Medieval: Battle — RandomMind
+https://opengameart.org/content/medieval-battle
+Original: battle_8.mp3
+
+Guardiana: Col Legno — Jan Schupke (Vehicle)
+https://opengameart.org/content/col-legno
+Original: Vehicle - OGA - Col Legno.wav
+
+Nimbus: Battle Theme A — cynicmusic
+https://opengameart.org/content/battle-theme-a
+Original: battleThemeA.mp3
+
+Hombre Lobo: Ancient Power of Serpents — Kevin MacLeod
+https://opengameart.org/content/ancient-power-of-serpents
+Original: Ancient Power Of Serpents.mp3
+Submitted on OpenGameArt by josepharaoh99 with a link to FreePD.
+
+T. Shadow: The Final Battle — skrjablin
+https://opengameart.org/node/73591
+Original: the_final_battle.ogg
+This is the track originally proposed for Azrak; swapped at the user's request.
+
+A. Lumen: New Sunrise — nene
+https://opengameart.org/content/new-sunrise
+Original: new_sunrise_V2_0.wav
+
+Nivor: Battle Theme — Wolfgang_
+https://opengameart.org/node/16611
+Original: Battle.mp3
+
+Kairós: Determined Pursuit — Emma_MA
+https://opengameart.org/content/determined-pursuit-epic-orchestra-loop
+Original: determined_pursuit_loop.wav
+
+Kálamo: existing licensed game asset azrak-batalla-final-musiclfiles.mp3.
+The existing asset and its provenance are retained; no CC0 claim is made for it.
+
+Exploration music is documented separately in world-music.txt.

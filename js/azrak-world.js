@@ -622,6 +622,7 @@
   }
 
   async function playCinematic(kind, { reduced = false, sound = () => {} } = {}) {
+    const characterTheme = kind === 'traicion' ? globalThis.CharacterMusic?.startScene('azrak') : null;
     const shots = kind === 'traicion' ? betrayal : finale;
     // Load the rescue and every stage of the seal before their scheduled appearance.
     const landmarkImages = kind === 'final' ? ['portal-nivor-v1.png', 'azrak-interrumpe-union-v1.png', 'calamo-sonrisa-detalle-v1.png', 'calamo-barrera-tinta-v1.png', 'calamo-contiene-azrak-v1.png', 'sellado-inicio-v1.png', 'sellado-avanza-v1.png', 'azrak-sellado-v2.png'].map(file => {
@@ -656,6 +657,7 @@
     const musicStatus = musicNotice.querySelector('p');
     const updateMusicState = () => {
       if (closed) return;
+      characterTheme?.pause(controlsSuspended() || muted);
       musicNotice.hidden = !musicWaiting() || viewing.waiting;
       layer.classList.toggle('pausada', suspended());
     };
@@ -827,6 +829,7 @@
       }
     } finally {
       closed = true;
+      characterTheme?.close();
       viewing.destroy();
       Object.values(tracks).forEach(audio => { audio.pause(); audio.currentTime = 0; audio.removeAttribute('src'); audio.load(); });
       document.removeEventListener('keydown', onKey);

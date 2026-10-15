@@ -22,7 +22,7 @@
     const game = readState?.();
     if (!game || document.hidden || !game.screen.classList.contains('activa')) return null;
     const cinema = [...document.querySelectorAll('.cinematica-azrak,.cinematica-final-cumbres,.cinematica-santuario,.cinematica-despertar-dragon,.kairos-cinema,.story-cinema,.presentacion-mision')].some(visible);
-    if (cinema || game.cinematic) return null;
+    if (cinema || game.cinematic || globalThis.CharacterMusic?.ownsScene()) return null;
     const dialogue = game.dialogue || [...document.querySelectorAll('[aria-modal="true"]')].some(visible);
     return {src: select(game.world, game.mission), volume: dialogue ? 0.035 : 0.14};
   }

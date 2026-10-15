@@ -1,0 +1,19 @@
+#btnMusicaDuelo {
+  display: block;
+  margin: 5px auto 0;
+  min-height: 32px;
+  padding: 4px 7px;
+  border: 1px solid #b28b4e;
+  border-radius: 8px;
+  background: #13242a;
+  color: #fff0d3;
+  font: 600 11px/1.2 system-ui, sans-serif;
+  cursor: pointer;
+  pointer-events: auto;
+  white-space: nowrap;
+}
+#btnMusicaDuelo:focus-visible { outline: 3px solid #9cddff; outline-offset: 2px; }
+#btnMusicaDuelo[aria-pressed="true"] { background: #342b29; }
+.versus-estado-combate { clip-path: none; }
+.creditos-musicales { font-size: 12px; line-height: 1.5; margin: 12px 0; }
+.creditos-musicales a { color: #b8e5ff; }
