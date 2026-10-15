@@ -573,5 +573,6 @@ globalThis.I18nSpanishUI=Object.freeze({
   "adventure.combat.rankOffline": "Podés consultar tus puntos en tu perfil cuando vuelva la conexión.",
   "adventure.combat.rankUp": "{detail} · ¡Ascendiste a {rank}!",
   "adventure.combat.forestWordsTheme": "🌲 Tema: palabras del bosque",
-  "adventure.combat.azrakWordsTheme": "🔥 Tema: fuego, luz y esperanza"
+  "adventure.combat.azrakWordsTheme": "🔥 Tema: fuego, luz y esperanza",
+  "adventure.combat.desertWordsTheme": "🌵 Tema: palabras del desierto"
 });

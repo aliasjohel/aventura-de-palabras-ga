@@ -9512,6 +9512,8 @@ function actualizarCabeceraMision() {
   const escenario = aventura[escenarioActual];
   if (escenarioActual === 0 || escenarioActual === 4) {
     GameUI.text(categoriaActual, GameUI.key(escenarioActual === 0 ? "adventure.combat.forestWordsTheme" : "adventure.combat.azrakWordsTheme"));
+  } else if (escenarioActual === 1) {
+    GameUI.text(categoriaActual, GameUI.key("adventure.combat.desertWordsTheme"));
   } else {
     GameUI.text(categoriaActual, `Tema: palabras de ${escenario.nombre}`);
   }
@@ -10460,7 +10462,11 @@ function actualizarVientoArenaMision() {
     return;
   }
 
-  if (capaExistente) return;
+  // Keep the animation within a mission, but replace weather inherited from
+  // the preceding scene when the player arrives through the normal walk.
+  const claseMision = `viento-desierto-mision-${misionActual + 1}`;
+  if (capaExistente?.classList.contains(claseMision)) return;
+  capaExistente?.remove();
 
   const capa = document.createElement("div");
   const esMovil = window.matchMedia("(max-width: 600px)").matches;
