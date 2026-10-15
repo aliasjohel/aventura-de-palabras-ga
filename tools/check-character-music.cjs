@@ -22,7 +22,7 @@ const server = http.createServer((req, res) => {
   const browser = await chromium.launch({channel: 'msedge', headless: true});
   try {
     const contexts = [], pages = [], errors = [];
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
       const context = await browser.newContext({viewport: {width: 844, height: 390}}); contexts.push(context);
       await context.route('https://**/*', route => route.abort());
       await context.addInitScript(() => {
@@ -49,6 +49,22 @@ const server = http.createServer((req, res) => {
       await page.locator('body').click({position:{x:830,y:375}});
     }
     const [first, second] = pages;
+    const victory = pages[2];
+    await victory.evaluate(() => {
+      personajeRivalVersus = 'kairos';
+      dueloAventuraActivo = {...configuracionesDuelosAventura.kairos_bosque, tipo:'kairos_bosque', resultado:'jugador'};
+      resultadoRondaVersus.classList.add('oculto'); mostrarPantalla(pantallaVersus);
+    });
+    await victory.waitForFunction(() => characterPlayers.some(audio => !audio.paused && audio.currentTime > .05));
+    await victory.evaluate(() => mostrarResultadoPartidaVersus('jugador', 'Victoria de prueba'));
+    await victory.locator('#btnRevanchaVersus').click();
+    await victory.locator('.kairos-cinema[data-world-music="true"]').waitFor();
+    await victory.waitForFunction(() => worldPlayers.some(audio => audio.src.endsWith('world-forest-sunset-plains.mp3') && !audio.paused && audio.currentTime > .05 && audio.volume > .03)).catch(async error => {
+      console.error(await victory.evaluate(() => ({hidden:document.hidden, screen:pantallaJuego.className, scene:CharacterMusic.ownsScene(), calamo:temaCalamoActivo, players:worldPlayers.map(a=>({src:a.src,paused:a.paused,time:a.currentTime,volume:a.volume,error:a.error?.message})), cinemas:[...document.querySelectorAll('.kairos-cinema')].map(n=>n.dataset.worldMusic)}))); throw error;
+    });
+    assert(await victory.evaluate(() => characterPlayers.every(audio => audio.paused)));
+    assert.equal(await victory.evaluate(() => CharacterMusic.ownsScene()), false);
+    await contexts[2].close();
     await first.evaluate(() => { window.introPromise = KairosForest.play('entrada'); });
     await first.waitForFunction(() => characterPlayers.some(audio => audio.src.endsWith('character-kairos.mp3') && !audio.paused && audio.currentTime > .05));
     assert(await first.evaluate(() => worldPlayers.every(audio => audio.paused)));
@@ -101,6 +117,6 @@ const server = http.createServer((req, res) => {
       await first.waitForFunction(() => probe.currentTime > .03); await first.evaluate(() => probe.pause());
     }
     assert.deepEqual(errors, []);
-    console.log('PASS: real intro-to-duel audio, independent opponents/mute, all 10 decodable themes, native loop, mobile button and offline range playback.');
+    console.log('PASS: forest music after Kairos victory/report; intro-to-duel audio, independent opponents/mute, all 10 decodable themes, native loop, mobile button and offline range playback.');
   } finally { await browser.close(); await new Promise(resolve => server.close(resolve)); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

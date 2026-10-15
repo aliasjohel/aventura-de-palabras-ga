@@ -21,7 +21,7 @@
   function state() {
     const game = readState?.();
     if (!game || document.hidden || !game.screen.classList.contains('activa')) return null;
-    const cinema = [...document.querySelectorAll('.cinematica-azrak,.cinematica-final-cumbres,.cinematica-santuario,.cinematica-despertar-dragon,.kairos-cinema,.story-cinema,.presentacion-mision')].some(visible);
+    const cinema = [...document.querySelectorAll('.cinematica-azrak,.cinematica-final-cumbres,.cinematica-santuario,.cinematica-despertar-dragon,.kairos-cinema,.story-cinema,.presentacion-mision')].some(node => node.dataset.worldMusic !== 'true' && visible(node));
     if (cinema || game.cinematic || globalThis.CharacterMusic?.ownsScene()) return null;
     const dialogue = game.dialogue || [...document.querySelectorAll('[aria-modal="true"]')].some(visible);
     return {src: select(game.world, game.mission), volume: dialogue ? 0.035 : 0.14};
@@ -61,7 +61,11 @@
       const current = state();
       if (active !== next || current?.src !== target.src) { next.pause(); return; }
       fade(next, current.volume);
-    }).catch(() => { blocked.add(next); }).finally(() => { pending.delete(next); });
+    }).catch(error => {
+      // Pausing for a duel can interrupt a still-loading play request. That is
+      // not an autoplay denial and must not block the return to exploration.
+      if (error.name !== 'AbortError') blocked.add(next);
+    }).finally(() => { pending.delete(next); });
   }
   function interact() { unlocked = true; blocked.clear(); sync(); }
   document.addEventListener('pointerdown', interact, {passive: true});

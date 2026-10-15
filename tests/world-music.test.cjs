@@ -5,7 +5,7 @@ function fixture(){
   const game={world:0,mission:0,screen:{classList:{contains:()=>screenActive}},dialogue:false,cinematic:false};
   class Audio{
     constructor(src){this.src=src;this.paused=true;this.currentTime=0;this.volume=1;this.plays=0;players.push(this);}
-    play(){this.plays++;if(deny)return Promise.reject(Error('autoplay denied'));this.paused=false;return Promise.resolve();}
+    play(){this.plays++;if(deny)return Promise.reject(Object.assign(Error('play rejected'),{name:deny==='abort'?'AbortError':'NotAllowedError'}));this.paused=false;return Promise.resolve();}
     pause(){this.paused=true;}
   }
   const document={hidden:false,querySelectorAll:()=>[],addEventListener:(type,fn)=>{events[type]=fn;}};
@@ -43,4 +43,10 @@ test('switching winter variants fades the old one out and does not leave two tra
 test('a blocked autoplay waits for interaction instead of retrying continuously',async()=>{
   const f=fixture();f.deny(true);await f.interact();await f.tick();const audio=f.players[0];await f.advance(1000);await f.advance(1000);assert.equal(audio.plays,1);
   f.deny(false);await f.interact();assert(!audio.paused);
+});
+
+test('a play interrupted by a duel can resume exploration without another gesture',async()=>{
+  const f=fixture();f.deny('abort');await f.interact();await f.tick();
+  f.screen(false);f.music.sync();f.deny(false);f.screen(true);f.music.sync();await f.tick();
+  assert(!f.players[0].paused);assert.equal(f.players[0].plays,2);
 });

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v351`;
+const CACHE_NAME = `${CACHE_PREFIX}v352`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1043,8 +1043,8 @@ const ASSET_REVISIONS = {
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
   "./js/player-avatar.js": "sha256-004b52a0ba02e5717ecce7017e475c38e8132abaafd78fe7f8f2bcc2d9e450cf",
   "./js/public-player-profile.js": "sha256-d0d6b5caa479fec6889cbd7acc2ca5e8bee8cde5b5cb47970d3d5b41b8abb00a",
-  "./": "sha256-183bc30fe4e226db3ce61658f8d4901a2fb684f499810e6c050873ee330b55f7",
-  "./index.html": "sha256-183bc30fe4e226db3ce61658f8d4901a2fb684f499810e6c050873ee330b55f7",
+  "./": "sha256-8502e909faa79f6e38a179bcc675dda65b991da6a226e0e30b0026c35b31cb56",
+  "./index.html": "sha256-8502e909faa79f6e38a179bcc675dda65b991da6a226e0e30b0026c35b31cb56",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-1fc15e46fc5749a4013df3635222feabfb3cf66ee288d4dab2c145ae4c43a61f",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1115,7 +1115,7 @@ const ASSET_REVISIONS = {
   "./css/forest-root-trap.css": "sha256-0ae41c5356bb805e0672bb9cf9f66415b1cb1180c285353f191de5cce2373ca1",
   "./js/forest-root-trap.js": "sha256-a71fecacd5cfe6f7f2226c438540d9184fff458b3519db7cb77f2595faeeb085",
   "./js/forest-wildlife.js": "sha256-3ff0d53fcd15efbfe2d798a680e267906d3002bca5b129e6ce6a1c0ebef90ac0",
-  "./js/world-music.js": "sha256-e8c3d5722c899be973bb373f911e71e968795cefe8b2fa45a43d91d5c6c58535",
+  "./js/world-music.js": "sha256-adc470101071eae81b842992cae0b2930f4a5a8592d4ae70b3f9ab0537c8f769",
   "./assets/licenses/world-music.txt": "sha256-1ccd8393364615f0a6bfbf6279b2c7335d931515035fe3240bf7d5d8367f7d6b",
   "./assets/licenses/defeat-sound.txt": "sha256-c682efccd14ce23e0a114a59d1c3231055537ef5d803c6416b3412e65796f390",
   "./assets/sounds/defeat-crystal-chime.wav": "sha256-72aacc3caf38e6628c3f18c0d7755cae3325cccd6d79c514b633ab98c4ec8d6a",
@@ -1140,7 +1140,7 @@ const ASSET_REVISIONS = {
   "./js/versus-room-supabase.js": "sha256-ed1c45def7549af97aa214f19f87fc3ad9eec7b61b1c36afd745015613132869",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
   "./js/app.js": "sha256-4dbaf8b40c35cdce75bc23a965828c33e1225066c43915fc41491daab715fae8",
-  "./js/kairos-forest.js": "sha256-0890e4be760852c8f1ecfe27bc43e25c12237cb4f704b1b5caf4e3e49d8e1cbf",
+  "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
   "./assets/images/cinematicas/bosque-kairos/ataque-v1.png": "sha256-614b33e5e9fab59f36f7757aa4102a768b64eb485c559e8f821a7618274375ec",

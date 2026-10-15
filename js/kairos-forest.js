@@ -13,7 +13,7 @@
     ],
   };
   let active = null;
-  function play(kind, { reduced = false, shots = scenes[kind], assetRoot = root, label = "La prueba de Kairós", heading = "BOSQUE ENCANTADO", onPauseChange = () => {}, character = shots === scenes[kind] ? 'kairos' : null } = {}) {
+  function play(kind, { reduced = false, shots = scenes[kind], assetRoot = root, label = "La prueba de Kairós", heading = "BOSQUE ENCANTADO", onPauseChange = () => {}, character = kind === 'entrada' && shots === scenes[kind] ? 'kairos' : null } = {}) {
     if (active) return active;
     if (!shots) return Promise.resolve();
     const theme = character ? globalThis.CharacterMusic?.startScene(character) : null;
@@ -24,6 +24,7 @@
       siblings.forEach(([el]) => { el.inert = true; });
       const layer = document.createElement("section");
       layer.className = "kairos-cinema";
+      if (kind === 'informe' && shots === scenes.informe) layer.dataset.worldMusic = 'true';
       layer.dataset.region = heading;
       layer.setAttribute("role", "dialog");
       layer.setAttribute("aria-modal", "true");
