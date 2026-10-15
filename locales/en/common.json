@@ -81,5 +81,6 @@
   "audioEffects": "Effects and ambience",
   "audioTestMusic": "Test music",
   "audioTestKeyboard": "Test keyboard",
-  "audioTestEffects": "Test effects"
+  "audioTestEffects": "Test effects",
+  "languageDeferred": "The language will change after this battle."
 }

@@ -814,11 +814,35 @@ document.addEventListener("click", desbloquearAudio, { once: true });
 // Variables del juego
 // ====================
 
-const filasTeclado = [
-  ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
-  ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ"],
-  ["Z", "X", "C", "V", "B", "N", "M"],
-];
+let filasTeclado = WordGameplay.rules('es').rows;
+let contextoPalabrasCombate = null;
+let motorPalabrasCombate = VersusEngine;
+let liberarIdiomaCombate = null;
+const bancosPalabrasValidados = new WeakSet();
+function finalizarContextoPalabras() {
+  liberarIdiomaCombate?.();
+  liberarIdiomaCombate = null;
+  contextoPalabrasCombate = null;
+  motorPalabrasCombate = VersusEngine;
+  filasTeclado = WordGameplay.rules('es').rows;
+}
+function iniciarContextoPalabras(mode, online = false) {
+  finalizarContextoPalabras();
+  // Validate whole banks before starting, without silently repairing data.
+  const bancos = mode === 'adventure' ? [aventura[escenarioActual].palabras] : Object.values(bancosPalabrasVersus);
+  for (const banco of bancos) if (!bancosPalabrasValidados.has(banco)) {
+    WordGameplay.validateBank(banco, 'es', {hints: mode === 'adventure'});
+    bancosPalabrasValidados.add(banco);
+  }
+  // Only the original Spanish banks are enabled until stage 3C/3E.
+  contextoPalabrasCombate = WordGameplay.createContext({mode, online, requestedLanguage: I18n.language, availableLanguages: ['es']});
+  motorPalabrasCombate = VersusEngine.paraIdioma(contextoPalabrasCombate.language);
+  filasTeclado = contextoPalabrasCombate.rules.rows;
+  liberarIdiomaCombate = I18n.lockLanguage();
+  return contextoPalabrasCombate;
+}
+function motorDePalabras() { return motorPalabrasCombate; }
+
 
 const aventura = SpanishWordBanks.adventure.map(escenario => ({ ...escenario }));
 
@@ -1014,6 +1038,7 @@ let letrasElegidas = [];
 let palabrasUsadasEnMision = [];
 // Se conserva por mundo y misión al guardar, incluso entre sesiones.
 let historialPalabrasAventura = {};
+let historialPalabrasPorIdioma = {};
 globalThis.AventuraMapa = { repeticion: null, iniciando: false };
 let intentos = 6;
 let escenarioActual = 0;
@@ -1949,6 +1974,7 @@ function actualizarPartidaOnline(partida) {
   desfaseServidorVersus = Date.parse(partida.serverTime) - Date.now();
 
   if (esNueva) {
+    iniciarContextoPalabras("online", true);
     detenerRondaVersus();
     ocultarRevelacionesPalabrasVersus();
     cancelarCinematicaFinalVersus();
@@ -3133,11 +3159,11 @@ function habilitarFijadoresPalabrasVersus(habilitados = true) {
 }
 
 function limpiarPalabraParaVersus(valor) {
-  return VersusEngine.normalizarPalabra(valor, maximoLetrasPalabraVersus);
+  return motorDePalabras().normalizarPalabra(valor, maximoLetrasPalabraVersus);
 }
 
 function obtenerClavePalabraVersus(valor) {
-  return VersusEngine.obtenerClavePalabra(valor);
+  return motorDePalabras().obtenerClavePalabra(valor);
 }
 
 function validarPreparacionVersus(mostrarErrores = false) {
@@ -3154,7 +3180,7 @@ function validarPreparacionVersus(mostrarErrores = false) {
     const repetida = valor.length >= minimoLetrasPalabraVersus && claves.some(
       (otra, otroIndice) => otroIndice !== indice && otra === claves[indice],
     );
-    const figuraEnDiccionario = clavesDiccionario.has(claves[indice]);
+    const figuraEnDiccionario = motorDePalabras().reglas.validate(valor) && clavesDiccionario.has(claves[indice]);
     let mensaje = "";
 
     contador.textContent = `${valor.length} ${valor.length === 1 ? "letra" : "letras"}`;
@@ -3713,7 +3739,7 @@ function mostrarPalabra() {
     const casilla = document.createElement("span");
     casilla.classList.add("casilla");
 
-    if (letrasElegidas.includes(letra)) {
+    if (letrasElegidas.includes(motorDePalabras().reglas.letter(letra))) {
       casilla.textContent = letra;
       casilla.classList.add("revelada");
     } else {
@@ -3746,10 +3772,12 @@ function crearTeclado() {
 }
 
 function elegirLetra(letra, boton) {
+  letra = motorDePalabras().reglas.letter(letra);
+  if (!letra || boton.disabled || letrasElegidas.includes(letra)) return;
   boton.disabled = true;
   letrasElegidas.push(letra);
 
-  if (palabraSecreta.includes(letra)) {
+  if (motorDePalabras().obtenerClavePalabra(palabraSecreta).includes(letra)) {
     boton.classList.add("correcta");
     personaje.textContent = "😁";
     mostrarReaccionExplorador("acierto", "reaccion-acierto");
@@ -3955,6 +3983,7 @@ function actualizarOrientacionPantalla(pantallaSeleccionada) {
 }
 
 function mostrarPantalla(pantallaSeleccionada) {
+  if (pantallaSeleccionada !== pantallaJuego && pantallaSeleccionada !== pantallaVersus) finalizarContextoPalabras();
   if (pantallaSeleccionada === pantallaMenu && globalThis.AventuraMapa?.repeticion) {
     finalizarRepeticionAventura();
     queueMicrotask(abrirMapaAventura);
@@ -4695,7 +4724,7 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
 }
 
 function obtenerPistaLupaVersus(palabra, letrasUsadas) {
-  const pendientes = [...new Set([...VersusEngine.obtenerClavePalabra(palabra)])]
+  const pendientes = [...new Set([...motorDePalabras().obtenerClavePalabra(palabra)])]
     .filter((letra) => !letrasUsadas.has(letra));
   return pendientes[Math.floor(Math.random() * pendientes.length)] || "";
 }
@@ -4760,7 +4789,7 @@ function aplicarFalloForzadoRivalLocalVersus() {
   const palabra = obtenerPalabraActualRivalVersus();
   const letra = obtenerLetraIncorrectaDisponibleVersus(palabra, demoVersus.letrasRival);
   if (!letra) return "";
-  const turno = VersusEngine.evaluarLetra({
+  const turno = motorDePalabras().evaluarLetra({
     palabra,
     letras: [...demoVersus.letrasRival],
     errores: demoVersus.erroresRival,
@@ -4786,7 +4815,7 @@ function aplicarFalloForzadoJugadorLocalVersus(presentar = true) {
   const palabra = obtenerPalabraActualJugadorVersus();
   const letra = obtenerLetraIncorrectaDisponibleVersus(palabra, demoVersus.letrasJugador);
   if (!letra) return;
-  const turno = VersusEngine.evaluarLetra({
+  const turno = motorDePalabras().evaluarLetra({
     palabra,
     letras: [...demoVersus.letrasJugador],
     errores: demoVersus.erroresJugador,
@@ -4990,7 +5019,7 @@ const bancosPalabrasVersus = SpanishWordBanks.versus;
 const clavesBancosPalabrasVersus = Object.fromEntries(
   Object.entries(bancosPalabrasVersus).map(([tematica, palabras]) => [
     tematica,
-    new Set(palabras.map((palabra) => VersusEngine.obtenerClavePalabra(palabra))),
+    new Set(palabras.map((palabra) => motorDePalabras().obtenerClavePalabra(palabra))),
   ]),
 );
 const nombresTematicasVersus = {
@@ -7460,7 +7489,7 @@ function agregarPalabraRecuperacionVersus(tipoJugador) {
   const esJugador = tipoJugador === "jugador";
   const tema = esJugador ? demoVersus.tematicaParaJugador : demoVersus.tematicaParaRival;
   const propiedad = esJugador ? "palabrasJugador" : "palabrasRival";
-  const palabraExtra = VersusEngine.elegirPalabraRecuperacion(
+  const palabraExtra = motorDePalabras().elegirPalabraRecuperacion(
     bancosPalabrasVersus[tema] || [],
     demoVersus[propiedad],
   );
@@ -7469,6 +7498,7 @@ function agregarPalabraRecuperacionVersus(tipoJugador) {
 }
 
 function prepararDueloVersus({ comenzarRonda = true } = {}) {
+  iniciarContextoPalabras(modoArcadeActivo ? "tower" : "versus");
   cancelarCinematicaFinalVersus();
   detenerRondaVersus({ conservarTemaCalamo: dueloAventuraActivo?.tipo === "calamo_desierto" });
   ocultarRevelacionesPalabrasVersus();
@@ -7580,13 +7610,13 @@ function jugarLetraDemoVersus(letra, boton) {
   const estadoJugador = document.getElementById("estadoProgresoUno");
   const intentosJugador = document.getElementById("intentosVersusUno");
   const palabraJugador = obtenerPalabraActualJugadorVersus();
-  const descubiertasAntes = VersusEngine.contarDescubiertas(
+  const descubiertasAntes = motorDePalabras().contarDescubiertas(
     palabraJugador,
     [...demoVersus.letrasJugador],
   );
 
   boton.disabled = true;
-  const turno = VersusEngine.evaluarLetra({
+  const turno = motorDePalabras().evaluarLetra({
     palabra: palabraJugador,
     letras: [...demoVersus.letrasJugador],
     errores: demoVersus.erroresJugador,
@@ -7596,7 +7626,7 @@ function jugarLetraDemoVersus(letra, boton) {
   demoVersus.erroresJugador = turno.errores;
 
   if (turno.resultado === "acierto" || turno.resultado === "completa") {
-    const descubiertasDespues = VersusEngine.contarDescubiertas(palabraJugador, turno.letras);
+    const descubiertasDespues = motorDePalabras().contarDescubiertas(palabraJugador, turno.letras);
     demoVersus.cargaHabilidadJugador = VersusEngine.sumarCargaHabilidad(
       demoVersus.cargaHabilidadJugador,
       descubiertasDespues - descubiertasAntes,
@@ -7639,7 +7669,7 @@ function jugarTurnoRivalVersus() {
   const alfabeto = filasTeclado.flat();
   const palabraRival = obtenerPalabraActualRivalVersus();
   const palabraRivalClave = obtenerClavePalabraVersus(palabraRival);
-  const descubiertasAntes = VersusEngine.contarDescubiertas(
+  const descubiertasAntes = motorDePalabras().contarDescubiertas(
     palabraRival,
     [...demoVersus.letrasRival],
   );
@@ -7664,7 +7694,7 @@ function jugarTurnoRivalVersus() {
   reproducirPulsacionTeclaVersus("rival");
   demoVersus.pistaLupaRival = "";
 
-  const turno = VersusEngine.evaluarLetra({
+  const turno = motorDePalabras().evaluarLetra({
     palabra: palabraRival,
     letras: [...demoVersus.letrasRival],
     errores: demoVersus.erroresRival,
@@ -7673,7 +7703,7 @@ function jugarTurnoRivalVersus() {
   demoVersus.letrasRival = new Set(turno.letras);
   demoVersus.erroresRival = turno.errores;
   if (turno.resultado === "acierto" || turno.resultado === "completa") {
-    const descubiertasDespues = VersusEngine.contarDescubiertas(palabraRival, turno.letras);
+    const descubiertasDespues = motorDePalabras().contarDescubiertas(palabraRival, turno.letras);
     demoVersus.cargaHabilidadRival = VersusEngine.sumarCargaHabilidad(
       demoVersus.cargaHabilidadRival,
       descubiertasDespues - descubiertasAntes,
@@ -7710,11 +7740,11 @@ function obtenerPalabraActualRivalVersus() {
 }
 
 function palabraCompletadaVersus(palabra, letras) {
-  return VersusEngine.palabraCompletada(palabra, [...letras]);
+  return motorDePalabras().palabraCompletada(palabra, [...letras]);
 }
 
 function contarLetrasDescubiertasVersus(palabra, letras) {
-  return VersusEngine.contarDescubiertas(palabra, [...letras]);
+  return motorDePalabras().contarDescubiertas(palabra, [...letras]);
 }
 
 function actualizarProgresosVersus() {
@@ -7722,11 +7752,11 @@ function actualizarProgresosVersus() {
   const palabraRival = document.getElementById("palabraVersusDos");
   const objetivoJugador = obtenerPalabraActualJugadorVersus();
   const objetivoRival = obtenerPalabraActualRivalVersus();
-  const progresoJugador = VersusEngine.obtenerProgreso(
+  const progresoJugador = motorDePalabras().obtenerProgreso(
     objetivoJugador,
     [...demoVersus.letrasJugador],
   );
-  const progresoRival = VersusEngine.obtenerProgreso(
+  const progresoRival = motorDePalabras().obtenerProgreso(
     objetivoRival,
     [...demoVersus.letrasRival],
     true,
@@ -9570,7 +9600,9 @@ function mostrarIntroduccionMundoDos() {
 }
 
 function reiniciarEstadoAventura() {
+  finalizarContextoPalabras();
   historialPalabrasAventura = {};
+  historialPalabrasPorIdioma = {};
   cancelarSecuenciaNarrativaActual();
   detenerSonidos();
   cancelarRetornoEstadoBaseExplorador();
@@ -9867,9 +9899,7 @@ function actualizarVidas() {
 }
 
 function palabraCompleta() {
-  return palabraSecreta
-    .split("")
-    .every((letra) => letrasElegidas.includes(letra));
+  return motorDePalabras().palabraCompletada(palabraSecreta, letrasElegidas);
 }
 
 function precargarSonidos() {
@@ -11057,6 +11087,7 @@ function logAudioEvento(mensaje, detalle = "") {
 }
 
 async function iniciarMisionAventura({ presentarMision = false } = {}) {
+  iniciarContextoPalabras("adventure");
   ocultarMensajeDesafioSuperado();
   detenerPolvoImpacto();
   detenerAmbientePuente();
@@ -11083,7 +11114,7 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   );
   const palabraSeleccionada = sinPalabraNormal ? null : obtenerPalabraAleatoria();
 
-  palabraSecreta = palabraSeleccionada?.palabra || "";
+  palabraSecreta = motorDePalabras().reglas.display(palabraSeleccionada?.palabra || "");
 
   pistaActual = palabraSeleccionada?.pista || "";
 
@@ -11327,6 +11358,8 @@ function guardarProgreso() {
 
   const progreso = {
     historialPalabrasAventura,
+    versionHistorialPalabras: 1,
+    historialPalabrasPorIdioma: {...historialPalabrasPorIdioma, es: WordGameplay.encodeHistory(historialPalabrasAventura, aventura)},
     escenarioActual,
     misionActual,
     desafioActual,
@@ -11356,6 +11389,7 @@ function guardarProgreso() {
 
 function cargarProgreso() {
   historialPalabrasAventura = {};
+  historialPalabrasPorIdioma = {};
   const progresoGuardado = localStorage.getItem("progresoAventuraGA");
 
   if (!progresoGuardado) {
@@ -11375,9 +11409,12 @@ function cargarProgreso() {
     return;
   }
 
+  historialPalabrasPorIdioma = progreso.versionHistorialPalabras === 1 && progreso.historialPalabrasPorIdioma && typeof progreso.historialPalabrasPorIdioma === 'object' && !Array.isArray(progreso.historialPalabrasPorIdioma)
+    ? {...progreso.historialPalabrasPorIdioma} : {};
+  const historialEspanol = WordGameplay.decodeHistory(historialPalabrasPorIdioma.es, aventura) ?? progreso.historialPalabrasAventura;
   escenarioActual = progreso.escenarioActual ?? 0;
   for (let mundo = 0; mundo < aventura.length; mundo++) {
-    const anterior = progreso.historialPalabrasAventura?.[mundo];
+    const anterior = historialEspanol?.[mundo];
     if (!anterior || typeof anterior !== "object") continue;
     const validas = new Set(aventura[mundo].palabras.map(item => item.palabra));
     const limpiar = lista => Array.isArray(lista)

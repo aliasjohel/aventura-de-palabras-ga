@@ -1,13 +1,15 @@
 (function iniciarVersusEngine(raiz, crearApi) {
-  const api = crearApi();
+  const api = crearApi("es", typeof module === "object" && module.exports ? require("./word-gameplay.js") : raiz.WordGameplay);
 
   if (typeof module === "object" && module.exports) {
     module.exports = api;
   }
 
   raiz.VersusEngine = api;
-})(typeof globalThis !== "undefined" ? globalThis : this, () => {
+})(typeof globalThis !== "undefined" ? globalThis : this, function crearMotor(idioma, WordGameplay) {
   "use strict";
+
+  const reglas = WordGameplay.rules(idioma);
 
   const CONFIG = Object.freeze({
     minimoLetras: 3,
@@ -20,18 +22,12 @@
   });
 
   function normalizarPalabra(valor, maximoLetras = CONFIG.maximoLetras) {
-    return `${valor || ""}`
-      .toLocaleUpperCase("es-AR")
-      .replace(/[^A-ZÁÉÍÓÚÜÑ]/g, "")
-      .slice(0, maximoLetras);
+    if (idioma === "es") return reglas.clean(valor, maximoLetras);
+    return reglas.validate(valor, {min: 1, max: maximoLetras}) ? reglas.display(valor) : "";
   }
 
   function obtenerClavePalabra(valor) {
-    return normalizarPalabra(valor)
-      .replace(/Ñ/g, "\uE000")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/\uE000/g, "Ñ");
+    return reglas.key(normalizarPalabra(valor));
   }
 
   function crearEstadoPalabra() {
@@ -40,8 +36,8 @@
 
   function evaluarLetra({ palabra, letras = [], errores = 0, letra }) {
     const objetivo = obtenerClavePalabra(palabra);
-    const intento = obtenerClavePalabra(letra).slice(0, 1);
-    const usadas = [...new Set(letras.map((valor) => obtenerClavePalabra(valor).slice(0, 1)))];
+    const intento = reglas.letter(letra);
+    const usadas = [...new Set(letras.map((valor) => reglas.letter(valor)))];
 
     if (!intento || usadas.includes(intento)) {
       return {
@@ -67,14 +63,14 @@
   }
 
   function palabraCompletada(palabra, letras = []) {
-    const usadas = new Set(letras);
-    return [...obtenerClavePalabra(palabra)].every((letra) => usadas.has(letra));
+    const usadas = new Set(letras.map(reglas.letter));
+    return Boolean(obtenerClavePalabra(palabra)) && [...obtenerClavePalabra(palabra)].every((letra) => usadas.has(letra));
   }
 
   function obtenerProgreso(palabra, letras = [], ocultarAciertos = false) {
     const original = [...normalizarPalabra(palabra)];
     const clave = [...obtenerClavePalabra(palabra)];
-    const usadas = new Set(letras.map((letra) => obtenerClavePalabra(letra).slice(0, 1)));
+    const usadas = new Set(letras.map((letra) => reglas.letter(letra)));
     return clave.map((letra, indice) => {
       if (!usadas.has(letra)) return "_";
       return ocultarAciertos ? "?" : original[indice];
@@ -82,13 +78,14 @@
   }
 
   function contarDescubiertas(palabra, letras = []) {
-    const usadas = new Set(letras.map((letra) => obtenerClavePalabra(letra).slice(0, 1)));
+    const usadas = new Set(letras.map((letra) => reglas.letter(letra)));
     return [...obtenerClavePalabra(palabra)].filter((letra) => usadas.has(letra)).length;
   }
 
   function elegirPalabraRecuperacion(banco = [], usadas = [], aleatorio = Math.random) {
     const clavesUsadas = new Set(usadas.map(obtenerClavePalabra));
     const disponibles = banco
+      .filter(palabra => reglas.validate(palabra))
       .map((palabra) => normalizarPalabra(palabra))
       .filter((palabra) => palabra && !clavesUsadas.has(obtenerClavePalabra(palabra)));
     if (!disponibles.length) return "";
@@ -148,6 +145,7 @@
   }
 
   return Object.freeze({
+    idioma, reglas, paraIdioma: idioma => crearMotor(idioma, WordGameplay),
     CONFIG,
     normalizarPalabra,
     obtenerClavePalabra,

@@ -17,7 +17,7 @@ const migracion = fs.readFileSync(
 );
 
 assert.match(app, /function agregarPalabraRecuperacionVersus\(/);
-assert.match(app, /VersusEngine\.elegirPalabraRecuperacion\(/);
+assert.match(app, /motorDePalabras\(\)\.elegirPalabraRecuperacion\(/);
 assert.match(app, /if \(demoVersus\.vidasJugador > 0\) agregarPalabraRecuperacionVersus\("jugador"\)/);
 assert.match(app, /if \(demoVersus\.vidasRival > 0\) agregarPalabraRecuperacionVersus\("rival"\)/);
 assert.match(app, /demoVersus\.palabrasCompletadasJugador >= maximoPalabrasVersus/);
@@ -25,7 +25,7 @@ assert.match(app, /demoVersus\.palabrasCompletadasRival >= maximoPalabrasVersus/
 assert.match(app, /const palabraPerdida = ganador === "rival" \? palabraEvento : ""/);
 assert.doesNotMatch(app, /partida\.me\?\.lastFailedWord \|\| palabraEvento/);
 assert.match(app, /VersusEngine\.obtenerEtiquetaRonda\(propio\.wordIndex\)/);
-assert.match(html, /js\/versus-engine\.js\?v=20260817-versus-recuperacion-1/);
+assert.match(html, /js\/versus-engine\.js\?v=20261015-3b-1/);
 const engineHash = require('node:crypto').createHash('sha256').update(fs.readFileSync(path.join(raiz, 'js/versus-engine.js'), 'utf8').replace(/\r\n/g, '\n')).digest('hex');
 assert.ok(serviceWorker.includes(`"./js/versus-engine.js": "sha256-${engineHash}"`));
 

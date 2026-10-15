@@ -81,5 +81,6 @@
   "audioEffects": "Efectos y ambiente",
   "audioTestMusic": "Probar música",
   "audioTestKeyboard": "Probar teclado",
-  "audioTestEffects": "Probar efectos"
+  "audioTestEffects": "Probar efectos",
+  "languageDeferred": "El idioma se aplicará al terminar este combate."
 }

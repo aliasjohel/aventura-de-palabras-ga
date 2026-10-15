@@ -16,7 +16,7 @@ for (const mundo of aventura) {
 }
 const functions = app.slice(app.indexOf('function guardarProgreso()'), app.indexOf('\ncargarPersonajesDesbloqueados();', app.indexOf('function obtenerPalabraAleatoria()')));
 const storage = new Map();
-const ctx = { aventura, AzrakWorld, Math, Set, JSON, Number,
+const ctx = { aventura, AzrakWorld, Math, Set, JSON, Number, WordGameplay: require('../js/word-gameplay.js'), historialPalabrasPorIdioma: {},
   modoPruebasActivo: false, historialPalabrasAventura: {}, palabrasUsadasEnMision: [],
   escenarioActual: 0, misionActual: 0, desafioActual: 1, desafiosCompletados: 0,
   monedas: 123, experiencia: 456, cristalesObtenidos: 0,
@@ -77,3 +77,16 @@ storage.set('progresoAventuraGA', JSON.stringify({ historialPalabrasAventura: {
 ctx.cargarProgreso();
 assert.equal(JSON.stringify(ctx.historialPalabrasAventura[0]), JSON.stringify({ usadas: ['ARBOL'], mision: -1, enMision: [] }));
 console.log('adventure-word-bank: 250 clues, cycles, missions, persistence, old saves and test-mode isolation OK');
+
+// Stage 3B writes stable IDs and retains the legacy Spanish history for rollback.
+ctx.guardarProgreso();
+const migrated = JSON.parse(storage.get('progresoAventuraGA'));
+assert.equal(migrated.versionHistorialPalabras, 1);
+assert.equal(migrated.historialPalabrasPorIdioma.es[0].used[0], 'es:world:0:word:0');
+migrated.historialPalabrasPorIdioma.en = {future: 'preserve'};
+migrated.historialPalabrasAventura[0].usadas = ['HOJA'];
+storage.set('progresoAventuraGA', JSON.stringify(migrated));
+ctx.cargarProgreso();
+assert.equal(ctx.historialPalabrasAventura[0].usadas[0], 'ARBOL');
+ctx.guardarProgreso();
+assert.equal(JSON.parse(storage.get('progresoAventuraGA')).historialPalabrasPorIdioma.en.future, 'preserve');

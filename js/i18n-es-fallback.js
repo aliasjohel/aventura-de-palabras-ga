@@ -82,6 +82,7 @@ globalThis.I18nSpanishUI=Object.freeze({
   "common.audioTestMusic": "Probar música",
   "common.audioTestKeyboard": "Probar teclado",
   "common.audioTestEffects": "Probar efectos",
+  "common.languageDeferred": "El idioma se aplicará al terminar este combate.",
   "menu.title": "Aventura de Palabras",
   "menu.subtitle": "Explorá mundos resolviendo palabras",
   "menu.adventure": "🗺️ Aventura",

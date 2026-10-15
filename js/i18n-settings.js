@@ -9,7 +9,7 @@
   });
   select.addEventListener('change',async()=>{
     select.disabled=true;status.textContent='';
-    try{const result=await I18n.setPreference(select.value);if(result.applied&&!result.saved)GameUI.text(status,GameUI.key('common.languageUnsaved'));}
+    try{const result=await I18n.setPreference(select.value);if(result.applied&&!result.saved)GameUI.text(status,GameUI.key('common.languageUnsaved'));else if(result.deferred)GameUI.text(status,GameUI.key('common.languageDeferred'));}
     catch(_){GameUI.text(status,GameUI.key('common.languageUnavailable'));refresh();}
     finally{select.disabled=false;}
   });

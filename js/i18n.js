@@ -15,6 +15,7 @@
   function create({loadJson,document:doc=null,storage=null,deviceLanguages=()=>[],report=message=>console.warn(message)}){
     const catalogs=new Map(),reported=new Set(),listeners=new Set();
     let registry=null,initialized=false,initialization=null,language='es',preference='auto',generation=0;
+    const languageLocks=new Set(); let deferredLanguage=null;
     const diagnostic=message=>{if(!reported.has(message)){reported.add(message);report(message);}};
     const formatLocale=id=>registry?.languages.find(item=>item.id===id)?.locale||registry?.formatLocale||'es-AR';
     const valid=value=>value==='auto'||registry?.languages.some(item=>item.id===value);
@@ -73,19 +74,27 @@
       const version=++generation,id=value==='auto'?detect():value;
       await loadLanguage(registry.fallbackLanguage);if(id!==registry.fallbackLanguage)await loadLanguage(id);
       if(version!==generation)return {applied:false,saved:false};
-      preference=value;language=id;let saved=!persist;
+      preference=value;const deferred=languageLocks.size>0;
+      if(deferred)deferredLanguage=id;else {language=id;deferredLanguage=null;}
+      let saved=!persist;
       if(persist){try{if(!storage)throw Error('Storage unavailable');storage.setItem(preferenceKey,value);saved=true;}catch(_){diagnostic('i18n: preference could not be saved');}}
-      notify();return {applied:true,saved};
+      if(!deferred)notify();return {applied:true,saved,deferred};
     }
     async function initialize(){
       registry=await loadJson('languages.json');
       if(registry.defaultLanguage!=='es'||registry.fallbackLanguage!=='es'||!registry.languages.some(item=>item.id==='es'))throw Error('Spanish fallback required');
       try{const stored=storage?.getItem(preferenceKey);preference=valid(stored)?stored:'auto';}catch(_){preference='auto';}
-      language=preference==='auto'?detect():preference;
-      await loadLanguage('es');if(language!=='es')await loadLanguage(language);initialized=true;notify();
+      const initialLanguage=preference==='auto'?detect():preference;
+      await loadLanguage('es');if(initialLanguage!=='es')await loadLanguage(initialLanguage);
+      if(languageLocks.size)deferredLanguage=initialLanguage;else language=initialLanguage;
+      initialized=true;if(!languageLocks.size)notify();
     }
     function init(){if(!initialization)initialization=initialize().catch(error=>{initialization=null;throw error;});return initialization;}
-    return {init,t,resolve:translation,apply,setPreference,subscribe:listener=>{listeners.add(listener);return ()=>listeners.delete(listener);},
+    function lockLanguage(){
+      const token={};languageLocks.add(token);let released=false;
+      return ()=>{if(released)return;released=true;languageLocks.delete(token);if(!languageLocks.size&&deferredLanguage!==null){language=deferredLanguage;deferredLanguage=null;notify();}};
+    }
+    return {init,t,resolve:translation,apply,setPreference,lockLanguage,get languageLocked(){return languageLocks.size>0;},subscribe:listener=>{listeners.add(listener);return ()=>listeners.delete(listener);},
       get language(){return language;},get preference(){return preference;},get fallbackLanguage(){return registry?.fallbackLanguage||'es';},
       get languages(){return registry?.languages.map(item=>({...item}))||[];},
       number:(value,options)=>new Intl.NumberFormat(formatLocale(language),options).format(value),
