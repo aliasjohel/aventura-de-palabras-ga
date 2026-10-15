@@ -10530,7 +10530,7 @@ function actualizarVidaDesiertoMision() {
     const duracionBandada = 22 + Math.random() * 5;
     for (let indice = 0; indice < configuracionAves.cantidad; indice += 1) {
       const ave = crearAnimalAnimadoDesierto(
-        `ave-desierto-ambiente${configuracionAves.bandada ? " ave-bandada-desierto" : ""}`,
+        `ave-desierto-ambiente${configuracionAves.bandada ? " ave-bandada-desierto" : " ave-desierto-ocasional"}`,
         [
           "assets/images/ambiente/desierto/halcon-alas-arriba.png",
           "assets/images/ambiente/desierto/halcon-alas-abajo.png",
@@ -10545,11 +10545,11 @@ function actualizarVidaDesiertoMision() {
       );
       ave.style.setProperty(
         "--duracion-ave",
-        `${configuracionAves.bandada ? duracionBandada : 20 + Math.random() * 8}s`,
+        `${configuracionAves.bandada ? duracionBandada : 85 + Math.random() * 25}s`,
       );
       ave.style.setProperty(
         "--retraso-ave",
-        `${configuracionAves.bandada ? retrasoBandada - indice * 0.65 : -Math.random() * 24}s`,
+        `${configuracionAves.bandada ? retrasoBandada - indice * 0.65 : 12 + Math.random() * 13}s`,
       );
       ave.style.setProperty(
         "--escala-ave",

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v352`;
+const CACHE_NAME = `${CACHE_PREFIX}v353`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1043,10 +1043,10 @@ const ASSET_REVISIONS = {
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
   "./js/player-avatar.js": "sha256-004b52a0ba02e5717ecce7017e475c38e8132abaafd78fe7f8f2bcc2d9e450cf",
   "./js/public-player-profile.js": "sha256-d0d6b5caa479fec6889cbd7acc2ca5e8bee8cde5b5cb47970d3d5b41b8abb00a",
-  "./": "sha256-8502e909faa79f6e38a179bcc675dda65b991da6a226e0e30b0026c35b31cb56",
-  "./index.html": "sha256-8502e909faa79f6e38a179bcc675dda65b991da6a226e0e30b0026c35b31cb56",
+  "./": "sha256-691803bc95187528731d134dad6c7976b1deada2b6b06481be6a701f534c033c",
+  "./index.html": "sha256-691803bc95187528731d134dad6c7976b1deada2b6b06481be6a701f534c033c",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
-  "./css/styles.css": "sha256-1fc15e46fc5749a4013df3635222feabfb3cf66ee288d4dab2c145ae4c43a61f",
+  "./css/styles.css": "sha256-918dc77c5c19721e6d696fa701d4e88ff3e1eefdb38860efa018de4475a1e8f2",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
   "./js/azrak-world.js": "sha256-8199650759ea7a381920fe69a001b220b678f83a61dbf0cbd293d106a71afe99",
   "./assets/images/cinematicas/reino-azrak/primer-shadow-lume-capturada-v1.png": "sha256-190fd4207138436bf0a6b68048a766bce2fe136bebf4051095bc84fe6b6b286c",
@@ -1139,7 +1139,7 @@ const ASSET_REVISIONS = {
   "./js/versus-room.js": "sha256-bcd7d15b293d34bd9b73cae19909b52492c7defbd8629952d99b3b004b56be0f",
   "./js/versus-room-supabase.js": "sha256-ed1c45def7549af97aa214f19f87fc3ad9eec7b61b1c36afd745015613132869",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-4dbaf8b40c35cdce75bc23a965828c33e1225066c43915fc41491daab715fae8",
+  "./js/app.js": "sha256-01769b4ce362b27d620fe1fcf9c44f6b8dc240371cc0935e70020dbdb34c8db4",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
@@ -1705,7 +1705,6 @@ const LEGACY_RESOURCE_REVISIONS = {
   "./js/player-avatar.js": "aventura-palabras-runtime-v347",
   "./js/public-player-profile.js": "aventura-palabras-runtime-v347",
   "./manifest.json": "legacy-v93-v95",
-  "./css/styles.css": "aventura-palabras-runtime-v347",
   "./css/azrak-world.css": "aventura-palabras-runtime-v347",
   "./assets/images/cinematicas/reino-azrak/primer-shadow-lume-capturada-v1.png": "legacy-v93-v95",
   "./assets/images/cinematicas/reino-azrak/primer-shadow-lume-rescate-v1.png": "legacy-v93-v95",

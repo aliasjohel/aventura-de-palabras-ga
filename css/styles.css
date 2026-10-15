@@ -4865,6 +4865,11 @@ button:disabled {
     width: clamp(180px, 34vw, 400px);
 }
 
+.versus-personaje.personaje-guardiana {
+    scale: 1.08;
+    transform-origin: 50% 100%;
+}
+
 .versus-personaje-uno.personaje-mago {
     left: -5%;
     width: clamp(300px, 65vw, 760px);
@@ -10162,6 +10167,10 @@ button:disabled {
     filter: blur(.15px);
 }
 
+.ave-desierto-ocasional {
+    animation-name: cruzarAveDesiertoOcasional;
+}
+
 .ave-bandada-desierto .cuadro-fauna-desierto {
     filter: sepia(.18) brightness(.68) opacity(.78) drop-shadow(0 1px 1px rgba(54, 25, 9, .26));
 }
@@ -10268,6 +10277,14 @@ button:disabled {
     48% { transform: translate3d(58vw, -8px, 0) scale(var(--escala-ave)); }
     82% { opacity: .7; }
     88%, 100% { opacity: 0; transform: translate3d(126vw, 5px, 0) scale(var(--escala-ave)); }
+}
+
+@keyframes cruzarAveDesiertoOcasional {
+    0%, 2% { opacity: 0; transform: translate3d(-12vw, 2px, 0) scale(var(--escala-ave)); }
+    3% { opacity: .76; }
+    12% { transform: translate3d(58vw, -8px, 0) scale(var(--escala-ave)); }
+    23% { opacity: .7; }
+    24%, 100% { opacity: 0; transform: translate3d(126vw, 5px, 0) scale(var(--escala-ave)); }
 }
 
 @keyframes aletearHalconDesierto {
