@@ -16,7 +16,7 @@ for (const mundo of aventura) {
 }
 const functions = app.slice(app.indexOf('function guardarProgreso()'), app.indexOf('\ncargarPersonajesDesbloqueados();', app.indexOf('function obtenerPalabraAleatoria()')));
 const storage = new Map();
-const ctx = { aventura, AzrakWorld, Math, Set, JSON, Number, contextoPalabrasCombate: null, WordGameplay: require('../js/word-gameplay.js'), historialPalabrasPorIdioma: {},
+const ctx = { aventura, AzrakWorld, Math, Set, JSON, Number, contextoPalabrasCombate: null, WordGameplay: require('../js/word-gameplay.js'), historialPalabrasPorIdioma: {}, historialPalabrasPruebasPorIdioma: null,
   modoPruebasActivo: false, historialPalabrasAventura: {}, palabrasUsadasEnMision: [],
   escenarioActual: 0, misionActual: 0, desafioActual: 1, desafiosCompletados: 0,
   monedas: 123, experiencia: 456, cristalesObtenidos: 0,
@@ -91,3 +91,25 @@ ctx.cargarProgreso();
 assert.equal(ctx.historialPalabrasAventura[0].usadas[0], 'ARBOL');
 ctx.guardarProgreso();
 assert.equal(JSON.parse(storage.get('progresoAventuraGA')).historialPalabrasPorIdioma.en.future, 'preserve');
+
+// Regression: clearing the transient mission list must not allow test-mode repeats.
+ctx.modoPruebasActivo = true;
+const realSaveBeforeTests = storage.get('progresoAventuraGA');
+const deterministicMath = Object.create(Math); deterministicMath.random = () => 0;
+ctx.Math = deterministicMath;
+ctx.historialPalabrasPruebasPorIdioma = null;
+storage.delete('historialPalabrasPruebasAventuraV1');
+for (let world = 0; world < 5; world++) {
+  ctx.escenarioActual = world;
+  const seen = new Set();
+  for (let n = 0; n < 50; n++) {
+    ctx.misionActual = Math.floor(n / 3) % 10;
+    if (n % 3 === 0) ctx.palabrasUsadasEnMision = [];
+    if (n % 7 === 0) ctx.historialPalabrasPruebasPorIdioma = null;
+    const answer = ctx.obtenerPalabraAleatoria().palabra;
+    assert(!seen.has(answer), `Test mode repeated ${answer} in world ${world + 1}`);
+    seen.add(answer);
+  }
+  assert.equal(seen.size, 50);
+}
+assert.equal(storage.get('progresoAventuraGA'), realSaveBeforeTests);

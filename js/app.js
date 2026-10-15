@@ -1045,6 +1045,7 @@ let palabrasUsadasEnMision = [];
 // Se conserva por mundo y misión al guardar, incluso entre sesiones.
 let historialPalabrasAventura = {};
 let historialPalabrasPorIdioma = {};
+let historialPalabrasPruebasPorIdioma = null;
 globalThis.AventuraMapa = { repeticion: null, iniciando: false };
 let intentos = 6;
 let escenarioActual = 0;
@@ -11524,16 +11525,28 @@ function actualizarMenuPrincipal() {
   btnNuevaAventura.classList.remove("oculto");
 }
 
+function cargarHistorialPalabrasPruebas() {
+  if (historialPalabrasPruebasPorIdioma !== null) return;
+  historialPalabrasPruebasPorIdioma = {};
+  try {
+    const datos = JSON.parse(localStorage.getItem('historialPalabrasPruebasAventuraV1'));
+    if (datos?.version === 1 && datos.idiomas && typeof datos.idiomas === 'object' && !Array.isArray(datos.idiomas)) {
+      historialPalabrasPruebasPorIdioma = datos.idiomas;
+    }
+  } catch { /* Keep a session history if local storage is unavailable. */ }
+}
+
 function obtenerPalabraAleatoria() {
   const idioma = contextoPalabrasCombate?.language || 'es';
   const banco = obtenerBancoPalabrasAventura();
   const mundosIdioma = idioma === 'es' ? aventura : [{palabras: banco}];
-  const historialIdioma = idioma === 'es' ? historialPalabrasAventura
-    : WordGameplay.decodeHistory(historialPalabrasPorIdioma[idioma], mundosIdioma, idioma) || {};
-  // Las pruebas no consumen las palabras de la partida real.
-  const historial = modoPruebasActivo
-    ? { usadas: palabrasUsadasEnMision, mision: misionActual, enMision: palabrasUsadasEnMision }
-    : (historialIdioma[escenarioActual] ??= { usadas: [], mision: misionActual, enMision: [] });
+  if (modoPruebasActivo) cargarHistorialPalabrasPruebas();
+  // Test runs keep their own per-world history across missions and reloads.
+  const historialIdioma = modoPruebasActivo
+    ? WordGameplay.decodeHistory(historialPalabrasPruebasPorIdioma[idioma], mundosIdioma, idioma) || {}
+    : idioma === 'es' ? historialPalabrasAventura
+      : WordGameplay.decodeHistory(historialPalabrasPorIdioma[idioma], mundosIdioma, idioma) || {};
+  const historial = (historialIdioma[escenarioActual] ??= { usadas: [], mision: misionActual, enMision: [] });
   if (historial.mision !== misionActual) {
     historial.mision = misionActual;
     historial.enMision = [];
@@ -11558,7 +11571,12 @@ function obtenerPalabraAleatoria() {
   historial.usadas.push(palabraSeleccionada.palabra);
   if (!historial.enMision.includes(palabraSeleccionada.palabra)) historial.enMision.push(palabraSeleccionada.palabra);
   palabrasUsadasEnMision = [...historial.enMision];
-  if (!modoPruebasActivo && idioma !== 'es') {
+  if (modoPruebasActivo) {
+    historialPalabrasPruebasPorIdioma[idioma] = WordGameplay.encodeHistory(historialIdioma, mundosIdioma, idioma);
+    try {
+      localStorage.setItem('historialPalabrasPruebasAventuraV1', JSON.stringify({version: 1, idiomas: historialPalabrasPruebasPorIdioma}));
+    } catch { /* The separate history remains available for this session. */ }
+  } else if (idioma !== 'es') {
     historialPalabrasPorIdioma[idioma] = WordGameplay.encodeHistory(historialIdioma, mundosIdioma, idioma);
   }
   guardarProgreso();
