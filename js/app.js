@@ -828,20 +828,26 @@ function finalizarContextoPalabras() {
 }
 function iniciarContextoPalabras(mode, online = false) {
   finalizarContextoPalabras();
-  // Validate whole banks before starting, without silently repairing data.
-  const bancos = mode === 'adventure' ? [aventura[escenarioActual].palabras] : Object.values(bancosPalabrasVersus);
+  const idiomasDisponibles = mode === 'adventure' && escenarioActual === 0
+    ? ['es', ...Object.keys(globalThis.ForestWordBanks?.banks || {})] : ['es'];
+  contextoPalabrasCombate = WordGameplay.createContext({mode, online, requestedLanguage: I18n.language, availableLanguages: idiomasDisponibles, bankVersion: mode === 'adventure' && escenarioActual === 0 && I18n.language !== 'es' ? globalThis.ForestWordBanks?.version : undefined});
+  const bancos = mode === 'adventure' ? [obtenerBancoPalabrasAventura()] : Object.values(bancosPalabrasVersus);
   for (const banco of bancos) if (!bancosPalabrasValidados.has(banco)) {
-    WordGameplay.validateBank(banco, 'es', {hints: mode === 'adventure'});
+    WordGameplay.validateBank(banco, contextoPalabrasCombate.language, {hints: mode === 'adventure'});
     bancosPalabrasValidados.add(banco);
   }
-  // Only the original Spanish banks are enabled until stage 3C/3E.
-  contextoPalabrasCombate = WordGameplay.createContext({mode, online, requestedLanguage: I18n.language, availableLanguages: ['es']});
   motorPalabrasCombate = VersusEngine.paraIdioma(contextoPalabrasCombate.language);
   filasTeclado = contextoPalabrasCombate.rules.rows;
   liberarIdiomaCombate = I18n.lockLanguage();
   return contextoPalabrasCombate;
 }
 function motorDePalabras() { return motorPalabrasCombate; }
+function obtenerBancoPalabrasAventura() {
+  const idioma = contextoPalabrasCombate?.language || 'es';
+  return escenarioActual === 0 && idioma !== 'es'
+    ? ForestWordBanks.banks[idioma] : aventura[escenarioActual].palabras;
+}
+
 
 
 const aventura = SpanishWordBanks.adventure.map(escenario => ({ ...escenario }));
@@ -11519,25 +11525,29 @@ function actualizarMenuPrincipal() {
 }
 
 function obtenerPalabraAleatoria() {
-  const escenario = aventura[escenarioActual];
+  const idioma = contextoPalabrasCombate?.language || 'es';
+  const banco = obtenerBancoPalabrasAventura();
+  const mundosIdioma = idioma === 'es' ? aventura : [{palabras: banco}];
+  const historialIdioma = idioma === 'es' ? historialPalabrasAventura
+    : WordGameplay.decodeHistory(historialPalabrasPorIdioma[idioma], mundosIdioma, idioma) || {};
   // Las pruebas no consumen las palabras de la partida real.
   const historial = modoPruebasActivo
     ? { usadas: palabrasUsadasEnMision, mision: misionActual, enMision: palabrasUsadasEnMision }
-    : (historialPalabrasAventura[escenarioActual] ??= { usadas: [], mision: misionActual, enMision: [] });
+    : (historialIdioma[escenarioActual] ??= { usadas: [], mision: misionActual, enMision: [] });
   if (historial.mision !== misionActual) {
     historial.mision = misionActual;
     historial.enMision = [];
   }
-  let palabrasDisponibles = escenario.palabras.filter(item => !historial.usadas.includes(item.palabra));
+  let palabrasDisponibles = banco.filter(item => !historial.usadas.includes(item.palabra));
   if (!palabrasDisponibles.length) {
     const ultima = historial.usadas.at(-1);
     historial.usadas = [];
-    palabrasDisponibles = escenario.palabras.filter(item =>
+    palabrasDisponibles = banco.filter(item =>
       !historial.enMision.includes(item.palabra) && item.palabra !== ultima);
     // Sólo puede ocurrir tras agotar el banco entero en una misma misión.
     if (!palabrasDisponibles.length) {
       historial.enMision = [];
-      palabrasDisponibles = escenario.palabras.filter(item => item.palabra !== ultima);
+      palabrasDisponibles = banco.filter(item => item.palabra !== ultima);
     }
   } else {
     const sinRepetirMision = palabrasDisponibles.filter(item => !historial.enMision.includes(item.palabra));
@@ -11548,6 +11558,9 @@ function obtenerPalabraAleatoria() {
   historial.usadas.push(palabraSeleccionada.palabra);
   if (!historial.enMision.includes(palabraSeleccionada.palabra)) historial.enMision.push(palabraSeleccionada.palabra);
   palabrasUsadasEnMision = [...historial.enMision];
+  if (!modoPruebasActivo && idioma !== 'es') {
+    historialPalabrasPorIdioma[idioma] = WordGameplay.encodeHistory(historialIdioma, mundosIdioma, idioma);
+  }
   guardarProgreso();
   return palabraSeleccionada;
 }

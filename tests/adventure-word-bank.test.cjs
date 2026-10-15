@@ -16,7 +16,7 @@ for (const mundo of aventura) {
 }
 const functions = app.slice(app.indexOf('function guardarProgreso()'), app.indexOf('\ncargarPersonajesDesbloqueados();', app.indexOf('function obtenerPalabraAleatoria()')));
 const storage = new Map();
-const ctx = { aventura, AzrakWorld, Math, Set, JSON, Number, WordGameplay: require('../js/word-gameplay.js'), historialPalabrasPorIdioma: {},
+const ctx = { aventura, AzrakWorld, Math, Set, JSON, Number, contextoPalabrasCombate: null, WordGameplay: require('../js/word-gameplay.js'), historialPalabrasPorIdioma: {},
   modoPruebasActivo: false, historialPalabrasAventura: {}, palabrasUsadasEnMision: [],
   escenarioActual: 0, misionActual: 0, desafioActual: 1, desafiosCompletados: 0,
   monedas: 123, experiencia: 456, cristalesObtenidos: 0,
@@ -31,6 +31,7 @@ const ctx = { aventura, AzrakWorld, Math, Set, JSON, Number, WordGameplay: requi
   actualizarJugador() {}, guardarDesbloqueoGuardiana() {}, guardarDesbloqueoMago() {},
   guardarDesbloqueoNimbus() {}, guardarDesbloqueoNivor() {},
 };
+ctx.obtenerBancoPalabrasAventura = () => aventura[ctx.escenarioActual].palabras;
 vm.createContext(ctx);
 vm.runInContext(functions, ctx);
 // Every world completes two full cycles, crossing missions and reloads.

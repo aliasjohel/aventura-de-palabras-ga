@@ -5,7 +5,7 @@ globalThis.I18nSpanishUI=Object.freeze({
   "common.done": "Listo",
   "common.language": "Idioma",
   "common.automatic": "Automático",
-  "common.languageSample": "El idioma se aplica al menú, Configuración, perfil y tienda. La aventura y el multijugador siguen en español.",
+  "common.languageSample": "El idioma se aplica al menú y los controles. Las palabras y pistas del Bosque también están en inglés y portugués. La historia, los otros mundos y los duelos siguen en español.",
   "common.languageUnsaved": "El idioma cambió, pero no pudimos guardar tu elección en este dispositivo.",
   "common.languageUnavailable": "No pudimos cargar los idiomas. Podés seguir jugando en español.",
   "common.vibration": "Vibración en ataques",

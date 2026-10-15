@@ -36,12 +36,12 @@
     });
     cache.set(language, api); return api;
   }
-  function createContext({requestedLanguage = 'es', availableLanguages = ['es'], online = false, mode = 'adventure'} = {}) {
+  function createContext({requestedLanguage = 'es', availableLanguages = ['es'], online = false, mode = 'adventure', bankVersion} = {}) {
     const requested = Object.hasOwn(definitions, requestedLanguage) ? requestedLanguage : 'es';
     const language = online ? 'es' : availableLanguages.includes(requested) ? requested : 'es';
     if (!availableLanguages.includes(language)) throw new Error('No complete word bank available');
     return Object.freeze({mode, requestedLanguage: requested, language, fallback: requested !== language,
-      bankVersion: language === 'es' ? 'es-original-v1' : language + '-v1', rulesVersion: version, rules: rules(language)});
+      bankVersion: bankVersion || (language === 'es' ? 'es-original-v1' : language + '-v1'), rulesVersion: version, rules: rules(language)});
   }
   function validateBank(entries, language, {hints = false} = {}) {
     const rule = rules(language), seen = new Set();
@@ -56,20 +56,20 @@
     return true;
   }
   // IDs refer to the original, immutable bank order, not translated spellings.
-  const wordId = (world, index) => `es:world:${world}:word:${index}`;
-  function encodeHistory(history, worlds) {
+  const wordId = (world, index, language = "es") => `${language}:world:${world}:word:${index}`;
+  function encodeHistory(history, worlds, language = "es") {
     return Object.fromEntries(worlds.map((world, index) => {
-      const record = history[index] || {}, ids = new Map(world.palabras.map((item, n) => [item.palabra, wordId(index, n)]));
+      const record = history[index] || {}, ids = new Map(world.palabras.map((item, n) => [item.palabra, wordId(index, n, language)]));
       const encode = list => Array.isArray(list) ? [...new Set(list.map(word => ids.get(word)).filter(Boolean))] : [];
       return [index, {used: encode(record.usadas), inMission: encode(record.enMision), mission: Number.isInteger(record.mision) ? record.mision : -1}];
     }));
   }
-  function decodeHistory(history, worlds) {
+  function decodeHistory(history, worlds, language = "es") {
     if (!history || typeof history !== 'object' || Array.isArray(history)) return null;
     const result = {};
     worlds.forEach((world, index) => {
       const record = history[index]; if (!record || typeof record !== 'object') return;
-      const words = new Map(world.palabras.map((item, n) => [wordId(index, n), item.palabra]));
+      const words = new Map(world.palabras.map((item, n) => [wordId(index, n, language), item.palabra]));
       const decode = list => Array.isArray(list) ? [...new Set(list.map(id => words.get(id)).filter(Boolean))] : [];
       result[index] = {usadas: decode(record.used), enMision: decode(record.inMission), mision: Number.isInteger(record.mission) ? record.mission : -1};
     });
