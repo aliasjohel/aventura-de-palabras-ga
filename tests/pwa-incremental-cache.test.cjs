@@ -64,11 +64,13 @@ test('migration from v347 retains unchanged resources in place and only download
     return [file, /\.(html|css|js|json|svg|txt|xml|webmanifest)$/.test(filename) ? body.toString().replace(/\r\n/g, '\n') : body];
   })));
   f.puts.length = 0; await w.install(); await w.activate();
-  assert.deepEqual(f.downloads, modified);
-  assert.equal(f.puts.length, 2 + modified.length, 'only modified files and metadata, no copying of existing resources');
+  const uniqueDownloads = [...new Set(modified.map(file => file === './' ? './index.html' : file))];
+  assert.deepEqual(f.downloads, uniqueDownloads);
+  assert.equal(f.puts.length, 2 + uniqueDownloads.length, 'only modified files and metadata, no copying of existing resources');
   assert(f.stores.has('aventura-palabras-runtime-v347'), 'referenced original cache is preserved');
-  assert.equal(await (await w.read('./js/app.js?v=new')).text(), 'original:./js/app.js');
-  assert.equal(f.messages.at(-1).reutilizados, w.config.assets.length - modified.length);
+  const expectedApp = modified.includes('./js/app.js') ? fs.readFileSync(path.join(root,'js/app.js'),'utf8').replace(/\r\n/g,'\n') : 'original:./js/app.js';
+  assert.equal(await (await w.read('./js/app.js?v=new')).text(), expectedApp);
+  assert.equal(f.messages.at(-1).reutilizados, w.config.assets.length - uniqueDownloads.length);
 });
 
 test('a CSS-only update downloads one file; unchanged code and media are neither copied nor downloaded', async () => {

@@ -374,7 +374,7 @@ const sonidos = {
   error: new Audio("assets/sounds/error.mp3"),
   moneda: new Audio("assets/sounds/moneda.mp3"),
   victoria: new Audio("assets/sounds/victoria.mp3"),
-  derrota: new Audio("assets/sounds/derrota.mp3"),
+  derrota: new Audio("assets/sounds/defeat-crystal-chime.wav"),
   piedra: new Audio("assets/sounds/piedra.mp3"),
   ramas: new Audio("assets/sounds/ramas.mp3"),
   lluvia: new Audio("assets/sounds/lluvia.mp3"),
@@ -3969,6 +3969,7 @@ function mostrarPantalla(pantallaSeleccionada) {
   });
 
   pantallaSeleccionada.classList.add("activa");
+  WorldMusic.sync();
   actualizarIdentidadMultijugador();
   actualizarOrientacionPantalla(pantallaSeleccionada);
 
@@ -11567,6 +11568,12 @@ function obtenerNombreFondoMision(
 }
 
 function actualizarEscenaPorMision() {
+  WorldMusic.configure(() => ({
+    world: escenarioActual, mission: misionActual, screen: pantallaJuego,
+    dialogue: Boolean(secuenciaNarrativaActual),
+    cinematic: cinematicaSantuarioActiva || cinematicaPortalActiva || temaCalamoActivo
+      || [musicaMuralDragon, musicaCaminaPortal, musicaSegundoCristal, musicaCinematicaFinalMundo3, musicaCinematicaFinalMundo4].some(audio => !audio.paused && !audio.ended),
+  }));
   ForestWildlife.configure({scene: contenedorEscenario, screen: pantallaJuego, world: escenarioActual, mission: misionActual});
   const escena = obtenerEscenaMision();
   const nombreFondo = obtenerNombreFondoMision(

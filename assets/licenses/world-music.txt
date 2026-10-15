@@ -1,0 +1,32 @@
+AVENTURA DE PALABRAS — EXPLORATION MUSIC
+Sources and licenses checked on 2026-10-14.
+Selected license: CC0 1.0 Universal for all the tracks below.
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Forest: Sunset Plains — Yoiyami
+https://opengameart.org/content/sunset-plains
+Original: sunset_plains.wav
+
+Desert: Egyptian Meditation Music — brandon75689 (submitted by HaelDB)
+https://opengameart.org/content/egyptian-meditation-music
+Original: v312.ogg
+The page offers CC0 and OGA-BY; this project uses its CC0 option.
+
+Celestial Peaks: Fantasy: Rising Moon — RandomMind
+https://opengameart.org/content/fantasy-rising-moon
+Original: Rising_Moon_0.mp3
+
+Eternal Winter: Through the Snow — Cleyton Kauffman
+https://opengameart.org/content/snow-theme
+https://soundcloud.com/cleytonkauffman
+Originals: BGM_Snow_Theme_Slowed_Loop.wav, BGM_Snow_Theme_Loop.wav
+Both original versions are included in the author's Snow Theme download.
+The accompanying readme explicitly confirms CC0 and optional attribution.
+
+Azrak's Kingdom: At the End of Hope — Emma_MA
+https://opengameart.org/content/at-the-end-of-hope
+Original: at_the_end_of_hope_loop.wav
+
+Processing: loudness normalization and MP3 encoding at 112 kbps, 44.1 kHz,
+stereo. The original compositions and winter tempos have been preserved.
+No claim of authorship or endorsement is made by this game.

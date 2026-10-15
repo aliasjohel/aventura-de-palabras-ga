@@ -1,0 +1,5 @@
+Defeat Crystal Chime — original sound created for Aventura de Palabras.
+Generated on 2026-10-14 by tools/generate-defeat-sound.py.
+Three descending synthesized notes with a short crystal-like decay.
+No recordings, voice samples, external music or third-party sound libraries
+were incorporated into this sound.
