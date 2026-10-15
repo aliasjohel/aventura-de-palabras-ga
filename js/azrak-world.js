@@ -663,7 +663,7 @@
     };
 
     const tracks = kind === 'final' ? Object.fromEntries(Object.entries(finalMusic).map(([key, spec]) => {
-      const audio = new Audio(spec.src); audio.preload = 'auto'; audio.volume = .65; audio.loop = Boolean(spec.loop);
+      const audio = GameAudio.create(spec.src, 'music'); audio.preload = 'auto'; audio.volume = .65; audio.loop = Boolean(spec.loop);
       audio.addEventListener('playing', () => {
         if (closed || currentTrack !== audio) return;
         musicReady = true; showMusicAction(muted); updateMusicState();

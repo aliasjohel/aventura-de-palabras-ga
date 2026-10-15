@@ -48,9 +48,9 @@
 
   document.body.prepend(intro);
 
-  const sonidoMagico = new Audio("assets/sounds/cristal-casilla.mp3");
+  const sonidoMagico = GameAudio.create("assets/sounds/cristal-casilla.mp3");
   const musicaMenu = globalThis.musicaMenuAventura
-    || new Audio("assets/sounds/melodia-menu.mp3");
+    || GameAudio.create("assets/sounds/melodia-menu.mp3", "music");
   globalThis.musicaMenuAventura = musicaMenu;
   sonidoMagico.volume = 0.16;
   musicaMenu.volume = 1;

@@ -24,7 +24,7 @@
     const cinema = [...document.querySelectorAll('.cinematica-azrak,.cinematica-final-cumbres,.cinematica-santuario,.cinematica-despertar-dragon,.kairos-cinema,.story-cinema,.presentacion-mision')].some(node => node.dataset.worldMusic !== 'true' && visible(node));
     if (cinema || game.cinematic || globalThis.CharacterMusic?.ownsScene()) return null;
     const dialogue = game.dialogue || [...document.querySelectorAll('[aria-modal="true"]')].some(visible);
-    return {src: select(game.world, game.mission), volume: dialogue ? 0.035 : 0.14};
+    return {src: select(game.world, game.mission), volume: dialogue ? 0.12 : (game.world === 1 ? 0.8 : 0.55)};
   }
   function pauseAll() {
     fades.clear(); clearInterval(fadeTimer); fadeTimer = null;
@@ -50,7 +50,7 @@
     if (!unlocked || !target?.src) { pauseAll(); return; }
     let next = players.get(target.src);
     if (!next) {
-      next = new Audio(target.src); next.loop = true; next.preload = 'none'; next.volume = 0;
+      next = GameAudio.create(target.src, 'music'); next.loop = true; next.preload = 'none'; next.volume = 0;
       players.set(target.src, next);
     }
     if (active !== next) { if (active) fade(active, 0, true); active = next; }

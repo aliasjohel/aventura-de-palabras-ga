@@ -370,32 +370,32 @@ const btnSaltarNarrativa = document.getElementById("btnSaltarNarrativa");
 // Sonidos
 // ====================
 const sonidos = {
-  acertar: new Audio("assets/sounds/acertar.mp3"),
-  error: new Audio("assets/sounds/error.mp3"),
-  moneda: new Audio("assets/sounds/moneda.mp3"),
-  victoria: new Audio("assets/sounds/victoria.mp3"),
-  derrota: new Audio("assets/sounds/defeat-crystal-chime.wav"),
-  piedra: new Audio("assets/sounds/piedra.mp3"),
-  ramas: new Audio("assets/sounds/ramas.mp3"),
-  lluvia: new Audio("assets/sounds/lluvia.mp3"),
-  niebla: new Audio("assets/sounds/niebla.mp3"),
-  lobos: new Audio("assets/sounds/lobos.mp3"),
-  bosqueProhibido: new Audio("assets/sounds/bosque-prohibido.mp3"),
-  ambientePuente: new Audio("assets/sounds/ambiente-puente.mp3"),
-  crujidoPuente: new Audio("assets/sounds/crujido-puente.mp3"),
-  ambienteSantuario: new Audio("assets/sounds/ambiente-santuario.mp3"),
-  ambientePortal: new Audio("assets/sounds/ambiente-portal.mp3"),
-  diamanteRecolectado: new Audio(
+  acertar: GameAudio.create("assets/sounds/acertar.mp3", "keyboard"),
+  error: GameAudio.create("assets/sounds/error.mp3", "keyboard"),
+  moneda: GameAudio.create("assets/sounds/moneda.mp3"),
+  victoria: GameAudio.create("assets/sounds/victoria.mp3"),
+  derrota: GameAudio.create("assets/sounds/defeat-crystal-chime.wav"),
+  piedra: GameAudio.create("assets/sounds/piedra.mp3"),
+  ramas: GameAudio.create("assets/sounds/ramas.mp3"),
+  lluvia: GameAudio.create("assets/sounds/lluvia.mp3"),
+  niebla: GameAudio.create("assets/sounds/niebla.mp3"),
+  lobos: GameAudio.create("assets/sounds/lobos.mp3"),
+  bosqueProhibido: GameAudio.create("assets/sounds/bosque-prohibido.mp3"),
+  ambientePuente: GameAudio.create("assets/sounds/ambiente-puente.mp3"),
+  crujidoPuente: GameAudio.create("assets/sounds/crujido-puente.mp3"),
+  ambienteSantuario: GameAudio.create("assets/sounds/ambiente-santuario.mp3"),
+  ambientePortal: GameAudio.create("assets/sounds/ambiente-portal.mp3"),
+  diamanteRecolectado: GameAudio.create(
     "assets/sounds/diamante-recolectado.mp3",
   ),
-  cristalCasilla: new Audio("assets/sounds/cristal-casilla.mp3"),
-  colocarPieza: new Audio("assets/sounds/colocar-piezas.mp3"),
-  comienzaMundo2: new Audio("assets/sounds/comienza-mundo-2.mp3"),
-  versusAtaqueUno: new Audio("assets/sounds/ataque-1.mp3"),
-  versusAtaqueDos: new Audio("assets/sounds/ataque-2.mp3"),
-  versusFight: new Audio("assets/sounds/fight.mp3"),
-  versusFinish: new Audio("assets/sounds/finish.mp3"),
-  avisoCinematica: new Audio("assets/sounds/trueno-cinematica-v2.wav"),
+  cristalCasilla: GameAudio.create("assets/sounds/cristal-casilla.mp3"),
+  colocarPieza: GameAudio.create("assets/sounds/colocar-piezas.mp3"),
+  comienzaMundo2: GameAudio.create("assets/sounds/comienza-mundo-2.mp3"),
+  versusAtaqueUno: GameAudio.create("assets/sounds/ataque-1.mp3"),
+  versusAtaqueDos: GameAudio.create("assets/sounds/ataque-2.mp3"),
+  versusFight: GameAudio.create("assets/sounds/fight.mp3"),
+  versusFinish: GameAudio.create("assets/sounds/finish.mp3"),
+  avisoCinematica: GameAudio.create("assets/sounds/trueno-cinematica-v2.wav"),
 };
 
 const claveVibracionAtaques = "vibracionAtaquesAventuraGA";
@@ -458,7 +458,7 @@ document.addEventListener("keydown", (evento) => {
   if (evento.key === "Escape" && !modalConfiguracion.classList.contains("oculto")) cerrarConfiguracion();
 });
 
-const musicaPrologo = new Audio("assets/sounds/prologo.mp3");
+const musicaPrologo = GameAudio.create("assets/sounds/prologo.mp3", "music");
 const musicaDueloCalamo = CharacterMusic.audioFor("kalamo");
 let temaCalamoActivo = false;
 let temaCalamoPausado = false;
@@ -487,26 +487,24 @@ function detenerTemaCalamo() {
 musicaPrologo.loop = false;
 musicaPrologo.volume = 0.25;
 const musicaMenu = globalThis.musicaMenuAventura
-  || new Audio("assets/sounds/melodia-menu.mp3");
+  || GameAudio.create("assets/sounds/melodia-menu.mp3", "music");
 globalThis.musicaMenuAventura = musicaMenu;
 musicaMenu.loop = true;
 musicaMenu.volume = 1;
 musicaMenu.preload = "auto";
-const sonidoComenzarAventura = new Audio(
+const sonidoComenzarAventura = GameAudio.create(
   "assets/sounds/comenzar-aventura.wav",
 );
-const sonidoSeleccionPersonaje = new Audio(
+const sonidoSeleccionPersonaje = GameAudio.create(
   "assets/sounds/seleccion-personaje.mp3",
 );
-const musicaMuralDragon = new Audio("assets/sounds/mural-dragon1.mp3");
-const musicaCaminaPortal = new Audio("assets/sounds/camina-al-portal.mp3");
-const musicaSegundoCristal = new Audio("assets/sounds/recibe-2-diamante.mp3");
-const musicaCinematicaFinalMundo3 = new Audio(
-  "assets/sounds/cinematica-final-mundo3.mp3",
-);
-const musicaCinematicaFinalMundo4 = new Audio(
-  "assets/sounds/cinematica-final-mundo4.mp3",
-);
+const musicaMuralDragon = GameAudio.create("assets/sounds/mural-dragon1.mp3", "music");
+const musicaCaminaPortal = GameAudio.create("assets/sounds/camina-al-portal.mp3", "music");
+const musicaSegundoCristal = GameAudio.create("assets/sounds/recibe-2-diamante.mp3", "music");
+const musicaCinematicaFinalMundo3 = GameAudio.create(
+  "assets/sounds/cinematica-final-mundo3.mp3", "music");
+const musicaCinematicaFinalMundo4 = GameAudio.create(
+  "assets/sounds/cinematica-final-mundo4.mp3", "music");
 musicaCinematicaFinalMundo4.loop = false;
 musicaCinematicaFinalMundo4.volume = 0.58;
 musicaCinematicaFinalMundo4.preload = "auto";
@@ -557,7 +555,7 @@ function reproducirSonidoVersus(nombre, volumen = 0.68) {
   const fuente = sonidos[nombre];
   if (!fuente) return;
 
-  const instancia = new Audio(fuente.currentSrc || fuente.src);
+  const instancia = GameAudio.create(fuente.currentSrc || fuente.src);
   instancia.volume = volumen;
   instancia.preload = "auto";
   instanciasSonidoVersus.add(instancia);
@@ -590,7 +588,7 @@ function reproducirPulsacionTeclaVersus(origen = "jugador") {
   ganancia.gain.exponentialRampToValueAtTime(origen === "rival" ? 0.075 : 0.055, ahora + 0.006);
   ganancia.gain.exponentialRampToValueAtTime(0.0001, ahora + 0.075);
   oscilador.connect(ganancia);
-  ganancia.connect(contextoAudioTeclasVersus.destination);
+  ganancia.connect(GameAudio.output(contextoAudioTeclasVersus, "keyboard"));
   oscilador.start(ahora);
   oscilador.stop(ahora + 0.08);
 }
@@ -14012,7 +14010,7 @@ function reproducirToqueCampanaCumbres() {
     volumen.gain.exponentialRampToValueAtTime(0.12 / (indice + 1), ahora + 0.006);
     volumen.gain.exponentialRampToValueAtTime(0.0001, ahora + 0.6);
     tono.connect(volumen);
-    volumen.connect(contexto.destination);
+    volumen.connect(GameAudio.output(contexto));
     tono.onended = () => { tono.disconnect(); volumen.disconnect(); };
     tono.start(ahora);
     tono.stop(ahora + 0.62);

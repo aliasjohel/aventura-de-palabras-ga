@@ -6,8 +6,8 @@ const root = path.resolve(__dirname, "..");
 const app = fs.readFileSync(path.join(root, "js", "app.js"), "utf8");
 const worker = fs.readFileSync(path.join(root, "sw.js"), "utf8");
 
-assert.match(app, /musicaCaminaPortal = new Audio\("assets\/sounds\/camina-al-portal\.mp3"\)/);
-assert.match(app, /musicaSegundoCristal = new Audio\("assets\/sounds\/recibe-2-diamante\.mp3"\)/);
+assert.match(app, /musicaCaminaPortal = GameAudio.create\("assets\/sounds\/camina-al-portal\.mp3", "music"\)/);
+assert.match(app, /musicaSegundoCristal = GameAudio.create\("assets\/sounds\/recibe-2-diamante\.mp3", "music"\)/);
 assert.match(app, /musicaSegundoCristal\.volume = 0\.52/);
 assert.match(app, /function detenerSonidos\(\)[\s\S]+detenerMusicaCinematica\(musicaSegundoCristal, 0\.52\)/);
 assert.match(app, /function ejecutarCinematicaFinalPortal[\s\S]+reproducirMusicaCinematica\([\s\S]+musicaCaminaPortal/);

@@ -33,7 +33,7 @@
       volume.gain.setValueAtTime(.0001, start);
       volume.gain.exponentialRampToValueAtTime(bird ? .035 : .018, start + .012);
       volume.gain.exponentialRampToValueAtTime(.0001, start + .13);
-      voice.connect(volume); volume.connect(context.destination); voices.add(voice);
+      voice.connect(volume); volume.connect(GameAudio.output(context)); voices.add(voice);
       voice.onended = () => { voices.delete(voice); voice.disconnect(); volume.disconnect(); };
       voice.start(start); voice.stop(start + .15);
     }

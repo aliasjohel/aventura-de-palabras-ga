@@ -73,5 +73,13 @@
     "searching": "Checking for a new version…",
     "unconfirmed": "Your browser has not confirmed the new version yet. Check again in a few seconds.",
     "searchError": "We could not check for an update. Your save is safe. Check your connection and tap Retry update."
-  }
+  },
+  "audioTitle": "Sound",
+  "audioHelp": "Adjust sounds anytime. Also check your phone’s media volume.",
+  "audioMusic": "Music",
+  "audioKeyboard": "Keyboard",
+  "audioEffects": "Effects and ambience",
+  "audioTestMusic": "Test music",
+  "audioTestKeyboard": "Test keyboard",
+  "audioTestEffects": "Test effects"
 }

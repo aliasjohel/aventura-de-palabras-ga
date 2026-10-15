@@ -21,7 +21,7 @@
     const src = tracks[character];
     if (!src) return null;
     if (!players.has(src)) {
-      const audio = new Audio(src);
+      const audio = GameAudio.create(src, 'music');
       audio.preload = 'none'; audio.loop = true; audio.volume = .22;
       players.set(src, audio);
     }

@@ -73,5 +73,13 @@
     "searching": "Buscando la versión nueva…",
     "unconfirmed": "El navegador aún no confirmó la versión nueva. Volvé a intentar la búsqueda en unos segundos.",
     "searchError": "No se pudo buscar la actualización. Tu partida sigue guardada. Revisá la conexión y tocá Reintentar actualización."
-  }
+  },
+  "audioTitle": "Sonido",
+  "audioHelp": "Ajustá los sonidos cuando quieras. También revisá el volumen multimedia de tu celular.",
+  "audioMusic": "Música",
+  "audioKeyboard": "Teclado",
+  "audioEffects": "Efectos y ambiente",
+  "audioTestMusic": "Probar música",
+  "audioTestKeyboard": "Probar teclado",
+  "audioTestEffects": "Probar efectos"
 }

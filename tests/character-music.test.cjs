@@ -12,7 +12,7 @@ function fixture(storage = new Map()) {
     pause() { this.paused = true; }
   }
   const document = {hidden: false, documentElement: {lang: 'es'}, getElementById: () => button, addEventListener(type, fn) { events[type] = fn; }};
-  const context = {Audio, document, localStorage: {getItem: key => storage.get(key), setItem: (key, value) => storage.set(key, value)},
+  const context = {Audio, GameAudio: {create: src => new Audio(src)}, document, localStorage: {getItem: key => storage.get(key), setItem: (key, value) => storage.set(key, value)},
     window: {addEventListener(type, fn) { events[type] = fn; }}, setInterval(fn) { timers.push(fn); }, WorldMusic: {sync() {}}};
   vm.runInNewContext(source, context);
   const music = context.CharacterMusic;
