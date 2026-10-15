@@ -10075,6 +10075,21 @@ button:disabled {
     filter: blur(.35px);
 }
 
+/* Mission 2: many fine grains per gust, without multiplying animated layers. */
+.viento-desierto-mision-2 .particula-arena {
+    filter: none;
+}
+
+.viento-desierto-mision-2 .particula-arena::after {
+    box-shadow:
+        -17px 7px 0 rgba(246, 215, 157, .8),
+        -39px -11px 0 rgba(218, 173, 105, .7),
+        -62px 16px 0 rgba(239, 200, 135, .75),
+        -86px -5px 0 rgba(246, 215, 157, .6),
+        -113px 12px 0 rgba(218, 173, 105, .7),
+        -141px -17px 0 rgba(239, 200, 135, .65);
+}
+
 .viento-desierto-remolino::after {
     content: "";
     position: absolute;

@@ -10467,6 +10467,7 @@ function actualizarVientoArenaMision() {
   const cantidadParticulas = esMovil
     ? configuracionViento.particulasMovil
     : configuracionViento.particulasEscritorio;
+  const tormentaDensa = configuracionViento.densa === true;
 
   capa.className =
     `capa-viento-arena viento-desierto-mision-${misionActual + 1} viento-desierto-${configuracionViento.tipo}`;
@@ -10477,7 +10478,7 @@ function actualizarVientoArenaMision() {
     const tamano = 1 + Math.random() * 1.6;
 
     particula.className = "particula-arena";
-    particula.style.setProperty("--y-arena", `${12 + Math.random() * 76}%`);
+    particula.style.setProperty("--y-arena", `${tormentaDensa ? 2 + Math.random() * 96 : 12 + Math.random() * 76}%`);
     particula.style.setProperty(
       "--duracion-arena",
       `${configuracionViento.duracionMinima + Math.random() * configuracionViento.variacionDuracion}s`,
@@ -10488,12 +10489,12 @@ function actualizarVientoArenaMision() {
     );
     particula.style.setProperty(
       "--deriva-arena",
-      `${-8 + Math.random() * 16}px`,
+      `${tormentaDensa ? 10 + Math.random() * 26 : -8 + Math.random() * 16}px`,
     );
     particula.style.setProperty("--tamano-arena", `${tamano}px`);
     particula.style.setProperty(
       "--opacidad-arena",
-      `${0.28 + Math.random() * 0.3}`,
+      `${tormentaDensa ? 0.45 + Math.random() * 0.3 : 0.28 + Math.random() * 0.3}`,
     );
     capa.appendChild(particula);
   }
@@ -10503,7 +10504,7 @@ function actualizarVientoArenaMision() {
 
 const configuracionesVientoDesierto = Object.freeze({
   0: { tipo: "brisa", particulasMovil: 7, particulasEscritorio: 12, duracionMinima: 12, variacionDuracion: 8 },
-  1: { tipo: "ventisca", particulasMovil: 18, particulasEscritorio: 28, duracionMinima: 4.2, variacionDuracion: 3.4 },
+  1: { tipo: "ventisca", densa: true, particulasMovil: 72, particulasEscritorio: 112, duracionMinima: 2.6, variacionDuracion: 2.2 },
   3: { tipo: "remolino", particulasMovil: 14, particulasEscritorio: 22, duracionMinima: 6, variacionDuracion: 4 },
   6: { tipo: "ventisca", particulasMovil: 16, particulasEscritorio: 26, duracionMinima: 4.8, variacionDuracion: 3.8 },
 });
