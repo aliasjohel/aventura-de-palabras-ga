@@ -829,14 +829,13 @@ function finalizarContextoPalabras() {
 function iniciarContextoPalabras(mode, online = false) {
   finalizarContextoPalabras();
   online = online || mode === 'online';
-  const esTutorial = typeof tutorialCombateVersus !== 'undefined' && tutorialCombateVersus.activo;
   const idiomasDisponibles = mode === 'adventure'
     ? ['es', ...['en', 'pt-BR'].filter(idioma => obtenerBancoPalabrasIdioma(idioma, escenarioActual))]
-    : online || esTutorial ? ['es']
+    : online ? ['es']
       : ['es', ...['en', 'pt-BR'].filter(idioma => obtenerBancosVersusIdioma(idioma))];
   const versionBanco = mode === 'adventure' && I18n.language !== 'es' && idiomasDisponibles.includes(I18n.language)
     ? (escenarioActual === 0 ? ForestWordBanks.version : AdventureWordBanks.version)
-    : mode !== 'adventure' && !online && !esTutorial && idiomasDisponibles.includes(I18n.language) && I18n.language !== 'es'
+    : mode !== 'adventure' && !online && idiomasDisponibles.includes(I18n.language) && I18n.language !== 'es'
       ? LocalVersusWordBanks.version : undefined;
   contextoPalabrasCombate = WordGameplay.createContext({mode, online, requestedLanguage: I18n.language, availableLanguages: idiomasDisponibles, bankVersion: versionBanco});
   const bancos = mode === 'adventure' ? [obtenerBancoPalabrasAventura()] : Object.values(obtenerBancosPalabrasVersus());
@@ -2743,14 +2742,14 @@ function completarAccionPasoTutorialVersus() {
 }
 function renderizarPasoTutorialVersus() {
   const paso = pasosTutorialVersus[pasoActualTutorialVersus];
-  tutorialCombateVersus.letras = [...(paso.letras || [])];
+  tutorialCombateVersus.letras = [...PuzzleLessons.tutorial[contextoPalabrasCombate.language].actions[pasoActualTutorialVersus]];
   tutorialCombateVersus.ocupado = false;
   tutorialCombateVersus.completado = false;
   progresoTutorialVersus.textContent = "PRÁCTICA · A TU RITMO";
   numeroPasoTutorialVersus.textContent = `PASO ${pasoActualTutorialVersus + 1} DE ${pasosTutorialVersus.length}`;
-  tituloPasoTutorialVersus.textContent = paso.titulo;
-  descripcionPasoTutorialVersus.textContent = paso.descripcion;
-  accionPasoTutorialVersus.textContent = paso.accion;
+  GameUI.text(tituloPasoTutorialVersus, GameUI.key(`adventure.lessons.tutorial.steps.s${pasoActualTutorialVersus}.title`));
+  GameUI.text(descripcionPasoTutorialVersus, GameUI.key(`adventure.lessons.tutorial.steps.s${pasoActualTutorialVersus}.description`));
+  GameUI.text(accionPasoTutorialVersus, GameUI.key(`adventure.lessons.tutorial.steps.s${pasoActualTutorialVersus}.action`));
   accionPasoTutorialVersus.classList.remove("completada");
   btnSiguienteTutorialVersus.disabled = !paso.rival;
   btnSiguienteTutorialVersus.textContent = paso.rival ? "Ver ataque rival" : pasoActualTutorialVersus === 7 ? "Terminar tutorial" : "Continuar";
@@ -2759,7 +2758,8 @@ function renderizarPasoTutorialVersus() {
     ocultarVistaImpactoRivalVersus();
   }
   if (pasoActualTutorialVersus === 7) {
-    demoVersus.palabrasJugador[demoVersus.indiceJugador] = "TIGRE";
+    const palabraFinal = PuzzleLessons.tutorial[contextoPalabrasCombate.language].words[4];
+    demoVersus.palabrasJugador[demoVersus.indiceJugador] = palabraFinal;
     demoVersus.letrasJugador = new Set(["T", "I", "G", "R"]);
     demoVersus.vidasRival = 1;
     actualizarVidasVersus();
@@ -2784,15 +2784,17 @@ function comenzarTutorialVersus() {
   modoArcadeActivo = false;
   personajeJugadorVersus = "guardiana";
   personajeRivalVersus = "mago";
-  palabrasSecretasVersus = ["GATO", "PERRO", "LORO", "OSO", "TIGRE"];
+  const idiomaLeccion = obtenerBancosVersusIdioma(I18n.language) ? I18n.language : 'es';
+  const leccion = PuzzleLessons.tutorial[idiomaLeccion];
+  palabrasSecretasVersus = [...leccion.words];
   tematicaVersus.value = "animales";
   crearTecladoVersus();
   prepararDueloVersus({ comenzarRonda: false });
   demoVersus.tematicaParaJugador = "animales";
   demoVersus.palabrasJugador = [...palabrasSecretasVersus];
-  demoVersus.letrasJugador = new Set(["G", "T", "O"]);
-  demoVersus.cargaHabilidadJugador = 3;
-  actualizarPanelHabilidadVersus(3);
+  demoVersus.letrasJugador = new Set(leccion.initial);
+  demoVersus.cargaHabilidadJugador = leccion.initial.length;
+  actualizarPanelHabilidadVersus(leccion.initial.length);
   actualizarProgresosVersus();
   document.querySelector(".versus-jugador-uno .versus-etiqueta").textContent = "VOS · GUARDIANA";
   document.querySelector(".versus-jugador-dos .versus-etiqueta").textContent = "RIVAL · ZAFIR";
@@ -13160,10 +13162,18 @@ function iniciarPuzzleAzrak(tipo) {
   cerrarPuzzleAzrak = AzrakWorld.mountPuzzle(puzzleCumbres, tipo, () => void completarPruebaEspecialBosque(tipo), { sound: reproducirSonido });
 }
 
+let idiomaPuzzle = 'es';
+let liberarIdiomaPuzzle = null;
+function obtenerDatosSopaCumbres() { return PuzzleLessons.search(idiomaPuzzle, letrasSopaCumbres, palabrasSopaCumbres); }
+function obtenerRondasSellosAeralis() { return PuzzleLessons.seals[idiomaPuzzle] || rondasSellosAeralis; }
+
 function abrirPruebaEspecialBosque(tipo) {
   if (!tipo || pruebaEspecialBosqueActiva) return;
 
+  idiomaPuzzle = I18n.language;
+  liberarIdiomaPuzzle = I18n.lockLanguage();
   pruebaEspecialBosqueActiva = tipo;
+  estadoPruebaBosque.textContent = "";
   focoPrevioPruebaBosque = document.activeElement;
   modalPruebaBosque.classList.remove("oculto", "prueba-completada");
   modalPruebaBosque.classList.toggle(
@@ -13286,6 +13296,7 @@ function cerrarPruebaEspecialBosque() {
   const focoAnterior = focoPrevioPruebaBosque;
   focoPrevioPruebaBosque = null;
   pruebaEspecialBosqueActiva = "";
+  liberarIdiomaPuzzle?.();liberarIdiomaPuzzle = null;
   pruebaBosqueEnModoDemo = false;
   focoAnterior?.focus?.();
 }
@@ -13624,7 +13635,7 @@ function iniciarSopaCeleste() {
   etiquetaPruebaBosque.textContent = "PRUEBA DEL PUENTE DE PALABRAS";
   tituloPruebaBosque.textContent = "Encontrá las palabras ocultas";
   instruccionPruebaBosque.textContent =
-    "Buscá NUBE, VIENTO y CIELO. Arrastrá sobre sus letras en línea recta o elegí la primera y la última con el teclado.";
+    GameUI.resolve(GameUI.key('adventure.lessons.searchInstruction', {words: obtenerDatosSopaCumbres().words.map(x=>x.palabra).join(', ')}));
   inicioSeleccionSopaCumbres = null;
   trayectoSeleccionSopaCumbres = [];
   palabrasEncontradasSopaCumbres = new Set();
@@ -13636,7 +13647,7 @@ function iniciarSopaCeleste() {
 
   const lista = document.createElement("div");
   lista.className = "palabras-sopa-cumbres";
-  palabrasSopaCumbres.forEach(({ palabra }) => {
+  obtenerDatosSopaCumbres().words.forEach(({ palabra }) => {
     const objetivo = document.createElement("span");
     objetivo.dataset.palabra = palabra;
     objetivo.textContent = palabra;
@@ -13647,7 +13658,7 @@ function iniciarSopaCeleste() {
   tablero.className = "tablero-sopa-cumbres";
   tablero.setAttribute("role", "grid");
   tablero.setAttribute("aria-label", "Sopa de letras de diez por diez");
-  botonesPuzzleCumbres = [...letrasSopaCumbres].map((letra, indice) => {
+  botonesPuzzleCumbres = [...obtenerDatosSopaCumbres().letters].map((letra, indice) => {
     const boton = document.createElement("button");
     boton.type = "button";
     boton.className = "letra-sopa-cumbres";
@@ -13738,8 +13749,8 @@ function mostrarTrayectoSopaCumbres() {
 
 function validarTrayectoSopaCumbres() {
   const trayecto = [...trayectoSeleccionSopaCumbres];
-  const texto = trayecto.map((indice) => letrasSopaCumbres[indice]).join("");
-  const palabra = palabrasSopaCumbres.find(
+  const texto = trayecto.map((indice) => obtenerDatosSopaCumbres().letters[indice]).join("");
+  const palabra = obtenerDatosSopaCumbres().words.find(
     (objetivo) => objetivo.palabra === texto || objetivo.palabra === [...texto].reverse().join(""),
   );
   botonesPuzzleCumbres.forEach((boton) => boton.classList.remove("seleccionada"));
@@ -13761,7 +13772,7 @@ function validarTrayectoSopaCumbres() {
   puzzleCumbres.querySelectorAll(".progreso-puente-celeste i")[cantidad - 1]?.classList.add("construido");
   reproducirSonido("cristalCasilla");
 
-  if (cantidad === palabrasSopaCumbres.length) {
+  if (cantidad === obtenerDatosSopaCumbres().words.length) {
     estadoPruebaBosque.textContent = "¡Las tres palabras reconstruyeron el puente celeste!";
     void completarPruebaEspecialBosque("sopa-celeste");
   } else {
@@ -14190,7 +14201,7 @@ function iniciarSellosAeralis() {
 }
 
 function renderizarRondaSellosAeralis() {
-  const ronda = rondasSellosAeralis[rondaSellosCumbres];
+  const ronda = obtenerRondasSellosAeralis()[rondaSellosCumbres];
   if (!ronda || pruebaEspecialBosqueActiva !== "sellos-aeralis") return;
   puzzleCumbres.replaceChildren();
   puzzleCumbres.classList.remove("sello-rompiendose");
@@ -14199,7 +14210,7 @@ function renderizarRondaSellosAeralis() {
 
   const cabecera = document.createElement("div");
   cabecera.className = "cabecera-sellos-aeralis";
-  cabecera.innerHTML = `<span>Sello ${rondaSellosCumbres + 1} de ${rondasSellosAeralis.length}</span><strong>${ronda.pista}</strong>`;
+  cabecera.innerHTML = `<span>Sello ${rondaSellosCumbres + 1} de ${obtenerRondasSellosAeralis().length}</span><strong>${ronda.pista}</strong>`;
   const anillos = document.createElement("div");
   anillos.className = "anillos-sellos-aeralis";
   anillos.setAttribute("role", "group");
@@ -14231,7 +14242,7 @@ function renderizarRondaSellosAeralis() {
 }
 
 function girarAnilloSelloAeralis(posicion) {
-  const ronda = rondasSellosAeralis[rondaSellosCumbres];
+  const ronda = obtenerRondasSellosAeralis()[rondaSellosCumbres];
   const opciones = ronda?.opciones[posicion];
   const boton = botonesPuzzleCumbres[posicion];
   if (!ronda || !opciones || !boton || boton.disabled) return;
@@ -14245,7 +14256,7 @@ function girarAnilloSelloAeralis(posicion) {
 }
 
 function comprobarSelloAeralis() {
-  const ronda = rondasSellosAeralis[rondaSellosCumbres];
+  const ronda = obtenerRondasSellosAeralis()[rondaSellosCumbres];
   if (!ronda || pruebaEspecialBosqueActiva !== "sellos-aeralis") return;
   const palabraActual = ronda.opciones
     .map((letras, indice) => letras[indicesSellosCumbres[indice]])
@@ -14261,7 +14272,7 @@ function comprobarSelloAeralis() {
     void puzzleCumbres.offsetWidth;
     puzzleCumbres.classList.add("error");
     estadoPruebaBosque.textContent = posicionesCorrectas.length
-      ? `“${palabraActual}” no abre el sello · ${posicionesCorrectas.length} letra${posicionesCorrectas.length === 1 ? " brilló" : "s brillaron"} por estar bien ubicada${posicionesCorrectas.length === 1 ? "" : "s"}.`
+      ? GameUI.resolve(GameUI.key('adventure.lessons.sealFeedback', {word: palabraActual, count: posicionesCorrectas.length}))
       : `“${palabraActual}” no abre el sello · Ninguna letra está bien ubicada todavía.`;
     reproducirSonido("error");
     setTimeout(() => {
@@ -14284,8 +14295,8 @@ function comprobarSelloAeralis() {
   setTimeout(() => {
     if (pruebaEspecialBosqueActiva !== "sellos-aeralis") return;
     rondaSellosCumbres += 1;
-    if (rondaSellosCumbres === rondasSellosAeralis.length) {
-      estadoPruebaBosque.textContent = "¡AIRE, NUBE y LIBRE rompieron la prisión de Aeralis!";
+    if (rondaSellosCumbres === obtenerRondasSellosAeralis().length) {
+      estadoPruebaBosque.textContent = GameUI.resolve(GameUI.key('adventure.lessons.sealsComplete', {words: obtenerRondasSellosAeralis().map(x=>x.palabra).join(', ')}));
       void completarPruebaEspecialBosque("sellos-aeralis");
     } else {
       renderizarRondaSellosAeralis();
@@ -14317,6 +14328,7 @@ function renderizarPuzzleRamasDeslizante() {
       vacio.className = "espacio-vacio-ramas";
       vacio.setAttribute("role", "gridcell");
       vacio.setAttribute("aria-label", "Espacio vacío");
+      vacio.dataset.puzzleLabel = "ACÁ";
       tableroRamasDeslizante.appendChild(vacio);
       return;
     }
@@ -14329,10 +14341,7 @@ function renderizarPuzzleRamasDeslizante() {
     boton.dataset.numero = `${pieza + 1}`;
     boton.style.backgroundPosition = `${columna * 50}% ${fila * 50}%`;
     boton.disabled = !movimientosValidos.includes(posicion);
-    boton.setAttribute(
-      "aria-label",
-      `Pieza ${pieza + 1}${boton.disabled ? "" : ", se puede mover"}`,
-    );
+    GameUI.attribute(boton, 'aria-label', GameUI.key(boton.disabled ? 'adventure.lessons.tileFixed' : 'adventure.lessons.tileMovable', {number: pieza + 1}));
     boton.addEventListener("click", () => moverPiezaPuzzleRamas(posicion));
     tableroRamasDeslizante.appendChild(boton);
   });
@@ -14538,6 +14547,7 @@ function renderizarPuzzleVientosDesierto() {
 
     const boton = document.createElement("button");
     boton.type = "button";
+    boton.dataset.puzzleLabel = "☀ ENTRADA";
     boton.className = `canal-viento canal-${canal.tipo}${energizados.has(indice) ? " energizado" : ""}${indice === origenVientoDesierto ? " canal-origen" : ""}`;
     boton.dataset.viento = `${indice}`;
     boton.style.setProperty(
@@ -14545,10 +14555,12 @@ function renderizarPuzzleVientosDesierto() {
       `${orientacionesVientosDesierto[indice] * 90}deg`,
     );
     boton.setAttribute("role", "gridcell");
-    boton.setAttribute(
-      "aria-label",
-      `Fila ${Math.floor(indice / ladoTableroVientoDesierto) + 1}, columna ${indice % ladoTableroVientoDesierto + 1}: canal ${canal.tipo}, abierto hacia ${obtenerAberturasCanal(indice).join(", ")}, ${energizados.has(indice) ? "con energía" : "sin energía"}`,
-    );
+    GameUI.attribute(boton, 'aria-label', GameUI.key('adventure.lessons.channelLabel', {
+      row: Math.floor(indice / ladoTableroVientoDesierto) + 1, column: indice % ladoTableroVientoDesierto + 1,
+      type: GameUI.key('adventure.lessons.channelType.' + canal.tipo),
+      directions: obtenerAberturasCanal(indice).map(direccion => idiomaPuzzle === 'en' && direccion === 'O' ? 'W' : direccion).join(', '),
+      power: GameUI.key(energizados.has(indice) ? 'adventure.lessons.powered' : 'adventure.lessons.unpowered'),
+    }));
     boton.innerHTML = "<span></span>";
     boton.addEventListener("click", () => girarObeliscoViento(indice));
     tableroVientosDesierto.appendChild(boton);
@@ -15336,9 +15348,11 @@ function completarRompecabezasMuralSantuario() {
   setTimeout(() => cerrarRompecabezasMuralSantuario(true), 1800);
 }
 
+let liberarIdiomaMural = null;
 function abrirRompecabezasMuralSantuario() {
   if (rompecabezasMuralActivo) return Promise.resolve(false);
 
+  liberarIdiomaMural = I18n.lockLanguage();
   rompecabezasMuralActivo = true;
   focoPrevioMural = document.activeElement;
   crearTableroMuralSantuario();
@@ -15362,6 +15376,7 @@ function cerrarRompecabezasMuralSantuario(completado) {
   clearTimeout(temporizadorAyudaMural);
   temporizadorAyudaMural = null;
   rompecabezasMuralActivo = false;
+  liberarIdiomaMural?.();liberarIdiomaMural = null;
   modalMuralSantuario.classList.add("oculto");
   pantallaJuego.classList.remove("rompecabezas-mural-activo");
   piezaSeleccionadaMural = null;
