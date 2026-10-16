@@ -31,6 +31,7 @@ const ctx = { aventura, AzrakWorld, Math, Set, JSON, Number, contextoPalabrasCom
   actualizarJugador() {}, guardarDesbloqueoGuardiana() {}, guardarDesbloqueoMago() {},
   guardarDesbloqueoNimbus() {}, guardarDesbloqueoNivor() {},
 };
+ctx.obtenerMundosPalabrasIdioma = () => aventura;
 ctx.obtenerBancoPalabrasAventura = () => aventura[ctx.escenarioActual].palabras;
 vm.createContext(ctx);
 vm.runInContext(functions, ctx);

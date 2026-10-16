@@ -5,7 +5,7 @@ globalThis.I18nSpanishUI=Object.freeze({
   "common.done": "Listo",
   "common.language": "Idioma",
   "common.automatic": "Automático",
-  "common.languageSample": "El idioma se aplica al menú y los controles. Las palabras y pistas del Bosque también están en inglés y portugués. La historia, los otros mundos y los duelos siguen en español.",
+  "common.languageSample": "El idioma se aplica al menú, los controles y las palabras y pistas de los cinco mundos. La historia, los puzzles y los duelos siguen en español.",
   "common.languageUnsaved": "El idioma cambió, pero no pudimos guardar tu elección en este dispositivo.",
   "common.languageUnavailable": "No pudimos cargar los idiomas. Podés seguir jugando en español.",
   "common.vibration": "Vibración en ataques",
@@ -574,5 +574,8 @@ globalThis.I18nSpanishUI=Object.freeze({
   "adventure.combat.rankUp": "{detail} · ¡Ascendiste a {rank}!",
   "adventure.combat.forestWordsTheme": "🌲 Tema: palabras del bosque",
   "adventure.combat.azrakWordsTheme": "🔥 Tema: fuego, luz y esperanza",
-  "adventure.combat.desertWordsTheme": "🌵 Tema: palabras del desierto"
+  "adventure.combat.desertWordsTheme": "🌵 Tema: palabras del desierto",
+  "adventure.combat.mountainWordsTheme": "☁️ Tema: montañas y cielo",
+  "adventure.combat.winterWordsTheme": "❄️ Tema: palabras del invierno",
+  "adventure.combat.wordsThemeHelp": "Todas las palabras están relacionadas con este tema."
 });

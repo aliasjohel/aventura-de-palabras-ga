@@ -225,6 +225,9 @@
     "rankUp": "{detail} · ¡Ascendiste a {rank}!",
     "forestWordsTheme": "🌲 Tema: palabras del bosque",
     "azrakWordsTheme": "🔥 Tema: fuego, luz y esperanza",
-    "desertWordsTheme": "🌵 Tema: palabras del desierto"
+    "desertWordsTheme": "🌵 Tema: palabras del desierto",
+    "mountainWordsTheme": "☁️ Tema: montañas y cielo",
+    "winterWordsTheme": "❄️ Tema: palabras del invierno",
+    "wordsThemeHelp": "Todas las palabras están relacionadas con este tema."
   }
 }
