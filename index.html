@@ -121,7 +121,7 @@
                     <label class="idioma-configuracion" for="idiomaJuego">
                         <strong data-i18n="common.language">Idioma</strong>
                         <select id="idiomaJuego" disabled><option value="auto" data-i18n="common.automatic">Automático</option></select>
-                        <small data-i18n="common.languageSample">El idioma se aplica al menú, los controles y las palabras y pistas de los cinco mundos. La historia, los puzzles y los duelos siguen en español.</small>
+                        <small data-i18n="common.languageSample">El idioma se aplica a los menús, la historia, las palabras y pistas de los cinco mundos, Torre y duelos locales. Los puzzles, el tutorial y el multijugador online siguen en español.</small>
                     </label>
                     <p id="estadoIdioma" role="status" aria-live="polite"></p>
 <fieldset class="audio-settings"><legend data-i18n="common.audioTitle">Sonido</legend><p data-i18n="common.audioHelp">Ajustá los sonidos cuando quieras. También revisá el volumen multimedia de tu celular.</p>
@@ -746,42 +746,42 @@
         <section id="pantallaPreparacionVersus" class="pantalla pantalla-preparacion-versus"
             aria-labelledby="tituloPreparacionVersus">
             <div class="preparacion-versus-marco">
-                <button id="btnSalirPreparacionVersus" class="versus-volver" type="button">← Volver</button>
+                <button id="btnSalirPreparacionVersus" class="versus-volver" type="button" data-i18n="common.duelPreparation.back">← Volver</button>
 
                 <header class="preparacion-versus-cabecera">
-                    <p>DUELO DE PALABRAS</p>
-                    <h2 id="tituloPreparacionVersus">Prepar&aacute; tus palabras secretas</h2>
-                    <span>Eleg&iacute; una tem&aacute;tica y cinco palabras para desafiar al rival.</span>
+                    <p data-i18n="common.duelPreparation.eyebrow">DUELO DE PALABRAS</p>
+                    <h2 id="tituloPreparacionVersus" data-i18n="common.duelPreparation.title">Prepará tus palabras secretas</h2>
+                    <span data-i18n="common.duelPreparation.subtitle">Elegí una temática y cinco palabras para desafiar al rival.</span>
                 </header>
 
                 <div class="preparacion-versus-cuerpo">
                     <form id="formPreparacionVersus" class="form-preparacion-versus" novalidate>
                         <label class="campo-tematica-versus" for="tematicaVersus">
-                            <span>Tem&aacute;tica que resolver&aacute; tu rival</span>
+                            <span data-i18n="common.duelPreparation.topic">Temática que resolverá tu rival</span>
                             <select id="tematicaVersus">
-                                <option value="paises">&#127758; Pa&iacute;ses</option>
-                                <option value="frutas">&#127822; Frutas</option>
-                                <option value="animales">&#128062; Animales</option>
-                                <option value="comidas">&#127860; Comidas</option>
-                                <option value="profesiones">&#129520; Profesiones</option>
-                                <option value="deportes">&#9917; Deportes</option>
-                                <option value="transportes">&#128690; Transportes</option>
-                                <option value="objetos">&#129513; Objetos</option>
-                                <option value="naturaleza">&#127807; Naturaleza</option>
-                                <option value="nombres">&#128292; Nombres</option>
+                                <option value="paises" data-i18n="common.duelPreparation.topics.paises">🌎 Países</option>
+                                <option value="frutas" data-i18n="common.duelPreparation.topics.frutas">🍎 Frutas</option>
+                                <option value="animales" data-i18n="common.duelPreparation.topics.animales">🐾 Animales</option>
+                                <option value="comidas" data-i18n="common.duelPreparation.topics.comidas">🍴 Comidas</option>
+                                <option value="profesiones" data-i18n="common.duelPreparation.topics.profesiones">🧰 Profesiones</option>
+                                <option value="deportes" data-i18n="common.duelPreparation.topics.deportes">⚽ Deportes</option>
+                                <option value="transportes" data-i18n="common.duelPreparation.topics.transportes">🚲 Transportes</option>
+                                <option value="objetos" data-i18n="common.duelPreparation.topics.objetos">🧩 Objetos</option>
+                                <option value="naturaleza" data-i18n="common.duelPreparation.topics.naturaleza">🌿 Naturaleza</option>
+                                <option value="nombres" data-i18n="common.duelPreparation.topics.nombres">🔤 Nombres</option>
                             </select>
                         </label>
 
                         <fieldset class="palabras-secretas-versus">
-                            <legend>Tus cinco palabras para el rival</legend>
+                            <legend data-i18n="common.duelPreparation.legend">Tus cinco palabras para el rival</legend>
 
                             <div class="campo-palabra-secreta">
                                 <b>1</b>
                                 <input id="palabraSecretaVersus1" class="input-palabra-versus" type="text" minlength="3"
-                                    aria-label="Primera palabra"
-                                    maxlength="12" autocomplete="off" spellcheck="false" placeholder="Primera palabra">
+                                    data-i18n-aria-label="common.duelPreparation.word1" aria-label="Primera palabra"
+                                    maxlength="12" autocomplete="off" spellcheck="false" data-i18n-placeholder="common.duelPreparation.word1" placeholder="Primera palabra">
                                 <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
-                                    aria-label="Conservar la primera palabra al volver a elegir" title="Conservar palabra">📌</button>
+                                    data-i18n-aria-label="common.duelPreparation.pin1" aria-label="Conservar la primera palabra al volver a elegir" data-i18n-title="common.duelPreparation.pin" title="Conservar palabra">📌</button>
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </div>
@@ -789,10 +789,10 @@
                             <div class="campo-palabra-secreta">
                                 <b>2</b>
                                 <input id="palabraSecretaVersus2" class="input-palabra-versus" type="text" minlength="3"
-                                    aria-label="Segunda palabra"
-                                    maxlength="12" autocomplete="off" spellcheck="false" placeholder="Segunda palabra">
+                                    data-i18n-aria-label="common.duelPreparation.word2" aria-label="Segunda palabra"
+                                    maxlength="12" autocomplete="off" spellcheck="false" data-i18n-placeholder="common.duelPreparation.word2" placeholder="Segunda palabra">
                                 <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
-                                    aria-label="Conservar la segunda palabra al volver a elegir" title="Conservar palabra">📌</button>
+                                    data-i18n-aria-label="common.duelPreparation.pin2" aria-label="Conservar la segunda palabra al volver a elegir" data-i18n-title="common.duelPreparation.pin" title="Conservar palabra">📌</button>
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </div>
@@ -800,10 +800,10 @@
                             <div class="campo-palabra-secreta">
                                 <b>3</b>
                                 <input id="palabraSecretaVersus3" class="input-palabra-versus" type="text" minlength="3"
-                                    aria-label="Tercera palabra"
-                                    maxlength="12" autocomplete="off" spellcheck="false" placeholder="Tercera palabra">
+                                    data-i18n-aria-label="common.duelPreparation.word3" aria-label="Tercera palabra"
+                                    maxlength="12" autocomplete="off" spellcheck="false" data-i18n-placeholder="common.duelPreparation.word3" placeholder="Tercera palabra">
                                 <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
-                                    aria-label="Conservar la tercera palabra al volver a elegir" title="Conservar palabra">📌</button>
+                                    data-i18n-aria-label="common.duelPreparation.pin3" aria-label="Conservar la tercera palabra al volver a elegir" data-i18n-title="common.duelPreparation.pin" title="Conservar palabra">📌</button>
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </div>
@@ -811,10 +811,10 @@
                             <div class="campo-palabra-secreta">
                                 <b>4</b>
                                 <input id="palabraSecretaVersus4" class="input-palabra-versus" type="text" minlength="3"
-                                    aria-label="Cuarta palabra"
-                                    maxlength="12" autocomplete="off" spellcheck="false" placeholder="Cuarta palabra">
+                                    data-i18n-aria-label="common.duelPreparation.word4" aria-label="Cuarta palabra"
+                                    maxlength="12" autocomplete="off" spellcheck="false" data-i18n-placeholder="common.duelPreparation.word4" placeholder="Cuarta palabra">
                                 <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
-                                    aria-label="Conservar la cuarta palabra al volver a elegir" title="Conservar palabra">📌</button>
+                                    data-i18n-aria-label="common.duelPreparation.pin4" aria-label="Conservar la cuarta palabra al volver a elegir" data-i18n-title="common.duelPreparation.pin" title="Conservar palabra">📌</button>
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </div>
@@ -822,48 +822,44 @@
                             <div class="campo-palabra-secreta">
                                 <b>5</b>
                                 <input id="palabraSecretaVersus5" class="input-palabra-versus" type="text" minlength="3"
-                                    aria-label="Quinta palabra"
-                                    maxlength="12" autocomplete="off" spellcheck="false" placeholder="Quinta palabra">
+                                    data-i18n-aria-label="common.duelPreparation.word5" aria-label="Quinta palabra"
+                                    maxlength="12" autocomplete="off" spellcheck="false" data-i18n-placeholder="common.duelPreparation.word5" placeholder="Quinta palabra">
                                 <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
-                                    aria-label="Conservar la quinta palabra al volver a elegir" title="Conservar palabra">📌</button>
+                                    data-i18n-aria-label="common.duelPreparation.pin5" aria-label="Conservar la quinta palabra al volver a elegir" data-i18n-title="common.duelPreparation.pin" title="Conservar palabra">📌</button>
                                 <small class="contador-palabra-versus">0 letras</small>
                                 <em class="error-palabra-versus" aria-live="polite"></em>
                             </div>
                         </fieldset>
 
-                        <button id="btnPalabrasAleatoriasVersus" class="btn-palabras-aleatorias-versus" type="button">✨
-                            Elegir palabras por m&iacute;</button>
-                        <p class="ayuda-fijar-palabras-versus">Tocá 📌 en las palabras que quieras conservar antes de volver a elegir.</p>
+                        <button id="btnPalabrasAleatoriasVersus" class="btn-palabras-aleatorias-versus" type="button" data-i18n="common.duelPreparation.random">✨ Elegir palabras por mí</button>
+                        <p class="ayuda-fijar-palabras-versus" data-i18n="common.duelPreparation.pinHelp">Tocá 📌 en las palabras que quieras conservar antes de volver a elegir.</p>
 
                         <button id="btnConfirmarPalabrasVersus" class="btn-confirmar-palabras-versus" type="submit"
-                            disabled>Confirmar palabras</button>
-                        <p id="estadoPreparacionRivalVersus" class="estado-preparacion-rival-versus" aria-live="polite">
-                            Tu rival est&aacute; preparando su desaf&iacute;o&hellip;</p>
+                            disabled data-i18n="common.duelPreparation.confirm">Confirmar palabras</button>
+                        <p id="estadoPreparacionRivalVersus" class="estado-preparacion-rival-versus" aria-live="polite" data-i18n="common.duelPreparation.preparing">Tu rival está preparando su desafío…</p>
                         <button id="btnCompletarPalabrasPruebasVersus" class="btn-prueba-preparacion-versus oculto"
-                            type="button">
-                            ⚡ Completar palabras de prueba
-                        </button>
+                            type="button" data-i18n="common.duelPreparation.test">⚡ Completar palabras de prueba</button>
                     </form>
 
-                    <aside class="reglas-preparacion-versus" aria-label="Reglas para elegir palabras">
+                    <aside class="reglas-preparacion-versus" data-i18n-aria-label="common.duelPreparation.rulesLabel" aria-label="Reglas para elegir palabras">
                         <div class="tiempo-preparacion-versus">
-                            <span>TIEMPO PARA ELEGIR</span>
+                            <span data-i18n="common.duelPreparation.time">TIEMPO PARA ELEGIR</span>
                             <strong>01:30</strong>
                         </div>
-                        <h3>Reglas</h3>
+                        <h3 data-i18n="common.duelPreparation.rules">Reglas</h3>
                         <ul>
-                            <li>Entre 3 y 12 letras.</li>
-                            <li>Sin espacios ni n&uacute;meros.</li>
-                            <li>No se pueden repetir.</li>
-                            <li>Deben figurar en el diccionario de la tem&aacute;tica.</li>
-                            <li>Tu rival no podr&aacute; verlas.</li>
-                            <li>Agotar los 6 intentos quita un coraz&oacute;n.</li>
+                            <li data-i18n="common.duelPreparation.lengthRule">Entre 3 y 12 letras.</li>
+                            <li data-i18n="common.duelPreparation.charactersRule">Sin espacios ni números.</li>
+                            <li data-i18n="common.duelPreparation.repeatRule">No se pueden repetir.</li>
+                            <li data-i18n="common.duelPreparation.dictionaryRule">Deben figurar en el diccionario de la temática.</li>
+                            <li data-i18n="common.duelPreparation.secretRule">Tu rival no podrá verlas.</li>
+                            <li data-i18n="common.duelPreparation.attemptsRule">Agotar los 6 intentos quita un corazón.</li>
                         </ul>
 
                         <div id="esperaRivalVersus" class="espera-rival-versus oculto" role="status" aria-live="polite">
                             <span aria-hidden="true">⌛</span>
-                            <strong>Palabras listas</strong>
-                            <p>Esperando al rival...</p>
+                            <strong data-i18n="common.duelPreparation.ready">Palabras listas</strong>
+                            <p data-i18n="common.duelPreparation.waitingDots">Esperando al rival...</p>
                         </div>
                     </aside>
                 </div>
@@ -873,7 +869,7 @@
                 <span>↻</span>
                 <strong data-i18n="adventure.combat.rotate">Girá el celular</strong>
                 <p data-i18n="adventure.combat.landscape">El modo versus se juega en horizontal.</p>
-                <button id="btnSalirPreparacionVersusVertical" type="button">Volver al menú</button>
+                <button id="btnSalirPreparacionVersusVertical" type="button" data-i18n="common.duelPreparation.menu">Volver al menú</button>
             </div>
         </section>
 
@@ -1616,6 +1612,7 @@
     <script src="js/versus-room.js?v=20260922-alias-1"></script>
     <script src="js/versus-room-supabase.js?v=20261002-cinematicas-escala-1"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
+    <script src="js/word-banks-versus.js?v=20261016-3e-1"></script>
     <script src="js/word-banks-worlds.js?v=20261015-3d-1"></script>
     <script src="js/word-banks-forest.js?v=20261015-3c-1"></script>
     <script src="js/word-banks-es.js?v=20261007-word-banks-3a-1"></script>
@@ -1631,7 +1628,7 @@
     <script src="js/i18n-combat.js?v=20261007-i18n-2c-1"></script>
     <script src="js/world-music.js?v=20261015-audio-1"></script>
     <script src="js/character-music.js?v=20261015-audio-1"></script>
-    <script src="js/app.js?v=20261015-3d-1"></script>
+    <script src="js/app.js?v=20261016-3e-1"></script>
     <script src="js/cosmetic-shop.js?v=20261006-i18n-2b-1"></script>
     <script src="js/public-player-profile.js?v=20261006-i18n-2b-1"></script>
     <script src="js/pwa.js?v=20261006-i18n-2b-1"></script>

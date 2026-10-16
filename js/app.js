@@ -828,18 +828,32 @@ function finalizarContextoPalabras() {
 }
 function iniciarContextoPalabras(mode, online = false) {
   finalizarContextoPalabras();
+  online = online || mode === 'online';
+  const esTutorial = typeof tutorialCombateVersus !== 'undefined' && tutorialCombateVersus.activo;
   const idiomasDisponibles = mode === 'adventure'
-    ? ['es', ...['en', 'pt-BR'].filter(idioma => obtenerBancoPalabrasIdioma(idioma, escenarioActual))] : ['es'];
+    ? ['es', ...['en', 'pt-BR'].filter(idioma => obtenerBancoPalabrasIdioma(idioma, escenarioActual))]
+    : online || esTutorial ? ['es']
+      : ['es', ...['en', 'pt-BR'].filter(idioma => obtenerBancosVersusIdioma(idioma))];
   const versionBanco = mode === 'adventure' && I18n.language !== 'es' && idiomasDisponibles.includes(I18n.language)
-    ? (escenarioActual === 0 ? ForestWordBanks.version : AdventureWordBanks.version) : undefined;
+    ? (escenarioActual === 0 ? ForestWordBanks.version : AdventureWordBanks.version)
+    : mode !== 'adventure' && !online && !esTutorial && idiomasDisponibles.includes(I18n.language) && I18n.language !== 'es'
+      ? LocalVersusWordBanks.version : undefined;
   contextoPalabrasCombate = WordGameplay.createContext({mode, online, requestedLanguage: I18n.language, availableLanguages: idiomasDisponibles, bankVersion: versionBanco});
-  const bancos = mode === 'adventure' ? [obtenerBancoPalabrasAventura()] : Object.values(bancosPalabrasVersus);
+  const bancos = mode === 'adventure' ? [obtenerBancoPalabrasAventura()] : Object.values(obtenerBancosPalabrasVersus());
   for (const banco of bancos) if (!bancosPalabrasValidados.has(banco)) {
     WordGameplay.validateBank(banco, contextoPalabrasCombate.language, {hints: mode === 'adventure'});
     bancosPalabrasValidados.add(banco);
   }
   motorPalabrasCombate = VersusEngine.paraIdioma(contextoPalabrasCombate.language);
   filasTeclado = contextoPalabrasCombate.rules.rows;
+  const firma = filasTeclado.flat().join('');
+  if (tecladoVersus.dataset.alfabeto !== firma) {
+    tecladoVersus.replaceChildren();
+    miniTecladoRivalVersus.replaceChildren();
+    crearTecladoVersus();
+    crearMiniTecladoRivalVersus();
+    tecladoVersus.dataset.alfabeto = firma;
+  }
   liberarIdiomaCombate = I18n.lockLanguage();
   return contextoPalabrasCombate;
 }
@@ -2759,11 +2773,12 @@ function comenzarTutorialVersus() {
   tutorialCombateVersus.respaldo = {
     jugador: personajeJugadorVersus, rival: personajeRivalVersus,
     arcade: modoArcadeActivo, tema: tematicaVersus.value,
-    palabras: palabrasSecretasVersus,
+    palabras: palabrasSecretasVersus, contexto: contextoPalabrasCombate,
     demo: Object.fromEntries(Object.entries(demoVersus).map(([clave, valor]) =>
       [clave, valor instanceof Set ? new Set(valor) : Array.isArray(valor) ? [...valor] : valor])),
     pantalla: document.querySelector(".pantalla.activa"),
   };
+  finalizarContextoPalabras();
   tutorialCombateVersus.activo = true;
   tutorialCombateVersus.sesion += 1;
   modoArcadeActivo = false;
@@ -2828,6 +2843,16 @@ function cerrarTutorialVersus({ recordar = false } = {}) {
     modoArcadeActivo = respaldo.arcade;
     palabrasSecretasVersus = respaldo.palabras;
     tematicaVersus.value = respaldo.tema;
+    finalizarContextoPalabras();
+    if (respaldo.contexto) {
+      contextoPalabrasCombate = respaldo.contexto;
+      motorPalabrasCombate = VersusEngine.paraIdioma(respaldo.contexto.language);
+      filasTeclado = respaldo.contexto.rules.rows;
+      liberarIdiomaCombate = I18n.lockLanguage();
+      tecladoVersus.replaceChildren();miniTecladoRivalVersus.replaceChildren();
+      crearTecladoVersus();crearMiniTecladoRivalVersus();
+      tecladoVersus.dataset.alfabeto = filasTeclado.flat().join('');
+    }
     Object.assign(demoVersus, respaldo.demo);
     configurarPersonajesCombateVersus();
     tutorialCombateVersus.respaldo = null;
@@ -3164,7 +3189,7 @@ function fijarPalabraVersus(indice, fijada) {
   if (!boton) return;
   const activa = Boolean(fijada && inputsPalabrasVersus[indice]?.value);
   boton.setAttribute("aria-pressed", String(activa));
-  boton.title = activa ? "Liberar palabra" : "Conservar palabra";
+  GameUI.attribute(boton, 'title', GameUI.key(activa ? 'common.duelPreparation.unpin' : 'common.duelPreparation.pin'));
 }
 
 function habilitarFijadoresPalabrasVersus(habilitados = true) {
@@ -3184,7 +3209,7 @@ function obtenerClavePalabraVersus(valor) {
 function validarPreparacionVersus(mostrarErrores = false) {
   const valores = inputsPalabrasVersus.map((input) => input.value);
   const claves = valores.map(obtenerClavePalabraVersus);
-  const clavesDiccionario = clavesBancosPalabrasVersus[tematicaVersus.value] || new Set();
+  const clavesDiccionario = new Set((obtenerBancosPalabrasVersus()[tematicaVersus.value] || []).map(obtenerClavePalabraVersus));
   let formularioValido = true;
 
   inputsPalabrasVersus.forEach((input, indice) => {
@@ -3198,21 +3223,21 @@ function validarPreparacionVersus(mostrarErrores = false) {
     const figuraEnDiccionario = motorDePalabras().reglas.validate(valor) && clavesDiccionario.has(claves[indice]);
     let mensaje = "";
 
-    contador.textContent = `${valor.length} ${valor.length === 1 ? "letra" : "letras"}`;
+    GameUI.text(contador, GameUI.key(valor.length === 1 ? 'common.duelPreparation.letter' : 'common.duelPreparation.letters', {count: valor.length}));
     if (valor.length > 0 && valor.length < minimoLetrasPalabraVersus) {
-      mensaje = `Debe tener al menos ${minimoLetrasPalabraVersus} letras.`;
+      mensaje = GameUI.key('common.duelPreparation.minimum', {count: minimoLetrasPalabraVersus});
     }
     if (valor.length > maximoLetrasPalabraVersus) {
-      mensaje = `Puede tener hasta ${maximoLetrasPalabraVersus} letras.`;
+      mensaje = GameUI.key('common.duelPreparation.maximum', {count: maximoLetrasPalabraVersus});
     }
     if (
       valor.length >= minimoLetrasPalabraVersus &&
       valor.length <= maximoLetrasPalabraVersus &&
       !figuraEnDiccionario
     ) {
-      mensaje = `No figura en el diccionario de ${nombresTematicasVersus[tematicaVersus.value] || "esta temática"}.`;
+      mensaje = GameUI.key('common.duelPreparation.dictionary', {topic: CombatUI.value(obtenerNombreTemaVersus(tematicaVersus.value))});
     }
-    if (repetida) mensaje = "Esta palabra está repetida.";
+    if (repetida) mensaje = GameUI.key('common.duelPreparation.repeated');
 
     const valida =
       valor.length >= minimoLetrasPalabraVersus &&
@@ -3221,7 +3246,7 @@ function validarPreparacionVersus(mostrarErrores = false) {
       !repetida;
     formularioValido = formularioValido && valida;
     input.classList.toggle("invalida", mostrarErrores && !valida);
-    error.textContent = mostrarErrores ? mensaje : "";
+    GameUI.text(error, mostrarErrores ? mensaje : "");
   });
 
   btnConfirmarPalabrasVersus.disabled = !formularioValido;
@@ -3234,10 +3259,10 @@ function abrirPreparacionVersus() {
   palabrasSecretasVersus = [];
   formPreparacionVersus.reset();
   esperaRivalVersus.classList.add("oculto");
-  tituloEsperaRivalVersus.textContent = "Palabras listas";
-  textoEsperaRivalVersus.textContent = "Esperando al rival…";
+  GameUI.text(tituloEsperaRivalVersus, GameUI.key('common.duelPreparation.ready'));
+  GameUI.text(textoEsperaRivalVersus, GameUI.key('common.duelPreparation.waiting'));
   estadoPreparacionRivalVersus.className = "estado-preparacion-rival-versus";
-  estadoPreparacionRivalVersus.textContent = "Tu rival está preparando su desafío…";
+  GameUI.text(estadoPreparacionRivalVersus, GameUI.key('common.duelPreparation.preparing'));
   inputsPalabrasVersus.forEach((input) => {
     input.disabled = false;
     input.classList.remove("invalida");
@@ -3250,12 +3275,14 @@ function abrirPreparacionVersus() {
   btnPalabrasAleatoriasVersus.disabled = false;
   validarPreparacionVersus();
   mostrarPantalla(pantallaPreparacionVersus);
+  iniciarContextoPalabras('versus', adaptadorSalasVersus !== adaptadorLocalSalasVersus);
+  validarPreparacionVersus();
   actualizarPreparacionRemota(adaptadorSalasVersus.obtenerSala());
 }
 
 inputsPalabrasVersus.forEach((input) => {
   input.addEventListener("input", () => {
-    input.value = limpiarPalabraParaVersus(input.value);
+    input.value = motorDePalabras().reglas.clean(input.value, maximoLetrasPalabraVersus);
     habilitarFijadoresPalabrasVersus();
     validarPreparacionVersus(true);
   });
@@ -3275,13 +3302,13 @@ tematicaVersus.addEventListener("change", () => {
 });
 
 function completarPalabrasAleatoriasVersus() {
-  const banco = bancosPalabrasVersus[tematicaVersus.value] || [];
+  const banco = obtenerBancosPalabrasVersus()[tematicaVersus.value] || [];
   const clavesFijadas = new Set(inputsPalabrasVersus.flatMap((input, indice) => (
     btnsFijarPalabrasVersus[indice]?.getAttribute("aria-pressed") === "true"
       ? [obtenerClavePalabraVersus(input.value)]
       : []
   )));
-  const clavesAnteriores = ultimasPalabrasAleatoriasVersus.get(tematicaVersus.value) || new Set();
+  const clavesAnteriores = ultimasPalabrasAleatoriasVersus.get(contextoPalabrasCombate.language + ':' + tematicaVersus.value) || new Set();
   let seleccion = mezclarPalabrasVersus(banco.filter((palabra) => {
     const clave = obtenerClavePalabraVersus(palabra);
     return !clavesFijadas.has(clave) && !clavesAnteriores.has(clave);
@@ -3300,7 +3327,7 @@ function completarPalabrasAleatoriasVersus() {
     input.dispatchEvent(new Event("input", { bubbles: true }));
   });
   ultimasPalabrasAleatoriasVersus.set(
-    tematicaVersus.value,
+    contextoPalabrasCombate.language + ':' + tematicaVersus.value,
     new Set(inputsPalabrasVersus.map((input) => obtenerClavePalabraVersus(input.value))),
   );
   btnConfirmarPalabrasVersus.focus();
@@ -3998,7 +4025,7 @@ function actualizarOrientacionPantalla(pantallaSeleccionada) {
 }
 
 function mostrarPantalla(pantallaSeleccionada) {
-  if (pantallaSeleccionada !== pantallaJuego && pantallaSeleccionada !== pantallaVersus) finalizarContextoPalabras();
+  if (pantallaSeleccionada !== pantallaJuego && pantallaSeleccionada !== pantallaVersus && pantallaSeleccionada !== pantallaPreparacionVersus) finalizarContextoPalabras();
   if (pantallaSeleccionada === pantallaMenu && globalThis.AventuraMapa?.repeticion) {
     finalizarRepeticionAventura();
     queueMicrotask(abrirMapaAventura);
@@ -4185,13 +4212,20 @@ function animarCambioOrdenTecladoVersus(reordenar) {
   }, 720);
 }
 
+function obtenerFilasTecladoRenderizadoVersus() {
+  // Menu cleanup can run after the combat context has been released.
+  const firma = tecladoVersus.dataset.alfabeto;
+  return firma ? WordGameplay.rules(firma.includes('Ñ') ? 'es' : 'en').rows : filasTeclado;
+}
+
 function restaurarOrdenTecladoVersus(animar = false) {
+  const filas = obtenerFilasTecladoRenderizadoVersus();
   const botones = new Map(
     [...tecladoVersus.querySelectorAll("button")].map((boton) => [boton.textContent, boton]),
   );
   const restaurar = () => {
     [...tecladoVersus.querySelectorAll(".fila-teclado-versus")].forEach((fila, indice) => {
-      filasTeclado[indice].forEach((letra) => fila.appendChild(botones.get(letra)));
+      filas[indice].forEach((letra) => fila.appendChild(botones.get(letra)));
     });
   };
   if (animar) animarCambioOrdenTecladoVersus(restaurar);
@@ -4199,11 +4233,12 @@ function restaurarOrdenTecladoVersus(animar = false) {
 }
 
 function desordenarTecladoVersus(animar = true) {
+  const filas = obtenerFilasTecladoRenderizadoVersus();
   const botones = mezclarPalabrasVersus([...tecladoVersus.querySelectorAll("button")]);
   const desordenar = () => {
     let desplazamiento = 0;
     [...tecladoVersus.querySelectorAll(".fila-teclado-versus")].forEach((fila, indice) => {
-      const cantidad = filasTeclado[indice].length;
+      const cantidad = filas[indice].length;
       botones.slice(desplazamiento, desplazamiento + cantidad).forEach((boton) => fila.appendChild(boton));
       desplazamiento += cantidad;
     });
@@ -5031,12 +5066,15 @@ btnHabilidadVersus.addEventListener("click", activarHabilidadVersus);
 // Duelo local de cinco rondas. En línea, las palabras y jugadas del rival
 // llegan desde el otro dispositivo en lugar de esta simulación.
 const bancosPalabrasVersus = SpanishWordBanks.versus;
-const clavesBancosPalabrasVersus = Object.fromEntries(
-  Object.entries(bancosPalabrasVersus).map(([tematica, palabras]) => [
-    tematica,
-    new Set(palabras.map((palabra) => motorDePalabras().obtenerClavePalabra(palabra))),
-  ]),
-);
+function obtenerBancosVersusIdioma(idioma) {
+  if (idioma === 'es') return bancosPalabrasVersus;
+  const bancos = globalThis.LocalVersusWordBanks?.banks[idioma];
+  return bancos && Object.keys(bancosPalabrasVersus).every(tema => Array.isArray(bancos[tema]) && bancos[tema].length >= 40) ? bancos : null;
+}
+function obtenerBancosPalabrasVersus() {
+  const idioma = contextoPalabrasCombate?.language || 'es';
+  return obtenerBancosVersusIdioma(idioma) || bancosPalabrasVersus;
+}
 const nombresTematicasVersus = {
   paises: "Países",
   frutas: "Frutas",
@@ -5449,13 +5487,14 @@ function iniciarDueloAventura(tipo) {
   personajeJugadorVersus = "explorador";
   personajeRivalVersus = configuracion.rival;
 
-  const tematicasDisponibles = Object.keys(bancosPalabrasVersus);
+  iniciarContextoPalabras('versus');
+  const tematicasDisponibles = Object.keys(obtenerBancosPalabrasVersus());
   const tematicaRival = tematicasDisponibles[
     Math.floor(Math.random() * tematicasDisponibles.length)
   ];
   tematicaVersus.value = tematicaRival;
   palabrasSecretasVersus = mezclarPalabrasVersus(
-    bancosPalabrasVersus[tematicaRival],
+    obtenerBancosPalabrasVersus()[tematicaRival],
   ).slice(0, maximoPalabrasVersus);
   dueloAventuraActivo = {
     ...configuracion,
@@ -7505,7 +7544,7 @@ function agregarPalabraRecuperacionVersus(tipoJugador) {
   const tema = esJugador ? demoVersus.tematicaParaJugador : demoVersus.tematicaParaRival;
   const propiedad = esJugador ? "palabrasJugador" : "palabrasRival";
   const palabraExtra = motorDePalabras().elegirPalabraRecuperacion(
-    bancosPalabrasVersus[tema] || [],
+    obtenerBancosPalabrasVersus()[tema] || [],
     demoVersus[propiedad],
   );
   if (palabraExtra) demoVersus[propiedad].push(palabraExtra);
@@ -7513,7 +7552,8 @@ function agregarPalabraRecuperacionVersus(tipoJugador) {
 }
 
 function prepararDueloVersus({ comenzarRonda = true } = {}) {
-  iniciarContextoPalabras(modoArcadeActivo ? "tower" : "versus");
+  const modoPalabras = modoArcadeActivo ? "tower" : "versus";
+  if (contextoPalabrasCombate?.mode !== modoPalabras) iniciarContextoPalabras(modoPalabras);
   cancelarCinematicaFinalVersus();
   detenerRondaVersus({ conservarTemaCalamo: dueloAventuraActivo?.tipo === "calamo_desierto" });
   ocultarRevelacionesPalabrasVersus();
@@ -7523,13 +7563,13 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
     CombatUI.text(document.querySelector(".versus-jugador-uno .versus-etiqueta"), "JUGADOR 1");
     CombatUI.text(document.querySelector(".versus-jugador-dos .versus-etiqueta"), "JUGADOR 2");
   }
-  const tematicasDisponibles = Object.keys(bancosPalabrasVersus);
+  const tematicasDisponibles = Object.keys(obtenerBancosPalabrasVersus());
   demoVersus.tematicaParaRival = tematicaVersus.value;
   demoVersus.tematicaParaJugador = tematicasDisponibles[
     Math.floor(Math.random() * tematicasDisponibles.length)
   ];
   demoVersus.palabrasJugador = mezclarPalabrasVersus(
-    bancosPalabrasVersus[demoVersus.tematicaParaJugador],
+    obtenerBancosPalabrasVersus()[demoVersus.tematicaParaJugador],
   ).slice(0, maximoPalabrasVersus);
   demoVersus.palabrasRival = palabrasSecretasVersus.map(limpiarPalabraParaVersus);
   demoVersus.indiceJugador = 0;
@@ -7581,12 +7621,13 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
 
 function iniciarCombateArcade() {
   if (!modoArcadeActivo || rivalesTorreArcade.length === 0) return;
+  iniciarContextoPalabras('tower');
   pisoCombateArcade = pisoActualArcade;
   personajeRivalVersus = rivalesTorreArcade[pisoCombateArcade];
-  const tematicasDisponibles = Object.keys(bancosPalabrasVersus);
+  const tematicasDisponibles = Object.keys(obtenerBancosPalabrasVersus());
   const temaRival = tematicasDisponibles[pisoCombateArcade % tematicasDisponibles.length];
   tematicaVersus.value = temaRival;
-  palabrasSecretasVersus = mezclarPalabrasVersus(bancosPalabrasVersus[temaRival])
+  palabrasSecretasVersus = mezclarPalabrasVersus(obtenerBancosPalabrasVersus()[temaRival])
     .slice(0, maximoPalabrasVersus);
   prepararDueloVersus({ comenzarRonda: false });
   const arena = arenasVersus[pisoCombateArcade % arenasVersus.length];

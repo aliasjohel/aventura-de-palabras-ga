@@ -26,7 +26,8 @@ for (const [tematica, palabras] of Object.entries(bancos)) {
 const frutas = new Set(bancos.frutas.map((palabra) => engine.obtenerClavePalabra(palabra)));
 assert.ok(frutas.has(engine.obtenerClavePalabra("limon")), "LIMON debe coincidir con LIMÓN");
 assert.equal(engine.obtenerClavePalabra("ÁFRICA"), engine.obtenerClavePalabra("africa"));
-assert.match(app, /No figura en el diccionario de/);
+assert.match(app, /common\.duelPreparation\.dictionary/);
+assert.match(require('../locales/es/common.json').duelPreparation.dictionary, /No figura en el diccionario de/);
 assert.match(app, /tematicaVersus\.addEventListener\("change"/);
 
 const migrationPath = path.join(
