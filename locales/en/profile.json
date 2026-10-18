@@ -117,5 +117,26 @@
     "world": "Complete World {world}",
     "rank": "Reach {rank} rank",
     "gift": "🎁 Frames unlocked: {frames}. Choose them in My Profile."
+  },
+  "friends": {
+    "title": "Friends",
+    "open": "Friends and challenges",
+    "intro": "Share the adventure, view profiles and challenge your friends.",
+    "back": "← Back",
+    "list": "My friends",
+    "requests": "Requests",
+    "add": "Add",
+    "invites": "Challenges",
+    "received": "Received",
+    "sent": "Sent",
+    "codeHelp": "Share your code or enter another player’s code.",
+    "cancelRequest": "Cancel request",
+    "noReceived": "No incoming friend requests.",
+    "noSent": "No outgoing friend requests.",
+    "noInvites": "No pending challenges.",
+    "offline": "Connect to refresh Friends, view profiles and send or respond to requests and challenges.",
+    "onlineHelp": "Friends and online duels require a connection.",
+    "retryHelp": "Could not refresh Friends. Check your connection and tap Retry connection.",
+    "inviteLanguage": "Words in {language} · Accept to open the room."
   }
 }

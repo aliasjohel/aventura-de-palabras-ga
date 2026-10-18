@@ -39,20 +39,26 @@
   let draft = { ...saved };
   const el = (id) => document.getElementById(id);
   const dialog = el("editorAvatar");
-  function portrait(avatar, frame) {
+  function portrait(avatar, frame, miniatura = false) {
     const badge = document.createElement("span");
     badge.className = `player-avatar frame-${frame}`;
     const img = document.createElement("img");
     const face = document.createElement("span");
     face.className = "player-avatar-portrait";
-    img.src = `assets/images/personajes/versus/${avatar}-base.png`;
+    img.src = miniatura ? `assets/images/perfil/miniaturas/${avatar}-base.webp` : `assets/images/personajes/versus/${avatar}-base.png`;
+    if (miniatura) {
+      img.loading = 'lazy'; img.decoding = 'async'; img.width = 96; img.height = 96;
+    }
     img.alt = "";
     face.append(img);
     const ranked=AvatarRewards.catalog.find(item=>item.id===frame)?.rank;
     const ornament = document.createElement(ranked?"span":"img");
     ornament.className = "player-avatar-frame";
     if(ranked){ornament.classList.add('rank-frame');ornament.dataset.symbol={bronce:'★',plata:'✦',oro:'★',platino:'✧',diamante:'◆',leyenda:'♛'}[frame];}
-    else ornament.src = `assets/images/perfil/marco-${frame}-v1.png`;
+    else ornament.src = miniatura ? `assets/images/perfil/miniaturas/marco-${frame}-v1.webp` : `assets/images/perfil/marco-${frame}-v1.png`;
+    if (miniatura && !ranked) {
+      ornament.loading = 'lazy'; ornament.decoding = 'async'; ornament.width = 96; ornament.height = 96;
+    }
     ornament.alt = "";
     ornament.setAttribute("aria-hidden", "true");
     badge.append(face, ornament);
@@ -70,9 +76,9 @@
       catch (_) { return { ...saved }; }
     },
     normalizar: normalize,
-    crear: (value) => {
+    crear: (value, options = {}) => {
       const identity = normalize(value);
-      return portrait(identity.avatar, identity.frame);
+      return portrait(identity.avatar, identity.frame, options.miniatura === true);
     },
   });
   function renderPreview() {

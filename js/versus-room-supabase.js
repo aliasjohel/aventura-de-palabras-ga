@@ -46,6 +46,11 @@
     let canalSocial = null;
     let suscripcionAuth = null;
     let ultimaSalaInvitada = null;
+    let salaInvitadaPendiente = null;
+    let aperturaInvitadaEnCurso = null;
+    let cargaSocialEnCurso = null;
+    let intervaloSocial = null;
+    const salasAbandonadas = new Set();
     let intervaloVerificacionSala = null;
     let recargaEnCurso = null;
     let recargaSolicitada = false;
@@ -96,6 +101,16 @@
     }
 
     function actualizarSesion(sesion) {
+      const siguienteUsuario = sesion?.user?.id || null;
+      if (usuarioId !== siguienteUsuario) {
+        ultimaSalaInvitada = null;
+        salaInvitadaPendiente = null;
+        salasAbandonadas.clear();
+        versionCanalSala += 1;
+        salaActual = null;
+        partidaActual = null;
+        void detenerCanal().catch(() => {});
+      }
       sesionActual = sesion || null;
       usuarioActual = sesionActual?.user || null;
       usuarioId = usuarioActual?.id || null;
@@ -111,6 +126,8 @@
     }
 
     async function detenerCanalSocial() {
+      if (intervaloSocial) raiz.clearInterval(intervaloSocial);
+      intervaloSocial = null;
       if (!canalSocial) return;
       const canal = canalSocial;
       canalSocial = null;
@@ -124,18 +141,38 @@
         emitirSocial();
         return null;
       }
-      const { data, error } = await cliente.rpc("get_versus_social_state");
-      if (error) {
-        errorEstadoSocial = traducirError(error, "No pudimos cargar Amigos.");
-        estadoSocial = null;
+      const identidadCarga = usuarioId;
+      if (cargaSocialEnCurso?.usuario === identidadCarga) return cargaSocialEnCurso.promesa;
+      const carga = { usuario: identidadCarga };
+      carga.promesa = (async () => {
+        const { data, error } = await cliente.rpc("get_versus_social_state");
+        if (usuarioId !== identidadCarga) return null;
+        if (error) {
+          errorEstadoSocial = traducirError(error, "No pudimos cargar Amigos.");
+          emitirSocial();
+          throw errorEstadoSocial;
+        }
+        estadoSocial = data;
+        errorEstadoSocial = null;
         emitirSocial();
-        throw errorEstadoSocial;
-      }
-      estadoSocial = data;
-      errorEstadoSocial = null;
-      emitirSocial();
-      return estadoSocial;
+        const aceptadas = data?.accepted_invites || [];
+        const invitacion = aceptadas.find(i => i.room_id === salaActual?.id) || aceptadas[0];
+        if (invitacion?.room_id) await abrirSalaInvitada(invitacion.room_id, identidadCarga);
+        return estadoSocial;
+      })().finally(() => {
+        if (cargaSocialEnCurso === carga) cargaSocialEnCurso = null;
+      });
+      cargaSocialEnCurso = carga;
+      return carga.promesa;
     }
+
+    function sincronizarAlVolver() {
+      if (!usuarioId || raiz.document?.visibilityState === "hidden" || raiz.navigator?.onLine === false) return;
+      void Promise.allSettled([cargarEstadoSocial(), recargarSala()]);
+    }
+    raiz.addEventListener?.("online", sincronizarAlVolver);
+    raiz.addEventListener?.("focus", sincronizarAlVolver);
+    raiz.document?.addEventListener("visibilitychange", sincronizarAlVolver);
 
     function programarSincronizacionAuth() {
       if (temporizadorSincronizacionAuth) {
@@ -156,42 +193,51 @@
       }, 0);
     }
 
-    async function abrirSalaInvitada(roomId) {
-      if (!roomId || roomId === ultimaSalaInvitada) return;
-      ultimaSalaInvitada = roomId;
-      await cargarSala(roomId);
-      await escucharSala(roomId);
-      suscriptoresInvitacionAceptada.forEach((suscriptor) => suscriptor(salaActual));
+    async function abrirSalaInvitada(roomId, identidad = usuarioId) {
+      if (!roomId || salasAbandonadas.has(roomId) || identidad !== usuarioId || roomId === ultimaSalaInvitada) return;
+      if (salaActual && salaActual.id !== roomId && ["complete", "preparing", "playing"].includes(salaActual.estado)) return;
+      if (aperturaInvitadaEnCurso) return aperturaInvitadaEnCurso;
+      aperturaInvitadaEnCurso = (async () => {
+        const sala = await cargarSala(roomId);
+        if (salasAbandonadas.has(roomId) || identidad !== usuarioId || !sala || sala.id !== roomId
+          || !["complete", "preparing", "playing"].includes(sala.estado)
+          || !sala.jugadores.some(j => j.id === identidad)) return;
+        await escucharSala(roomId);
+        if (salasAbandonadas.has(roomId) || identidad !== usuarioId || salaActual?.id !== roomId) return;
+        ultimaSalaInvitada = roomId;
+        if (suscriptoresInvitacionAceptada.size) {
+          suscriptoresInvitacionAceptada.forEach(suscriptor => suscriptor(salaActual));
+        } else salaInvitadaPendiente = { sala: salaActual, usuario: identidad };
+      })().finally(() => { aperturaInvitadaEnCurso = null; });
+      return aperturaInvitadaEnCurso;
     }
 
     async function escucharSocial() {
       await detenerCanalSocial();
       if (!usuarioId || !esCuentaPermanente()) return;
-      const alCambiar = (cambio) => {
-        void cargarEstadoSocial();
-        const invitacion = cambio?.new;
-        const esAceptacionNueva = cambio?.table === "versus_invites"
-          && cambio?.eventType === "UPDATE"
-          && invitacion?.status === "accepted"
-          && invitacion?.room_id
-          && [invitacion.challenger_id, invitacion.challenged_id].includes(usuarioId);
-        if (esAceptacionNueva) void abrirSalaInvitada(invitacion.room_id);
-      };
+      // Realtime is a refresh hint; only the persisted RPC state can open a room.
+      const alCambiar = () => { void cargarEstadoSocial().catch(() => {}); };
       canalSocial = cliente
         .channel(`versus-social-${usuarioId}`)
         .on("postgres_changes", { event: "*", schema: "public", table: "versus_profiles" }, alCambiar)
         .on("postgres_changes", { event: "*", schema: "public", table: "versus_friendships" }, alCambiar)
         .on("postgres_changes", { event: "*", schema: "public", table: "versus_invites" }, alCambiar)
-        .subscribe();
+        .subscribe(status => {
+          if (status === "SUBSCRIBED") sincronizarAlVolver();
+        });
+      intervaloSocial = raiz.setInterval(sincronizarAlVolver, 15000);
     }
 
     async function cargarPartida() {
       if (!salaActual?.id || !["playing", "finished"].includes(salaActual.estado)) {
         return partidaActual;
       }
+      const roomId = salaActual.id;
+      const identidad = usuarioId;
       const { data, error } = await cliente.rpc("get_versus_match_state", {
-        p_room_id: salaActual.id,
+        p_room_id: roomId,
       });
+      if (identidad !== usuarioId || salaActual?.id !== roomId) return partidaActual;
       if (error) throw traducirError(error, "No pudimos sincronizar el combate.");
       partidaActual = data;
       emitirPartida(partidaActual);
@@ -234,6 +280,11 @@
         });
         suscripcionAuth = data.subscription;
       }
+      const roomId = obtenerSalaRecordada();
+      if (roomId && /^[0-9a-f-]{36}$/i.test(roomId)) {
+        await cargarSala(roomId);
+        if (salaActual) await escucharSala(roomId);
+      }
       await escucharSocial();
       if (esCuentaPermanente()) {
         try {
@@ -241,11 +292,6 @@
         } catch (error) {
           console.warn("La cuenta está conectada, pero Amigos todavía no respondió.", error);
         }
-      }
-      const roomId = obtenerSalaRecordada();
-      if (roomId && /^[0-9a-f-]{36}$/i.test(roomId)) {
-        await cargarSala(roomId);
-        if (salaActual) await escucharSala(roomId);
       }
       return usuarioId;
     }
@@ -354,7 +400,9 @@
     }
 
     async function escucharSala(roomId) {
+      const identidad = usuarioId;
       await detenerCanal();
+      if (identidad !== usuarioId || salaActual?.id !== roomId || salasAbandonadas.has(roomId)) return;
       if(raiz.CosmeticStore){
         // Broadcasts only request a refresh. Ownership and equipment come from the server.
         const canal=cliente.channel(`versus-outfits-${roomId}`);
@@ -376,21 +424,23 @@
           schema: "public",
           table: "versus_rooms",
           filter: `id=eq.${roomId}`,
-        }, () => { void recargarSala(); })
+        }, () => { void recargarSala().catch(() => {}); })
         .on("postgres_changes", {
           event: "*",
           schema: "public",
           table: "versus_players",
           filter: `room_id=eq.${roomId}`,
-        }, () => { void recargarSala(); })
+        }, () => { void recargarSala().catch(() => {}); })
         .on("postgres_changes", {
           event: "*",
           schema: "public",
           table: "versus_matches",
           filter: `room_id=eq.${roomId}`,
-        }, () => { void cargarPartida(); })
-        .subscribe();
-      intervaloVerificacionSala = setInterval(() => { void recargarSala(); }, 4000);
+        }, () => { void cargarPartida().catch(() => {}); })
+        .subscribe(status => {
+          if (status === "SUBSCRIBED") void recargarSala().catch(() => {});
+        });
+      intervaloVerificacionSala = setInterval(() => { void recargarSala().catch(() => {}); }, 4000);
     }
 
     async function crearSala({ alias }) {
@@ -400,6 +450,7 @@
 
       const { data, error } = await cliente.rpc("create_versus_room_localized", { p_alias: nombre, p_language: raiz.I18n?.language || "es" });
       if (error) throw traducirError(error, "No pudimos crear la sala.");
+      salasAbandonadas.delete(data.id);
       await cargarSala(data.id);
       await escucharSala(data.id);
       return salaActual;
@@ -462,6 +513,7 @@
         p_alias: nombre,
       });
       if (error) throw traducirError(error, "No pudimos unirnos a la sala.");
+      salasAbandonadas.delete(data.id);
       await cargarSala(data.id);
       await escucharSala(data.id);
       return salaActual;
@@ -515,16 +567,22 @@
 
     async function salirSala() {
       const roomId = salaActual?.id;
+      if (roomId) salasAbandonadas.add(roomId);
       await detenerCanal();
       salaActual = null;
       partidaActual = null;
       recordarSala(null);
+      ultimaSalaInvitada = null;
+      salaInvitadaPendiente = null;
       emitir(null);
       emitirPartida(null);
       if (!roomId) return;
 
       const { error } = await cliente.rpc("leave_versus_room", { p_room_id: roomId });
-      if (error) throw traducirError(error, "No pudimos abandonar la sala.");
+      if (error) {
+        salasAbandonadas.delete(roomId);
+        throw traducirError(error, "No pudimos abandonar la sala.");
+      }
     }
 
     function suscribir(suscriptor) {
@@ -545,6 +603,10 @@
 
     function suscribirInvitacionesAceptadas(suscriptor) {
       suscriptoresInvitacionAceptada.add(suscriptor);
+      if (salaInvitadaPendiente?.usuario === usuarioId && salaInvitadaPendiente.sala.id === salaActual?.id) {
+        salaInvitadaPendiente = null;
+        if (["complete", "preparing", "playing"].includes(salaActual.estado)) suscriptor(salaActual);
+      }
       return () => suscriptoresInvitacionAceptada.delete(suscriptor);
     }
 
@@ -596,6 +658,9 @@
       "respond_versus_friend_request",
       { p_friendship_id: id, p_accept: aceptar },
       "No pudimos responder la solicitud.",
+    );
+    const cancelarSolicitudAmistad = (id) => ejecutarRpcSocial(
+      "respond_versus_friend_request", {p_friendship_id:id,p_accept:false}, "No pudimos responder la solicitud.",
     );
     const eliminarAmigo = (id) => ejecutarRpcSocial(
       "remove_versus_friend", { p_friendship_id: id }, "No pudimos quitar al amigo.",
@@ -682,6 +747,7 @@
       enviarSolicitudAmistad,
       responderSolicitudAmistad,
       eliminarAmigo,
+      cancelarSolicitudAmistad,
       enviarInvitacion,
       cancelarInvitacion,
       responderInvitacion,

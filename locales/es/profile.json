@@ -117,5 +117,26 @@
     "world": "Completá el mundo {world}",
     "rank": "Alcanzá el rango {rank}",
     "gift": "🎁 Marcos desbloqueados: {frames}. Elegilos en Mi perfil."
+  },
+  "friends": {
+    "title": "Amigos",
+    "open": "Amigos y desafíos",
+    "intro": "Compartí la aventura, consultá perfiles y desafiá a tus amigos.",
+    "back": "← Volver",
+    "list": "Mis amigos",
+    "requests": "Solicitudes",
+    "add": "Agregar",
+    "invites": "Desafíos",
+    "received": "Recibidas",
+    "sent": "Enviadas",
+    "codeHelp": "Compartí tu código o escribí el de otro jugador.",
+    "cancelRequest": "Cancelar solicitud",
+    "noReceived": "No tenés solicitudes recibidas.",
+    "noSent": "No tenés solicitudes enviadas.",
+    "noInvites": "No hay desafíos pendientes.",
+    "offline": "Necesitás conexión para actualizar Amigos, ver perfiles y enviar o responder solicitudes y desafíos.",
+    "onlineHelp": "Amigos y los duelos online necesitan conexión.",
+    "retryHelp": "No pudimos actualizar Amigos. Revisá tu conexión y tocá Reintentar conexión.",
+    "inviteLanguage": "Palabras en {language} · La sala se abre al aceptar."
   }
 }

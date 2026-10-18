@@ -85,3 +85,44 @@ button.enlace-perfil-jugador, #listaRanking button.enlace-perfil-jugador { width
 #avatarDueloRival:focus-visible, .enlace-perfil-jugador:focus-visible { outline: 3px solid #ffe0a7; outline-offset: 3px; }
 @media(max-width:420px) { .perfil-publico { padding: 18px; } .perfil-publico-identidad { gap: 12px; } #avatarPerfilPublico .player-avatar { width: 85px; height: 85px; } .perfil-publico-partidas article { align-items: flex-start; } }
 #avatarDueloRival { width: max-content; height: max-content; line-height: 0; }
+/* Shared Friends dialog: profile and multiplayer open the same DOM and actions. */
+#amigosPerfil { box-sizing: border-box; width: min(660px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); margin: auto; padding: clamp(14px, 3vw, 24px); overflow-y: auto; color: #f7f0de; background: radial-gradient(ellipse at top left, #29425655, transparent 60%), linear-gradient(145deg, #142536, #080f1c); border: 1px solid #ae9561; border-radius: 20px; box-shadow: 0 24px 100px #000b; text-align: left; }
+#amigosPerfil::backdrop { background: #020810df; backdrop-filter: blur(5px); }
+#amigosPerfil [hidden] { display: none !important; }
+#amigosPerfil .panel-amigos-versus { padding: 0; border: 0; background: none; gap: 14px; }
+#amigosPerfil .cabecera-amigos-versus { align-items: flex-start; flex-wrap: wrap; }
+#amigosPerfil h3 { margin: 4px 0; font-size: 24px; }
+#amigosPerfil h4 { margin: 20px 0 10px; font-size: 14px; color: #efce91; }
+#amigosPerfil p { line-height: 1.55; }
+#amigosPerfil button { min-height: 44px; margin: 0; border-radius: 9px; font-size: 13px; cursor: pointer; }
+#amigosPerfil button:focus-visible, #btnAmigosPerfil:focus-visible { outline: 3px solid #b5e4cf; outline-offset: 3px; }
+#amigosPerfil button:disabled, #amigosPerfil input:disabled { opacity: .5; cursor: default; }
+#amigosPerfil .amigos-conexion { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+#conexionAmigosPerfil { margin: 0; color: #bacdd5; font-size: 13px; }
+#amigosPerfil .amigos-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; padding: 5px; border: 1px solid #93b5bb33; border-radius: 12px; background: #020b15aa; }
+#amigosPerfil .amigos-tabs button { padding: 9px 4px; border: 1px solid transparent; background: transparent; color: #c4d5dd; overflow-wrap: anywhere; }
+#amigosPerfil .amigos-tabs [aria-selected="true"] { background: #244c44; color: #f4e3bd; border-color: #84b39a77; }
+#amigosPerfil .fila-social-versus { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 14px; }
+#amigosPerfil .fila-social-versus:has(.player-avatar) { grid-template-columns: 56px minmax(0, 1fr); }
+#amigosPerfil .fila-social-versus .player-avatar { width: 56px; height: 56px; }
+#amigosPerfil .fila-social-versus > div:not(.acciones-fila-social-versus) { display: grid; gap: 5px; min-width: 0; overflow-wrap: anywhere; }
+#amigosPerfil .fila-social-versus strong { font-size: 15px; }
+#amigosPerfil .fila-social-versus small { font-size: 12px; }
+#amigosPerfil .acciones-fila-social-versus { grid-column: 1 / -1; }
+#amigosPerfil .acciones-fila-social-versus button { flex: 1 1 auto; }
+#amigosPerfil .amigo-rango { color: #efce91; font-size: 12px; }
+#amigosPerfil .amigos-vacio { margin: 0; padding: 12px 2px; color: #adbecb; font-size: 13px; }
+#amigosPerfil input { box-sizing: border-box; min-height: 44px; max-width: 100%; font-size: 16px; }
+#amigosPerfil .identidad-amigos-versus { flex-wrap: wrap; }
+#amigosPerfil .agregar-amigo-versus input { flex-basis: 100%; width: 100%; }
+#amigosPerfil .registro-cuenta-versus label input, #amigosPerfil .crear-perfil-versus label input { width: 100%; }
+#amigosPerfil .mensaje-amigos-versus { font-size: 13px; margin-bottom: 0; overflow-wrap: anywhere; }
+.perfil-amigos-acceso { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #7892ad55; border-radius: 14px; padding: 16px; margin: 0 0 18px; background: #153c3455; }
+.perfil-amigos-acceso > div { flex: 1 1 190px; }
+.perfil-amigos-acceso h3 { margin: 0 0 7px; font-size: 16px; color: #efce91; }
+.perfil-amigos-acceso p { margin: 0; font-size: 13px; line-height: 1.5; color: #b9d0d2; }
+#btnAmigosPerfil { min-height: 44px; margin: 0; padding: 10px 15px; font-size: 13px; }
+@media (max-width: 360px) {
+  #amigosPerfil .amigos-tabs { grid-template-columns: 1fr 1.3fr 1fr; }
+  #amigosPerfil .amigos-tabs button { font-size: 12px; overflow-wrap: normal; padding-inline: 2px; }
+}

@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="css/i18n-settings.css?v=20261006-i18n-2a-1">
     <link rel="stylesheet" href="css/character-music.css?v=20261014-character-music-1">
     <link rel="stylesheet" href="css/versus-ranks.css?v=20260922-medallas-3">
-    <link rel="stylesheet" href="css/player-avatar.css?v=20260921-social-mapa-1">
+    <link rel="stylesheet" href="css/player-avatar.css?v=20261018-v365-1">
     <link rel="stylesheet" href="css/versus-identity.css?v=20260915-social-1">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
@@ -483,64 +483,7 @@
 
                 <p id="idiomaSalaOnline" role="status"></p>
                 <div id="inicioSalaVersus" class="inicio-sala-versus">
-                    <section class="panel-amigos-versus" aria-labelledby="tituloAmigosVersus">
-                        <div class="cabecera-amigos-versus">
-                            <div>
-                                <small data-i18n="multiplayer.legacy.s3">CUENTA DE JUGADOR</small>
-                                <h3 id="tituloAmigosVersus" data-i18n="multiplayer.legacy.s4">Amigos y desafíos</h3>
-                            </div>
-                            <span id="estadoCuentaVersus" class="estado-cuenta-versus" data-i18n="multiplayer.legacy.s5">Conectando…</span>
-                        </div>
-
-                        <div id="registroCuentaVersus" class="registro-cuenta-versus oculto">
-                            <p data-i18n="multiplayer.legacy.s6">Guardá tu jugador para tener amigos y recibir desafíos en cualquier dispositivo.</p>
-                            <label for="correoCuentaVersus">
-                                <span data-i18n="multiplayer.legacy.s7">Tu correo</span>
-                                <input id="correoCuentaVersus" type="email" autocomplete="email"
-                                    placeholder="tu@correo.com" data-i18n-placeholder="multiplayer.legacy.s8">
-                            </label>
-                            <div class="acciones-cuenta-versus">
-                                <button id="btnGuardarCuentaVersus" type="button" data-i18n="multiplayer.legacy.s9">Guardar mi jugador</button>
-                                <button id="btnEntrarCuentaVersus" class="secundario" type="button" data-i18n="multiplayer.legacy.s10">Ya tengo cuenta</button>
-                                <button id="btnGoogleCuentaVersus" class="secundario" type="button" data-i18n="multiplayer.legacy.s11">Continuar con Google</button>
-                            </div>
-                            <small data-i18n="multiplayer.legacy.s12">Podés seguir jugando como invitado si no querés registrarte.</small>
-                        </div>
-
-                        <div id="crearPerfilVersus" class="crear-perfil-versus oculto">
-                            <p data-i18n="multiplayer.legacy.s13">Elegí el nombre que verán tus amigos.</p>
-                            <label for="aliasPerfilVersus">
-                                <span data-i18n="multiplayer.legacy.s14">Nombre de jugador</span>
-                                <input id="aliasPerfilVersus" type="text" minlength="2" maxlength="16"
-                                    autocomplete="nickname" placeholder="Ej: Gabi" data-i18n-placeholder="multiplayer.legacy.s15">
-                            </label>
-                            <button id="btnGuardarPerfilVersus" type="button" data-i18n="multiplayer.legacy.s16">Crear perfil de Amigos</button>
-                        </div>
-
-                        <div id="contenidoAmigosVersus" class="contenido-amigos-versus oculto">
-                            <div class="identidad-amigos-versus">
-                                <div>
-                                    <small data-i18n="multiplayer.legacy.s17">TU CÓDIGO DE AMIGO</small>
-                                    <strong id="codigoAmigoVersus">--------</strong>
-                                </div>
-                                <button id="btnCopiarCodigoAmigoVersus" class="secundario" type="button" data-i18n="multiplayer.legacy.s18">Copiar</button>
-                            </div>
-                            <form id="formAgregarAmigoVersus" class="agregar-amigo-versus">
-                                <label for="codigoNuevoAmigoVersus" class="sr-only" data-i18n="multiplayer.legacy.s19">Código de amigo</label>
-                                <input id="codigoNuevoAmigoVersus" type="text" maxlength="8" autocomplete="off"
-                                    autocapitalize="characters" placeholder="C&Oacute;DIGO DE AMIGO" data-i18n-placeholder="multiplayer.legacy.s20">
-                                <button type="submit" data-i18n="multiplayer.legacy.s21">Agregar</button>
-                            </form>
-                            <div id="solicitudesAmigosVersus" class="lista-social-versus"></div>
-                            <div id="invitacionesVersus" class="lista-social-versus"></div>
-                            <div class="titulo-lista-amigos-versus">
-                                <strong data-i18n="multiplayer.legacy.s22">Tus amigos</strong>
-                                <small data-i18n="multiplayer.legacy.s23">Desafialos sin crear una sala</small>
-                            </div>
-                            <div id="listaAmigosVersus" class="lista-social-versus"></div>
-                        </div>
-                        <p id="mensajeAmigosVersus" class="mensaje-amigos-versus" role="status" aria-live="polite"></p>
-                    </section>
+                    <button id="btnAmigosSala" type="button" data-i18n="profile.friends.open">Amigos y desafíos</button>
 
                     <label class="campo-sala-versus campo-alias-versus" for="aliasSalaVersus">
                         <span data-i18n="multiplayer.legacy.s24">Tu nombre</span>
@@ -1538,12 +1481,81 @@
         <button id="tiendaIrPerfil" type="button" data-i18n="shop.goProfile">Ir a Mi perfil</button>
     </dialog>
 
+    <dialog id="amigosPerfil" aria-labelledby="tituloAmigosVersus"><section class="panel-amigos-versus" aria-labelledby="tituloAmigosVersus">
+                        <div class="cabecera-amigos-versus">
+                            <div>
+                                <small data-i18n="multiplayer.legacy.s3">CUENTA DE JUGADOR</small>
+                                <h3 id="tituloAmigosVersus" data-i18n="profile.friends.title">Amigos</h3>
+                            </div>
+                            <button id="cerrarAmigosPerfil" type="button" data-i18n="profile.friends.back">← Volver</button></div><div class="amigos-conexion"><span id="estadoCuentaVersus" class="estado-cuenta-versus" data-i18n="multiplayer.legacy.s5">Conectando…</span>
+                        </div>
+
+                        <p id="conexionAmigosPerfil" role="status" aria-live="polite"></p><button id="reintentarAmigosPerfil" hidden type="button" class="secundario" data-i18n="profile.retryConnection">Reintentar conexión</button>
+                        <div id="registroCuentaVersus" class="registro-cuenta-versus oculto">
+                            <p data-i18n="multiplayer.legacy.s6">Guardá tu jugador para tener amigos y recibir desafíos en cualquier dispositivo.</p>
+                            <label for="correoCuentaVersus">
+                                <span data-i18n="multiplayer.legacy.s7">Tu correo</span>
+                                <input id="correoCuentaVersus" type="email" autocomplete="email"
+                                    placeholder="tu@correo.com" data-i18n-placeholder="multiplayer.legacy.s8">
+                            </label>
+                            <div class="acciones-cuenta-versus">
+                                <button id="btnGuardarCuentaVersus" type="button" data-i18n="multiplayer.legacy.s9">Guardar mi jugador</button>
+                                <button id="btnEntrarCuentaVersus" class="secundario" type="button" data-i18n="multiplayer.legacy.s10">Ya tengo cuenta</button>
+                                <button id="btnGoogleCuentaVersus" class="secundario" type="button" data-i18n="multiplayer.legacy.s11">Continuar con Google</button>
+                            </div>
+                            <small data-i18n="multiplayer.legacy.s12">Podés seguir jugando como invitado si no querés registrarte.</small>
+                        </div>
+
+                        <div id="crearPerfilVersus" class="crear-perfil-versus oculto">
+                            <p data-i18n="multiplayer.legacy.s13">Elegí el nombre que verán tus amigos.</p>
+                            <label for="aliasPerfilVersus">
+                                <span data-i18n="multiplayer.legacy.s14">Nombre de jugador</span>
+                                <input id="aliasPerfilVersus" type="text" minlength="2" maxlength="16"
+                                    autocomplete="nickname" placeholder="Ej: Gabi" data-i18n-placeholder="multiplayer.legacy.s15">
+                            </label>
+                            <button id="btnGuardarPerfilVersus" type="button" data-i18n="multiplayer.legacy.s16">Crear perfil de Amigos</button>
+                        </div>
+
+<div id="contenidoAmigosVersus" class="contenido-amigos-versus oculto">
+ <div class="amigos-tabs" role="tablist" aria-label="Amigos" data-i18n-aria-label="profile.friends.title">
+ <button id="tabAmigos-lista" type="button" role="tab" aria-controls="amigos-lista" aria-selected="true" tabindex="0" data-amigos-tab="lista" data-i18n="profile.friends.list">Mis amigos</button>
+<button id="tabAmigos-solicitudes" type="button" role="tab" aria-controls="amigos-solicitudes" aria-selected="false" tabindex="-1" data-amigos-tab="solicitudes" data-i18n="profile.friends.requests">Solicitudes</button>
+<button id="tabAmigos-agregar" type="button" role="tab" aria-controls="amigos-agregar" aria-selected="false" tabindex="-1" data-amigos-tab="agregar" data-i18n="profile.friends.add">Agregar</button>
+ </div>
+ <section id="amigos-lista" role="tabpanel" aria-labelledby="tabAmigos-lista">
+  <div id="listaAmigosVersus" class="lista-social-versus"></div>
+  <h4 data-i18n="profile.friends.invites">Desafíos</h4><div id="invitacionesVersus" class="lista-social-versus"></div>
+ </section>
+ <section id="amigos-solicitudes" role="tabpanel" aria-labelledby="tabAmigos-solicitudes" hidden>
+  <h4 data-i18n="profile.friends.received">Recibidas</h4><div id="solicitudesAmigosVersus" class="lista-social-versus"></div>
+  <h4 data-i18n="profile.friends.sent">Enviadas</h4><div id="solicitudesEnviadasAmigos" class="lista-social-versus"></div>
+ </section>
+ <section id="amigos-agregar" role="tabpanel" aria-labelledby="tabAmigos-agregar" hidden>
+  <p data-i18n="profile.friends.codeHelp">Compartí tu código o escribí el de otro jugador.</p>                            <div class="identidad-amigos-versus">
+                                <div>
+                                    <small data-i18n="multiplayer.legacy.s17">TU CÓDIGO DE AMIGO</small>
+                                    <strong id="codigoAmigoVersus">--------</strong>
+                                </div>
+                                <button id="btnCopiarCodigoAmigoVersus" class="secundario" type="button" data-i18n="multiplayer.legacy.s18">Copiar</button>
+                            </div>
+                            <form id="formAgregarAmigoVersus" class="agregar-amigo-versus">
+                                <label for="codigoNuevoAmigoVersus" class="sr-only" data-i18n="multiplayer.legacy.s19">Código de amigo</label>
+                                <input id="codigoNuevoAmigoVersus" type="text" maxlength="8" autocomplete="off"
+                                    autocapitalize="characters" placeholder="C&Oacute;DIGO DE AMIGO" data-i18n-placeholder="multiplayer.legacy.s20">
+                                <button type="submit" data-i18n="multiplayer.legacy.s21">Agregar</button>
+                            </form>
+
+ </section>
+</div>
+                        <p id="mensajeAmigosVersus" class="mensaje-amigos-versus" role="status" aria-live="polite"></p>
+                    </section></dialog>
     <dialog id="editorAvatar" aria-labelledby="tituloAvatar">
         <header class="avatar-header"><div><small>AVENTURA DE PALABRAS</small><h2 id="tituloAvatar" data-i18n="menu.myProfile">Mi perfil</h2></div><button id="cerrarAvatar" type="button" data-i18n="menu.back">← Volver al menú</button></header>
         <section class="perfil-cabecera" aria-label="Identidad del jugador" data-i18n-aria-label="profile.identity">
             <span id="avatarPreview"></span>
             <div class="perfil-identidad"><small data-i18n="profile.player">JUGADOR</small><h3 id="perfilNombre">Aventurero</h3><p class="perfil-id"><span data-i18n="profile.friendCode">Código de amigo:</span> <span id="perfilId" data-i18n="multiplayer.legacy.s5">Conectando…</span></p><p id="avatarDescripcion"></p></div>
         </section>
+        <section class="perfil-amigos-acceso" aria-labelledby="tituloAmigosPerfil"><div><h3 id="tituloAmigosPerfil" data-i18n="profile.friends.title">Amigos</h3><p data-i18n="profile.friends.intro">Compartí la aventura, consultá perfiles y desafiá a tus amigos.</p></div><button id="btnAmigosPerfil" type="button" data-i18n="profile.friends.open">Amigos y desafíos</button></section>
         <section class="perfil-historial" aria-labelledby="tituloHistorialPerfil">
             <h3 id="tituloHistorialPerfil" data-i18n="profile.history">Historial multijugador</h3>
             <p id="perfilEstado" role="status" aria-live="polite">Cargando tu historial…</p>
@@ -1583,7 +1595,7 @@
       <button id="reintentarPerfilPublico" class="secundario" type="button" hidden data-i18n="profile.retry">Reintentar</button>
     </dialog>
     <script src="js/i18n.js?v=20261015-3b-1"></script>
-    <script src="js/i18n-es-fallback.js?v=20261017-3g-1"></script>
+    <script src="js/i18n-es-fallback.js?v=20261018-v365-1"></script>
     <script src="js/i18n-ui.js?v=20261006-i18n-2b-1"></script>
     <script src="js/narrative-i18n.js?v=20261015-narrative-1"></script>
     <script src="js/i18n-settings.js?v=20261015-3b-1"></script>
@@ -1591,7 +1603,7 @@
     <script src="js/game-wallet.js?v=20261002-cinematicas-escala-1"></script>
     <script src="js/versus-ranks.js?v=20260922-medallas-3"></script>
     <script src="js/avatar-rewards.js?v=20261006-rewards-1"></script>
-    <script src="js/player-avatar.js?v=20261006-i18n-2b-1"></script>
+    <script src="js/player-avatar.js?v=20261018-v365-1"></script>
     <script src="js/multiplayer-i18n.js?v=20261017-3g-1"></script>
     <script src="js/versus-identity.js?v=20261017-3g-1"></script>
     <script src="js/audio-settings.js?v=20261015-audio-1"></script>
@@ -1602,7 +1614,7 @@
     <script src="js/word-gameplay.js?v=20261017-3g-1"></script>
     <script src="js/versus-engine.js?v=20261015-3b-1"></script>
     <script src="js/versus-room.js?v=20260922-alias-1"></script>
-    <script src="js/versus-room-supabase.js?v=20261017-3g-1"></script>
+    <script src="js/versus-room-supabase.js?v=20261018-v365-1"></script>
     <script src="js/puzzle-lessons.js?v=20261016-3f-1"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
     <script src="js/word-banks-versus.js?v=20261016-3e-1"></script>
@@ -1621,7 +1633,7 @@
     <script src="js/i18n-combat.js?v=20261007-i18n-2c-1"></script>
     <script src="js/world-music.js?v=20261015-audio-1"></script>
     <script src="js/character-music.js?v=20261015-audio-1"></script>
-    <script src="js/app.js?v=20261017-3g-1"></script>
+    <script src="js/app.js?v=20261018-v365-1"></script>
     <script src="js/lessons-i18n.js?v=20261016-3f-1"></script>
     <script src="js/cosmetic-shop.js?v=20261006-i18n-2b-1"></script>
     <script src="js/public-player-profile.js?v=20261006-i18n-2b-1"></script>

@@ -1,2 +1,9 @@
 # Acceso privado del autor; nunca publicar el enlace de activación.
 .local-developer/
+
+# Local CLI state and generated visual QA output.
+supabase/.temp/
+tools/*-preview.png
+tools/i18n-*.png
+tools/reward-frames-*.png
+tools/tower-controls-*.png

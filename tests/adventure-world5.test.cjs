@@ -65,6 +65,7 @@ function endingHarness(state, playback = async () => {}) {
     prefiereReducirMovimiento: { matches: false }, desafiosPorMision: 3,
     desafiosCompletados: 0, detenerSonidos() {},
     cristalesObtenidos: 4, actualizarJugador() {},
+    guardarDesbloqueoAzrak() { calls.push("unlock:azrak"); },
     AzrakWorld: { playCinematic: playback },
     guardarProgreso() { calls.push(`save:${ctx.estadoFinalAzrak}`); },
     iniciarDueloAventura(type) { calls.push(type); },
@@ -94,7 +95,7 @@ test('ending is resumable, runs once, and only completes after cinematic playbac
   release(); await pending;
   assert.equal(h.ctx.estadoFinalAzrak, 'completo');
   assert.equal(h.ctx.finalAzrakEnCurso, false);
-  assert.deepEqual(h.calls, ['save:completo', 'end']);
+  assert.deepEqual(h.calls, ['unlock:azrak', 'save:completo', 'end']);
 });
 
 test('reloading each final phase chooses the correct battle and never repeats Shadow after victory', () => {

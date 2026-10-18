@@ -117,5 +117,26 @@
     "world": "Conclua o mundo {world}",
     "rank": "Alcance o rank {rank}",
     "gift": "🎁 Molduras desbloqueadas: {frames}. Escolha em Meu perfil."
+  },
+  "friends": {
+    "title": "Amigos",
+    "open": "Amigos e desafios",
+    "intro": "Compartilhe a aventura, veja perfis e desafie seus amigos.",
+    "back": "← Voltar",
+    "list": "Meus amigos",
+    "requests": "Solicitações",
+    "add": "Adicionar",
+    "invites": "Desafios",
+    "received": "Recebidas",
+    "sent": "Enviadas",
+    "codeHelp": "Compartilhe seu código ou digite o código de outro jogador.",
+    "cancelRequest": "Cancelar solicitação",
+    "noReceived": "Nenhuma solicitação recebida.",
+    "noSent": "Nenhuma solicitação enviada.",
+    "noInvites": "Nenhum desafio pendente.",
+    "offline": "Conecte-se para atualizar Amigos, ver perfis e enviar ou responder solicitações e desafios.",
+    "onlineHelp": "Amigos e duelos online precisam de conexão.",
+    "retryHelp": "Não foi possível atualizar Amigos. Verifique a conexão e toque em Tentar conectar novamente.",
+    "inviteLanguage": "Palavras em {language} · Aceite para abrir a sala."
   }
 }

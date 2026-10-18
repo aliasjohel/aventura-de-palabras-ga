@@ -1,0 +1,44 @@
+-- Full file only: no synthetic row survives.
+begin;
+do $$
+declare a uuid:=gen_random_uuid();b uuid:=gen_random_uuid();c uuid:=gen_random_uuid();pa public.versus_profiles;pb public.versus_profiles;f public.versus_friendships;j jsonb;k integer;begin
+ insert into auth.users(id,is_anonymous) values(a,false),(b,false),(c,false);
+ perform set_config('request.jwt.claim.sub',a::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',a,'is_anonymous',false)::text,true);
+ set local role authenticated;pa:=public.upsert_versus_profile('QA Perfil Uno');
+ perform set_config('request.jwt.claim.sub',b::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',b,'is_anonymous',false)::text,true);
+ pb:=public.upsert_versus_profile('QA Perfil Dos');
+ perform public.save_versus_appearance('mago','bosque');
+ perform set_config('request.jwt.claim.sub',a::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',a,'is_anonymous',false)::text,true);
+ f:=public.send_versus_friend_request(pb.friend_code);
+ begin perform public.respond_versus_friend_request(f.id,true);raise exception using errcode='23514',message='requester self-accepted';exception when sqlstate 'P0001' then null;end;
+ j:=public.get_versus_social_state();assert jsonb_array_length(j->'outgoing_requests')=1;
+ perform public.respond_versus_friend_request(f.id,false);
+ reset role;
+ assert (select status='declined' from public.versus_friendships where id=f.id),'cancel must keep row';
+ set local role authenticated;
+ f:=public.send_versus_friend_request(pb.friend_code);
+ perform set_config('request.jwt.claim.sub',c::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',c,'is_anonymous',false)::text,true);
+ begin perform public.respond_versus_friend_request(f.id,false);raise exception using errcode='23514',message='outsider cancelled';exception when sqlstate 'P0001' then null;end;
+ perform set_config('request.jwt.claim.sub',b::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',b,'is_anonymous',false)::text,true);
+ j:=public.get_versus_social_state();assert jsonb_array_length(j->'incoming_requests')=1;
+ perform public.respond_versus_friend_request(f.id,true);
+ perform set_config('request.jwt.claim.sub',a::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',a,'is_anonymous',false)::text,true);
+ begin perform public.respond_versus_friend_request(f.id,false);raise exception using errcode='23514',message='late cancel removed friendship';exception when sqlstate 'P0001' then null;end;
+ reset role;
+ assert (select status='accepted' from public.versus_friendships where id=f.id);
+ for k in 1..10 loop insert into versus_private.ranked_results(match_id,user_id,alias,points,win,draw,before_points,after_points) values(gen_random_uuid(),b,'QA Perfil Dos',3,true,false,3*(k-1),3*k);end loop;
+ set local role authenticated;
+ j:=public.get_versus_social_state();
+ assert j#>>'{friends,0,user_id}'=b::text;
+ assert j#>>'{friends,0,avatar}'='mago';assert j#>>'{friends,0,frame}'='bosque';assert (j#>>'{friends,0,points}')::int=30,'authoritative points';
+ assert not (j#>'{friends,0}' ? 'email'),'private fields exposed';
+ perform set_config('request.jwt.claim.sub',b::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',b,'is_anonymous',false)::text,true);
+ j:=public.get_versus_social_state();assert (j#>>'{friends,0,points}')::int=0,'zero points fallback';
+ perform set_config('request.jwt.claim.sub',c::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',c,'is_anonymous',false)::text,true);
+ j:=public.get_versus_social_state();assert jsonb_array_length(j->'friends')=0,'another account sees friends';
+ reset role;
+ assert not has_function_privilege('anon','public.get_versus_social_state()','EXECUTE');
+ assert not has_function_privilege('anon','public.respond_versus_friend_request(uuid,boolean)','EXECUTE');
+end $$;
+select 'PASS Stage 3: code requests, non-destructive cancellation, no self-accept, late cancellation, metadata, rank, fallback, privacy and privileges' result;
+rollback;

@@ -1369,8 +1369,15 @@ async function asegurarConexionSalasVersus() {
     cancelarSuscripcionInvitacionesVersus?.();
     cancelarSuscripcionInvitacionesVersus = adaptadorSalasVersus
       .suscribirInvitacionesAceptadas((sala) => {
+        for (const id of ["perfilPublico", "amigosPerfil", "editorAvatar"]) {
+          const dialogo = document.getElementById(id);
+          if (dialogo?.open) dialogo.close();
+        }
+        modoArcadeActivo = false;
         actualizarEstadoMultijugador(sala);
-        abrirSeleccionPersonajeVersus();
+        if (sala.estado === "playing") actualizarPartidaOnline(adaptadorSalasVersus.obtenerPartida());
+        else if (sala.estado === "preparing") abrirPreparacionVersus();
+        else abrirSeleccionPersonajeVersus();
       });
     actualizarEstadoMultijugador(adaptadorSalasVersus.obtenerSala());
     actualizarPartidaOnline(adaptadorSalasVersus.obtenerPartida());
@@ -1388,13 +1395,58 @@ function mostrarErrorSalaVersus(mensaje = "") {
   GameUI.text(errorSalaVersus, OnlineUI.error(mensaje));
 }
 
+let amigosOperacionEnCurso = false;
+function actualizarDisponibilidadAmigos() {
+  const dialogo = document.getElementById("amigosPerfil");
+  const sinRed = navigator.onLine === false;
+  const error = mensajeAmigosVersus.dataset.errorConexion;
+  GameUI.text(document.getElementById("conexionAmigosPerfil"), GameUI.key(sinRed ? "profile.friends.offline" : error ? "profile.friends.retryHelp" : "profile.friends.onlineHelp"));
+  dialogo.querySelectorAll("[data-amigos-red], #registroCuentaVersus button, #crearPerfilVersus button, #formAgregarAmigoVersus button, #registroCuentaVersus input, #crearPerfilVersus input, #formAgregarAmigoVersus input").forEach(nodo=>{nodo.disabled=sinRed||amigosOperacionEnCurso;});
+  document.getElementById("reintentarAmigosPerfil").hidden=!error;
+  document.getElementById("reintentarAmigosPerfil").disabled=sinRed||amigosOperacionEnCurso;
+}
+function seleccionarPestanaAmigos(id) {
+  document.querySelectorAll("[data-amigos-tab]").forEach(boton=>{
+    const activo=boton.dataset.amigosTab===id;
+    boton.setAttribute("aria-selected",String(activo));boton.tabIndex=activo?0:-1;
+    document.getElementById("amigos-"+boton.dataset.amigosTab).hidden=!activo;
+  });
+}
+async function abrirAmigosPerfil() {
+  const dialogo=document.getElementById("amigosPerfil");
+  if (!dialogo.open) dialogo.showModal();
+  seleccionarPestanaAmigos("lista");
+  actualizarDisponibilidadAmigos();
+  if (navigator.onLine===false) return;
+  try {
+    const adaptador=await asegurarConexionSalasVersus();
+    if (!adaptador.cargarEstadoSocial) throw new Error("No pudimos cargar Amigos.");
+    await adaptador.cargarEstadoSocial();
+  } catch (error) {
+    actualizarPanelAmigosVersus(null,null,error,false);
+  }
+}
+for (const id of ["btnAmigosPerfil","btnAmigosSala"]) document.getElementById(id).addEventListener("click",()=>{void abrirAmigosPerfil();});
+document.getElementById("cerrarAmigosPerfil").addEventListener("click",()=>document.getElementById("amigosPerfil").close());
+document.getElementById("reintentarAmigosPerfil").addEventListener("click",()=>{void abrirAmigosPerfil();});
+for (const boton of document.querySelectorAll("[data-amigos-tab]")) {
+  boton.addEventListener("click",()=>seleccionarPestanaAmigos(boton.dataset.amigosTab));
+  boton.addEventListener("keydown",evento=>{
+    const botones=[...document.querySelectorAll("[data-amigos-tab]")];const indice=botones.indexOf(boton);
+    const siguiente=evento.key==="Home"?0:evento.key==="End"?botones.length-1:evento.key==="ArrowRight"?(indice+1)%botones.length:evento.key==="ArrowLeft"?(indice+botones.length-1)%botones.length:null;
+    if(siguiente!==null){evento.preventDefault();seleccionarPestanaAmigos(botones[siguiente].dataset.amigosTab);botones[siguiente].focus();}
+  });
+}
+window.addEventListener("offline",actualizarDisponibilidadAmigos);
+window.addEventListener("online",()=>{actualizarDisponibilidadAmigos();if(document.getElementById("amigosPerfil").open)void abrirAmigosPerfil();});
+
 function mostrarMensajeAmigosVersus(mensaje = "", esError = false) {
   delete mensajeAmigosVersus.dataset.errorConexion;
   GameUI.text(mensajeAmigosVersus, esError ? OnlineUI.error(mensaje) : OnlineUI.value(mensaje));
   mensajeAmigosVersus.classList.toggle("error", esError);
 }
 
-function crearFilaSocialVersus({ nombre, detalle, acciones = [] }) {
+function crearFilaSocialVersus({ nombre, detalle, acciones = [], identidad, puntos }) {
   const fila = document.createElement("article");
   fila.className = "fila-social-versus";
   const textos = document.createElement("div");
@@ -1403,15 +1455,24 @@ function crearFilaSocialVersus({ nombre, detalle, acciones = [] }) {
   const textoDetalle = document.createElement("small");
   GameUI.text(textoDetalle, detalle);
   textos.append(titulo, textoDetalle);
+  if (Number.isFinite(Number(puntos)) && puntos != null) {
+    const division = VersusRanks.division(puntos);
+    const rango = document.createElement("span");
+    rango.className = "amigo-rango";
+    GameUI.text(rango, GameUI.key("profile.rankDivision", {rank:GameUI.key("profile.ranks."+division.rank.key+".name"),division:division.number?" "+division.number:""}));
+    textos.append(rango);
+  }
   const botones = document.createElement("div");
   botones.className = "acciones-fila-social-versus";
   acciones.forEach(({ texto, accion }) => {
     const boton = document.createElement("button");
     boton.type = "button";
     OnlineUI.text(boton, texto);
+    boton.dataset.amigosRed = "true";
     boton.addEventListener("click", () => ejecutarAccionAmigosVersus(accion));
     botones.append(boton);
   });
+  if (identidad) fila.append(PlayerAvatar.crear(identidad, { miniatura: true }));
   fila.append(textos, botones);
   return fila;
 }
@@ -1434,7 +1495,7 @@ function actualizarPanelAmigosVersus(
 
   if (errorSocial) {
     mensajeAmigosVersus.dataset.errorConexion = "true";
-    OnlineUI.text(mensajeAmigosVersus, `${errorSocial.message} Volvé a abrir Multijugador para reintentar.`);
+    GameUI.text(mensajeAmigosVersus, GameUI.key("profile.friends.retryHelp"));
     mensajeAmigosVersus.classList.add("error");
   } else if (mensajeAmigosVersus.dataset.errorConexion) {
     delete mensajeAmigosVersus.dataset.errorConexion;
@@ -1442,10 +1503,17 @@ function actualizarPanelAmigosVersus(
     mensajeAmigosVersus.classList.remove("error");
   }
 
-  if (!permanente || !estado?.profile) return;
+  actualizarDisponibilidadAmigos();
+  if (!permanente || !estado?.profile) {
+    for (const id of ["listaAmigosVersus", "solicitudesAmigosVersus", "solicitudesEnviadasAmigos", "invitacionesVersus"]) document.getElementById(id).replaceChildren();
+    codigoAmigoVersus.textContent = "--------";
+    return;
+  }
   aliasSalaVersus.value = estado.profile.alias;
   codigoAmigoVersus.textContent = estado.profile.friend_code;
   solicitudesAmigosVersus.replaceChildren();
+  const enviadas = document.getElementById("solicitudesEnviadasAmigos");
+  enviadas.replaceChildren();
   invitacionesVersus.replaceChildren();
   listaAmigosVersus.replaceChildren();
 
@@ -1460,15 +1528,16 @@ function actualizarPanelAmigosVersus(
     }));
   });
   (estado.outgoing_requests || []).forEach((solicitud) => {
-    solicitudesAmigosVersus.append(crearFilaSocialVersus({
+    enviadas.append(crearFilaSocialVersus({
       nombre: OnlineUI.value(`Solicitud enviada a ${solicitud.alias}`),
       detalle: OnlineUI.value("Esperando respuesta"),
+      acciones: [{texto:GameUI.key("profile.friends.cancelRequest"),accion:()=>adaptadorSalasVersus.cancelarSolicitudAmistad(solicitud.id)}],
     }));
   });
   (estado.incoming_invites || []).forEach((invitacion) => {
     invitacionesVersus.append(crearFilaSocialVersus({
       nombre: OnlineUI.value(`${invitacion.alias} te desafía`),
-      detalle: OnlineUI.value("Aceptá y la partida comenzará automáticamente"),
+      detalle: GameUI.key("profile.friends.inviteLanguage", {language:GameUI.key("multiplayer.languages."+(invitacion.word_language||"es"))}),
       acciones: [
         { texto: "Aceptar", accion: () => adaptadorSalasVersus.responderInvitacion(invitacion.id, true) },
         { texto: "Rechazar", accion: () => adaptadorSalasVersus.responderInvitacion(invitacion.id, false) },
@@ -1487,6 +1556,8 @@ function actualizarPanelAmigosVersus(
   (estado.friends || []).forEach((amigo) => {
     listaAmigosVersus.append(crearFilaSocialVersus({
       nombre: amigo.alias,
+      identidad: {avatar:amigo.avatar,frame:amigo.frame},
+      puntos: amigo.points,
       detalle: OnlineUI.value(`Código ${amigo.friend_code}`),
       acciones: [
         { texto: "Ver perfil", accion: () => PublicPlayerProfile.abrir(amigo.user_id) },
@@ -1495,15 +1566,24 @@ function actualizarPanelAmigosVersus(
       ],
     }));
   });
+  for (const [id,key] of [["solicitudesAmigosVersus","noReceived"],["solicitudesEnviadasAmigos","noSent"],["invitacionesVersus","noInvites"]]) {
+    const lista = document.getElementById(id);
+    if (!lista.children.length) {const vacio=document.createElement("p");vacio.className="amigos-vacio";GameUI.text(vacio,GameUI.key("profile.friends."+key));lista.append(vacio);}
+  }
   if (!(estado.friends || []).length) {
     listaAmigosVersus.append(crearFilaSocialVersus({
       nombre: OnlineUI.value("Todavía no agregaste amigos"),
       detalle: OnlineUI.value("Compartí tu código o escribí el de otro jugador"),
     }));
   }
+  actualizarDisponibilidadAmigos();
 }
 
 async function ejecutarAccionAmigosVersus(accion, mensajeExito = "Listo") {
+  if (amigosOperacionEnCurso) return;
+  if (navigator.onLine === false) {actualizarDisponibilidadAmigos();return;}
+  amigosOperacionEnCurso = true;
+  actualizarDisponibilidadAmigos();
   mostrarMensajeAmigosVersus("Procesando…");
   try {
     await asegurarConexionSalasVersus();
@@ -1511,7 +1591,7 @@ async function ejecutarAccionAmigosVersus(accion, mensajeExito = "Listo") {
     mostrarMensajeAmigosVersus(mensajeExito);
   } catch (error) {
     mostrarMensajeAmigosVersus(error.message || "No pudimos completar la acción.", true);
-  }
+  } finally {amigosOperacionEnCurso=false;actualizarDisponibilidadAmigos();}
 }
 
 function actualizarSalaVersus(sala) {
