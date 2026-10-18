@@ -36,7 +36,7 @@
     const lado = propio ? "Propio" : "Rival";
     const globo = el(`mensajeDuelo${lado}`);
     clearTimeout(temporizadores.get(lado));
-    globo.textContent = `${propio ? "Vos" : jugador.alias}: ${texto}`;
+    GameUI.text(globo, GameUI.key("multiplayer.quickBubble", {alias: propio ? OnlineUI.value("Vos") : jugador.alias, message: OnlineUI.value(texto)}));
     globo.hidden = false;
     temporizadores.set(lado, setTimeout(() => { globo.hidden = true; }, 4000));
   }
@@ -45,7 +45,7 @@
     el("opcionesMensajesVersus").querySelectorAll("button").forEach((boton) => {
       boton.disabled = enviando || segundos > 0 || !contexto?.activo;
     });
-    abrir.textContent = enviando ? "Enviando…" : segundos ? `💬 ${segundos}s` : "💬 Mensajes";
+    OnlineUI.text(abrir, enviando ? "Enviando…" : segundos ? `💬 ${segundos}s` : "💬 Mensajes");
     if (!enviando && segundos === 0) { clearInterval(reloj); reloj = null; }
   }
   async function enviar(id) {
@@ -75,7 +75,7 @@
     const boton = document.createElement("button");
     boton.type = "button";
     boton.dataset.mensaje = id;
-    boton.textContent = texto;
+    OnlineUI.text(boton, texto);
     boton.addEventListener("click", () => { void enviar(id); });
     el("opcionesMensajesVersus").append(boton);
   });
@@ -89,7 +89,7 @@
   });
   function actualizarSilencio() {
     el("silenciarMensajesVersus").setAttribute("aria-pressed", String(silenciado));
-    el("silenciarMensajesVersus").textContent = silenciado ? "Activar mensajes del rival" : "Silenciar rival";
+    OnlineUI.text(el("silenciarMensajesVersus"), silenciado ? "Activar mensajes del rival" : "Silenciar rival");
   }
   el("silenciarMensajesVersus").addEventListener("click", () => {
     silenciado = !silenciado;
@@ -127,7 +127,7 @@
           avatar.replaceChildren(PlayerAvatar.crear(identidad));
           avatar.dataset.identidad = firma;
         }
-        avatar.setAttribute("aria-label", `Avatar de ${jugador.alias}`);
+        GameUI.attribute(avatar,"aria-label",OnlineUI.value(`Avatar de ${jugador.alias}`));
         document.querySelector(`.versus-jugador-${propio ? "uno" : "dos"} .versus-etiqueta`).textContent = jugador.alias;
       }
       if (!jugador) continue;

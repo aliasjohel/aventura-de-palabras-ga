@@ -36,9 +36,9 @@
     });
     cache.set(language, api); return api;
   }
-  function createContext({requestedLanguage = 'es', availableLanguages = ['es'], online = false, mode = 'adventure', bankVersion} = {}) {
+  function createContext({requestedLanguage = 'es', availableLanguages = ['es'], online = false, onlineLanguage = 'es', mode = 'adventure', bankVersion} = {}) {
     const requested = Object.hasOwn(definitions, requestedLanguage) ? requestedLanguage : 'es';
-    const language = online ? 'es' : availableLanguages.includes(requested) ? requested : 'es';
+    const language = online ? (Object.hasOwn(definitions, onlineLanguage) ? onlineLanguage : 'es') : availableLanguages.includes(requested) ? requested : 'es';
     if (!availableLanguages.includes(language)) throw new Error('No complete word bank available');
     return Object.freeze({mode, requestedLanguage: requested, language, fallback: requested !== language,
       bankVersion: bankVersion || (language === 'es' ? 'es-original-v1' : language + '-v1'), rulesVersion: version, rules: rules(language)});

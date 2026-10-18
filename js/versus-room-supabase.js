@@ -13,6 +13,7 @@
     if (!cliente) throw new Error("El cliente de Supabase no está disponible.");
 
     let usuarioId = null;
+    let idiomaBusqueda = null;
     let usuarioActual = null;
     let sesionActual = null;
     let estadoSocial = null;
@@ -252,7 +253,7 @@
     async function cargarSala(roomId) {
       const versionCarga = versionCanalSala;
       const [{ data: sala, error: errorSala }, { data: jugadores, error: errorJugadores }] = await Promise.all([
-        cliente.from("versus_rooms").select("id, code, status, host_id, created_at, updated_at, queue_mode").eq("id", roomId).maybeSingle(),
+        cliente.from("versus_rooms").select("id, code, status, host_id, created_at, updated_at, queue_mode, word_language").eq("id", roomId).maybeSingle(),
         cliente.from("versus_players").select("id, user_id, alias, slot, ready, character_key, theme_key, preparation_ready, rematch_ready, joined_at, avatar_key, frame_key, quick_message_key, quick_message_at").eq("room_id", roomId).order("slot"),
       ]);
 
@@ -285,6 +286,7 @@
       salaActual = {
         id: sala.id,
         codigo: sala.code,
+        idioma: sala.word_language || "es",
         modo: sala.queue_mode,
         estado: sala.status,
         creadaEn: sala.created_at,
@@ -396,7 +398,7 @@
       const nombre = raiz.VersusRoom.validarAlias(alias);
       if (nombre.length < 2) throw new Error("Escribí un nombre de al menos 2 caracteres.");
 
-      const { data, error } = await cliente.rpc("create_versus_room", { p_alias: nombre });
+      const { data, error } = await cliente.rpc("create_versus_room_localized", { p_alias: nombre, p_language: raiz.I18n?.language || "es" });
       if (error) throw traducirError(error, "No pudimos crear la sala.");
       await cargarSala(data.id);
       await escucharSala(data.id);
@@ -405,10 +407,12 @@
 
     async function buscarPartida({ alias, cancelar = false, modo = "classic" }) {
       if (!usuarioId) await inicializar();
-      const { data, error } = await cliente.rpc("find_versus_opponent_mode", {
+      const { data, error } = await cliente.rpc("find_versus_opponent_localized", {
+        p_language: raiz.I18n?.language || "es",
         p_alias: cancelar ? raiz.VersusRoom.limpiarAlias(alias) : raiz.VersusRoom.validarAlias(alias), p_cancel: cancelar, p_mode: modo,
       });
-      if (error) throw traducirError(error, "No pudimos buscar un rival.");
+      if (error) { idiomaBusqueda = null; throw traducirError(error, "No pudimos buscar un rival."); }
+      if(cancelar || data?.room_id) idiomaBusqueda = null;
       if (data?.room_id) {
         await cargarSala(data.room_id);
         await escucharSala(data.room_id);
@@ -453,7 +457,7 @@
       if (nombre.length < 2) throw new Error("Escribí un nombre de al menos 2 caracteres.");
       if (codigoLimpio.length !== 6) throw new Error("El código debe tener 6 caracteres.");
 
-      const { data, error } = await cliente.rpc("join_versus_room", {
+      const { data, error } = await cliente.rpc("join_versus_room_localized", {
         p_code: codigoLimpio,
         p_alias: nombre,
       });
@@ -597,14 +601,14 @@
       "remove_versus_friend", { p_friendship_id: id }, "No pudimos quitar al amigo.",
     );
     const enviarInvitacion = (id) => ejecutarRpcSocial(
-      "send_versus_invite", { p_friend_id: id }, "No pudimos enviar el desafío.",
+      "send_versus_invite_localized", { p_friend_id: id, p_language: raiz.I18n?.language || "es" }, "No pudimos enviar el desafío.",
     );
     const cancelarInvitacion = (id) => ejecutarRpcSocial(
       "cancel_versus_invite", { p_invite_id: id }, "No pudimos cancelar el desafío.",
     );
     async function responderInvitacion(id, aceptar) {
       const sala = await ejecutarRpcSocial(
-        "respond_versus_invite",
+        "respond_versus_invite_localized",
         { p_invite_id: id, p_accept: aceptar },
         "No pudimos responder el desafío.",
       );

@@ -3,7 +3,7 @@ const {create}=require('../js/i18n.js'),{catalog}=require('../js/cosmetic-store.
 const root=path.resolve(__dirname,'..'),loadJson=async file=>JSON.parse(fs.readFileSync(path.join(root,'locales',file),'utf8'));
 const flatten=(value,prefix='',result={})=>{for(const[name,item]of Object.entries(value)){const key=prefix?prefix+'.'+name:name;if(typeof item==='string'||Object.hasOwn(item,'other'))result[key]=item;else flatten(item,key,result);}return result;};
 test('interface catalogs have the same keys and interpolation parameters in all three languages',async()=>{
- for(const namespace of ['common','menu','profile','shop','characters','errors','adventure']){
+ for(const namespace of ['common','menu','profile','shop','characters','errors','adventure','multiplayer']){
   const spanish=flatten(await loadJson('es/'+namespace+'.json'));
   for(const locale of ['en','pt-BR']){
    const translated=flatten(await loadJson(locale+'/'+namespace+'.json'));assert.deepEqual(Object.keys(translated).sort(),Object.keys(spanish).sort());
@@ -14,7 +14,7 @@ test('interface catalogs have the same keys and interpolation parameters in all 
  }
 });
 test('all literal interface keys in markup and presentation modules exist in the Spanish catalog',async()=>{
- const known={};for(const ns of ['common','menu','profile','shop','characters','errors','adventure'])Object.assign(known,flatten(await loadJson('es/'+ns+'.json'),ns));
+ const known={};for(const ns of ['common','menu','profile','shop','characters','errors','adventure','multiplayer'])Object.assign(known,flatten(await loadJson('es/'+ns+'.json'),ns));
  for(const file of ['index.html','actualizar.html','js/i18n-ui.js','js/i18n-settings.js','js/player-avatar.js','js/cosmetic-shop.js','js/public-player-profile.js','js/pwa.js','js/app.js']){
   const source=fs.readFileSync(path.join(root,file),'utf8');
   for(const[,name]of source.matchAll(/["']((?:common|menu|profile|shop|characters|errors)\.[\w.-]+)["']/g))if(!name.endsWith('.'))assert(Object.hasOwn(known,name),file+' '+name);
@@ -64,7 +64,7 @@ test('the presentation layer remains usable with the previous installed i18n cor
  U.text(node,U.key('shop.buyPrice',{coins:200}));assert.equal(node.textContent,'Comprar por 200 monedas');
 });
 test('the generated offline fallback matches the central Spanish catalogs',async()=>{
- const values={};for(const ns of ['common','menu','profile','shop','characters','errors','adventure'])Object.assign(values,flatten(await loadJson('es/'+ns+'.json'),ns));
+ const values={};for(const ns of ['common','menu','profile','shop','characters','errors','adventure','multiplayer'])Object.assign(values,flatten(await loadJson('es/'+ns+'.json'),ns));
  const context={};vm.runInNewContext(fs.readFileSync(path.join(root,'js/i18n-es-fallback.js'),'utf8'),context);assert.deepEqual(JSON.parse(JSON.stringify(context.I18nSpanishUI)),values);
 });
 test('coin notices use natural singular and plural forms without rewriting Spanish',async()=>{

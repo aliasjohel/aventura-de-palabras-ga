@@ -831,13 +831,13 @@ function iniciarContextoPalabras(mode, online = false) {
   online = online || mode === 'online';
   const idiomasDisponibles = mode === 'adventure'
     ? ['es', ...['en', 'pt-BR'].filter(idioma => obtenerBancoPalabrasIdioma(idioma, escenarioActual))]
-    : online ? ['es']
+    : online ? ['es','en','pt-BR']
       : ['es', ...['en', 'pt-BR'].filter(idioma => obtenerBancosVersusIdioma(idioma))];
   const versionBanco = mode === 'adventure' && I18n.language !== 'es' && idiomasDisponibles.includes(I18n.language)
     ? (escenarioActual === 0 ? ForestWordBanks.version : AdventureWordBanks.version)
     : mode !== 'adventure' && !online && idiomasDisponibles.includes(I18n.language) && I18n.language !== 'es'
       ? LocalVersusWordBanks.version : undefined;
-  contextoPalabrasCombate = WordGameplay.createContext({mode, online, requestedLanguage: I18n.language, availableLanguages: idiomasDisponibles, bankVersion: versionBanco});
+  contextoPalabrasCombate = WordGameplay.createContext({mode, online, onlineLanguage: partidaOnlineVersus?.wordLanguage || adaptadorSalasVersus.obtenerSala()?.idioma || 'es', requestedLanguage: I18n.language, availableLanguages: idiomasDisponibles, bankVersion: versionBanco});
   const bancos = mode === 'adventure' ? [obtenerBancoPalabrasAventura()] : Object.values(obtenerBancosPalabrasVersus());
   for (const banco of bancos) if (!bancosPalabrasValidados.has(banco)) {
     WordGameplay.validateBank(banco, contextoPalabrasCombate.language, {hints: mode === 'adventure'});
@@ -1385,12 +1385,12 @@ async function asegurarConexionSalasVersus() {
 }
 
 function mostrarErrorSalaVersus(mensaje = "") {
-  errorSalaVersus.textContent = mensaje;
+  GameUI.text(errorSalaVersus, OnlineUI.error(mensaje));
 }
 
 function mostrarMensajeAmigosVersus(mensaje = "", esError = false) {
   delete mensajeAmigosVersus.dataset.errorConexion;
-  mensajeAmigosVersus.textContent = mensaje;
+  GameUI.text(mensajeAmigosVersus, esError ? OnlineUI.error(mensaje) : OnlineUI.value(mensaje));
   mensajeAmigosVersus.classList.toggle("error", esError);
 }
 
@@ -1399,16 +1399,16 @@ function crearFilaSocialVersus({ nombre, detalle, acciones = [] }) {
   fila.className = "fila-social-versus";
   const textos = document.createElement("div");
   const titulo = document.createElement("strong");
-  titulo.textContent = nombre;
+  GameUI.text(titulo, nombre);
   const textoDetalle = document.createElement("small");
-  textoDetalle.textContent = detalle;
+  GameUI.text(textoDetalle, detalle);
   textos.append(titulo, textoDetalle);
   const botones = document.createElement("div");
   botones.className = "acciones-fila-social-versus";
   acciones.forEach(({ texto, accion }) => {
     const boton = document.createElement("button");
     boton.type = "button";
-    boton.textContent = texto;
+    OnlineUI.text(boton, texto);
     boton.addEventListener("click", () => ejecutarAccionAmigosVersus(accion));
     botones.append(boton);
   });
@@ -1426,19 +1426,19 @@ function actualizarPanelAmigosVersus(
   registroCuentaVersus.classList.toggle("oculto", permanente);
   crearPerfilVersus.classList.toggle("oculto", !permanente || Boolean(estado?.profile));
   contenidoAmigosVersus.classList.toggle("oculto", !estado?.profile);
-  estadoCuentaVersus.textContent = errorSocial
-    ? "Conexión pendiente"
+  GameUI.text(estadoCuentaVersus, errorSocial
+    ? OnlineUI.value("Conexión pendiente")
     : permanente
-      ? (estado?.profile ? estado.profile.alias : "Cuenta guardada")
-    : "Modo invitado";
+      ? (estado?.profile ? estado.profile.alias : OnlineUI.value("Cuenta guardada"))
+    : OnlineUI.value("Modo invitado"));
 
   if (errorSocial) {
     mensajeAmigosVersus.dataset.errorConexion = "true";
-    mensajeAmigosVersus.textContent = `${errorSocial.message} Volvé a abrir Multijugador para reintentar.`;
+    OnlineUI.text(mensajeAmigosVersus, `${errorSocial.message} Volvé a abrir Multijugador para reintentar.`);
     mensajeAmigosVersus.classList.add("error");
   } else if (mensajeAmigosVersus.dataset.errorConexion) {
     delete mensajeAmigosVersus.dataset.errorConexion;
-    mensajeAmigosVersus.textContent = "";
+    OnlineUI.text(mensajeAmigosVersus, "");
     mensajeAmigosVersus.classList.remove("error");
   }
 
@@ -1451,8 +1451,8 @@ function actualizarPanelAmigosVersus(
 
   (estado.incoming_requests || []).forEach((solicitud) => {
     solicitudesAmigosVersus.append(crearFilaSocialVersus({
-      nombre: `${solicitud.alias} quiere agregarte`,
-      detalle: `Código ${solicitud.friend_code}`,
+      nombre: OnlineUI.value(`${solicitud.alias} quiere agregarte`),
+      detalle: OnlineUI.value(`Código ${solicitud.friend_code}`),
       acciones: [
         { texto: "Aceptar", accion: () => adaptadorSalasVersus.responderSolicitudAmistad(solicitud.id, true) },
         { texto: "Rechazar", accion: () => adaptadorSalasVersus.responderSolicitudAmistad(solicitud.id, false) },
@@ -1461,14 +1461,14 @@ function actualizarPanelAmigosVersus(
   });
   (estado.outgoing_requests || []).forEach((solicitud) => {
     solicitudesAmigosVersus.append(crearFilaSocialVersus({
-      nombre: `Solicitud enviada a ${solicitud.alias}`,
-      detalle: "Esperando respuesta",
+      nombre: OnlineUI.value(`Solicitud enviada a ${solicitud.alias}`),
+      detalle: OnlineUI.value("Esperando respuesta"),
     }));
   });
   (estado.incoming_invites || []).forEach((invitacion) => {
     invitacionesVersus.append(crearFilaSocialVersus({
-      nombre: `${invitacion.alias} te desafía`,
-      detalle: "Aceptá y la partida comenzará automáticamente",
+      nombre: OnlineUI.value(`${invitacion.alias} te desafía`),
+      detalle: OnlineUI.value("Aceptá y la partida comenzará automáticamente"),
       acciones: [
         { texto: "Aceptar", accion: () => adaptadorSalasVersus.responderInvitacion(invitacion.id, true) },
         { texto: "Rechazar", accion: () => adaptadorSalasVersus.responderInvitacion(invitacion.id, false) },
@@ -1477,8 +1477,8 @@ function actualizarPanelAmigosVersus(
   });
   (estado.outgoing_invites || []).forEach((invitacion) => {
     invitacionesVersus.append(crearFilaSocialVersus({
-      nombre: `Desafío enviado a ${invitacion.alias}`,
-      detalle: "Esperando que acepte",
+      nombre: OnlineUI.value(`Desafío enviado a ${invitacion.alias}`),
+      detalle: OnlineUI.value("Esperando que acepte"),
       acciones: [
         { texto: "Cancelar", accion: () => adaptadorSalasVersus.cancelarInvitacion(invitacion.id) },
       ],
@@ -1487,7 +1487,7 @@ function actualizarPanelAmigosVersus(
   (estado.friends || []).forEach((amigo) => {
     listaAmigosVersus.append(crearFilaSocialVersus({
       nombre: amigo.alias,
-      detalle: `Código ${amigo.friend_code}`,
+      detalle: OnlineUI.value(`Código ${amigo.friend_code}`),
       acciones: [
         { texto: "Ver perfil", accion: () => PublicPlayerProfile.abrir(amigo.user_id) },
         { texto: "Desafiar", accion: () => adaptadorSalasVersus.enviarInvitacion(amigo.user_id) },
@@ -1497,8 +1497,8 @@ function actualizarPanelAmigosVersus(
   });
   if (!(estado.friends || []).length) {
     listaAmigosVersus.append(crearFilaSocialVersus({
-      nombre: "Todavía no agregaste amigos",
-      detalle: "Compartí tu código o escribí el de otro jugador",
+      nombre: OnlineUI.value("Todavía no agregaste amigos"),
+      detalle: OnlineUI.value("Compartí tu código o escribí el de otro jugador"),
     }));
   }
 }
@@ -1515,6 +1515,7 @@ async function ejecutarAccionAmigosVersus(accion, mensajeExito = "Listo") {
 }
 
 function actualizarSalaVersus(sala) {
+  GameUI.text(document.getElementById('idiomaSalaOnline'), GameUI.key('multiplayer.roomLanguage', {language: GameUI.key('multiplayer.languages.'+(sala?.idioma || I18n.language))}));
   if (!sala) {
     inicioSalaVersus.classList.remove("oculto");
     esperaSalaVersus.classList.add("oculto");
@@ -1531,9 +1532,9 @@ function actualizarSalaVersus(sala) {
     const tarjeta = document.createElement("article");
     tarjeta.className = `jugador-sala-versus${jugador ? "" : " vacio"}`;
     const etiqueta = document.createElement("span");
-    etiqueta.textContent = `JUGADOR ${indice + 1}${jugador?.anfitrion ? " · ANFITRIÓN" : ""}`;
+    OnlineUI.text(etiqueta, `JUGADOR ${indice + 1}${jugador?.anfitrion ? " · ANFITRIÓN" : ""}`);
     const nombre = document.createElement("strong");
-    nombre.textContent = jugador?.alias || "Esperando rival…";
+    GameUI.text(nombre, jugador ? jugador.alias : OnlineUI.value("Esperando rival…"));
     if (jugador && globalThis.PlayerAvatar) tarjeta.append(PlayerAvatar.crear(jugador.identidad));
     tarjeta.append(etiqueta, nombre);
     jugadoresSalaVersus.append(tarjeta);
@@ -1541,12 +1542,12 @@ function actualizarSalaVersus(sala) {
 
   const salaCompleta = sala.jugadores.length === 2;
   btnContinuarSalaVersus.disabled = !salaCompleta;
-  estadoSalaVersus.textContent = salaCompleta
+  OnlineUI.text(estadoSalaVersus, salaCompleta
     ? "¡Los dos jugadores están conectados! Ya pueden continuar."
-    : "Esperando al segundo jugador…";
-  notaAdaptadorVersus.textContent = adaptadorSalasVersus.proveedor === "supabase"
+    : "Esperando al segundo jugador…");
+  OnlineUI.text(notaAdaptadorVersus, adaptadorSalasVersus.proveedor === "supabase"
     ? "Conectado a Supabase · sala sincronizada en tiempo real."
-    : "Vista local de desarrollo. La conexión entre celulares requiere Supabase.";
+    : "Vista local de desarrollo. La conexión entre celulares requiere Supabase.");
   btnRivalPruebaVersus.classList.toggle(
     "oculto",
     adaptadorSalasVersus.proveedor !== "local" || !modoPruebasActivo || salaCompleta,
@@ -1571,14 +1572,14 @@ function actualizarSeleccionPersonajeRemota(sala) {
   actualizarSelectorTrajeVersus();
 
   estadoPersonajePropioVersus.className = propioListo ? "listo" : "";
-  estadoPersonajePropioVersus.textContent = propioListo
+  OnlineUI.text(estadoPersonajePropioVersus, propioListo
     ? `${jugadorPropio.alias}: ${personajesVersus[jugadorPropio.personaje].nombre} listo.`
-    : "Elegí tu personaje.";
+    : "Elegí tu personaje.");
 
   estadoPersonajeRivalVersus.className = rivalListo ? "listo" : "";
-  estadoPersonajeRivalVersus.textContent = rivalListo
+  OnlineUI.text(estadoPersonajeRivalVersus, rivalListo
     ? `${jugadorRival.alias} eligió ${personajesVersus[jugadorRival.personaje].nombre}.`
-    : `${jugadorRival?.alias || "Tu rival"} está eligiendo…`;
+    : `${jugadorRival?.alias || "Tu rival"} está eligiendo…`);
 
   if (rivalListo && personajesVersus[jugadorRival.personaje]) {
     personajeRivalVersus = jugadorRival.personaje;
@@ -1678,9 +1679,9 @@ function actualizarEstadoRevanchaVersus(sala) {
 
   btnRevanchaVersus.classList.remove("oculto");
   btnRevanchaVersus.disabled = revanchaVersusEnCurso || Boolean(propio.revanchaLista);
-  btnRevanchaVersus.textContent = propio.revanchaLista
+  OnlineUI.text(btnRevanchaVersus, propio.revanchaLista
     ? "Esperando al rival…"
-    : rival.revanchaLista ? "Aceptar revancha" : "Pedir revancha";
+    : rival.revanchaLista ? "Aceptar revancha" : "Pedir revancha");
 }
 
 function prepararInterfazRevanchaVersus() {
@@ -1688,7 +1689,7 @@ function prepararInterfazRevanchaVersus() {
   detenerRondaVersus();
   resultadoRondaVersus.classList.add("oculto");
   btnRevanchaVersus.disabled = false;
-  btnRevanchaVersus.textContent = "Pedir revancha";
+  OnlineUI.text(btnRevanchaVersus, "Pedir revancha");
   revanchaVersusEnCurso = false;
   partidaOnlineVersus = null;
   partidaOnlineIniciada = false;
@@ -1706,8 +1707,8 @@ function mostrarAbandonoRivalVersus() {
   detenerRondaVersus();
   bloquearTecladoDemoVersus();
   mostrarResultadoPartidaVersus("jugador", "El rival abandonó la sala. La partida terminó.");
-  tituloResultadoVersus.textContent = "El rival abandonó";
-  etiquetaResultadoVersus.textContent = "PARTIDA INTERRUMPIDA";
+  OnlineUI.text(tituloResultadoVersus, "El rival abandonó");
+  OnlineUI.text(etiquetaResultadoVersus, "PARTIDA INTERRUMPIDA");
   btnRevanchaVersus.classList.add("oculto");
 }
 
@@ -1722,9 +1723,9 @@ function actualizarPreparacionRemota(sala) {
   const nombreTemaRival = nombresTematicasVersus[jugadorRival?.tematica];
 
   estadoPreparacionRivalVersus.className = `estado-preparacion-rival-versus${rivalListo ? " listo" : ""}`;
-  estadoPreparacionRivalVersus.textContent = rivalListo
+  OnlineUI.text(estadoPreparacionRivalVersus, rivalListo
     ? `${jugadorRival.alias} ya preparó tu desafío${nombreTemaRival ? ` · ${nombreTemaRival}` : ""}.`
-    : `${jugadorRival?.alias || "Tu rival"} está preparando su desafío…`;
+    : `${jugadorRival?.alias || "Tu rival"} está preparando su desafío…`);
 
   if (!propioListo) return;
 
@@ -1734,12 +1735,12 @@ function actualizarPreparacionRemota(sala) {
   btnPalabrasAleatoriasVersus.disabled = true;
   btnConfirmarPalabrasVersus.disabled = true;
   esperaRivalVersus.classList.remove("oculto");
-  tituloEsperaRivalVersus.textContent = rivalListo
+  OnlineUI.text(tituloEsperaRivalVersus, rivalListo
     ? "Ambos desafíos están listos"
-    : "Tus palabras están protegidas";
-  textoEsperaRivalVersus.textContent = rivalListo
+    : "Tus palabras están protegidas");
+  OnlineUI.text(textoEsperaRivalVersus, rivalListo
     ? "Preparando el combate en línea…"
-    : `Esperando a ${jugadorRival?.alias || "tu rival"}…`;
+    : `Esperando a ${jugadorRival?.alias || "tu rival"}…`);
 }
 
 function obtenerNombreTemaVersus(tema) {
@@ -2049,20 +2050,20 @@ function modoOnlineSeleccionado() {
   return document.querySelector('input[name="modoOnline"]:checked')?.value || 'classic';
 }
 function actualizarReglasModoOnline() {
-  document.getElementById('reglasModoOnline').textContent = modoOnlineSeleccionado() === 'ranked'
+  OnlineUI.text(document.getElementById('reglasModoOnline'), modoOnlineSeleccionado() === 'ranked'
     ? 'Victoria +3 · Empate +1 · Derrota −1 (Novato no pierde puntos). Abandonar un duelo empezado cuenta como derrota.'
-    : 'Jugá sin cambiar tus puntos. Las partidas se guardan en tu historial.';
+    : 'Jugá sin cambiar tus puntos. Las partidas se guardan en tu historial.');
 }
 async function cargarRangoSala() {
   const nodo = document.getElementById('rangoSalaVersus');
   try {
     const rango = await adaptadorSalasVersus.obtenerRango();
     globalThis.PlayerAvatar?.desbloquear(null,rango.points);
-    nodo.replaceChildren(VersusRanks.badge(rango.points, true));
-  } catch (_) { nodo.textContent = 'Conectate para consultar tu rango.'; }
+    nodo.replaceChildren(GameUI.rankBadge(rango.points, true));
+  } catch (_) { OnlineUI.text(nodo, 'Conectate para consultar tu rango.'); }
 }
 for (const input of document.querySelectorAll('input[name="modoOnline"]')) input.addEventListener('change', actualizarReglasModoOnline);
-document.getElementById('catalogoRangos').replaceChildren(...VersusRanks.tiers.map(t => VersusRanks.badge(t.min)));
+document.getElementById('catalogoRangos').replaceChildren(...VersusRanks.tiers.map(t => GameUI.rankBadge(t.min)));
 actualizarReglasModoOnline();
 let busquedaPublicaActiva = false;
 let peticionBusqueda = null;
@@ -2089,19 +2090,19 @@ async function consultarBusquedaPublica() {
     const resultado = await peticionBusqueda;
     encontro = Boolean(resultado?.room_id);
     if (!encontro && busquedaPublicaActiva) {
-      estadoBusqueda.textContent = modoOnlineSeleccionado() === 'ranked'
+      OnlineUI.text(estadoBusqueda, modoOnlineSeleccionado() === 'ranked'
         ? (resultado?.expanded ? 'Buscando en tu rango y rangos vecinos, con puntos cercanos…' : 'Buscando un rival de tu rango y con puntos parecidos…')
-        : 'Buscando rival para Clásico… Podés esperar o cancelar.';
+        : 'Buscando rival para Clásico… Podés esperar o cancelar.');
       if (resultado?.points != null) document.getElementById('rangoSalaVersus').replaceChildren(VersusRanks.badge(resultado.points, true));
     }
     if (encontro && busquedaPublicaActiva) {
       mostrarBusquedaActiva(false);
-      estadoBusqueda.textContent = "¡Rival encontrado! Elegí tu personaje.";
+      OnlineUI.text(estadoBusqueda, "¡Rival encontrado! Elegí tu personaje.");
       abrirSeleccionPersonajeVersus();
     }
   } catch (error) {
     mostrarBusquedaActiva(false);
-    estadoBusqueda.textContent = `${error.message} Podés volver a intentar la búsqueda.`;
+    OnlineUI.text(estadoBusqueda, `${error.message} Podés volver a intentar la búsqueda.`);
   } finally {
     peticionBusqueda = null;
     if (busquedaPublicaActiva && !encontro) temporizadorBusqueda = setTimeout(consultarBusquedaPublica, 3000);
@@ -2119,9 +2120,9 @@ async function cancelarBusquedaPublica() {
     const enCurso = await peticionBusqueda;
     const resultado = await adaptadorSalasVersus.buscarPartida({ alias: aliasSalaVersus.value, cancelar: true, modo: modoOnlineSeleccionado() });
     if (resultado?.room_id || enCurso?.room_id) await adaptadorSalasVersus.salirSala();
-    estadoBusqueda.textContent = "Búsqueda cancelada.";
+    OnlineUI.text(estadoBusqueda, "Búsqueda cancelada.");
   } catch (_) {
-    estadoBusqueda.textContent = "Sin conexión. La búsqueda pendiente caduca automáticamente en 30 segundos.";
+    OnlineUI.text(estadoBusqueda, "Sin conexión. La búsqueda pendiente caduca automáticamente en 30 segundos.");
   } finally {
     mostrarBusquedaActiva(false);
   }
@@ -2130,16 +2131,16 @@ async function cancelarBusquedaPublica() {
 btnBuscarPartida.addEventListener("click", async () => {
   if (busquedaPublicaActiva) return;
   mostrarBusquedaActiva(true);
-  estadoBusqueda.textContent = "Conectando…";
+  OnlineUI.text(estadoBusqueda, "Conectando…");
   try {
     await asegurarConexionSalasVersus();
     if (!busquedaPublicaActiva) return;
     if (!adaptadorSalasVersus.buscarPartida) throw new Error("Necesitás conexión a internet para buscar rival.");
-    estadoBusqueda.textContent = "Buscando rival… Si todavía no hay otro jugador, podés esperar o cancelar.";
+    OnlineUI.text(estadoBusqueda, "Buscando rival… Si todavía no hay otro jugador, podés esperar o cancelar.");
     await consultarBusquedaPublica();
   } catch (error) {
     mostrarBusquedaActiva(false);
-    estadoBusqueda.textContent = error.message;
+    GameUI.text(estadoBusqueda, OnlineUI.error(error));
   }
 });
 btnCancelarBusqueda.addEventListener("click", cancelarBusquedaPublica);
@@ -2368,13 +2369,13 @@ btnSiguiente.addEventListener("click", continuarAventura);
 function seleccionarPersonajeVersus(personaje) {
   if (!personajesVersus[personaje] || !personajeDisponibleVersus(personaje)) return;
   personajeJugadorVersus = personaje;
-  document.getElementById('seleccionAleatoriaEstado').textContent = '';
+  OnlineUI.text(document.getElementById('seleccionAleatoriaEstado'), '');
   tarjetasPersonajesVersus.forEach((tarjeta) => {
     const seleccionada = tarjeta.dataset.personaje === personaje;
     tarjeta.classList.toggle("seleccionada", seleccionada);
     tarjeta.setAttribute("aria-checked", `${seleccionada}`);
   });
-  btnConfirmarPersonajeVersus.textContent = `Luchar con ${personajesVersus[personaje].nombre}`;
+  OnlineUI.text(btnConfirmarPersonajeVersus, `Luchar con ${personajesVersus[personaje].nombre}`);
   actualizarSelectorTrajeVersus();
 }
 
@@ -2513,9 +2514,9 @@ function actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada = false }
         : tarjeta.dataset.personaje === "mago"
           ? 2
           : 1;
-      estado.textContent = disponible
+      OnlineUI.text(estado, disponible
         ? "DISPONIBLE"
-        : `COMPLETÁ EL MUNDO ${mundoRequerido}`;
+        : `COMPLETÁ EL MUNDO ${mundoRequerido}`);
     }
   });
 
@@ -2527,26 +2528,26 @@ function actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada = false }
 function abrirSeleccionPersonajeVersus() {
   actualizarDisponibilidadPersonajesVersus();
   seleccionarPersonajeVersus(personajeJugadorVersus);
-  etiquetaSeleccionPersonajeVersus.textContent = modoArcadeActivo
+  OnlineUI.text(etiquetaSeleccionPersonajeVersus, modoArcadeActivo
     ? "ELEGÍ A TU CAMPEÓN PARA LA TORRE"
-    : "ELIGE A TU CAMPEÓN";
-  tituloSeleccionPersonajeVersus.textContent = modoArcadeActivo
+    : "ELIGE A TU CAMPEÓN");
+  OnlineUI.text(tituloSeleccionPersonajeVersus, modoArcadeActivo
     ? "Selección del modo Arcade"
-    : "Selección de personaje";
-  detalleSeleccionPersonajeVersus.textContent = modoPruebasActivo
+    : "Selección de personaje");
+  OnlineUI.text(detalleSeleccionPersonajeVersus, modoPruebasActivo
     ? "Modo Pruebas: todos los personajes están disponibles."
     : modoArcadeActivo
       ? "Tu personaje se enfrentará a ocho rivales controlados por la máquina."
-      : "La Guardiana se desbloquea al completar el Mundo 1.";
+      : "La Guardiana se desbloquea al completar el Mundo 1.");
   mostrarPantalla(pantallaSeleccionPersonajeVersus);
   if (modoArcadeActivo) {
     btnConfirmarPersonajeVersus.disabled = false;
     actualizarDisponibilidadPersonajesVersus();
     actualizarSelectorTrajeVersus();
     estadoPersonajePropioVersus.className = "";
-    estadoPersonajePropioVersus.textContent = "Elegí con quién subirás la torre.";
+    OnlineUI.text(estadoPersonajePropioVersus, "Elegí con quién subirás la torre.");
     estadoPersonajeRivalVersus.className = "listo";
-    estadoPersonajeRivalVersus.textContent = "La máquina ya preparó a tus rivales.";
+    OnlineUI.text(estadoPersonajeRivalVersus, "La máquina ya preparó a tus rivales.");
   } else {
     actualizarSeleccionPersonajeRemota(adaptadorSalasVersus.obtenerSala());
   }
@@ -3035,8 +3036,8 @@ codigoNuevoAmigoVersus.addEventListener("input", () => {
 btnCopiarCodigoAmigoVersus.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(codigoAmigoVersus.textContent);
-    btnCopiarCodigoAmigoVersus.textContent = "Copiado";
-    setTimeout(() => { btnCopiarCodigoAmigoVersus.textContent = "Copiar"; }, 1300);
+    OnlineUI.text(btnCopiarCodigoAmigoVersus, "Copiado");
+    setTimeout(() => { OnlineUI.text(btnCopiarCodigoAmigoVersus, "Copiar"); }, 1300);
   } catch (error) {
     mostrarMensajeAmigosVersus(`Tu código es ${codigoAmigoVersus.textContent}`);
   }
@@ -3060,10 +3061,10 @@ codigoSalaVersus.addEventListener("input", () => {
 btnCopiarCodigoVersus.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(codigoCreadoVersus.textContent);
-    btnCopiarCodigoVersus.textContent = "Copiado";
-    setTimeout(() => { btnCopiarCodigoVersus.textContent = "Copiar"; }, 1300);
+    OnlineUI.text(btnCopiarCodigoVersus, "Copiado");
+    setTimeout(() => { OnlineUI.text(btnCopiarCodigoVersus, "Copiar"); }, 1300);
   } catch (error) {
-    estadoSalaVersus.textContent = `Código: ${codigoCreadoVersus.textContent}`;
+    OnlineUI.text(estadoSalaVersus, `Código: ${codigoCreadoVersus.textContent}`);
   }
 });
 
@@ -3112,7 +3113,7 @@ btnConfirmarPersonajeVersus.addEventListener("click", async () => {
   tarjetasPersonajesVersus.forEach((tarjeta) => { tarjeta.disabled = true; });
   actualizarSelectorTrajeVersus();
   estadoPersonajePropioVersus.className = "";
-  estadoPersonajePropioVersus.textContent = "Guardando tu elección…";
+  OnlineUI.text(estadoPersonajePropioVersus, "Guardando tu elección…");
   try {
     const sala = await adaptadorSalasVersus.actualizarPersonaje({
       personaje: personajeJugadorVersus,
@@ -3121,7 +3122,7 @@ btnConfirmarPersonajeVersus.addEventListener("click", async () => {
     actualizarEstadoMultijugador(sala);
   } catch (error) {
     estadoPersonajePropioVersus.className = "error";
-    estadoPersonajePropioVersus.textContent = error.message || "No pudimos guardar tu personaje.";
+    OnlineUI.text(estadoPersonajePropioVersus, error.message || "No pudimos guardar tu personaje.");
     btnConfirmarPersonajeVersus.disabled = false;
     actualizarDisponibilidadPersonajesVersus();
     actualizarSelectorTrajeVersus();
@@ -16786,3 +16787,5 @@ CharacterMusic.configure(() => ({
     && !tutorialCombateVersus.activo,
   sceneAllowed: pantallaJuego.classList.contains("activa") || pantallaVersus.classList.contains("activa"),
 }));
+
+I18n.subscribe(() => { actualizarSalaVersus(adaptadorSalasVersus.obtenerSala()); });

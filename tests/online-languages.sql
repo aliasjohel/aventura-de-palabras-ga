@@ -1,0 +1,80 @@
+-- Run inside a transaction, after the migration, then roll back all fixtures.
+do $$
+declare a uuid:=gen_random_uuid();b uuid:=gen_random_uuid();c uuid:=gen_random_uuid();r public.versus_rooms;j jsonb;words text[];l text;k text;m uuid;before_count int;begin
+ insert into auth.users(id) values(a),(b),(c);
+ foreach l in array array['es','en','pt-BR'] loop
+  perform set_config('request.jwt.claim.sub',a::text,true);
+  set local role authenticated;
+  r:=public.create_versus_room_localized('QA Uno',l);
+  assert r.word_language=l,'room owns language';
+  perform set_config('request.jwt.claim.sub',b::text,true);
+  perform public.join_versus_room_localized(r.code,'QA Dos');
+  perform public.set_versus_character(r.id,'explorador',true);
+  perform set_config('request.jwt.claim.sub',a::text,true);
+  perform public.set_versus_character(r.id,'azrak',true);
+  words:=case l when 'en' then array['CAT','DOG','GOOSE','OTTER','TIGER'] when 'pt-BR' then array['LEÃO','CACHORRO','PÁSSARO','ONÇA','GATO'] else array['GATO','PERRO','LORO','TIGRE','OSO'] end;
+  begin perform public.set_versus_challenge(r.id,'animales',array['APPLE','DOG','GOOSE','OTTER','TIGER']);raise exception using errcode='23514',message='Wrong language/topic accepted';exception when sqlstate 'P0001' then null;end;
+  begin perform public.set_versus_challenge(r.id,'animales',array[words[1],words[1],words[3],words[4],words[5]]);raise exception using errcode='23514',message='Duplicate accepted';exception when sqlstate 'P0001' then null;end;
+  perform public.set_versus_challenge(r.id,'animales',words);
+  perform set_config('request.jwt.claim.sub',b::text,true);
+  perform public.set_versus_challenge(r.id,'animales',words);
+  reset role;
+  select id into m from public.versus_matches where room_id=r.id;
+  update public.versus_matches set started_at=now()-interval '5 seconds' where id=m;
+  set local role authenticated;
+  j:=public.get_versus_match_state(r.id);
+  assert j->>'wordLanguage'=l,'match carries language';
+  assert not (j->'me' ? 'words'),'secret words stay hidden';
+  foreach k in array array['Q','W','Y','U','I','Z'] loop j:=public.play_versus_letter(r.id,k);end loop;
+  reset role;
+  assert (select cardinality(ch.words)=6 from public.versus_challenges ch where room_id=r.id and target_id=b),'failed word adds recovery';
+  assert (select case when l='es' then exists(select 1 from private.versus_word_dictionary d where d.word=ch.words[6]) else exists(select 1 from versus_private.localized_dictionary d where d.word_language=l and d.word=ch.words[6]) end from public.versus_challenges ch where room_id=r.id and target_id=b),'recovery in room language';
+  update public.versus_match_players set ability_charge=8 where match_id=m;
+  set local role authenticated;
+  perform set_config('request.jwt.claim.sub',a::text,true);
+  j:=public.activate_versus_ability(r.id);
+  assert l='es' or j#>>'{lastEvent,letter}'<>'Ñ','Azrak uses matching alphabet';
+  perform public.leave_versus_room(r.id);
+  reset role;
+ end loop;
+ delete from versus_private.search_queue;
+ perform set_config('request.jwt.claim.sub',a::text,true);
+ set local role authenticated;
+ j:=public.find_versus_opponent_localized('QA Uno',false,'classic','en');assert (j->>'waiting')::boolean;
+ perform set_config('request.jwt.claim.sub',b::text,true);
+ j:=public.find_versus_opponent_localized('QA Dos',false,'classic','pt-BR');assert (j->>'waiting')::boolean,'different languages never pair';
+ perform set_config('request.jwt.claim.sub',c::text,true);
+ j:=public.find_versus_opponent_mode('QA Tres',false,'classic');assert (j->>'waiting')::boolean,'old client stays Spanish';
+ perform set_config('request.jwt.claim.sub',b::text,true);
+ j:=public.find_versus_opponent_localized('QA Dos',false,'classic','en');assert j->>'room_id' is not null,'same language pairs';
+ assert (select word_language='en' from public.versus_rooms where id=(j->>'room_id')::uuid);
+ perform public.leave_versus_room((j->>'room_id')::uuid);
+ reset role;
+ assert not has_function_privilege('anon','public.create_versus_room_localized(text,text)','EXECUTE');
+ assert not has_table_privilege('authenticated','versus_private.localized_dictionary','SELECT');
+ assert public.versus_letter_key('AÇÃO MAÇÃ PÃO PEÑA')='ACAO MACA PAO PEÑA','accents/cedilla match, Ñ retained';
+end $$;
+-- Invitation language and legacy-client safety, with permanent test identities only.
+do $$
+declare a uuid:=gen_random_uuid();b uuid:=gen_random_uuid();pa public.versus_profiles;pb public.versus_profiles;i public.versus_invites;r public.versus_rooms;begin
+ insert into auth.users(id,is_anonymous) values(a,false),(b,false);
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',a,'is_anonymous',false)::text,true);
+ perform set_config('request.jwt.claim.sub',a::text,true);
+ set local role authenticated;
+ pa:=public.upsert_versus_profile('QA Amigo Uno');
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',b,'is_anonymous',false)::text,true);
+ perform set_config('request.jwt.claim.sub',b::text,true);
+ pb:=public.upsert_versus_profile('QA Amigo Dos');
+ reset role;
+ insert into public.versus_friendships(requester_id,addressee_id,status) values(a,b,'accepted');
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',a,'is_anonymous',false)::text,true);
+ perform set_config('request.jwt.claim.sub',a::text,true);
+ set local role authenticated;
+ i:=public.send_versus_invite_localized(b,'pt-BR');assert i.word_language='pt-BR';
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',b,'is_anonymous',false)::text,true);
+ perform set_config('request.jwt.claim.sub',b::text,true);
+ begin perform public.respond_versus_invite(i.id,true);raise exception using errcode='23514',message='Legacy accepted translated invitation';exception when sqlstate 'P0001' then null;end;
+ r:=public.respond_versus_invite_localized(i.id,true);assert r.word_language='pt-BR','invitation carries challenger language';
+ perform public.leave_versus_room(r.id);
+ reset role;
+end $$;

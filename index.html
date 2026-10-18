@@ -368,7 +368,7 @@
                     <div class="acciones-mural-santuario">
                         <button id="btnAyudaMuralSantuario" type="button">✨ Mostrar guía</button>
                         <button id="btnRetirarPiezaMural" type="button" disabled>↩ Retirar pieza</button>
-                        <button id="btnSalirMuralSantuario" class="secundario" type="button">Volver al menú</button>
+                        <button id="btnSalirMuralSantuario" class="secundario" type="button" data-i18n="multiplayer.legacy.s52">Volver al menú</button>
                     </div>
                 </section>
             </div>
@@ -438,7 +438,7 @@
                     <p id="estadoPruebaBosque" class="estado-prueba-bosque" role="status" aria-live="polite"></p>
                     <div class="acciones-prueba-bosque">
                         <button id="btnRepetirPruebaBosque" type="button">↻ Mezclar de nuevo</button>
-                        <button id="btnSalirPruebaBosque" class="secundario" type="button">Volver al menú</button>
+                        <button id="btnSalirPruebaBosque" class="secundario" type="button" data-i18n="multiplayer.legacy.s52">Volver al menú</button>
                     </div>
                 </section>
             </div>
@@ -473,71 +473,69 @@
 
         <section id="pantallaSalaVersus" class="pantalla pantalla-sala-versus" aria-labelledby="tituloSalaVersus">
             <div class="sala-versus-marco">
-                <button id="btnSalirSalaVersus" class="versus-volver" type="button">&larr; Volver</button>
+                <button id="btnSalirSalaVersus" class="versus-volver" type="button" data-i18n="multiplayer.legacy.s53">← Volver</button>
 
                 <header class="sala-versus-cabecera">
-                    <p>DUELO ENTRE JUGADORES</p>
-                    <h2 id="tituloSalaVersus">Sala multijugador</h2>
-                    <span>Desafi&aacute; a un amigo o jug&aacute; con un c&oacute;digo de sala.</span>
+                    <p data-i18n="multiplayer.legacy.s0">DUELO ENTRE JUGADORES</p>
+                    <h2 id="tituloSalaVersus" data-i18n="multiplayer.legacy.s1">Sala multijugador</h2>
+                    <span data-i18n="multiplayer.legacy.s2">Desafiá a un amigo o jugá con un código de sala.</span>
                 </header>
 
+                <p id="idiomaSalaOnline" role="status"></p>
                 <div id="inicioSalaVersus" class="inicio-sala-versus">
                     <section class="panel-amigos-versus" aria-labelledby="tituloAmigosVersus">
                         <div class="cabecera-amigos-versus">
                             <div>
-                                <small>CUENTA DE JUGADOR</small>
-                                <h3 id="tituloAmigosVersus">Amigos y desaf&iacute;os</h3>
+                                <small data-i18n="multiplayer.legacy.s3">CUENTA DE JUGADOR</small>
+                                <h3 id="tituloAmigosVersus" data-i18n="multiplayer.legacy.s4">Amigos y desafíos</h3>
                             </div>
-                            <span id="estadoCuentaVersus" class="estado-cuenta-versus">Conectando&hellip;</span>
+                            <span id="estadoCuentaVersus" class="estado-cuenta-versus" data-i18n="multiplayer.legacy.s5">Conectando…</span>
                         </div>
 
                         <div id="registroCuentaVersus" class="registro-cuenta-versus oculto">
-                            <p>Guard&aacute; tu jugador para tener amigos y recibir desaf&iacute;os en cualquier
-                                dispositivo.</p>
+                            <p data-i18n="multiplayer.legacy.s6">Guardá tu jugador para tener amigos y recibir desafíos en cualquier dispositivo.</p>
                             <label for="correoCuentaVersus">
-                                <span>Tu correo</span>
+                                <span data-i18n="multiplayer.legacy.s7">Tu correo</span>
                                 <input id="correoCuentaVersus" type="email" autocomplete="email"
-                                    placeholder="tu@correo.com">
+                                    placeholder="tu@correo.com" data-i18n-placeholder="multiplayer.legacy.s8">
                             </label>
                             <div class="acciones-cuenta-versus">
-                                <button id="btnGuardarCuentaVersus" type="button">Guardar mi jugador</button>
-                                <button id="btnEntrarCuentaVersus" class="secundario" type="button">Ya tengo
-                                    cuenta</button>
-                                <button id="btnGoogleCuentaVersus" class="secundario" type="button">Continuar con
-                                    Google</button>
+                                <button id="btnGuardarCuentaVersus" type="button" data-i18n="multiplayer.legacy.s9">Guardar mi jugador</button>
+                                <button id="btnEntrarCuentaVersus" class="secundario" type="button" data-i18n="multiplayer.legacy.s10">Ya tengo cuenta</button>
+                                <button id="btnGoogleCuentaVersus" class="secundario" type="button" data-i18n="multiplayer.legacy.s11">Continuar con Google</button>
                             </div>
-                            <small>Pod&eacute;s seguir jugando como invitado si no quer&eacute;s registrarte.</small>
+                            <small data-i18n="multiplayer.legacy.s12">Podés seguir jugando como invitado si no querés registrarte.</small>
                         </div>
 
                         <div id="crearPerfilVersus" class="crear-perfil-versus oculto">
-                            <p>Eleg&iacute; el nombre que ver&aacute;n tus amigos.</p>
+                            <p data-i18n="multiplayer.legacy.s13">Elegí el nombre que verán tus amigos.</p>
                             <label for="aliasPerfilVersus">
-                                <span>Nombre de jugador</span>
+                                <span data-i18n="multiplayer.legacy.s14">Nombre de jugador</span>
                                 <input id="aliasPerfilVersus" type="text" minlength="2" maxlength="16"
-                                    autocomplete="nickname" placeholder="Ej: Gabi">
+                                    autocomplete="nickname" placeholder="Ej: Gabi" data-i18n-placeholder="multiplayer.legacy.s15">
                             </label>
-                            <button id="btnGuardarPerfilVersus" type="button">Crear perfil de Amigos</button>
+                            <button id="btnGuardarPerfilVersus" type="button" data-i18n="multiplayer.legacy.s16">Crear perfil de Amigos</button>
                         </div>
 
                         <div id="contenidoAmigosVersus" class="contenido-amigos-versus oculto">
                             <div class="identidad-amigos-versus">
                                 <div>
-                                    <small>TU C&Oacute;DIGO DE AMIGO</small>
+                                    <small data-i18n="multiplayer.legacy.s17">TU CÓDIGO DE AMIGO</small>
                                     <strong id="codigoAmigoVersus">--------</strong>
                                 </div>
-                                <button id="btnCopiarCodigoAmigoVersus" class="secundario" type="button">Copiar</button>
+                                <button id="btnCopiarCodigoAmigoVersus" class="secundario" type="button" data-i18n="multiplayer.legacy.s18">Copiar</button>
                             </div>
                             <form id="formAgregarAmigoVersus" class="agregar-amigo-versus">
-                                <label for="codigoNuevoAmigoVersus" class="sr-only">C&oacute;digo de amigo</label>
+                                <label for="codigoNuevoAmigoVersus" class="sr-only" data-i18n="multiplayer.legacy.s19">Código de amigo</label>
                                 <input id="codigoNuevoAmigoVersus" type="text" maxlength="8" autocomplete="off"
-                                    autocapitalize="characters" placeholder="C&Oacute;DIGO DE AMIGO">
-                                <button type="submit">Agregar</button>
+                                    autocapitalize="characters" placeholder="C&Oacute;DIGO DE AMIGO" data-i18n-placeholder="multiplayer.legacy.s20">
+                                <button type="submit" data-i18n="multiplayer.legacy.s21">Agregar</button>
                             </form>
                             <div id="solicitudesAmigosVersus" class="lista-social-versus"></div>
                             <div id="invitacionesVersus" class="lista-social-versus"></div>
                             <div class="titulo-lista-amigos-versus">
-                                <strong>Tus amigos</strong>
-                                <small>Desafialos sin crear una sala</small>
+                                <strong data-i18n="multiplayer.legacy.s22">Tus amigos</strong>
+                                <small data-i18n="multiplayer.legacy.s23">Desafialos sin crear una sala</small>
                             </div>
                             <div id="listaAmigosVersus" class="lista-social-versus"></div>
                         </div>
@@ -545,46 +543,46 @@
                     </section>
 
                     <label class="campo-sala-versus campo-alias-versus" for="aliasSalaVersus">
-                        <span>Tu nombre</span>
+                        <span data-i18n="multiplayer.legacy.s24">Tu nombre</span>
                         <input id="aliasSalaVersus" type="text" minlength="2" maxlength="16" autocomplete="nickname"
-                            placeholder="Ej: Gabi">
+                            placeholder="Ej: Gabi" data-i18n-placeholder="multiplayer.legacy.s15">
                     </label>
 
-                    <section class="opcion-sala-versus" aria-label="Partidas públicas">
-                        <h3>Buscar partida</h3>
-                        <p>Elegí cómo querés jugar. Después preparan el duelo en la sala.</p>
-                        <fieldset class="modos-online"><legend>Modo de juego</legend>
-                          <label class="modo-online"><input type="radio" name="modoOnline" value="classic" checked><span><strong>Clásico</strong><small>Jugá por diversión, sin cambiar tus puntos.</small></span></label>
-                          <label class="modo-online"><input type="radio" name="modoOnline" value="ranked"><span><strong>Clasificatorio</strong><small>Rivales de nivel cercano. Ganá puntos y subí de rango.</small></span></label>
+                    <section class="opcion-sala-versus" aria-label="Partidas públicas" data-i18n-aria-label="multiplayer.legacy.s25">
+                        <h3 data-i18n="multiplayer.legacy.s26">Buscar partida</h3>
+                        <p data-i18n="multiplayer.legacy.s27">Elegí cómo querés jugar. Después preparan el duelo en la sala.</p>
+                        <fieldset class="modos-online"><legend data-i18n="multiplayer.legacy.s28">Modo de juego</legend>
+                          <label class="modo-online"><input type="radio" name="modoOnline" value="classic" checked><span><strong data-i18n="multiplayer.legacy.s29">Clásico</strong><small data-i18n="multiplayer.legacy.s30">Jugá por diversión, sin cambiar tus puntos.</small></span></label>
+                          <label class="modo-online"><input type="radio" name="modoOnline" value="ranked"><span><strong data-i18n="multiplayer.legacy.s31">Clasificatorio</strong><small data-i18n="multiplayer.legacy.s32">Rivales de nivel cercano. Ganá puntos y subí de rango.</small></span></label>
                         </fieldset>
                         <div id="rangoSalaVersus" aria-live="polite"></div>
-                        <p id="reglasModoOnline">Las victorias y los personajes usados se guardan en tu historial.</p>
-                        <details><summary>Rangos y títulos</summary><div id="catalogoRangos" class="rangos-catalogo"></div></details>
-                        <button id="btnBuscarPartida" type="button">Buscar rival</button>
-                        <button id="btnCancelarBusqueda" type="button" class="oculto">Cancelar búsqueda</button>
+                        <p id="reglasModoOnline" data-i18n="multiplayer.legacy.s33">Las victorias y los personajes usados se guardan en tu historial.</p>
+                        <details><summary data-i18n="multiplayer.legacy.s34">Rangos y títulos</summary><div id="catalogoRangos" class="rangos-catalogo"></div></details>
+                        <button id="btnBuscarPartida" type="button" data-i18n="multiplayer.legacy.s35">Buscar rival</button>
+                        <button id="btnCancelarBusqueda" type="button" class="oculto" data-i18n="multiplayer.legacy.s36">Cancelar búsqueda</button>
                         <p id="estadoBusqueda" role="status" aria-live="polite"></p>
-                        <button id="btnRankingSala" type="button" aria-haspopup="dialog" aria-controls="rankingMenu">🏆 Ver ranking</button>
+                        <button id="btnRankingSala" type="button" aria-haspopup="dialog" aria-controls="rankingMenu" data-i18n="multiplayer.legacy.s37">🏆 Ver ranking</button>
                     </section>
                     <details class="salas-manuales-versus">
-                        <summary>Clásico con código de sala</summary>
+                        <summary data-i18n="multiplayer.legacy.s38">Clásico con código de sala</summary>
                         <div class="acciones-sala-versus">
                             <article class="opcion-sala-versus">
                                 <span class="icono-opcion-sala" aria-hidden="true">&#10022;</span>
-                                <h3>Crear sala</h3>
-                                <p>Gener&aacute; un c&oacute;digo para compartir con tu rival.</p>
-                                <button id="btnCrearSalaVersus" type="button">Crear partida</button>
+                                <h3 data-i18n="multiplayer.legacy.s39">Crear sala</h3>
+                                <p data-i18n="multiplayer.legacy.s40">Generá un código para compartir con tu rival.</p>
+                                <button id="btnCrearSalaVersus" type="button" data-i18n="multiplayer.legacy.s41">Crear partida</button>
                             </article>
 
                             <article class="opcion-sala-versus">
                                 <span class="icono-opcion-sala" aria-hidden="true">&#9876;</span>
-                                <h3>Unirse</h3>
-                                <p>Ingres&aacute; el c&oacute;digo de seis caracteres.</p>
+                                <h3 data-i18n="multiplayer.legacy.s42">Unirse</h3>
+                                <p data-i18n="multiplayer.legacy.s43">Ingresá el código de seis caracteres.</p>
                                 <label class="campo-codigo-versus" for="codigoSalaVersus">
-                                    <span class="sr-only">C&oacute;digo de sala</span>
+                                    <span class="sr-only" data-i18n="multiplayer.legacy.s44">Código de sala</span>
                                     <input id="codigoSalaVersus" type="text" maxlength="6" inputmode="text"
                                         autocomplete="off" autocapitalize="characters" placeholder="ABC123">
                                 </label>
-                                <button id="btnUnirseSalaVersus" type="button">Ingresar a sala</button>
+                                <button id="btnUnirseSalaVersus" type="button" data-i18n="multiplayer.legacy.s45">Ingresar a sala</button>
                             </article>
                         </div>
                     </details>
@@ -593,22 +591,16 @@
 
                 <div id="esperaSalaVersus" class="espera-sala-versus oculto">
                     <div class="codigo-creado-versus">
-                        <span>C&Oacute;DIGO DE SALA</span>
+                        <span data-i18n="multiplayer.legacy.s46">CÓDIGO DE SALA</span>
                         <strong id="codigoCreadoVersus">------</strong>
                         <button id="btnCopiarCodigoVersus" class="btn-copiar-codigo-versus"
-                            type="button">Copiar</button>
+                            type="button" data-i18n="multiplayer.legacy.s18">Copiar</button>
                     </div>
 
                     <div id="jugadoresSalaVersus" class="jugadores-sala-versus"></div>
-                    <p id="estadoSalaVersus" class="estado-sala-versus" role="status" aria-live="polite">
-                        Esperando al segundo jugador&hellip;
-                    </p>
-                    <button id="btnRivalPruebaVersus" class="btn-rival-prueba-versus oculto" type="button">
-                        Agregar rival de prueba
-                    </button>
-                    <button id="btnContinuarSalaVersus" class="btn-continuar-sala-versus" type="button" disabled>
-                        Elegir personaje
-                    </button>
+                    <p id="estadoSalaVersus" class="estado-sala-versus" role="status" aria-live="polite" data-i18n="multiplayer.legacy.s47">Esperando al segundo jugador…</p>
+                    <button id="btnRivalPruebaVersus" class="btn-rival-prueba-versus oculto" type="button" data-i18n="multiplayer.legacy.s48">Agregar rival de prueba</button>
+                    <button id="btnContinuarSalaVersus" class="btn-continuar-sala-versus" type="button" disabled data-i18n="multiplayer.legacy.s49">Elegir personaje</button>
                     <small class="nota-adaptador-versus">Vista local de desarrollo. La conexi&oacute;n entre celulares
                         se activar&aacute; con Supabase.</small>
                 </div>
@@ -616,42 +608,41 @@
 
             <div class="versus-aviso-orientacion" role="status">
                 <span aria-hidden="true">&#8635;</span>
-                <strong>Girá tu celular</strong>
-                <small>La sala multijugador se disfruta en horizontal.</small>
-                <button id="btnSalirSalaVersusVertical" type="button">Volver al menú</button>
+                <strong data-i18n="multiplayer.legacy.s50">Girá tu celular</strong>
+                <small data-i18n="multiplayer.legacy.s51">La sala multijugador se disfruta en horizontal.</small>
+                <button id="btnSalirSalaVersusVertical" type="button" data-i18n="multiplayer.legacy.s52">Volver al menú</button>
             </div>
         </section>
 
         <section id="pantallaSeleccionPersonajeVersus" class="pantalla pantalla-seleccion-personaje-versus"
             aria-labelledby="tituloSeleccionPersonajeVersus">
             <div class="seleccion-personaje-marco">
-                <button id="btnSalirSeleccionPersonajeVersus" class="versus-volver" type="button">&larr; Volver</button>
+                <button id="btnSalirSeleccionPersonajeVersus" class="versus-volver" type="button" data-i18n="multiplayer.legacy.s53">← Volver</button>
 
                 <header class="seleccion-personaje-cabecera">
-                    <p id="etiquetaSeleccionPersonajeVersus">ELIGE A TU CAMPE&Oacute;N</p>
-                    <h2 id="tituloSeleccionPersonajeVersus">Selecci&oacute;n de personaje</h2>
-                    <span id="detalleSeleccionPersonajeVersus">Todos est&aacute;n disponibles durante el
-                        desarrollo.</span>
+                    <p id="etiquetaSeleccionPersonajeVersus" data-i18n="multiplayer.legacy.extra0">ELIGE A TU CAMPEÓN</p>
+                    <h2 id="tituloSeleccionPersonajeVersus" data-i18n="multiplayer.legacy.extra1">Selección de personaje</h2>
+                    <span id="detalleSeleccionPersonajeVersus" data-i18n="multiplayer.legacy.extra2">Todos están disponibles durante el desarrollo.</span>
                 </header>
 
                 <div class="lista-personajes-versus" role="radiogroup" aria-label="Personajes disponibles">
                     <button class="tarjeta-personaje-versus seleccionada" type="button" role="radio" aria-checked="true"
                         data-personaje="explorador">
-                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/explorador-base.png" alt="Aren">
                         <strong>Aren</strong>
                         <small>Bumer&aacute;n &middot; Trampa Selv&aacute;tica</small>
                     </button>
                     <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
                         data-personaje="mago">
-                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/mago-base.png" alt="Zafir">
                         <strong>Zafir</strong>
                         <small>Fuego arcano &middot; Eclipse Violeta</small>
                     </button>
                     <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
                         data-personaje="guardiana">
-                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
                         <img src="assets/images/personajes/coleccion/guardiana-bosque-base.png"
                             alt="Guardiana del Bosque">
                         <strong>Guardiana</strong>
@@ -659,28 +650,28 @@
                     </button>
                     <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
                         data-personaje="dragon">
-                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/dragon-base.png" alt="Nimbus, dragón joven">
                         <strong>Nimbus</strong>
                         <small>Rugido drac&oacute;nico &middot; Llamado de la Matriarca</small>
                     </button>
                     <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
                         data-personaje="hombre_lobo">
-                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/hombre-lobo-base.png" alt="Hombre lobo">
                         <strong>Hombre Lobo</strong>
                         <small>Zarpazo Feral &middot; Cacer&iacute;a de Luna Llena</small>
                     </button>
                     <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
                         data-personaje="t_shadow">
-                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/t-shadow-base.png" alt="T. Shadow">
                         <strong>T. Shadow</strong>
                         <small>Corte sombr&iacute;o &middot; Legi&oacute;n Umbr&iacute;a</small>
                     </button>
                     <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
                         data-personaje="guardian_alba">
-                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/guardian-alba-base.png"
                             alt="Guardi&aacute;n del Alba">
                         <strong>A. Lumen</strong>
@@ -688,7 +679,7 @@
                     </button>
                     <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
                         data-personaje="dragon_hielo">
-                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/dragon-hielo-base.png"
                             alt="Nivor, drag&oacute;n boreal">
                         <strong>Nivor</strong>
@@ -696,14 +687,14 @@
                     </button>
                     <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
                         data-personaje="azrak">
-                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/azrak-base.png" alt="Azrak, guerrero infernal">
                         <strong>Azrak</strong>
                         <small>Corte Infernal &middot; Eclipse Infernal</small>
                     </button>
                     <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
                         data-personaje="kalamo">
-                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/kalamo-base.png"
                             alt="K&aacute;lamo, ladr&oacute;n de letras">
                         <strong>K&aacute;lamo</strong>
@@ -711,7 +702,7 @@
                     </button>
                     <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
                         data-personaje="kairos">
-                        <span class="estado-personaje-versus">DISPONIBLE</span>
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
                         <img src="assets/images/personajes/versus/kairos-seleccion-v2.png"
                             alt="Kair&oacute;s, ladr&oacute;n de instantes">
                         <strong>Kair&oacute;s</strong>
@@ -722,11 +713,11 @@
                 <button id="btnPersonajeAleatorio" type="button">🎲 Aleatorio</button>
                 <p id="seleccionAleatoriaEstado" role="status" aria-live="polite"></p>
                 <fieldset id="selectorTrajesDuelo" hidden>
-                    <legend>Elegí tu traje</legend>
+                    <legend data-i18n="multiplayer.legacy.extra10">Elegí tu traje</legend>
                     <div id="opcionesTrajesDuelo"></div>
                 </fieldset>
                 <div class="estado-personajes-remotos" aria-live="polite">
-                    <span id="estadoPersonajePropioVersus">Eleg&iacute; tu personaje.</span>
+                    <span id="estadoPersonajePropioVersus" data-i18n="multiplayer.legacy.s82">Elegí tu personaje.</span>
                     <span id="estadoPersonajeRivalVersus">Tu rival est&aacute; eligiendo&hellip;</span>
                 </div>
 
@@ -739,7 +730,7 @@
                 <span>&#8635;</span>
                 <strong data-i18n="adventure.combat.rotate">Girá el celular</strong>
                 <p data-i18n="adventure.combat.landscape">El modo versus se juega en horizontal.</p>
-                <button id="btnSalirSeleccionPersonajeVersusVertical" type="button">Volver al menú</button>
+                <button id="btnSalirSeleccionPersonajeVersusVertical" type="button" data-i18n="multiplayer.legacy.s52">Volver al menú</button>
             </div>
         </section>
 
@@ -893,10 +884,10 @@
                         <strong>VS</strong>
                         <button id="btnMusicaDuelo" type="button" aria-pressed="false">🎵 Silenciar música</button>
                         <div id="chatRapidoVersus" hidden>
-                            <button id="abrirMensajesVersus" type="button" aria-expanded="false" aria-controls="panelMensajesVersus">💬 Mensajes</button>
+                            <button id="abrirMensajesVersus" type="button" aria-expanded="false" aria-controls="panelMensajesVersus" data-i18n="multiplayer.legacy.s113">💬 Mensajes</button>
                             <div id="panelMensajesVersus" hidden aria-label="Mensajes rápidos">
                                 <div id="opcionesMensajesVersus"></div>
-                                <button id="silenciarMensajesVersus" type="button" aria-pressed="false">Silenciar rival</button>
+                                <button id="silenciarMensajesVersus" type="button" aria-pressed="false" data-i18n="multiplayer.legacy.s124">Silenciar rival</button>
                                 <span id="estadoMensajesVersus" role="status" aria-live="polite"></span>
                             </div>
                         </div>
@@ -1526,7 +1517,7 @@
         <button id="btnTutorialVersus" class="modos-guia" type="button"><span data-i18n="menu.versusGuide">❔ Cómo jugar modo versus</span> <span aria-hidden="true">→</span></button>
     </dialog>
     <dialog id="elegirTrajeAntesDuelo" aria-labelledby="tituloElegirTraje" aria-describedby="detalleElegirTraje">
-        <h2 id="tituloElegirTraje">Elegí tu traje</h2>
+        <h2 id="tituloElegirTraje" data-i18n="multiplayer.legacy.extra10">Elegí tu traje</h2>
         <p id="detalleElegirTraje"></p>
         <div id="opcionesTrajesAntesDuelo"></div>
         <button id="confirmarTrajeAntesDuelo" type="button">Usar este traje</button>
@@ -1551,7 +1542,7 @@
         <header class="avatar-header"><div><small>AVENTURA DE PALABRAS</small><h2 id="tituloAvatar" data-i18n="menu.myProfile">Mi perfil</h2></div><button id="cerrarAvatar" type="button" data-i18n="menu.back">← Volver al menú</button></header>
         <section class="perfil-cabecera" aria-label="Identidad del jugador" data-i18n-aria-label="profile.identity">
             <span id="avatarPreview"></span>
-            <div class="perfil-identidad"><small data-i18n="profile.player">JUGADOR</small><h3 id="perfilNombre">Aventurero</h3><p class="perfil-id"><span data-i18n="profile.friendCode">Código de amigo:</span> <span id="perfilId">Conectando…</span></p><p id="avatarDescripcion"></p></div>
+            <div class="perfil-identidad"><small data-i18n="profile.player">JUGADOR</small><h3 id="perfilNombre">Aventurero</h3><p class="perfil-id"><span data-i18n="profile.friendCode">Código de amigo:</span> <span id="perfilId" data-i18n="multiplayer.legacy.s5">Conectando…</span></p><p id="avatarDescripcion"></p></div>
         </section>
         <section class="perfil-historial" aria-labelledby="tituloHistorialPerfil">
             <h3 id="tituloHistorialPerfil" data-i18n="profile.history">Historial multijugador</h3>
@@ -1592,7 +1583,7 @@
       <button id="reintentarPerfilPublico" class="secundario" type="button" hidden data-i18n="profile.retry">Reintentar</button>
     </dialog>
     <script src="js/i18n.js?v=20261015-3b-1"></script>
-    <script src="js/i18n-es-fallback.js?v=20261015-narrative-1"></script>
+    <script src="js/i18n-es-fallback.js?v=20261017-3g-1"></script>
     <script src="js/i18n-ui.js?v=20261006-i18n-2b-1"></script>
     <script src="js/narrative-i18n.js?v=20261015-narrative-1"></script>
     <script src="js/i18n-settings.js?v=20261015-3b-1"></script>
@@ -1601,16 +1592,17 @@
     <script src="js/versus-ranks.js?v=20260922-medallas-3"></script>
     <script src="js/avatar-rewards.js?v=20261006-rewards-1"></script>
     <script src="js/player-avatar.js?v=20261006-i18n-2b-1"></script>
-    <script src="js/versus-identity.js?v=20260915-social-1"></script>
+    <script src="js/multiplayer-i18n.js?v=20261017-3g-1"></script>
+    <script src="js/versus-identity.js?v=20261017-3g-1"></script>
     <script src="js/audio-settings.js?v=20261015-audio-1"></script>
     <script src="js/intro.js?v=20261015-audio-1"></script>
     <script src="js/supabase-loader.js?v=20260922-local-sdk-1"></script>
     <script src="js/supabase-config.js?v=20260805-supabase-1"></script>
     <script src="js/supabase-client.js?v=20260817-amigos-cuentas-1"></script>
-    <script src="js/word-gameplay.js?v=20261015-3c-1"></script>
+    <script src="js/word-gameplay.js?v=20261017-3g-1"></script>
     <script src="js/versus-engine.js?v=20261015-3b-1"></script>
     <script src="js/versus-room.js?v=20260922-alias-1"></script>
-    <script src="js/versus-room-supabase.js?v=20261002-cinematicas-escala-1"></script>
+    <script src="js/versus-room-supabase.js?v=20261017-3g-1"></script>
     <script src="js/puzzle-lessons.js?v=20261016-3f-1"></script>
     <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
     <script src="js/word-banks-versus.js?v=20261016-3e-1"></script>
@@ -1629,7 +1621,7 @@
     <script src="js/i18n-combat.js?v=20261007-i18n-2c-1"></script>
     <script src="js/world-music.js?v=20261015-audio-1"></script>
     <script src="js/character-music.js?v=20261015-audio-1"></script>
-    <script src="js/app.js?v=20261016-3f-1"></script>
+    <script src="js/app.js?v=20261017-3g-1"></script>
     <script src="js/lessons-i18n.js?v=20261016-3f-1"></script>
     <script src="js/cosmetic-shop.js?v=20261006-i18n-2b-1"></script>
     <script src="js/public-player-profile.js?v=20261006-i18n-2b-1"></script>
