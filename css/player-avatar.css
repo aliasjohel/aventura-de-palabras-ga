@@ -17,6 +17,15 @@
 #editorAvatar .avatar-header { flex-wrap: wrap; }
 #editorAvatar .avatar-header button { width: auto; min-height: 44px; margin: 0; padding: 10px 14px; font-size: 13px; white-space: nowrap; }
 .perfil-cabecera { display: flex; align-items: center; gap: 22px; padding: 24px 0; }
+#editorAvatar .perfil-cabecera { position: relative; isolation: isolate; overflow: hidden; min-height: 166px; box-sizing: border-box; padding: 24px 16px; margin: 18px 0; border: 1px solid #86bba34d; border-radius: 16px; background: linear-gradient(90deg, #061b2055, #04131c99), url('../assets/images/perfil/fondo-bosque-luciernagas-v1.webp') center 55% / cover, #102b27; }
+#editorAvatar .perfil-cabecera > #avatarPreview, #editorAvatar .perfil-cabecera > .perfil-identidad { position: relative; z-index: 1; }
+#editorAvatar .perfil-identidad { text-shadow: 0 2px 5px #000; }
+.perfil-luciernagas { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.perfil-luciernagas i { position: absolute; left: var(--x); top: var(--y); width: 4px; height: 4px; border-radius: 50%; background: #fff3ab; box-shadow: 0 0 5px 2px #e7ef7499; opacity: .3; animation: perfil-luciernaga var(--duration) ease-in-out var(--delay) infinite alternate; animation-play-state: paused; }
+#editorAvatar[open]:not(.perfil-movimiento-pausado) .perfil-luciernagas i { animation-play-state: running; }
+@keyframes perfil-luciernaga { 0% { transform: translate3d(-6px, 8px, 0); opacity: .15; } 50% { opacity: .85; } 100% { transform: translate3d(10px, -12px, 0); opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { #editorAvatar .perfil-luciernagas i { animation: none; opacity: .45; } }
+@media (max-width: 400px) { #editorAvatar .perfil-cabecera { padding: 18px 10px; gap: 10px; } }
 #avatarPreview .player-avatar { width: 132px; height: 132px; }
 .perfil-identidad { min-width: 0; }
 .perfil-identidad h3 { margin: 5px 0 9px; font-size: 25px; overflow-wrap: anywhere; }

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v366`;
+const CACHE_NAME = `${CACHE_PREFIX}v367`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -218,6 +218,7 @@ const CORE_ASSETS = [
   "./assets/images/perfil/miniaturas/marco-clasico-v1.webp",
   "./assets/images/perfil/miniaturas/marco-fuego-v1.webp",
   "./assets/images/perfil/miniaturas/marco-hielo-v1.webp",
+  "./assets/images/perfil/fondo-bosque-luciernagas-v1.webp",
   "./assets/images/perfil/miniaturas/marco-real-v1.webp",
   "./assets/images/perfil/marco-bronce-v1.webp",
   "./assets/images/perfil/miniaturas/marco-bronce-v1.webp",
@@ -862,6 +863,7 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/miniaturas/marco-clasico-v1.webp": "sha256-c1633dee63a2c7552ad4f0d35afc48aa9d73dc49d9c1301571c7c7410ccda226",
   "./assets/images/perfil/miniaturas/marco-fuego-v1.webp": "sha256-e1e661f323966ef58fc54bba65bc85b8b4a146716b2f4d8579fcd4b72fd9232a",
   "./assets/images/perfil/miniaturas/marco-hielo-v1.webp": "sha256-22e0ada6f08e78a1877b076fd9fa756aefb239ab03a3722e97e47bc4372ddf52",
+  "./assets/images/perfil/fondo-bosque-luciernagas-v1.webp": "sha256-687b22017b073cbba14f7002c939a258fb1ae80ea836ba1ca444858bf9405263",
   "./assets/images/perfil/miniaturas/marco-real-v1.webp": "sha256-e4588d5f9eef1eb25f7ff6d49d89b6e4a5f71f93e62ead07178e9860b2132a91",
   "./assets/images/perfil/marco-bronce-v1.webp": "sha256-813861595b9334a1e2928b76fa8274e87bae07cd53527ad5e4960b856994971c",
   "./assets/images/perfil/miniaturas/marco-bronce-v1.webp": "sha256-f67368f0291898807da780c9cf33cfd3b6bfd39e3d1e5b4ed5a8b7f959c1b213",
@@ -1106,12 +1108,12 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/marco-real-v1.png": "sha256-779730399f0a11b044c321dc015c91941abd4e47b03dc9174b1300ed4867eef5",
   "./css/versus-identity.css": "sha256-1ebcda73fd4f844e671cca882ba528a45f843410422953426d79977182e8ee0d",
   "./js/versus-identity.js": "sha256-9238b24dc6597c27b568abee1d1edff774d7198cadad8116dd3427d3facfba12",
-  "./css/player-avatar.css": "sha256-932095c31aeb2b91fb166611084616a06413b7bbfb64b90a39b825342cc48caf",
+  "./css/player-avatar.css": "sha256-7eb7b1cb2829986473ef0c16f960251c4a85b1373f3593855403e059d77cab05",
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
-  "./js/player-avatar.js": "sha256-6b56f4683e8923d9c4253fc0adbdabb58358cd3878c03f62b4d468539e342fc2",
+  "./js/player-avatar.js": "sha256-aa1f817342be396bebf6768520e0d310563a2f0afddfb5194706bf0a6f84621f",
   "./js/public-player-profile.js": "sha256-d0d6b5caa479fec6889cbd7acc2ca5e8bee8cde5b5cb47970d3d5b41b8abb00a",
-  "./": "sha256-89168e29970c92fdb983e96db4cb330380d4d25ff76b4b81ba0051355f2672a8",
-  "./index.html": "sha256-89168e29970c92fdb983e96db4cb330380d4d25ff76b4b81ba0051355f2672a8",
+  "./": "sha256-740a85e7cd1d0e431508022fb1453038df2e4ae330d6e2da1f9ceb7475a3a75f",
+  "./index.html": "sha256-740a85e7cd1d0e431508022fb1453038df2e4ae330d6e2da1f9ceb7475a3a75f",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-5980b88ad51760fd028c6106e2c1b63d6234e600d2ef3090b9860e09a84e739d",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",

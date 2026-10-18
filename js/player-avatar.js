@@ -39,18 +39,39 @@
   let draft = { ...saved };
   const el = (id) => document.getElementById(id);
   const dialog = el("editorAvatar");
+  const fireflies = document.createElement('span');
+  fireflies.className = 'perfil-luciernagas';
+  fireflies.setAttribute('aria-hidden', 'true');
+  for (let i = 0; i < 8; i += 1) {
+    const light = document.createElement('i');
+    light.style.setProperty('--x', `${8 + (i * 37) % 84}%`);
+    light.style.setProperty('--y', `${18 + (i * 23) % 66}%`);
+    light.style.setProperty('--delay', `${-i * 1.7}s`);
+    light.style.setProperty('--duration', `${6 + i % 4}s`);
+    fireflies.append(light);
+  }
+  dialog.querySelector('.perfil-cabecera').prepend(fireflies);
+  function syncProfileMotion() {
+    dialog.classList.toggle('perfil-movimiento-pausado', document.hidden || !dialog.open);
+  }
+  document.addEventListener('visibilitychange', syncProfileMotion);
+  dialog.addEventListener('close', syncProfileMotion);
+  syncProfileMotion();
   function portrait(avatar, frame, miniatura = false) {
     const badge = document.createElement("span");
     badge.className = `player-avatar frame-${frame}`;
-    const img = document.createElement("img");
-    const face = document.createElement("span");
-    face.className = "player-avatar-portrait";
-    img.src = miniatura ? `assets/images/perfil/miniaturas/${avatar}-base.webp` : `assets/images/personajes/versus/${avatar}-base.png`;
-    if (miniatura) {
-      img.loading = 'lazy'; img.decoding = 'async'; img.width = 96; img.height = 96;
+    if (avatar) {
+      const img = document.createElement("img");
+      const face = document.createElement("span");
+      face.className = "player-avatar-portrait";
+      img.src = miniatura ? `assets/images/perfil/miniaturas/${avatar}-base.webp` : `assets/images/personajes/versus/${avatar}-base.png`;
+      if (miniatura) {
+        img.loading = 'lazy'; img.decoding = 'async'; img.width = 96; img.height = 96;
+      }
+      img.alt = "";
+      face.append(img);
+      badge.append(face);
     }
-    img.alt = "";
-    face.append(img);
     const ranked=AvatarRewards.catalog.find(item=>item.id===frame)?.rank;
     const ornament = document.createElement("img");
     ornament.className = "player-avatar-frame";
@@ -62,7 +83,7 @@
     }
     ornament.alt = "";
     ornament.setAttribute("aria-hidden", "true");
-    badge.append(face, ornament);
+    badge.append(ornament);
     return badge;
   }
   function renderMenu() {
@@ -150,7 +171,7 @@
       button.dataset.value = id;
       button.className = "avatar-choice";
       U.attribute(button,"aria-label",label);
-      button.append(portrait(property === "avatar" ? id : "explorador", property === "frame" ? id : "clasico"));
+      button.append(portrait(property === "avatar" ? id : null, property === "frame" ? id : "clasico"));
       const name = document.createElement("span");
       U.text(name,label);
       button.append(name);
@@ -172,6 +193,7 @@
     el("estadoAvatar").textContent = "";
     renderPreview();
     dialog.showModal();
+    syncProfileMotion();
     void loadProfile();
   });
   ["cerrarAvatar", "cancelarAvatar"].forEach((id) => el(id).addEventListener("click", () => dialog.close()));
