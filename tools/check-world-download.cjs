@@ -57,7 +57,9 @@ const server = http.createServer((req, res) => {
     await context.setOffline(true);
     await page.reload(); await page.evaluate(() => I18n.ready);
     const beforeRepeat = downloads.length;
+    const repeatStart = Date.now();
     assert.equal((await page.evaluate(() => GameResources.world([], 0))).offline, true);
+    const repeatPreparationMs = Date.now() - repeatStart;
     assert.equal(downloads.length, beforeRepeat, 'offline revisit uses saved resources');
     assert.equal(await page.getByText('Descargando el mundo 1', { exact: true }).count(), 0, 'saved worlds never show another download');
     const allAvailable = await page.evaluate(paths => GameResources.available(paths), preparedPaths);
@@ -120,6 +122,6 @@ const server = http.createServer((req, res) => {
       }
     }
     assert.deepEqual(errors, []);
-    console.log(JSON.stringify({ pass: true, worlds, savedOffline: allAvailable, offlineDragonMusic: music, noRepeatDownloads: true, playerSaveUnchanged: true }, null, 2));
+    console.log(JSON.stringify({ pass: true, worlds, repeatPreparationMs, savedOffline: allAvailable, offlineDragonMusic: music, noRepeatDownloads: true, playerSaveUnchanged: true }, null, 2));
   } finally { await browser.close(); server.close(); }
 })().catch(error => { console.error(error); server.close(); process.exitCode = 1; });

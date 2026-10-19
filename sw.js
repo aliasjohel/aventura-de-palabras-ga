@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v372`;
+const CACHE_NAME = `${CACHE_PREFIX}v373`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1125,8 +1125,8 @@ const ASSET_REVISIONS = {
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
   "./js/player-avatar.js": "sha256-32238ae2b6e3ab07cd4f9688d9b5c5778d8d0014cc7cfaa1ce207885aa2e1862",
   "./js/public-player-profile.js": "sha256-8cca6d307c960e16dae507d1efa6911d53abd1ae127eca38e6b580acbdfe20ff",
-  "./": "sha256-6b1f99cd50c93a82a9be74a45f5faf729ada8f8aabec69b54a2457464b5bb61d",
-  "./index.html": "sha256-6b1f99cd50c93a82a9be74a45f5faf729ada8f8aabec69b54a2457464b5bb61d",
+  "./": "sha256-3039353093b32ce3696db45fd50fcf999358fb287f51cbe8eeabe7865306f525",
+  "./index.html": "sha256-3039353093b32ce3696db45fd50fcf999358fb287f51cbe8eeabe7865306f525",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-5980b88ad51760fd028c6106e2c1b63d6234e600d2ef3090b9860e09a84e739d",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -2542,6 +2542,39 @@ self.addEventListener("message", (event) => {
         if (paths.some(path => !Object.prototype.hasOwnProperty.call(REVISIONES_ACTUALES, path))) {
           throw new Error('El paquete contiene recursos desconocidos.');
         }
+        // Cache.keys reads the index without opening hundreds of large media
+        // responses. These immutable entries are only stored after hash and
+        // status verification. A fresh index still detects storage eviction.
+        const compartida = await caches.open(RESOURCE_CACHE_NAME);
+        const guardadas = new Set((await compartida.keys()).map(request => request.url));
+        const presentes = new Set(paths.filter(path => guardadas.has(crearURLRecurso(path, REVISIONES_ACTUALES[path]).href)));
+        if (event.data.checkOnly && presentes.size === paths.length) {
+          event.ports?.[0]?.postMessage({ available: true, total: paths.length, version: CACHE_NAME });
+          return;
+        }
+        // Older installations can reference media in a previous release's
+        // cache. Inspect those indexes once as well, without reading bodies.
+        if (presentes.size < paths.length) {
+          const referencias = await obtenerReferenciasInstaladas();
+          const indices = new Map();
+          for (const path of paths) {
+            if (presentes.has(path)) continue;
+            const ref = referencias[path];
+            if (!ref || ref.cache === RESOURCE_CACHE_NAME) continue;
+            if (!indices.has(ref.cache)) {
+              const cache = await caches.open(ref.cache);
+              indices.set(ref.cache, new Set((await cache.keys()).map(request => {
+                const url = new URL(request.url); url.search = ''; return url.href;
+              })));
+            }
+            const url = new URL(ref.url); url.search = '';
+            if (indices.get(ref.cache).has(url.href)) presentes.add(path);
+          }
+          if (event.data.checkOnly && presentes.size === paths.length) {
+            event.ports?.[0]?.postMessage({ available: true, total: paths.length, version: CACHE_NAME });
+            return;
+          }
+        }
         const anteriores = await obtenerCachesReutilizables();
         let available = true;
         let completed = 0, completedBytes = 0;
@@ -2556,7 +2589,8 @@ self.addEventListener("message", (event) => {
         // Recheck the actual files on every request; a previous success is not
         // evidence that storage eviction has not removed part of the pack.
         for (const path of paths) {
-          let response = await buscarRecursoInstalado(new Request(new URL(path, self.registration.scope)));
+          if (event.data.checkOnly && presentes.has(path)) continue;
+          let response = presentes.has(path) ? { status: 200 } : await buscarRecursoInstalado(new Request(new URL(path, self.registration.scope)));
           if (!response) {
             const ref = await buscarRecursoReutilizable(path, REVISIONES_ACTUALES[path], anteriores);
             if (ref) response = await (await caches.open(ref.cache)).match(ref.url);

@@ -5,7 +5,7 @@ const hash = body => 'sha256-' + crypto.createHash('sha256').update(body).digest
 const scope = 'https://game.test/adventure/';
 const absolute = input => new URL(typeof input === 'string' ? input : input.url || input.href, scope).href;
 function fixture() {
-  const stores = new Map(), downloads = [], puts = [], messages = [], packProgress = [];
+  const stores = new Map(), downloads = [], puts = [], messages = [], packProgress = [], reads = [];
   let network = new Map(), failed = '', quota = '';
   const caches = {
     keys: async () => [...stores.keys()], delete: async name => stores.delete(name),
@@ -15,6 +15,7 @@ function fixture() {
       return {
         keys: async () => [...entries.keys()].map(url => new Request(url)),
         match: async (input, options = {}) => {
+          reads.push(absolute(input));
           const url = new URL(absolute(input)); if (options.ignoreSearch) url.search = '';
           for (const [key, value] of entries) {
             const candidate = new URL(key); if (options.ignoreSearch) candidate.search = '';
@@ -57,7 +58,7 @@ function fixture() {
       },
       read: (file, headers) => context.responderRecursoEstatico({request: new Request(new URL(file, scope), {headers}), waitUntil() {}})};
   }
-  return {stores, caches, puts, downloads, messages, packProgress, worker, quota: value => {quota = value;}, network: files => {network = new Map(Object.entries(files));}, fail: file => {failed = file;}};
+  return {stores, caches, puts, downloads, messages, packProgress, reads, worker, quota: value => {quota = value;}, network: files => {network = new Map(Object.entries(files));}, fail: file => {failed = file;}};
 }
 
 test('world progress counts saved bytes and a second visit downloads nothing', async () => {
@@ -73,6 +74,9 @@ test('world progress counts saved bytes and a second visit downloads nothing', a
   assert.equal((await w.pack(paths, false, sizes)).available, true);
   assert.deepEqual(f.downloads, []);
   assert.equal(f.packProgress.at(-1).completedBytes, 10);
+  f.reads.length = 0;
+  assert.equal((await w.pack(paths, true)).available, true);
+  assert.deepEqual(f.reads, [], 'saved worlds are checked through cache keys without reopening media responses');
 });
 
 test('new installation is core-only; interrupted packs resume and eviction invalidates offline availability', async () => {
@@ -135,6 +139,11 @@ test('optional legacy media is referenced in place and remains readable offline'
   assert.deepEqual(f.downloads,['./index.html']);
   const refs=await (await (await f.caches.open('aventura-palabras-runtime-v369')).match(scope+'__ubicaciones-recursos__.json')).json();
   assert.equal(refs['./music.mp3'].cache,'aventura-palabras-runtime-v347');
+  f.reads.length=0;
+  assert.equal((await w.pack(['./music.mp3'],true)).available,true);
+  assert.equal(f.reads.filter(url=>url.includes('/music.mp3')).length,0,'legacy media is also checked without opening its body');
+  f.stores.get('aventura-palabras-runtime-v347').delete(scope+'music.mp3');
+  assert.equal((await w.pack(['./music.mp3'],true)).available,false,'an index refresh detects eviction from legacy caches');
 });
 
 test('migration from v347 retains unchanged resources in place and only downloads modified files', async () => {
