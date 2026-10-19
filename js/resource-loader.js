@@ -87,11 +87,12 @@
       const language = globalThis.I18n?.language || 'es';
       const labels = language === 'en' ? ['Preparing scene resources…', 'Retry'] : language === 'pt-BR' ? ['Preparando os recursos da cena…', 'Tentar novamente'] : ['Preparando los recursos de la escena…', 'Reintentar'];
       const title = document.createElement('strong');
-      title.textContent = worldIndex === undefined ? labels[0] :
+      const downloadTitle = worldIndex === undefined ? labels[0] :
         (language === 'en' ? `Downloading world ${worldIndex + 1}` : language === 'pt-BR' ? `Baixando o mundo ${worldIndex + 1}` : `Descargando el mundo ${worldIndex + 1}`);
+      title.textContent = language === 'en' ? 'Checking saved resources…' : language === 'pt-BR' ? 'Verificando os recursos salvos…' : 'Comprobando los recursos guardados…';
       const bar = document.createElement('progress'); bar.max = 1; bar.value = 0;
       bar.style.cssText = 'width:min(420px,85vw);height:24px;accent-color:#63d9c6';
-      bar.setAttribute('aria-label', title.textContent);
+      bar.setAttribute('aria-label', downloadTitle);
       const detail = document.createElement('span');
       const update = data => {
         bar.max = data.totalBytes || data.total || 1;
@@ -104,7 +105,7 @@
       const showTimer = setTimeout(() => document.body.append(notice), 700);
       try {
         for (;;) {
-          notice.replaceChildren(title, bar, detail);
+          notice.replaceChildren(title);
           try {
             if (worldIndex !== undefined && navigator.serviceWorker && !navigator.serviceWorker.controller) {
               await new Promise((resolve, reject) => {
@@ -122,6 +123,12 @@
                 changed();
               });
             }
+            // A cache scan is not a download. Only show MB progress when files
+            // are actually missing, including in author test mode after reload.
+            const saved = await workerRequest(paths.map(canonical), true);
+            if (saved?.available) return { offline: true, total: paths.length };
+            title.textContent = downloadTitle;
+            notice.replaceChildren(title, bar, detail);
             const result = await ensure(paths, update);
             if (result.offline) void navigator.storage?.persist?.().catch(() => {});
             return result;

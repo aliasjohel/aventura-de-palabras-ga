@@ -12,6 +12,17 @@
 @keyframes polvoEnOrbita { 0%,100% { transform:translate(0,0); opacity:.75; } 25% { transform:translate(var(--orbita-x),-5px); opacity:.35; } 50% { transform:translate(calc(var(--orbita-x)*2),calc(var(--orbita-y)*2)); opacity:.65; } 75% { transform:translate(var(--orbita-x),5px); opacity:1; } }
 .viento-destello { fill:none; stroke:#81badb; stroke-width:2; }
 .viento-particula { fill:none; stroke:#fff6c3; stroke-width:2; stroke-linecap:round; }
+.torbellino-final { opacity:0; transition:opacity .65s ease; }
+.peligro-palabras[data-world="2"][data-stage="6"] .torbellino-final { opacity:1; }
+.torbellino-nucleo { fill:url(#torbellino-niebla); }
+.torbellino-rafaga { fill:none; stroke:#eef8eb; stroke-width:9; stroke-linecap:round; stroke-dasharray:100 18 54 12; opacity:.8; animation:torbellinoCerrado .75s linear var(--demora) infinite; }
+.torbellino-rafaga:nth-child(even) { stroke:#8fb8c7; stroke-width:12; animation-direction:reverse; }
+.torbellino-escombro { fill:#c9b57d; animation:fragmentosTorbellino 1.1s ease-in-out var(--demora) infinite alternate; }
+.torbellino-escombro:nth-child(3n) { fill:#f8ebc4; }
+#personajeImagen.aren-en-remolino-final { translate:0 -10px; opacity:.2; transition:translate .65s ease,opacity .65s ease; }
+.peligro-palabras:not([data-stage="6"]) .torbellino-final * { animation-play-state:paused; }
+@keyframes torbellinoCerrado { to { stroke-dashoffset:-184; } }
+@keyframes fragmentosTorbellino { from { transform:translate(-8px,5px); opacity:.5; } to { transform:translate(var(--deriva),-9px); opacity:1; } }
 .hielo-bloque { fill:#93dffe6b; stroke:#cef5ff; stroke-width:2; stroke-linejoin:round; }
 .hielo-grieta { fill:none; stroke:#f0ffffba; stroke-width:1.6; }
 .jaula-resplandor { fill:#ff681a28; stroke:#ff7b2155; stroke-width:6; filter:blur(3px); }
@@ -29,3 +40,4 @@
 #pantallaJuego:not(.activa) .peligro-palabras * { animation-play-state:paused; }
 @keyframes vientoAtrapa { to { stroke-dashoffset:-152; } }
 @media(prefers-reduced-motion:reduce) { .peligro-palabras, .peligro-etapa { transition:none; } .viento-cinta, .viento-polvo, .jaula-llama, .jaula-brasa { animation:none; } }
+@media(prefers-reduced-motion:reduce) { .torbellino-final { transition:none; } .torbellino-rafaga,.torbellino-escombro { animation:none; } #personajeImagen.aren-en-remolino-final { translate:none; transition:none; } }

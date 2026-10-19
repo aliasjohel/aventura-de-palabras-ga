@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v370`;
+const CACHE_NAME = `${CACHE_PREFIX}v371`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -861,7 +861,7 @@ const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
   "./js/resource-catalog.js": "sha256-bd22dda986941915df1a439b1cc5201cc29b557b61960e408e6f508ec8aea52a",
-  "./js/resource-loader.js": "sha256-084365c01775c1e4f5506844593d9687b56c333f49b964b6ce8a932f83af49a5",
+  "./js/resource-loader.js": "sha256-ad1e232b755c34f73a839b18c857b49f23ff8ce0d570ea1c8b16ddb72cba7851",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
   "./assets/images/perfil/miniaturas/dragon-base.webp": "sha256-f25e547e72384e6edab79d058d145d1dd506e9a62257f29f1a166ebb91db4d2b",
   "./assets/images/perfil/miniaturas/dragon-hielo-base.webp": "sha256-005ea98519d0904d32e708ed14eabc23f5a235f2a3e08f47058a1a21bed178bb",
@@ -1125,8 +1125,8 @@ const ASSET_REVISIONS = {
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
   "./js/player-avatar.js": "sha256-32238ae2b6e3ab07cd4f9688d9b5c5778d8d0014cc7cfaa1ce207885aa2e1862",
   "./js/public-player-profile.js": "sha256-8cca6d307c960e16dae507d1efa6911d53abd1ae127eca38e6b580acbdfe20ff",
-  "./": "sha256-9b4575b759b4798b1708eb2d4fc5d24e7c5687a6688ccd77080c4908c659c7b5",
-  "./index.html": "sha256-9b4575b759b4798b1708eb2d4fc5d24e7c5687a6688ccd77080c4908c659c7b5",
+  "./": "sha256-89b493f4cdb9116e5507de98e5f1ad88536d598b82242c4128b312c88d05ed9c",
+  "./index.html": "sha256-89b493f4cdb9116e5507de98e5f1ad88536d598b82242c4128b312c88d05ed9c",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-5980b88ad51760fd028c6106e2c1b63d6234e600d2ef3090b9860e09a84e739d",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1190,8 +1190,8 @@ const ASSET_REVISIONS = {
   "./assets/sounds/victoria-mundo5.mp3": "sha256-b225db3633251ef525960d165c65ec25c2972eadfc59a10664939b02b8009d5d",
   "./assets/sounds/azrak-es-vencido.mp3": "sha256-1c5d9b8cc53b0b8be1c061c03063ef24497e4bc570d80fc5580911e0e024b823",
   "./css/desert-sand-trap.css": "sha256-e8a4073778b33d673abe603f009e678c560abf41c9b29fe26a8f31667559d65c",
-  "./css/world-word-hazards.css": "sha256-fc0a6ecfd1e48bd42c39da9976608b151f277c7d9055802eb247be65925b1cb0",
-  "./js/world-word-hazards.js": "sha256-752d30be518432771b8fc30fe1910434bf6f7a5fcd4c4032b8e4371d05718792",
+  "./css/world-word-hazards.css": "sha256-7243457a9269bb38b6e3ec158d7f4b0e305bfb9d22c84cb7f7c17f03b163b5f8",
+  "./js/world-word-hazards.js": "sha256-3b70ec9d41759cc453c6f5491a8c83ca30678b00836ab7369c8bb7aa767d63e0",
   "./js/desert-sand-trap.js": "sha256-f4d575efeaa9c3b32b0a37bfa5ba656684f15e60f341ac6a9524c22c4c542cb5",
   "./assets/images/personajes/explorador-brazo-arena-v1.png": "sha256-4c2db838858591bf6870d0598895146acb757c773da3c0f765f01e33d8268823",
   "./css/forest-root-trap.css": "sha256-0ae41c5356bb805e0672bb9cf9f66415b1cb1180c285353f191de5cce2373ca1",
@@ -1831,8 +1831,6 @@ const LEGACY_RESOURCE_REVISIONS = {
   "./assets/sounds/victoria-mundo5.mp3": "legacy-v93-v95",
   "./assets/sounds/azrak-es-vencido.mp3": "legacy-v93-v95",
   "./css/desert-sand-trap.css": "aventura-palabras-runtime-v347",
-  "./css/world-word-hazards.css": "aventura-palabras-runtime-v347",
-  "./js/world-word-hazards.js": "aventura-palabras-runtime-v347",
   "./js/desert-sand-trap.js": "aventura-palabras-runtime-v347",
   "./assets/images/personajes/explorador-brazo-arena-v1.png": "legacy-v93-v95",
   "./css/forest-root-trap.css": "aventura-palabras-runtime-v347",

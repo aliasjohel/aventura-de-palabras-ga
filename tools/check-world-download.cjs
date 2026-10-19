@@ -34,7 +34,7 @@ const server = http.createServer((req, res) => {
       observer.observe(document.body, { subtree: true, childList: true, characterData: true });
     });
     await page.getByText('Descargando el mundo 1', { exact: true }).waitFor({ timeout: 30000 });
-    await page.screenshot({ path: path.join(root, 'docs/v370-descarga-mundo.png') });
+    await page.screenshot({ path: path.join(root, process.env.WORLD_SCREENSHOT || 'docs/v370-descarga-mundo.png') });
     const prepared = await page.evaluate(() => worldPreparation);
     assert.equal(prepared.offline, true);
     assert(await page.evaluate(() => worldProgress.some(text => /MB/.test(text))), 'visible byte progress');
@@ -59,6 +59,7 @@ const server = http.createServer((req, res) => {
     const beforeRepeat = downloads.length;
     assert.equal((await page.evaluate(() => GameResources.world([], 0))).offline, true);
     assert.equal(downloads.length, beforeRepeat, 'offline revisit uses saved resources');
+    assert.equal(await page.getByText('Descargando el mundo 1', { exact: true }).count(), 0, 'saved worlds never show another download');
     const allAvailable = await page.evaluate(paths => GameResources.available(paths), preparedPaths);
     assert.equal(allAvailable, true);
     await page.evaluate(() => {
@@ -74,6 +75,22 @@ const server = http.createServer((req, res) => {
     });
     assert(music.playing && music.ready >= 2, 'dragon music plays offline');
     assert.equal(await page.evaluate(() => localStorage.getItem('progresoAventuraGA')), saveBefore);
+    await page.evaluate(() => {
+      document.getElementById('mapaAventura').close();
+      window.repeatedDownloadScreens = [];
+      new MutationObserver(() => {
+        for (const title of document.querySelectorAll('[role="status"] strong')) {
+          if (title.textContent.startsWith('Descargando')) repeatedDownloadScreens.push(title.textContent);
+        }
+      }).observe(document.body, { subtree: true, childList: true, characterData: true });
+      modoPruebasActivo = true;
+      selectorMundoPruebas.value = '0'; selectorMisionPruebas.value = '0';
+      dispatchEvent(new Event('pageshow'));
+      iniciarMisionSeleccionadaPruebas();
+    });
+    await page.waitForFunction(() => pantallaJuego.classList.contains('activa'));
+    assert.deepEqual(await page.evaluate(() => repeatedDownloadScreens), [], 'author test mode does not ask to download a saved world');
+    assert.equal(downloads.length, beforeRepeat, 'author test mode stays offline');
     const worlds = [{ world: 1, files: preparedPaths.length, MB: worldBytes / 1e6 }];
     if (process.env.ALL_WORLDS === '1') {
       for (let index = 1; index < 5; index++) {
