@@ -2,9 +2,10 @@
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
 const crypto = require('node:crypto'), cp = require('node:child_process');
 const root = path.resolve(__dirname, '..'), file = path.join(root, 'sw.js');
+cp.execFileSync(process.execPath, [path.join(__dirname, 'prepare-progressive-assets.cjs'), ...(process.argv.includes('--check') ? ['--check'] : [])]);
 const source = fs.readFileSync(file, 'utf8');
 const context = {self: {addEventListener() {}}, URL, Request, Response};
-vm.runInNewContext(source + '\nglobalThis.assets = CORE_ASSETS;', context);
+vm.runInNewContext(source + '\nglobalThis.assets = RESOURCE_ASSETS;', context);
 const baseline = JSON.parse(fs.readFileSync(path.join(__dirname, 'cache-legacy-v347.json')));
 const hashes = {}, legacy = {};
 for (const asset of context.assets) {

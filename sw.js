@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v368`;
+const CACHE_NAME = `${CACHE_PREFIX}v369`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -204,7 +204,9 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/personajes/coleccion/guardiana-bosque-victoria.png",
   "./assets/images/elementos/estela-escarcha-nivor.png",
 ];
-const CORE_ASSETS = [
+const RESOURCE_ASSETS = [
+  "./js/resource-catalog.js",
+  "./js/resource-loader.js",
   "./assets/images/perfil/miniaturas/azrak-base.webp",
   "./assets/images/perfil/miniaturas/dragon-base.webp",
   "./assets/images/perfil/miniaturas/dragon-hielo-base.webp",
@@ -849,8 +851,17 @@ const CORE_ASSETS = [
   ...RECURSOS_MODOS_LOCALES,
 ];
 
+// The initial installation contains executable code, language data and menu art.
+// Optional media remain in the immutable catalogue, downloaded by scene preflight.
+const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
+  !/\.(?:png|webp|jpe?g|mp3|wav|ogg|mp4)$/i.test(path)
+  || /assets\/images\/(?:intro\/(?:libro-intro-sin-cristal|cristal-icono)\.png|fondos\/menu-inicio-aventura\.png)/.test(path)
+  || /assets\/sounds\/(?:melodia-menu|cristal-casilla)\.mp3/.test(path));
+
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
+  "./js/resource-catalog.js": "sha256-186b8ce606310d7cb06f7040cf18c3eae99875a6ed079ec858942e672989a656",
+  "./js/resource-loader.js": "sha256-875f1e6725e2fb1f8a47ee9354aa20a1aa8f6a9dfcd2af0ced3025c2cfccbdc2",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
   "./assets/images/perfil/miniaturas/dragon-base.webp": "sha256-f25e547e72384e6edab79d058d145d1dd506e9a62257f29f1a166ebb91db4d2b",
   "./assets/images/perfil/miniaturas/dragon-hielo-base.webp": "sha256-005ea98519d0904d32e708ed14eabc23f5a235f2a3e08f47058a1a21bed178bb",
@@ -898,13 +909,13 @@ const ASSET_REVISIONS = {
   "./js/word-banks-forest.js": "sha256-1f50cd3a347769733f601c529f3902f9851ba61c9013d9e13198530d49bc275b",
   "./js/word-banks-es.js": "sha256-2747407626268b62dcfbee2a7c8984c8d6da7ac7803652294b418e344099c84f",
   "./js/i18n-settings.js": "sha256-87266c5c9bbd97e9009e2d1f2fa707fd1f3249ca1d91fd1ba800ed0d1c7fe171",
-  "./js/i18n-es-fallback.js": "sha256-151abfb7b48a43774c7b200990ffe93342519db56698059fc422e2f39bfae921",
+  "./js/i18n-es-fallback.js": "sha256-0477cd86583e7caa71fb6ffd11857e0300bc1e77890b228e64f0b54b6fe19f8d",
   "./js/i18n-ui.js": "sha256-a2797fa63f31d094889c04cf83e9b0ae25bd8f0399b8107f6c20a04df5318097",
   "./js/narrative-i18n.js": "sha256-e1930c0260e5a07b9ea429390a53b35cd03f785ad11ddbd95b5957d13c90c8b0",
   "./js/i18n-combat.js": "sha256-fdc7a05af378d2f19cd1ed2aa597cf90bb77f73857315f572ce962257187a9c6",
   "./actualizar.html": "sha256-f4f76241c563ca0a3f40875f0a63a8ae695e4ad910c6688c41f399fc37ea6b38",
   "./css/i18n-settings.css": "sha256-a0a8506694f704e68adc268acca9910aeccd8d665426982ba0687d7b4a874b10",
-  "./locales/en/common.json": "sha256-206e8ac9cd0d82b8eeaaf9b9a4097761e489383dda3f9405dccc50659a5c3fd8",
+  "./locales/en/common.json": "sha256-608f18890e1ad20929808193df0bbb00fc466fece5dbd53daec115fb3fa9e7d9",
   "./locales/en/menu.json": "sha256-dc309b8fef736fd3bc1aef3da4dd94a5929852bc2dede44fce54886ccd10227a",
   "./locales/en/profile.json": "sha256-07f6523ab9498236de33d56d4a1570c29b0c214c8a5706ef8ccdfa1ac6164037",
   "./locales/en/shop.json": "sha256-365d42ce6f45e3f14ae5b4d670147b968f6cd90ca1ca7205136bc93cb6cf1f1c",
@@ -915,7 +926,7 @@ const ASSET_REVISIONS = {
   "./locales/en/multiplayer.json": "sha256-6219ba925e14105d0184784246bb6418a19031b94c4ba8b0a70edf8c43f42803",
   "./locales/en/economy.json": "sha256-ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
   "./locales/en/errors.json": "sha256-7d6b6bd3e1197d4bd429dfb6c75445759694121e750b8083844428fe0200e792",
-  "./locales/pt-BR/common.json": "sha256-ce7ca0766a3980936d569312532b65dced72c1c3255d0dae2ff944cc3b59a6c9",
+  "./locales/pt-BR/common.json": "sha256-47947ca5948dd628c89a7b5e36aa4ac94e796b751a66cdd3fd872c34960dcb6f",
   "./locales/pt-BR/menu.json": "sha256-c7e5219019c6c0737e5088be8188bd787945d2b2b0c17a41df8a9a436751f582",
   "./locales/pt-BR/profile.json": "sha256-f5daa4678692db47e93f76802be4c95317a6a115648954c554006353a093843b",
   "./locales/pt-BR/shop.json": "sha256-0f604638ad5a50e53213472581441d9d01c49062c8bc3abdb9c88bbd1f7882b9",
@@ -928,7 +939,7 @@ const ASSET_REVISIONS = {
   "./locales/pt-BR/errors.json": "sha256-14f3ccef9d2f91a2fcd4f2a45d51b81e7010cbf6bdc30c5c1d32e1242bf189f4",
   "./js/i18n.js": "sha256-39b929be09ad6d90170147ffcd76056ef7df4924681827e750a2250fef9e37fd",
   "./locales/languages.json": "sha256-ac43785e98f0be3a6151d6277d4d6d29322ea80e1741fc3088d60aa368c1cb61",
-  "./locales/es/common.json": "sha256-6244681446c2089e178a71f9eabb9f05802837b3fa6afe34cb38a931451597f6",
+  "./locales/es/common.json": "sha256-7426a54521fd221f764af8f2ce83c18657ee068457e7ed011e52078499b120b7",
   "./locales/es/menu.json": "sha256-4f84d868655dfb0f9ebeba9003f7eca4b56790693f8f47264e7d3b8178b3e047",
   "./locales/es/profile.json": "sha256-fcecf0b3d515d67adbc15395c62e4210a5c444c10fabdd1d3e3ab368e4bebc52",
   "./locales/es/shop.json": "sha256-16a5454cae96d92520a3eb1d64f0205fa90ad640e492c8b2dad986105c443c63",
@@ -956,7 +967,7 @@ const ASSET_REVISIONS = {
   "./prueba-aren-union.html": "sha256-ef4ba7ed6ef00f671a462b4fc676b8ba75a46cc10c166a1466eb76e6f24c931f",
   "./js/aren-union-preview.js": "sha256-d97daee349894661d09d64f63d3a2b5cb40d4c74d5b7c6abe0b8153e1c912698",
   "./css/aren-union-preview.css": "sha256-05d6fe570dcf15b89c651945a425ebe1139dde2ebdc3fc07d244348330df1291",
-  "./js/aren-union-duel.js": "sha256-6aaeb4a1042ddd53a1d4a3192bd7bf85d5394726cdd18d24112a320078a09bf4",
+  "./js/aren-union-duel.js": "sha256-b256e5c71927ea9cd8e7b4c8873b065c9e18830d30c436d91e49f04d9acc913b",
   "./assets/images/trajes/aren-union-base-v1.png": "sha256-6094233062b3ca009b4fadb7f02e7daa4276bcf03acb034ae006771312d95a9e",
   "./assets/images/trajes/aren-union-capa-v1.png": "sha256-e20d76865f3bd19ab85617c0d0e859fe2264bec437f86b299dfb71adc13886d5",
   "./assets/images/trajes/aren-union-invocacion-v1.png": "sha256-455cd7e235fa2d3d150f703d1725fde8ee0ce8c84cd8a7a58ad103df73a94f7d",
@@ -1092,7 +1103,7 @@ const ASSET_REVISIONS = {
   "./assets/images/trajes/zafir-celestial-vidrio-v1.png": "sha256-ecb0e14ad3f2dc8902132bc71eb5a1c1c0af24d28f1c8600ce18068b3b4005e9",
   "./js/vendor/supabase-2.116.0.js": "sha256-84ee9bf45695c1dd3ba1595b6bcfb0f09672434631351ffc8ebe9140545d5ff6",
   "./assets/sounds/trueno-cinematica-v2.wav": "sha256-d8ae2e5eeea5ef2ff3505dc6bf8a2e0d19a2ef0b0b5b2b8b0ae322390187dc6b",
-  "./js/versus-ranks.js": "sha256-91e85b3e85823aa036d98dbc2b8e83521bf7fc1725206e42f9e3516cc4ec48f5",
+  "./js/versus-ranks.js": "sha256-86e2c6100af5392b9ebbde9a7a5a704d998bc63667271387863cbfde41ab7a8c",
   "./css/versus-ranks.css": "sha256-b1e2baad76d13a59c719f949ae0dfdc6a9f0761dc3e5d9815967ab42a21a6643",
   "./assets/images/rangos/novato-v2.png": "sha256-14eb166fc419558d23c946c41ff14606b1e19fca167697cccd9e26802cb877eb",
   "./assets/images/rangos/bronce-v2.png": "sha256-d54bce3ce2e860969b8324b38e0ea0f2d6dad9570b46d9a4be0d4ef164290e0d",
@@ -1112,10 +1123,10 @@ const ASSET_REVISIONS = {
   "./js/versus-identity.js": "sha256-9238b24dc6597c27b568abee1d1edff774d7198cadad8116dd3427d3facfba12",
   "./css/player-avatar.css": "sha256-7eb7b1cb2829986473ef0c16f960251c4a85b1373f3593855403e059d77cab05",
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
-  "./js/player-avatar.js": "sha256-aa1f817342be396bebf6768520e0d310563a2f0afddfb5194706bf0a6f84621f",
-  "./js/public-player-profile.js": "sha256-d0d6b5caa479fec6889cbd7acc2ca5e8bee8cde5b5cb47970d3d5b41b8abb00a",
-  "./": "sha256-0bc7031467540ff072dc06be895490593e7df28bf078aa39d0fe87b7fa87736e",
-  "./index.html": "sha256-0bc7031467540ff072dc06be895490593e7df28bf078aa39d0fe87b7fa87736e",
+  "./js/player-avatar.js": "sha256-32238ae2b6e3ab07cd4f9688d9b5c5778d8d0014cc7cfaa1ce207885aa2e1862",
+  "./js/public-player-profile.js": "sha256-8cca6d307c960e16dae507d1efa6911d53abd1ae127eca38e6b580acbdfe20ff",
+  "./": "sha256-661094d1920166429267abf9d2561c591e5c92b4ffc6b769410c7b188930857c",
+  "./index.html": "sha256-661094d1920166429267abf9d2561c591e5c92b4ffc6b769410c7b188930857c",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-5980b88ad51760fd028c6106e2c1b63d6234e600d2ef3090b9860e09a84e739d",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1186,7 +1197,7 @@ const ASSET_REVISIONS = {
   "./css/forest-root-trap.css": "sha256-0ae41c5356bb805e0672bb9cf9f66415b1cb1180c285353f191de5cce2373ca1",
   "./js/forest-root-trap.js": "sha256-a71fecacd5cfe6f7f2226c438540d9184fff458b3519db7cb77f2595faeeb085",
   "./js/forest-wildlife.js": "sha256-5d28c31f49a3d6b7638816e62118a2db4036c5d0bfbe5debe9004fdfe145b29b",
-  "./js/audio-settings.js": "sha256-920646c673bd28a12446792cb02224208c97eec3884457c61e92ed2633744a83",
+  "./js/audio-settings.js": "sha256-4a564e3fa39564ba49e1a7a4640fcf9ff401a19cbeacf7a5ce00d3bccf521d0f",
   "./js/world-music.js": "sha256-ee4d3e985d49e5e54c3df71395356788f42014ee9a6f67b4522385f8da0be382",
   "./assets/licenses/world-music.txt": "sha256-1ccd8393364615f0a6bfbf6279b2c7335d931515035fe3240bf7d5d8367f7d6b",
   "./assets/licenses/defeat-sound.txt": "sha256-c682efccd14ce23e0a114a59d1c3231055537ef5d803c6416b3412e65796f390",
@@ -1204,7 +1215,7 @@ const ASSET_REVISIONS = {
   "./assets/images/intro/conceptos/prologo-cuatro-escenas-v1.png": "sha256-2b209d5c4a3c1a14c1f6e8ce236fd4cbc9d0c8347fd842164fb3d3b623b11d7e",
   "./css/intro.css": "sha256-d3cf35e248c8e466193bb2e4f0eafb94b4551fd62f06161ca114ab0115cb1d54",
   "./js/intro.js": "sha256-6dfd307bd0b1df195cae3f1cfc7917569d8b418f58382eea4f2eeac7a4624922",
-  "./js/supabase-loader.js": "sha256-baab094b00e6d0c1e65bdf3ed4c4f2243e22f3f216e12c7dadd275d669c7f963",
+  "./js/supabase-loader.js": "sha256-52c182c9754dd44411a51a233d0cc4df4e9879d046f90b8af53e6cb939eac5ba",
   "./js/supabase-config.js": "sha256-305eac5a6b712731f4e372cca9f6a4f2af0610e772bd928eaa5e75fc0b427295",
   "./js/supabase-client.js": "sha256-25fedbd5cf0ce2c70266f4e9c17ece167849bbe12abde0ec59d275d497153b4e",
   "./js/word-gameplay.js": "sha256-ed28310b7afcba7a3ce8391e8a26d23ec39ae19f710b99016de494c3dffe4913",
@@ -1215,14 +1226,14 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-b0f570977c4301832f53a48048ad35fda86dd4225f7d03b56fec60038e5ca4fc",
+  "./js/app.js": "sha256-ea5b911991e67d6ab3bcf6d4455b9751072d1eb7e02e816340808f10a4d480df",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
   "./assets/images/cinematicas/bosque-kairos/ataque-v1.png": "sha256-614b33e5e9fab59f36f7757aa4102a768b64eb485c559e8f821a7618274375ec",
   "./assets/images/cinematicas/bosque-kairos/informe-sombra-v1.png": "sha256-92441299f45b224410db5bfdcb8a478bc15e574731c08c2f53cb434737f46768",
   "./assets/images/cinematicas/bosque-kairos/guardiana-revelada-v1.png": "sha256-b72b6da46a5c789b2cba9e45e3a4f2ad493db4b7cd80a786c09282f419f3b27b",
-  "./js/pwa.js": "sha256-256f4cb2112fc4b4f992648f6eec5a66c5de6877dbb3daa49bf6405bc75bb507",
+  "./js/pwa.js": "sha256-cd0968e0f68e33d3bedd258351422af26d2e013a6b479c6f2496bf9c6bb9917f",
   "./assets/icons/icon-192.png": "sha256-197cc1d70461ce213728833900b9ebd7121e86a5e86e5f4080ae008a120fbd0e",
   "./assets/icons/icon-512.png": "sha256-963213d2e3a94a65bbcc1c35ca0e245973de3fe76c1701986f5360c2fe46568e",
   "./assets/images/intro/libro-intro-sin-cristal.png": "sha256-80370ebe316fefb1ee769fe59b4f2dc33284f11f550021f67f6f4b2719ab4623",
@@ -1607,7 +1618,6 @@ const LEGACY_RESOURCE_REVISIONS = {
   "./prueba-aren-union.html": "aventura-palabras-runtime-v347",
   "./js/aren-union-preview.js": "aventura-palabras-runtime-v347",
   "./css/aren-union-preview.css": "aventura-palabras-runtime-v347",
-  "./js/aren-union-duel.js": "aventura-palabras-runtime-v347",
   "./assets/images/trajes/aren-union-base-v1.png": "20261002-cinematicas-escala-1",
   "./assets/images/trajes/aren-union-capa-v1.png": "20261002-cinematicas-escala-1",
   "./assets/images/trajes/aren-union-invocacion-v1.png": "20261002-cinematicas-escala-1",
@@ -1743,7 +1753,6 @@ const LEGACY_RESOURCE_REVISIONS = {
   "./assets/images/trajes/zafir-celestial-vidrio-v1.png": "legacy-v93-v95",
   "./js/vendor/supabase-2.116.0.js": "aventura-palabras-runtime-v347",
   "./assets/sounds/trueno-cinematica-v2.wav": "20260922-relampago-1",
-  "./js/versus-ranks.js": "aventura-palabras-runtime-v347",
   "./css/versus-ranks.css": "aventura-palabras-runtime-v347",
   "./assets/images/rangos/novato-v2.png": "20260922-medallas-3",
   "./assets/images/rangos/bronce-v2.png": "20260922-medallas-3",
@@ -1761,7 +1770,6 @@ const LEGACY_RESOURCE_REVISIONS = {
   "./assets/images/perfil/marco-real-v1.png": "legacy-v93-v95",
   "./css/versus-identity.css": "aventura-palabras-runtime-v347",
   "./js/avatar-rewards.js": "aventura-palabras-runtime-v347",
-  "./js/public-player-profile.js": "aventura-palabras-runtime-v347",
   "./manifest.json": "legacy-v93-v95",
   "./css/azrak-world.css": "aventura-palabras-runtime-v347",
   "./assets/images/cinematicas/reino-azrak/primer-shadow-lume-capturada-v1.png": "legacy-v93-v95",
@@ -1835,7 +1843,6 @@ const LEGACY_RESOURCE_REVISIONS = {
   "./js/prologue-cinematic.js": "aventura-palabras-runtime-v347",
   "./assets/images/intro/conceptos/prologo-cuatro-escenas-v1.png": "legacy-v93-v95",
   "./css/intro.css": "aventura-palabras-runtime-v347",
-  "./js/supabase-loader.js": "aventura-palabras-runtime-v347",
   "./js/supabase-config.js": "aventura-palabras-runtime-v347",
   "./js/supabase-client.js": "aventura-palabras-runtime-v347",
   "./js/versus-room.js": "aventura-palabras-runtime-v347",
@@ -1845,7 +1852,6 @@ const LEGACY_RESOURCE_REVISIONS = {
   "./assets/images/cinematicas/bosque-kairos/ataque-v1.png": "legacy-v93-v95",
   "./assets/images/cinematicas/bosque-kairos/informe-sombra-v1.png": "legacy-v93-v95",
   "./assets/images/cinematicas/bosque-kairos/guardiana-revelada-v1.png": "legacy-v93-v95",
-  "./js/pwa.js": "aventura-palabras-runtime-v347",
   "./assets/icons/icon-192.png": "legacy-v93-v95",
   "./assets/icons/icon-512.png": "legacy-v93-v95",
   "./assets/images/intro/libro-intro-sin-cristal.png": "legacy-v93-v95",
@@ -2188,7 +2194,7 @@ const LEGACY_RESOURCE_REVISIONS = {
 // END GENERATED RESOURCE MANIFEST
 
 const REVISIONES_ACTUALES = Object.fromEntries(
-  CORE_ASSETS.map((path) => [path, ASSET_REVISIONS[path] || LEGACY_REVISION]),
+  RESOURCE_ASSETS.map((path) => [path, ASSET_REVISIONS[path] || LEGACY_REVISION]),
 );
 
 async function informarProgresoInstalacion({
@@ -2235,7 +2241,7 @@ async function obtenerCachesReutilizables() {
       }
     } else if (LEGACY_CACHE_NAMES.has(nombre)) {
       revisiones = Object.fromEntries(
-        CORE_ASSETS.map((path) => [path, LEGACY_REVISION]),
+        RESOURCE_ASSETS.map((path) => [path, LEGACY_REVISION]),
       );
     }
 
@@ -2273,9 +2279,33 @@ function crearURLRecurso(path, revision) {
   return url;
 }
 
+const descargasPendientes = new Map();
 async function descargarRecursoVerificado(path, revision) {
+  const key = path + revision;
+  if (descargasPendientes.has(key)) return descargasPendientes.get(key);
+  const promise = (async () => {
+    for (let intento = 0; intento < 2; intento++) {
+      try { return await descargarArchivoVerificado(path, revision); }
+      catch (error) {
+        if (intento || error.name === 'QuotaExceededError' || /no corresponde|: 4\d\d/.test(error.message)) throw error;
+      }
+    }
+  })();
+  descargasPendientes.set(key, promise);
+  try { return await promise; } finally { descargasPendientes.delete(key); }
+}
+
+async function descargarArchivoVerificado(path, revision) {
   const url = crearURLRecurso(path, revision);
-  const response = await fetch(new Request(url, { cache: 'reload' }));
+  const controller = typeof AbortController === 'function' ? new AbortController() : null;
+  const timer = controller ? setTimeout(() => controller.abort(), 45000) : null;
+  let response;
+  try {
+    response = await fetch(new Request(url, { cache: 'reload', ...(controller ? { signal: controller.signal } : {}) }));
+    // Include body consumption in the timeout, not just response headers.
+    if (!response.ok || response.status !== 200) throw new Error(`No se pudo descargar ${path}: ${response.status}`);
+    response = new Response(await response.arrayBuffer(), { status: 200, headers: response.headers });
+  } finally { if (timer) clearTimeout(timer); }
   if (!response.ok || response.status !== 200) throw new Error(`No se pudo descargar ${path}: ${response.status}`);
   const digest = await crypto.subtle.digest('SHA-256', await response.clone().arrayBuffer());
   const hash = 'sha256-' + [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, '0')).join('');
@@ -2289,6 +2319,13 @@ async function instalarRecursosConProgreso() {
   const cache = await caches.open(CACHE_NAME);
   const cachesAnteriores = await obtenerCachesReutilizables();
   const referencias = {};
+  // Preserve optional resources stored by older releases in their original
+  // cache. This matters for legacy media that never entered the shared cache.
+  for (const path of RESOURCE_ASSETS) {
+    if (CORE_ASSETS.includes(path)) continue;
+    const ref = await buscarRecursoReutilizable(path, REVISIONES_ACTUALES[path], cachesAnteriores);
+    if (ref) referencias[path] = ref;
+  }
   const total = CORE_ASSETS.length;
   let completados = 0;
   let descargados = 0;
@@ -2361,18 +2398,8 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil((async () => {
-    const referencias = await obtenerReferenciasInstaladas();
-    const conservadas = new Set([CACHE_NAME, RESOURCE_CACHE_NAME, ...Object.values(referencias).map(ref => ref.cache)]);
-    const cacheNames = await caches.keys();
-    // A newer update may already be preparing its own reference map. Do not
-    // remove caches it could still be inspecting or referencing.
-    if (!self.registration.installing && !self.registration.waiting) {
-      await Promise.all(
-        cacheNames
-          .filter((cacheName) => cacheName.startsWith(CACHE_PREFIX) && !conservadas.has(cacheName))
-          .map((cacheName) => caches.delete(cacheName)),
-      );
-    }
+    // v369 preserves every old release cache: old tabs and optional packs can
+    // still reference them. No cleanup of player data or downloaded media.
     await self.clients.claim();
   })());
 });
@@ -2467,8 +2494,8 @@ async function responderRecursoEstatico(event) {
   // Keep each installed release consistent instead of mixing its code with
   // background downloads from the next release while installation is pending.
   const path = './' + new URL(request.url).pathname.slice(new URL(self.registration.scope).pathname.length);
-  if (cachedResponse && CORE_ASSETS.includes(path)) return cachedResponse;
-  if (CORE_ASSETS.includes(path)) {
+  if (cachedResponse && REVISIONES_ACTUALES[path]) return cachedResponse;
+  if (REVISIONES_ACTUALES[path]) {
     // Recover an evicted file only when the server has the exact installed bytes.
     const referencia = await descargarRecursoVerificado(path, REVISIONES_ACTUALES[path]);
     const recursos = await caches.open(referencia.cache);
@@ -2510,8 +2537,37 @@ self.addEventListener("fetch", (event) => {
 });
 
 self.addEventListener("message", (event) => {
+  if (event.data?.type === "RESOURCE_PACK") {
+    event.waitUntil((async () => {
+      try {
+        const paths = [...new Set(event.data.core ? CORE_ASSETS : (event.data.paths || []))];
+        if (paths.some(path => !Object.prototype.hasOwnProperty.call(REVISIONES_ACTUALES, path))) {
+          throw new Error('El paquete contiene recursos desconocidos.');
+        }
+        const anteriores = await obtenerCachesReutilizables();
+        let available = true;
+        // Recheck the actual files on every request; a previous success is not
+        // evidence that storage eviction has not removed part of the pack.
+        for (const path of paths) {
+          let response = await buscarRecursoInstalado(new Request(new URL(path, self.registration.scope)));
+          if (!response) {
+            const ref = await buscarRecursoReutilizable(path, REVISIONES_ACTUALES[path], anteriores);
+            if (ref) response = await (await caches.open(ref.cache)).match(ref.url);
+          }
+          if (response?.status === 200) continue;
+          if (event.data.checkOnly) { available = false; continue; }
+          await descargarRecursoVerificado(path, REVISIONES_ACTUALES[path]);
+        }
+        event.ports?.[0]?.postMessage({ available, total: paths.length, version: CACHE_NAME });
+      } catch (error) {
+        event.ports?.[0]?.postMessage({ error: error.name === 'QuotaExceededError'
+          ? 'No hay espacio suficiente para guardar estos recursos. Liberá espacio y reintentá; tus datos se conservan.'
+          : error.message });
+      }
+    })());
+  }
   if (event.data?.type === "GET_VERSION") {
-    event.ports?.[0]?.postMessage({ version: CACHE_NAME });
+    event.ports?.[0]?.postMessage({ version: CACHE_NAME, resourcePacks: true });
   }
   if (event.data?.type === "SKIP_WAITING") {
     self.skipWaiting();

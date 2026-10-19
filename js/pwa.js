@@ -1,4 +1,5 @@
 const PWA_UPDATE_INTERVAL = 60 * 60 * 1000;
+let verificarEstadoOfflinePwa = () => {};
 
 async function registrarAplicacionInstalable() {
   if (!("serviceWorker" in navigator)) {
@@ -28,6 +29,14 @@ async function registrarAplicacionInstalable() {
   let recargandoPorActualizacion = false;
   let progresoInstalacion = null;
   let errorInstalacion = false;
+  let registroPwa = null;
+  let busquedaEnCurso = null;
+  const buscarActualizacion = () => {
+    if (!registroPwa) return Promise.resolve();
+    busquedaEnCurso ||= registroPwa.update().catch(() => mostrarErrorDescarga())
+      .finally(() => { busquedaEnCurso = null; });
+    return busquedaEnCurso;
+  };
 
   const mostrarEstadoOffline = (estado, texto) => {
     if (!estadoOfflineJuego) return;
@@ -35,14 +44,23 @@ async function registrarAplicacionInstalable() {
     GameUI.text(estadoOfflineJuego, texto);
   };
 
-  const mostrarModosLocalesDisponibles = () => {
+  const mostrarModosLocalesDisponibles = async () => {
+    if (globalThis.GameResources?.coreAvailable) {
+      let disponible = false;
+      try { disponible = await GameResources.coreAvailable(); } catch (_error) {}
+      if (!disponible) {
+        mostrarEstadoOffline('pendiente', GameUI.key('common.pwa.checkPending'));
+        return;
+      }
+    }
     mostrarEstadoOffline(
       navigator.onLine ? "listo" : "sin-red",
       navigator.onLine
-        ? GameUI.key('common.pwa.ready')
-        : GameUI.key('common.pwa.offline'),
+        ? GameUI.key('common.pwa.coreReady')
+        : GameUI.key('common.pwa.cachedOnly'),
     );
   };
+  verificarEstadoOfflinePwa = mostrarModosLocalesDisponibles;
 
   const solicitarConservacionPaqueteLocal = async () => {
     if (!navigator.storage?.persist) return;
@@ -75,7 +93,7 @@ async function registrarAplicacionInstalable() {
     mostrarEstadoOffline(
       estado === "completa" ? "listo" : "descargando",
       estado === "completa"
-        ? GameUI.key('common.pwa.ready')
+        ? GameUI.key('common.pwa.coreReady')
         : GameUI.key('common.pwa.saving', {percent:valor}),
     );
     barraActualizacion.value = valor;
@@ -100,7 +118,10 @@ async function registrarAplicacionInstalable() {
     GameUI.text(tituloActualizacion, GameUI.key('common.pwa.failed'));
     GameUI.text(textoActualizacion, GameUI.key('common.pwa.retryDownload'));
     progresoActualizacion.hidden = true;
-    accionesActualizacion.hidden = true;
+    accionesActualizacion.hidden = false;
+    btnActualizar.disabled = false;
+    btnPosponer.disabled = false;
+    GameUI.text(btnActualizar, GameUI.key('common.pwa.retry'));
     avisoPendiente = !menuPrincipalPwa.classList.contains("activa");
     avisoActualizacion.hidden = avisoPendiente;
     mostrarEstadoOffline(
@@ -111,6 +132,9 @@ async function registrarAplicacionInstalable() {
 
   const presentarAvisoActualizacion = () => {
     if (!workerEnEspera) return;
+    btnActualizar.disabled = false;
+    btnPosponer.disabled = false;
+    GameUI.text(btnActualizar, GameUI.key('common.pwa.updateNow'));
     avisoPendiente = false;
     iconoActualizacion.textContent = "↻";
     GameUI.text(tituloActualizacion, GameUI.key('common.pwa.available'));
@@ -151,14 +175,14 @@ async function registrarAplicacionInstalable() {
     });
   };
 
-  navigator.serviceWorker.addEventListener("message", (event) => {
+  navigator.serviceWorker.addEventListener("message", async (event) => {
     const mensaje = event.data;
-    if (
-      !navigator.serviceWorker.controller
-      || mensaje?.type !== "PWA_INSTALL_PROGRESS"
-    ) {
+    if (mensaje?.type !== "PWA_INSTALL_PROGRESS") {
       return;
     }
+
+    const registro = await navigator.serviceWorker.getRegistration();
+    if (![registro?.installing, registro?.waiting, registro?.active].includes(event.source)) return;
 
     if (mensaje.estado === "error") {
       mostrarErrorDescarga();
@@ -166,9 +190,19 @@ async function registrarAplicacionInstalable() {
     }
 
     actualizarBarraDescarga(mensaje);
+    if (mensaje.estado === 'completa' && !navigator.serviceWorker.controller) {
+      avisoActualizacion.hidden = true;
+      avisoPendiente = false;
+    }
   });
 
-  btnActualizar.addEventListener("click", () => {
+  btnActualizar.addEventListener("click", async () => {
+    if (errorInstalacion && !workerEnEspera) {
+      btnActualizar.disabled = true;
+      try { await buscarActualizacion(); }
+      finally { btnActualizar.disabled = false; }
+      return;
+    }
     if (!workerEnEspera || recargandoPorActualizacion) return;
     recargandoPorActualizacion = true;
     btnActualizar.disabled = true;
@@ -220,6 +254,7 @@ async function registrarAplicacionInstalable() {
       scope: "./",
       updateViaCache: "none",
     });
+    registroPwa = registro;
 
     document.documentElement.dataset.pwa = "activa";
     navigator.serviceWorker.ready.then(() => {
@@ -231,15 +266,16 @@ async function registrarAplicacionInstalable() {
     registro.addEventListener("updatefound", () => {
       observarInstalacion(registro.installing);
     });
-    registro.update().catch(() => {});
+    void buscarActualizacion();
+    window.addEventListener('online', () => { void buscarActualizacion(); });
 
     window.setInterval(() => {
-      registro.update().catch(() => {});
+      void buscarActualizacion();
     }, PWA_UPDATE_INTERVAL);
 
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "visible") {
-        registro.update().catch(() => {});
+        void buscarActualizacion();
       }
     });
   } catch (error) {
@@ -250,19 +286,12 @@ async function registrarAplicacionInstalable() {
 }
 
 window.addEventListener("online", () => {
-  const estado = document.getElementById("estadoOfflineJuego");
-  if (estado?.dataset.estado === "sin-red") {
-    estado.dataset.estado = "listo";
-    GameUI.text(estado, GameUI.key('common.pwa.ready'));
-  }
+  void verificarEstadoOfflinePwa();
 });
 
 window.addEventListener("offline", () => {
-  const estado = document.getElementById("estadoOfflineJuego");
-  if (estado?.dataset.estado === "listo") {
-    estado.dataset.estado = "sin-red";
-    GameUI.text(estado, GameUI.key('common.pwa.offline'));
-  }
+  void verificarEstadoOfflinePwa();
 });
 
-window.addEventListener("load", registrarAplicacionInstalable);
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", registrarAplicacionInstalable, { once: true });
+else void registrarAplicacionInstalable();

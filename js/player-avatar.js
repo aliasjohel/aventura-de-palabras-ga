@@ -61,7 +61,7 @@
     const badge = document.createElement("span");
     badge.className = `player-avatar frame-${frame}`;
     if (avatar) {
-      const img = document.createElement("img");
+      const img = document.createElement("img");img.loading='lazy';img.decoding='async';
       const face = document.createElement("span");
       face.className = "player-avatar-portrait";
       img.src = miniatura ? `assets/images/perfil/miniaturas/${avatar}-base.webp` : `assets/images/personajes/versus/${avatar}-base.png`;
@@ -73,7 +73,7 @@
       badge.append(face);
     }
     const ranked=AvatarRewards.catalog.find(item=>item.id===frame)?.rank;
-    const ornament = document.createElement("img");
+    const ornament = document.createElement("img");ornament.loading='lazy';ornament.decoding='async';
     ornament.className = "player-avatar-frame";
     if(ranked) ornament.classList.add('rank-frame');
     ornament.src = miniatura ? `assets/images/perfil/miniaturas/marco-${frame}-v1.webp` : `assets/images/perfil/marco-${frame}-v1.${ranked ? 'webp' : 'png'}`;

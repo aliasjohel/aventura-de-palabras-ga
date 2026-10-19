@@ -41,7 +41,9 @@ const server=http.createServer((req,res)=>{
     await page.evaluate(()=>{intentos=5;actualizarVidas();});assert.equal(await page.locator('.trampa-raices').getAttribute('data-stage'),'1');
     await page.evaluate(()=>{intentos=0;actualizarVidas();});assert.equal(await page.locator('.trampa-raices').getAttribute('data-stage'),'6');assert(await page.locator('.trampa-raices').evaluate(n=>n.classList.contains('capturado')));
     await page.evaluate(()=>{intentos=6;actualizarVidas();modalHistoria.classList.remove('oculto');});
-    await page.waitForFunction(()=>worldPlayers.find(a=>!a.paused)?.volume<.04);await page.evaluate(()=>modalHistoria.classList.add('oculto'));
+    // GameAudio.volume exposes the authored level; the mixer applies its gain
+    // separately through the native media setter.
+    await page.waitForFunction(()=>Math.abs((worldPlayers.find(a=>!a.paused)?.volume ?? 1)-.12)<.001);await page.evaluate(()=>modalHistoria.classList.add('oculto'));
     for(const [world,mission,file] of [[1,0,'world-desert-meditation.mp3'],[2,0,'world-sky-rising-moon.mp3'],[3,0,'world-winter-slow.mp3'],[3,3,'world-winter-through-snow.mp3'],[4,0,'world-azrak-end-of-hope.mp3']]){
       await page.evaluate(({world,mission})=>{escenarioActual=world;misionActual=mission;actualizarEscenaPorMision();actualizarVidas();}, {world,mission});
       await waitPlaying(file);assert.equal(await page.locator('#vidas').isVisible(),false);
@@ -54,7 +56,7 @@ const server=http.createServer((req,res)=>{
     assert.equal(await page.evaluate(()=>sonidos.derrota.src.endsWith('defeat-crystal-chime.wav')),true);
     await page.evaluate(()=>{const b=document.createElement('button');b.id='defeatProbe';b.textContent='Defeat';b.onclick=()=>reproducirSonido('derrota');document.body.append(b);});await page.locator('#defeatProbe').click();await page.waitForFunction(()=>defeatPlayers.some(a=>!a.paused&&a.currentTime>.03));await page.evaluate(()=>sonidos.derrota.pause());
     await page.evaluate(async()=>{window.musicRegistration=await navigator.serviceWorker.register('/music-test-sw.js');await navigator.serviceWorker.ready;});
-    await page.waitForFunction(()=>navigator.serviceWorker.controller);
+    await page.waitForFunction(() => navigator.serviceWorker.controller?.scriptURL.endsWith('/music-test-sw.js'));
     await context.setOffline(true);
     for(const src of musicFiles){
       const range=await page.evaluate(async src=>{const r=await fetch(src,{headers:{Range:'bytes=0-127'}});return {status:r.status,length:(await r.arrayBuffer()).byteLength};},src);

@@ -6,7 +6,7 @@ const scope = 'https://game.test/adventure/';
 const absolute = input => new URL(typeof input === 'string' ? input : input.url || input.href, scope).href;
 function fixture() {
   const stores = new Map(), downloads = [], puts = [], messages = [];
-  let network = new Map(), failed = '';
+  let network = new Map(), failed = '', quota = '';
   const caches = {
     keys: async () => [...stores.keys()], delete: async name => stores.delete(name),
     open: async name => {
@@ -21,11 +21,14 @@ function fixture() {
             if (candidate.href === url.href) return value.clone();
           }
         },
-        put: async (input, response) => { puts.push({cache: name, url: absolute(input)}); entries.set(absolute(input), response.clone()); },
+        put: async (input, response) => {
+          if (quota && absolute(input).includes(quota)) { const error = Error('storage full'); error.name = 'QuotaExceededError'; throw error; }
+          puts.push({cache: name, url: absolute(input)}); entries.set(absolute(input), response.clone());
+        },
       };
     },
   };
-  function worker(version, files) {
+  function worker(version, files, core) {
     const events = {};
     const context = { URL, Request, Response, Headers, Uint8Array, crypto: crypto.webcrypto, caches,
       fetch: async request => {
@@ -42,14 +45,82 @@ function fixture() {
     };
     let script = source.replace(/const CACHE_NAME = .*;/, 'const CACHE_NAME = ' + JSON.stringify(version) + ';');
     if (files) script += '\nCORE_ASSETS.splice(0,CORE_ASSETS.length,...' + JSON.stringify(Object.keys(files)) + ');Object.assign(ASSET_REVISIONS,' + JSON.stringify(Object.fromEntries(Object.entries(files).map(([p,b])=>[p,hash(b)]))) + ');Object.assign(REVISIONES_ACTUALES,ASSET_REVISIONS);';
+    if (core) script += '\nRESOURCE_ASSETS.splice(0,RESOURCE_ASSETS.length,...' + JSON.stringify(Object.keys(files)) + ');CORE_ASSETS.splice(0,CORE_ASSETS.length,...' + JSON.stringify(core) + ');';
     script += '\nglobalThis.config={assets:CORE_ASSETS,revisions:REVISIONES_ACTUALES,legacy:LEGACY_RESOURCE_REVISIONS,resourceCache:RESOURCE_CACHE_NAME};';
     vm.runInNewContext(script, context);
     const lifecycle = async type => { let work; events[type]({waitUntil: promise => {work = promise;}}); await work; };
     return {context, config: context.config, install: () => lifecycle('install'), activate: () => lifecycle('activate'),
+      pack: async (paths, checkOnly = false) => {
+        let work, result;
+        events.message({ data: { type: 'RESOURCE_PACK', paths, checkOnly }, ports: [{postMessage: value => {result = value;}}], waitUntil: promise => {work = promise;} });
+        await work; return result;
+      },
       read: (file, headers) => context.responderRecursoEstatico({request: new Request(new URL(file, scope), {headers}), waitUntil() {}})};
   }
-  return {stores, caches, puts, downloads, messages, worker, network: files => {network = new Map(Object.entries(files));}, fail: file => {failed = file;}};
+  return {stores, caches, puts, downloads, messages, worker, quota: value => {quota = value;}, network: files => {network = new Map(Object.entries(files));}, fail: file => {failed = file;}};
 }
+
+test('new installation is core-only; interrupted packs resume and eviction invalidates offline availability', async () => {
+  const f = fixture(), files = {'./index.html':'core','./scene.png':'scene','./music.mp3':'music'};
+  f.network(files); const w = f.worker('aventura-palabras-runtime-v369', files, ['./index.html']);
+  await w.install(); await w.activate(); assert.deepEqual(f.downloads, ['./index.html']);
+  assert.equal((await w.pack(['./scene.png','./music.mp3'], true)).available, false);
+  f.fail('./music.mp3'); assert.match((await w.pack(['./scene.png','./music.mp3'])).error, /interrupted/);
+  assert.equal((await w.pack(['./scene.png','./music.mp3'], true)).available, false);
+  f.fail(''); f.downloads.length = 0;
+  assert.equal((await w.pack(['./scene.png','./music.mp3'])).available, true);
+  assert.deepEqual(f.downloads, ['./music.mp3']);
+  const shared = f.stores.get(w.config.resourceCache);
+  for (const key of shared.keys()) if (key.includes('scene.png')) shared.delete(key);
+  assert.equal((await w.pack(['./scene.png','./music.mp3'], true)).available, false);
+  assert.equal((await w.pack(['./scene.png','./music.mp3'])).available, true);
+});
+
+test('quota failure does not remove old caches or publish an incomplete pack', async () => {
+  const f = fixture(), files = {'./index.html':'core','./scene.png':'scene'};
+  f.network(files); const w = f.worker('aventura-palabras-runtime-v369', files, ['./index.html']); await w.install();
+  const old = await f.caches.open('aventura-palabras-runtime-v368'); await old.put(scope+'saved.png',new Response('saved'));
+  f.quota('scene.png'); assert.match((await w.pack(['./scene.png'])).error, /espacio/);
+  assert.equal((await w.pack(['./scene.png'],true)).available, false);
+  await w.activate(); assert.equal(await (await old.match(scope+'saved.png')).text(),'saved');
+  f.quota(''); assert.equal((await w.pack(['./scene.png'])).available,true);
+});
+
+test('quota exhaustion during core installation leaves the previous version usable', async () => {
+  const f=fixture(),files={'./index.html':'old core','./styles.css':'old style'};
+  f.network(files);const old=f.worker('aventura-palabras-runtime-v368',files);await old.install();
+  const changed={...files,'./styles.css':'new style'};f.network(changed);f.quota('styles.css');
+  const next=f.worker('aventura-palabras-runtime-v369',changed);
+  await assert.rejects(next.install(),error=>error.name==='QuotaExceededError');
+  assert.equal(await (await old.read('./styles.css')).text(),'old style');
+  assert.equal(f.messages.at(-1).estado,'error');
+  assert.equal(await (await f.caches.open('aventura-palabras-runtime-v369')).match(scope+'__ubicaciones-recursos__.json'),undefined);
+});
+
+test('v368 optional media references survive a core-only upgrade without copying bytes', async () => {
+  const f = fixture(), files = {'./index.html':'old core','./scene.png':'scene','./music.mp3':'music'};
+  f.network(files); const old = f.worker('aventura-palabras-runtime-v368',files); await old.install(); await old.activate();
+  const changed = {...files, './index.html':'new core'}; f.network(changed); f.downloads.length = f.puts.length = 0;
+  const next = f.worker('aventura-palabras-runtime-v369',changed,['./index.html']); await next.install(); await next.activate();
+  assert.deepEqual(f.downloads,['./index.html']);
+  f.fail('./music.mp3'); assert.equal(await (await next.read('./music.mp3')).text(),'music');
+  assert.equal((await next.pack(['./scene.png','./music.mp3'],true)).available,true);
+  assert(f.stores.has('aventura-palabras-runtime-v368'));
+  assert.equal(f.puts.filter(p=>p.cache===next.config.resourceCache).length,1);
+});
+
+test('optional legacy media is referenced in place and remains readable offline', async () => {
+  const f=fixture(), files={'./index.html':'core','./music.mp3':'legacy music'};
+  const legacy=await f.caches.open('aventura-palabras-runtime-v347');
+  await legacy.put(scope+'music.mp3',new Response('legacy music'));
+  await legacy.put(scope+'__revisiones-recursos__.json',new Response(JSON.stringify({'./music.mp3':hash('legacy music')})));
+  f.network(files);const w=f.worker('aventura-palabras-runtime-v369',files,['./index.html']);
+  await w.install();await w.activate();f.fail('./music.mp3');
+  assert.equal(await (await w.read('./music.mp3')).text(),'legacy music');
+  assert.deepEqual(f.downloads,['./index.html']);
+  const refs=await (await (await f.caches.open('aventura-palabras-runtime-v369')).match(scope+'__ubicaciones-recursos__.json')).json();
+  assert.equal(refs['./music.mp3'].cache,'aventura-palabras-runtime-v347');
+});
 
 test('migration from v347 retains unchanged resources in place and only downloads modified files', async () => {
   const f = fixture(), w = f.worker('aventura-palabras-runtime-v348');
@@ -86,7 +157,7 @@ test('a CSS-only update downloads one file; unchanged code and media are neither
   const range = await next.read('./music.mp3', {Range:'bytes=2-5'});
   assert.equal(range.status, 206); assert.equal(await range.text(), '2345');
   assert.equal(f.downloads.length, 1);
-  assert(!f.stores.has('aventura-palabras-runtime-v400'), 'obsolete manifest can be deleted without deleting resources');
+  assert(f.stores.has('aventura-palabras-runtime-v400'), 'v369 conservatively preserves old manifests for installed clients');
 });
 
 test('an interrupted update leaves the active release offline-capable and retries only missing files', async () => {

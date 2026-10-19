@@ -1,0 +1,146 @@
+{
+  "method": "Edge headless, clean contexts, 40 ms latency, 5 MiB/s page network, SW blocked for comparable startup; uncompressed HTTP bytes; 10-second window. Installation sizes calculated from exact published bytes, not timed.",
+  "results": [
+    {
+      "version": 368,
+      "readyMs": 3544,
+      "requestsFirst10s": 195,
+      "networkMBFirst10s": 42.582,
+      "sdkWaitMs": 15014,
+      "sdkOk": false,
+      "errors": [],
+      "requestedMB": 179.134,
+      "largestRequests": [
+        {
+          "file": "assets/sounds/recibe-2-diamante.mp3",
+          "mb": 5.761
+        },
+        {
+          "file": "assets/images/personajes/versus/explorador-pantalla-rota-kalamo-v1.png",
+          "mb": 3.652
+        },
+        {
+          "file": "assets/images/personajes/versus/libro-sello-kalamo.png",
+          "mb": 3.539
+        },
+        {
+          "file": "assets/sounds/prologo.mp3",
+          "mb": 3.457
+        },
+        {
+          "file": "assets/images/personajes/versus/kalamo-final-golpe-impulso.png",
+          "mb": 3.148
+        },
+        {
+          "file": "assets/images/personajes/versus/kalamo-final-lanza-explorador-v1.png",
+          "mb": 3.037
+        },
+        {
+          "file": "assets/images/personajes/versus/kairos-final-explorador-concepto-v1.png",
+          "mb": 2.932
+        },
+        {
+          "file": "assets/images/fondos/bosque-0.png",
+          "mb": 2.799
+        },
+        {
+          "file": "assets/images/personajes/versus/kalamo-final-prepara-golpe-v1.png",
+          "mb": 2.768
+        },
+        {
+          "file": "assets/sounds/melodia-menu.mp3",
+          "mb": 2.763
+        },
+        {
+          "file": "assets/images/elementos/cubos-hielo-nivor.png",
+          "mb": 2.583
+        },
+        {
+          "file": "assets/images/elements/cristal-sabiduria-dorado-v2.png",
+          "mb": 2.498
+        }
+      ],
+      "menuReadyMs": 4314,
+      "networkFailures": [],
+      "httpErrors": [],
+      "consoleErrors": []
+    },
+    {
+      "version": 369,
+      "readyMs": 2403,
+      "requestsFirst10s": 87,
+      "networkMBFirst10s": 14.231,
+      "sdkWaitMs": 2,
+      "sdkOk": true,
+      "errors": [],
+      "requestedMB": 14.215,
+      "largestRequests": [
+        {
+          "file": "assets/sounds/melodia-menu.mp3",
+          "mb": 2.763
+        },
+        {
+          "file": "assets/images/intro/libro-intro-sin-cristal.png",
+          "mb": 2.333
+        },
+        {
+          "file": "assets/images/fondos/menu-inicio-aventura.png",
+          "mb": 2.095
+        },
+        {
+          "file": "assets/images/personajes/explorador-brazo-arena-v1.png",
+          "mb": 1.388
+        },
+        {
+          "file": "assets/images/perfil/marco-clasico-v1.png",
+          "mb": 1.263
+        },
+        {
+          "file": "assets/images/personajes/versus/explorador-base.png",
+          "mb": 1.211
+        },
+        {
+          "file": "js/app.js",
+          "mb": 0.68
+        },
+        {
+          "file": "css/styles.css",
+          "mb": 0.631
+        },
+        {
+          "file": "assets/images/intro/cristal-icono.png",
+          "mb": 0.563
+        },
+        {
+          "file": "js/vendor/supabase-2.116.0.js",
+          "mb": 0.218
+        },
+        {
+          "file": "index.html",
+          "mb": 0.132
+        },
+        {
+          "file": "js/i18n-es-fallback.js",
+          "mb": 0.125
+        }
+      ],
+      "menuReadyMs": 3524,
+      "networkFailures": [],
+      "httpErrors": [],
+      "consoleErrors": [],
+      "sdkRequestMs": 147
+    }
+  ],
+  "installations": [
+    {
+      "version": 368,
+      "coreFiles": 710,
+      "coreMB": 1109.515
+    },
+    {
+      "version": 369,
+      "coreFiles": 114,
+      "coreMB": 10.71
+    }
+  ]
+}

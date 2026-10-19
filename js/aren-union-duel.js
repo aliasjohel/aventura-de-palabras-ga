@@ -3,9 +3,9 @@
   function prepararCapaUnion(actor){
   const arena=actor.parentElement;
   const layer=document.createElement('div');layer.className='aren-union-duelo-capa';layer.hidden=true;layer.setAttribute('aria-hidden','true');
-  const cape=new Image();cape.src='assets/images/trajes/aren-union-capa-v1.png';layer.append(cape);
+  const cape=new Image();cape.loading='lazy';cape.decoding='async';cape.src='assets/images/trajes/aren-union-capa-v1.png';layer.append(cape);
   const gems=Array.from({length:5},(_,i)=>{
-    const gem=new Image();gem.src='assets/images/elements/cristal-sabiduria-esmeralda.png';
+    const gem=new Image();gem.loading='lazy';gem.decoding='async';gem.src='assets/images/elements/cristal-sabiduria-esmeralda.png';
     gem.className='aren-union-cristal-entrada';gem.hidden=true;gem.alt='';gem.setAttribute('aria-hidden','true');
     gem.style.setProperty('--tono',i*65+'deg');arena.append(gem);return gem;
   });

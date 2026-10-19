@@ -31,7 +31,7 @@
       const favorite = el("favoritoPerfilPublico"); favorite.replaceChildren();
       const first = profile.favorites?.[0];
       if (first) {
-        const portrait = document.createElement("img"); portrait.src = PlayerProfile.imagenPersonaje(first.character); portrait.alt = PlayerProfile.nombrePersonaje(first.character);
+        const portrait = document.createElement("img");portrait.loading='lazy';portrait.decoding='async'; portrait.src = PlayerProfile.imagenPersonaje(first.character); portrait.alt = PlayerProfile.nombrePersonaje(first.character);
         const detail = document.createElement("div"); detail.append(text("strong",portrait.alt),text("p",K("profile.favoriteStats",{played:first.played,wins:first.wins}))); favorite.append(portrait,detail);
       } else favorite.append(text("p",K("profile.noCharacterMatches")));
       el("partidasPerfilPublico").replaceChildren();

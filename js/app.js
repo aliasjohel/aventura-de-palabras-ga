@@ -507,25 +507,25 @@ const musicaCinematicaFinalMundo4 = GameAudio.create(
   "assets/sounds/cinematica-final-mundo4.mp3", "music");
 musicaCinematicaFinalMundo4.loop = false;
 musicaCinematicaFinalMundo4.volume = 0.58;
-musicaCinematicaFinalMundo4.preload = "auto";
+musicaCinematicaFinalMundo4.preload = "none";
 musicaMuralDragon.loop = false;
 musicaMuralDragon.volume = 0.58;
-musicaMuralDragon.preload = "auto";
+musicaMuralDragon.preload = "none";
 musicaCaminaPortal.loop = false;
 musicaCaminaPortal.volume = 0.62;
-musicaCaminaPortal.preload = "auto";
+musicaCaminaPortal.preload = "none";
 musicaSegundoCristal.loop = false;
 musicaSegundoCristal.volume = 0.52;
-musicaSegundoCristal.preload = "auto";
+musicaSegundoCristal.preload = "none";
 musicaCinematicaFinalMundo3.loop = false;
 musicaCinematicaFinalMundo3.volume = 0.58;
-musicaCinematicaFinalMundo3.preload = "auto";
+musicaCinematicaFinalMundo3.preload = "none";
 Object.values(sonidos).forEach((sonido) => {
   sonido.preload = "none";
 });
-sonidos.avisoCinematica.preload = "auto";
-sonidoComenzarAventura.preload = "auto";
-sonidoSeleccionPersonaje.preload = "auto";
+sonidos.avisoCinematica.preload = "none";
+sonidoComenzarAventura.preload = "none";
+sonidoSeleccionPersonaje.preload = "none";
 
 function reproducirMusicaCinematica(musica, nombre, volumen) {
   if (!musica.paused && !musica.ended) return;
@@ -1352,7 +1352,8 @@ async function asegurarConexionSalasVersus() {
     }
 
     const adaptadorSupabase = VersusRoomSupabase.crearAdaptador(cliente);
-    await adaptadorSupabase.inicializar();
+    try { await adaptadorSupabase.inicializar(); }
+    catch (error) { error.code = error.code || "SUPABASE_INITIALIZATION_FAILED"; throw error; }
     cancelarSuscripcionSalasVersus?.();
     adaptadorSalasVersus = adaptadorSupabase;
     cancelarSuscripcionSalasVersus = adaptadorSalasVersus.suscribir(
@@ -2318,7 +2319,7 @@ async function abrirSalaVersus() {
     actualizarSalaVersus(adaptadorSalasVersus.obtenerSala());
     void cargarRangoSala();
   } catch (error) {
-    estadoCuentaVersus.textContent = "Sin conexión";
+    estadoCuentaVersus.textContent = error.code === "SDK_LOAD_FAILED" ? "SDK pendiente de descarga" : "No se pudo iniciar la conexión";
     mostrarErrorSalaVersus(error.message || "No pudimos conectarnos con Supabase.");
   } finally {
     btnCrearSalaVersus.disabled = false;
@@ -3420,6 +3421,7 @@ btnPalabrasAleatoriasVersus.addEventListener("click", completarPalabrasAleatoria
 
 formPreparacionVersus.addEventListener("submit", async (evento) => {
   evento.preventDefault();
+  if (btnConfirmarPalabrasVersus.disabled) return;
   if (!validarPreparacionVersus(true)) return;
 
   palabrasSecretasVersus = inputsPalabrasVersus.map((input) => input.value);
@@ -3434,6 +3436,8 @@ formPreparacionVersus.addEventListener("submit", async (evento) => {
     tituloEsperaRivalVersus.textContent = "Protegiendo tus palabras…";
     textoEsperaRivalVersus.textContent = "Guardando el desafío de forma segura.";
     try {
+      tituloEsperaRivalVersus.textContent = "Preparando los recursos del combate…";
+      await prepararImagenesCombate([personajeJugadorVersus, personajeRivalVersus].filter(Boolean));
       const sala = await adaptadorSalasVersus.guardarDesafio({
         tematica: tematicaVersus.value,
         palabras: palabrasSecretasVersus,
@@ -6384,6 +6388,9 @@ function recursosPersonajeCombate(personaje) {
   return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || []),...extras].filter(Boolean);
 }
 async function prepararImagenesCombate(personajes) {
+  await GameResources.combat(personajes.flatMap(recursosPersonajeCombate).concat(
+    arenasVersus.map(arena => arena.src), fondoVersus.getAttribute("src"),
+    personajes.map(id => CharacterMusic.tracks[id])), personajes);
   // Retain decoded frames for this pair only, instead of all fighters on mobile.
   const urls = [...new Set(personajes.flatMap(recursosPersonajeCombate))];
   const images = await Promise.all(urls.map(src => new Promise((resolve, reject) => {
@@ -9705,9 +9712,17 @@ function actualizarVistaMisionDev() {
   actualizarControlesDev();
 }
 
-function mostrarPrologo() {
+let preparandoPrologo = false;
+async function mostrarPrologo() {
+  if (preparandoPrologo) return;
+  preparandoPrologo = true;
   solicitarOrientacion("portrait");
-  void precargarRecursosCriticosMision();
+  try {
+    await GameResources.prepare([
+      "./assets/images/intro/conceptos/prologo-cuatro-escenas-v1.png",
+      "./assets/sounds/prologo.mp3",
+    ]);
+  } finally { preparandoPrologo = false; }
   btnComenzarPrologo.disabled = false;
   modalPrologo.classList.remove("cerrando", "oculto");
   modalPrologo.classList.add("abriendo");
@@ -9720,7 +9735,8 @@ function mostrarPrologo() {
   btnSaltarNarrativa.classList.add("oculto");
 }
 
-function mostrarIntroduccionMundoDos() {
+async function mostrarIntroduccionMundoDos() {
+  await precargarRecursosCriticosMision();
   btnComenzarMundo2.disabled = false;
   modalIntroduccionMundo2.classList.remove("cerrando", "oculto");
   modalIntroduccionMundo2.classList.add("abriendo");
@@ -10006,6 +10022,7 @@ function ocultarMensajeDesafioSuperado() {
 }
 
 function esperarCargaFondoEscenario() {
+  fondoEscenario.loading = "eager";
   if (fondoEscenario.complete && fondoEscenario.naturalWidth > 0) {
     return Promise.resolve();
   }
@@ -11729,8 +11746,7 @@ globalThis.AventuraDeveloper?.ready.then(autorizado => {
 actualizarControlesDev();
 crearTecladoVersus();
 actualizarOrientacionPantalla(pantallaMenu);
-void precargarRecursosCriticosMision();
-precargarImagenesHojas();
+// Scene resources are prepared on entry, rather than competing with the menu.
 
 function cambiarPersonaje(estado) {
   personajeImagen.src = obtenerSrcExplorador(estado);
@@ -12177,6 +12193,7 @@ async function cambiarFondoMisionConFundido(nombreFondo) {
 }
 
 function esperarCargaImagen(imagen) {
+  imagen.loading = "eager";
   if (imagen.complete && imagen.naturalWidth > 0) {
     return Promise.resolve();
   }
@@ -16609,6 +16626,11 @@ function precargarRecursosCriticosMision(
   const estadoExplorador = obtenerEstadoBaseExplorador(escenario, mision);
 
   return Promise.all([
+    GameResources.world([
+      ...escenasPorEscenario[escenario].flatMap(escena => escena.fondos.map(nombre => `assets/images/fondos/${nombre}`)),
+      ...(escenario === 4 ? [...AzrakWorld.betrayal, ...AzrakWorld.finale]
+        .flatMap(shot => (shot.actors || []).map(actor => `assets/images/personajes/versus/${actor.file}`)) : []),
+    ], escenario),
     precargarImagen(`assets/images/fondos/${nombreFondo}`),
     escenario === 0 && mision === 2
       ? precargarImagen("assets/images/elementos/tronco-antiguo-caido-bosque.png")

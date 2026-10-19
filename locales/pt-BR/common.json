@@ -35,7 +35,7 @@
     "unsupported": "Este navegador não permite instalar os modos offline",
     "ready": "Aventura, Modo de teste e Torre disponíveis offline",
     "offline": "Sem conexão · Aventura, Modo de teste e Torre disponíveis",
-    "saving": "Salvando os modos locais para jogar offline · {percent}%",
+    "saving": "Salvando o núcleo inicial · {percent}%",
     "comparing": "Comparando arquivos salvos…",
     "fileProgress": "{completed} de {total} prontos · {reused} reutilizados · {downloaded} baixados",
     "preparing": "Preparando atualização",
@@ -72,7 +72,10 @@
     "updateProgress": "Preparando atualização: {percent}% ({completed} de {total} arquivos).",
     "searching": "Buscando uma nova versão…",
     "unconfirmed": "O navegador ainda não confirmou a nova versão. Tente buscar novamente em alguns segundos.",
-    "searchError": "Não foi possível buscar a atualização. Sua partida continua salva. Verifique a conexão e toque em Tentar atualizar novamente."
+    "searchError": "Não foi possível buscar a atualização. Sua partida continua salva. Verifique a conexão e toque em Tentar atualizar novamente.",
+    "coreReady": "Núcleo salvo. Os recursos de cada cena são verificados antes de entrar.",
+    "cachedOnly": "Sem conexão. O conteúdo fica disponível quando todos os seus recursos estão salvos.",
+    "checkPending": "Recursos offline aguardando verificação."
   },
   "audioTitle": "Som",
   "audioHelp": "Ajuste os sons quando quiser. Confira também o volume de mídia do celular.",

@@ -14,7 +14,7 @@ const server=http.createServer((req,res)=>{const file=path.join(root,new URL(req
  try{
   const context=await browser.newContext({serviceWorkers:'allow',locale:'es-AR'});await context.route('https://**/*',r=>r.abort());const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('http://127.0.0.1:'+server.address().port+'/index.html');await page.evaluate(()=>I18n.ready);
-  await page.waitForFunction(async()=>{const registration=await navigator.serviceWorker.getRegistration();return registration?.active&&!!(await caches.match(new URL('./js/narrative-i18n.js',location.href)));},null,{timeout:60000});
+  await page.waitForFunction(async()=>{const registration=await navigator.serviceWorker.getRegistration();if(!registration?.active)return false;for(const name of await caches.keys())if((await (await caches.open(name)).keys()).some(key=>new URL(key.url).pathname.endsWith('/js/narrative-i18n.js')))return true;return false;},null,{timeout:60000});
   await page.reload();await page.evaluate(()=>I18n.ready);await page.waitForFunction(()=>!!navigator.serviceWorker.controller);
   await context.setOffline(true);await page.reload();await page.evaluate(()=>I18n.ready);
   for(const language of ['en','pt-BR','es']){

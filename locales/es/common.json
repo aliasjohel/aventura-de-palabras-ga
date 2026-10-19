@@ -35,7 +35,7 @@
     "unsupported": "Este navegador no permite instalar los modos sin conexión",
     "ready": "Aventura, Pruebas y Torre disponibles sin conexión",
     "offline": "Sin conexión · Aventura, Pruebas y Torre disponibles",
-    "saving": "Guardando modos locales para jugar sin conexión · {percent}%",
+    "saving": "Guardando el núcleo inicial · {percent}%",
     "comparing": "Comparando archivos guardados…",
     "fileProgress": "{completed} de {total} listos · {reused} reutilizados · {downloaded} descargados",
     "preparing": "Preparando actualización",
@@ -72,7 +72,10 @@
     "updateProgress": "Preparando actualización: {percent}% ({completed} de {total} archivos).",
     "searching": "Buscando la versión nueva…",
     "unconfirmed": "El navegador aún no confirmó la versión nueva. Volvé a intentar la búsqueda en unos segundos.",
-    "searchError": "No se pudo buscar la actualización. Tu partida sigue guardada. Revisá la conexión y tocá Reintentar actualización."
+    "searchError": "No se pudo buscar la actualización. Tu partida sigue guardada. Revisá la conexión y tocá Reintentar actualización.",
+    "coreReady": "Núcleo guardado. Los recursos de cada escena se comprueban al entrar.",
+    "cachedOnly": "Sin conexión. Podés abrir el contenido cuyos recursos ya estén guardados.",
+    "checkPending": "Recursos offline pendientes de comprobar."
   },
   "audioTitle": "Sonido",
   "audioHelp": "Ajustá los sonidos cuando quieras. También revisá el volumen multimedia de tu celular.",

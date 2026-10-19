@@ -51,7 +51,7 @@ test('HTML loads banks before consumers and offline installation includes them',
     assert.ok(scripts.indexOf('js/word-banks-es.js') < scripts.indexOf(consumer), consumer);
   }
   const worker = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
-  assert.match(worker.match(/const CORE_ASSETS = \[([\s\S]*?)\n\];/)[1], /"\.\/js\/word-banks-es\.js"/);
+  assert.match(worker.match(/const RESOURCE_ASSETS = \[([\s\S]*?)\n\];/)[1], /"\.\/js\/word-banks-es\.js"/);
 });
 
 test('installed Spanish bank is served offline without a network request', async () => {

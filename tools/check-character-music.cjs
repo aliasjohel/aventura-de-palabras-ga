@@ -4,6 +4,7 @@ const root = path.resolve(__dirname, '..');
 const musicFiles = fs.readdirSync(path.join(root, 'assets/sounds')).filter(file => /^character-.*\.mp3$/.test(file)).map(file => './assets/sounds/' + file);
 const server = http.createServer((req, res) => {
   const name = new URL(req.url, 'http://localhost').pathname;
+  if (name === '/music-offline-probe.html') { res.setHeader('Content-Type','text/html'); return res.end('<!doctype html><meta charset=utf-8><body>Offline music probe</body>'); }
   if (name === '/character-test-sw.js') {
     res.setHeader('Content-Type', 'text/javascript');
     return res.end(fs.readFileSync(path.join(root, 'sw.js'), 'utf8') + '\nCORE_ASSETS.splice(0,CORE_ASSETS.length,...' + JSON.stringify(musicFiles) + ');self.addEventListener("install",e=>e.waitUntil(self.skipWaiting()));');
@@ -101,8 +102,10 @@ const server = http.createServer((req, res) => {
     assert(button.x >= 0 && button.y >= 0 && button.x + button.width <= 844 && button.y + button.height <= 390);
     await first.screenshot({path:'E:/Proyectos/adventure-music-source/character-music-mobile.png'});
     await first.evaluate(() => mostrarPantalla(pantallaMenu)); assert(await first.evaluate(() => characterPlayers.every(audio => audio.paused)));
-    await first.evaluate(async () => { await navigator.serviceWorker.register('/character-test-sw.js'); await navigator.serviceWorker.ready; });
-    await first.waitForFunction(() => navigator.serviceWorker.controller);
+    // Isolate offline decoding from the game's own update checker and active media.
+    await first.goto('http://127.0.0.1:'+server.address().port+'/music-offline-probe.html');
+    await first.evaluate(async () => { window.musicInstallProgress=[];navigator.serviceWorker.addEventListener('message',e=>musicInstallProgress.push(e.data));const registration=await navigator.serviceWorker.register('/character-test-sw.js'); if(registration.waiting)registration.waiting.postMessage({type:'SKIP_WAITING'});registration.addEventListener('updatefound',()=>{const worker=registration.installing;worker?.addEventListener('statechange',()=>{if(worker.state==='installed')worker.postMessage({type:'SKIP_WAITING'});});});await navigator.serviceWorker.ready; });
+    await first.waitForFunction(() => navigator.serviceWorker.controller?.scriptURL.endsWith('/character-test-sw.js'),null,{timeout:90000}).catch(async error=>{console.error(await first.evaluate(async()=>({controller:navigator.serviceWorker.controller?.scriptURL,registration:await navigator.serviceWorker.getRegistration().then(r=>({active:r?.active?.scriptURL,waiting:r?.waiting?.scriptURL,installing:r?.installing?.scriptURL})),progress:musicInstallProgress.slice(-4)})));throw error;});
     await contexts[0].setOffline(true);
     for (const src of musicFiles) {
       const range = await first.evaluate(async src => { const response = await fetch(src, {headers:{Range:'bytes=0-127'}}); return {status:response.status, size:(await response.arrayBuffer()).byteLength}; }, src);

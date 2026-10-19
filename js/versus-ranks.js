@@ -17,7 +17,7 @@
   function badge(value,progress=false){
     const score=points(value),d=division(score),rank=d.rank,node=document.createElement('span');node.className='rango-jugador';
     const shield=document.createElement('span');shield.className='rango-escudo';
-    const img=document.createElement('img');img.src='assets/images/rangos/'+rank.key+'-v2.png';img.alt='Insignia '+d.name;img.width=96;img.height=96;shield.append(img);
+    const img=document.createElement('img');img.loading='lazy';img.decoding='async';img.src='assets/images/rangos/'+rank.key+'-v2.png';img.alt='Insignia '+d.name;img.width=96;img.height=96;shield.append(img);
     if(d.number){const numeral=document.createElement('b');numeral.className='rango-numero';numeral.textContent=d.number;numeral.setAttribute('aria-hidden','true');shield.append(numeral);}
     const copy=document.createElement('span'),name=document.createElement('strong'),title=document.createElement('small');name.textContent=d.name;title.textContent=rank.title;copy.append(name,title);
     if(progress){const label=document.createElement('small');label.textContent=d.next===null?score+' puntos · Rango máximo':score+' / '+d.next+' puntos · Próximo: '+d.nextName;copy.append(label);if(d.next!==null){const bar=document.createElement('progress');bar.max=d.next-d.min;bar.value=score-d.min;bar.setAttribute('aria-label','Progreso hacia '+d.nextName);copy.append(bar);}}

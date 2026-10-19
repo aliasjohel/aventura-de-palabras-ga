@@ -8,7 +8,7 @@
  const factor=g=>values[g]/100;
  function apply(){for(const refs of [media,buses]) for(const ref of refs){const item=ref.deref();if(item)item.apply();else refs.delete(ref);}}
  function create(src,group='effects'){
-  const audio=new Audio(src);let proto=audio,desc;while(proto&&!desc){desc=Object.getOwnPropertyDescriptor(proto,'volume');proto=Object.getPrototypeOf(proto);}let base=audio.volume;
+  const audio=new Audio(src);audio.preload="none";let proto=audio,desc;while(proto&&!desc){desc=Object.getOwnPropertyDescriptor(proto,'volume');proto=Object.getPrototypeOf(proto);}let base=audio.volume;
   if(!desc?.set)return audio;
   const entry={apply:()=>desc.set.call(audio,base*factor(group)*(preview && group==='music' && audio!==preview ? 0 : 1))};
   Object.defineProperty(audio,'volume',{configurable:true,get:()=>base,set(value){if(!Number.isFinite(value)||value<0||value>1)throw new RangeError('Invalid volume');base=value;entry.apply();}});

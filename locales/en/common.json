@@ -35,7 +35,7 @@
     "unsupported": "This browser cannot install offline modes",
     "ready": "Adventure, Test mode, and Tower available offline",
     "offline": "Offline · Adventure, Test mode, and Tower available",
-    "saving": "Saving local modes for offline play · {percent}%",
+    "saving": "Saving the initial core · {percent}%",
     "comparing": "Comparing saved files…",
     "fileProgress": "{completed} of {total} ready · {reused} reused · {downloaded} downloaded",
     "preparing": "Preparing update",
@@ -72,7 +72,10 @@
     "updateProgress": "Preparing update: {percent}% ({completed} of {total} files).",
     "searching": "Checking for a new version…",
     "unconfirmed": "Your browser has not confirmed the new version yet. Check again in a few seconds.",
-    "searchError": "We could not check for an update. Your save is safe. Check your connection and tap Retry update."
+    "searchError": "We could not check for an update. Your save is safe. Check your connection and tap Retry update.",
+    "coreReady": "Core saved. Scene resources are checked before entry.",
+    "cachedOnly": "Offline. Content is available when all its resources have been saved.",
+    "checkPending": "Offline resources still need to be checked."
   },
   "audioTitle": "Sound",
   "audioHelp": "Adjust sounds anytime. Also check your phone’s media volume.",

@@ -34,9 +34,11 @@ test("volver al menú recupera el aviso de una descarga o un error pendientes", 
   const elementos = new Map();
   let menuActivo = false, observarMenu;
   const eventos = {};
+  const progressWorker = {};
+  let updates = 0, holdUpdate = false, releaseUpdate;
   const elemento = id => {
     if (!elementos.has(id)) elementos.set(id, {
-      hidden: true, dataset: {}, addEventListener() {},
+      hidden: true, dataset: {}, handlers: {}, addEventListener(type, fn) { this.handlers[type] = fn; },
       classList: { contains: () => menuActivo },
     });
     return elementos.get(id);
@@ -51,26 +53,38 @@ test("volver al menú recupera el aviso de una descarga o un error pendientes", 
     },
     navigator: { onLine: true, serviceWorker: {
       controller: {}, addEventListener: (tipo, fn) => { eventos[tipo] = fn; },
-      register: async () => ({ update: async () => {}, addEventListener() {} }),
+      register: async () => ({ update: () => { updates++; return holdUpdate ? new Promise(resolve => {releaseUpdate = resolve;}) : Promise.resolve(); }, addEventListener() {} }),
+      getRegistration: async () => ({ installing: progressWorker }),
       ready: Promise.resolve(),
     } },
-    document: { getElementById: elemento, documentElement: { dataset: {} }, addEventListener() {} },
+    document: { readyState: 'loading', getElementById: elemento, documentElement: { dataset: {} }, addEventListener() {} },
     window: { addEventListener() {}, setInterval() {} },
     sessionStorage: { getItem() {} },
     MutationObserver: class { constructor(fn) { observarMenu = fn; } observe() {} },
   };
   vm.runInNewContext(pwa, contexto);
   await contexto.registrarAplicacionInstalable();
-  eventos.message({ data: { type: 'PWA_INSTALL_PROGRESS', porcentaje: 25, completados: 1, total: 4 } });
+  await eventos.message({ source: progressWorker, data: { type: 'PWA_INSTALL_PROGRESS', porcentaje: 25, completados: 1, total: 4 } });
   assert.equal(elemento('avisoActualizacionPwa').hidden, true);
   menuActivo = true; observarMenu();
   assert.equal(elemento('avisoActualizacionPwa').hidden, false);
   assert.equal(elemento('barraActualizacionPwa').value, 25);
   menuActivo = false; observarMenu();
-  eventos.message({ data: { type: 'PWA_INSTALL_PROGRESS', estado: 'error' } });
+  await eventos.message({ source: progressWorker, data: { type: 'PWA_INSTALL_PROGRESS', estado: 'error' } });
   menuActivo = true; observarMenu();
   assert.equal(elemento('avisoActualizacionPwa').hidden, false);
   assert.equal(elemento('tituloActualizacionPwa').textContent, 'No se completó la actualización');
+  holdUpdate = true;
+  const updatesBefore = updates;
+  const retryOne = elemento('btnActualizarAplicacion').handlers.click();
+  const retryTwo = elemento('btnActualizarAplicacion').handlers.click();
+  assert.equal(updates, updatesBefore + 1, 'manual retry is single-flight');
+  releaseUpdate(); await Promise.all([retryOne,retryTwo]); holdUpdate = false;
+  contexto.navigator.serviceWorker.controller = null;
+  await eventos.message({ source: progressWorker, data: { type: 'PWA_INSTALL_PROGRESS', porcentaje: 50, completados: 2, total: 4 } });
+  assert.equal(elemento('barraActualizacionPwa').value, 50, 'first installation reports progress without a controller');
+  await eventos.message({ source: {}, data: { type: 'PWA_INSTALL_PROGRESS', porcentaje: 90, completados: 3, total: 4 } });
+  assert.equal(elemento('barraActualizacionPwa').value, 50, 'foreign workers cannot replace progress');
 });
 
 test("los archivos instalados no se mezclan con otra versión en segundo plano", async () => {
