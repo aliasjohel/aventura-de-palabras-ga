@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v369`;
+const CACHE_NAME = `${CACHE_PREFIX}v370`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -860,8 +860,8 @@ const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
 
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
-  "./js/resource-catalog.js": "sha256-186b8ce606310d7cb06f7040cf18c3eae99875a6ed079ec858942e672989a656",
-  "./js/resource-loader.js": "sha256-875f1e6725e2fb1f8a47ee9354aa20a1aa8f6a9dfcd2af0ced3025c2cfccbdc2",
+  "./js/resource-catalog.js": "sha256-bd22dda986941915df1a439b1cc5201cc29b557b61960e408e6f508ec8aea52a",
+  "./js/resource-loader.js": "sha256-084365c01775c1e4f5506844593d9687b56c333f49b964b6ce8a932f83af49a5",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
   "./assets/images/perfil/miniaturas/dragon-base.webp": "sha256-f25e547e72384e6edab79d058d145d1dd506e9a62257f29f1a166ebb91db4d2b",
   "./assets/images/perfil/miniaturas/dragon-hielo-base.webp": "sha256-005ea98519d0904d32e708ed14eabc23f5a235f2a3e08f47058a1a21bed178bb",
@@ -1125,8 +1125,8 @@ const ASSET_REVISIONS = {
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
   "./js/player-avatar.js": "sha256-32238ae2b6e3ab07cd4f9688d9b5c5778d8d0014cc7cfaa1ce207885aa2e1862",
   "./js/public-player-profile.js": "sha256-8cca6d307c960e16dae507d1efa6911d53abd1ae127eca38e6b580acbdfe20ff",
-  "./": "sha256-661094d1920166429267abf9d2561c591e5c92b4ffc6b769410c7b188930857c",
-  "./index.html": "sha256-661094d1920166429267abf9d2561c591e5c92b4ffc6b769410c7b188930857c",
+  "./": "sha256-9b4575b759b4798b1708eb2d4fc5d24e7c5687a6688ccd77080c4908c659c7b5",
+  "./index.html": "sha256-9b4575b759b4798b1708eb2d4fc5d24e7c5687a6688ccd77080c4908c659c7b5",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-5980b88ad51760fd028c6106e2c1b63d6234e600d2ef3090b9860e09a84e739d",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1226,7 +1226,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-ea5b911991e67d6ab3bcf6d4455b9751072d1eb7e02e816340808f10a4d480df",
+  "./js/app.js": "sha256-fae7b39cd62ec5577d9ca3d2e4752a8cd2694ee9ab085bd98b02f89170676b0c",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
@@ -2546,6 +2546,15 @@ self.addEventListener("message", (event) => {
         }
         const anteriores = await obtenerCachesReutilizables();
         let available = true;
+        let completed = 0, completedBytes = 0;
+        const sizeOf = path => Math.max(0, Number(event.data.sizes?.[path]) || 0);
+        const totalBytes = paths.reduce((sum, path) => sum + sizeOf(path), 0);
+        const progress = () => {
+          if (!event.data.checkOnly) event.ports?.[0]?.postMessage({
+            progress: true, completed, total: paths.length, completedBytes, totalBytes,
+          });
+        };
+        progress();
         // Recheck the actual files on every request; a previous success is not
         // evidence that storage eviction has not removed part of the pack.
         for (const path of paths) {
@@ -2554,9 +2563,13 @@ self.addEventListener("message", (event) => {
             const ref = await buscarRecursoReutilizable(path, REVISIONES_ACTUALES[path], anteriores);
             if (ref) response = await (await caches.open(ref.cache)).match(ref.url);
           }
-          if (response?.status === 200) continue;
-          if (event.data.checkOnly) { available = false; continue; }
-          await descargarRecursoVerificado(path, REVISIONES_ACTUALES[path]);
+          if (response?.status !== 200) {
+            if (event.data.checkOnly) { available = false; continue; }
+            await descargarRecursoVerificado(path, REVISIONES_ACTUALES[path]);
+          }
+          completed++;
+          completedBytes += sizeOf(path);
+          progress();
         }
         event.ports?.[0]?.postMessage({ available, total: paths.length, version: CACHE_NAME });
       } catch (error) {

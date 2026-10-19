@@ -2440,6 +2440,7 @@ async function entrarAlMundoHielo() {
   historiaMisionPendiente = false;
   maximoEscenarioDesbloqueado = Math.max(maximoEscenarioDesbloqueado, 3);
   guardarProgreso();
+  await precargarRecursosCriticosMision();
   await reproducirIntroduccionMundoHielo();
   await iniciarMisionAventura({ presentarMision: true });
   mostrarHistoriaMision({ misionYaCargada: true });
@@ -9640,7 +9641,7 @@ function prepararMisionElegida(mundoSeleccionado, misionSeleccionada) {
   muralSantuarioCompletado = escenarioActual > 0 || misionActual > 8;
   actualizarJugador();
   const repeticion = AventuraMapa.repeticion;
-  void iniciarMisionAventura().then(() => {
+  void iniciarMisionAventura({ presentarMision: true }).then(() => {
     if (AventuraMapa.repeticion !== repeticion || escenarioActual !== mundoSeleccionado || misionActual !== misionSeleccionada) return;
     mostrarHistoriaMision({ misionYaCargada: true });
   });
@@ -9718,6 +9719,7 @@ async function mostrarPrologo() {
   preparandoPrologo = true;
   solicitarOrientacion("portrait");
   try {
+    await precargarRecursosCriticosMision();
     await GameResources.prepare([
       "./assets/images/intro/conceptos/prologo-cuatro-escenas-v1.png",
       "./assets/sounds/prologo.mp3",

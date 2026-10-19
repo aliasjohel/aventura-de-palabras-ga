@@ -5,7 +5,7 @@ const hash = body => 'sha256-' + crypto.createHash('sha256').update(body).digest
 const scope = 'https://game.test/adventure/';
 const absolute = input => new URL(typeof input === 'string' ? input : input.url || input.href, scope).href;
 function fixture() {
-  const stores = new Map(), downloads = [], puts = [], messages = [];
+  const stores = new Map(), downloads = [], puts = [], messages = [], packProgress = [];
   let network = new Map(), failed = '', quota = '';
   const caches = {
     keys: async () => [...stores.keys()], delete: async name => stores.delete(name),
@@ -50,15 +50,30 @@ function fixture() {
     vm.runInNewContext(script, context);
     const lifecycle = async type => { let work; events[type]({waitUntil: promise => {work = promise;}}); await work; };
     return {context, config: context.config, install: () => lifecycle('install'), activate: () => lifecycle('activate'),
-      pack: async (paths, checkOnly = false) => {
+      pack: async (paths, checkOnly = false, sizes) => {
         let work, result;
-        events.message({ data: { type: 'RESOURCE_PACK', paths, checkOnly }, ports: [{postMessage: value => {result = value;}}], waitUntil: promise => {work = promise;} });
+        events.message({ data: { type: 'RESOURCE_PACK', paths, checkOnly, sizes }, ports: [{postMessage: value => { if (value.progress) packProgress.push(value); else result = value; }}], waitUntil: promise => {work = promise;} });
         await work; return result;
       },
       read: (file, headers) => context.responderRecursoEstatico({request: new Request(new URL(file, scope), {headers}), waitUntil() {}})};
   }
-  return {stores, caches, puts, downloads, messages, worker, quota: value => {quota = value;}, network: files => {network = new Map(Object.entries(files));}, fail: file => {failed = file;}};
+  return {stores, caches, puts, downloads, messages, packProgress, worker, quota: value => {quota = value;}, network: files => {network = new Map(Object.entries(files));}, fail: file => {failed = file;}};
 }
+
+test('world progress counts saved bytes and a second visit downloads nothing', async () => {
+  const f = fixture(), files = {'./index.html':'core','./scene.png':'scene','./music.mp3':'music'};
+  f.network(files);
+  const w = f.worker('aventura-palabras-runtime-v370', files, ['./index.html']);
+  await w.install(); await w.activate();
+  const paths = ['./scene.png','./music.mp3'], sizes = {'./scene.png':5,'./music.mp3':5};
+  await w.pack(paths, false, sizes);
+  assert.deepEqual(f.packProgress.map(p => p.completedBytes), [0,5,10]);
+  assert(f.packProgress.every(p => p.totalBytes === 10));
+  f.downloads.length = 0; f.packProgress.length = 0;
+  assert.equal((await w.pack(paths, false, sizes)).available, true);
+  assert.deepEqual(f.downloads, []);
+  assert.equal(f.packProgress.at(-1).completedBytes, 10);
+});
 
 test('new installation is core-only; interrupted packs resume and eviction invalidates offline availability', async () => {
   const f = fixture(), files = {'./index.html':'core','./scene.png':'scene','./music.mp3':'music'};
