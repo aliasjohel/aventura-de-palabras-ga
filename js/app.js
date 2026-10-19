@@ -3927,7 +3927,12 @@ function elegirLetra(letra, boton) {
     actualizarVidas();
 
     personaje.textContent = intentos <= 2 ? "😨" : "😕";
-    mostrarReaccionExplorador("desanimado", "reaccion-error");
+    if (escenarioActual === 2) {
+      cancelarRetornoEstadoBaseExplorador();
+      personajeImagen.classList.remove(...clasesAnimacionExplorador);
+    } else {
+      mostrarReaccionExplorador("desanimado", "reaccion-error");
+    }
     GameUI.text(mensajePersonaje, GameUI.key("adventure.combat.adventureMiss"));
     if (window.ForestRootTrap.message() || window.DesertSandTrap.message() || window.WorldWordHazards.message()) {
       mensajePersonaje.textContent = window.ForestRootTrap.message() || window.DesertSandTrap.message() || window.WorldWordHazards.message();
@@ -4055,8 +4060,10 @@ function verificarEstado() {
   if (intentos === 0) {
     personaje.textContent = "😵";
     cancelarRetornoEstadoBaseExplorador();
-    cambiarPersonaje("triste");
-    animarPersonajeTemporal("reaccion-derrota");
+    if (escenarioActual !== 2) {
+      cambiarPersonaje("triste");
+      animarPersonajeTemporal("reaccion-derrota");
+    }
     GameUI.text(mensajePersonaje,GameUI.key("adventure.controls.defeat"));
     if (window.ForestRootTrap.message() || window.DesertSandTrap.message() || window.WorldWordHazards.message()) {
       mensajePersonaje.textContent = window.ForestRootTrap.message() || window.DesertSandTrap.message() || window.WorldWordHazards.message();

@@ -92,11 +92,12 @@
       world=nextWorld; stage=enabled?Math.max(0,Math.min(6,6-lives)):0;
       layer.hidden=!stage; layer.dataset.world=String(world); layer.dataset.stage=String(stage);
       actor.classList.toggle('aren-en-remolino-final', world===2 && stage===6);
+      actor.classList.toggle('aren-viento-anclado', world===2 && stage>0);
       layer.classList.remove('liberando');
       layer.querySelectorAll('.peligro-etapa').forEach(g=>g.classList.toggle('activa',Number(g.dataset.etapa)<=stage));
       followReaction();
     },
-    release() { if(stage) layer.classList.add('liberando'); actor.classList.remove('aren-en-remolino-final'); },
+    release() { if(stage) layer.classList.add('liberando'); actor.classList.remove('aren-en-remolino-final', 'aren-viento-anclado'); },
     message() { return stage ? messages[world]?.[stage] || '' : ''; },
   };
 })();

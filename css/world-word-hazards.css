@@ -19,7 +19,8 @@
 .torbellino-rafaga:nth-child(even) { stroke:#8fb8c7; stroke-width:12; animation-direction:reverse; }
 .torbellino-escombro { fill:#c9b57d; animation:fragmentosTorbellino 1.1s ease-in-out var(--demora) infinite alternate; }
 .torbellino-escombro:nth-child(3n) { fill:#f8ebc4; }
-#personajeImagen.aren-en-remolino-final { translate:0 -10px; opacity:.2; transition:translate .65s ease,opacity .65s ease; }
+#personajeImagen.aren-viento-anclado { animation:none; translate:none; }
+#personajeImagen.aren-en-remolino-final { opacity:.2; transition:opacity .65s ease; }
 .peligro-palabras:not([data-stage="6"]) .torbellino-final * { animation-play-state:paused; }
 @keyframes torbellinoCerrado { to { stroke-dashoffset:-184; } }
 @keyframes fragmentosTorbellino { from { transform:translate(-8px,5px); opacity:.5; } to { transform:translate(var(--deriva),-9px); opacity:1; } }
