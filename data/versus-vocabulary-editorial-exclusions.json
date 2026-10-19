@@ -1,0 +1,836 @@
+[
+  {
+    "language": "en",
+    "theme": "transportes",
+    "word": "BOXC AR",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "objetos",
+    "word": "BRAIDCASE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "objetos",
+    "word": "EGG TIMER",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "objetos",
+    "word": "FILINGCABINET",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "objetos",
+    "word": "COATHANGER",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "objetos",
+    "word": "FRYINGPAN",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "objetos",
+    "word": "POWERBANK",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "objetos",
+    "word": "ROLLINGPIN",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "objetos",
+    "word": "SAFETY PIN",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "objetos",
+    "word": "SEWINGMACHINE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "objetos",
+    "word": "SLEEPINGBAG",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "objetos",
+    "word": "TOPCHARGE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "objetos",
+    "word": "WASTE BIN",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "objetos",
+    "word": "WATERINGCAN",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "naturaleza",
+    "word": "LIC HEN",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "naturaleza",
+    "word": "SAPHIRE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "profesiones",
+    "word": "OCCUPATIONAL",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "profesiones",
+    "word": "TOURGUIDE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "deportes",
+    "word": "JAIALAI",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "deportes",
+    "word": "TUGOFWAR",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "en",
+    "theme": "deportes",
+    "word": "WATERPOLO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "paises",
+    "word": "CABOVERDE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "paises",
+    "word": "TIMOR",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "paises",
+    "word": "SUAZILÂNDIA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "frutas",
+    "word": "BAB AÇU",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "frutas",
+    "word": "CABELO DE ANJO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "frutas",
+    "word": "CEREJA DO RIO GRANDE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "frutas",
+    "word": "FRUTA PÃO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "frutas",
+    "word": "LIM A DA PÉRSIA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "frutas",
+    "word": "MANÁ",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "frutas",
+    "word": "MANDACARU",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "frutas",
+    "word": "GUAJUVIRA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "frutas",
+    "word": "JATOBÁ",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "ARAPUCA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "AURORA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "BATATA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "BEIJAFLOR",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "BEMTEVI",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "BICHO DA SEDA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "BICHO PREGUIÇA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "BRILHANTE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "CAGA SEBO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "CAVALO MARINHO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "CERV O",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "CORDEL",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "EGUA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "FEN ECO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "FURA BARREIRA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "GLUGLU",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "HÍDR A",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "ICTIOSSAURO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "JOÃO DE BARRO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "LEÔNICO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "LEOPÃO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "LI RA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "LOUVA DEUS",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "MANA TIM",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "MANATI",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "MASSARONGO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "NÓTULA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "NUTRIA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "PARDA L",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "PICA PAU",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "PÓNEI",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "PORCO ESPINHO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "PORQUINHO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "QUERO QUERO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "RABO DE PALHA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "RUMINANTE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "SABIA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "SURI CATO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "TICO TICO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "TRACAJA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "OVINO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "animales",
+    "word": "VITELA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "comidas",
+    "word": "CONGELADO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "comidas",
+    "word": "ESSÊNCIA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "comidas",
+    "word": "FLOCOS",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "comidas",
+    "word": "GRÃO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "comidas",
+    "word": "MIOLO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "comidas",
+    "word": "OVOMALTINE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "comidas",
+    "word": "PÉ DE MOLEQUE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "comidas",
+    "word": "SOBREMESA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "comidas",
+    "word": "GRATINADO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "profesiones",
+    "word": "ESCRIVANINHA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "profesiones",
+    "word": "FUNDI DOR",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "profesiones",
+    "word": "HARP ISTA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "profesiones",
+    "word": "JORN ALEIRO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "profesiones",
+    "word": "LÍDER",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "profesiones",
+    "word": "MOTOCICLISTA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "profesiones",
+    "word": "REMADOR",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "profesiones",
+    "word": "BANHISTA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "profesiones",
+    "word": "PRÁTICO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "transportes",
+    "word": "CAMPE R",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "transportes",
+    "word": "CAVALO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "transportes",
+    "word": "DRAG A",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "transportes",
+    "word": "PÉGASO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "transportes",
+    "word": "TÂNDER",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "transportes",
+    "word": "TUKTUK",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "transportes",
+    "word": "ZEP ELIM",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "transportes",
+    "word": "FRETADO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "ALTO FALANTE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "BALAI O",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "BRAÇALE TE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "CARRO DE MÃO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "CUTEL O",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "JÓIA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "LAP ISEIRA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "MAM ADEIRA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "PALMA TÓRIA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "PÉD A L",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "PIRE S",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "QUEBRA NOZES",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "RAB ECA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "TEL A",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "TOCA DISCO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "APARELHO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "objetos",
+    "word": "JOGO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "ARCO ÍRIS",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "AVE NC A",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "ESTEP E",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "FI ORDE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "GARO A",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "JANGAL",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "LATÃO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "LICHEN",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "MORENA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "PAU",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "PAUL",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "PIC O",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "RADÍCULA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "RECANTO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "RENQUE",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "SERRADO",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "TERR A",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "naturaleza",
+    "word": "ZAFIRA",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "nombres",
+    "word": "FABIAN A",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "nombres",
+    "word": "OD AIR",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  },
+  {
+    "language": "pt-BR",
+    "theme": "nombres",
+    "word": "LUÍZ",
+    "reason": "editorial: compound, malformed draft, obsolete spelling, ambiguous or outside category"
+  }
+]

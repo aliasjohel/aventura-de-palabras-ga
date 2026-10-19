@@ -832,11 +832,11 @@ function iniciarContextoPalabras(mode, online = false) {
   const idiomasDisponibles = mode === 'adventure'
     ? ['es', ...['en', 'pt-BR'].filter(idioma => obtenerBancoPalabrasIdioma(idioma, escenarioActual))]
     : online ? ['es','en','pt-BR']
-      : ['es', ...['en', 'pt-BR'].filter(idioma => obtenerBancosVersusIdioma(idioma))];
+      : ['es', ...['en', 'pt-BR'].filter(idioma => obtenerBancosVersusIdioma(idioma, mode))];
   const versionBanco = mode === 'adventure' && I18n.language !== 'es' && idiomasDisponibles.includes(I18n.language)
     ? (escenarioActual === 0 ? ForestWordBanks.version : AdventureWordBanks.version)
     : mode !== 'adventure' && !online && idiomasDisponibles.includes(I18n.language) && I18n.language !== 'es'
-      ? LocalVersusWordBanks.version : undefined;
+      ? (mode === 'versus' ? ExpandedVersusWordBanks.version : LocalVersusWordBanks.version) : undefined;
   contextoPalabrasCombate = WordGameplay.createContext({mode, online, onlineLanguage: partidaOnlineVersus?.wordLanguage || adaptadorSalasVersus.obtenerSala()?.idioma || 'es', requestedLanguage: I18n.language, availableLanguages: idiomasDisponibles, bankVersion: versionBanco});
   const bancos = mode === 'adventure' ? [obtenerBancoPalabrasAventura()] : Object.values(obtenerBancosPalabrasVersus());
   for (const banco of bancos) if (!bancosPalabrasValidados.has(banco)) {
@@ -5149,9 +5149,12 @@ btnHabilidadVersus.addEventListener("click", activarHabilidadVersus);
 // Duelo local de cinco rondas. En línea, las palabras y jugadas del rival
 // llegan desde el otro dispositivo en lugar de esta simulación.
 const bancosPalabrasVersus = SpanishWordBanks.versus;
-function obtenerBancosVersusIdioma(idioma) {
+function obtenerBancosVersusIdioma(idioma, mode = contextoPalabrasCombate?.mode || 'versus') {
   if (idioma === 'es') return bancosPalabrasVersus;
-  const bancos = globalThis.LocalVersusWordBanks?.banks[idioma];
+  // Tower/tutorial retain the original immutable banks. Only Versus uses expansion.
+  const proveedor = mode === 'versus' || mode === 'online'
+    ? globalThis.ExpandedVersusWordBanks : globalThis.LocalVersusWordBanks;
+  const bancos = proveedor?.banks[idioma];
   return bancos && Object.keys(bancosPalabrasVersus).every(tema => Array.isArray(bancos[tema]) && bancos[tema].length >= 40) ? bancos : null;
 }
 function obtenerBancosPalabrasVersus() {
@@ -5570,7 +5573,7 @@ function iniciarDueloAventura(tipo) {
   personajeJugadorVersus = "explorador";
   personajeRivalVersus = configuracion.rival;
 
-  iniciarContextoPalabras('versus');
+  iniciarContextoPalabras('adventure-duel');
   const tematicasDisponibles = Object.keys(obtenerBancosPalabrasVersus());
   const tematicaRival = tematicasDisponibles[
     Math.floor(Math.random() * tematicasDisponibles.length)
@@ -7635,7 +7638,7 @@ function agregarPalabraRecuperacionVersus(tipoJugador) {
 }
 
 function prepararDueloVersus({ comenzarRonda = true } = {}) {
-  const modoPalabras = modoArcadeActivo ? "tower" : "versus";
+  const modoPalabras = tutorialCombateVersus.activo ? "tutorial" : dueloAventuraActivo ? "adventure-duel" : modoArcadeActivo ? "tower" : "versus";
   if (contextoPalabrasCombate?.mode !== modoPalabras) iniciarContextoPalabras(modoPalabras);
   cancelarCinematicaFinalVersus();
   detenerRondaVersus({ conservarTemaCalamo: dueloAventuraActivo?.tipo === "calamo_desierto" });

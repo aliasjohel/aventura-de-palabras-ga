@@ -1,0 +1,106 @@
+{
+  "en": {
+    "paises": {
+      "before": 56,
+      "added": 44,
+      "after": 100
+    },
+    "frutas": {
+      "before": 47,
+      "added": 13,
+      "after": 60
+    },
+    "animales": {
+      "before": 76,
+      "added": 199,
+      "after": 275
+    },
+    "comidas": {
+      "before": 57,
+      "added": 153,
+      "after": 210
+    },
+    "profesiones": {
+      "before": 65,
+      "added": 125,
+      "after": 190
+    },
+    "deportes": {
+      "before": 52,
+      "added": 26,
+      "after": 78
+    },
+    "transportes": {
+      "before": 62,
+      "added": 38,
+      "after": 100
+    },
+    "objetos": {
+      "before": 77,
+      "added": 360,
+      "after": 437
+    },
+    "naturaleza": {
+      "before": 72,
+      "added": 178,
+      "after": 250
+    },
+    "nombres": {
+      "before": 92,
+      "added": 208,
+      "after": 300
+    }
+  },
+  "pt-BR": {
+    "paises": {
+      "before": 56,
+      "added": 44,
+      "after": 100
+    },
+    "frutas": {
+      "before": 60,
+      "added": 30,
+      "after": 90
+    },
+    "animales": {
+      "before": 107,
+      "added": 153,
+      "after": 260
+    },
+    "comidas": {
+      "before": 64,
+      "added": 146,
+      "after": 210
+    },
+    "profesiones": {
+      "before": 77,
+      "added": 113,
+      "after": 190
+    },
+    "deportes": {
+      "before": 54,
+      "added": 23,
+      "after": 77
+    },
+    "transportes": {
+      "before": 57,
+      "added": 33,
+      "after": 90
+    },
+    "objetos": {
+      "before": 90,
+      "added": 332,
+      "after": 422
+    },
+    "naturaleza": {
+      "before": 84,
+      "added": 176,
+      "after": 260
+    },
+    "nombres": {
+      "before": 113,
+      "added": 187,
+      "after": 300
+    }
+  }
+}
