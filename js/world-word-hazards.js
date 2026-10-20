@@ -15,7 +15,7 @@
   };
   const messages = {
     2: ['', 'El viento empieza a girar alrededor de Aren.', 'Las ráfagas rodean sus botas.', 'El remolino se enrosca en sus piernas.', 'Aren apenas puede moverse contra el viento.', '¡El torbellino está por envolverlo!', 'El torbellino atrapó a Aren. ¡Reintentá para liberarlo!'],
-    3: ['', 'La escarcha se pega a las botas de Aren.', 'El hielo empieza a sujetarle los tobillos.', 'Sus piernas quedan cubiertas de hielo.', 'El frío le alcanza la cintura. ¡Encontrá la palabra!', 'El hielo sube hasta sus hombros.', 'Aren quedó congelado. ¡Reintentá para romper el hielo!'],
+    3: ['', 'Una pierna de Aren queda cubierta de hielo.', 'El hielo congela también la otra pierna.', 'El hielo atrapa uno de sus brazos.', 'Sus dos brazos quedan congelados.', 'El hielo cubre su torso. ¡Encontrá la palabra!', 'Aren quedó completamente congelado. ¡Reintentá para romper el hielo!'],
     4: ['', 'Las primeras llamas brotan alrededor de Aren.', 'Un círculo de fuego rodea sus botas.', 'Las llamas se elevan a un lado de Aren.', 'El fuego levanta las paredes de la jaula.', 'Las llamas se curvan sobre su cabeza. ¡Encontrá la palabra!', 'La jaula de fuego se cerró alrededor de Aren. ¡Reintentá para liberarlo!'],
   };
   const group = (body, i) => `<g class="peligro-etapa" data-etapa="${i+1}">${body}</g>`;
@@ -35,14 +35,15 @@
     }).join('');
     return group(`<ellipse class="viento-sombra" cx="80" cy="${y}" rx="${rx}" ry="${8+i*2}"/><path class="viento-cinta" d="M${80-rx} ${y} C${70-rx} ${y-18} ${90+rx} ${y-20} ${80+rx} ${y} C${70+rx} ${y+17} ${90-rx} ${y+13} ${84-rx} ${y+5}"/><path class="viento-destello" d="M${85-rx} ${y+4} Q80 ${y+19} ${78+rx} ${y-3}"/><path class="viento-particula" d="M${42+i*9} ${y-10} l9 -3 m-18 10 l5 -2"/>${dust}`, i);
   }).join('') + finalWind;
-  const ice = [
-    'M32 186 L41 159 L53 167 L67 155 L79 170 L91 153 L103 163 L119 157 L129 186Z',
-    'M36 173 L39 138 L53 126 L67 143 L83 123 L99 137 L117 128 L125 170Z',
-    'M37 146 L32 106 L50 91 L66 109 L82 92 L102 102 L125 91 L128 146Z',
-    'M33 115 L31 77 L46 65 L65 78 L84 65 L103 74 L123 65 L131 114Z',
-    'M30 86 L34 48 L51 36 L65 50 L84 37 L102 42 L124 32 L132 85Z',
-    'M33 57 L39 24 L60 12 L86 18 L106 9 L124 26 L132 58Z',
-  ].map((d,i)=>group(`<path class="hielo-bloque" d="${d}"/><path class="hielo-grieta" d="M${48+i*2} ${177-i*28} l12 -12 -5 -10 m5 10 19 -3 M${104-i*2} ${174-i*28} l-9 -11 5 -11"/>`,i)).join('');
+  const iceFinal = `<g class="hielo-final"><path class="hielo-prision" d="M29 185 L20 143 L26 87 L20 46 L40 12 L64 18 L83 5 L108 16 L130 12 L143 47 L136 104 L142 151 L129 189 L86 196 L49 190Z"/><path class="hielo-faceta-oscura" d="M20 46 L49 61 L54 158 L29 185 L20 143 L26 87Z M108 16 L111 65 L129 91 L143 47 L130 12Z M111 65 L136 104 L142 151 L129 189 L108 160Z"/><path class="hielo-faceta-clara" d="M40 12 L64 18 L49 61 L20 46Z M83 5 L108 16 L111 65 L85 85 L64 18Z M49 61 L85 85 L72 136 L54 158Z M54 158 L108 160 L129 189 L86 196 L49 190 L29 185Z"/><path class="hielo-escarcha" d="M50 31 L63 61 L57 88 L75 111 L69 143 L83 172 M63 61 L80 53 M63 61 L46 56 M57 88 L39 92 M75 111 L94 105 L103 87 M69 143 L91 139 M104 38 L98 66 L112 87 M98 66 L84 67 M44 123 L53 141 M83 172 L98 179"/><path class="hielo-reflejo" d="M37 45 L44 69 L42 122 M90 22 L98 42 M120 109 L123 149 M62 178 L91 182"/></g>`;
+  const ice = `<defs><linearGradient id="hielo-progresivo" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edffff" stop-opacity=".8"/><stop offset=".45" stop-color="#6ac9ec" stop-opacity=".55"/><stop offset="1" stop-color="#2e75b1" stop-opacity=".8"/></linearGradient><linearGradient id="hielo-solido" x1="0" y1="0" x2="1" y2=".7"><stop stop-color="#2586b8"/><stop offset=".3" stop-color="#c8f5ff"/><stop offset=".58" stop-color="#80d4f1"/><stop offset="1" stop-color="#286eaa"/></linearGradient></defs>` + [
+    ['pierna-izquierda', 'M49 187 L45 171 L53 132 L52 116 L73 111 L81 127 L75 159 L77 183 L65 191Z', 'M60 132 l8 13 -9 12 5 13'],
+    ['pierna-derecha', 'M82 119 L98 111 L110 128 L106 157 L119 179 L112 191 L90 187 L80 157Z', 'M95 128 l-6 18 10 13 -3 17'],
+    ['brazo-izquierdo', 'M53 60 L67 72 L58 99 L46 122 L33 120 L29 104 L39 80Z', 'M49 79 l-6 15 5 9 -9 9'],
+    ['brazo-derecho', 'M103 61 L119 74 L128 102 L124 122 L111 124 L101 99 L93 79Z', 'M112 80 l8 16 -7 8 6 10'],
+    ['torso', 'M60 61 L80 55 L104 65 L109 95 L100 124 L77 133 L53 122 L51 89Z', 'M71 72 l12 15 -8 14 17 13 M83 87 l15 -7'],
+    ['cabeza', 'M48 57 L43 32 L57 13 L80 9 L106 16 L119 36 L111 62 L92 75 L65 71Z', 'M66 26 l16 12 -5 15 18 8'],
+  ].map(([part,d,crack],i)=>group(`<g class="hielo-parte" data-parte="${part}"><path class="hielo-bloque" d="${d}"/><path class="hielo-grieta" d="${crack}"/></g>`,i)).join('') + iceFinal;
   // Seis capas acumulativas: brasas, base, paredes, techo y cierre frontal.
   function flame(x, bottom, top, width = 9, delay = 0) {
     const height = bottom - top;
@@ -93,11 +94,13 @@
       layer.hidden=!stage; layer.dataset.world=String(world); layer.dataset.stage=String(stage);
       actor.classList.toggle('aren-en-remolino-final', world===2 && stage===6);
       actor.classList.toggle('aren-viento-anclado', world===2 && stage>0);
+      actor.classList.toggle('aren-congelado-final', world===3 && stage===6);
+      actor.classList.toggle('aren-hielo-anclado', world===3 && stage>0);
       layer.classList.remove('liberando');
       layer.querySelectorAll('.peligro-etapa').forEach(g=>g.classList.toggle('activa',Number(g.dataset.etapa)<=stage));
       followReaction();
     },
-    release() { if(stage) layer.classList.add('liberando'); actor.classList.remove('aren-en-remolino-final', 'aren-viento-anclado'); },
+    release() { if(stage) layer.classList.add('liberando'); actor.classList.remove('aren-en-remolino-final', 'aren-viento-anclado', 'aren-congelado-final', 'aren-hielo-anclado'); },
     message() { return stage ? messages[world]?.[stage] || '' : ''; },
   };
 })();

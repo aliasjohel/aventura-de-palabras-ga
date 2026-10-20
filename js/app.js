@@ -3927,7 +3927,7 @@ function elegirLetra(letra, boton) {
     actualizarVidas();
 
     personaje.textContent = intentos <= 2 ? "😨" : "😕";
-    if (escenarioActual === 2) {
+    if (escenarioActual === 2 || escenarioActual === 3) {
       cancelarRetornoEstadoBaseExplorador();
       personajeImagen.classList.remove(...clasesAnimacionExplorador);
     } else {
@@ -4060,7 +4060,7 @@ function verificarEstado() {
   if (intentos === 0) {
     personaje.textContent = "😵";
     cancelarRetornoEstadoBaseExplorador();
-    if (escenarioActual !== 2) {
+    if (escenarioActual !== 2 && escenarioActual !== 3) {
       cambiarPersonaje("triste");
       animarPersonajeTemporal("reaccion-derrota");
     }
