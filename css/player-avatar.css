@@ -127,25 +127,25 @@ button.enlace-perfil-jugador, #listaRanking button.enlace-perfil-jugador { width
 
 /* Arcane character background: local preview, no wallet writes. */
 .perfil-zafir { display:none; position:absolute; inset:0; pointer-events:none; overflow:hidden; }
-#editorAvatar .perfil-fondo-zafir { min-height:182px; padding-right:150px; background:linear-gradient(90deg, #07101cbb, #0b10254d 65%, transparent), url('../assets/images/perfil/fondo-santuario-arcano-v1.webp') center / cover, #101329; }
-#editorAvatar .perfil-fondo-zafir > #avatarPreview .player-avatar { width:80px; height:80px; }
-#editorAvatar .perfil-fondo-zafir .perfil-identidad h3 { font-size:20px; }
-#editorAvatar .perfil-fondo-zafir .perfil-identidad { flex:1; }
-.perfil-fondo-zafir .perfil-zafir { left:auto; right:0; width:155px; }
+#editorAvatar .perfil-fondo-personaje { min-height:182px; padding-right:150px; background:linear-gradient(90deg, #07101cbb, #0b10254d 65%, transparent), url('../assets/images/perfil/fondo-santuario-arcano-v1.webp') center / cover, #101329; }
+#editorAvatar .perfil-fondo-personaje > #avatarPreview .player-avatar { width:80px; height:80px; }
+#editorAvatar .perfil-fondo-personaje .perfil-identidad h3 { font-size:20px; }
+#editorAvatar .perfil-fondo-personaje .perfil-identidad { flex:1; }
+.perfil-fondo-personaje .perfil-zafir { left:auto; right:0; width:155px; }
 @media(max-width:600px) {
-  #editorAvatar .perfil-fondo-zafir { padding-right:86px; gap:10px; }
-  #editorAvatar .perfil-fondo-zafir > #avatarPreview .player-avatar { width:64px; height:64px; }
-  #editorAvatar .perfil-fondo-zafir .perfil-identidad h3 { font-size:17px; }
-  #editorAvatar .perfil-fondo-zafir .perfil-id, #editorAvatar .perfil-fondo-zafir #avatarDescripcion { font-size:10px; }
-  .perfil-fondo-zafir .perfil-zafir { right:0; width:130px; }
+  #editorAvatar .perfil-fondo-personaje { padding-right:86px; gap:10px; }
+  #editorAvatar .perfil-fondo-personaje > #avatarPreview .player-avatar { width:64px; height:64px; }
+  #editorAvatar .perfil-fondo-personaje .perfil-identidad h3 { font-size:17px; }
+  #editorAvatar .perfil-fondo-personaje .perfil-id, #editorAvatar .perfil-fondo-personaje #avatarDescripcion { font-size:10px; }
+  .perfil-fondo-personaje .perfil-zafir { right:0; width:130px; }
   .perfil-zafir-personaje { width:130px; height:130px; margin-top:-65px; right:0; }
 }
 @media(max-width:400px) {
-  #editorAvatar .perfil-fondo-zafir { min-height:166px; padding-right:76px; }
-  #editorAvatar .perfil-fondo-zafir > #avatarPreview .player-avatar { width:54px; height:54px; }
+  #editorAvatar .perfil-fondo-personaje { min-height:166px; padding-right:76px; }
+  #editorAvatar .perfil-fondo-personaje > #avatarPreview .player-avatar { width:54px; height:54px; }
 }
 .perfil-fondo-zafir .perfil-zafir { display:block; }
-.perfil-fondo-zafir .perfil-luciernagas { display:none; }
+.perfil-fondo-personaje .perfil-luciernagas { display:none; }
 .perfil-zafir-personaje { position:absolute; width:155px; height:145px; object-fit:contain; top:50%; margin-top:-72px; right:-4px; animation:perfil-zafir-flotar 6s ease-in-out infinite; }
 .perfil-zafir-esfera { position:absolute; left:7px; top:calc(50% - 24px); width:25px; height:25px; border-radius:50%; background:radial-gradient(circle at 38% 34%, #fff, #c9b6ff 18%, #9c60ed 44%, #5523a999 68%, transparent 72%); box-shadow:0 0 25px #a970ee99; animation:perfil-zafir-poder 6s ease-in-out infinite; }
 .perfil-zafir-runas { position:absolute; left:-4px; top:calc(50% - 35px); width:47px; height:47px; border:1px solid #d3adff88; border-radius:50%; color:#e0c7ff; font:10px/47px serif; text-align:center; animation:perfil-zafir-runas 18s linear infinite; }
@@ -161,8 +161,45 @@ button.enlace-perfil-jugador, #listaRanking button.enlace-perfil-jugador { width
 @media(prefers-reduced-motion:reduce) { #editorAvatar .perfil-zafir > * { animation:none; } }
 
 @media(max-width:360px) {
-  .perfil-fondo-zafir .perfil-zafir { width:100px; }
+  .perfil-fondo-personaje .perfil-zafir { width:100px; }
   .perfil-zafir-personaje { width:100px; height:112px; margin-top:-56px; }
   .perfil-zafir-esfera { width:20px; height:20px; top:calc(50% - 19px); }
   .perfil-zafir-runas { width:36px; height:36px; top:calc(50% - 27px); font-size:8px; line-height:36px; }
 }
+
+/* World backgrounds load their image and sprite only when selected. */
+#editorAvatar .perfil-fondo-mundo { background:linear-gradient(90deg, #07101cbf, #0b10254d 65%, transparent), var(--perfil-fondo, url('../assets/images/perfil/fondo-santuario-arcano-v1.webp')) center / cover, #101329; }
+#editorAvatar [data-profile-background="desierto"] { --perfil-fondo:url('../assets/images/perfil/fondo-desierto-animado-v1.webp'); }
+#editorAvatar [data-profile-background="cumbres"] { --perfil-fondo:url('../assets/images/perfil/fondo-cumbres-animado-v1.webp'); }
+#editorAvatar [data-profile-background="hielo"] { --perfil-fondo:url('../assets/images/perfil/fondo-hielo-animado-v1.webp'); }
+#editorAvatar [data-profile-background="azrak"] { --perfil-fondo:url('../assets/images/perfil/fondo-azrak-animado-v1.webp'); }
+.perfil-fondo-mundo .perfil-luciernagas { display:none; }
+#editorAvatar .perfil-fondo-mundo .perfil-luciernagas i { animation-play-state:paused; }
+.perfil-escena-mundo { position:absolute; inset:0 0 0 auto; width:150px; pointer-events:none; }
+.perfil-escena-mundo[hidden] { display:none; }
+.perfil-criatura { position:absolute; right:8px; top:50%; width:128px; height:140px; margin-top:-70px; object-fit:contain; animation:perfil-respirar 7s ease-in-out infinite; }
+[data-profile-background="cumbres"] .perfil-criatura { animation:perfil-planear 7s ease-in-out infinite; }
+[data-profile-background="hielo"] .perfil-criatura { width:148px; right:0; animation:perfil-planear 9s ease-in-out infinite; }
+.perfil-aura { position:absolute; width:86px; height:86px; top:50%; right:26px; margin-top:-43px; border-radius:50%; background:radial-gradient(ellipse, #6edcea55, transparent 70%); animation:perfil-halo 8s ease-in-out infinite; }
+[data-profile-background="azrak"] .perfil-aura { background:radial-gradient(ellipse, #dc65ff66, transparent 70%); }
+.perfil-particulas { position:absolute; inset:0; pointer-events:none; display:none; overflow:hidden; }
+.perfil-particulas i { position:absolute; left:var(--x); top:var(--y); width:3px; height:3px; border-radius:50%; background:#eac282; opacity:.5; animation:perfil-arena var(--duration) ease-in-out var(--delay) infinite; }
+[data-profile-background="desierto"] .perfil-particulas, [data-profile-background="cumbres"] .perfil-particulas, [data-profile-background="hielo"] .perfil-particulas, [data-profile-background="azrak"] .perfil-particulas { display:block; }
+[data-profile-background="cumbres"] .perfil-particulas i { width:30px; height:1px; background:#c7e3f077; animation-name:perfil-viento; }
+[data-profile-background="hielo"] .perfil-particulas i { background:#e3f8ff; animation-name:perfil-nevar; }
+[data-profile-background="azrak"] .perfil-particulas i { background:#ec95ff; box-shadow:0 0 4px #bb69ee; animation-name:perfil-brasas; }
+#editorAvatar .perfil-escena-mundo > *, #editorAvatar .perfil-particulas i { animation-play-state:paused; }
+#editorAvatar[open]:not(.perfil-movimiento-pausado) .perfil-escena-mundo:not([hidden]) > *, #editorAvatar[open]:not(.perfil-movimiento-pausado) .perfil-fondo-mundo .perfil-particulas i { animation-play-state:running; }
+#editorAvatar .perfil-fondos-prueba { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+.perfil-fondos-prueba small { grid-column:1/-1; }
+#editorAvatar .perfil-fondos-prueba button { width:100%; height:100%; font-size:11px; line-height:1.4; }
+@keyframes perfil-respirar { 0%,100% { transform:translateY(2px) scale(1); } 50% { transform:translateY(-2px) scale(1.025); } }
+@keyframes perfil-planear { 0%,100% { transform:translate(1px,3px) rotate(-2deg); } 50% { transform:translate(-4px,-6px) rotate(2deg); } }
+@keyframes perfil-halo { 0%,100% { opacity:.3; transform:scale(.8); } 50% { opacity:.7; transform:scale(1.12); } }
+@keyframes perfil-arena { 0% { opacity:0; transform:translate(-25px,5px); } 40% { opacity:.6; } 100% { opacity:0; transform:translate(40px,-8px); } }
+@keyframes perfil-viento { 0% { opacity:0; transform:translateX(-25px); } 40% { opacity:.35; } 100% { opacity:0; transform:translateX(45px); } }
+@keyframes perfil-nevar { 0% { opacity:0; transform:translate(-4px,-35px); } 30% { opacity:.65; } 100% { opacity:0; transform:translate(10px,55px); } }
+@keyframes perfil-brasas { 0% { opacity:0; transform:translateY(35px) scale(.7); } 40% { opacity:.7; } 100% { opacity:0; transform:translate(8px,-45px) scale(.3); } }
+@media(max-width:600px) { .perfil-escena-mundo { width:110px; } .perfil-criatura { width:92px; height:110px; margin-top:-55px; right:2px; } [data-profile-background="hielo"] .perfil-criatura { width:108px; } .perfil-aura { width:64px; height:64px; right:16px; margin-top:-32px; } }
+@media(max-width:360px) { .perfil-escena-mundo { width:88px; } .perfil-criatura { width:76px; height:96px; margin-top:-48px; } [data-profile-background="hielo"] .perfil-criatura { width:86px; } }
+@media(prefers-reduced-motion:reduce) { #editorAvatar .perfil-escena-mundo > *, #editorAvatar .perfil-particulas i { animation:none; } }

@@ -51,46 +51,74 @@
     fireflies.append(light);
   }
   dialog.querySelector('.perfil-cabecera').prepend(fireflies);
-  // Local art preview, separate from purchased inventory and public appearance.
+  // Art previews are separate from owned cosmetics and public identity.
   const header = dialog.querySelector('.perfil-cabecera');
+  const backgrounds = [
+    {id:'bosque'}, {id:'zafir', character:true}, {id:'desierto'},
+    {id:'cumbres', character:true, sprite:'figura-nimbus-v1.webp'},
+    {id:'hielo', character:true, sprite:'figura-nivor-v1.webp'},
+    {id:'azrak', character:true, sprite:'figura-azrak-v1.webp'}
+  ];
   const scene = document.createElement('span');
   scene.className = 'perfil-zafir'; scene.setAttribute('aria-hidden', 'true');
   scene.innerHTML = '<img class="perfil-zafir-personaje" alt="" decoding="async"><span class="perfil-zafir-esfera"></span><span class="perfil-zafir-runas">✧ · ◇ · ✧ · ◇ · ✧ · ◇</span>';
-  header.prepend(scene);
-  const picker = document.createElement('div'); picker.className = 'perfil-fondos-prueba';
-  const note = document.createElement('small');
-  const forest = document.createElement('button'), wizard = document.createElement('button');
-  forest.type = wizard.type = 'button';
-  picker.append(note, forest, wizard); header.after(picker);
+  const creatures = document.createElement('span');
+  creatures.className = 'perfil-escena-mundo'; creatures.setAttribute('aria-hidden', 'true'); creatures.hidden = true;
+  creatures.innerHTML = '<span class="perfil-aura"></span><img class="perfil-criatura" alt="" decoding="async">';
+  const particles = document.createElement('span');
+  particles.className = 'perfil-particulas'; particles.setAttribute('aria-hidden', 'true');
+  for (let i = 0; i < 8; i += 1) {
+    const particle = document.createElement('i');
+    particle.style.setProperty('--x', (8 + i * 37 % 84) + '%');
+    particle.style.setProperty('--y', (12 + i * 23 % 76) + '%');
+    particle.style.setProperty('--delay', (-i * 1.7) + 's');
+    particle.style.setProperty('--duration', (7 + i % 4) + 's');
+    particles.append(particle);
+  }
+  header.prepend(scene, creatures, particles);
+  const picker = document.createElement('div'); picker.className = 'perfil-fondos-prueba'; picker.setAttribute('role','group');
+  const note = document.createElement('small'); picker.append(note);
+  const buttons = backgrounds.map(background => {
+    const button = document.createElement('button'); button.type = 'button';
+    button.dataset.backgroundChoice = background.id;
+    button.addEventListener('click', () => { preview = background.id; renderBackground(); });
+    picker.append(button); return button;
+  });
+  header.after(picker);
   let preview = 'bosque';
   const labels = {
-    es: ['Prueba de fondos animados', 'Bosque con luciérnagas', 'Zafir · Invocación arcana'],
-    en: ['Animated background preview', 'Firefly forest', 'Zafir · Arcane invocation'],
-    'pt-BR': ['Prévia de fundos animados', 'Floresta de vaga-lumes', 'Zafir · Invocação arcana']
+    es: ['Prueba de fondos animados', 'Bosque con luciérnagas', 'Zafir · Invocación arcana', 'Desierto · Arenas del crepúsculo', 'Nimbus · Cumbres celestes', 'Nivor · Aurora de hielo', 'Azrak · Reino del eclipse'],
+    en: ['Animated background preview', 'Firefly forest', 'Zafir · Arcane invocation', 'Desert · Twilight sands', 'Nimbus · Celestial peaks', 'Nivor · Frozen aurora', 'Azrak · Eclipse kingdom'],
+    'pt-BR': ['Prévia de fundos animados', 'Floresta de vaga-lumes', 'Zafir · Invocação arcana', 'Deserto · Areias do crepúsculo', 'Nimbus · Cumes celestes', 'Nivor · Aurora de gelo', 'Azrak · Reino do eclipse']
   };
   function renderBackground() {
     const text = labels[globalThis.I18n?.language] || labels.es;
-    note.textContent = text[0]; forest.textContent = text[1]; wizard.textContent = text[2];
-    forest.setAttribute('aria-pressed', String(preview === 'bosque'));
-    wizard.setAttribute('aria-pressed', String(preview === 'zafir'));
+    note.textContent = text[0]; picker.setAttribute('aria-label',text[0]);
+    buttons.forEach((button,i) => { button.textContent = text[i + 1]; button.setAttribute('aria-pressed',String(preview === backgrounds[i].id)); });
     syncBackgroundSize();
-    if (preview === 'zafir' && !scene.firstElementChild.getAttribute('src')) {
-      scene.firstElementChild.src = 'assets/images/personajes/versus/mago-ataque.png';
+    if (preview === 'zafir' && !scene.firstElementChild.getAttribute('src')) scene.firstElementChild.src = 'assets/images/personajes/versus/mago-ataque.png';
+    const entry = backgrounds.find(background => background.id === preview);
+    creatures.hidden = !entry.sprite;
+    if (entry.sprite) {
+      const source = 'assets/images/perfil/' + entry.sprite;
+      if (creatures.lastElementChild.getAttribute('src') !== source) creatures.lastElementChild.src = source;
     }
   }
   function syncBackgroundSize() {
-    // Measure the original layout so long aliases and translated labels retain
-    // exactly the same banner dimensions when switching backgrounds.
+    // Use the original banner as the size reference, including translated text.
     header.style.removeProperty('min-height');
-    header.classList.remove('perfil-fondo-zafir');
+    header.classList.remove('perfil-fondo-personaje', 'perfil-fondo-zafir', 'perfil-fondo-mundo');
+    delete header.dataset.profileBackground;
     const height = header.getBoundingClientRect().height;
+    const entry = backgrounds.find(background => background.id === preview);
+    header.dataset.profileBackground = preview;
+    header.classList.toggle('perfil-fondo-personaje', Boolean(entry.character));
     header.classList.toggle('perfil-fondo-zafir', preview === 'zafir');
-    if (preview === 'zafir' && height) header.style.minHeight = height + 'px';
+    header.classList.toggle('perfil-fondo-mundo', preview !== 'bosque');
+    if (height && preview !== 'bosque') header.style.minHeight = height + 'px';
   }
   window.addEventListener('resize', syncBackgroundSize);
   new MutationObserver(syncBackgroundSize).observe(header.querySelector('.perfil-identidad'), {childList:true, subtree:true, characterData:true});
-  forest.addEventListener('click', () => { preview = 'bosque'; renderBackground(); });
-  wizard.addEventListener('click', () => { preview = 'zafir'; renderBackground(); });
   globalThis.I18n?.subscribe(renderBackground);
   renderBackground();
   function syncProfileMotion() {
