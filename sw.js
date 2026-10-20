@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v376`;
+const CACHE_NAME = `${CACHE_PREFIX}v377`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -221,6 +221,7 @@ const RESOURCE_ASSETS = [
   "./assets/images/perfil/miniaturas/marco-fuego-v1.webp",
   "./assets/images/perfil/miniaturas/marco-hielo-v1.webp",
   "./assets/images/perfil/fondo-bosque-luciernagas-v1.webp",
+  "./assets/images/perfil/fondo-santuario-arcano-v1.webp",
   "./assets/images/perfil/miniaturas/marco-real-v1.webp",
   "./assets/images/perfil/marco-bronce-v1.webp",
   "./assets/images/perfil/miniaturas/marco-bronce-v1.webp",
@@ -860,7 +861,7 @@ const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
 
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
-  "./js/resource-catalog.js": "sha256-bd22dda986941915df1a439b1cc5201cc29b557b61960e408e6f508ec8aea52a",
+  "./js/resource-catalog.js": "sha256-ee0237c1e43392b9e49da5e916ab4535c719f2d89d7c796610950cfea9a19c7a",
   "./js/resource-loader.js": "sha256-ad1e232b755c34f73a839b18c857b49f23ff8ce0d570ea1c8b16ddb72cba7851",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
   "./assets/images/perfil/miniaturas/dragon-base.webp": "sha256-f25e547e72384e6edab79d058d145d1dd506e9a62257f29f1a166ebb91db4d2b",
@@ -876,6 +877,7 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/miniaturas/marco-fuego-v1.webp": "sha256-e1e661f323966ef58fc54bba65bc85b8b4a146716b2f4d8579fcd4b72fd9232a",
   "./assets/images/perfil/miniaturas/marco-hielo-v1.webp": "sha256-22e0ada6f08e78a1877b076fd9fa756aefb239ab03a3722e97e47bc4372ddf52",
   "./assets/images/perfil/fondo-bosque-luciernagas-v1.webp": "sha256-687b22017b073cbba14f7002c939a258fb1ae80ea836ba1ca444858bf9405263",
+  "./assets/images/perfil/fondo-santuario-arcano-v1.webp": "sha256-30f1528e0ab3c0785eea9a1327b457b6f90331b15571d36ca48bf9c55eb71bce",
   "./assets/images/perfil/miniaturas/marco-real-v1.webp": "sha256-e4588d5f9eef1eb25f7ff6d49d89b6e4a5f71f93e62ead07178e9860b2132a91",
   "./assets/images/perfil/marco-bronce-v1.webp": "sha256-813861595b9334a1e2928b76fa8274e87bae07cd53527ad5e4960b856994971c",
   "./assets/images/perfil/miniaturas/marco-bronce-v1.webp": "sha256-f67368f0291898807da780c9cf33cfd3b6bfd39e3d1e5b4ed5a8b7f959c1b213",
@@ -1121,12 +1123,12 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/marco-real-v1.png": "sha256-779730399f0a11b044c321dc015c91941abd4e47b03dc9174b1300ed4867eef5",
   "./css/versus-identity.css": "sha256-1ebcda73fd4f844e671cca882ba528a45f843410422953426d79977182e8ee0d",
   "./js/versus-identity.js": "sha256-9238b24dc6597c27b568abee1d1edff774d7198cadad8116dd3427d3facfba12",
-  "./css/player-avatar.css": "sha256-ca64b9398203347a15a4f676a9dea45aebcff3b2816bcd37a90f96fdfa3be71c",
+  "./css/player-avatar.css": "sha256-78ee26a4bccaee54868e182c251cf08a00258aee65d323c4375853bdc9858c04",
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
-  "./js/player-avatar.js": "sha256-0c5879ab0f167905c42cfc4d244ffaf6fdfa08d502738b68ff10986b34849749",
+  "./js/player-avatar.js": "sha256-e0b86c6e7331864d415c56e0a3256d8ae1b9cfad58d3efa9d746ab92eab9a098",
   "./js/public-player-profile.js": "sha256-8cca6d307c960e16dae507d1efa6911d53abd1ae127eca38e6b580acbdfe20ff",
-  "./": "sha256-b72d60f07a645726a003678a15e3e54729396e84680a51f336cf233306295cea",
-  "./index.html": "sha256-b72d60f07a645726a003678a15e3e54729396e84680a51f336cf233306295cea",
+  "./": "sha256-9e9ee09516fb87e3df1e741ff15859e536740a43557d0754e46ff3cb9ee20a6d",
+  "./index.html": "sha256-9e9ee09516fb87e3df1e741ff15859e536740a43557d0754e46ff3cb9ee20a6d",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-5980b88ad51760fd028c6106e2c1b63d6234e600d2ef3090b9860e09a84e739d",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",

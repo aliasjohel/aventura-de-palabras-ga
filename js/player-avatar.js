@@ -73,17 +73,29 @@
     note.textContent = text[0]; forest.textContent = text[1]; wizard.textContent = text[2];
     forest.setAttribute('aria-pressed', String(preview === 'bosque'));
     wizard.setAttribute('aria-pressed', String(preview === 'zafir'));
-    header.classList.toggle('perfil-fondo-zafir', preview === 'zafir');
+    syncBackgroundSize();
     if (preview === 'zafir' && !scene.firstElementChild.getAttribute('src')) {
       scene.firstElementChild.src = 'assets/images/personajes/versus/mago-ataque.png';
     }
   }
+  function syncBackgroundSize() {
+    // Measure the original layout so long aliases and translated labels retain
+    // exactly the same banner dimensions when switching backgrounds.
+    header.style.removeProperty('min-height');
+    header.classList.remove('perfil-fondo-zafir');
+    const height = header.getBoundingClientRect().height;
+    header.classList.toggle('perfil-fondo-zafir', preview === 'zafir');
+    if (preview === 'zafir' && height) header.style.minHeight = height + 'px';
+  }
+  window.addEventListener('resize', syncBackgroundSize);
+  new MutationObserver(syncBackgroundSize).observe(header.querySelector('.perfil-identidad'), {childList:true, subtree:true, characterData:true});
   forest.addEventListener('click', () => { preview = 'bosque'; renderBackground(); });
   wizard.addEventListener('click', () => { preview = 'zafir'; renderBackground(); });
   globalThis.I18n?.subscribe(renderBackground);
   renderBackground();
   function syncProfileMotion() {
     dialog.classList.toggle('perfil-movimiento-pausado', document.hidden || !dialog.open);
+    if (dialog.open) syncBackgroundSize();
   }
   document.addEventListener('visibilitychange', syncProfileMotion);
   dialog.addEventListener('close', syncProfileMotion);

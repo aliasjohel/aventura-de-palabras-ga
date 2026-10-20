@@ -127,12 +127,28 @@ button.enlace-perfil-jugador, #listaRanking button.enlace-perfil-jugador { width
 
 /* Arcane character background: local preview, no wallet writes. */
 .perfil-zafir { display:none; position:absolute; inset:0; pointer-events:none; overflow:hidden; }
-#editorAvatar .perfil-fondo-zafir { padding-top:218px; background:radial-gradient(ellipse at 50% 18%, #54307a 0, #151d39 45%, #080e20 85%); }
+#editorAvatar .perfil-fondo-zafir { min-height:182px; padding-right:150px; background:linear-gradient(90deg, #07101cbb, #0b10254d 65%, transparent), url('../assets/images/perfil/fondo-santuario-arcano-v1.webp') center / cover, #101329; }
+#editorAvatar .perfil-fondo-zafir > #avatarPreview .player-avatar { width:80px; height:80px; }
+#editorAvatar .perfil-fondo-zafir .perfil-identidad h3 { font-size:20px; }
+#editorAvatar .perfil-fondo-zafir .perfil-identidad { flex:1; }
+.perfil-fondo-zafir .perfil-zafir { left:auto; right:0; width:155px; }
+@media(max-width:600px) {
+  #editorAvatar .perfil-fondo-zafir { padding-right:86px; gap:10px; }
+  #editorAvatar .perfil-fondo-zafir > #avatarPreview .player-avatar { width:64px; height:64px; }
+  #editorAvatar .perfil-fondo-zafir .perfil-identidad h3 { font-size:17px; }
+  #editorAvatar .perfil-fondo-zafir .perfil-id, #editorAvatar .perfil-fondo-zafir #avatarDescripcion { font-size:10px; }
+  .perfil-fondo-zafir .perfil-zafir { right:0; width:130px; }
+  .perfil-zafir-personaje { width:130px; height:130px; margin-top:-65px; right:0; }
+}
+@media(max-width:400px) {
+  #editorAvatar .perfil-fondo-zafir { min-height:166px; padding-right:76px; }
+  #editorAvatar .perfil-fondo-zafir > #avatarPreview .player-avatar { width:54px; height:54px; }
+}
 .perfil-fondo-zafir .perfil-zafir { display:block; }
 .perfil-fondo-zafir .perfil-luciernagas { display:none; }
-.perfil-zafir-personaje { position:absolute; width:290px; height:210px; object-fit:contain; top:0; left:calc(50% - 100px); animation:perfil-zafir-flotar 6s ease-in-out infinite; }
-.perfil-zafir-esfera { position:absolute; left:calc(50% - 67px); top:68px; width:48px; height:48px; border-radius:50%; background:radial-gradient(circle at 38% 34%, #fff, #c9b6ff 18%, #9c60ed 44%, #5523a999 68%, transparent 72%); box-shadow:0 0 25px #a970ee99; animation:perfil-zafir-poder 6s ease-in-out infinite; }
-.perfil-zafir-runas { position:absolute; left:calc(50% - 88px); top:47px; width:90px; height:90px; border:1px solid #d3adff88; border-radius:50%; color:#e0c7ff; font:18px/90px serif; text-align:center; animation:perfil-zafir-runas 18s linear infinite; }
+.perfil-zafir-personaje { position:absolute; width:155px; height:145px; object-fit:contain; top:50%; margin-top:-72px; right:-4px; animation:perfil-zafir-flotar 6s ease-in-out infinite; }
+.perfil-zafir-esfera { position:absolute; left:7px; top:calc(50% - 24px); width:25px; height:25px; border-radius:50%; background:radial-gradient(circle at 38% 34%, #fff, #c9b6ff 18%, #9c60ed 44%, #5523a999 68%, transparent 72%); box-shadow:0 0 25px #a970ee99; animation:perfil-zafir-poder 6s ease-in-out infinite; }
+.perfil-zafir-runas { position:absolute; left:-4px; top:calc(50% - 35px); width:47px; height:47px; border:1px solid #d3adff88; border-radius:50%; color:#e0c7ff; font:10px/47px serif; text-align:center; animation:perfil-zafir-runas 18s linear infinite; }
 #editorAvatar .perfil-zafir > * { animation-play-state:paused; }
 #editorAvatar[open]:not(.perfil-movimiento-pausado) .perfil-fondo-zafir .perfil-zafir > * { animation-play-state:running; }
 .perfil-fondos-prueba { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
@@ -143,3 +159,10 @@ button.enlace-perfil-jugador, #listaRanking button.enlace-perfil-jugador { width
 @keyframes perfil-zafir-poder { 0%,100% { transform:scale(.65); opacity:.45; } 50% { transform:scale(1.12); opacity:1; } }
 @keyframes perfil-zafir-runas { to { transform:rotate(360deg); } }
 @media(prefers-reduced-motion:reduce) { #editorAvatar .perfil-zafir > * { animation:none; } }
+
+@media(max-width:360px) {
+  .perfil-fondo-zafir .perfil-zafir { width:100px; }
+  .perfil-zafir-personaje { width:100px; height:112px; margin-top:-56px; }
+  .perfil-zafir-esfera { width:20px; height:20px; top:calc(50% - 19px); }
+  .perfil-zafir-runas { width:36px; height:36px; top:calc(50% - 27px); font-size:8px; line-height:36px; }
+}

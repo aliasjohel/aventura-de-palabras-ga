@@ -14,7 +14,20 @@ assert.equal(await page.locator('#avatarPreview .player-avatar-portrait img').co
 await page.getByRole('button',{name: lang==='es'?'Zafir · Invocación arcana':lang==='en'?'Zafir · Arcane invocation':'Zafir · Invocação arcana',exact:true}).click();
 await page.locator('.perfil-zafir-personaje').evaluate(i=>i.decode());
 assert.equal(await page.locator('.perfil-zafir-esfera').evaluate(e=>getComputedStyle(e).animationPlayState),'running');
-await page.screenshot({path:path.join(root,'docs','profile-zafir-'+lang+'.png')});
+await page.evaluate(()=>new Promise((resolve,reject)=>{const image=new Image();image.onload=resolve;image.onerror=reject;image.src='assets/images/perfil/fondo-santuario-arcano-v1.webp';}));
+for(const width of [320,390,844]) {
+  await page.setViewportSize({width,height:844});
+  await page.locator('.perfil-fondos-prueba button').first().click();
+  const forestSize=await page.locator('#editorAvatar .perfil-cabecera').boundingBox();
+  await page.locator('.perfil-fondos-prueba button').nth(1).click();
+  const wizardSize=await page.locator('#editorAvatar .perfil-cabecera').boundingBox();
+  assert.equal(wizardSize.height,forestSize.height,'same header height as forest at '+width);
+  assert.equal(wizardSize.width,forestSize.width,'same header width as forest at '+width);
+  assert.equal(await page.locator('#editorAvatar').evaluate(e=>e.scrollWidth<=e.clientWidth),true,'Zafir has no horizontal overflow');
+  await page.locator('#editorAvatar').evaluate(e=>e.scrollTop=0);
+  await page.screenshot({path:path.join(root,'docs','v377-zafir-'+lang+'-'+width+'.png')});
+}
+await page.setViewportSize({width:390,height:844});
 await page.emulateMedia({reducedMotion:'reduce'});
 assert.equal(await page.locator('.perfil-zafir-esfera').evaluate(e=>getComputedStyle(e).animationName),'none');
 await page.emulateMedia({reducedMotion:'no-preference'});
