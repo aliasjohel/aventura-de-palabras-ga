@@ -69,13 +69,13 @@ const server = http.createServer((req,res) => {
       assert.equal(await page.locator('[data-background-choice="azrak"]').getAttribute('aria-pressed'),'true');
       assert.deepEqual(await snapshot(),before,'previews cannot alter identity, wallet or progress');
       await page.locator('#cerrarAvatar').click();
-      assert.equal(await page.locator('.perfil-criatura').evaluate(e=>getComputedStyle(e).animationPlayState),'paused');
+      assert.equal(await page.locator('.perfil-figura').evaluate(e=>getComputedStyle(e).animationPlayState),'paused');
       assert.deepEqual(errors,[]);
       if(screenshots.length) {
         const meta=await sharp(screenshots[0]).metadata();
         await sharp({create:{width:meta.width*2,height:meta.height*3,channels:4,background:'#0b1220'}})
           .composite(screenshots.map((input,i)=>({input,left:i%2*meta.width,top:Math.floor(i/2)*meta.height})))
-          .png().toFile(path.join(root,'docs/v378-coleccion-fondos.png'));
+          .png().toFile(path.join(root,'docs',process.env.PROFILE_CAPTURE_NAME || 'v378-coleccion-fondos.png'));
       }
       console.log('PASS',lang,'six backgrounds, three widths, deferred art, motion pause, reduced motion, unchanged wallet and identity');
       await context.close();

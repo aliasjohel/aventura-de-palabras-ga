@@ -64,7 +64,8 @@
   scene.innerHTML = '<img class="perfil-zafir-personaje" alt="" decoding="async"><span class="perfil-zafir-esfera"></span><span class="perfil-zafir-runas">✧ · ◇ · ✧ · ◇ · ✧ · ◇</span>';
   const creatures = document.createElement('span');
   creatures.className = 'perfil-escena-mundo'; creatures.setAttribute('aria-hidden', 'true'); creatures.hidden = true;
-  creatures.innerHTML = '<span class="perfil-aura"></span><img class="perfil-criatura" alt="" decoding="async">';
+  creatures.innerHTML = '<span class="perfil-aura"></span><span class="perfil-figura"><img class="perfil-criatura" alt="" decoding="async"><svg class="perfil-poder perfil-espada-fuego" viewBox="0 0 100 150" aria-hidden="true"><path class="perfil-filo-caliente" d="M25 99 Q34 121 56 131" fill="none" stroke="#ffb52e" stroke-width="5" stroke-linecap="round"/><g class="perfil-llamarada"><path d="M25 99 C19 105 31 108 26 115 C34 111 33 124 41 126 C38 119 52 131 56 131 C43 118 44 111 39 107 C40 116 32 108 33 101 C28 106 29 100 25 99Z" fill="#ff690c"/><path d="M26 101 Q29 118 55 131 Q38 117 33 111 Q31 118 26 101Z" fill="#fff0a4"/></g><g class="perfil-chispas-espada" fill="#ffd168"><circle cx="29" cy="108" r="1.4"/><circle cx="35" cy="119" r="1"/><circle cx="42" cy="123" r="1.2"/></g></svg><svg class="perfil-poder perfil-ventisca" viewBox="0 0 150 100" aria-hidden="true"><defs><linearGradient id="perfil-aliento-hielo"><stop stop-color="#a4e6ff" stop-opacity="0"/><stop offset=".65" stop-color="#c6f4ff" stop-opacity=".7"/><stop offset="1" stop-color="#fff"/></linearGradient></defs><g class="perfil-chorro-hielo"><path d="M44 52 C20 44 0 42 -33 47 L-45 65 C-13 79 12 68 44 55Z" fill="url(#perfil-aliento-hielo)"/><path d="M44 53 Q10 45 -33 54 M44 54 Q8 57 -40 66 M40 55 Q14 65 -22 69" fill="none" stroke="#d5f8ff" stroke-width="1.1" stroke-linecap="round"/></g><g class="perfil-cristales-aliento" fill="#e2faff"><path d="M12 49 l3 4 -3 4 -3 -4Z M-9 59 l3 4 -3 4 -3 -4Z M-29 48 l2 3 -2 3 -2 -3Z"/></g></svg></span>';
+  const creatureImage = creatures.querySelector('.perfil-criatura');
   const particles = document.createElement('span');
   particles.className = 'perfil-particulas'; particles.setAttribute('aria-hidden', 'true');
   for (let i = 0; i < 8; i += 1) {
@@ -101,7 +102,7 @@
     creatures.hidden = !entry.sprite;
     if (entry.sprite) {
       const source = 'assets/images/perfil/' + entry.sprite;
-      if (creatures.lastElementChild.getAttribute('src') !== source) creatures.lastElementChild.src = source;
+      if (creatureImage.getAttribute('src') !== source) creatureImage.src = source;
     }
   }
   function syncBackgroundSize() {

@@ -177,9 +177,9 @@ button.enlace-perfil-jugador, #listaRanking button.enlace-perfil-jugador { width
 #editorAvatar .perfil-fondo-mundo .perfil-luciernagas i { animation-play-state:paused; }
 .perfil-escena-mundo { position:absolute; inset:0 0 0 auto; width:150px; pointer-events:none; }
 .perfil-escena-mundo[hidden] { display:none; }
-.perfil-criatura { position:absolute; right:8px; top:50%; width:128px; height:140px; margin-top:-70px; object-fit:contain; animation:perfil-respirar 7s ease-in-out infinite; }
-[data-profile-background="cumbres"] .perfil-criatura { animation:perfil-planear 7s ease-in-out infinite; }
-[data-profile-background="hielo"] .perfil-criatura { width:148px; right:0; animation:perfil-planear 9s ease-in-out infinite; }
+.perfil-figura { position:absolute; right:8px; top:50%; width:128px; height:140px; margin-top:-70px; object-fit:contain; animation:perfil-respirar 7s ease-in-out infinite; }
+[data-profile-background="cumbres"] .perfil-figura { animation:perfil-planear 7s ease-in-out infinite; }
+[data-profile-background="hielo"] .perfil-figura { width:148px; right:0; animation:perfil-planear 9s ease-in-out infinite; }
 .perfil-aura { position:absolute; width:86px; height:86px; top:50%; right:26px; margin-top:-43px; border-radius:50%; background:radial-gradient(ellipse, #6edcea55, transparent 70%); animation:perfil-halo 8s ease-in-out infinite; }
 [data-profile-background="azrak"] .perfil-aura { background:radial-gradient(ellipse, #dc65ff66, transparent 70%); }
 .perfil-particulas { position:absolute; inset:0; pointer-events:none; display:none; overflow:hidden; }
@@ -200,6 +200,26 @@ button.enlace-perfil-jugador, #listaRanking button.enlace-perfil-jugador { width
 @keyframes perfil-viento { 0% { opacity:0; transform:translateX(-25px); } 40% { opacity:.35; } 100% { opacity:0; transform:translateX(45px); } }
 @keyframes perfil-nevar { 0% { opacity:0; transform:translate(-4px,-35px); } 30% { opacity:.65; } 100% { opacity:0; transform:translate(10px,55px); } }
 @keyframes perfil-brasas { 0% { opacity:0; transform:translateY(35px) scale(.7); } 40% { opacity:.7; } 100% { opacity:0; transform:translate(8px,-45px) scale(.3); } }
-@media(max-width:600px) { .perfil-escena-mundo { width:110px; } .perfil-criatura { width:92px; height:110px; margin-top:-55px; right:2px; } [data-profile-background="hielo"] .perfil-criatura { width:108px; } .perfil-aura { width:64px; height:64px; right:16px; margin-top:-32px; } }
-@media(max-width:360px) { .perfil-escena-mundo { width:88px; } .perfil-criatura { width:76px; height:96px; margin-top:-48px; } [data-profile-background="hielo"] .perfil-criatura { width:86px; } }
+@media(max-width:600px) { .perfil-escena-mundo { width:110px; } .perfil-figura { width:92px; height:110px; margin-top:-55px; right:2px; } [data-profile-background="hielo"] .perfil-figura { width:108px; } .perfil-aura { width:64px; height:64px; right:16px; margin-top:-32px; } }
+@media(max-width:360px) { .perfil-escena-mundo { width:88px; } .perfil-figura { width:76px; height:96px; margin-top:-48px; } [data-profile-background="hielo"] .perfil-figura { width:86px; } }
 @media(prefers-reduced-motion:reduce) { #editorAvatar .perfil-escena-mundo > *, #editorAvatar .perfil-particulas i { animation:none; } }
+
+/* Character powers share the sprite coordinate system instead of floating over the banner. */
+.perfil-figura > .perfil-criatura { display:block; width:100%; height:100%; object-fit:contain; }
+.perfil-poder { display:none; position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+[data-profile-background="azrak"] .perfil-espada-fuego, [data-profile-background="hielo"] .perfil-ventisca { display:block; }
+[data-profile-background="hielo"] .perfil-criatura { transform:scaleX(-1); }
+[data-profile-background="hielo"] .perfil-figura { animation:perfil-nivor-aliento 7.5s ease-in-out infinite; }
+.perfil-filo-caliente { animation:perfil-encender-espada 7s ease-in-out infinite; }
+.perfil-llamarada { transform-box:fill-box; transform-origin:50% 70%; animation:perfil-fuego-espada 7s ease-in-out infinite; }
+.perfil-chispas-espada { animation:perfil-chispas-ataque 7s ease-out infinite; }
+.perfil-chorro-hielo { transform-origin:44px 53px; animation:perfil-soplar-hielo 7.5s ease-in-out infinite; }
+.perfil-cristales-aliento { animation:perfil-cristales-rafaga 7.5s ease-out infinite; }
+#editorAvatar .perfil-poder, #editorAvatar .perfil-poder * { animation-play-state:inherit; }
+@keyframes perfil-encender-espada { 0%,12%,88%,100% { opacity:0; } 24%,70% { opacity:.95; } 35%,58% { opacity:.55; } }
+@keyframes perfil-fuego-espada { 0%,15%,88%,100% { opacity:0; transform:scale(.75); } 25%,45%,64% { opacity:1; transform:scale(1.12,1.08); } 35%,55%,74% { opacity:.8; transform:scale(.9,1.04); } }
+@keyframes perfil-chispas-ataque { 0%,22%,85%,100% { opacity:0; transform:translate(0,0); } 32% { opacity:1; transform:translate(0,-2px); } 70% { opacity:0; transform:translate(5px,-16px); } }
+@keyframes perfil-nivor-aliento { 0%,100% { transform:translateY(2px) rotate(-1deg); } 20% { transform:translate(2px,-3px) rotate(2deg); } 35%,65% { transform:translate(4px,0) rotate(-2deg); } 80% { transform:translateY(0); } }
+@keyframes perfil-soplar-hielo { 0%,22%,85%,100% { opacity:0; transform:scale(.05,.2); } 35% { opacity:.85; transform:scale(.85,.8); } 52% { opacity:1; transform:scale(1,1); } 70% { opacity:.5; transform:scale(1.1,1.15); } }
+@keyframes perfil-cristales-rafaga { 0%,28%,90%,100% { opacity:0; transform:translate(10px,0); } 40% { opacity:.9; transform:translate(0,0); } 78% { opacity:0; transform:translate(-18px,9px); } }
+@media(prefers-reduced-motion:reduce) { #editorAvatar .perfil-poder, #editorAvatar .perfil-poder * { animation:none; } .perfil-filo-caliente, .perfil-llamarada { opacity:.65; } .perfil-chispas-espada, .perfil-chorro-hielo, .perfil-cristales-aliento { opacity:0; } }
