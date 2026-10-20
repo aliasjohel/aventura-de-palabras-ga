@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v375`;
+const CACHE_NAME = `${CACHE_PREFIX}v376`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1121,12 +1121,12 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/marco-real-v1.png": "sha256-779730399f0a11b044c321dc015c91941abd4e47b03dc9174b1300ed4867eef5",
   "./css/versus-identity.css": "sha256-1ebcda73fd4f844e671cca882ba528a45f843410422953426d79977182e8ee0d",
   "./js/versus-identity.js": "sha256-9238b24dc6597c27b568abee1d1edff774d7198cadad8116dd3427d3facfba12",
-  "./css/player-avatar.css": "sha256-7eb7b1cb2829986473ef0c16f960251c4a85b1373f3593855403e059d77cab05",
+  "./css/player-avatar.css": "sha256-ca64b9398203347a15a4f676a9dea45aebcff3b2816bcd37a90f96fdfa3be71c",
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
-  "./js/player-avatar.js": "sha256-32238ae2b6e3ab07cd4f9688d9b5c5778d8d0014cc7cfaa1ce207885aa2e1862",
+  "./js/player-avatar.js": "sha256-0c5879ab0f167905c42cfc4d244ffaf6fdfa08d502738b68ff10986b34849749",
   "./js/public-player-profile.js": "sha256-8cca6d307c960e16dae507d1efa6911d53abd1ae127eca38e6b580acbdfe20ff",
-  "./": "sha256-296d3fd9b1a9fad854203beba07f286248044c7865064fc32c89e9e613b4ae61",
-  "./index.html": "sha256-296d3fd9b1a9fad854203beba07f286248044c7865064fc32c89e9e613b4ae61",
+  "./": "sha256-b72d60f07a645726a003678a15e3e54729396e84680a51f336cf233306295cea",
+  "./index.html": "sha256-b72d60f07a645726a003678a15e3e54729396e84680a51f336cf233306295cea",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-5980b88ad51760fd028c6106e2c1b63d6234e600d2ef3090b9860e09a84e739d",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",

@@ -51,6 +51,37 @@
     fireflies.append(light);
   }
   dialog.querySelector('.perfil-cabecera').prepend(fireflies);
+  // Local art preview, separate from purchased inventory and public appearance.
+  const header = dialog.querySelector('.perfil-cabecera');
+  const scene = document.createElement('span');
+  scene.className = 'perfil-zafir'; scene.setAttribute('aria-hidden', 'true');
+  scene.innerHTML = '<img class="perfil-zafir-personaje" alt="" decoding="async"><span class="perfil-zafir-esfera"></span><span class="perfil-zafir-runas">✧ · ◇ · ✧ · ◇ · ✧ · ◇</span>';
+  header.prepend(scene);
+  const picker = document.createElement('div'); picker.className = 'perfil-fondos-prueba';
+  const note = document.createElement('small');
+  const forest = document.createElement('button'), wizard = document.createElement('button');
+  forest.type = wizard.type = 'button';
+  picker.append(note, forest, wizard); header.after(picker);
+  let preview = 'bosque';
+  const labels = {
+    es: ['Prueba de fondos animados', 'Bosque con luciérnagas', 'Zafir · Invocación arcana'],
+    en: ['Animated background preview', 'Firefly forest', 'Zafir · Arcane invocation'],
+    'pt-BR': ['Prévia de fundos animados', 'Floresta de vaga-lumes', 'Zafir · Invocação arcana']
+  };
+  function renderBackground() {
+    const text = labels[globalThis.I18n?.language] || labels.es;
+    note.textContent = text[0]; forest.textContent = text[1]; wizard.textContent = text[2];
+    forest.setAttribute('aria-pressed', String(preview === 'bosque'));
+    wizard.setAttribute('aria-pressed', String(preview === 'zafir'));
+    header.classList.toggle('perfil-fondo-zafir', preview === 'zafir');
+    if (preview === 'zafir' && !scene.firstElementChild.getAttribute('src')) {
+      scene.firstElementChild.src = 'assets/images/personajes/versus/mago-ataque.png';
+    }
+  }
+  forest.addEventListener('click', () => { preview = 'bosque'; renderBackground(); });
+  wizard.addEventListener('click', () => { preview = 'zafir'; renderBackground(); });
+  globalThis.I18n?.subscribe(renderBackground);
+  renderBackground();
   function syncProfileMotion() {
     dialog.classList.toggle('perfil-movimiento-pausado', document.hidden || !dialog.open);
   }

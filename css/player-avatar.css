@@ -124,3 +124,22 @@ button.enlace-perfil-jugador, #listaRanking button.enlace-perfil-jugador { width
   #amigosPerfil .amigos-tabs { grid-template-columns: 1fr 1.3fr 1fr; }
   #amigosPerfil .amigos-tabs button { font-size: 12px; overflow-wrap: normal; padding-inline: 2px; }
 }
+
+/* Arcane character background: local preview, no wallet writes. */
+.perfil-zafir { display:none; position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+#editorAvatar .perfil-fondo-zafir { padding-top:218px; background:radial-gradient(ellipse at 50% 18%, #54307a 0, #151d39 45%, #080e20 85%); }
+.perfil-fondo-zafir .perfil-zafir { display:block; }
+.perfil-fondo-zafir .perfil-luciernagas { display:none; }
+.perfil-zafir-personaje { position:absolute; width:290px; height:210px; object-fit:contain; top:0; left:calc(50% - 100px); animation:perfil-zafir-flotar 6s ease-in-out infinite; }
+.perfil-zafir-esfera { position:absolute; left:calc(50% - 67px); top:68px; width:48px; height:48px; border-radius:50%; background:radial-gradient(circle at 38% 34%, #fff, #c9b6ff 18%, #9c60ed 44%, #5523a999 68%, transparent 72%); box-shadow:0 0 25px #a970ee99; animation:perfil-zafir-poder 6s ease-in-out infinite; }
+.perfil-zafir-runas { position:absolute; left:calc(50% - 88px); top:47px; width:90px; height:90px; border:1px solid #d3adff88; border-radius:50%; color:#e0c7ff; font:18px/90px serif; text-align:center; animation:perfil-zafir-runas 18s linear infinite; }
+#editorAvatar .perfil-zafir > * { animation-play-state:paused; }
+#editorAvatar[open]:not(.perfil-movimiento-pausado) .perfil-fondo-zafir .perfil-zafir > * { animation-play-state:running; }
+.perfil-fondos-prueba { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+.perfil-fondos-prueba small { width:100%; color:#c5badb; }
+#editorAvatar .perfil-fondos-prueba button { flex:1 1 180px; margin:0; min-height:44px; padding:10px; font-size:12px; }
+#editorAvatar .perfil-fondos-prueba button[aria-pressed="true"] { outline:2px solid #c9a2ff; outline-offset:-2px; }
+@keyframes perfil-zafir-flotar { 0%,100% { transform:translateY(3px) rotate(-1deg); } 50% { transform:translateY(-5px) rotate(1deg); } }
+@keyframes perfil-zafir-poder { 0%,100% { transform:scale(.65); opacity:.45; } 50% { transform:scale(1.12); opacity:1; } }
+@keyframes perfil-zafir-runas { to { transform:rotate(360deg); } }
+@media(prefers-reduced-motion:reduce) { #editorAvatar .perfil-zafir > * { animation:none; } }
