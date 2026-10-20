@@ -52,3 +52,11 @@
 @keyframes vientoAtrapa { to { stroke-dashoffset:-152; } }
 @media(prefers-reduced-motion:reduce) { .peligro-palabras, .peligro-etapa { transition:none; } .viento-cinta, .viento-polvo, .jaula-llama, .jaula-brasa { animation:none; } }
 @media(prefers-reduced-motion:reduce) { .torbellino-final { transition:none; } .torbellino-rafaga,.torbellino-escombro { animation:none; } #personajeImagen.aren-en-remolino-final { translate:none; transition:none; } }
+
+/* Cumbres: changing pose keeps the same visible feet, height and center. */
+.escenario.viento-poses-fijas .personaje-imagen { height:clamp(113px,14.67vw,173px); }
+.escenario.viento-poses-fijas .personaje-imagen:not(.caminando):not(.oculto-cinematica) {
+  animation:none;
+  transform:translate(var(--viento-pose-x,0px),var(--viento-pose-y,0px)) scale(var(--viento-pose-escala,1));
+}
+@media(max-width:700px) { .escenario.viento-poses-fijas .personaje-imagen { height:87px; } }

@@ -7,7 +7,7 @@
   layer.setAttribute('aria-hidden', 'true');
   scene.append(layer);
   const poses = {
-    pensando: [1536,1024,558,78,930,841],
+    pensando: [1536,1024,558,47,931,839],
     nervioso: [1024,1536,210,156,735,1369], feliz: [1536,1024,568,71,904,757],
     preocupado: [1536,1024,558,43,928,839], acierto: [1024,1536,227,208,728,1151],
     desanimado: [1024,1536,290,243,773,1082], triste: [1536,1024,560,91,1041,841],
@@ -74,22 +74,38 @@
     layer.style.left=(center-s.left-scene.clientLeft-width/2)+'px';
     layer.style.top=(feet-s.top-scene.clientTop-height*.93)+'px';
   }
+  let groundPose = 'pensando';
+  function ground() {
+    if (!scene.classList.contains('viento-poses-fijas')) return;
+    const pose = poses[actor.getAttribute('src')?.match(/explorador-([a-z]+)\.png/)?.[1]];
+    const reference = poses[groundPose] || poses.pensando;
+    if (!pose) return;
+    const [w,h,x0,y0,x1,y1] = pose, [rw,rh,rx0,ry0,rx1,ry1] = reference;
+    const fit = Math.min(actor.offsetWidth/w,actor.offsetHeight/h);
+    const referenceFit = Math.min(actor.offsetWidth/rw,actor.offsetHeight/rh);
+    const scale = referenceFit*(ry1-ry0)/(fit*(y1-y0));
+    actor.style.setProperty('--viento-pose-escala', String(scale));
+    actor.style.setProperty('--viento-pose-x', (referenceFit*((rx0+rx1)/2-rw/2)-scale*fit*((x0+x1)/2-w/2))+'px');
+    actor.style.setProperty('--viento-pose-y', (scale*fit*(h-y1)-referenceFit*(rh-ry1))+'px');
+  }
   function followReaction() {
-    cancelAnimationFrame(frame); align();
+    cancelAnimationFrame(frame); ground(); align();
     if (layer.hidden || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const end=performance.now()+700;
     const tick=()=>{align(); if(performance.now()<end && !layer.hidden) frame=requestAnimationFrame(tick);};
     frame=requestAnimationFrame(tick);
   }
-  new ResizeObserver(align).observe(scene);
+  new ResizeObserver(()=>{ground();align();}).observe(scene);
   new MutationObserver(followReaction).observe(actor,{attributes:true,attributeFilter:['src','class']});
-  actor.addEventListener('load',align);
+  actor.addEventListener('load',()=>{ground();align();});
   window.WorldWordHazards = {
     update(nextWorld, mission, lives) {
       const enabled=nextWorld>=2 && nextWorld<=4 && mission>=0 && mission<10;
       if (enabled && (world!==nextWorld || !layer.firstChild)) {
         layer.innerHTML=`<svg viewBox="0 0 160 200" xmlns="http://www.w3.org/2000/svg">${art[nextWorld]}</svg>`;
       }
+      scene.classList.toggle('viento-poses-fijas', enabled && nextWorld===2);
+      if (enabled && nextWorld===2) groundPose = globalThis.obtenerEstadoBaseExplorador?.(nextWorld,mission) || 'pensando';
       world=nextWorld; stage=enabled?Math.max(0,Math.min(6,6-lives)):0;
       layer.hidden=!stage; layer.dataset.world=String(world); layer.dataset.stage=String(stage);
       actor.classList.toggle('aren-en-remolino-final', world===2 && stage===6);

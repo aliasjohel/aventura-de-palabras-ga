@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v380`;
+const CACHE_NAME = `${CACHE_PREFIX}v381`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1141,8 +1141,8 @@ const ASSET_REVISIONS = {
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
   "./js/player-avatar.js": "sha256-f1f23327605368eb6f868a88ced2c016706228e4d92c7375da3bf462c2c4597b",
   "./js/public-player-profile.js": "sha256-8cca6d307c960e16dae507d1efa6911d53abd1ae127eca38e6b580acbdfe20ff",
-  "./": "sha256-cf34f85a77e5f4a07bae650950b1d485e24d32e2ef496b6ca06c05d79e5f8fc4",
-  "./index.html": "sha256-cf34f85a77e5f4a07bae650950b1d485e24d32e2ef496b6ca06c05d79e5f8fc4",
+  "./": "sha256-ca5e8aa81ac2c5fdcd2bb59c210fc1954439a0981e37081ce35b4db7c06fd8d6",
+  "./index.html": "sha256-ca5e8aa81ac2c5fdcd2bb59c210fc1954439a0981e37081ce35b4db7c06fd8d6",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-5980b88ad51760fd028c6106e2c1b63d6234e600d2ef3090b9860e09a84e739d",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1206,8 +1206,8 @@ const ASSET_REVISIONS = {
   "./assets/sounds/victoria-mundo5.mp3": "sha256-b225db3633251ef525960d165c65ec25c2972eadfc59a10664939b02b8009d5d",
   "./assets/sounds/azrak-es-vencido.mp3": "sha256-1c5d9b8cc53b0b8be1c061c03063ef24497e4bc570d80fc5580911e0e024b823",
   "./css/desert-sand-trap.css": "sha256-e8a4073778b33d673abe603f009e678c560abf41c9b29fe26a8f31667559d65c",
-  "./css/world-word-hazards.css": "sha256-d15e86523825da75940846f74147bb63e59e2c15a5195bc382358e396d097e81",
-  "./js/world-word-hazards.js": "sha256-95d3f5870896a4a1a895ba10034d82104550e0b027ef855c9347147f7a05ff21",
+  "./css/world-word-hazards.css": "sha256-a0c702ded07999839e4f1c95f98a0b92646c05e3f1a8a54b4d040db60881c42a",
+  "./js/world-word-hazards.js": "sha256-e03b52359ac253ff3d6bde86b249cde85fd68bef284bd534c8d425277286a279",
   "./js/desert-sand-trap.js": "sha256-f4d575efeaa9c3b32b0a37bfa5ba656684f15e60f341ac6a9524c22c4c542cb5",
   "./assets/images/personajes/explorador-brazo-arena-v1.png": "sha256-4c2db838858591bf6870d0598895146acb757c773da3c0f765f01e33d8268823",
   "./css/forest-root-trap.css": "sha256-0ae41c5356bb805e0672bb9cf9f66415b1cb1180c285353f191de5cce2373ca1",
