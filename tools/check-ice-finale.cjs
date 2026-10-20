@@ -18,19 +18,20 @@ const server=http.createServer((req,res)=>{try{
       actualizarEscenaPorMision();actualizarCabeceraMision();actualizarVidas();await cambiarPersonaje('preocupado');mostrarPantalla(pantallaJuego);
       await Promise.all([esperarCargaFondoEscenario(),esperarCargaImagen(personajeImagen)]);
     });
-    let stage=0; const parts=['pierna-izquierda','pierna-derecha','brazo-izquierdo','brazo-derecho','torso','cabeza']; const poses=[];
+    let stage=0; const tops=[]; const poses=[];
     for(const letter of ['A','B','C','D','F','G']){
       await page.evaluate(letter=>elegirLetra(letter,document.createElement('button')),letter);await page.waitForTimeout(800);stage++;
       assert.equal(await page.locator('.peligro-etapa.activa').count(),stage);
-      assert.deepEqual(await page.locator('.peligro-etapa.activa .hielo-parte').evaluateAll(els=>els.map(el=>el.dataset.parte)),parts.slice(0,stage));
+      tops.push(await page.locator('.peligro-etapa.activa').evaluateAll(els=>Math.min(...els.map(el=>el.getBBox().y))));
       poses.push(await page.locator('#personajeImagen').evaluate(el=>({top:el.getBoundingClientRect().top,src:el.src})));
       if(stage<6)assert.equal(await page.locator('.aren-congelado-final').count(),0);
-      if(stage===3)await page.screenshot({path:path.join(root,'docs/v374-hielo-tercer-error.png')});
+      if(stage===3)await page.screenshot({path:path.join(root,'docs/v375-hielo-tercer-error.png')});
     }
-    assert(poses.every(p=>p.src===poses[0].src && Math.abs(p.top-poses[0].top)<.1),'frozen limbs stay in place throughout the six mistakes');
+    assert(tops.every((top,i)=>i===0 || top<tops[i-1]),'each error extends the ice upward from the feet');
+    assert(poses.every(p=>p.src===poses[0].src && Math.abs(p.top-poses[0].top)<.1),'Aren stays in place while the ice rises');
     const final=await page.evaluate(()=>({actorOpacity:getComputedStyle(personajeImagen).opacity,iceOpacity:getComputedStyle(document.querySelector('.hielo-final')).opacity,stage:document.querySelector('.peligro-palabras').dataset.stage}));
     assert.equal(final.actorOpacity,'0');assert.equal(final.iceOpacity,'1');assert.equal(final.stage,'6');
-    await page.screenshot({path:path.join(root,'docs/v374-hielo-ultimo-error.png')});
+    await page.screenshot({path:path.join(root,'docs/v375-hielo-ultimo-error.png')});
     await page.emulateMedia({reducedMotion:'reduce'});
     assert.equal(await page.locator('.hielo-final').evaluate(el=>getComputedStyle(el).transitionDuration),'0s');
     await page.evaluate(()=>WorldWordHazards.release());assert.equal(await page.locator('.aren-congelado-final').count(),0);
