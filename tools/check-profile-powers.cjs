@@ -19,12 +19,12 @@ const server=http.createServer((req,res)=>{
     await page.locator('#btnMiAvatar').click();
     for(const width of [320,390,844]){
       await page.setViewportSize({width,height:844});
-      for(const [id,selector] of [['azrak','.perfil-llamarada'],['hielo','.perfil-chorro-hielo']]){
+      for(const [id,selector] of [['azrak','.perfil-llamarada'],['hielo','.perfil-chorro-hielo'],['cumbres','.perfil-remolino-nimbus']]){
         await page.locator('[data-background-choice="'+id+'"]').click();await page.locator('.perfil-criatura').evaluate(i=>i.decode());
         const power=page.locator(selector);
         assert.equal(await power.evaluate(e=>getComputedStyle(e).animationPlayState),'running');
-        const figures=await page.locator('.perfil-figura').evaluate(e=>e.querySelectorAll('.perfil-criatura,.perfil-espada-fuego,.perfil-ventisca').length);
-        assert.equal(figures,3,'sprite and powers share their movement parent');
+        const figures=await page.locator('.perfil-figura').evaluate(e=>e.querySelectorAll('.perfil-criatura,.perfil-espada-fuego,.perfil-ventisca,.perfil-viento-nimbus').length);
+        assert.equal(figures,4,'sprite and powers share their movement parent');
         const setTime=time=>page.evaluate(time=>{for(const animation of document.getAnimations()){animation.pause();animation.currentTime=time;}},time);
         await setTime(0);assert.equal(Number(await power.evaluate(e=>getComputedStyle(e).opacity)),0,'starts with no power');
         await setTime(3500);assert(Number(await power.evaluate(e=>getComputedStyle(e).opacity))>.6,'power becomes clearly visible');
@@ -49,14 +49,14 @@ const server=http.createServer((req,res)=>{
     }
     for(let i=0;i<36;i++){
       const meta=await sharp(captures.azrak[i]).metadata();
-      await sharp({create:{width:meta.width*2,height:meta.height,channels:4,background:'#0b1220'}})
-        .composite([{input:captures.azrak[i],left:0,top:0},{input:captures.hielo[i],left:meta.width,top:0}])
+      await sharp({create:{width:meta.width*3,height:meta.height,channels:4,background:'#0b1220'}})
+        .composite([{input:captures.azrak[i],left:0,top:0},{input:captures.hielo[i],left:meta.width,top:0},{input:captures.cumbres[i],left:meta.width*2,top:0}])
         .png().toFile(path.join(frames,String(i).padStart(3,'0')+'.png'));
     }
     cp.execFileSync('C:/Users/User/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe',['-c',
-      'from PIL import Image; import pathlib,sys; frames=[Image.open(p).convert("RGB") for p in sorted(pathlib.Path(sys.argv[1]).glob("*.png"))]; frames[0].save(sys.argv[2],save_all=True,append_images=frames[1:],duration=210,loop=0,optimize=False)',
-      frames,path.join(root,'docs/v379-poderes.gif')]);
-    assert.deepEqual(errors,[]);console.log('PASS sword ignition and ice breath cycles at 320/390/844, attached powers, background/close pause, reduced motion; animated capture saved');
+      'from PIL import Image; import pathlib,sys; frames=[Image.open(p).convert("RGB") for p in sorted(pathlib.Path(sys.argv[1]).glob("*.png"))]; frames[0].save(sys.argv[2],save_all=True,append_images=frames[1:],duration=210,loop=0,optimize=False); nimbus=[frame.crop((frame.width*2//3,0,frame.width,frame.height)) for frame in frames]; nimbus[0].save(sys.argv[3],save_all=True,append_images=nimbus[1:],duration=210,loop=0,optimize=False)',
+      frames,path.join(frames,'all-powers.gif'),path.join(root,'docs/v380-nimbus.gif')]);
+    assert.deepEqual(errors,[]);console.log('PASS sword ignition, ice breath and Nimbus vortex cycles at 320/390/844, attached powers, background/close pause, reduced motion; animated capture saved');
     await context.close();
   }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);server.close();process.exitCode=1;});

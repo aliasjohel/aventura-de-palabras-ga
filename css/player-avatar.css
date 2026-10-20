@@ -223,3 +223,15 @@ button.enlace-perfil-jugador, #listaRanking button.enlace-perfil-jugador { width
 @keyframes perfil-soplar-hielo { 0%,22%,85%,100% { opacity:0; transform:scale(.05,.2); } 35% { opacity:.85; transform:scale(.85,.8); } 52% { opacity:1; transform:scale(1,1); } 70% { opacity:.5; transform:scale(1.1,1.15); } }
 @keyframes perfil-cristales-rafaga { 0%,28%,90%,100% { opacity:0; transform:translate(10px,0); } 40% { opacity:.9; transform:translate(0,0); } 78% { opacity:0; transform:translate(-18px,9px); } }
 @media(prefers-reduced-motion:reduce) { #editorAvatar .perfil-poder, #editorAvatar .perfil-poder * { animation:none; } .perfil-filo-caliente, .perfil-llamarada { opacity:.65; } .perfil-chispas-espada, .perfil-chorro-hielo, .perfil-cristales-aliento { opacity:0; } }
+
+/* Nimbus gathers air between his claws, then releases a small vortex. */
+[data-profile-background="cumbres"] .perfil-viento-nimbus { display:block; }
+[data-profile-background="cumbres"] .perfil-figura { animation:perfil-nimbus-conjurar 7s ease-in-out infinite; }
+.perfil-remolino-nimbus { transform-origin:25px 90px; animation:perfil-nimbus-remolino 7s ease-in-out infinite; }
+.perfil-anillos-viento { stroke-dasharray:10 3; animation:perfil-nimbus-corrientes 1s linear infinite; }
+.perfil-rafaga-nimbus { animation:perfil-nimbus-rafaga 7s ease-out infinite; }
+@keyframes perfil-nimbus-conjurar { 0%,100% { transform:translateY(2px) rotate(-1deg); } 20% { transform:translate(1px,-3px) rotate(1deg); } 45% { transform:translate(2px,-1px) rotate(0); } 65% { transform:translate(4px,1px) rotate(2deg); } }
+@keyframes perfil-nimbus-remolino { 0%,15%,95%,100% { opacity:0; transform:scale(.15); } 30% { opacity:.8; transform:scale(.8); } 48% { opacity:1; transform:scale(1); } 65% { opacity:.95; transform:translate(-12px,2px) scale(1.15); } 85% { opacity:0; transform:translate(-28px,5px) scale(1.25); } }
+@keyframes perfil-nimbus-corrientes { to { stroke-dashoffset:-26; } }
+@keyframes perfil-nimbus-rafaga { 0%,42%,94%,100% { opacity:0; transform:translateX(8px); } 58% { opacity:.8; transform:translateX(0); } 84% { opacity:0; transform:translateX(-18px); } }
+@media(prefers-reduced-motion:reduce) { #editorAvatar [data-profile-background="cumbres"] .perfil-figura { animation:none; } .perfil-remolino-nimbus, .perfil-rafaga-nimbus { opacity:0; } }
