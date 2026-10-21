@@ -235,3 +235,19 @@ button.enlace-perfil-jugador, #listaRanking button.enlace-perfil-jugador { width
 @keyframes perfil-nimbus-corrientes { to { stroke-dashoffset:-26; } }
 @keyframes perfil-nimbus-rafaga { 0%,42%,94%,100% { opacity:0; transform:translateX(8px); } 58% { opacity:.8; transform:translateX(0); } 84% { opacity:0; transform:translateX(-18px); } }
 @media(prefers-reduced-motion:reduce) { #editorAvatar [data-profile-background="cumbres"] .perfil-figura { animation:none; } .perfil-remolino-nimbus, .perfil-rafaga-nimbus { opacity:0; } }
+
+.perfil-fondos-prueba button span,.perfil-fondos-prueba button small { display:block; }
+.perfil-fondos-prueba button small { margin-top:5px; font-size:10px; opacity:.8; }
+.perfil-fondos-prueba button[data-owned="false"] { border-style:dashed; }
+.perfil-fondos-acciones { margin:0 0 20px; display:flex; gap:8px; flex-wrap:wrap; }
+.perfil-fondos-acciones p { width:100%; margin:0 0 6px; font-size:12px; color:#d5c9e4; }
+#editorAvatar .perfil-fondos-acciones button { flex:1; width:auto; margin:0; font-size:12px; min-height:44px; }
+.perfil-publico-identidad[data-profile-background] { position:relative; isolation:isolate; overflow:hidden; min-height:166px; box-sizing:border-box; border-radius:16px; padding:16px 100px 16px 12px; gap:12px; background:linear-gradient(90deg,#07101cbb,#0b102566),var(--perfil-fondo) center/cover,#101329; }
+.perfil-publico-identidad[data-profile-background] > :not(.perfil-publico-figura) { position:relative; z-index:1; min-width:0; text-shadow:0 2px 4px #000; }
+.perfil-publico-figura { position:absolute; right:4px; top:50%; width:100px; height:130px; margin-top:-65px; object-fit:contain; }
+.perfil-publico-identidad[data-profile-background="bosque"] { --perfil-fondo:url('../assets/images/perfil/fondo-bosque-luciernagas-v1.webp'); }
+.perfil-publico-identidad[data-profile-background="zafir"] { --perfil-fondo:url('../assets/images/perfil/fondo-santuario-arcano-v1.webp'); }
+.perfil-publico-identidad[data-profile-background="desierto"] { --perfil-fondo:url('../assets/images/perfil/fondo-desierto-animado-v1.webp'); }
+.perfil-publico-identidad[data-profile-background="cumbres"] { --perfil-fondo:url('../assets/images/perfil/fondo-cumbres-animado-v1.webp'); }
+.perfil-publico-identidad[data-profile-background="hielo"] { --perfil-fondo:url('../assets/images/perfil/fondo-hielo-animado-v1.webp'); }
+.perfil-publico-identidad[data-profile-background="azrak"] { --perfil-fondo:url('../assets/images/perfil/fondo-azrak-animado-v1.webp'); }

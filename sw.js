@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v381`;
+const CACHE_NAME = `${CACHE_PREFIX}v382`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -424,6 +424,8 @@ const RESOURCE_ASSETS = [
   "./assets/images/trajes/kalamo-astral-formacion-3-v1.png",
   "./js/cosmetic-store.js",
   "./js/game-wallet.js",
+  "./js/profile-backgrounds.js",
+  "./js/profile-background-shop.js",
   "./js/cosmetic-shop.js",
   "./css/cosmetic-shop.css",
   "./assets/images/trajes/aren-bosque-anciano-v1.png",
@@ -868,7 +870,7 @@ const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
 
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
-  "./js/resource-catalog.js": "sha256-6527f4b78b378a78591f4d94171a819722fb0e5d8809abf930ebb9a0c2493bbe",
+  "./js/resource-catalog.js": "sha256-fcac3780aeae81d7cf1b763ff3c32a41094e8de55a0103c91afe80d0a1eb69c4",
   "./js/resource-loader.js": "sha256-ad1e232b755c34f73a839b18c857b49f23ff8ce0d570ea1c8b16ddb72cba7851",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
   "./assets/images/perfil/miniaturas/dragon-base.webp": "sha256-f25e547e72384e6edab79d058d145d1dd506e9a62257f29f1a166ebb91db4d2b",
@@ -1086,9 +1088,11 @@ const ASSET_REVISIONS = {
   "./assets/images/trajes/kalamo-astral-formacion-2-v1.png": "sha256-b35efaea8dc91d775ee7cbcd284bda3d04909448d30d1f568dc70096183eaf7d",
   "./assets/images/trajes/kalamo-astral-formacion-3-v1.png": "sha256-da6a89b7d249089e452488ea43540f2fa34388f35521b9e174838a8c57eff1b3",
   "./js/cosmetic-store.js": "sha256-91fcd92aa251bf4db74a9b08a3806b0a3b5c55d4c7577fd1ea5b75f7d0e7adb9",
-  "./js/game-wallet.js": "sha256-ff0d0f75c208423a8d90f72a651857df0a9ad13cd732cef8aba083d96ec49fae",
+  "./js/game-wallet.js": "sha256-701d2d19397e09b4b174d2dcd6d215e93f105ae9e453db39c64c41ee9ff197f1",
+  "./js/profile-backgrounds.js": "sha256-32c111b3dd84f43a2a45200d7715fd9ce8a4128eece7896f2df2ff17d070b585",
+  "./js/profile-background-shop.js": "sha256-5ac4ea51e71b099501b2818e740fc57154db3bdade9c4cb52acfe5920fadad9a",
   "./js/cosmetic-shop.js": "sha256-479acb738f58f50511a20bc68ba0e55d452808bef881bd38d10ba40c3392080c",
-  "./css/cosmetic-shop.css": "sha256-578fc396ae6971da01892667a535cbe2b5e969797c9589c417db4e4baccb1a3d",
+  "./css/cosmetic-shop.css": "sha256-839b176124bcd68e6b9cacaf757d867e57af0e7e6edc7feeecc05da9e0e347e8",
   "./assets/images/trajes/aren-bosque-anciano-v1.png": "sha256-f36298208c10160dd346fe35a070077d24977be1c0478b60c213d22a734866ea",
   "./assets/images/trajes/aren-bosque-ataque-v1.png": "sha256-db35d231a6c68f5d8ec57fbaed7992d6da31828d3ac931ee630f72cbae7f6aa7",
   "./assets/images/trajes/aren-bosque-base-v1.png": "sha256-9a7c4e8bdb1c1b4efe035e4e9d0a7d32a4d9cbbfa96f568f95d7f1e18e292d6a",
@@ -1137,12 +1141,12 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/marco-real-v1.png": "sha256-779730399f0a11b044c321dc015c91941abd4e47b03dc9174b1300ed4867eef5",
   "./css/versus-identity.css": "sha256-1ebcda73fd4f844e671cca882ba528a45f843410422953426d79977182e8ee0d",
   "./js/versus-identity.js": "sha256-9238b24dc6597c27b568abee1d1edff774d7198cadad8116dd3427d3facfba12",
-  "./css/player-avatar.css": "sha256-7c1b059254358bf40cd7f0250c97d1a76b2c21f0e0ef2cda1f361c4894f38544",
+  "./css/player-avatar.css": "sha256-33e2af6c6a2699fe79191dfa9a5764c94830515b51bbc5203d07eafb45fc486b",
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
-  "./js/player-avatar.js": "sha256-f1f23327605368eb6f868a88ced2c016706228e4d92c7375da3bf462c2c4597b",
-  "./js/public-player-profile.js": "sha256-8cca6d307c960e16dae507d1efa6911d53abd1ae127eca38e6b580acbdfe20ff",
-  "./": "sha256-ca5e8aa81ac2c5fdcd2bb59c210fc1954439a0981e37081ce35b4db7c06fd8d6",
-  "./index.html": "sha256-ca5e8aa81ac2c5fdcd2bb59c210fc1954439a0981e37081ce35b4db7c06fd8d6",
+  "./js/player-avatar.js": "sha256-e2b042762b3c19f7735a2144b3e0cdb53362b08913ea1fe4059f485b00d00fd9",
+  "./js/public-player-profile.js": "sha256-57bfe13a79c7e27a6ae541b8747e8533057c570acd82f40a35038428f28e0810",
+  "./": "sha256-6b1d9a42fec80422364b3f18da0fe3bb7a400a3349d443ef3bd1be7f088f6ae3",
+  "./index.html": "sha256-6b1d9a42fec80422364b3f18da0fe3bb7a400a3349d443ef3bd1be7f088f6ae3",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-5980b88ad51760fd028c6106e2c1b63d6234e600d2ef3090b9860e09a84e739d",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1736,9 +1740,7 @@ const LEGACY_RESOURCE_REVISIONS = {
   "./assets/images/trajes/kalamo-astral-formacion-2-v1.png": "legacy-v93-v95",
   "./assets/images/trajes/kalamo-astral-formacion-3-v1.png": "legacy-v93-v95",
   "./js/cosmetic-store.js": "aventura-palabras-runtime-v347",
-  "./js/game-wallet.js": "aventura-palabras-runtime-v347",
   "./js/cosmetic-shop.js": "aventura-palabras-runtime-v347",
-  "./css/cosmetic-shop.css": "aventura-palabras-runtime-v347",
   "./assets/images/trajes/aren-bosque-anciano-v1.png": "legacy-v93-v95",
   "./assets/images/trajes/aren-bosque-ataque-v1.png": "legacy-v93-v95",
   "./assets/images/trajes/aren-bosque-base-v1.png": "legacy-v93-v95",

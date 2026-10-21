@@ -53,6 +53,9 @@
   dialog.querySelector('.perfil-cabecera').prepend(fireflies);
   // Art previews are separate from owned cosmetics and public identity.
   const header = dialog.querySelector('.perfil-cabecera');
+  const B = ProfileBackgrounds;
+  let backgroundBusy=false, backgroundNotice='', previewTouched=false;
+  let backgroundAccount=CosmeticStore.read().accountId||null;
   const backgrounds = [
     {id:'bosque'}, {id:'zafir', character:true}, {id:'desierto'},
     {id:'cumbres', character:true, sprite:'figura-nimbus-v1.webp'},
@@ -82,20 +85,35 @@
   const buttons = backgrounds.map(background => {
     const button = document.createElement('button'); button.type = 'button';
     button.dataset.backgroundChoice = background.id;
-    button.addEventListener('click', () => { preview = background.id; renderBackground(); });
+    button.addEventListener('click', () => { previewTouched=true; preview = background.id; backgroundNotice=''; renderBackground(); });
     picker.append(button); return button;
   });
   header.after(picker);
-  let preview = 'bosque';
-  const labels = {
-    es: ['Prueba de fondos animados', 'Bosque con luciérnagas', 'Zafir · Invocación arcana', 'Desierto · Arenas del crepúsculo', 'Nimbus · Cumbres celestes', 'Nivor · Aurora de hielo', 'Azrak · Reino del eclipse'],
-    en: ['Animated background preview', 'Firefly forest', 'Zafir · Arcane invocation', 'Desert · Twilight sands', 'Nimbus · Celestial peaks', 'Nivor · Frozen aurora', 'Azrak · Eclipse kingdom'],
-    'pt-BR': ['Prévia de fundos animados', 'Floresta de vaga-lumes', 'Zafir · Invocação arcana', 'Deserto · Areias do crepúsculo', 'Nimbus · Cumes celestes', 'Nivor · Aurora de gelo', 'Azrak · Reino do eclipse']
-  };
+  const backgroundActions=document.createElement('div');backgroundActions.className='perfil-fondos-acciones';
+  const backgroundBalance=document.createElement('p'), backgroundStatus=document.createElement('p');
+  backgroundStatus.setAttribute('role','status');backgroundStatus.setAttribute('aria-live','polite');
+  const buyBackground=document.createElement('button'), equipBackground=document.createElement('button');
+  buyBackground.type=equipBackground.type='button';buyBackground.id='comprarFondoPerfil';equipBackground.id='equiparFondoPerfil';
+  backgroundActions.append(backgroundBalance,backgroundStatus,buyBackground,equipBackground);picker.after(backgroundActions);
+  buyBackground.addEventListener('click',()=>void actBackground('purchase'));
+  equipBackground.addEventListener('click',()=>void actBackground('equip'));
+  let preview = B.read().equipped;
+  async function actBackground(action){
+    if(backgroundBusy)return;const id=preview;backgroundBusy=true;backgroundNotice='';renderBackground();
+    try{
+      if(!CosmeticStore.read().accountId)await globalThis.AventuraShop?.connect();
+      await B[action](id);preview=id;backgroundNotice=B.text(action==='purchase'?'purchased':'success');
+    }catch(error){backgroundNotice=error.message||B.text('failed');}
+    finally{backgroundBusy=false;renderBackground();}
+  }
   function renderBackground() {
-    const text = labels[globalThis.I18n?.language] || labels.es;
-    note.textContent = text[0]; picker.setAttribute('aria-label',text[0]);
-    buttons.forEach((button,i) => { button.textContent = text[i + 1]; button.setAttribute('aria-pressed',String(preview === backgrounds[i].id)); });
+    const inventory=B.read(), selected=B.catalog.find(item=>item.id===preview), owned=inventory.owned.includes(preview);
+    note.textContent=B.text('title');picker.setAttribute('aria-label',note.textContent);
+    buttons.forEach((button,i)=>{const id=backgrounds[i].id,has=inventory.owned.includes(id);const name=document.createElement('span'),detail=document.createElement('small');name.textContent=B.name(id);detail.textContent=inventory.equipped===id?B.text('equipped'):has?B.text('owned'):B.requirement(id);button.replaceChildren(name,detail);button.dataset.owned=String(has);button.disabled=backgroundBusy;button.setAttribute('aria-pressed',String(preview===id));});
+    backgroundBalance.textContent=B.text('balance',{n:CosmeticStore.read().coins});
+    backgroundStatus.textContent=backgroundNotice||(!owned?B.text('locked',{requirement:B.requirement(preview)}):B.text('hint'));
+    buyBackground.hidden=owned||!selected.price;buyBackground.disabled=backgroundBusy||Boolean(globalThis.AventuraShop?.testing());buyBackground.textContent=B.text('buy',{n:selected.price});
+    equipBackground.disabled=backgroundBusy||!owned||inventory.equipped===preview||Boolean(globalThis.AventuraShop?.testing());equipBackground.textContent=B.text(inventory.equipped===preview?'equipped':'equip');
     syncBackgroundSize();
     if (preview === 'zafir' && !scene.firstElementChild.getAttribute('src')) scene.firstElementChild.src = 'assets/images/personajes/versus/mago-ataque.png';
     const entry = backgrounds.find(background => background.id === preview);
@@ -121,6 +139,10 @@
   window.addEventListener('resize', syncBackgroundSize);
   new MutationObserver(syncBackgroundSize).observe(header.querySelector('.perfil-identidad'), {childList:true, subtree:true, characterData:true});
   globalThis.I18n?.subscribe(renderBackground);
+  window.addEventListener('profile-backgrounds-updated',renderBackground);
+  window.addEventListener('wallet-updated',()=>{const account=CosmeticStore.read().accountId||null;if(account!==backgroundAccount){backgroundAccount=account;previewTouched=false;preview=B.read().equipped;}renderBackground();});
+  window.addEventListener('storage',event=>{if(event.key?.startsWith('aventuraFondosV1:account:')){preview=B.read().equipped;renderBackground();}});
+  globalThis.ProfileBackgroundsUI=Object.freeze({preview:id=>{if(!B.catalog.some(item=>item.id===id))return;el('btnMiAvatar').click();previewTouched=true;preview=id;renderBackground();}});
   renderBackground();
   function syncProfileMotion() {
     dialog.classList.toggle('perfil-movimiento-pausado', document.hidden || !dialog.open);
@@ -203,6 +225,7 @@
       const profile = await globalThis.PlayerProfile.cargar();
       if (request !== profileRequest || !dialog.open) return;
       updateRewards(null,profile.points);
+      if(!globalThis.AventuraShop?.testing())void B.sync().then(()=>{if(!previewTouched)preview=B.read().equipped;renderBackground();}).catch(()=>{if(dialog.open){backgroundNotice=B.text('connect');renderBackground();}});
       U.text(el("perfilNombre"), profile.aliasIsFallback ? K("profile.adventurer") : profile.alias || K("profile.adventurer"));
       U.text(el("perfilId"), profile.friend_code || K("profile.friendCodeHelp"));
       for (const [id, key] of [["Jugadas", "played"], ["Victorias", "wins"], ["Derrotas", "losses"], ["Empates", "draws"]]) {
@@ -264,6 +287,7 @@
     draft = { ...saved };
     el("estadoAvatar").textContent = "";
     renderPreview();
+    previewTouched=false;preview=B.read().equipped;backgroundNotice='';renderBackground();
     dialog.showModal();
     syncProfileMotion();
     void loadProfile();

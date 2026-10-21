@@ -43,6 +43,15 @@
     });
     const activateAdmin=code=>adminAction('activate_game_admin',{p_code:code});
     const setAdminUnion=enabled=>adminAction('set_admin_union_access',{p_enabled:Boolean(enabled)});
+    const backgrounds=(action,id)=>enqueue(async account=>{
+      if(root.AventuraShop?.testing())throw Error(root.ProfileBackgrounds?.text('testing')||'Volvé del modo de prueba para comprar o equipar.');
+      await syncNow(account);
+      let worlds=0;
+      try{const progress=JSON.parse(root.localStorage?.getItem('progresoAventuraGA')||'{}');worlds=Math.max(0,Math.min(5,Number(progress.cristalesObtenidos)||0));if(progress.mundoTresCompletado)worlds=Math.max(worlds,3);if(progress.mundoCuatroCompletado)worlds=Math.max(worlds,4);}catch(_){}
+      const result=await rpc(account,'profile_backgrounds',{p_action:action,p_background:id,p_legacy_worlds:Math.trunc(worlds)});
+      if(result.backgrounds?.userId!==account)throw Error('No pudimos verificar tus fondos.');
+      store.applyAccount(result);notify();return result.backgrounds;
+    });
     function schedule(){
       if(!userId)return;
       root.clearTimeout(timer);
@@ -66,7 +75,7 @@
     root.addEventListener?.('online',schedule);
     root.addEventListener?.('focus',schedule);
     root.document?.addEventListener('visibilitychange',()=>{if(!root.document.hidden)schedule();});
-    return Object.freeze({connect,sync,activateAdmin,setAdminUnion});
+    return Object.freeze({connect,sync,activateAdmin,setAdminUnion,backgrounds});
   }
   return {create};
 });

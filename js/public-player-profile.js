@@ -15,6 +15,12 @@
     if (!append) {
       U.text(el("nombrePerfilPublico"), VersusRoom.aliasVisible(profile.alias) || K("profile.adventurer"));
       el("avatarPerfilPublico").replaceChildren(PlayerAvatar.crear(profile));
+      const banner=el('avatarPerfilPublico').parentElement;
+      const background=ProfileBackgrounds.catalog.some(item=>item.id===profile.background)?profile.background:'bosque';
+      banner.dataset.profileBackground=background;
+      let figure=banner.querySelector('.perfil-publico-figura');if(!figure){figure=document.createElement('img');figure.className='perfil-publico-figura';figure.alt='';figure.setAttribute('aria-hidden','true');banner.append(figure);}
+      const source={zafir:'assets/images/personajes/versus/mago-ataque.png',cumbres:'assets/images/perfil/figura-nimbus-v1.webp',hielo:'assets/images/perfil/figura-nivor-v1.webp',azrak:'assets/images/perfil/figura-azrak-v1.webp'}[background];figure.hidden=!source;if(source)figure.src=source;
+
       const frames = new Set(AvatarRewards.catalog.map(frame=>frame.id));
       GameUI.text(el("aparienciaPerfilPublico"), GameUI.key('profile.frame', {frame:K("profile.frames."+(frames.has(profile.frame)?profile.frame:"clasico"))}));
       GameUI.text(el("rankingPerfilPublico"), GameUI.key('profile.publicRanking', {position:profile.position?K("profile.position",{position:profile.position}):K("profile.noPosition"),points:profile.points||0}));
