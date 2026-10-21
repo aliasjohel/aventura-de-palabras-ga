@@ -60,3 +60,5 @@
 .tienda-fondos p { font-size:12px; color:#c6bdd2; }
 .tienda-fondos button { font-size:11px; min-height:44px; line-height:1.35; }
 @media(max-width:360px) { .tienda-fondos-catalogo { grid-template-columns:1fr; } }
+.tienda-fondo-miniatura { height:96px; margin:-4px -4px 10px; overflow:hidden; border-radius:8px; background-position:center; background-size:cover; position:relative; } .tienda-fondo-miniatura img { position:absolute; right:4px; bottom:0; height:95%; max-width:65%; object-fit:contain; }
+.tienda-fondo-candado { position:absolute; inset:0; display:grid; place-items:center; font-size:25px; background:#08101c40; text-shadow:0 2px 6px #000; }

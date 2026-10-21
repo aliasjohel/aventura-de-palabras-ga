@@ -85,7 +85,7 @@
   const buttons = backgrounds.map(background => {
     const button = document.createElement('button'); button.type = 'button';
     button.dataset.backgroundChoice = background.id;
-    button.addEventListener('click', () => { previewTouched=true; preview = background.id; backgroundNotice=''; renderBackground(); });
+    button.addEventListener('click', () => { if(!B.read().owned.includes(background.id)&&!globalThis.AventuraShop?.canPreviewBackgrounds?.())return;previewTouched=true; preview = background.id; backgroundNotice=''; renderBackground(); });
     picker.append(button); return button;
   });
   header.after(picker);
@@ -107,9 +107,10 @@
     finally{backgroundBusy=false;renderBackground();}
   }
   function renderBackground() {
+    if(!B.read().owned.includes(preview)&&!globalThis.AventuraShop?.canPreviewBackgrounds?.())preview=B.read().equipped;
     const inventory=B.read(), selected=B.catalog.find(item=>item.id===preview), owned=inventory.owned.includes(preview);
     note.textContent=B.text('title');picker.setAttribute('aria-label',note.textContent);
-    buttons.forEach((button,i)=>{const id=backgrounds[i].id,has=inventory.owned.includes(id);const name=document.createElement('span'),detail=document.createElement('small');name.textContent=B.name(id);detail.textContent=inventory.equipped===id?B.text('equipped'):has?B.text('owned'):B.requirement(id);button.replaceChildren(name,detail);button.dataset.owned=String(has);button.disabled=backgroundBusy;button.setAttribute('aria-pressed',String(preview===id));});
+    buttons.forEach((button,i)=>{const id=backgrounds[i].id,has=inventory.owned.includes(id);const name=document.createElement('span'),detail=document.createElement('small');name.textContent=(has?'':'🔒 ')+B.name(id);detail.textContent=inventory.equipped===id?B.text('equipped'):has?B.text('owned'):B.requirement(id);button.replaceChildren(name,detail);button.dataset.owned=String(has);button.disabled=backgroundBusy||(!has&&!globalThis.AventuraShop?.canPreviewBackgrounds?.());button.setAttribute('aria-pressed',String(preview===id));});
     backgroundBalance.textContent=B.text('balance',{n:CosmeticStore.read().coins});
     backgroundStatus.textContent=backgroundNotice||(!owned?B.text('locked',{requirement:B.requirement(preview)}):B.text('hint'));
     buyBackground.hidden=owned||!selected.price;buyBackground.disabled=backgroundBusy||Boolean(globalThis.AventuraShop?.testing());buyBackground.textContent=B.text('buy',{n:selected.price});
@@ -142,7 +143,7 @@
   window.addEventListener('profile-backgrounds-updated',renderBackground);
   window.addEventListener('wallet-updated',()=>{const account=CosmeticStore.read().accountId||null;if(account!==backgroundAccount){backgroundAccount=account;previewTouched=false;preview=B.read().equipped;}renderBackground();});
   window.addEventListener('storage',event=>{if(event.key?.startsWith('aventuraFondosV1:account:')){preview=B.read().equipped;renderBackground();}});
-  globalThis.ProfileBackgroundsUI=Object.freeze({preview:id=>{if(!B.catalog.some(item=>item.id===id))return;el('btnMiAvatar').click();previewTouched=true;preview=id;renderBackground();}});
+  globalThis.ProfileBackgroundsUI=Object.freeze({preview:id=>{if(!B.read().owned.includes(id)&&!globalThis.AventuraShop?.canPreviewBackgrounds?.())return;el('btnMiAvatar').click();previewTouched=true;preview=id;renderBackground();}});
   renderBackground();
   function syncProfileMotion() {
     dialog.classList.toggle('perfil-movimiento-pausado', document.hidden || !dialog.open);

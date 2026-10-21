@@ -23,9 +23,15 @@
    const card=document.createElement('article'),name=document.createElement('h4'),requirement=document.createElement('p'),preview=document.createElement('button');
    const owned=state.owned.includes(item.id);card.dataset.backgroundShop=item.id;name.textContent=B.name(item.id);
    requirement.textContent=state.equipped===item.id?B.text('equipped'):owned?B.text('owned'):B.requirement(item.id);
+   const art=document.createElement('div');art.className='tienda-fondo-miniatura';art.dataset.backgroundArt=item.id;art.dataset.locked=String(!owned);art.setAttribute('role','img');art.setAttribute('aria-label',B.name(item.id));
+   const scenes={bosque:'bosque-luciernagas',zafir:'santuario-arcano',desierto:'desierto-animado',cumbres:'cumbres-animado',hielo:'hielo-animado',azrak:'azrak-animado'};
+   if(shop.open)art.style.backgroundImage='url("assets/images/perfil/fondo-'+scenes[item.id]+'-v1.webp")';
+   const figures={zafir:'assets/images/personajes/versus/mago-ataque.png',cumbres:'assets/images/perfil/figura-nimbus-v1.webp',hielo:'assets/images/perfil/figura-nivor-v1.webp',azrak:'assets/images/perfil/figura-azrak-v1.webp'};
+   if(shop.open&&figures[item.id]){const figure=document.createElement('img');figure.src=figures[item.id];figure.alt='';figure.decoding='async';art.append(figure);}
+   if(!owned){const lock=document.createElement('span');lock.className='tienda-fondo-candado';lock.textContent='🔒';lock.setAttribute('aria-hidden','true');art.append(lock);}
    preview.type='button';preview.textContent=B.text('preview');preview.disabled=busy;
    preview.addEventListener('click',()=>{shop.close();ProfileBackgroundsUI.preview(item.id);});
-   card.append(name,requirement,preview);
+   card.append(art,name,requirement);if(owned||globalThis.AventuraShop?.canPreviewBackgrounds?.())card.append(preview);
    if(item.price||owned){const use=document.createElement('button');use.type='button';use.dataset.backgroundAction=owned?'equip':'purchase';
     use.textContent=owned?B.text(state.equipped===item.id?'equipped':'equip'):B.text('buy',{n:item.price});
     use.disabled=busy||testing||state.equipped===item.id;

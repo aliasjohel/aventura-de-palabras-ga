@@ -1147,6 +1147,7 @@ globalThis.AventuraShop = Object.freeze({
     mostrarPantalla(pantallaVersus);
   },
   testing: () => modoPruebasActivo || Boolean(globalThis.AventuraMapa?.repeticion),
+  canPreviewBackgrounds: () => modoPruebasActivo && herramientasAutorDisponibles,
   sync: () => { if (!modoPruebasActivo && !globalThis.AventuraMapa?.repeticion) { monedas=saldoTiendaOMonedas();actualizarJugador(); } },
 });
 const claveRecompensasMonedasPendientes = "recompensasMonedasPendientesAventuraGA";

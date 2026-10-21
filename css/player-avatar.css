@@ -251,3 +251,4 @@ button.enlace-perfil-jugador, #listaRanking button.enlace-perfil-jugador { width
 .perfil-publico-identidad[data-profile-background="cumbres"] { --perfil-fondo:url('../assets/images/perfil/fondo-cumbres-animado-v1.webp'); }
 .perfil-publico-identidad[data-profile-background="hielo"] { --perfil-fondo:url('../assets/images/perfil/fondo-hielo-animado-v1.webp'); }
 .perfil-publico-identidad[data-profile-background="azrak"] { --perfil-fondo:url('../assets/images/perfil/fondo-azrak-animado-v1.webp'); }
+#editorAvatar .perfil-fondos-prueba button small { color:#524168; opacity:1; }
