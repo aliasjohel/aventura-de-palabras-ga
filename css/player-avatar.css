@@ -243,7 +243,7 @@ button.enlace-perfil-jugador, #listaRanking button.enlace-perfil-jugador { width
 .perfil-fondos-acciones p { width:100%; margin:0 0 6px; font-size:12px; color:#d5c9e4; }
 #editorAvatar .perfil-fondos-acciones button { flex:1; width:auto; margin:0; font-size:12px; min-height:44px; }
 .perfil-publico-identidad[data-profile-background] { position:relative; isolation:isolate; overflow:hidden; min-height:166px; box-sizing:border-box; border-radius:16px; padding:16px 100px 16px 12px; gap:12px; background:linear-gradient(90deg,#07101cbb,#0b102566),var(--perfil-fondo) center/cover,#101329; }
-.perfil-publico-identidad[data-profile-background] > :not(.perfil-publico-figura) { position:relative; z-index:1; min-width:0; text-shadow:0 2px 4px #000; }
+.perfil-publico-identidad[data-profile-background] > :not(.perfil-publico-escena) { position:relative; z-index:1; min-width:0; text-shadow:0 2px 4px #000; }
 .perfil-publico-figura { position:absolute; right:4px; top:50%; width:100px; height:130px; margin-top:-65px; object-fit:contain; }
 .perfil-publico-identidad[data-profile-background="bosque"] { --perfil-fondo:url('../assets/images/perfil/fondo-bosque-luciernagas-v1.webp'); }
 .perfil-publico-identidad[data-profile-background="zafir"] { --perfil-fondo:url('../assets/images/perfil/fondo-santuario-arcano-v1.webp'); }
@@ -252,3 +252,12 @@ button.enlace-perfil-jugador, #listaRanking button.enlace-perfil-jugador { width
 .perfil-publico-identidad[data-profile-background="hielo"] { --perfil-fondo:url('../assets/images/perfil/fondo-hielo-animado-v1.webp'); }
 .perfil-publico-identidad[data-profile-background="azrak"] { --perfil-fondo:url('../assets/images/perfil/fondo-azrak-animado-v1.webp'); }
 #editorAvatar .perfil-fondos-prueba button small { color:#524168; opacity:1; }
+
+.perfil-publico-identidad > .perfil-publico-escena { position:absolute; inset:0; z-index:0; pointer-events:none; }
+#perfilPublico .perfil-publico-escena * { animation-play-state:paused; }
+#perfilPublico[open]:not(.perfil-movimiento-pausado) .perfil-publico-escena * { animation-play-state:running; }
+#perfilPublico .perfil-fondo-mundo .perfil-luciernagas i { animation-play-state:paused; }
+#perfilPublico .perfil-publico-escena .perfil-zafir { width:110px; }
+#perfilPublico .perfil-zafir-personaje { width:110px; height:125px; margin-top:-62px; }
+@media(max-width:360px) { #perfilPublico .perfil-publico-escena .perfil-zafir { width:88px; } #perfilPublico .perfil-zafir-personaje { width:88px; height:110px; margin-top:-55px; } }
+@media(prefers-reduced-motion:reduce) { #perfilPublico .perfil-publico-escena * { animation:none !important; } }

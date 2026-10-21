@@ -80,6 +80,23 @@
     particles.append(particle);
   }
   header.prepend(scene, creatures, particles);
+  // Both profiles use the same decoration templates and power coordinates.
+  globalThis.ProfileBackgroundScene=Object.freeze({render:(target,id)=>{
+    const entry=backgrounds.find(item=>item.id===id)||backgrounds[0];
+    const layer=document.createElement('span');layer.className='perfil-publico-escena';layer.setAttribute('aria-hidden','true');
+    const lights=fireflies.cloneNode(true),magic=scene.cloneNode(true),world=creatures.cloneNode(true);
+    for(const image of [...magic.querySelectorAll('img'),...world.querySelectorAll('img')])image.removeAttribute('src');
+    if(entry.id==='zafir')magic.querySelector('img').src='assets/images/personajes/versus/mago-ataque.png';
+    world.hidden=!entry.sprite;if(entry.sprite)world.querySelector('img').src='assets/images/perfil/'+entry.sprite;
+    // SVG paint servers must not reuse the private profile's document IDs.
+    world.innerHTML=world.innerHTML.replaceAll('perfil-aliento-hielo','perfil-publico-aliento-hielo');
+    layer.append(lights,magic,world,particles.cloneNode(true));
+    target.querySelector('.perfil-publico-escena')?.remove();target.prepend(layer);
+    target.dataset.profileBackground=entry.id;
+    target.classList.toggle('perfil-fondo-personaje',Boolean(entry.character));
+    target.classList.toggle('perfil-fondo-zafir',entry.id==='zafir');
+    target.classList.toggle('perfil-fondo-mundo',entry.id!=='bosque');
+  }});
   const picker = document.createElement('div'); picker.className = 'perfil-fondos-prueba'; picker.setAttribute('role','group');
   const note = document.createElement('small'); picker.append(note);
   const buttons = backgrounds.map(background => {

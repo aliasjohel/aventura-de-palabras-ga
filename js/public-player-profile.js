@@ -17,9 +17,7 @@
       el("avatarPerfilPublico").replaceChildren(PlayerAvatar.crear(profile));
       const banner=el('avatarPerfilPublico').parentElement;
       const background=ProfileBackgrounds.catalog.some(item=>item.id===profile.background)?profile.background:'bosque';
-      banner.dataset.profileBackground=background;
-      let figure=banner.querySelector('.perfil-publico-figura');if(!figure){figure=document.createElement('img');figure.className='perfil-publico-figura';figure.alt='';figure.setAttribute('aria-hidden','true');banner.append(figure);}
-      const source={zafir:'assets/images/personajes/versus/mago-ataque.png',cumbres:'assets/images/perfil/figura-nimbus-v1.webp',hielo:'assets/images/perfil/figura-nivor-v1.webp',azrak:'assets/images/perfil/figura-azrak-v1.webp'}[background];figure.hidden=!source;if(source)figure.src=source;
+      ProfileBackgroundScene.render(banner,background);
 
       const frames = new Set(AvatarRewards.catalog.map(frame=>frame.id));
       GameUI.text(el("aparienciaPerfilPublico"), GameUI.key('profile.frame', {frame:K("profile.frames."+(frames.has(profile.frame)?profile.frame:"clasico"))}));
@@ -59,6 +57,7 @@
     if (!matches.children.length) matches.append(text("p",K("profile.noMatches")));
     el("masPartidasPerfil").hidden = !profile.has_more;
     el("contenidoPerfilPublico").hidden = false;
+      syncMotion();
   }
   async function load(append = false) {
     const request = ++generation;
@@ -66,7 +65,7 @@
     el("masPartidasPerfil").disabled = true;
     el("reintentarPerfilPublico").hidden = true;
     U.text(el("estadoPerfilPublico"),K(append?"profile.loadingMore":"profile.loading"));
-    if (!append) el("contenidoPerfilPublico").hidden = true;
+    if (!append) { el("contenidoPerfilPublico").hidden = true; syncMotion(); }
     try {
       const profile = await PlayerProfile.cargarPublico(currentId,append ? nextOffset : 0);
       if (request !== generation || !dialog.open) return;
@@ -93,7 +92,10 @@
   }
   globalThis.PublicPlayerProfile = Object.freeze({abrir});
   el("cerrarPerfilPublico").addEventListener("click",()=>dialog.close());
-  dialog.addEventListener("close",()=>{ generation++; loading=false; history=[]; });
+  function syncMotion(){dialog.classList.toggle('perfil-movimiento-pausado',document.hidden||!dialog.open||el('contenidoPerfilPublico').hidden);}
+  document.addEventListener('visibilitychange',syncMotion);
+  dialog.addEventListener("close",()=>{ generation++; loading=false; history=[];syncMotion(); });
+  syncMotion();
   el("volverPerfilPublico").addEventListener("click",()=>{
     currentId=history.pop() || null; el("volverPerfilPublico").hidden=!history.length; nextOffset=0; dialog.scrollTop=0; void load();
   });

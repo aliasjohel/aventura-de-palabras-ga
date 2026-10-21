@@ -43,10 +43,27 @@ const server=http.createServer((req,res)=>{try{const file=new URL(req.url,'http:
   await page.locator('#cerrarAvatar').click();await page.evaluate(()=>backgroundQA.testing(false));await page.locator('#btnMiAvatar').click();assert.equal(await page.locator('#editorAvatar .perfil-cabecera').getAttribute('data-profile-background'),'bosque');assert(await page.locator('[data-background-choice="zafir"]').isDisabled());
   await page.evaluate(async()=>{backgroundQA.grant();await ProfileBackgrounds.sync();});await page.locator('[data-background-choice="azrak"]').click();await page.locator('#equiparFondoPerfil').click();await page.waitForFunction(()=>ProfileBackgrounds.read().equipped==='azrak');
   await page.locator('#cerrarAvatar').click();await page.evaluate(()=>PublicPlayerProfile.abrir('bob'));await page.waitForSelector('#perfilPublico .perfil-publico-identidad[data-profile-background="azrak"]');
-  await page.locator('.perfil-publico-figura').evaluate(i=>i.decode());await page.locator('#cerrarPerfilPublico').click();
+  await page.locator('#perfilPublico .perfil-criatura').evaluate(i=>i.decode());await page.locator('#cerrarPerfilPublico').click();
+  const ownBefore=await page.evaluate(()=>JSON.stringify(ProfileBackgrounds.read()));
+  for(const id of ['bosque','zafir','desierto','cumbres','hielo','azrak']){
+   await page.evaluate(async id=>{const base=await PlayerProfile.cargarPublico('bob');globalThis.PlayerProfile={...PlayerProfile,cargarPublico:async()=>({...base,background:id})};await PublicPlayerProfile.abrir('bob');},id);
+   const banner=page.locator('#perfilPublico .perfil-publico-identidad');assert.equal(await banner.getAttribute('data-profile-background'),id);assert.equal(await banner.locator('.perfil-publico-escena').count(),1);
+   await banner.locator('img[src]').evaluateAll(images=>Promise.all(images.map(i=>i.decode())));
+   const selector={bosque:'.perfil-luciernagas i',zafir:'.perfil-zafir-esfera',desierto:'.perfil-particulas i',cumbres:'.perfil-remolino-nimbus',hielo:'.perfil-chorro-hielo',azrak:'.perfil-llamarada'}[id];
+   assert.equal(await banner.locator(selector).first().evaluate(e=>getComputedStyle(e).animationPlayState),'running');
+   const count=await banner.evaluate(e=>e.getAnimations({subtree:true}).length);assert(count>0,'animated public scene '+id);
+   await banner.evaluate(e=>{for(const a of e.getAnimations({subtree:true})){a.pause();a.currentTime=3500;}});
+   if(['cumbres','hielo','azrak','zafir'].includes(id))assert(Number(await banner.locator(selector).first().evaluate(e=>getComputedStyle(e).opacity))>.6,'visible public power '+id);
+   for(const width of [320,390,844]){await page.setViewportSize({width,height:844});assert(await page.locator('#perfilPublico').evaluate(e=>e.scrollWidth<=e.clientWidth),'public overflow '+id);}
+   if(id==='cumbres'){await page.setViewportSize({width:390,height:844});await page.screenshot({path:path.join(root,'docs/v384-perfil-rival.png')});}
+   await page.locator('#cerrarPerfilPublico').click();assert.equal(await banner.locator(selector).first().evaluate(e=>getComputedStyle(e).animationPlayState),'paused');
+  }
+  assert.equal(await page.evaluate(()=>JSON.stringify(ProfileBackgrounds.read())),ownBefore,'viewing rival does not grant or equip their background');
+  await page.emulateMedia({reducedMotion:'reduce'});await page.evaluate(()=>PublicPlayerProfile.abrir('bob'));assert.equal(await page.locator('#perfilPublico .perfil-publico-escena').evaluate(e=>e.getAnimations({subtree:true}).length),0);await page.locator('#cerrarPerfilPublico').click();await page.emulateMedia({reducedMotion:'no-preference'});
+
   for(const lang of ['es','en','pt-BR'])for(const width of [320,390,844]){await page.evaluate(lang=>I18n.setPreference(lang),lang);await page.setViewportSize({width,height:844});await page.locator('#btnMiAvatar').click();assert(await page.locator('#editorAvatar').evaluate(e=>e.scrollWidth<=e.clientWidth));await page.locator('#cerrarAvatar').click();await page.locator('#btnTienda').click();assert(await page.locator('#tiendaMenu').evaluate(e=>e.scrollWidth<=e.clientWidth));await page.locator('#cerrarTiendaMenu').click();}
-  await page.evaluate(()=>I18n.setPreference('es'));await page.setViewportSize({width:390,height:844});await page.locator('#btnTienda').click();await page.locator('.tienda-fondos').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(root,'docs/v383-tienda-fondos.png')});
+  await page.evaluate(()=>I18n.setPreference('es'));await page.setViewportSize({width:390,height:844});await page.locator('#btnTienda').click();await page.locator('.tienda-fondos').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(root,'docs/v384-tienda-fondos.png')});
   await page.reload();await page.evaluate(()=>I18n.ready);assert.equal(await page.evaluate(()=>ProfileBackgrounds.read().equipped),'azrak','equipped inventory survives reload');
-  assert.deepEqual(errors,[]);console.log('PASS thumbnails, padlocks, normal user preview blocked, admin test preview without ownership, UI purchase/debit/double-click, separate equip, saved selection, shop, locked rewards, insufficient funds, test mode, account isolation, public profile, reload, three languages and mobile widths');
+  assert.deepEqual(errors,[]);console.log('PASS public animated backgrounds/powers, pause on close, reduced motion, unchanged viewer inventory, thumbnails, padlocks, normal user preview blocked, admin test preview without ownership, UI purchase/debit/double-click, separate equip, saved selection, shop, locked rewards, insufficient funds, test mode, account isolation, public profile, reload, three languages and mobile widths');
  }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);server.close();process.exitCode=1;});
