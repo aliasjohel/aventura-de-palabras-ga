@@ -1,7 +1,7 @@
 {
   "bazaar": "O BAZAR DOS REINOS",
   "title": "Loja",
-  "intro": "Vista seus heróis com as moedas da sua aventura.",
+  "intro": "Consiga personagens, trajes e fundos com as moedas da sua aventura.",
   "balance": {
     "one": "🪙 {coins} moeda",
     "other": "🪙 {coins} moedas"

@@ -33,6 +33,10 @@
         });
         store.applyAccount(result,state.equipmentVersion);notify();
       } while(store.read().pending.length);
+      if(root.CharacterStore){
+        const inventory=await rpc(id,'game_characters',{p_action:'sync',p_character:null});
+        root.CharacterStore.apply(inventory.characters,id);
+      }
       return result;
     }
     const sync=matchId=>enqueue(id=>syncNow(id,matchId));
@@ -51,6 +55,13 @@
       const result=await rpc(account,'profile_backgrounds',{p_action:action,p_background:id,p_legacy_worlds:Math.trunc(worlds)});
       if(result.backgrounds?.userId!==account)throw Error('No pudimos verificar tus fondos.');
       store.applyAccount(result);notify();return result.backgrounds;
+    });
+    const characters=(action,id)=>enqueue(async account=>{
+      if(root.AventuraShop?.testing())throw Error('Volvé del modo de prueba para comprar.');
+      await syncNow(account);
+      const result=await rpc(account,'game_characters',{p_action:action,p_character:id});
+      if(result.characters?.userId!==account)throw Error('No pudimos verificar tus personajes.');
+      store.applyAccount(result);notify();return result.characters;
     });
     function schedule(){
       if(!userId)return;
@@ -75,7 +86,7 @@
     root.addEventListener?.('online',schedule);
     root.addEventListener?.('focus',schedule);
     root.document?.addEventListener('visibilitychange',()=>{if(!root.document.hidden)schedule();});
-    return Object.freeze({connect,sync,activateAdmin,setAdminUnion,backgrounds});
+    return Object.freeze({connect,sync,activateAdmin,setAdminUnion,backgrounds,characters});
   }
   return {create};
 });

@@ -2534,12 +2534,13 @@ function cargarPersonajesDesbloqueados() {
 
 function personajeDisponibleVersus(personaje) {
   if (modoPruebasActivo) return true;
+  if (globalThis.CharacterStore?.catalog.some(item=>item.id===personaje)) return CharacterStore.owns(personaje);
   if (personaje === "guardiana") return guardianaDesbloqueada;
   if (personaje === "mago") return magoDesbloqueado;
   if (personaje === "dragon") return dragonDesbloqueado;
   if (personaje === "dragon_hielo") return nivorDesbloqueado;
   if (personaje === "azrak") return azrakDesbloqueado;
-  return true;
+  return personaje === "explorador";
 }
 
 function guardarPersonajeDesbloqueado(personaje) {
@@ -2597,6 +2598,8 @@ function actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada = false }
         : tarjeta.dataset.personaje === "mago"
           ? 2
           : 1;
+      const paid=globalThis.CharacterStore?.catalog.find(item=>item.id===tarjeta.dataset.personaje);
+      if(paid&&!disponible){estado.textContent=({es:'TIENDA · {n} MONEDAS',en:'SHOP · {n} COINS','pt-BR':'LOJA · {n} MOEDAS'}[I18n.language]||'TIENDA · {n} MONEDAS').replace('{n}',paid.price);return;}
       OnlineUI.text(estado, disponible
         ? "DISPONIBLE"
         : `COMPLETÁ EL MUNDO ${mundoRequerido}`);
@@ -2608,7 +2611,13 @@ function actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada = false }
   }
 }
 
+window.addEventListener('characters-updated',()=>{
+  if(pantallaSeleccionPersonajeVersus.classList.contains('oculto'))return;
+  actualizarDisponibilidadPersonajesVersus({seleccionBloqueada:btnConfirmarPersonajeVersus.disabled});
+  seleccionarPersonajeVersus(personajeJugadorVersus);
+});
 function abrirSeleccionPersonajeVersus() {
+  if(!modoPruebasActivo&&navigator.onLine&&CosmeticStore.read().accountId)void CharacterStore.sync().catch(()=>{});
   actualizarDisponibilidadPersonajesVersus();
   seleccionarPersonajeVersus(personajeJugadorVersus);
   OnlineUI.text(etiquetaSeleccionPersonajeVersus, modoArcadeActivo

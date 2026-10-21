@@ -15,7 +15,7 @@ const server=http.createServer((req,res)=>{try{const file=new URL(req.url,'http:
     if(args.p_action==='purchase'&&!state.owned.includes(args.p_background)){const price=args.p_background==='zafir'?150:100;if(state.coins<price)return {error:{message:'Saldo insuficiente'}};state.coins-=price;state.owned.push(args.p_background);purchases++;state.revision++;}
     if(args.p_action==='equip'){if(!state.owned.includes(args.p_background))return {error:{message:'Primero conseguí este fondo.'}};state.equipped=args.p_background;state.revision++;}
    }
-   return {data:{userId:current,coins:state.coins,owned:[],equipped:{},revision:state.revision,acknowledged:args.p_events?.map(e=>e.id)||[],backgrounds:{userId:current,...structuredClone(state)}}};}};
+   return {data:{userId:current,coins:state.coins,owned:[],equipped:{},revision:state.revision,acknowledged:args.p_events?.map(e=>e.id)||[],characters:{userId:current,owned:[],revision:1},backgrounds:{userId:current,...structuredClone(state)}}};}};
    globalThis.AventuraShop={...AventuraShop,connect:()=>GameWallet.sync(),testing:()=>testing,canPreviewBackgrounds:()=>testing};
    globalThis.PlayerProfile={...PlayerProfile,cargar:async()=>({id:current,alias:current,friend_code:'QA000001',points:0,favorites:[]}),cargarPublico:async()=>({id:current,alias:current,avatar:'mago',frame:'clasico',background:accounts[current].equipped,points:0,favorites:[],recent:[]})};
    globalThis.backgroundQA={switch:id=>{current=id;GameWallet.connect(client,id);},testing:value=>{testing=value;},purchases:()=>purchases,grant:()=>{accounts[current].owned=['bosque','cumbres','hielo','azrak'];accounts[current].revision++;}};

@@ -219,6 +219,8 @@ globalThis.GameResourceCatalog = Object.freeze([
   "./assets/images/trajes/kalamo-astral-formacion-3-v1.png",
   "./js/cosmetic-store.js",
   "./js/game-wallet.js",
+  "./js/character-store.js",
+  "./js/character-shop.js",
   "./js/profile-backgrounds.js",
   "./js/profile-background-shop.js",
   "./js/cosmetic-shop.js",

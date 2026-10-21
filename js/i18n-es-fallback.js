@@ -300,7 +300,7 @@ globalThis.I18nSpanishUI=Object.freeze({
   "profile.friends.inviteLanguage": "Palabras en {language} · La sala se abre al aceptar.",
   "shop.bazaar": "EL BAZAR DE LOS REINOS",
   "shop.title": "Tienda",
-  "shop.intro": "Vestí a tus héroes con las monedas de tu aventura.",
+  "shop.intro": "Conseguí personajes, trajes y fondos con las monedas de tu aventura.",
   "shop.balance": "🪙 {coins} monedas",
   "shop.earnCoins": "Conseguí monedas completando desafíos y misiones.",
   "shop.outfitCollection": "Trajes · Colección de los reinos",
