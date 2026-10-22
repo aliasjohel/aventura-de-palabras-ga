@@ -2776,7 +2776,7 @@ function salirModoArcade() {
 
 const claveTutorialVersusVisto = "tutorialVersusVistoAventuraGA";
 const tutorialCombateVersus = {
-  activo: false, ocupado: false, completado: false, letras: [],
+  activo: false, ocupado: false, completado: false, explicando: false, letras: [],
   sesion: 0, temporizadores: new Set(), respaldo: null,
 };
 const pasosTutorialVersus = [
@@ -2806,7 +2806,7 @@ function programarTutorialVersus(accion, demora) {
 }
 function actualizarControlesTutorialVersus() {
   if (!tutorialCombateVersus.activo) return;
-  const esperando = !tutorialCombateVersus.ocupado && !tutorialCombateVersus.completado;
+  const esperando = !tutorialCombateVersus.explicando && !tutorialCombateVersus.ocupado && !tutorialCombateVersus.completado;
   tecladoVersus.querySelectorAll("button").forEach((boton) => {
     const habilitada = esperando && boton.textContent === tutorialCombateVersus.letras[0];
     boton.disabled = !habilitada;
@@ -2825,9 +2825,17 @@ function pausarCombateTutorialVersus() {
   demoVersus.temporizadorEfectoHabilidad = null;
   detenerCaosContinuoTecladoVersus();
 }
+function mostrarCartelTutorialVersus(visible) {
+  tutorialCombateVersus.explicando = visible;
+  modalTutorialVersus.classList.toggle("oculto", !visible);
+  modalTutorialVersus.setAttribute("aria-modal", String(visible));
+  pantallaVersus.inert = visible;
+}
 function completarAccionPasoTutorialVersus() {
   tutorialCombateVersus.ocupado = false;
   tutorialCombateVersus.completado = true;
+  mostrarCartelTutorialVersus(true);
+  btnSiguienteTutorialVersus.textContent = pasoActualTutorialVersus === 7 ? "Terminar tutorial" : "Continuar";
   pausarCombateTutorialVersus();
   btnSiguienteTutorialVersus.disabled = false;
   accionPasoTutorialVersus.textContent = pasoActualTutorialVersus === 7
@@ -2848,8 +2856,9 @@ function renderizarPasoTutorialVersus() {
   GameUI.text(descripcionPasoTutorialVersus, GameUI.key(`adventure.lessons.tutorial.steps.s${pasoActualTutorialVersus}.description`));
   GameUI.text(accionPasoTutorialVersus, GameUI.key(`adventure.lessons.tutorial.steps.s${pasoActualTutorialVersus}.action`));
   accionPasoTutorialVersus.classList.remove("completada");
-  btnSiguienteTutorialVersus.disabled = !paso.rival;
-  btnSiguienteTutorialVersus.textContent = paso.rival ? "Ver ataque rival" : pasoActualTutorialVersus === 7 ? "Terminar tutorial" : "Continuar";
+  mostrarCartelTutorialVersus(true);
+  btnSiguienteTutorialVersus.disabled = false;
+  btnSiguienteTutorialVersus.textContent = "Continuar";
   if (pasoActualTutorialVersus !== 6) {
     limpiarEfectoVisualHabilidadVersus();
     ocultarVistaImpactoRivalVersus();
@@ -2864,6 +2873,7 @@ function renderizarPasoTutorialVersus() {
   }
   pausarCombateTutorialVersus();
   actualizarControlesTutorialVersus();
+  btnSiguienteTutorialVersus.focus({ preventScroll: true });
 }
 function comenzarTutorialVersus() {
   if (tutorialCombateVersus.activo) return;
@@ -2905,7 +2915,6 @@ function comenzarTutorialVersus() {
   mostrarPantalla(pantallaVersus);
   pasoActualTutorialVersus = 0;
   renderizarPasoTutorialVersus();
-  tecladoVersus.querySelector("button:not(:disabled)")?.focus({ preventScroll: true });
 }
 function abrirTutorialVersus({ mostrarBienvenida = false, alCerrar = null } = {}) {
   if (tutorialCombateVersus.activo) return;
@@ -2922,6 +2931,7 @@ function abrirTutorialVersus({ mostrarBienvenida = false, alCerrar = null } = {}
 function cerrarTutorialVersus({ recordar = false } = {}) {
   if (recordar) guardarTutorialVersusVisto();
   const respaldo = tutorialCombateVersus.respaldo;
+  mostrarCartelTutorialVersus(false);
   tutorialCombateVersus.activo = false;
   tutorialCombateVersus.sesion += 1;
   tutorialCombateVersus.temporizadores.forEach(clearTimeout);
@@ -2969,7 +2979,7 @@ function cerrarTutorialVersus({ recordar = false } = {}) {
   else document.getElementById("btnModosJuego").focus();
 }
 function jugarLetraTutorialVersus(letra, boton) {
-  if (boton.disabled || tutorialCombateVersus.ocupado || tutorialCombateVersus.completado || letra !== tutorialCombateVersus.letras[0]) return;
+  if (tutorialCombateVersus.explicando || boton.disabled || tutorialCombateVersus.ocupado || tutorialCombateVersus.completado || letra !== tutorialCombateVersus.letras[0]) return;
   tutorialCombateVersus.letras.shift();
   pantallaVersus.classList.remove("tutorial-pausado");
   jugarLetraDemoVersus(letra, boton);
@@ -2984,7 +2994,7 @@ function jugarLetraTutorialVersus(letra, boton) {
   actualizarControlesTutorialVersus();
 }
 function lanzarHabilidadTutorialVersus(desdeRival = false) {
-  if (tutorialCombateVersus.ocupado || tutorialCombateVersus.completado) return;
+  if (tutorialCombateVersus.explicando || tutorialCombateVersus.ocupado || tutorialCombateVersus.completado) return;
   tutorialCombateVersus.ocupado = true;
   pantallaVersus.classList.remove("tutorial-pausado");
   btnSiguienteTutorialVersus.disabled = true;
@@ -3001,12 +3011,15 @@ function lanzarHabilidadTutorialVersus(desdeRival = false) {
 }
 function avanzarTutorialRealVersus() {
   if (btnSiguienteTutorialVersus.disabled || tutorialCombateVersus.ocupado) return;
-  if (pasoActualTutorialVersus === 5 && !tutorialCombateVersus.completado) {
-    lanzarHabilidadTutorialVersus(true);
+  if (!tutorialCombateVersus.completado) {
+    if (!tutorialCombateVersus.explicando) return;
+    mostrarCartelTutorialVersus(false);
+    btnSiguienteTutorialVersus.disabled = true;
+    actualizarControlesTutorialVersus();
+    if (pasoActualTutorialVersus === 5) lanzarHabilidadTutorialVersus(true);
+    else (pasoActualTutorialVersus === 4 ? btnHabilidadVersus : tecladoVersus.querySelector("button:not(:disabled)"))?.focus({ preventScroll: true });
     return;
   }
-
-  if (!tutorialCombateVersus.completado) return;
   if (pasoActualTutorialVersus === pasosTutorialVersus.length - 1) {
     cerrarTutorialVersus({ recordar: true });
     return;
@@ -3073,7 +3086,7 @@ btnCerrarTutorialVersus.addEventListener("click", () => cerrarTutorialVersus({ r
 
 btnSiguienteTutorialVersus.addEventListener("click", avanzarTutorialRealVersus);
 document.addEventListener("keydown", (evento) => {
-  if (evento.key === "Escape" && !modalTutorialVersus.classList.contains("oculto")) {
+  if (evento.key === "Escape" && (tutorialCombateVersus.activo || !modalTutorialVersus.classList.contains("oculto"))) {
     cerrarTutorialVersus();
   }
 });

@@ -17433,29 +17433,22 @@ button:disabled {
   .nucleo-termico.estado-estable > span { animation-duration: 1ms; }
 }
 
-/* Guía sobre el combate real: el panel ocupa su propio espacio. */
-body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
-.tutorial-combate-real #pantallaVersus.activa {
-    padding-right: calc(var(--ancho-guia) + 18px);
-}
+/* La guía se superpone sin alterar las dimensiones de la arena real. */
 .modal-tutorial-versus.guia-en-arena {
-    inset: 10px 10px 10px auto;
-    width: var(--ancho-guia);
-    padding: 0;
-    background: none;
+    inset: 0;
+    width: 100%;
+    padding: 12px;
+    background: rgba(4, 12, 18, .48);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    overflow: visible;
-    pointer-events: none;
 }
 .guia-en-arena .panel-tutorial-versus {
-    width: 100%;
-    height: 100%;
+    width: min(520px, 100%);
+    height: auto;
     min-height: 0;
-    max-height: 100%;
+    max-height: calc(100dvh - 24px);
     border: 1px solid #b79954;
     border-radius: 16px;
-    pointer-events: auto;
     display: flex;
     flex-direction: column;
 }
@@ -17483,10 +17476,7 @@ body.tutorial-combate-real { --ancho-guia: clamp(220px, 27vw, 340px); }
     .guia-en-arena #numeroPasoTutorialVersus { font-size: .62rem; }
     .guia-en-arena #btnSiguienteTutorialVersus { margin-top: 6px; }
 }
-@media (orientation: portrait) and (max-width: 700px) {
-    .tutorial-combate-real #pantallaVersus.activa { padding: 18px; }
-    .modal-tutorial-versus.guia-en-arena { display: none; }
-}
+
 
 /* Azrak: cada tecla arde durante la aparición de la calavera. */
 .teclado-versus.efecto-calavera-azrak { isolation:isolate; }

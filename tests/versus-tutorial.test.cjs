@@ -19,6 +19,7 @@ function harness() {
     tecladoVersus: { querySelectorAll() { return buttons; } },
     btnHabilidadVersus: node(), btnSiguienteTutorialVersus: node(),
     pantallaVersus: node(), accionPasoTutorialVersus: node(),
+    modalTutorialVersus: { ...node(), setAttribute() {} },
     demoVersus: {}, temporizadorVistaImpactoRivalVersus: null,
     detenerCaosContinuoTecladoVersus() {},
     jugarLetraDemoVersus(letter) { calls.push(letter); },
@@ -75,4 +76,21 @@ test('victory awaits the real finisher, and leaving during its announcement canc
   await pending;
   assert.deepEqual(canceled.calls, []);
   assert.equal(canceled.run('tutorialCombateVersus.completado'), false);
+});
+
+test('Continue dismisses instructions and enables practice, completion blocks controls again', () => {
+  const h = harness();
+  h.run('mostrarCartelTutorialVersus(true); actualizarControlesTutorialVersus()');
+  assert.ok(h.buttons.every(b => b.disabled));
+  assert.equal(h.context.pantallaVersus.inert, true);
+  h.context.jugarLetraTutorialVersus('A', h.buttons[0]);
+  assert.deepEqual(h.calls, []);
+  h.context.tecladoVersus.querySelector = () => h.buttons[0];
+  h.context.avanzarTutorialRealVersus();
+  assert.equal(h.context.pantallaVersus.inert, false);
+  assert.equal(h.buttons[0].disabled, false);
+  h.context.jugarLetraTutorialVersus('A', h.buttons[0]);
+  for (const fn of h.timers.values()) fn();
+  assert.equal(h.context.pantallaVersus.inert, true);
+  assert.equal(h.run('tutorialCombateVersus.explicando'), true);
 });

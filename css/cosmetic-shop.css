@@ -63,3 +63,12 @@
 .tienda-fondo-miniatura { height:96px; margin:-4px -4px 10px; overflow:hidden; border-radius:8px; background-position:center; background-size:cover; position:relative; } .tienda-fondo-miniatura img { position:absolute; right:4px; bottom:0; height:95%; max-width:65%; object-fit:contain; }
 .tienda-fondo-candado { position:absolute; inset:0; display:grid; place-items:center; font-size:25px; background:#08101c40; text-shadow:0 2px 6px #000; }
 .tienda-personajes{margin:20px 0;padding-bottom:20px;border-bottom:1px solid #c5a4ef55}.tienda-personajes article{min-width:0;padding:12px;border:1px solid #ad9ac444;border-radius:12px;background:#141d2d}.tienda-personajes img{width:100%;height:140px;object-fit:contain}.tienda-personajes h4{margin:8px 0}.tienda-personajes p{font-size:13px;color:#c6bdd2}.tienda-personajes button{font-size:12px;min-height:44px;line-height:1.4}
+
+.precio-con-moneda::before{content:"";display:inline-block;width:1em;height:1em;vertical-align:-.12em;margin-inline-end:.4em;border-radius:50%;border:1px solid #a96b12;background:radial-gradient(ellipse at 35% 30%,#fff5a4,#efbd43 55%,#bd791b);box-shadow:inset 0 0 0 2px #ffdf72,inset 0 0 0 3px #c58a28}
+.tienda-traje-dialogo{width:min(900px,96vw);max-height:94dvh;padding:16px;color:#f7e7bf;background:#101a27;border:1px solid #c4ad71;border-radius:18px;overflow:auto}
+.tienda-traje-dialogo::backdrop{background:#020810cc}
+.tienda-traje-dialogo .cerrar-vista-traje{display:block;margin:0 0 8px auto;min-width:44px;min-height:44px;font-size:26px}
+.tienda-traje-dialogo .tienda-traje-vista{margin:0;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+.tienda-traje-dialogo .tienda-traje-escena img{height: min(58dvh,520px)}
+@media(max-width:600px){.tienda-traje-dialogo{padding:10px}.tienda-traje-dialogo .tienda-traje-vista{grid-template-columns:1fr}.tienda-traje-dialogo .tienda-traje-escena{min-height:0}.tienda-traje-dialogo .tienda-traje-escena img{height:38dvh}}
+@media(orientation:landscape) and (max-height:500px){.tienda-traje-dialogo .tienda-traje-escena{min-height:0}.tienda-traje-dialogo .tienda-traje-escena img{height:60dvh}.tienda-traje-dialogo .tienda-traje-vista{padding:10px}}
