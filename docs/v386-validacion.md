@@ -1,0 +1,17 @@
+# v386 — nueva escala de monedas y Aventura con cobro único
+
+Personajes: Hombre Lobo 2.000, Kairós 2.500, Kálamo 3.000, Lume 3.000 y Shadow 3.500. Todos los trajes y los fondos comprables multiplican su precio por diez. Los requisitos de los objetos por logro conservan sus valores: no se multiplican los puntos de clasificación ni los mundos requeridos.
+
+Clásico y Clasificatorio: victoria 100, empate 50, derrota 30. Se mantienen los requisitos de participación y finalización; el abandono no paga. Aventura: 50 por cada misión normal y 300 por la misión final de cada mundo. Son 9 x 50 + 300 = 750 por mundo y 3.750 por los cinco mundos. Ya no hay premios separados por palabra, puzzle o minijefe. Se conserva la experiencia y la progresión. Prueba de desarrollador y repetición desde el mapa no conceden monedas reales.
+
+Conversión: saldos del servidor multiplicados por diez en una sola migración transaccional; historial de recompensas convertido conservando sus IDs. Monedero local, importación anterior y eventos pendientes llevan currencyVersion=2. Los caches de cuentas se convierten al leerlos, una sola vez. Las respuestas nuevas deben declarar la versión. El endpoint antiguo solicita actualizar el juego para evitar mezclar unidades. Nueva entrada: public.sync_game_wallet_v2 con los mismos argumentos.
+
+El cobro único de misiones usa una tabla privada con PK (user_id, world, mission), RLS y sin acceso directo para clientes. Las solicitudes repetidas con IDs de evento distintos no conceden un segundo premio. Se importan las misiones completadas conocidas del historial anterior y las misiones cobradas sin conexión cuando se vincula el monedero a una cuenta. Las comprobaciones se hacen bajo el bloqueo del monedero existente. Aventura offline continúa siendo progreso confiado al cliente, como antes; no se presenta como una garantía antitrampas del progreso.
+
+Verificación: 221 pruebas automatizadas. Pruebas de migración local, cuenta inactiva, importación, saldo del servidor y pendientes sin duplicación. SQL transaccional con ROLLBACK en tests/economy-scale.sql: los cinco precios, trajes, fondos, compras repetidas, 50 misiones con máximo 3.750, reclamaciones repetidas, importación de saldo y misiones offline, recompensas reales de victoria/empate/derrota y ausencia de premio por abandono. tests/profile-backgrounds.sql conserva compras, logros y aislamiento entre cuentas.
+
+Navegador: completar palabras y misiones reales, recompensa de Nimbus, modo de pruebas/repetición, cinco compras y retratos, saldo insuficiente, cuenta separada, tres idiomas y anchos de celular. Capturas v386-tienda-personajes.png, v386-tienda-fondos.png y v386-perfil-rival.png. Manifiesto de 724 recursos; actualización incremental y actualización v385 a v386 con saldo convertido una vez, compras/equipo conservados y el resto del almacenamiento local e IndexedDB preservado.
+
+Asesor Supabase: la tabla privada de cobros únicos tiene RLS sin políticas de acceso directo deliberadamente; las llamadas pasan por funciones autenticadas. Los avisos heredados de otras funciones y configuración de autenticación no pertenecen a este cambio. Referencia: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy
+
+Los anuncios no se integran en esta versión. La duplicación voluntaria requiere un proveedor y confirmación de anuncio completado antes de otorgar el extra. No se simula un anuncio ni se conceden premios por anuncios inexistentes.

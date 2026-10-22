@@ -2,8 +2,8 @@
 'use strict';
 const catalog=Object.freeze([
   {id:'bosque',free:true},
-  {id:'desierto',price:100},
-  {id:'zafir',price:150},
+  {id:'desierto',price:1000},
+  {id:'zafir',price:1500},
   {id:'cumbres',world:3},
   {id:'hielo',world:4},
   {id:'azrak',rank:'diamante',points:240},

@@ -125,6 +125,7 @@ test('mission 8 keeps three completed portals and advances only on the fourth wo
     escenarioActual: 4, misionActual: 7, desafiosCompletados: 0, desafiosPorMision: 3,
     historiaMisionPendiente: false, palabrasUsadasEnMision: [], mensajePersonaje: {},
     obtenerCantidadMisiones: () => 10,
+    otorgarRecompensaMision: () => {},
     ...Object.fromEntries(['detenerAmbiente', 'detenerAmbientePuente', 'detenerAmbienteCristal',
       'detenerPortalMision', 'detenerAmbienteHojas', 'detenerTormenta', 'detenerNiebla',
       'detenerMiradasLobos', 'detenerPresenciaBosque', 'detenerAranaBosque'].map(name => [name, () => {}])),

@@ -53,7 +53,15 @@ const server=http.createServer((req,res)=>{try{
  assert.equal(transitions.active,'aventura-palabras-runtime-v'+oldVersion);
  assert.equal(transitions.waiting,'aventura-palabras-runtime-v'+newVersion);
  await context.setOffline(true);await page.goto(url);await page.evaluate(()=>I18n.ready);
- assert.deepEqual(await snapshot(),before,'all local player data survives the upgrade byte-for-byte');
+ const after=await snapshot();
+ const previousWallet=JSON.parse(before.aventuraTiendaV1),nextWallet=JSON.parse(after.aventuraTiendaV1);
+ if(nextWallet.currencyVersion===2&&previousWallet.currencyVersion!==2){
+  assert.equal(nextWallet.coins,previousWallet.coins*10,'legacy coins scale exactly once');
+  assert.deepEqual(nextWallet.owned,previousWallet.owned,'costume ownership preserved');
+  assert.deepEqual(nextWallet.equipped,previousWallet.equipped,'equipment preserved');
+  const again=await page.evaluate(()=>CosmeticStore.read());assert.equal(again.coins,nextWallet.coins,'repeat read does not scale again');
+  delete after.aventuraTiendaV1;const rest={...before};delete rest.aventuraTiendaV1;assert.deepEqual(after,rest,'all other local player data preserved');
+ }else assert.deepEqual(after,before,'all local player data survives the upgrade byte-for-byte');
  const preserved=await page.evaluate(()=>new Promise((resolve,reject)=>{const r=indexedDB.open('release-preservation',1);r.onerror=()=>reject(r.error);r.onsuccess=()=>{const db=r.result,q=db.transaction('player').objectStore('player').get('snapshot');q.onsuccess=()=>{db.close();resolve(q.result);};};}));assert.deepEqual(preserved,{profile:'synthetic-player',friends:['synthetic-friend']});
  assert.equal(await page.locator('#btnAmigosPerfil').count(),1,'new profile entry is cached offline');assert.equal(await page.evaluate(()=>I18n.language),'en');assert.deepEqual(errors,[]);
  console.log('PASS release upgrade v'+oldVersion+' -> v'+newVersion+': active/waiting isolation, offline app, all localStorage and IndexedDB preserved (profile, wallet, progress, Tower, language, audio and session probes).');

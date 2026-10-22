@@ -3,18 +3,18 @@ do $$
 declare a uuid:=gen_random_uuid(); b uuid:=gen_random_uuid(); c uuid:=gen_random_uuid(); r jsonb; denied boolean;
 begin
  insert into auth.users(id) values(a),(b),(c);
- insert into versus_private.game_wallets(user_id,coins,legacy_done) values(a,500,true),(b,0,true);
+ insert into versus_private.game_wallets(user_id,coins,legacy_done) values(a,5000,true),(b,0,true);
  perform set_config('request.jwt.claim.sub',a::text,true);
  r:=public.profile_backgrounds('sync',null,0);
  if r#>'{backgrounds,owned}'<>'["bosque"]'::jsonb then raise exception 'unearned backgrounds'; end if;
  denied:=false;begin perform public.profile_backgrounds('equip','azrak',0);exception when others then denied:=true;end;
  if not denied then raise exception 'locked equip allowed';end if;
  r:=public.profile_backgrounds('purchase','desierto',0);
- if (r->>'coins')::int<>400 then raise exception 'wrong debit';end if;
+ if (r->>'coins')::int<>4000 then raise exception 'wrong debit';end if;
  r:=public.profile_backgrounds('purchase','desierto',0);
- if (r->>'coins')::int<>400 then raise exception 'double charge';end if;
+ if (r->>'coins')::int<>4000 then raise exception 'double charge';end if;
  r:=public.profile_backgrounds('purchase','zafir',0);
- if (r->>'coins')::int<>250 then raise exception 'wrong second debit';end if;
+ if (r->>'coins')::int<>2500 then raise exception 'wrong second debit';end if;
  r:=public.profile_backgrounds('equip','zafir',0);
  if r#>>'{backgrounds,equipped}'<>'zafir' then raise exception 'equip failed';end if;
  if public.get_versus_public_profile(a,0)->>'background'<>'zafir' then raise exception 'public background missing';end if;
@@ -25,7 +25,7 @@ begin
  if not denied or (select coins from versus_private.game_wallets where user_id=b)<>0 then raise exception 'insufficient balance not atomic';end if;
  r:=public.profile_backgrounds('sync',null,0);
  if r#>'{backgrounds,owned}' ? 'zafir' then raise exception 'cross-user inventory';end if;
- insert into versus_private.adventure_coin_events(user_id,event_id,amount,origin) values(b,gen_random_uuid(),30,'aventura:nimbus_cumbres:duelo'),(b,gen_random_uuid(),30,'aventura:nivor_cero_absoluto:duelo');
+ insert into versus_private.adventure_coin_events(user_id,event_id,amount,origin) values(b,gen_random_uuid(),300,'aventura:2:9:mision'),(b,gen_random_uuid(),300,'aventura:3:9:mision');
  insert into versus_private.ranked_results(match_id,user_id,alias,points,win,draw,before_points,after_points) values(gen_random_uuid(),b,'Background QA',240,true,false,0,240);
  r:=public.profile_backgrounds('sync',null,0);
  if not ((r#>'{backgrounds,owned}') ?& array['cumbres','hielo','azrak']) then raise exception 'earned backgrounds missing';end if;

@@ -1,11 +1,11 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.CharacterStore=Object.freeze({...api,...api.create(root.localStorage,()=>root.CosmeticStore.read().accountId, (action,id)=>root.GameWallet.characters(action,id),()=>root.dispatchEvent(new Event('characters-updated'))) });})(globalThis,()=>{
 'use strict';
 const catalog=Object.freeze([
-{id:'hombre_lobo',name:'Hombre Lobo',price:200,image:'hombre-lobo-base.png'},
-{id:'kairos',name:'Kairós',price:250,image:'kairos-seleccion-v2.png'},
-{id:'kalamo',name:'Kálamo',price:300,image:'kalamo-base.png'},
-{id:'guardian_alba',name:'Lume',price:300,image:'guardian-alba-base.png'},
-{id:'t_shadow',name:'Shadow',price:350,image:'t-shadow-base.png'}
+{id:'hombre_lobo',name:'Hombre Lobo',price:2000,image:'hombre-lobo-base.png'},
+{id:'kairos',name:'Kairós',price:2500,image:'kairos-seleccion-v2.png'},
+{id:'kalamo',name:'Kálamo',price:3000,image:'kalamo-base.png'},
+{id:'guardian_alba',name:'Lume',price:3000,image:'guardian-alba-base.png'},
+{id:'t_shadow',name:'Shadow',price:3500,image:'t-shadow-base.png'}
 ].map(Object.freeze));
 function create(storage,account,request,changed=()=>{}){
  const pending=new Map(),key=id=>'aventuraPersonajesV1:account:'+id;

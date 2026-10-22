@@ -27,7 +27,7 @@
       let result;
       do {
         check(id);const state=store.read();
-        result=await rpc(id,'sync_game_wallet',{
+        result=await rpc(id,'sync_game_wallet_v2',{
           p_legacy:state.legacy?{...state.legacy,equipped:state.equipped}:null,p_events:state.pending.slice(0,100),
           p_equipped:state.equipmentDirty?state.equipped:null,p_match_id:matchId,
         });

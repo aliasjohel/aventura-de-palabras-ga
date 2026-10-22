@@ -1157,7 +1157,10 @@ function leerRecompensasMonedasPendientes() {
     const guardadas = JSON.parse(
       localStorage.getItem(claveRecompensasMonedasPendientes) || "[]",
     );
-    return Array.isArray(guardadas) ? guardadas : [];
+    if(!Array.isArray(guardadas))return [];
+    const converted=guardadas.map(item=>item.currencyVersion===2?item:{...item,cantidad:item.cantidad*10,currencyVersion:2});
+    if(guardadas.some(item=>item.currencyVersion!==2))guardarRecompensasMonedasPendientes(converted);
+    return converted;
   } catch (_error) {
     return [];
   }
@@ -1189,6 +1192,7 @@ function otorgarMonedas(cantidad, origen) {
   recompensas.push({
     id: crearIdRecompensaMonedas(),
     cantidad: valor,
+    currencyVersion: 2,
     origen,
     obtenidaEn: new Date().toISOString(),
   });
@@ -3966,10 +3970,6 @@ function verificarEstado() {
     mensajePersonaje.textContent = "";
     mensajePersonaje.classList.add("oculto");
     const mensajeSuperadoTerminado = mostrarMensajeDesafioSuperado();
-    otorgarMonedas(
-      10,
-      `aventura:${escenarioActual}:${misionActual}:${desafiosCompletados + 1}:palabra`,
-    );
     experiencia += 20;
 
     actualizarJugador();
@@ -5680,7 +5680,7 @@ async function completarDueloAventura() {
   dueloAventuraActivo = null;
   limpiarInterfazDueloAventura();
   mostrarPantalla(pantallaJuego);
-  otorgarMonedas(30, `aventura:${duelo.tipo}:duelo`);
+  if(['guardiana','mago_desierto','nimbus_cumbres','nivor_cero_absoluto','azrak_final'].includes(duelo.tipo))otorgarRecompensaMision();
   experiencia += 60;
   actualizarJugador();
 
@@ -5876,7 +5876,7 @@ async function completarRescatePrimerShadow() {
     });
     if (escenarioActual !== 4 || misionActual !== 2 || estadoPrimerEncuentroShadow !== "rescate") return;
     estadoPrimerEncuentroShadow = "completo";
-    otorgarMonedas(30, "aventura:shadow_primero:duelo");
+
     experiencia += 60;
     actualizarJugador();
     desafiosCompletados = obtenerCantidadDesafiosMision() - 1;
@@ -11415,6 +11415,11 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   return Promise.resolve();
 }
 
+function otorgarRecompensaMision(){
+  if(modoPruebasActivo||globalThis.AventuraMapa?.repeticion)return;
+  const reward=CosmeticStore.claimAdventure(escenarioActual,misionActual);
+  if(reward){monedas=saldoTiendaOMonedas();actualizarJugador();}
+}
 function avanzarMision() {
   desafiosCompletados++;
 
@@ -11443,6 +11448,7 @@ function avanzarMision() {
     return "";
   }
 
+  otorgarRecompensaMision();
   misionActual++;
   mensajePersonaje.textContent = "🏆 ¡Misión completada!";
   let sonidoNarrativo =
@@ -11544,6 +11550,7 @@ function guardarProgreso() {
     desafioActual,
     desafiosCompletados,
     monedas,
+    currencyVersion: 2,
     experiencia,
     cristalesObtenidos,
     muralSantuarioCompletado,
@@ -15157,7 +15164,7 @@ async function completarPruebaEspecialBosque(tipo) {
     await liberarMaguitoDeTrampaEspejismo();
   }
 
-  otorgarMonedas(10, `aventura:${escenarioActual}:${misionActual}:puzzle:${tipo}`);
+
   experiencia += 20;
   actualizarJugador();
   sonidoNarrativoPendiente = avanzarMision();
