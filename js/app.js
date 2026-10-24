@@ -1288,7 +1288,11 @@ async function asegurarConexionSalasVersus() {
 
     const adaptadorSupabase = VersusRoomSupabase.crearAdaptador(cliente);
     try { await adaptadorSupabase.inicializar(); }
-    catch (error) { error.code = error.code || "SUPABASE_INITIALIZATION_FAILED"; throw error; }
+    catch (error) {
+      await adaptadorSupabase.destruir?.();
+      error.code = error.code || "SUPABASE_INITIALIZATION_FAILED";
+      throw error;
+    }
     cancelarSuscripcionSalasVersus?.();
     adaptadorSalasVersus = adaptadorSupabase;
     cancelarSuscripcionSalasVersus = adaptadorSalasVersus.suscribir(
@@ -2118,7 +2122,7 @@ async function consultarBusquedaPublica() {
     }
   } catch (error) {
     mostrarBusquedaActiva(false);
-    OnlineUI.text(estadoBusqueda, `${error.message} Podés volver a intentar la búsqueda.`);
+    GameUI.text(estadoBusqueda, OnlineUI.error(error));
   } finally {
     peticionBusqueda = null;
     if (busquedaPublicaActiva && !encontro) temporizadorBusqueda = setTimeout(consultarBusquedaPublica, 3000);

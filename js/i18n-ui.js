@@ -56,9 +56,9 @@
     const known=Object.entries(globalThis.I18nSpanishUI||{}).find(([name,text])=>name.startsWith('errors.')&&text===message);
     if(known)return key(known[0]);
     const missing=message.match(/^Te faltan (\d+) monedas\.$/);if(missing)return key('errors.missingCoins',{coins:missing[1]});
-    if(message)console.warn('Interface operation failed:',message);
-    // Unknown backend messages stay intact in Spanish; other locales get a clear UI notice.
-    return message?{i18nError:message,fallback:key(fallback)}:key(fallback);
+    if(message)console.warn('Interface operation failed:',message.slice(0,1000).replace(/eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g,'[token]').replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi,'[correo]'));
+    // Unknown backend/SDK details belong in diagnostics, never in player text.
+    return key(fallback);
   }
   globalThis.GameUI=Object.freeze({key,resolve,text:(node,value)=>bind(node,value,'text'),attribute:(node,name,value)=>bind(node,value,name),rankBadge,error});
   I18n.subscribe(refresh);I18n.ready.then(refresh);

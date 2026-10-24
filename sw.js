@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v387-security1`;
+const CACHE_NAME = `${CACHE_PREFIX}v387-security2`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -935,7 +935,7 @@ const ASSET_REVISIONS = {
   "./js/word-banks-es.js": "sha256-2747407626268b62dcfbee2a7c8984c8d6da7ac7803652294b418e344099c84f",
   "./js/i18n-settings.js": "sha256-87266c5c9bbd97e9009e2d1f2fa707fd1f3249ca1d91fd1ba800ed0d1c7fe171",
   "./js/i18n-es-fallback.js": "sha256-d831380a06fc7146d069d56bb9edbfc98742c2f9d1eb00050fb806f9d65476c4",
-  "./js/i18n-ui.js": "sha256-a2797fa63f31d094889c04cf83e9b0ae25bd8f0399b8107f6c20a04df5318097",
+  "./js/i18n-ui.js": "sha256-177f68a93d64a93ba7201874b2020998b99a9644824025d201bb70fb0f735831",
   "./js/narrative-i18n.js": "sha256-e1930c0260e5a07b9ea429390a53b35cd03f785ad11ddbd95b5957d13c90c8b0",
   "./js/i18n-combat.js": "sha256-fdc7a05af378d2f19cd1ed2aa597cf90bb77f73857315f572ce962257187a9c6",
   "./actualizar.html": "sha256-f4f76241c563ca0a3f40875f0a63a8ae695e4ad910c6688c41f399fc37ea6b38",
@@ -1159,8 +1159,8 @@ const ASSET_REVISIONS = {
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
   "./js/player-avatar.js": "sha256-6e7278100624b641eef48662f51fa7b104a443f01ff9eb302c4fa8c1a99e009b",
   "./js/public-player-profile.js": "sha256-48d7ac44f3792d9d7754e98037dfd7ec6f9a1ec783be104dc46e7a49e9d5b498",
-  "./": "sha256-ef14967d237cddb849524b397c5660e1545f9624d67cae21159f49d5a7661cb4",
-  "./index.html": "sha256-ef14967d237cddb849524b397c5660e1545f9624d67cae21159f49d5a7661cb4",
+  "./": "sha256-ada54d6b6277121ac9c1ec7e169507fba2a074935a998333587da20925b28b65",
+  "./index.html": "sha256-ada54d6b6277121ac9c1ec7e169507fba2a074935a998333587da20925b28b65",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-e3f9c152ea730c6b2dcc63b246dace51a045d2f6a7505da4276f6466fe198c9b",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1255,12 +1255,12 @@ const ASSET_REVISIONS = {
   "./js/word-gameplay.js": "sha256-ed28310b7afcba7a3ce8391e8a26d23ec39ae19f710b99016de494c3dffe4913",
   "./js/versus-engine.js": "sha256-544297ccc805d3448fd1563053f6ebaba45483eef69e2d65ce045eb78282a9b4",
   "./js/versus-room.js": "sha256-bcd7d15b293d34bd9b73cae19909b52492c7defbd8629952d99b3b004b56be0f",
-  "./js/versus-room-supabase.js": "sha256-f026a66a39f67566f726f0957f145a7039b5b4b15db34527a8ea8009f88bf1d8",
+  "./js/versus-room-supabase.js": "sha256-eeacbfb25480ea0b497dc25bef9af85ca8da1a716a9ba7a6fb8280eb0cd9d91a",
   "./js/puzzle-lessons.js": "sha256-c3269cb6042e311b9768722585ca236fc2696bc3918bd5cd80675ac0bf7dbaf5",
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-686495561c9c93e24305a310f77025e441a69b7acc70ba988f48b120c095517d",
+  "./js/app.js": "sha256-de62397c38f2cd93cd46660474ab6362badef3bb692f2794c7705e537f78c88e",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
@@ -1609,7 +1609,6 @@ const ASSET_REVISIONS = {
 };
 const LEGACY_RESOURCE_REVISIONS = {
   "./js/word-banks-es.js": "aventura-palabras-runtime-v347",
-  "./js/i18n-ui.js": "aventura-palabras-runtime-v347",
   "./js/i18n-combat.js": "aventura-palabras-runtime-v347",
   "./actualizar.html": "aventura-palabras-runtime-v347",
   "./css/i18n-settings.css": "aventura-palabras-runtime-v347",

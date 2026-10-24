@@ -2,6 +2,16 @@
   "use strict";
 
   const sesionesEnCurso = new WeakMap();
+  const adaptadores = new WeakMap();
+  let secuenciaAdaptador = 0;
+
+  function diagnosticar(operacion, error) {
+    const mensaje = String(error?.message || error || '').slice(0, 1000)
+      .replace(/eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g, '[token]')
+      .replace(/sb_(?:secret|publishable|p)_[A-Za-z0-9_-]+/g, '[clave]')
+      .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, '[correo]');
+    console.warn('[Aventura online]', { operacion, codigo: error?.code || 'CLIENT_ERROR', mensaje });
+  }
 
   function recuperarSesion(cliente) {
     if (sesionesEnCurso.has(cliente)) return sesionesEnCurso.get(cliente);
@@ -31,7 +41,7 @@
           else storage.setItem(clave, anterior);
         }
       } catch (_) {
-        throw new Error("Habilitá el almacenamiento del navegador para conservar tu jugador online.");
+        throw errorJugador("Habilitá el almacenamiento del navegador para conservar tu jugador online.");
       }
       const ingreso = await cliente.auth.signInAnonymously();
       if (ingreso.error) throw traducirError(ingreso.error, "No pudimos iniciar la sesión anónima.");
@@ -46,16 +56,51 @@
     return promesa;
   }
 
+  const mensajesJugador = new WeakSet();
+  function errorJugador(mensaje) {
+    const error = new Error(mensaje);
+    mensajesJugador.add(error);
+    return error;
+  }
+
   function traducirError(error, respaldo) {
-    const mensaje = error?.message || respaldo;
+    if (error && mensajesJugador.has(error)) return error;
+    const mensaje = String(error?.message || '');
+    diagnosticar('operacion', error);
     if (/anonymous sign-ins are disabled/i.test(mensaje)) {
-      return new Error("Supabase indica que los jugadores anónimos todavía están desactivados.");
+      return errorJugador("El acceso de invitados no está disponible. Probá entrar con tu cuenta.");
     }
-    return new Error(mensaje.replace(/^.*?: /, ""));
+    // Only known, translated player messages may cross the backend/UI boundary.
+    const conocido = Object.entries(raiz.I18nSpanishUI || {})
+      .some(([clave, texto]) => clave.startsWith('errors.') && texto === mensaje);
+    return errorJugador(conocido ? mensaje : respaldo || "No pudimos completar la conexión. Volvé a intentarlo.");
   }
 
   function crearAdaptador(cliente) {
     if (!cliente) throw new Error("El cliente de Supabase no está disponible.");
+    if (adaptadores.has(cliente)) return adaptadores.get(cliente);
+
+    const idAdaptador = ++secuenciaAdaptador;
+    let secuenciaCanal = 0;
+    let eliminado = false;
+    let conexionLista = false;
+    let cierreEnCurso = null;
+    let colaSocial = Promise.resolve();
+    let colaSala = Promise.resolve();
+    let propietarioSocial = null;
+    let propietarioSala = null;
+    let salaCanal = null;
+    const nuevoCanal = nombre => cliente.channel(`${nombre}-${idAdaptador}-${++secuenciaCanal}`);
+    function encolarSocial(accion) {
+      const siguiente = colaSocial.then(accion, accion);
+      colaSocial = siguiente.catch(() => {});
+      return siguiente;
+    }
+    function encolarSala(accion) {
+      const siguiente = colaSala.then(accion, accion);
+      colaSala = siguiente.catch(() => {});
+      return siguiente;
+    }
 
     let usuarioId = null;
     let inicializacionEnCurso = null;
@@ -148,8 +193,10 @@
     }
 
     function actualizarSesion(sesion) {
+      if (eliminado) return;
       const siguienteUsuario = sesion?.user?.id || null;
       if (usuarioId !== siguienteUsuario) {
+        conexionLista = false;
         confirmacionCorreoPendiente = false;
         ultimaSalaInvitada = null;
         salaInvitadaPendiente = null;
@@ -158,6 +205,7 @@
         salaActual = null;
         partidaActual = null;
         void detenerCanal().catch(() => {});
+        void detenerCanalSocial().catch(error => diagnosticar('cerrar-social', error));
       }
       sesionActual = sesion || null;
       usuarioActual = sesionActual?.user || null;
@@ -175,16 +223,22 @@
       return `${raiz.location?.origin || ""}${raiz.location?.pathname || "/"}`;
     }
 
-    async function detenerCanalSocial() {
+    async function limpiarCanalSocial() {
       if (intervaloSocial) raiz.clearInterval(intervaloSocial);
       intervaloSocial = null;
       if (!canalSocial) return;
       const canal = canalSocial;
       canalSocial = null;
+      propietarioSocial = null;
       await cliente.removeChannel(canal);
     }
 
+    function detenerCanalSocial() {
+      return encolarSocial(limpiarCanalSocial);
+    }
+
     async function cargarEstadoSocial() {
+      if (eliminado) return null;
       if (!esCuentaPermanente()) {
         estadoSocial = null;
         errorEstadoSocial = null;
@@ -196,7 +250,7 @@
       const carga = { usuario: identidadCarga };
       carga.promesa = (async () => {
         const { data, error } = await cliente.rpc("get_versus_social_state");
-        if (usuarioId !== identidadCarga) return null;
+        if (eliminado || usuarioId !== identidadCarga) return null;
         if (error) {
           errorEstadoSocial = traducirError(error, "No pudimos cargar Amigos.");
           emitirSocial();
@@ -217,7 +271,9 @@
     }
 
     function sincronizarAlVolver() {
-      if (!usuarioId || raiz.document?.visibilityState === "hidden" || raiz.navigator?.onLine === false) return;
+      if (eliminado || !usuarioId || raiz.document?.visibilityState === "hidden" || raiz.navigator?.onLine === false) return;
+      void escucharSocial().catch(error => diagnosticar('reconectar-social', error));
+      if (salaActual?.id) void escucharSala(salaActual.id).catch(error => diagnosticar('reconectar-sala', error));
       void Promise.allSettled([cargarEstadoSocial(), recargarSala()]);
     }
     raiz.addEventListener?.("online", sincronizarAlVolver);
@@ -225,11 +281,13 @@
     raiz.document?.addEventListener("visibilitychange", sincronizarAlVolver);
 
     function programarSincronizacionAuth() {
+      if (eliminado) return;
       if (temporizadorSincronizacionAuth) {
         raiz.clearTimeout(temporizadorSincronizacionAuth);
       }
       temporizadorSincronizacionAuth = raiz.setTimeout(() => {
         temporizadorSincronizacionAuth = null;
+        if (eliminado) return;
         void (async () => {
           try {
             await escucharSocial();
@@ -262,20 +320,35 @@
       return aperturaInvitadaEnCurso;
     }
 
-    async function escucharSocial() {
-      await detenerCanalSocial();
-      if (!usuarioId || !esCuentaPermanente()) return;
-      // Realtime is a refresh hint; only the persisted RPC state can open a room.
-      const alCambiar = () => { void cargarEstadoSocial().catch(() => {}); };
-      canalSocial = cliente
-        .channel(`versus-social-${usuarioId}`)
-        .on("postgres_changes", { event: "*", schema: "public", table: "versus_profiles" }, alCambiar)
-        .on("postgres_changes", { event: "*", schema: "public", table: "versus_friendships" }, alCambiar)
-        .on("postgres_changes", { event: "*", schema: "public", table: "versus_invites" }, alCambiar)
-        .subscribe(status => {
-          if (status === "SUBSCRIBED") sincronizarAlVolver();
-        });
-      intervaloSocial = raiz.setInterval(sincronizarAlVolver, 15000);
+    function escucharSocial() {
+      return encolarSocial(async () => {
+        const identidad = usuarioId;
+        if (!eliminado && identidad && esCuentaPermanente() && canalSocial
+          && propietarioSocial === identidad && canalSocial.state !== 'closed') return;
+        await limpiarCanalSocial();
+        if (eliminado || !identidad || identidad !== usuarioId || !esCuentaPermanente()) return;
+        // Realtime is a refresh hint; only the persisted RPC state can open a room.
+        const canal = nuevoCanal(`versus-social-${identidad}`);
+        canalSocial = canal;
+        propietarioSocial = identidad;
+        const vigente = () => !eliminado && canalSocial === canal && usuarioId === identidad;
+        const alCambiar = () => { if (vigente()) void cargarEstadoSocial().catch(() => {}); };
+        try {
+          canal
+            .on("postgres_changes", { event: "*", schema: "public", table: "versus_profiles" }, alCambiar)
+            .on("postgres_changes", { event: "*", schema: "public", table: "versus_friendships" }, alCambiar)
+            .on("postgres_changes", { event: "*", schema: "public", table: "versus_invites" }, alCambiar)
+            .subscribe((status, error) => {
+              if (!vigente()) return;
+              if (status === "SUBSCRIBED") sincronizarAlVolver();
+              else if (error) diagnosticar('estado-social', error);
+            });
+          intervaloSocial = raiz.setInterval(sincronizarAlVolver, 15000);
+        } catch (error) {
+          await limpiarCanalSocial();
+          throw traducirError(error, "No pudimos conectar las actualizaciones. Volvé a intentarlo.");
+        }
+      });
     }
 
     async function cargarPartida() {
@@ -295,14 +368,18 @@
     }
 
     function inicializar() {
+      if (eliminado) return Promise.reject(new Error("La conexión se cerró. Volvé a entrar a Multijugador."));
       if (inicializacionEnCurso) return inicializacionEnCurso;
-      if (usuarioId && suscripcionAuth && !confirmacionCorreoPendiente) return Promise.resolve(usuarioId);
-      inicializacionEnCurso = inicializarConexion().finally(() => { inicializacionEnCurso = null; });
+      if (conexionLista && usuarioId && suscripcionAuth && !confirmacionCorreoPendiente) return escucharSocial().then(() => usuarioId);
+      inicializacionEnCurso = inicializarConexion()
+        .catch(error => { throw traducirError(error, "No pudimos conectarnos al multijugador. Volvé a intentarlo."); })
+        .finally(() => { inicializacionEnCurso = null; });
       return inicializacionEnCurso;
     }
 
     async function inicializarConexion() {
       const sesion = await recuperarSesion(cliente);
+      if (eliminado) throw new Error("La conexión se cerró.");
 
       if (!sesion?.user?.id) throw new Error("Supabase no devolvió una identidad de jugador.");
       actualizarSesion(sesion);
@@ -311,6 +388,7 @@
       }
       if (!suscripcionAuth) {
         const { data } = cliente.auth.onAuthStateChange((_evento, nuevaSesion) => {
+          if (eliminado) return;
           actualizarSesion(nuevaSesion);
           estadoSocial = null;
           errorEstadoSocial = null;
@@ -333,6 +411,7 @@
           console.warn("La cuenta está conectada, pero Amigos todavía no respondió.", error);
         }
       }
+      conexionLista = !eliminado;
       return usuarioId;
     }
 
@@ -353,6 +432,7 @@
         recordarSala(null);
         emitir(null);
         emitirPartida(null);
+        await detenerCanal();
         return null;
       }
 
@@ -427,60 +507,68 @@
       return recargaEnCurso;
     }
 
-    async function detenerCanal() {
-      if(canalTrajes){const anterior=canalTrajes;canalTrajes=null;await cliente.removeChannel(anterior);}
-      trajesRival={};propietarioTrajesRival=null;rivalTrajesSolicitado=null;
+    async function limpiarCanalSala() {
+      // Detach all handles BEFORE awaiting either SDK removal.
+      const canales = [canalSala, canalTrajes].filter(Boolean);
+      canalSala = null; canalTrajes = null; propietarioSala = null; salaCanal = null;
+      trajesRival = {}; propietarioTrajesRival = null; rivalTrajesSolicitado = null;
       versionCanalSala += 1;
-      if (intervaloVerificacionSala) clearInterval(intervaloVerificacionSala);
+      if (intervaloVerificacionSala) raiz.clearInterval(intervaloVerificacionSala);
       intervaloVerificacionSala = null;
-      if (!canalSala) return;
-      const canal = canalSala;
-      canalSala = null;
-      await cliente.removeChannel(canal);
+      await Promise.all(canales.map(canal => cliente.removeChannel(canal)));
     }
 
-    async function escucharSala(roomId) {
+    function detenerCanal() {
+      return encolarSala(limpiarCanalSala);
+    }
+
+    function escucharSala(roomId) {
       const identidad = usuarioId;
-      await detenerCanal();
-      if (identidad !== usuarioId || salaActual?.id !== roomId || salasAbandonadas.has(roomId)) return;
-      if(raiz.CosmeticStore){
-        // Broadcasts only request a refresh. Ownership and equipment come from the server.
-        const canal=cliente.channel(`versus-outfits-${roomId}`);
-        canalTrajes=canal;
-        canal.on('broadcast',{event:'outfit'},({payload})=>{
-          if(canalTrajes!==canal||salaActual?.id!==roomId||payload?.player===usuarioId)return;
-          if(!salaActual.jugadores.some(player=>player.id===payload?.player))return;
-          void cargarTrajesSala().catch(()=>{});
-        }).on('broadcast',{event:'outfit-request'},()=>enviarTrajes()).subscribe(status=>{
-          if(status==='SUBSCRIBED'&&canalTrajes===canal){
-            enviarTrajes();void canal.send({type:'broadcast',event:'outfit-request',payload:{}}).catch(()=>{});
+      return encolarSala(async () => {
+        if (eliminado || identidad !== usuarioId || salaActual?.id !== roomId || salasAbandonadas.has(roomId)) return;
+        if (canalSala && propietarioSala === identidad && salaCanal === roomId
+          && canalSala.state !== 'closed' && (!raiz.CosmeticStore || (canalTrajes && canalTrajes.state !== 'closed'))) return;
+        await limpiarCanalSala();
+        if (eliminado || identidad !== usuarioId || salaActual?.id !== roomId || salasAbandonadas.has(roomId)) return;
+        propietarioSala = identidad; salaCanal = roomId;
+        const vigente = () => !eliminado && propietarioSala === identidad && usuarioId === identidad
+          && salaCanal === roomId && salaActual?.id === roomId && !salasAbandonadas.has(roomId);
+        try {
+          if (raiz.CosmeticStore) {
+            // Broadcasts are hints; ownership still comes only from the server.
+            // Peers must share the broadcast topic. Its lifecycle is serialized above.
+            const canal = cliente.channel('versus-outfits-' + roomId);
+            canalTrajes = canal;
+            canal.on('broadcast', {event:'outfit'}, ({payload}) => {
+              if (!vigente() || canalTrajes !== canal || payload?.player === usuarioId) return;
+              if (!salaActual.jugadores.some(player => player.id === payload?.player)) return;
+              void cargarTrajesSala().catch(() => {});
+            }).on('broadcast', {event:'outfit-request'}, () => {
+              if (vigente() && canalTrajes === canal) enviarTrajes();
+            }).subscribe(status => {
+              if (status === 'SUBSCRIBED' && vigente() && canalTrajes === canal) {
+                enviarTrajes(); void canal.send({type:'broadcast', event:'outfit-request', payload:{}}).catch(() => {});
+              }
+            });
           }
-        });
-      }
-      canalSala = cliente
-        .channel(`versus-room-${roomId}-${usuarioId}`)
-        .on("postgres_changes", {
-          event: "*",
-          schema: "public",
-          table: "versus_rooms",
-          filter: `id=eq.${roomId}`,
-        }, () => { void recargarSala().catch(() => {}); })
-        .on("postgres_changes", {
-          event: "*",
-          schema: "public",
-          table: "versus_players",
-          filter: `room_id=eq.${roomId}`,
-        }, () => { void recargarSala().catch(() => {}); })
-        .on("postgres_changes", {
-          event: "*",
-          schema: "public",
-          table: "versus_matches",
-          filter: `room_id=eq.${roomId}`,
-        }, () => { void cargarPartida().catch(() => {}); })
-        .subscribe(status => {
-          if (status === "SUBSCRIBED") void recargarSala().catch(() => {});
-        });
-      intervaloVerificacionSala = setInterval(() => { void recargarSala().catch(() => {}); }, 4000);
+          const canal = nuevoCanal('versus-room-' + roomId + '-' + identidad);
+          canalSala = canal;
+          const recargar = () => { if (vigente() && canalSala === canal) void recargarSala().catch(() => {}); };
+          canal.on('postgres_changes', {event:'*', schema:'public', table:'versus_rooms', filter:'id=eq.' + roomId}, recargar)
+            .on('postgres_changes', {event:'*', schema:'public', table:'versus_players', filter:'room_id=eq.' + roomId}, recargar)
+            .on('postgres_changes', {event:'*', schema:'public', table:'versus_matches', filter:'room_id=eq.' + roomId}, () => {
+              if (vigente() && canalSala === canal) void cargarPartida().catch(() => {});
+            }).subscribe((status, error) => {
+              if (!vigente() || canalSala !== canal) return;
+              if (status === 'SUBSCRIBED') recargar();
+              else if (error) diagnosticar('estado-sala', error);
+            });
+          intervaloVerificacionSala = raiz.setInterval(recargar, 4000);
+        } catch (error) {
+          await limpiarCanalSala();
+          throw traducirError(error, 'No pudimos conectar la sala. Volvé a intentarlo.');
+        }
+      });
     }
 
     async function crearSala({ alias }) {
@@ -757,8 +845,33 @@
       return partidaActual;
     }
 
-    return Object.freeze({
+    function destruir() {
+      if (cierreEnCurso) return cierreEnCurso;
+      eliminado = true; conexionLista = false;
+      usuarioId = null; usuarioActual = null; sesionActual = null;
+      versionCanalSala += 1;
+      salaActual = null; partidaActual = null; estadoSocial = null;
+      if (temporizadorSincronizacionAuth) raiz.clearTimeout(temporizadorSincronizacionAuth);
+      temporizadorSincronizacionAuth = null;
+      suscripcionAuth?.unsubscribe?.(); suscripcionAuth = null;
+      raiz.removeEventListener?.('costume-equipped', enviarTrajes);
+      raiz.removeEventListener?.('wallet-updated', enviarTrajes);
+      raiz.removeEventListener?.('online', sincronizarAlVolver);
+      raiz.removeEventListener?.('focus', sincronizarAlVolver);
+      raiz.document?.removeEventListener?.('visibilitychange', sincronizarAlVolver);
+      suscriptores.clear(); suscriptoresPartida.clear(); suscriptoresSocial.clear(); suscriptoresInvitacionAceptada.clear();
+      // Keep this adapter in the client cache until removal settles: a replacement
+      // must not overlap an old channel that is still unsubscribing.
+      cierreEnCurso = Promise.allSettled([detenerCanalSocial(), detenerCanal()]).then(results => {
+        for (const result of results) if (result.status === 'rejected') diagnosticar('cerrar-canales', result.reason);
+        if (adaptadores.get(cliente) === adaptador) adaptadores.delete(cliente);
+      });
+      return cierreEnCurso;
+    }
+
+    const adaptador = Object.freeze({
       proveedor: "supabase",
+      destruir,
       inicializar,
       crearSala,
       buscarPartida,
@@ -801,6 +914,8 @@
       obtenerEstadoSocial: () => estadoSocial,
       esCuentaPermanente,
     });
+    adaptadores.set(cliente, adaptador);
+    return adaptador;
   }
 
   raiz.VersusRoomSupabase = Object.freeze({ crearAdaptador });
