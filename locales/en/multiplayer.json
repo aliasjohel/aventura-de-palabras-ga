@@ -166,5 +166,9 @@
     "pt-BR": "Portuguese"
   },
   "quickBubble": "{alias}: {message}",
-  "failure": "Could not complete the action. Check your connection and try again."
+  "failure": "Could not complete the action. Check your connection and try again.",
+  "actualRanked": "Ranked · This duel changes your points",
+  "actualClassic": "Classic · This duel does not change your points",
+  "searchRanked": "Find opponent · Ranked",
+  "searchClassic": "Find opponent · Classic"
 }

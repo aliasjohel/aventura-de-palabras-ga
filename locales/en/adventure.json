@@ -228,7 +228,8 @@
     "desertWordsTheme": "🌵 Theme: desert words",
     "mountainWordsTheme": "☁️ Theme: mountains and sky",
     "winterWordsTheme": "❄️ Theme: winter words",
-    "wordsThemeHelp": "All words are related to this theme."
+    "wordsThemeHelp": "All words are related to this theme.",
+    "rankTotal": "Ranking total: {points} points"
   },
   "narrative": {
     "world1mission1titulo": "The Enchanted Forest",

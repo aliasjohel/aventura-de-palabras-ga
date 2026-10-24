@@ -1528,5 +1528,12 @@ globalThis.I18nSpanishUI=Object.freeze({
   "multiplayer.languages.en": "Inglés",
   "multiplayer.languages.pt-BR": "Portugués",
   "multiplayer.quickBubble": "{alias}: {message}",
-  "multiplayer.failure": "No pudimos completar la acción. Revisá la conexión e intentá de nuevo."
+  "multiplayer.failure": "No pudimos completar la acción. Revisá la conexión e intentá de nuevo.",
+  "adventure.combat.rankTotal": "Total del ranking: {points} puntos",
+  "multiplayer.actualRanked": "Clasificatorio · Este duelo modifica tus puntos",
+  "multiplayer.actualClassic": "Clásico · Este duelo no modifica tus puntos",
+  "multiplayer.searchRanked": "Buscar rival · Clasificatorio",
+  "multiplayer.searchClassic": "Buscar rival · Clásico",
+  "errors.classicRoomForRanked": "Esta sala es Clásica y no suma puntos. Para jugar Clasificatorio, salí de la sala y volvé a buscar rival.",
+  "errors.rankedRoomForClassic": "Esta sala es Clasificatoria. Podés continuarla o salir antes de buscar Clásico."
 });

@@ -228,7 +228,8 @@
     "desertWordsTheme": "🌵 Tema: palabras del desierto",
     "mountainWordsTheme": "☁️ Tema: montañas y cielo",
     "winterWordsTheme": "❄️ Tema: palabras del invierno",
-    "wordsThemeHelp": "Todas las palabras están relacionadas con este tema."
+    "wordsThemeHelp": "Todas las palabras están relacionadas con este tema.",
+    "rankTotal": "Total del ranking: {points} puntos"
   },
   "narrative": {
     "world1mission1titulo": "El Bosque Encantado",

@@ -22,5 +22,7 @@
   "accessFailure": "Não foi possível ativar o acesso. Tente novamente.",
   "unionFailure": "Não foi possível ativar Aren Unión. Conecte-se e tente novamente.",
   "unionPlaying": "Termine o duelo antes de alterar o acesso a Aren Unión.",
-  "unionCode": "Digite seu código pessoal em Acesso de desenvolvedor antes de ativar Aren Unión online."
+  "unionCode": "Digite seu código pessoal em Acesso de desenvolvedor antes de ativar Aren Unión online.",
+  "classicRoomForRanked": "Esta sala é Clássica e não dá pontos no ranking. Saia da sala e busque novamente para jogar Ranqueado.",
+  "rankedRoomForClassic": "Esta sala é Ranqueada. Você pode continuar ou sair antes de buscar Clássico."
 }

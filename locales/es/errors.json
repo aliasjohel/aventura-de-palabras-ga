@@ -19,5 +19,7 @@
   "accessFailure": "No pudimos activar el acceso. Intentá nuevamente.",
   "unionFailure": "No pudimos activar Aren Unión. Reintentá con conexión.",
   "unionPlaying": "Terminá el duelo antes de cambiar el acceso a Aren Unión.",
-  "unionCode": "Ingresá tu código personal en Acceso de desarrollador antes de activar Aren Unión online."
+  "unionCode": "Ingresá tu código personal en Acceso de desarrollador antes de activar Aren Unión online.",
+  "classicRoomForRanked": "Esta sala es Clásica y no suma puntos. Para jugar Clasificatorio, salí de la sala y volvé a buscar rival.",
+  "rankedRoomForClassic": "Esta sala es Clasificatoria. Podés continuarla o salir antes de buscar Clásico."
 }

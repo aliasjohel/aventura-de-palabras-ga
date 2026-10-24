@@ -166,5 +166,9 @@
     "pt-BR": "Portugués"
   },
   "quickBubble": "{alias}: {message}",
-  "failure": "No pudimos completar la acción. Revisá la conexión e intentá de nuevo."
+  "failure": "No pudimos completar la acción. Revisá la conexión e intentá de nuevo.",
+  "actualRanked": "Clasificatorio · Este duelo modifica tus puntos",
+  "actualClassic": "Clásico · Este duelo no modifica tus puntos",
+  "searchRanked": "Buscar rival · Clasificatorio",
+  "searchClassic": "Buscar rival · Clásico"
 }

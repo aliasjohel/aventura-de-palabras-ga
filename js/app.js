@@ -1636,6 +1636,10 @@ function actualizarIdentidadMultijugador(sala = adaptadorSalasVersus.obtenerSala
 }
 
 function actualizarEstadoMultijugador(sala) {
+  for (const nodo of document.querySelectorAll('[data-modo-sala]')) {
+    nodo.hidden = adaptadorSalasVersus.proveedor !== 'supabase' || !['classic', 'ranked'].includes(sala?.modo);
+    if (!nodo.hidden) GameUI.text(nodo, GameUI.key(sala.modo === 'ranked' ? 'multiplayer.actualRanked' : 'multiplayer.actualClassic'));
+  }
   actualizarIdentidadMultijugador(sala);
   actualizarSalaVersus(sala);
   actualizarSeleccionPersonajeRemota(sala);
@@ -2070,6 +2074,7 @@ function modoOnlineSeleccionado() {
   return document.querySelector('input[name="modoOnline"]:checked')?.value || 'classic';
 }
 function actualizarReglasModoOnline() {
+  GameUI.text(document.getElementById('btnBuscarPartida'), GameUI.key(modoOnlineSeleccionado() === 'ranked' ? 'multiplayer.searchRanked' : 'multiplayer.searchClassic'));
   OnlineUI.text(document.getElementById('reglasModoOnline'), modoOnlineSeleccionado() === 'ranked'
     ? 'Victoria +3 · Empate +1 · Derrota −1 (Novato no pierde puntos). Abandonar un duelo empezado cuenta como derrota.'
     : 'Jugá sin cambiar tus puntos. Las partidas se guardan en tu historial.');
@@ -2123,6 +2128,7 @@ async function consultarBusquedaPublica() {
   } catch (error) {
     mostrarBusquedaActiva(false);
     GameUI.text(estadoBusqueda, OnlineUI.error(error));
+    if (error.code === 'VERSUS_MODE_MISMATCH') mostrarErrorSalaVersus(error);
   } finally {
     peticionBusqueda = null;
     if (busquedaPublicaActiva && !encontro) temporizadorBusqueda = setTimeout(consultarBusquedaPublica, 3000);
@@ -2150,6 +2156,7 @@ async function cancelarBusquedaPublica() {
 
 btnBuscarPartida.addEventListener("click", async () => {
   if (busquedaPublicaActiva) return;
+  mostrarErrorSalaVersus('');
   mostrarBusquedaActiva(true);
   OnlineUI.text(estadoBusqueda, "Conectando…");
   try {
@@ -6486,7 +6493,7 @@ function recursosPersonajeCombate(personaje) {
     azrak: [srcAzrakAtaqueVersus], kalamo: [srcKalamoAtaqueVersus, srcKalamoHabilidadVersus], kairos: [srcKairosAtaqueVersus],
   };
   const trajes=[trajePersonajeVersus(personajeVersusUno,personaje),trajePersonajeVersus(personajeVersusDos,personaje)].filter(Boolean);
-  const extras=trajes.flatMap(id=>(id==='aren-union'?['base','ataque','habilidad','invocacion','victoria','capa','vidrio','mano','planta','envejecido','anciano']:CosmeticStore.find(id).poses).map(pose=>CosmeticStore.asset(id,pose)));
+  const extras=trajes.flatMap(id=>(id==='aren-union'?['base','ataque','habilidad','impacto','invocacion','victoria','capa','vidrio','mano','planta','envejecido','anciano']:CosmeticStore.find(id).poses).map(pose=>CosmeticStore.asset(id,pose)));
   return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || []),...extras].filter(Boolean);
 }
 async function prepararImagenesCombate(personajes) {
@@ -8560,7 +8567,7 @@ async function mostrarResultadoRango(matchId) {
       const interpolado = puntosIniciales+(puntosFinales-puntosIniciales)*progreso;
       const puntos = progreso===1 ? puntosFinales : puntosFinales>puntosIniciales ? Math.floor(interpolado) : Math.ceil(interpolado);
       if (puntos!==ultimo) {
-        CombatUI.text(contador, puntos+' puntos');
+        GameUI.text(contador, GameUI.key('adventure.combat.rankTotal', {points:puntos}));
         medalla.replaceChildren(GameUI.rankBadge(puntos,true));
         if (ultimo!==-1 && !reducido) reproducirPulsacionTeclaVersus(puntosFinales>puntosIniciales?'jugador':'rival');
         ultimo=puntos;
@@ -8725,6 +8732,7 @@ function configurarVictimaFinalVersus(elemento, personaje) {
     "victima-final-kairos",
   );
   elemento.classList.add(`victima-final-${clave}`);
+  elemento.classList.toggle('victima-trampa-union', elemento === victimaTrampaVersus && trajeFinalVersus(clave) === 'aren-union');
   return clave;
 }
 
@@ -8807,7 +8815,7 @@ function reproducirTrampaSelvaticaVersus(victima = personajeRivalVersus) {
   cancelarCinematicaFinalVersus();
   prepararTrajesFinalVersus('explorador');
   crearParticulasEclipseVersus();
-  programarReaccionVictimaFinalVersus(victimaTrampaVersus, victima, 2200);
+  programarReaccionVictimaFinalVersus(victimaTrampaVersus, victima, trajeFinalVersus(victima) === 'aren-union' ? 2700 : 2200);
   fondoCinematicaVersus.src = fondoVersus.src;
   etiquetaCinematicaVersus.textContent = "TÉCNICA SECRETA";
   tituloCinematicaVersus.textContent = "TRAMPA SELVÁTICA";

@@ -595,6 +595,17 @@
       if (data?.room_id) {
         await cargarSala(data.room_id);
         await escucharSala(data.room_id);
+        // The server may resume an older pairing before considering the new mode.
+        // Keep that room available to resume/leave, but never open it as the requested mode.
+        if (!cancelar && salaActual?.id === data.room_id && salaActual.modo !== modo) {
+          const clasica = salaActual.modo === 'classic';
+          const key = clasica ? 'errors.classicRoomForRanked' : 'errors.rankedRoomForClassic';
+          const error = errorJugador(raiz.I18nSpanishUI?.[key] || (clasica
+            ? 'Esta sala es Clásica y no suma puntos. Para jugar Clasificatorio, salí de la sala y volvé a buscar rival.'
+            : 'Esta sala es Clasificatoria. Podés continuarla o salir antes de buscar Clásico.'));
+          error.code = 'VERSUS_MODE_MISMATCH';
+          throw error;
+        }
       }
       return data;
     }

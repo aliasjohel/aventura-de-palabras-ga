@@ -13,8 +13,8 @@
   arena.insertBefore(layer,actor);
   let follow=null;
   function update(){
-    const active=actor.getAttribute('src')?.includes('/aren-union-');
-    const capeIncluded=/aren-union-(disparo-v2|ataque-rayo-v2|habilidad-v1|ataque-v1|concepto-v1)\.png$/.test(actor.getAttribute('src')||'');
+    const active=actor.getAttribute('src')?.includes('/aren-union-')&&!arena.classList.contains('oculto');
+    const capeIncluded=/aren-union-(disparo-v2|ataque-rayo-v2|habilidad-v1|ataque-v1|concepto-v1|impacto-v[12])\.png$/.test(actor.getAttribute('src')||'');
     layer.hidden=!active||capeIncluded||actor.hasAttribute('data-cambiando-pose');if(!active){gems.forEach(gem=>gem.hidden=true);entranceStart=null;if(follow!==null)cancelAnimationFrame(follow);follow=null;return;}
     const style=getComputedStyle(actor),w=actor.offsetWidth,h=actor.offsetHeight;
     const ratio=(actor.naturalWidth||1152)/(actor.naturalHeight||1536);
@@ -24,6 +24,8 @@
     const ch=ih*.52,cw=ch*1.5;
     layer.style.left=actor.offsetLeft+'px';layer.style.top=actor.offsetTop+'px';layer.style.width=w+'px';layer.style.height=h+'px';
     layer.style.transform=style.transform;layer.style.translate=style.translate;layer.style.rotate=style.rotate;layer.style.scale=style.scale;layer.style.opacity=style.opacity;
+    layer.style.transformOrigin=style.transformOrigin;
+    layer.style.zIndex=String((parseInt(style.zIndex,10)||3)-1);
     cape.style.width=cw+'px';cape.style.height=ch+'px';cape.style.left=(shoulderX-cw*.87)+'px';cape.style.top=(shoulderY-ch*.24)+'px';
     const entering=actor.classList.contains('entrada-union');
     layer.classList.toggle('invocando',entering);
@@ -46,11 +48,13 @@
   }
   function tick(){follow=null;update();}
   new MutationObserver(update).observe(actor,{attributes:true,attributeFilter:['src','class','style','data-cambiando-pose']});
+  new MutationObserver(update).observe(arena,{attributes:true,attributeFilter:['class']});
   new ResizeObserver(update).observe(arena);
   window.addEventListener('costume-equipped',update);actor.addEventListener('load',update);
   }
   prepararCapaUnion(document.getElementById('personajeVersusUno'));
   prepararCapaUnion(document.getElementById('personajeVersusDos'));
+  prepararCapaUnion(document.getElementById('victimaTrampaVersus'));
 
   // Follow actual key bounds so the current also fits the rival preview and mobile layout.
   function prepararCorrienteUnion(keyboard,selector){

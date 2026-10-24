@@ -7323,6 +7323,10 @@ button:disabled {
     --direccion-victima-trampa: 1;
 }
 
+.cinematica-mago-atrapado.victima-trampa-union.reaccion-final-activa {
+    --direccion-victima-trampa: 1;
+}
+
 .cinematica-explorador-atrapado.victima-final-mago,
 .cinematica-explorador-atrapado.victima-final-guardiana,
 .cinematica-explorador-atrapado.victima-final-dragon,

@@ -228,7 +228,8 @@
     "desertWordsTheme": "🌵 Tema: palavras do deserto",
     "mountainWordsTheme": "☁️ Tema: montanhas e céu",
     "winterWordsTheme": "❄️ Tema: palavras do inverno",
-    "wordsThemeHelp": "Todas as palavras estão relacionadas a este tema."
+    "wordsThemeHelp": "Todas as palavras estão relacionadas a este tema.",
+    "rankTotal": "Total do ranking: {points} pontos"
   },
   "narrative": {
     "world1mission1titulo": "A Floresta Encantada",

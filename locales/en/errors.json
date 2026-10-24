@@ -22,5 +22,7 @@
   "accessFailure": "We could not activate access. Please try again.",
   "unionFailure": "We could not enable Aren Unión. Go online and try again.",
   "unionPlaying": "Finish the duel before changing access to Aren Unión.",
-  "unionCode": "Enter your personal code under Developer access before enabling Aren Unión online."
+  "unionCode": "Enter your personal code under Developer access before enabling Aren Unión online.",
+  "classicRoomForRanked": "This room is Classic and awards no ranking points. Leave the room and search again to play Ranked.",
+  "rankedRoomForClassic": "This room is Ranked. You can continue it or leave before searching for Classic."
 }

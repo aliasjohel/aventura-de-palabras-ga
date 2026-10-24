@@ -166,5 +166,9 @@
     "pt-BR": "Português"
   },
   "quickBubble": "{alias}: {message}",
-  "failure": "Não foi possível concluir a ação. Verifique a conexão e tente novamente."
+  "failure": "Não foi possível concluir a ação. Verifique a conexão e tente novamente.",
+  "actualRanked": "Ranqueado · Este duelo altera seus pontos",
+  "actualClassic": "Clássico · Este duelo não altera seus pontos",
+  "searchRanked": "Buscar rival · Ranqueado",
+  "searchClassic": "Buscar rival · Clássico"
 }
