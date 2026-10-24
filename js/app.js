@@ -1308,7 +1308,10 @@ async function asegurarConexionSalasVersus() {
     );
     cancelarSuscripcionInvitacionesVersus?.();
     cancelarSuscripcionInvitacionesVersus = adaptadorSalasVersus
-      .suscribirInvitacionesAceptadas((sala) => {
+      .suscribirInvitacionesAceptadas(async (sala) => {
+        try { await prepararRecursosMultijugador(); }
+        catch (error) { if (error.code !== 'RESOURCE_PREPARATION_CANCELLED') mostrarErrorSalaVersus(error); return; }
+        if (adaptadorSalasVersus.obtenerSala()?.id !== sala.id) return;
         for (const id of ["perfilPublico", "amigosPerfil", "editorAvatar"]) {
           const dialogo = document.getElementById(id);
           if (dialogo?.open) dialogo.close();
@@ -1479,7 +1482,7 @@ function actualizarPanelAmigosVersus(
       nombre: OnlineUI.value(`${invitacion.alias} te desafía`),
       detalle: GameUI.key("profile.friends.inviteLanguage", {language:GameUI.key("multiplayer.languages."+(invitacion.word_language||"es"))}),
       acciones: [
-        { texto: "Aceptar", accion: () => adaptadorSalasVersus.responderInvitacion(invitacion.id, true) },
+        { texto: "Aceptar", accion: async () => { await prepararRecursosMultijugador(); return adaptadorSalasVersus.responderInvitacion(invitacion.id, true); } },
         { texto: "Rechazar", accion: () => adaptadorSalasVersus.responderInvitacion(invitacion.id, false) },
       ],
     }));
@@ -1501,7 +1504,7 @@ function actualizarPanelAmigosVersus(
       detalle: OnlineUI.value(`Código ${amigo.friend_code}`),
       acciones: [
         { texto: "Ver perfil", accion: () => PublicPlayerProfile.abrir(amigo.user_id) },
-        { texto: "Desafiar", accion: () => adaptadorSalasVersus.enviarInvitacion(amigo.user_id) },
+        { texto: "Desafiar", accion: async () => { await prepararRecursosMultijugador(); return adaptadorSalasVersus.enviarInvitacion(amigo.user_id); } },
         { texto: "Quitar", accion: () => adaptadorSalasVersus.eliminarAmigo(amigo.friendship_id) },
       ],
     }));
@@ -2160,6 +2163,7 @@ btnBuscarPartida.addEventListener("click", async () => {
   mostrarBusquedaActiva(true);
   OnlineUI.text(estadoBusqueda, "Conectando…");
   try {
+    await prepararRecursosMultijugador();
     await asegurarConexionSalasVersus();
     if (!busquedaPublicaActiva) return;
     if (!adaptadorSalasVersus.buscarPartida) throw new Error("Necesitás conexión a internet para buscar rival.");
@@ -2254,22 +2258,40 @@ document.getElementById("btnRankingSala").addEventListener("click", abrirRanking
 document.getElementById("cerrarRankingMenu").addEventListener("click", () => rankingMenu.close());
 document.getElementById("medallasRanking").replaceChildren(...VersusRanks.tiers.map(t => GameUI.rankBadge(t.min, true)));
 
+async function prepararRecursosMultijugador() {
+  try {
+    return await GameResources.multiplayer([
+      ...arenasVersus.map(arena => arena.src), ...Object.values(CharacterMusic.tracks),
+    ]);
+  } catch (error) {
+    if (error.code === 'RESOURCE_PREPARATION_CANCELLED') {
+      for (const dialogo of document.querySelectorAll('dialog[open]')) dialogo.close();
+      mostrarPantalla(pantallaMenu);
+    }
+    throw error;
+  }
+}
+
 async function abrirSalaVersus() {
   mostrarErrorSalaVersus();
   mostrarPantalla(pantallaSalaVersus);
   btnCrearSalaVersus.disabled = true;
   btnUnirseSalaVersus.disabled = true;
+  btnBuscarPartida.disabled = true;
 
   try {
+    await prepararRecursosMultijugador();
     await asegurarConexionSalasVersus();
     actualizarSalaVersus(adaptadorSalasVersus.obtenerSala());
     void cargarRangoSala();
   } catch (error) {
+    if (error.code === 'RESOURCE_PREPARATION_CANCELLED') return;
     estadoCuentaVersus.textContent = error.code === "SDK_LOAD_FAILED" ? "SDK pendiente de descarga" : "No se pudo iniciar la conexión";
     mostrarErrorSalaVersus(error.message || "No pudimos conectarnos con Supabase.");
   } finally {
     btnCrearSalaVersus.disabled = false;
     btnUnirseSalaVersus.disabled = false;
+    btnBuscarPartida.disabled = busquedaPublicaActiva;
   }
 }
 
@@ -2293,6 +2315,7 @@ async function ejecutarAccionSalaVersus(accion) {
   btnCrearSalaVersus.disabled = true;
   btnUnirseSalaVersus.disabled = true;
   try {
+    await prepararRecursosMultijugador();
     await asegurarConexionSalasVersus();
     const sala = await accion();
     actualizarSalaVersus(sala);

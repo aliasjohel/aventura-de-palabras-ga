@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v387-security3`;
+const CACHE_NAME = `${CACHE_PREFIX}v387-multiplayer1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -879,7 +879,7 @@ const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
   "./js/resource-catalog.js": "sha256-18afb0122209df5a719ec551ebc11d153798f254465a66d50a1c61f322720650",
-  "./js/resource-loader.js": "sha256-ad1e232b755c34f73a839b18c857b49f23ff8ce0d570ea1c8b16ddb72cba7851",
+  "./js/resource-loader.js": "sha256-0efe95b4b3d3a10591d1cc88125b0b289797cd0dc1858de86bbafcd6f3740e3e",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
   "./assets/images/perfil/miniaturas/dragon-base.webp": "sha256-f25e547e72384e6edab79d058d145d1dd506e9a62257f29f1a166ebb91db4d2b",
   "./assets/images/perfil/miniaturas/dragon-hielo-base.webp": "sha256-005ea98519d0904d32e708ed14eabc23f5a235f2a3e08f47058a1a21bed178bb",
@@ -1161,8 +1161,8 @@ const ASSET_REVISIONS = {
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
   "./js/player-avatar.js": "sha256-6e7278100624b641eef48662f51fa7b104a443f01ff9eb302c4fa8c1a99e009b",
   "./js/public-player-profile.js": "sha256-48d7ac44f3792d9d7754e98037dfd7ec6f9a1ec783be104dc46e7a49e9d5b498",
-  "./": "sha256-34bf7e2e0e3961944414e46aaed38274310e2e9a3868b14d0245867ae804dda8",
-  "./index.html": "sha256-34bf7e2e0e3961944414e46aaed38274310e2e9a3868b14d0245867ae804dda8",
+  "./": "sha256-8c46824588ca40054f7516dd1b7c1407f8ac80e3aad0d75a26de61e6cf5903e1",
+  "./index.html": "sha256-8c46824588ca40054f7516dd1b7c1407f8ac80e3aad0d75a26de61e6cf5903e1",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-e5d70dd545ed32247fa97340e8c5cd81468ad725f9041703ee96500860fb2f91",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1262,7 +1262,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-c1c2b2de735d10d9a25d4baaff587155580cf165198c27e70a888f8fab390437",
+  "./js/app.js": "sha256-43e00cc02ae767d07d279b864d64e73e6b8914d0d80301dbd8c8c34ec5ac24bf",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
@@ -2559,6 +2559,10 @@ self.addEventListener("fetch", (event) => {
 
 self.addEventListener("message", (event) => {
   if (event.data?.type === "RESOURCE_PACK") {
+    let cancelled = false;
+    if (event.ports?.[0]) event.ports[0].onmessage = message => {
+      if (message.data?.type === 'CANCEL_RESOURCE_PACK') cancelled = true;
+    };
     event.waitUntil((async () => {
       try {
         const paths = [...new Set(event.data.core ? CORE_ASSETS : (event.data.paths || []))];
@@ -2599,6 +2603,7 @@ self.addEventListener("message", (event) => {
           }
         }
         const anteriores = await obtenerCachesReutilizables();
+        if (cancelled) return;
         let available = true;
         let completed = 0, completedBytes = 0;
         const sizeOf = path => Math.max(0, Number(event.data.sizes?.[path]) || 0);
@@ -2612,6 +2617,7 @@ self.addEventListener("message", (event) => {
         // Recheck the actual files on every request; a previous success is not
         // evidence that storage eviction has not removed part of the pack.
         for (const path of paths) {
+          if (cancelled) return;
           if (event.data.checkOnly && presentes.has(path)) continue;
           let response = presentes.has(path) ? { status: 200 } : await buscarRecursoInstalado(new Request(new URL(path, self.registration.scope)));
           if (!response) {
