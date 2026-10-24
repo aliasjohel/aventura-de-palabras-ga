@@ -28,10 +28,15 @@
   preview.append(close,document.querySelector('.tienda-traje-vista'),previewStatus);document.body.append(preview);
   close.addEventListener('click',()=>preview.close());
   el('tiendaMenu').addEventListener('close',()=>{if(preview.open)preview.close();});
+  const pendingNotice=document.createElement('p');pendingNotice.setAttribute('role','status');el('tiendaSaldo').parentElement.after(pendingNotice);
   function announce(message){U.text(el('tiendaTrajesEstado'),message);U.text(previewStatus,message);}
   function render(){
     try {
-      const state=store.read(),item=store.find(selected),owned=state.owned.includes(item.id),equipped=state.equipped[item.character]===item.id;
+      const snapshot=store.read();
+      const pendingWords={es:'Recompensas pendientes de confirmación: ',en:'Rewards awaiting confirmation: ','pt-BR':'Recompensas aguardando confirmação: '};
+      const count=Object.values(globalThis.AdventureRewards?.read()||{}).filter(e=>['finish_submitted','awaiting_verification'].includes(e.status)).length;
+      pendingNotice.hidden=!count;pendingNotice.textContent=(pendingWords[globalThis.I18n?.language]||pendingWords.es)+count;
+      const state=snapshot,item=store.find(selected),owned=state.owned.includes(item.id),equipped=state.equipped[item.character]===item.id;
       for(const button of el('tiendaTrajesCatalogo').children){const entry=store.find(button.dataset.skin);button.hidden=Boolean(entry.adminOnly&&!state.owned.includes(entry.id));}
       if(item.adminOnly&&!owned){selected=store.catalog.find(entry=>!entry.adminOnly).id;selectedPose='base';return render();}
       GameUI.text(el('tiendaSaldo'), GameUI.key('shop.balance', {coins:state.coins}));
@@ -68,7 +73,7 @@
     b.append(img,hero,title,document.createElement('small'));
     b.addEventListener('click',()=>{selected=item.id;selectedPose='base';announce('');render();if(!preview.open)preview.showModal();});el('tiendaTrajesCatalogo').append(b);
   }
-  el('comprarTraje').addEventListener('click',()=>{const id=selected;void action(async()=>{if(globalThis.AventuraShop?.testing())throw Error('Las monedas de prueba no se pueden gastar.');await store.purchase(id);return K('shop.purchased');});});
+  el('comprarTraje').addEventListener('click',()=>{const id=selected;void action(async()=>{if(globalThis.AventuraShop?.testing())throw Error('Las monedas de prueba no se pueden gastar.');await globalThis.AventuraShop?.connect();if(globalThis.AventuraShop?.testing())throw Error('Las monedas de prueba no se pueden gastar.');await store.purchase(id);return K('shop.purchased');});});
   el('equiparTraje').addEventListener('click',()=>{const item=store.find(selected);void action(()=>{store.equip(item.character,item.id);return K("shop.outfitSaved",{hero:item.hero,outfit:outfit(item)});});});
   el('restaurarTraje').addEventListener('click',()=>{const item=store.find(selected);void action(()=>{store.equip(item.character,null);return K("shop.originalSaved",{hero:item.hero});});});
   el('btnTienda').addEventListener('click',()=>{

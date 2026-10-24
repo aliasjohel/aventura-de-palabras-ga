@@ -138,7 +138,7 @@
   ];
   const hiddenRunesImage = base + 'puente-runas-ocultas-v2.png';
 
-  function mountHiddenRunes(container, board, message, makeButton, finish, sound) {
+  function mountHiddenRunes(container, board, message, makeButton, finish, sound, record) {
     let closed = false, zoom = 1, dragged = false;
     const found = new Set(), pointers = new Map();
     board.className = 'runas-visor'; board.tabIndex = 0;
@@ -165,6 +165,7 @@
       item.append(preview, label); targets.append(item);
       const button = makeButton('', () => {
         if (closed || dragged || found.has(index)) return;
+        record('runes',{op:'find',index});
         found.add(index); sound('acertar'); button.classList.add('encontrada'); button.setAttribute('aria-pressed', 'true');
         button.setAttribute('aria-label', `${rune.name}, encontrada`); button.textContent = '✓';
         item.classList.add('encontrada'); label.textContent = `✓ ${rune.name}`; status();
@@ -250,7 +251,7 @@
   function chamberDifferenceAt(x, y, found = new Set()) {
     return chamberDifferences.findIndex((d, i) => !found.has(i) && x >= d.x-12 && x <= d.x+d.w+12 && y >= d.y-12 && y <= d.y+d.h+12);
   }
-  function mountChamberDifferences(container, board, message, makeButton, finish, sound, requestHint) {
+  function mountChamberDifferences(container, board, message, makeButton, finish, sound, requestHint, record) {
     let closed = false, ready = false, zoom = 1, hintPending = false;
     const found = new Set(), hinted = new Set(), views = [], scenes = [];
     board.className = 'camara-diferencias';
@@ -263,6 +264,7 @@
       if (closed || !ready || index < 0 || found.has(index)) return;
       found.add(index); sound('acertar');
       const d = chamberDifferences[index];
+      record('differences',{op:'mark',x:d.x+d.w/2,y:d.y+d.h/2});
       scenes.forEach(scene => {
         const ring = document.createElement('span'); ring.className = 'diferencia-encontrada'; ring.textContent = '✓'; ring.setAttribute('aria-hidden','true');
         ring.style.cssText = `left:${(d.x+d.w/2)/1536*100}%;top:${(d.y+d.h/2)/1024*100}%;width:${(d.w+26)/1536*100}%;height:${(d.h+26)/1024*100}%;`;
@@ -358,7 +360,7 @@
   }
 
   // Each puzzle owns its timers. Closing or restarting invalidates the old board.
-  function mountPuzzle(container, type, complete, { sound = () => {}, requestHint = null } = {}) {
+  function mountPuzzle(container, type, complete, { sound = () => {}, requestHint = null, record = () => {} } = {}) {
     let disposed = false, busy = false;
     const timers = new Set();
     const later = (fn, delay) => {
@@ -386,12 +388,13 @@
     };
     let closeRunes = () => {};
     if (type === 'runas-azrak') {
-      closeRunes = mountHiddenRunes(container, board, message, makeButton, finish, sound);
+      closeRunes = mountHiddenRunes(container, board, message, makeButton, finish, sound, record);
     } else if (type === 'sellos-azrak') {
       const values = [0, 1, 2, 3];
       board.classList.add('tablero-juramentos');
       ['Norte', 'Este', 'Sur', 'Oeste'].forEach((direction, index) => {
         const button = makeButton('', () => {
+          record('oaths',{op:'rotate',index});
           values[index] = (values[index] + 1) % symbols.length;
           renderSymbol();
         });
@@ -416,12 +419,13 @@
       clues.textContent = 'El cielo guía al norte. El bosque recibe el amanecer al este. El invierno espera al sur. El sol descansa al oeste.';
       container.prepend(clues);
       makeButton('Abrir los cuatro sellos', () => {
+        record('oaths',{op:'check'});
         if (sealsSolved(values)) finish();
         else message.textContent = 'Todavía hay símbolos fuera de lugar. Leé las cuatro pistas.';
       }, container);
       message.textContent = 'Tocá cada sello para cambiar su símbolo. Después comprobá el orden.';
     } else if (type === 'eclipse-azrak') {
-      closeRunes = mountChamberDifferences(container, board, message, makeButton, finish, sound, requestHint);
+      closeRunes = mountChamberDifferences(container, board, message, makeButton, finish, sound, requestHint, record);
     }
     return () => { disposed = true; closeRunes(); timers.forEach(clearTimeout); timers.clear(); };
   }
@@ -447,7 +451,7 @@
     { key: 'traicion', text: '«Ya no me servís», sentencia Azrak. Una descarga alcanza a Shadow y abre una grieta bajo sus pies.', actors: [aren(), shadow(45, 'desvanecer', 't-shadow-impacto.png'), azrak('', 'azrak-ataque.png')], effect: 'traicion' },
     { key: 'ausencia', text: 'La grieta se cierra entre humo violeta. No queda rastro de Shadow. Aren se interpone: «Se terminó, Azrak».', actors: [aren(25), azrak()], effect: 'bruma' },
     { key: 'burla-azrak', image: 'ausencia-v1.png', text: 'Azrak se ríe: «¿Vos vas a detenerme? Un simple humano, sin alas ni magia propia. No tenés ninguna posibilidad».', actors: [aren(25), azrak()], duration: 8500 },
-    { key: 'aren-decide', image: 'ausencia-v1.png', focus: '25% 65%', text: 'Aren tiembla, pero da un paso al frente: «Tengo miedo. También tengo personas por las que seguir. Si me derribás, voy a volver a levantarme».', actors: [aren(25), azrak()], duration: 10000 },
+    { key: 'aren-decide', image: 'ausencia-v1.png', focus: '25% 65%', text: 'Aren da un paso al frente: «Voy a seguir adelante por los que quiero y por este mundo. Si me derribás, voy a volver a levantarme».', actors: [aren(25), azrak()], duration: 10000 },
   ];
   const finale = [
     { key: 'resiste', text: 'El duelo está ganado, pero Azrak absorbe la energía del trono. Los guardianes atraviesan el portal: esta vez, Aren no luchará solo.', actors: [aren(), actor('guardiana', '../coleccion/guardiana-bosque-base.png', 31, 74, 30), actor('zafir', 'mago-base.png', 43, 73, 29), azrak()], effect: 'portal' },

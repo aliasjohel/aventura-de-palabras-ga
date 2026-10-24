@@ -420,7 +420,7 @@
     "cinema76": "“Você não me serve mais”, declara Azrak. Uma descarga atinge Shadow e abre uma fenda sob seus pés.",
     "cinema77": "A fenda se fecha entre fumaça violeta. Não resta sinal de Shadow. Aren se interpõe: “Acabou, Azrak.”",
     "cinema78": "Azrak ri: “Você vai me deter? Um simples humano, sem asas nem magia própria. Você não tem nenhuma chance.”",
-    "cinema79": "Aren treme, mas dá um passo à frente: “Tenho medo. Também tenho pessoas por quem continuar. Se me derrubar, vou me levantar de novo.”",
+    "cinema79": "Aren dá um passo à frente: “Vou seguir em frente por quem eu amo e por este mundo. Se me derrubar, vou me levantar de novo.”",
     "cinema80": "O duelo está ganho, mas Azrak absorve a energia do trono. Os guardiões atravessam o portal: desta vez, Aren não lutará sozinho.",
     "cinema81": "Um rugido sacode o trono. O cão de três cabeças de Azrak se ergue sobre os guardiões, enorme como uma torre. Suas três cabeças lançam chamas, e Aren mal consegue erguer a espada a tempo.",
     "cinema82": "Antes que o fogo os alcance, um raio de gelo surge do portal que Lume mantém aberto. Duas garras gigantes se agarram à pedra. Nivor respondeu ao chamado!",
@@ -960,5 +960,17 @@
     },
     "powered": "com energia",
     "unpowered": "sem energia"
+  },
+  "rewards": {
+    "claimed": "Recompensa recebida",
+    "processing": "Recompensa aguardando confirmação",
+    "playing": "Tentativa online em andamento",
+    "replay": "Recompensa pendente · Jogue novamente online",
+    "available": "Recompensa disponível ao concluir online",
+    "interrupted": "Conexão interrompida · Jogue novamente online",
+    "restart": "↻ Reiniciar missão do início",
+    "unavailable": "Recompensa pendente · Serviço online indisponível",
+    "connectionLost": "Você pode continuar a história. Repita a missão do começo com conexão para receber a recompensa.",
+    "duelOfflineRestart": "A conexão caiu. Este duelo recomeça no modo história, sem recompensa. Repita a missão online para recebê-la."
   }
 }

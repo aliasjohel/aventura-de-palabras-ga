@@ -1,6 +1,51 @@
 (function iniciarVersusRoomSupabase(raiz) {
   "use strict";
 
+  const sesionesEnCurso = new WeakMap();
+
+  function recuperarSesion(cliente) {
+    if (sesionesEnCurso.has(cliente)) return sesionesEnCurso.get(cliente);
+    const recuperar = async () => {
+      // Read again INSIDE the browser lock: another tab may just have saved its session.
+      const { data, error } = await cliente.auth.getSession();
+      if (error) throw traducirError(error, "No pudimos recuperar la sesión.");
+      let sesion = data?.session;
+      if (sesion) {
+        // Keep the existing UUID, including confirmation completed in another browser.
+        const renovacion = await cliente.auth.refreshSession(sesion);
+        if (renovacion.error) throw traducirError(renovacion.error, "La sesión guardada venció. Volvé a entrar con tu correo.");
+        return renovacion.data?.session || sesion;
+      }
+      // Supabase can fall back to memory if storage is unavailable. Do not create
+      // disposable identities on each launch when we cannot remember the first one.
+      const clave = "aventura-auth-storage-check";
+      try {
+        const storage = raiz.localStorage;
+        if (!storage) throw new Error();
+        const anterior = storage.getItem(clave);
+        try {
+          storage.setItem(clave, "1");
+          if (storage.getItem(clave) !== "1") throw new Error();
+        } finally {
+          if (anterior === null) storage.removeItem(clave);
+          else storage.setItem(clave, anterior);
+        }
+      } catch (_) {
+        throw new Error("Habilitá el almacenamiento del navegador para conservar tu jugador online.");
+      }
+      const ingreso = await cliente.auth.signInAnonymously();
+      if (ingreso.error) throw traducirError(ingreso.error, "No pudimos iniciar la sesión anónima.");
+      return ingreso.data?.session;
+    };
+    // Separate from Supabase's own token lock, avoiding nested acquisition of that lock.
+    const nombre = "aventura-auth-bootstrap:" + (cliente.supabaseUrl || raiz.AVENTURA_SUPABASE_CONFIG?.url || "default");
+    const promesa = Promise.resolve().then(() => raiz.navigator?.locks?.request
+      ? raiz.navigator.locks.request(nombre, { mode: "exclusive" }, recuperar)
+      : recuperar()).finally(() => sesionesEnCurso.delete(cliente));
+    sesionesEnCurso.set(cliente, promesa);
+    return promesa;
+  }
+
   function traducirError(error, respaldo) {
     const mensaje = error?.message || respaldo;
     if (/anonymous sign-ins are disabled/i.test(mensaje)) {
@@ -13,6 +58,8 @@
     if (!cliente) throw new Error("El cliente de Supabase no está disponible.");
 
     let usuarioId = null;
+    let inicializacionEnCurso = null;
+    let confirmacionCorreoPendiente = false;
     let idiomaBusqueda = null;
     let usuarioActual = null;
     let sesionActual = null;
@@ -103,6 +150,7 @@
     function actualizarSesion(sesion) {
       const siguienteUsuario = sesion?.user?.id || null;
       if (usuarioId !== siguienteUsuario) {
+        confirmacionCorreoPendiente = false;
         ultimaSalaInvitada = null;
         salaInvitadaPendiente = null;
         salasAbandonadas.clear();
@@ -114,6 +162,8 @@
       sesionActual = sesion || null;
       usuarioActual = sesionActual?.user || null;
       usuarioId = usuarioActual?.id || null;
+      if (usuarioActual?.is_anonymous === false) confirmacionCorreoPendiente = false;
+      else if (usuarioActual?.new_email) confirmacionCorreoPendiente = true;
       raiz.GameWallet?.connect(cliente, usuarioId);
     }
 
@@ -244,25 +294,15 @@
       return partidaActual;
     }
 
-    async function inicializar() {
-      const { data: sesionActual, error: errorSesion } = await cliente.auth.getSession();
-      if (errorSesion) throw traducirError(errorSesion, "No pudimos recuperar la sesión.");
+    function inicializar() {
+      if (inicializacionEnCurso) return inicializacionEnCurso;
+      if (usuarioId && suscripcionAuth && !confirmacionCorreoPendiente) return Promise.resolve(usuarioId);
+      inicializacionEnCurso = inicializarConexion().finally(() => { inicializacionEnCurso = null; });
+      return inicializacionEnCurso;
+    }
 
-      let sesion = sesionActual.session;
-      if (!sesion) {
-        const { data, error } = await cliente.auth.signInAnonymously();
-        if (error) throw traducirError(error, "No pudimos iniciar la sesión anónima.");
-        sesion = data.session;
-      } else {
-        // La confirmación puede abrirse en otro navegador mientras la PWA conserva
-        // el JWT anónimo anterior. Renovarlo trae inmediatamente el estado real.
-        const { data, error } = await cliente.auth.refreshSession(sesion);
-        if (error) throw traducirError(
-          error,
-          "La sesión guardada venció. Volvé a entrar con tu correo.",
-        );
-        sesion = data.session || sesion;
-      }
+    async function inicializarConexion() {
+      const sesion = await recuperarSesion(cliente);
 
       if (!sesion?.user?.id) throw new Error("Supabase no devolvió una identidad de jugador.");
       actualizarSesion(sesion);
@@ -618,6 +658,8 @@
         { emailRedirectTo: urlRetornoAutenticacion() },
       );
       if (error) throw traducirError(error, "No pudimos enviar la confirmación.");
+      // Confirmation in another browser must refresh this UUID rather than create a guest.
+      confirmacionCorreoPendiente = true;
       return email;
     }
 

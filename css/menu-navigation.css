@@ -119,3 +119,7 @@
 @keyframes mapa-viaje { from { transform: translate(-35px,-120px); opacity: 0; } to { transform: translate(0,0); opacity: 1; } }
 .mapa-aren-llegando { animation: mapa-viaje 1s ease-out both; }
 @media(prefers-reduced-motion:reduce) { .mapa-aren-llegando { animation: none; } }
+
+.mapa-mision .mapa-recompensa{display:block;margin-top:8px;font:600 11px/1.45 system-ui,sans-serif;color:#f0d58b;overflow-wrap:anywhere}
+.mapa-mision[data-reward-state="claimed"] .mapa-recompensa{color:#a2dfad}
+.mapa-mision[data-reward-state="processing"] .mapa-recompensa{color:#b9dff5}

@@ -827,6 +827,11 @@ function finalizarContextoPalabras() {
   filasTeclado = WordGameplay.rules('es').rows;
 }
 function iniciarContextoPalabras(mode, online = false) {
+  const vistaAventura = globalThis.AdventureOnline?.view();
+  const idiomaMision = ['adventure','adventure-duel'].includes(mode) && vistaAventura && !vistaAventura.complete
+    && AdventureOnline.handles(escenarioActual,misionActual,vistaAventura.kind) ? vistaAventura.language : null;
+  // Keep a lock across word/puzzle/duel context changes within the same authoritative mission.
+  const conservarIdiomaMision = idiomaMision ? I18n.lockLanguage() : null;
   finalizarContextoPalabras();
   online = online || mode === 'online';
   const idiomasDisponibles = mode === 'adventure'
@@ -837,7 +842,7 @@ function iniciarContextoPalabras(mode, online = false) {
     ? (escenarioActual === 0 ? ForestWordBanks.version : AdventureWordBanks.version)
     : mode !== 'adventure' && !online && idiomasDisponibles.includes(I18n.language) && I18n.language !== 'es'
       ? (mode === 'versus' ? ExpandedVersusWordBanks.version : LocalVersusWordBanks.version) : undefined;
-  contextoPalabrasCombate = WordGameplay.createContext({mode, online, onlineLanguage: partidaOnlineVersus?.wordLanguage || adaptadorSalasVersus.obtenerSala()?.idioma || 'es', requestedLanguage: I18n.language, availableLanguages: idiomasDisponibles, bankVersion: versionBanco});
+  contextoPalabrasCombate = WordGameplay.createContext({mode, online, onlineLanguage: partidaOnlineVersus?.wordLanguage || adaptadorSalasVersus.obtenerSala()?.idioma || 'es', requestedLanguage: idiomaMision || I18n.language, availableLanguages: idiomasDisponibles, bankVersion: versionBanco});
   const bancos = mode === 'adventure' ? [obtenerBancoPalabrasAventura()] : Object.values(obtenerBancosPalabrasVersus());
   for (const banco of bancos) if (!bancosPalabrasValidados.has(banco)) {
     WordGameplay.validateBank(banco, contextoPalabrasCombate.language, {hints: mode === 'adventure'});
@@ -854,6 +859,7 @@ function iniciarContextoPalabras(mode, online = false) {
     tecladoVersus.dataset.alfabeto = firma;
   }
   liberarIdiomaCombate = I18n.lockLanguage();
+  conservarIdiomaMision?.();
   return contextoPalabrasCombate;
 }
 function motorDePalabras() { return motorPalabrasCombate; }
@@ -1077,7 +1083,7 @@ function saldoTiendaOMonedas(respaldo = monedas) {
   catch (_) { return respaldo; }
 }
 monedas = saldoTiendaOMonedas();
-// Acceso local o activación del dispositivo mediante el enlace privado de autor.
+// Herramientas de autor solo en el servidor local de desarrollo.
 let herramientasAutorDisponibles = Boolean(globalThis.AventuraDeveloper?.enabled);
 function actualizarAccesoHerramientasAutor() {
   herramientasAutorDisponibles = Boolean(globalThis.AventuraDeveloper?.enabled);
@@ -1088,7 +1094,7 @@ function actualizarAccesoHerramientasAutor() {
 }
 function actualizarAccesoUnionOnline() {
   let state;try { state=globalThis.CosmeticStore?.read(); } catch(_) {}
-  document.getElementById('accesoUnionOnline').hidden=!herramientasAutorDisponibles&&!state?.admin;
+  document.getElementById('accesoUnionOnline').hidden=!state?.securityReady||!state?.arenTrial;
   GameUI.text(document.getElementById('btnUnionOnline'),GameUI.key(state?.adminUnion?'common.disableUnion':'common.enableUnion'));
 }
 window.addEventListener('wallet-updated',actualizarAccesoUnionOnline);
@@ -1100,7 +1106,7 @@ document.getElementById('btnUnionOnline').addEventListener('click',async()=>{
     if(partidaOnlineVersus?.status==='playing')throw Error('Terminá el duelo antes de cambiar el acceso a Aren Unión.');
     await globalThis.AventuraShop.connect();
     const state=CosmeticStore.read();
-    const result=state.admin?await GameWallet.setAdminUnion(!state.adminUnion):await AventuraDeveloper.activateOnline();
+    const result=await GameWallet.setArenTrial(!state.adminUnion);
     window.dispatchEvent(new Event('costume-equipped'));
     GameUI.text(status,GameUI.key(result.adminUnion?'common.unionEnabled':'common.unionDisabled'));
   } catch(error) { GameUI.text(status,GameUI.error(error,'errors.unionFailure')); }
@@ -1109,24 +1115,6 @@ document.getElementById('btnUnionOnline').addEventListener('click',async()=>{
 actualizarAccesoHerramientasAutor();
 globalThis.AventuraDeveloper?.ready.then(actualizarAccesoHerramientasAutor);
 window.addEventListener('developer-access-changed', actualizarAccesoHerramientasAutor);
-globalThis.AventuraDeveloper?.ready.then(() => {
-  if (herramientasAutorDisponibles) GameUI.text(document.getElementById('estadoAccesoDesarrollador'), GameUI.key('common.accessEnabled'));
-});
-document.getElementById('formActivarDesarrollador').addEventListener('submit', async event => {
-  event.preventDefault();
-  const button = document.getElementById('btnActivarDesarrollador');
-  const input = document.getElementById('codigoDesarrollador');
-  const status = document.getElementById('estadoAccesoDesarrollador');
-  if (button.disabled) return;
-  button.disabled = true;
-  try {
-    const result = await globalThis.AventuraDeveloper.activate(input.value);
-    input.value = '';
-    GameUI.text(status,GameUI.key(result.persisted?'common.accessSaved':'common.accessSession'));
-    modoPruebas.focus();
-  } catch (error) { GameUI.text(status,GameUI.error(error,'errors.accessFailure')); }
-  finally { button.disabled = false; }
-});
 globalThis.AventuraShop = Object.freeze({
   connect: async () => {
     const adapter=await asegurarConexionSalasVersus();
@@ -1146,72 +1134,10 @@ globalThis.AventuraShop = Object.freeze({
     prepararDueloVersus({comenzarRonda:false});
     mostrarPantalla(pantallaVersus);
   },
-  testing: () => modoPruebasActivo || Boolean(globalThis.AventuraMapa?.repeticion),
+  testing: () => modoPruebasActivo,
   canPreviewBackgrounds: () => modoPruebasActivo && herramientasAutorDisponibles,
-  sync: () => { if (!modoPruebasActivo && !globalThis.AventuraMapa?.repeticion) { monedas=saldoTiendaOMonedas();actualizarJugador(); } },
+  sync: () => { if (!modoPruebasActivo) { monedas=saldoTiendaOMonedas();actualizarJugador(); } },
 });
-const claveRecompensasMonedasPendientes = "recompensasMonedasPendientesAventuraGA";
-
-function leerRecompensasMonedasPendientes() {
-  try {
-    const guardadas = JSON.parse(
-      localStorage.getItem(claveRecompensasMonedasPendientes) || "[]",
-    );
-    if(!Array.isArray(guardadas))return [];
-    const converted=guardadas.map(item=>item.currencyVersion===2?item:{...item,cantidad:item.cantidad*10,currencyVersion:2});
-    if(guardadas.some(item=>item.currencyVersion!==2))guardarRecompensasMonedasPendientes(converted);
-    return converted;
-  } catch (_error) {
-    return [];
-  }
-}
-
-function guardarRecompensasMonedasPendientes(recompensas) {
-  try {
-    localStorage.setItem(
-      claveRecompensasMonedasPendientes,
-      JSON.stringify(recompensas),
-    );
-  } catch (error) {
-    console.warn("No se pudo guardar la cola de monedas offline.", error);
-  }
-}
-
-function crearIdRecompensaMonedas() {
-  return globalThis.crypto?.randomUUID?.()
-    || `monedas-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-}
-
-function otorgarMonedas(cantidad, origen) {
-  const valor = Math.max(0, Math.trunc(Number(cantidad) || 0));
-  if (!valor) return;
-  if (modoPruebasActivo || globalThis.AventuraMapa?.repeticion) { monedas += valor; return; }
-  monedas = globalThis.CosmeticStore ? CosmeticStore.earn(valor, origen) : monedas + valor;
-
-  const recompensas = leerRecompensasMonedasPendientes();
-  recompensas.push({
-    id: crearIdRecompensaMonedas(),
-    cantidad: valor,
-    currencyVersion: 2,
-    origen,
-    obtenidaEn: new Date().toISOString(),
-  });
-  guardarRecompensasMonedasPendientes(recompensas);
-}
-
-function confirmarRecompensasMonedasSincronizadas(idsConfirmados = []) {
-  const confirmados = new Set(idsConfirmados);
-  if (!confirmados.size) return;
-  guardarRecompensasMonedasPendientes(
-    leerRecompensasMonedasPendientes().filter(({ id }) => !confirmados.has(id)),
-  );
-}
-
-globalThis.AventuraMonedasOffline = Object.freeze({
-  obtenerPendientes: () => leerRecompensasMonedasPendientes().map((item) => ({ ...item })),
-  confirmarSincronizadas: confirmarRecompensasMonedasSincronizadas,
-});
-
 let experiencia = 0;
 let cristalesObtenidos = 0;
 let mundoDosCompletado = false;
@@ -1309,6 +1235,10 @@ let secuenciaKairosActiva = false;
 let estadoEncuentroCalamo = "pendiente";
 let secuenciaCalamoActiva = false;
 let dueloAventuraActivo = null;
+let autoridadDueloAventura = null;
+let ultimoEventoDueloAventura = 0;
+let efectoDueloAventura = '';
+const letrasPendientesDueloAventura = new Set();
 const desafiosPorMision = 3;
 function obtenerCantidadDesafiosMision(escenario = escenarioActual, mision = misionActual) {
   return (escenario === 4 && mision === 7) || (escenario === 0 && mision === 1) || (escenario === 1 && mision === 5) ? 4 : desafiosPorMision;
@@ -3116,10 +3046,14 @@ btnEntrarCuentaVersus.addEventListener("click", () => ejecutarAccionAmigosVersus
   "Te enviamos un enlace para entrar a tu cuenta.",
 ));
 
-btnGoogleCuentaVersus.addEventListener("click", () => ejecutarAccionAmigosVersus(
-  () => adaptadorSalasVersus.vincularGoogle(),
-  "Abriendo Google…",
-));
+// Google is disabled in Supabase. Keep the translated control for later activation.
+btnGoogleCuentaVersus.addEventListener("click", () => {
+  if (btnGoogleCuentaVersus.hidden || btnGoogleCuentaVersus.disabled) return;
+  return ejecutarAccionAmigosVersus(
+    () => adaptadorSalasVersus.vincularGoogle(),
+    "Abriendo Google…",
+  );
+});
 
 btnGuardarPerfilVersus.addEventListener("click", () => ejecutarAccionAmigosVersus(
   async () => {
@@ -3796,7 +3730,9 @@ btnSalirMuralSantuario.addEventListener("click", () => {
   mostrarPantalla(pantallaMenu);
 });
 
-btnRepetirPruebaBosque.addEventListener("click", () => {
+btnRepetirPruebaBosque.addEventListener("click", async () => {
+  const kind=globalThis.AdventureOnline?.view()?.kind;
+  if(globalThis.AdventureOnline?.handles(escenarioActual,misionActual,kind))await AdventureOnline.action(kind==='memory:wolves'?'puzzle':'reset_puzzle',kind==='memory:wolves'?{op:'replay'}:{});
   if (pruebaEspecialBosqueActiva?.endsWith("-azrak")) {
     iniciarPuzzleAzrak(pruebaEspecialBosqueActiva);
     return;
@@ -3892,6 +3828,11 @@ btnNuevaAventura.addEventListener("click", () => {
 function mostrarPalabra() {
   palabraOculta.innerHTML = "";
 
+  if (globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'word')) {
+    AdventureOnline.view().mask.forEach(letra=>{const casilla=document.createElement('span');casilla.classList.add('casilla');if(letra){casilla.textContent=letra;casilla.classList.add('revelada');}palabraOculta.appendChild(casilla);});
+    return;
+  }
+
   palabraSecreta.split("").forEach((letra) => {
     const casilla = document.createElement("span");
     casilla.classList.add("casilla");
@@ -3928,9 +3869,19 @@ function crearTeclado() {
   });
 }
 
-function elegirLetra(letra, boton) {
+let accionAventuraOnlineEnCurso = false;
+async function elegirLetra(letra, boton) {
   letra = motorDePalabras().reglas.letter(letra);
-  if (!letra || boton.disabled || letrasElegidas.includes(letra)) return;
+  if (!letra || boton.disabled || letrasElegidas.includes(letra) || accionAventuraOnlineEnCurso) return;
+  if (globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'word')) {
+    const mundoAccion=escenarioActual,misionAccion=misionActual,desafioAccion=desafiosCompletados;
+    accionAventuraOnlineEnCurso=true;boton.disabled=true;
+    const vista=await AdventureOnline.action('letter',{letter:letra});
+    accionAventuraOnlineEnCurso=false;
+    if(mundoAccion!==escenarioActual||misionAccion!==misionActual||desafioAccion!==desafiosCompletados)return;
+    if(!vista){continuarPalabraAventuraSinConexion();return;}
+    palabraSecreta=vista.mask.map(l=>l||'_').join('');
+  }
   boton.disabled = true;
   letrasElegidas.push(letra);
 
@@ -3991,7 +3942,7 @@ function verificarEstado() {
       escenarioActual === 0 &&
       misionActual === 8 &&
       desafiosCompletados === desafiosPorMision - 1 &&
-      cristalesObtenidos === 0;
+      (cristalesObtenidos === 0 || globalThis.AdventureOnline?.handles(0,8,'word'));
 
     if (completaSantuarioPorPrimeraVez) {
       reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
@@ -4569,6 +4520,7 @@ function descripcionHabilidadVersus(personaje, desdeRival = false) {
     : habilidadesVersus[personaje] || habilidadesVersus.explorador;
 }
 function sincronizarTecladoDemoVersus() {
+  if (autoridadDueloAventura?.active()) return sincronizarTecladoDueloAventura();
   const bloqueado = demoVersus.finalizadoJugador
     || demoVersus.partidaFinalizada
     || tecladoVersus.classList.contains("efecto-raices")
@@ -4920,7 +4872,7 @@ function limpiarCalaveraTecladoVersus() {
   tecladoVersus.classList.remove('efecto-calavera-azrak');
 }
 
-function mostrarCalaveraTecladoVersus(alTerminar) {
+function mostrarCalaveraTecladoVersus(alTerminar, milisegundos = 2000) {
   limpiarCalaveraTecladoVersus();
   void tecladoVersus.offsetWidth;
   tecladoVersus.classList.add('efecto-calavera-azrak');
@@ -4934,7 +4886,7 @@ function mostrarCalaveraTecladoVersus(alTerminar) {
     } else {
       sincronizarTecladoDemoVersus();
     }
-  }, 2000);
+  }, milisegundos);
 }
 
 function animarTeclaCalaveraIgneaVersus(letra, recibida = false, presentar = true) {
@@ -5026,7 +4978,7 @@ function limpiarRelojKairosVersus() {
   CombatUI.attribute(tecladoVersus, "aria-label", "Teclado de combate");
 }
 
-function mostrarRelojKairosVersus() {
+function mostrarRelojKairosVersus(milisegundos = 2000) {
   clearTimeout(temporizadorRelojKairos);
   tecladoVersus.querySelector(".arena-reloj-kairos")?.remove();
   tecladoVersus.classList.remove("efecto-reloj-kairos");
@@ -5048,7 +5000,7 @@ function mostrarRelojKairosVersus() {
     } else {
       sincronizarTecladoDemoVersus();
     }
-  }, 2000);
+  }, milisegundos);
 }
 
 function animarRoboTiempoKairosVersus(desdeRival = false, segundos = 20) {
@@ -5161,6 +5113,11 @@ async function activarHabilidadVersus() {
   if (btnHabilidadVersus.disabled) return;
   if (tutorialCombateVersus.activo) {
     if (pasoActualTutorialVersus === 4) lanzarHabilidadTutorialVersus();
+    return;
+  }
+  if (autoridadDueloAventura?.active()) {
+    btnHabilidadVersus.disabled = true;
+    await autoridadDueloAventura.send({op:'ability'});
     return;
   }
   if (adaptadorSalasVersus.proveedor !== "supabase") {
@@ -5489,6 +5446,101 @@ const configuracionesDuelosAventura = Object.freeze({
   },
 });
 
+function sincronizarTecladoDueloAventura() {
+  const estado = globalThis.AdventureOnline?.view()?.detail;
+  if (!estado?.player) return;
+  const jugador = estado.player;
+  const bloqueado = !estado.started || estado.finished || jugador.finished
+    || ['roots','black_hole','key_bounce','ice_screen','key_theft','time_steal','forced_miss'].includes(jugador.effect);
+  tecladoVersus.querySelectorAll('button').forEach(boton => {
+    boton.disabled = bloqueado || jugador.letters.includes(boton.textContent)
+      || letrasPendientesDueloAventura.has(jugador.index + ':' + boton.textContent);
+  });
+}
+
+function mostrarProgresoDueloAventura(estado) {
+  if (!estado?.player) return;
+  for (const [actor, numero] of [['player','Uno'],['npc','Dos']]) {
+    const jugador = estado[actor];
+    const elemento = document.getElementById('palabraVersus' + numero);
+    const progreso = jugador.finished
+      ? GameUI.key('adventure.combat.words',{count:jugador.completed})
+      : jugador.mask.map(letra => letra || '_').join(' ');
+    GameUI.text(elemento, progreso);
+    GameUI.attribute(elemento,'aria-label',GameUI.key('adventure.combat.progress',{progress:progreso}));
+    ajustarPalabraLargaVersus(elemento,jugador.mask.length);
+    CombatUI.text(numero === 'Uno' ? tituloProgresoUno : tituloProgresoDos,
+      `${numero === 'Uno' ? 'TU DESAFÍO' : 'RIVAL'} · ${(nombresTematicasVersus[jugador.theme] || jugador.theme).toUpperCase()} ${VersusEngine.obtenerEtiquetaRonda(jugador.index)}`);
+  }
+  CombatUI.text(tituloVersus,`J1 ${estado.player.completed}/${maximoPalabrasVersus} · J2 ${estado.npc.completed}/${maximoPalabrasVersus}`);
+}
+
+function renderizarDueloAventuraAutoritativo(estado) {
+  if (!dueloAventuraActivo || !estado?.player) return;
+  for (const [actor, sufijo] of [['player','Jugador'],['npc','Rival']]) {
+    const jugador = estado[actor];
+    demoVersus['vidas'+sufijo] = jugador.lives;
+    demoVersus['errores'+sufijo] = jugador.errors;
+    demoVersus['letras'+sufijo] = new Set(jugador.letters);
+    demoVersus['indice'+sufijo] = jugador.index;
+    demoVersus['palabrasCompletadas'+sufijo] = jugador.completed;
+    demoVersus['finalizado'+sufijo] = jugador.finished;
+    demoVersus['tiempo'+sufijo] = jugador.remaining;
+    demoVersus['cargaHabilidad'+sufijo] = jugador.charge;
+  }
+  mostrarProgresoDueloAventura(estado);
+  actualizarVidasVersus();
+  actualizarIntentosVersus(document.getElementById('intentosVersusUno'),estado.player.errors,'Jugador 1');
+  actualizarIntentosVersus(document.getElementById('intentosVersusDos'),estado.npc.errors,'Jugador 2');
+  actualizarTiemposVersus();
+  actualizarPanelHabilidadVersus(estado.player.charge,estado.player.hint);
+  if (!estado.started || estado.finished || estado.player.finished) btnHabilidadVersus.disabled = true;
+  for (const evento of estado.events || []) {
+    if (evento.seq <= ultimoEventoDueloAventura) continue;
+    ultimoEventoDueloAventura = evento.seq;
+    if (evento.type === 'word' && evento.correct) {
+      if (evento.actor === 'player') reproducirAtaqueJugadorVersus();
+      else reproducirAtaqueRivalVersus();
+    }
+    if (evento.type === 'ability') reproducirAnimacionHabilidadVersus(
+      evento.actor === 'player' ? 'explorador' : estado.character,
+      {desdeRival:evento.actor === 'npc', alImpactar:()=>{}});
+    if (evento.type === 'letter' && evento.actor === 'npc') reproducirPulsacionTeclaVersus('rival');
+  }
+  const firma = estado.player.effect + ':' + estado.player.effect_until;
+  if (firma !== efectoDueloAventura) {
+    efectoDueloAventura = firma;
+    limpiarEfectoVisualHabilidadVersus();
+    limpiarCalaveraTecladoVersus();
+    limpiarRelojKairosVersus();
+    // These callbacks only animate. The authoritative input path owns errors, time and damage.
+    if (estado.player.effect === 'forced_miss') mostrarCalaveraTecladoVersus(()=>{},estado.player.effectRemaining);
+    else if (estado.player.effect === 'time_steal') mostrarRelojKairosVersus(estado.player.effectRemaining);
+    else aplicarEfectoVisualHabilidadVersus(estado.player.effect,estado.player.effectRemaining);
+  }
+  sincronizarTecladoDueloAventura();
+  if (estado.finished && !demoVersus.partidaFinalizada) finalizarPartidaVersus(
+    estado.winner === 'player' ? 'jugador' : estado.winner === 'npc' ? 'rival' : 'empate',
+    `Resultado final: ${estado.player.lives} a ${estado.npc.lives} corazones.`);
+}
+
+function continuarDueloAventuraSinConexion(contexto) {
+  const tipo = contexto.type || contexto.tipo;
+  if (dueloAventuraActivo?.tipo !== tipo) return;
+  autoridadDueloAventura?.stop();
+  globalThis.AdventureOnline?.clear();
+  dueloAventuraActivo = null;
+  void iniciarDueloAventura(tipo).then(()=>mostrarAvisoAvanceVersus(
+    I18n.t('adventure.rewards.duelOfflineRestart'), 'error'));
+}
+
+autoridadDueloAventura = globalThis.AdventureDuelOnline?.create({
+  authority: globalThis.AdventureOnline,
+  scope: () => dueloAventuraActivo ? {type:dueloAventuraActivo.tipo,world:escenarioActual,mission:misionActual} : null,
+  render: renderizarDueloAventuraAutoritativo,
+  fallback: continuarDueloAventuraSinConexion,
+});
+
 async function presentarDueloAventura(tipo) {
   if (tipo === "shadow_primero") {
     if (primerEncuentroShadowEnCurso || dueloAventuraActivo || escenarioActual !== 4 || misionActual !== 2) return;
@@ -5595,9 +5647,16 @@ async function presentarDueloAventura(tipo) {
   iniciarDueloAventura(tipo);
 }
 
-function iniciarDueloAventura(tipo) {
+async function iniciarDueloAventura(tipo) {
   const configuracion = configuracionesDuelosAventura[tipo];
   if (!configuracion) return;
+  await globalThis.AdventureOnline?.flush();
+  const vista = globalThis.AdventureOnline?.view();
+  const clase = globalThis.AdventureDuelOnline?.kinds[tipo];
+  if (vista && vista.kind !== clase && vista.phaseDone) {
+    await AdventureOnline.prepare(undefined, escenarioActual, misionActual, vista.phase + 1, contextoPalabrasCombate.language);
+  }
+  if (escenarioActual !== configuracion.escenario || misionActual !== configuracion.mision) return;
 
   cancelarCinematicaFinalVersus();
   detenerRondaVersus({ conservarTemaCalamo: tipo === "calamo_desierto" });
@@ -5622,8 +5681,12 @@ function iniciarDueloAventura(tipo) {
     tipo,
     resultado: "",
   };
+  ultimoEventoDueloAventura = 0;
+  efectoDueloAventura = '';
+  letrasPendientesDueloAventura.clear();
 
   prepararDueloVersus({ comenzarRonda: false });
+  if (autoridadDueloAventura?.active()) renderizarDueloAventuraAutoritativo(AdventureOnline.view().detail);
   fondoVersus.src = configuracion.arena;
   CombatUI.attribute(fondoVersus, 'alt', configuracion.altArena);
   CombatUI.text(document.querySelector(".versus-jugador-uno .versus-etiqueta"), "EXPLORADOR");
@@ -5663,14 +5726,17 @@ function limpiarInterfazDueloAventura() {
 function abandonarDueloAventura() {
   cancelarCinematicaFinalVersus();
   detenerRondaVersus();
+  globalThis.AdventureOnline?.clear();
+  void AdventureRewards.cancel();
   dueloAventuraActivo = null;
   limpiarInterfazDueloAventura();
   mostrarPantalla(pantallaMenu);
 }
 
-function reintentarDueloAventura() {
+async function reintentarDueloAventura() {
   const tipo = dueloAventuraActivo?.tipo;
   if (!tipo) return;
+  if (autoridadDueloAventura?.active()) await autoridadDueloAventura.send({op:'retry_duel'});
   dueloAventuraActivo = null;
   limpiarInterfazDueloAventura();
   iniciarDueloAventura(tipo);
@@ -5679,6 +5745,7 @@ function reintentarDueloAventura() {
 async function completarDueloAventura() {
   const duelo = dueloAventuraActivo;
   if (!duelo || duelo.resultado !== "jugador") return;
+  if (autoridadDueloAventura?.active() && !AdventureOnline.view()?.phaseDone) return;
 
   if (duelo.tipo === "shadow_primero") {
     dueloAventuraActivo = null;
@@ -6759,6 +6826,11 @@ function limpiarEntradaDueloVersus() {
 function comenzarRondaVersus() {
   document.querySelector(".versus-insignia").hidden = true;
   if (tutorialCombateVersus.activo) return;
+  if (autoridadDueloAventura?.active()) {
+    bloquearTecladoDemoVersus();
+    void autoridadDueloAventura.start();
+    return;
+  }
   if (dueloAventuraActivo?.tipo === "calamo_desierto") iniciarTemaCalamo();
   mostrarEstadoProgresoVersus(
     document.getElementById("estadoProgresoUno"),
@@ -6783,6 +6855,16 @@ async function jugarLetraVersus(letra, boton) {
   if (!boton.disabled) reproducirPulsacionTeclaVersus("jugador");
   if (tutorialCombateVersus.activo) {
     jugarLetraTutorialVersus(letra, boton);
+    return;
+  }
+  if (autoridadDueloAventura?.active()) {
+    if (boton.disabled || demoVersus.partidaFinalizada) return;
+    const word = AdventureOnline.view().detail.player.index;
+    const clave = word + ':' + letra;
+    letrasPendientesDueloAventura.add(clave);
+    boton.disabled = true;
+    try { await autoridadDueloAventura.send({op:'letter',letter:letra,word}); }
+    finally { letrasPendientesDueloAventura.delete(clave); if(autoridadDueloAventura.active())sincronizarTecladoDueloAventura(); }
     return;
   }
   if (adaptadorSalasVersus.proveedor !== "supabase") {
@@ -7644,6 +7726,7 @@ function bloquearTecladoDemoVersus() {
 }
 
 function habilitarTecladoVersus() {
+  if (autoridadDueloAventura?.active()) return sincronizarTecladoDueloAventura();
   const bloqueadoPorRaices = tecladoVersus.classList.contains("efecto-raices")
     || tecladoVersus.classList.contains("efecto-agujero-negro")
     || tecladoVersus.classList.contains("efecto-teclas-rotas")
@@ -7766,6 +7849,7 @@ function iniciarCombateArcade() {
 btnCombatirArcade.addEventListener("click", iniciarCombateArcade);
 
 function detenerRondaVersus({ conservarTemaCalamo = false } = {}) {
+  autoridadDueloAventura?.stop();
   limpiarQuemaduraTecladoVersus();
   if (!conservarTemaCalamo) detenerTemaCalamo();
   limpiarRelojKairosVersus();
@@ -7928,6 +8012,7 @@ function contarLetrasDescubiertasVersus(palabra, letras) {
 }
 
 function actualizarProgresosVersus() {
+  if (autoridadDueloAventura?.active()) return mostrarProgresoDueloAventura(AdventureOnline.view().detail);
   const palabraJugador = document.getElementById("palabraVersusUno");
   const palabraRival = document.getElementById("palabraVersusDos");
   const objetivoJugador = obtenerPalabraActualJugadorVersus();
@@ -8262,6 +8347,11 @@ function verificarFinNaturalVersus() {
 }
 
 function finalizarPartidaVersus(ganador, detalle, palabraPerdida = "") {
+  if (autoridadDueloAventura?.active()) {
+    const estado = AdventureOnline.view().detail;
+    if (!estado.finished) return;
+    ganador = estado.winner === 'player' ? 'jugador' : estado.winner === 'npc' ? 'rival' : 'empate';
+  }
   if (demoVersus.partidaFinalizada) return;
   actualizarProgresosVersus();
   demoVersus.partidaFinalizada = true;
@@ -9786,6 +9876,8 @@ async function mostrarIntroduccionMundoDos() {
 }
 
 function reiniciarEstadoAventura() {
+  globalThis.AdventureOnline?.clear();
+  if(globalThis.AdventureRewards)void AdventureRewards.cancel().catch(()=>{});
   finalizarContextoPalabras();
   historialPalabrasAventura = {};
   historialPalabrasPorIdioma = {};
@@ -10086,7 +10178,17 @@ function actualizarVidas() {
 }
 
 function palabraCompleta() {
+  if(globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'word'))return AdventureOnline.view().phaseDone;
   return motorDePalabras().palabraCompletada(palabraSecreta, letrasElegidas);
+}
+
+function continuarPalabraAventuraSinConexion(){
+  globalThis.AdventureOnline?.clear();
+  const palabra=obtenerPalabraAleatoria();
+  palabraSecreta=motorDePalabras().reglas.display(palabra.palabra);pistaActual=palabra.pista;
+  letrasElegidas=[];intentos=6;actualizarVidas();mostrarPalabra();teclado.innerHTML='';crearTeclado();
+  GameUI.text(mensajePersonaje,GameUI.key('adventure.rewards.connectionLost'));
+  mensajePersonaje.classList.remove('oculto');
 }
 
 function precargarSonidos() {
@@ -11279,7 +11381,12 @@ function logAudioEvento(mensaje, detalle = "") {
 }
 
 async function iniciarMisionAventura({ presentarMision = false } = {}) {
+  await globalThis.AdventureOnline?.flush();
   iniciarContextoPalabras("adventure");
+  let intentoOnline;
+  if(!modoPruebasActivo&&desafiosCompletados===0)intentoOnline=await AdventureRewards.begin(escenarioActual,misionActual).catch(()=>{});
+  if(modoPruebasActivo)globalThis.AdventureOnline?.clear();
+  const desafioOnline=!modoPruebasActivo?await globalThis.AdventureOnline?.prepare(intentoOnline,escenarioActual,misionActual,desafiosCompletados,contextoPalabrasCombate.language,prefiereReducirMovimiento.matches):null;
   ocultarMensajeDesafioSuperado();
   detenerPolvoImpacto();
   detenerAmbientePuente();
@@ -11309,6 +11416,9 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   palabraSecreta = motorDePalabras().reglas.display(palabraSeleccionada?.palabra || "");
 
   pistaActual = palabraSeleccionada?.pista || "";
+  if(desafioOnline?.kind==='word'){
+    palabraSecreta=desafioOnline.mask.map(l=>l||'_').join('');pistaActual=desafioOnline.hint;
+  }
 
   letrasElegidas = [];
   intentos = 6;
@@ -11429,9 +11539,9 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
 }
 
 function otorgarRecompensaMision(){
-  if(modoPruebasActivo||globalThis.AventuraMapa?.repeticion)return;
-  const reward=CosmeticStore.claimAdventure(escenarioActual,misionActual);
-  if(reward){monedas=saldoTiendaOMonedas();actualizarJugador();}
+  if(modoPruebasActivo)return;
+  const mundo=escenarioActual,mision=misionActual;
+  void Promise.resolve(globalThis.AdventureOnline?.flush()).then(()=>AdventureRewards.complete(mundo,mision)).catch(()=>{});
 }
 function avanzarMision() {
   desafiosCompletados++;
@@ -11455,13 +11565,13 @@ function avanzarMision() {
   detenerPresenciaBosque();
   detenerAranaBosque();
 
+  otorgarRecompensaMision();
   if (globalThis.AventuraMapa?.repeticion) {
     AventuraMapa.repeticion.completa = true;
     historiaMisionPendiente = false;
     return "";
   }
 
-  otorgarRecompensaMision();
   misionActual++;
   mensajePersonaje.textContent = "🏆 ¡Misión completada!";
   let sonidoNarrativo =
@@ -13299,18 +13409,22 @@ function iniciarPuzzleAzrak(tipo) {
     : tipo === "eclipse-azrak" ? "Encontrá siete diferencias. Ampliá las imágenes y arrastrá para comparar cada rincón."
     : "Resolvé el mecanismo para continuar. Podés reiniciarlo sin perder corazones.";
   btnRepetirPruebaBosque.textContent = "↻ Reiniciar puzzle";
-  cerrarPuzzleAzrak = AzrakWorld.mountPuzzle(puzzleCumbres, tipo, () => void completarPruebaEspecialBosque(tipo), { sound: reproducirSonido });
+  cerrarPuzzleAzrak = AzrakWorld.mountPuzzle(puzzleCumbres, tipo, () => void completarPruebaEspecialBosque(tipo), { sound: reproducirSonido, record:registrarAccionPuzzleOnline });
 }
 
 let idiomaPuzzle = 'es';
 let liberarIdiomaPuzzle = null;
+function estadoPuzzleOnline(kind){return globalThis.AdventureOnline?.handles(escenarioActual,misionActual,kind)?AdventureOnline.view().detail:null;}
+function registrarAccionPuzzleOnline(kind,payload){
+  if(estadoPuzzleOnline(kind))void AdventureOnline.action('puzzle',payload);
+}
 function obtenerDatosSopaCumbres() { return PuzzleLessons.search(idiomaPuzzle, letrasSopaCumbres, palabrasSopaCumbres); }
 function obtenerRondasSellosAeralis() { return PuzzleLessons.seals[idiomaPuzzle] || rondasSellosAeralis; }
 
 function abrirPruebaEspecialBosque(tipo) {
   if (!tipo || pruebaEspecialBosqueActiva) return;
 
-  idiomaPuzzle = I18n.language;
+  idiomaPuzzle = contextoPalabrasCombate?.language || I18n.language;
   liberarIdiomaPuzzle = I18n.lockLanguage();
   pruebaEspecialBosqueActiva = tipo;
   estadoPruebaBosque.textContent = "";
@@ -13539,12 +13653,16 @@ const mapaLaberintoHielo = Object.freeze([
 ]);
 const ladoLaberintoHielo = mapaLaberintoHielo.length;
 const estadoLaberintoHielo = { x: 1.5, y: 1.5, vx: 0, vy: 0, ultimoTiempo: 0 };
+let acumuladorLaberintoHielo=0,intervaloAutoridadLaberinto=null,entradaLaberintoPendiente=false;
+let prediccionOnlineLaberinto=null,generacionOnlineLaberinto=0;
 
 function esperarPuzzleHielo(milisegundos) {
   return new Promise((resolver) => window.setTimeout(resolver, milisegundos));
 }
 
 function detenerLaberintoHielo() {
+  generacionOnlineLaberinto++;prediccionOnlineLaberinto=null;
+  clearInterval(intervaloAutoridadLaberinto);intervaloAutoridadLaberinto=null;
   if (cuadroLaberintoHielo) cancelAnimationFrame(cuadroLaberintoHielo);
   cuadroLaberintoHielo = null;
   window.removeEventListener("deviceorientation", leerInclinacionLaberintoHielo);
@@ -13599,32 +13717,25 @@ function dibujarHuevoLaberintoHielo() {
 
 function animarLaberintoHielo(tiempo) {
   if (pruebaEspecialBosqueActiva !== "laberinto-hielo" || laberintoHieloCompletado) return;
-  const delta = estadoLaberintoHielo.ultimoTiempo
-    ? Math.min(0.034, (tiempo - estadoLaberintoHielo.ultimoTiempo) / 1000)
-    : 0.016;
-  estadoLaberintoHielo.ultimoTiempo = tiempo;
-  const fuerzaX = controlesLaberintoHielo.x || inclinacionLaberintoHielo.x;
-  const fuerzaY = controlesLaberintoHielo.y || inclinacionLaberintoHielo.y;
-  estadoLaberintoHielo.vx = (estadoLaberintoHielo.vx + fuerzaX * 7.2 * delta) * 0.975;
-  estadoLaberintoHielo.vy = (estadoLaberintoHielo.vy + fuerzaY * 7.2 * delta) * 0.975;
-  const velocidad = Math.hypot(estadoLaberintoHielo.vx, estadoLaberintoHielo.vy);
-  if (velocidad > 4.2) {
-    estadoLaberintoHielo.vx *= 4.2 / velocidad;
-    estadoLaberintoHielo.vy *= 4.2 / velocidad;
+  const delta = estadoLaberintoHielo.ultimoTiempo ? Math.min(.25,(tiempo-estadoLaberintoHielo.ultimoTiempo)/1000) : 1/60;
+  estadoLaberintoHielo.ultimoTiempo=tiempo;acumuladorLaberintoHielo+=delta;
+  const fuerza={x:controlesLaberintoHielo.x||inclinacionLaberintoHielo.x,y:controlesLaberintoHielo.y||inclinacionLaberintoHielo.y};
+  if(prediccionOnlineLaberinto&&estadoPuzzleOnline('maze')){
+    Object.assign(estadoLaberintoHielo,prediccionOnlineLaberinto.frame(tiempo,fuerza));
+    acumuladorLaberintoHielo=0;
+  }else{
+    prediccionOnlineLaberinto=null;
+    while(acumuladorLaberintoHielo>=AdventureMazePhysics.DT){
+      Object.assign(estadoLaberintoHielo,AdventureMazePhysics.step(estadoLaberintoHielo,fuerza,mapaLaberintoHielo));
+      acumuladorLaberintoHielo-=AdventureMazePhysics.DT;
+    }
   }
-
-  const siguienteX = estadoLaberintoHielo.x + estadoLaberintoHielo.vx * delta;
-  if (!hayChoqueLaberintoHielo(siguienteX, estadoLaberintoHielo.y)) estadoLaberintoHielo.x = siguienteX;
-  else estadoLaberintoHielo.vx *= -0.24;
-  const siguienteY = estadoLaberintoHielo.y + estadoLaberintoHielo.vy * delta;
-  if (!hayChoqueLaberintoHielo(estadoLaberintoHielo.x, siguienteY)) estadoLaberintoHielo.y = siguienteY;
-  else estadoLaberintoHielo.vy *= -0.24;
   dibujarHuevoLaberintoHielo();
 
   if (Math.hypot(
     estadoLaberintoHielo.x - (ladoLaberintoHielo - 1.5),
     estadoLaberintoHielo.y - (ladoLaberintoHielo - 1.5),
-  ) < 0.42) {
+  ) < 0.42 && (!estadoPuzzleOnline('maze') || estadoPuzzleOnline('maze').done)) {
     laberintoHieloCompletado = true;
     puzzleCumbres.querySelector(".meta-laberinto-hielo")?.classList.add("rescatado");
     estadoPruebaBosque.textContent = "¡El huevo llegó a salvo al nido boreal!";
@@ -13662,6 +13773,25 @@ function iniciarLaberintoHielo() {
   btnRepetirPruebaBosque.textContent = "↻ Volver al inicio";
   laberintoHieloCompletado = false;
   Object.assign(estadoLaberintoHielo, { x: 1.5, y: 1.5, vx: 0, vy: 0, ultimoTiempo: 0 });
+  acumuladorLaberintoHielo=0;entradaLaberintoPendiente=false;
+  if(estadoPuzzleOnline('maze')){
+    const intento=AdventureOnline.view().attemptId,generacion=generacionOnlineLaberinto;
+    const predictor=AdventureMazeOnline.create({map:mapaLaberintoHielo,initial:estadoPuzzleOnline('maze'),now:performance.now()});
+    prediccionOnlineLaberinto=predictor;
+    let pendiente=false;
+    intervaloAutoridadLaberinto=setInterval(async()=>{
+      if(generacion!==generacionOnlineLaberinto)return;
+      if(pruebaEspecialBosqueActiva!=='laberinto-hielo'||!estadoPuzzleOnline('maze')){clearInterval(intervaloAutoridadLaberinto);return;}
+      if(pendiente)return;pendiente=true;
+      const enviado=performance.now();
+      try{
+        const vista=await AdventureOnline.action('puzzle',{op:'input',x:controlesLaberintoHielo.x||inclinacionLaberintoHielo.x,y:controlesLaberintoHielo.y||inclinacionLaberintoHielo.y});
+        if(generacion===generacionOnlineLaberinto&&prediccionOnlineLaberinto===predictor&&vista&&vista.attemptId===intento&&pruebaEspecialBosqueActiva==='laberinto-hielo'){
+          predictor.reconcile(vista.detail,{sentAt:enviado,receivedAt:performance.now(),sequence:vista.sequence});
+        }
+      }finally{pendiente=false;}
+    },100);
+  }
 
   const tablero = document.createElement("div");
   tablero.className = "tablero-laberinto-hielo";
@@ -13761,6 +13891,7 @@ function renderizarCorazonTermico() {
 
 function ajustarNucleoTermico(indice) {
   if (pruebaEspecialBosqueActiva !== "corazon-termico") return;
+  registrarAccionPuzzleOnline('thermal',{op:'rotate',index:indice});
   estadosCorazonTermico[indice] = (estadosCorazonTermico[indice] + 1) % 3;
   const siguiente = (indice + 1) % estadosCorazonTermico.length;
   estadosCorazonTermico[siguiente] = (estadosCorazonTermico[siguiente] + 1) % 3;
@@ -13889,6 +14020,7 @@ function mostrarTrayectoSopaCumbres() {
 
 function validarTrayectoSopaCumbres() {
   const trayecto = [...trayectoSeleccionSopaCumbres];
+  if(trayecto.length)registrarAccionPuzzleOnline('search',{op:'search',from:trayecto[0],to:trayecto.at(-1)});
   const texto = trayecto.map((indice) => obtenerDatosSopaCumbres().letters[indice]).join("");
   const palabra = obtenerDatosSopaCumbres().words.find(
     (objetivo) => objetivo.palabra === texto || objetivo.palabra === [...texto].reverse().join(""),
@@ -14062,6 +14194,7 @@ function activarCeldaRedHielo(indice) {
       return;
     }
     colorActivoRedHielo = extremo.color;
+    registrarAccionPuzzleOnline('ice-path',{op:'path_start',color:extremo.color,start:indice});
     extremoInicialRedHielo = indice;
     trayectoActivoRedHielo = [indice];
     caminosRedHielo.set(extremo.color, [...trayectoActivoRedHielo]);
@@ -14108,6 +14241,7 @@ function extenderCaminoRedHielo(indice) {
   renderizarRedHielo();
   if (extremo && indice !== extremoInicialRedHielo) {
     const colorCompletado = colorActivoRedHielo;
+    registrarAccionPuzzleOnline('ice-path',{op:'path',color:colorCompletado,path:[...trayectoActivoRedHielo]});
     coloresCompletadosRedHielo.add(colorCompletado);
     colorActivoRedHielo = "";
     trayectoActivoRedHielo = [];
@@ -14193,12 +14327,13 @@ function actualizarPosicionesCampanasCumbres(posiciones, duracionPaso) {
   });
 }
 
-function prepararRondaCampanasCumbres() {
+async function prepararRondaCampanasCumbres() {
+  await globalThis.AdventureOnline?.flush();
   if (pruebaEspecialBosqueActiva !== "campanas-celestes") return;
   const configuracion = rondasCampanasCumbres[rondaCampanasCumbresActual];
   const secuencia = ++secuenciaCampanasCumbres;
   campanasCumbresAceptando = false;
-  campanaReliquiaCumbres = Math.floor(Math.random() * 3);
+  campanaReliquiaCumbres = estadoPuzzleOnline('bells')?.relic ?? Math.floor(Math.random() * 3);
   puzzleCumbres.replaceChildren();
 
   const cabecera = document.createElement("div");
@@ -14242,7 +14377,7 @@ async function mezclarCampanasCumbres(posiciones, configuracion, secuencia) {
   await esperarCampanasCumbres(420);
 
   const pares = [[0, 1], [1, 2], [0, 2]];
-  const desfase = Math.floor(Math.random() * pares.length);
+  const desfase = estadoPuzzleOnline('bells')?.offset ?? Math.floor(Math.random() * pares.length);
   for (let paso = 0; paso < configuracion.intercambios; paso += 1) {
     if (secuencia !== secuenciaCampanasCumbres || pruebaEspecialBosqueActiva !== "campanas-celestes") return;
     const [primera, segunda] = pares[(paso + desfase) % pares.length];
@@ -14289,6 +14424,7 @@ function reproducirToqueCampanaCumbres() {
 }
 
 function elegirCampanaCumbres(identidad) {
+  if(campanasCumbresAceptando)registrarAccionPuzzleOnline('bells',{op:'choose',index:identidad});
   if (!campanasCumbresAceptando || pruebaEspecialBosqueActiva !== "campanas-celestes") return;
   reproducirToqueCampanaCumbres();
   campanasCumbresAceptando = false;
@@ -14386,6 +14522,7 @@ function girarAnilloSelloAeralis(posicion) {
   const opciones = ronda?.opciones[posicion];
   const boton = botonesPuzzleCumbres[posicion];
   if (!ronda || !opciones || !boton || boton.disabled) return;
+  registrarAccionPuzzleOnline('rings',{op:'rotate',index:posicion});
   indicesSellosCumbres[posicion] = (indicesSellosCumbres[posicion] + 1) % opciones.length;
   const letra = opciones[indicesSellosCumbres[posicion]];
   boton.querySelector("strong").textContent = letra;
@@ -14398,6 +14535,7 @@ function girarAnilloSelloAeralis(posicion) {
 function comprobarSelloAeralis() {
   const ronda = obtenerRondasSellosAeralis()[rondaSellosCumbres];
   if (!ronda || pruebaEspecialBosqueActiva !== "sellos-aeralis") return;
+  registrarAccionPuzzleOnline('rings',{op:'check'});
   const palabraActual = ronda.opciones
     .map((letras, indice) => letras[indicesSellosCumbres[indice]])
     .join("");
@@ -14447,7 +14585,8 @@ function comprobarSelloAeralis() {
 function iniciarPuzzleRamasDeslizante() {
   if (pruebaEspecialBosqueActiva !== "ramas") return;
 
-  estadoTableroRamas = AdventurePuzzles.crearTableroMezclado(6);
+  estadoTableroRamas = globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'slide')
+    ? AdventureOnline.view().board.map(n=>n===-1?null:n) : AdventurePuzzles.crearTableroMezclado(6);
   movimientosPuzzleRamas = 0;
   tableroRamasDeslizante.classList.remove("resuelto", "movimiento-invalido");
   estadoPruebaBosque.textContent =
@@ -14487,8 +14626,18 @@ function renderizarPuzzleRamasDeslizante() {
   });
 }
 
-function moverPiezaPuzzleRamas(posicion) {
+let movimientoRamasOnlineEnCurso=false;
+async function moverPiezaPuzzleRamas(posicion) {
   if (pruebaEspecialBosqueActiva !== "ramas") return;
+  if(movimientoRamasOnlineEnCurso)return;
+  if(globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'slide')){
+    if(!AdventurePuzzles.obtenerMovimientosValidos(estadoTableroRamas).includes(posicion))return;
+    movimientoRamasOnlineEnCurso=true;
+    const vista=await AdventureOnline.action('tile',{index:posicion});
+    movimientoRamasOnlineEnCurso=false;
+    if(pruebaEspecialBosqueActiva!=='ramas')return;
+    if(!vista){iniciarPuzzleRamasDeslizante();return;}
+  }
 
   const resultado = AdventurePuzzles.moverPieza(estadoTableroRamas, posicion);
   if (!resultado.movida) {
@@ -14579,6 +14728,7 @@ function iniciarPuzzleVientosDesierto() {
     },
   );
   movimientosVientosDesierto = 0;
+  if(estadoPuzzleOnline('channels'))orientacionesVientosDesierto=[...estadoPuzzleOnline('channels').values];
   estadoPruebaBosque.textContent =
     "Conectá la entrada solar con el núcleo. Cuidado: los desvíos también se iluminan, pero algunos terminan sin salida.";
   renderizarPuzzleVientosDesierto();
@@ -14714,6 +14864,7 @@ function renderizarPuzzleVientosDesierto() {
 
 function girarObeliscoViento(indice) {
   if (pruebaEspecialBosqueActiva !== "vientos") return;
+  registrarAccionPuzzleOnline('channels',{op:'rotate',index:indice});
 
   orientacionesVientosDesierto[indice] =
     (orientacionesVientosDesierto[indice] + 1) % 4;
@@ -14804,13 +14955,14 @@ function crearObjetivoOasisAleatorio() {
   );
 }
 
-function prepararRondaOasisDesierto() {
-  const objetivo = crearObjetivoOasisAleatorio();
+async function prepararRondaOasisDesierto() {
+  await globalThis.AdventureOnline?.flush();
+  const objetivo = estadoPuzzleOnline('oasis')?.goal || crearObjetivoOasisAleatorio();
   objetivoOasisDesiertoActual = objetivo;
   const indiceBrillo = coloresBrilloOasis.indexOf(objetivo.brillo);
   const palmeraSiguiente = (objetivo.palmeras % 3) + 1;
   const palmeraAnterior = ((objetivo.palmeras + 1) % 3) + 1;
-  const opciones = mezclarLista([
+  const opciones = estadoPuzzleOnline('oasis')?.choices || mezclarLista([
     objetivo,
     {
       ondas: objetivo.ondas,
@@ -14828,7 +14980,7 @@ function prepararRondaOasisDesierto() {
       brillo: objetivo.brillo,
     },
   ]);
-  oasisVerdaderoDesierto = opciones.indexOf(objetivo);
+  oasisVerdaderoDesierto = opciones.findIndex(opcion=>crearClaveRasgosOasis(opcion)===crearClaveRasgosOasis(objetivo));
   botonesOasisDesierto.forEach((boton, indice) => {
     const rasgos = opciones[indice];
     boton.disabled = false;
@@ -14848,6 +15000,7 @@ function prepararRondaOasisDesierto() {
 
 function elegirOasisDesierto(indice) {
   if (pruebaEspecialBosqueActiva !== "oasis") return;
+  registrarAccionPuzzleOnline('oasis',{op:'choose',index:indice});
 
   const boton = botonesOasisDesierto[indice];
   if (indice !== oasisVerdaderoDesierto) {
@@ -14912,6 +15065,7 @@ function iniciarPuzzleEspejosDesierto() {
     aplicarGiroEspejosVinculados(Math.floor(Math.random() * objetivos.length));
   }
   rutaLuzEspejos.classList.remove("resuelta");
+  if(estadoPuzzleOnline('mirrors'))orientacionesEspejosDesierto=[...estadoPuzzleOnline('mirrors').values];
   estadoPruebaBosque.textContent =
     "Los cinco espejos están conectados: cada toque gira el elegido y el siguiente.";
   renderizarPuzzleEspejosDesierto();
@@ -14943,6 +15097,7 @@ function renderizarPuzzleEspejosDesierto() {
 
 function girarEspejoDesierto(indice) {
   if (pruebaEspecialBosqueActiva !== "espejos") return;
+  registrarAccionPuzzleOnline('mirrors',{op:'rotate',index:indice});
 
   const objetivos = [1, 3, 1, 3, 1];
   aplicarGiroEspejosVinculados(indice);
@@ -14984,6 +15139,8 @@ function esperarPruebaBosque(duracion) {
 }
 
 async function mostrarSecuenciaMemoriaLobos() {
+  await globalThis.AdventureOnline?.flush();
+  if(estadoPuzzleOnline('memory:wolves'))secuenciaMemoriaLobos=[...estadoPuzzleOnline('memory:wolves').values];
   if (pruebaEspecialBosqueActiva !== "lobos") return;
 
   const secuencia = ++secuenciaPruebaBosque;
@@ -15016,6 +15173,7 @@ async function mostrarSecuenciaMemoriaLobos() {
 
 function elegirLoboMemoria(indice) {
   if (pruebaEspecialBosqueActiva !== "lobos" || !memoriaLobosAceptandoEntrada) return;
+  registrarAccionPuzzleOnline('memory:wolves',{op:'choose',index:indice});
 
   const boton = botonesMemoriaLobos[indice];
   boton.classList.add("elegido");
@@ -15134,6 +15292,7 @@ async function completarPruebaEspecialBosque(tipo) {
   if (pruebaEspecialBosqueActiva !== tipo) return;
 
   pruebaEspecialBosqueActiva = "completando";
+  await globalThis.AdventureOnline?.flush();
   const secuencia = ++secuenciaPruebaBosque;
   btnRepetirPruebaBosque.disabled = true;
   btnSalirPruebaBosque.disabled = true;
@@ -15364,7 +15523,8 @@ function limpiarEstilosArrastrePiezaMural(pieza) {
   pieza.style.removeProperty("top");
 }
 
-function intentarEncajarPiezaMural(
+let movimientoMuralOnlineEnCurso=false;
+async function intentarEncajarPiezaMural(
   espacio,
   pieza = piezaSeleccionadaMural,
   origenArrastre = null,
@@ -15375,6 +15535,13 @@ function intentarEncajarPiezaMural(
   if (origen === espacio) {
     limpiarSeleccionPiezaMural();
     return;
+  }
+  if(globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'mural')){
+    if(movimientoMuralOnlineEnCurso)return;
+    movimientoMuralOnlineEnCurso=true;
+    await AdventureOnline.action('mural_place',{piece:Number(pieza.dataset.indice),slot:Number(espacio.dataset.indice)});
+    movimientoMuralOnlineEnCurso=false;
+    if(!rompecabezasMuralActivo)return;
   }
 
   const ocupante = espacio.querySelector(":scope > .pieza-mural-santuario");
@@ -15417,11 +15584,18 @@ function limpiarSeleccionPiezaMural() {
   btnRetirarPiezaMural.disabled = true;
 }
 
-function retirarPiezaMuralSantuario(
+async function retirarPiezaMuralSantuario(
   pieza = piezaSeleccionadaMural,
   origenArrastre = null,
 ) {
   if (!rompecabezasMuralActivo || !pieza) return;
+  if(globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'mural')){
+    if(movimientoMuralOnlineEnCurso)return;
+    movimientoMuralOnlineEnCurso=true;
+    await AdventureOnline.action('mural_place',{piece:Number(pieza.dataset.indice),slot:-1});
+    movimientoMuralOnlineEnCurso=false;
+    if(!rompecabezasMuralActivo)return;
+  }
 
   const origen = origenArrastre || pieza.closest(".espacio-mural-santuario");
   limpiarEstilosArrastrePiezaMural(pieza);
@@ -15529,8 +15703,9 @@ function cerrarRompecabezasMuralSantuario(completado) {
 
 async function completarSantuarioConMural() {
   if (cinematicaSantuarioActiva || rompecabezasMuralActivo) return;
+  if(globalThis.AdventureOnline?.handles(0,8,'word'))await AdventureOnline.prepare(undefined,0,8,3,contextoPalabrasCombate.language);
 
-  if (!muralSantuarioCompletado) {
+  if (!muralSantuarioCompletado || globalThis.AdventureOnline?.handles(0,8,'mural')) {
     const completado = await abrirRompecabezasMuralSantuario();
     if (!completado) return;
     muralSantuarioCompletado = true;
@@ -16822,6 +16997,7 @@ function abrirMapaAventura() {
     camino.append(boton);
   });
   mostrarMisionesMapa(datos.mundo);
+  if(navigator.onLine&&!modoPruebasActivo)void AventuraShop.connect().then(()=>AdventureRewards.recover()).catch(()=>{});
   if (!mapa.open) mapa.showModal();
   mapa.scrollTop = 0;
   localStorage.setItem("mapaMundoVistoGA", String(datos.ultimo));
@@ -16850,14 +17026,19 @@ function mostrarMisionesMapa(mundo, desplazar = false) {
     nombre.textContent = `${mision + 1}. ${historia.titulo}`;
     const accion = document.createElement("span");
     accion.textContent = estado === "completada" ? "✓ Completada · Volver a jugar" : estado === "actual" ? "▶ Continuar" : "🔒 Pendiente";
-    boton.append(nombre, accion);
-    boton.addEventListener("click", () => seleccionarMisionMapa(mundo, mision));
+    const recompensa=document.createElement('small');recompensa.className='mapa-recompensa precio-con-moneda';
+    const estadoPremio=AdventureRewards.status(mundo,mision);
+    const etiqueta=estadoPremio==='claimed'?'claimed':estadoPremio==='processing'?'processing':estadoPremio==='playing_online'?'playing':estadoPremio==='replay_required'?'interrupted':estadoPremio==='unavailable'?'unavailable':estado==='completada'?'replay':'available';
+    GameUI.text(recompensa,GameUI.key('adventure.rewards.'+etiqueta));boton.dataset.rewardState=estadoPremio;
+    boton.append(nombre, accion,recompensa);
+    if(estado==='actual'&&estadoPremio==='replay_required')GameUI.text(accion,GameUI.key('adventure.rewards.restart'));
+    boton.addEventListener("click", () => seleccionarMisionMapa(mundo, mision,{desdeInicio:estado==='actual'&&estadoPremio==='replay_required'}));
     panel.append(boton);
   });
   if (desplazar) { titulo.focus({preventScroll:true}); panel.scrollIntoView({block:"start", behavior:"smooth"}); }
 }
 
-async function seleccionarMisionMapa(mundo, mision) {
+async function seleccionarMisionMapa(mundo, mision,{desdeInicio=false}={}) {
   if (AventuraMapa.iniciando) return;
   const estado = estadoMisionMapa(mundo, mision);
   if (estado === "bloqueada") return;
@@ -16872,10 +17053,10 @@ async function seleccionarMisionMapa(mundo, mision) {
     }
     // Cerrar el mapa mientras Aren camina cancela la selección.
     if (!document.getElementById("mapaAventura").open) return;
-    if (estado === "actual") { await continuarDesdeMapa(); return; }
+    if (estado === "actual"&&!desdeInicio) { await continuarDesdeMapa(); return; }
     if (modoPruebasActivo) actualizarModoPruebas(false);
     reiniciarEstadoAventura();
-    AventuraMapa.repeticion = { mundo, mision, completa: false };
+    AventuraMapa.repeticion = estado === "actual" ? null : { mundo, mision, completa: false };
     document.getElementById("mapaAventura").close();
     cristalesObtenidos = mundo;
     if (mundo === 0 && mision === 9) cristalesObtenidos = 1;
@@ -16889,6 +17070,8 @@ function finalizarRepeticionAventura() {
   detenerSonidos();
   reiniciarEstadoAventura();
   AventuraMapa.repeticion = null;
+  globalThis.AdventureOnline?.clear();
+  void AdventureRewards.cancel();
   cargarPersonajesDesbloqueados();
   cargarProgreso();
   actualizarDisponibilidadPersonajesVersus();
@@ -16933,3 +17116,18 @@ CharacterMusic.configure(() => ({
 }));
 
 I18n.subscribe(() => { actualizarSalaVersus(adaptadorSalasVersus.obtenerSala()); });
+
+window.addEventListener('offline',()=>{
+  const duelo = autoridadDueloAventura?.active() ? {...dueloAventuraActivo} : null;
+  AdventureRewards.disconnected();
+  if(globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'word')&&!AdventureOnline.view().phaseDone)continuarPalabraAventuraSinConexion();
+  else globalThis.AdventureOnline?.clear();
+  if (duelo) continuarDueloAventuraSinConexion(duelo);
+});
+window.addEventListener('online',()=>{void AdventureRewards.recover();});
+function actualizarEstadosRecompensaMapa(){
+ const map=document.getElementById('mapaAventura');if(!map?.open)return;
+ const selected=document.querySelector('.mapa-mundo[aria-expanded="true"]');if(selected)mostrarMisionesMapa(Number(selected.dataset.mundo));
+}
+window.addEventListener('adventure-rewards-updated',actualizarEstadosRecompensaMapa);
+window.addEventListener('wallet-updated',actualizarEstadosRecompensaMapa);

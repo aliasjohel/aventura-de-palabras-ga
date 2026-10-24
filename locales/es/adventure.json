@@ -420,7 +420,7 @@
     "cinema76": "«Ya no me servís», sentencia Azrak. Una descarga alcanza a Shadow y abre una grieta bajo sus pies.",
     "cinema77": "La grieta se cierra entre humo violeta. No queda rastro de Shadow. Aren se interpone: «Se terminó, Azrak».",
     "cinema78": "Azrak se ríe: «¿Vos vas a detenerme? Un simple humano, sin alas ni magia propia. No tenés ninguna posibilidad».",
-    "cinema79": "Aren tiembla, pero da un paso al frente: «Tengo miedo. También tengo personas por las que seguir. Si me derribás, voy a volver a levantarme».",
+    "cinema79": "Aren da un paso al frente: «Voy a seguir adelante por los que quiero y por este mundo. Si me derribás, voy a volver a levantarme».",
     "cinema80": "El duelo está ganado, pero Azrak absorbe la energía del trono. Los guardianes atraviesan el portal: esta vez, Aren no luchará solo.",
     "cinema81": "Un rugido sacude el trono. El cancerbero de Azrak se alza sobre los guardianes, enorme como una torre. Sus tres cabezas lanzan llamaradas y Aren apenas alcanza a levantar su espada.",
     "cinema82": "Antes de que el fuego los alcance, un rayo de hielo surge del portal que Lume mantiene abierto. Dos garras gigantes se aferran a la piedra. ¡Nivor ha respondido a la llamada!",
@@ -960,5 +960,17 @@
     },
     "powered": "con energía",
     "unpowered": "sin energía"
+  },
+  "rewards": {
+    "claimed": "Recompensa cobrada",
+    "processing": "Recompensa pendiente de confirmación",
+    "playing": "Intento online en curso",
+    "replay": "Recompensa pendiente · Repetí online para cobrar",
+    "available": "Recompensa disponible al completar online",
+    "interrupted": "Conexión interrumpida · Repetí online para cobrar",
+    "restart": "↻ Repetir misión desde el inicio",
+    "unavailable": "Recompensa pendiente · Servicio online no disponible",
+    "connectionLost": "La historia sigue disponible. Repetí la misión desde el principio con conexión para cobrar su recompensa.",
+    "duelOfflineRestart": "Se cortó la conexión. Reiniciamos este duelo en modo historia, sin recompensa. Podés repetir la misión online para cobrarla."
   }
 }

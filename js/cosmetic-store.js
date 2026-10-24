@@ -22,7 +22,6 @@
   const find=id=>catalog.find(item=>item.id===id);
   const cinemaPoses=Object.freeze(['planta','mano','vidrio','envejecido','anciano','final']);
   const currencyVersion=2;
-  const scale=value=>{const result=integer(value)*10;if(!Number.isSafeInteger(result))throw Error('Saldo fuera de rango.');return result;};
   const integer=value=>Number.isSafeInteger(value)&&value>=0?value:0;
   function normalizeSkins(value){
     const result={};
@@ -45,87 +44,92 @@
   function create(storage){
     let purchaseHandler=null;
     const changed=()=>globalThis.dispatchEvent?.(new Event('wallet-local-changed'));
-    function previousMissions(progress){
-      if(!progress){try{progress=JSON.parse(storage.getItem('progresoAventuraGA')||'{}');}catch{progress={};}}
-      const claims=[];
-      const world=Math.max(0,Math.min(4,integer(progress.escenarioActual)));
-      for(let w=0;w<5;w++)for(let m=0;m<10;m++)if(progress.estadoFinalAzrak==='completo'||w<world||(w===world&&m<integer(progress.misionActual)))claims.push(`aventura:${w}:${m}:mision`);
-      return claims;
-    }
+    const missionKey=(world,mission)=>'aventura:'+world+':'+mission+':mision';
+    const validMission=e=>e&&Number.isInteger(e.world)&&e.world>=0&&e.world<5&&Number.isInteger(e.mission)&&e.mission>=0&&e.mission<10;
+    const requests=value=>[...new Map((Array.isArray(value)?value:[]).filter(validMission).map(e=>[missionKey(e.world,e.mission),{world:e.world,mission:e.mission}])).values()];
     function read(){
+      const historicProgress=storage.getItem('progresoAventuraGA');
+      if(historicProgress&&!storage.getItem(key+':pre-security-v3:story'))storage.setItem(key+':pre-security-v3:story',historicProgress);
       const raw=storage.getItem(key);
-      if(!raw){
-        let legacy={};try{legacy=JSON.parse(storage.getItem('progresoAventuraGA')||'{}');}catch(_){}
-        const state={currencyVersion,coins:legacy.currencyVersion===2?integer(legacy.monedas):scale(legacy.monedas),owned:[],equipped:{},missionClaims:previousMissions(legacy)};
-        storage.setItem(key,JSON.stringify(state));return state;
-      }
-      let value;try{value=JSON.parse(raw);}catch(_){throw Error('No pudimos leer tus compras. No se cobró ninguna moneda.');}
-      if(!value||typeof value!=='object')throw Error('No pudimos leer tus compras. No se cobró ninguna moneda.');
-      if(value.currencyVersion!==currencyVersion){
-        value.coins=scale(value.coins);
-        if(Array.isArray(value.pending))value.pending=value.pending.map(e=>({...e,amount:scale(e.amount),currencyVersion}));
-        if(value.legacy&&value.legacy.currencyVersion!==currencyVersion)value.legacy={...value.legacy,coins:scale(value.legacy.coins),currencyVersion};
-        value.missionClaims=previousMissions();
-        value.currencyVersion=currencyVersion;
-        save(value);
+      let value;
+      try{value=raw?JSON.parse(raw):null;}catch{throw Error('No pudimos leer tus compras. No se cobró ninguna moneda.');}
+      if(raw&&(!value||typeof value!=='object'||Array.isArray(value)))throw Error('No pudimos leer tus compras. No se cobró ninguna moneda.');
+      if(!value){
+        // Display-only legacy state. Never import or rewrite a historic payload while reading.
+        value={coins:0,owned:[],equipped:{}};
       }
       const owned=[...new Set((Array.isArray(value.owned)?value.owned:[]).filter(id=>find(id)&&(!find(id).adminOnly||(value.accountId&&value.adminUnion===true))))];
       const equipped=normalizeSkins(value.equipped);
-      for(const char of Object.keys(equipped)) if(!owned.includes(equipped[char]))delete equipped[char];
-      const state={currencyVersion,coins:integer(value.coins),owned,equipped,missionClaims:Array.isArray(value.missionClaims)?value.missionClaims:[]};
-      if(typeof value.accountId==='string')Object.assign(state,{accountId:value.accountId,revision:Number.isSafeInteger(value.revision)?value.revision:-1,
-        pending:Array.isArray(value.pending)?value.pending:[],legacy:value.legacy||null,equipmentVersion:integer(value.equipmentVersion),equipmentDirty:Boolean(value.equipmentDirty),admin:value.admin===true,adminUnion:value.adminUnion===true});
+      for(const char of Object.keys(equipped))if(!owned.includes(equipped[char]))delete equipped[char];
+      return {currencyVersion,securityVersion:value.securityVersion,securityReady:value.securityVersion===3&&value.securityReady===true,
+        coins:value.securityVersion===3?integer(value.coins):0,owned,equipped,requests:requests(value.requests),
+        missionClaims:(Array.isArray(value.missionClaims)?value.missionClaims:[]).filter(e=>/^aventura:[0-4]:[0-9]:mision$/.test(e)),
+        accountId:typeof value.accountId==='string'?value.accountId:null,revision:Number.isSafeInteger(value.revision)?value.revision:-1,
+        equipmentVersion:integer(value.equipmentVersion),equipmentDirty:value.equipmentDirty===true,
+        world5Complete:value.world5Complete===true,admin:false,arenTrial:value.arenTrial===true,adminUnion:value.adminUnion===true};
+    }
+    function archiveLegacy(raw){
+      if(!raw)return;
+      const old=JSON.parse(raw);if(old.securityVersion===3)return;
+      const archive=key+':pre-security-v3:'+(old.accountId||'guest');
+      if(!storage.getItem(archive))storage.setItem(archive,JSON.stringify({wallet:raw,progress:storage.getItem('progresoAventuraGA')}));
+    }
+    function save(state){
+      archiveLegacy(storage.getItem(key));
+      state.currencyVersion=currencyVersion;
+      const encoded=JSON.stringify(state);
+      storage.setItem(key,encoded);
+      if(state.accountId)storage.setItem(key+':account:'+state.accountId,encoded);
       return state;
     }
-    function save(state){state.currencyVersion=currencyVersion;storage.setItem(key,JSON.stringify(state));if(state.accountId)storage.setItem(key+':account:'+state.accountId,JSON.stringify(state));return state;}
     function beginAccount(id){
-      const previous=read();if(previous.accountId===id)return previous;
-      const cached=storage.getItem(key+':account:'+id);
-      if(cached){storage.setItem(key,cached);return read();}
-      const legacy=previous.accountId?null:{currencyVersion,missionClaims:previous.missionClaims,deviceId:globalThis.crypto.randomUUID(),coins:previous.coins,owned:previous.owned,equipped:previous.equipped};
-      if(legacy)storage.setItem(key+':legacy-backup',JSON.stringify(legacy));
-      return save({coins:legacy?.coins||0,owned:legacy?.owned||[],equipped:legacy?.equipped||{},accountId:id,revision:-1,pending:[],legacy,equipmentVersion:0,equipmentDirty:false,missionClaims:previous.accountId?[]:previous.missionClaims});
+      if(typeof id!=='string'||!id)throw Error('Cuenta inválida.');
+      const previous=read();
+      archiveLegacy(storage.getItem(key));
+      const cachedRaw=storage.getItem(key+':account:'+id);
+      let cached;try{cached=cachedRaw?JSON.parse(cachedRaw):null;}catch{throw Error('No pudimos leer tus compras.');}
+      if(cachedRaw&&(!cached||typeof cached!=='object'||Array.isArray(cached)||cached.accountId!==id))throw Error('No pudimos verificar el archivo de tu cuenta.');
+      archiveLegacy(cachedRaw);
+      const candidate=previous.accountId===id?previous:cached?.accountId===id?cached:null;
+      if(candidate?.securityVersion===3){
+        if(previous.accountId!==id)storage.setItem(key,JSON.stringify(candidate));
+        return read();
+      }
+      // Preserve exact historical bytes before replacing a cache. Archives are never sent to RPC.
+      const archive=key+':pre-security-v3:'+id;
+      if(!storage.getItem(archive))storage.setItem(archive,JSON.stringify({wallet:previous.accountId===id?storage.getItem(key):cachedRaw||(!previous.accountId?storage.getItem(key):null),progress:storage.getItem('progresoAventuraGA')}));
+      return save({currencyVersion,securityVersion:3,securityReady:false,accountId:id,coins:0,owned:[],equipped:{},revision:-1,
+        requests:!previous.accountId?previous.requests:[],missionClaims:[],equipmentVersion:0,equipmentDirty:false});
     }
     function applyAccount(result,sentEquipmentVersion){
-      if(result.currencyVersion!==currencyVersion)throw Error('Actualizá el juego para sincronizar tus monedas.');
-      const state=read();if(state.accountId!==result.userId||result.revision<state.revision)return state;
-      const acknowledged=new Set(result.acknowledged||[]);
-      const pending=state.pending.filter(e=>!acknowledged.has(e.id));
+      if(result?.securityVersion!==3||result.currencyVersion!==currencyVersion)throw Error('Actualizá el juego y el servidor del monedero.');
+      const state=read();
+      if(state.accountId!==result.userId)return state;
+      if(!Number.isSafeInteger(result.coins)||result.coins<0||!Number.isSafeInteger(result.revision)||result.revision<0||!Array.isArray(result.owned)||!Array.isArray(result.missionClaims))throw Error('Respuesta de monedero inválida.');
+      if(result.revision<state.revision)return state;
+      const owned=[...new Set(result.owned.filter(id=>find(id)&&(!find(id).adminOnly||result.adminUnion===true)))];
       const dirty=state.equipmentDirty&&state.equipmentVersion!==sentEquipmentVersion;
-      const owned=result.owned.filter(id=>find(id)&&(!find(id).adminOnly||result.adminUnion===true));
       const equipped=normalizeSkins(dirty?state.equipped:result.equipped);
-      for(const character of Object.keys(equipped))if(!owned.includes(equipped[character]))delete equipped[character];
-      return save({...state,coins:integer(result.coins)+pending.reduce((sum,e)=>sum+e.amount,0),owned,
-        equipped,pending,missionClaims:[...new Set([...(result.missionClaims||state.missionClaims),...pending.filter(e=>/^aventura:[0-4]:[0-9]:mision$/.test(e.origin)).map(e=>e.origin)])],revision:result.revision,legacy:null,equipmentDirty:dirty,admin:result.admin===true,adminUnion:result.adminUnion===true});
+      for(const char of Object.keys(equipped))if(!owned.includes(equipped[char]))delete equipped[char];
+      const claims=[...new Set(result.missionClaims.filter(e=>/^aventura:[0-4]:[0-9]:mision$/.test(e)))];
+      const pending=state.requests.filter(e=>!claims.includes(missionKey(e.world,e.mission)));
+      return save({...state,securityVersion:3,securityReady:true,coins:result.coins,owned,equipped,requests:pending,missionClaims:claims,
+        revision:result.revision,equipmentDirty:dirty,world5Complete:result.world5Complete===true,admin:false,arenTrial:result.arenTrial===true,adminUnion:result.adminUnion===true});
     }
-    function claimAdventure(world,mission){
-      if(!Number.isInteger(world)||world<0||world>4||!Number.isInteger(mission)||mission<0||mission>9)throw Error('Misión inválida.');
-      const state=read(),origin=`aventura:${world}:${mission}:mision`;
-      if(state.missionClaims.includes(origin))return 0;
-      const amount=mission===9?300:50;
-      if(!Number.isSafeInteger(state.coins+amount))throw Error('Saldo fuera de rango.');
-      state.missionClaims.push(origin);state.coins+=amount;
-      if(state.accountId)state.pending.push({id:globalThis.crypto.randomUUID(),amount,origin,currencyVersion});
-      save(state);changed();return amount;
-    }
+    function claimAdventure(){throw Error('La recompensa requiere completar un intento online.');}
     function canPurchase(id){
-      if(find(id)?.adminOnly)return false;
-      if(find(id)?.character!=='azrak')return true;
-      try {
-        const unlocked=JSON.parse(storage.getItem('personajesDesbloqueadosAventuraGA')||'[]');
-        const progress=JSON.parse(storage.getItem('progresoAventuraGA')||'{}');
-        return (Array.isArray(unlocked)&&unlocked.includes('azrak'))||progress.estadoFinalAzrak==='completo';
-      } catch { return false; }
+      const item=find(id);if(!item||item.adminOnly)return false;
+      const state=read();
+      return state.owned.includes(id)||item.character!=='azrak'||state.world5Complete;
     }
     function purchase(id){
       const item=find(id);if(!item)throw Error('Este traje no está disponible.');
       const state=read();
-      if(state.owned.includes(id))return state;
+      if(!state.accountId||!state.securityReady||!purchaseHandler)throw Error('Conectate para verificar tu monedero antes de comprar.');
       if(item.adminOnly)throw Error('Aren Unión requiere un desbloqueo de administrador.');
+      if(state.owned.includes(id))return state;
       if(!canPurchase(id))throw Error('Completá el Mundo 5 para desbloquear a Azrak y comprar su traje.');
-      if(state.accountId){if(!purchaseHandler)throw Error('Conectate para comprar con las monedas de tu cuenta.');return purchaseHandler(id);}
-      if(state.coins<item.price)throw Error(`Te faltan ${item.price-state.coins} monedas.`);
-      state.coins-=item.price;state.owned.push(id);return save(state);
+      return purchaseHandler(id);
     }
     function equip(character,id){
       const state=read();
@@ -134,12 +138,7 @@
       if(state.accountId){state.equipmentDirty=true;state.equipmentVersion+=1;}
       save(state);changed();return state;
     }
-    function earn(amount,origin){
-      if(!Number.isSafeInteger(amount)||amount<=0)throw Error('Cantidad de monedas inválida.');
-      const state=read();if(!Number.isSafeInteger(state.coins+amount))throw Error('Saldo fuera de rango.');
-      if(state.accountId){if(![50,100,300].includes(amount)||!/^aventura:[a-zA-Z0-9_:]+$/.test(origin||''))throw Error('Recompensa de aventura inválida.');state.pending.push({id:globalThis.crypto.randomUUID(),amount,origin,currencyVersion});}
-      state.coins+=amount;save(state);changed();return state.coins;
-    }
+    function earn(){throw Error('Los créditos genéricos están desactivados.');}
     return Object.freeze({key,catalog,find,asset,previewAsset,normalizeSkins,read,claimAdventure,canPurchase,purchase,equip,earn,beginAccount,applyAccount,setPurchaseHandler:handler=>{purchaseHandler=handler;}});
   }
   return {key,catalog,find,asset,previewAsset,normalizeSkins,create};

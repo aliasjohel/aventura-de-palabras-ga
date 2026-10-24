@@ -420,7 +420,7 @@
     "cinema76": "“You are no longer useful to me,” Azrak declares. A blast strikes Shadow and opens a rift beneath his feet.",
     "cinema77": "The rift closes amid violet smoke. No trace of Shadow remains. Aren steps forward: “It is over, Azrak.”",
     "cinema78": "Azrak laughs: “You are going to stop me? A mere human, with no wings or magic of your own. You have no chance.”",
-    "cinema79": "Aren trembles but takes a step forward: “I am afraid. I also have people to keep going for. If you knock me down, I will get up again.”",
+    "cinema79": "Aren takes a step forward: “I will keep going for the people I love and for this world. If you knock me down, I will get up again.”",
     "cinema80": "The duel is won, but Azrak absorbs the throne’s energy. The guardians cross the portal: this time, Aren will not fight alone.",
     "cinema81": "A roar shakes the throne. Azrak’s three-headed hound rises over the guardians, as enormous as a tower. Its three heads breathe fire, and Aren barely has time to raise his sword.",
     "cinema82": "Before the fire reaches them, a beam of ice bursts from the portal Lume is holding open. Two giant claws grip the stone. Nivor has answered the call!",
@@ -960,5 +960,17 @@
     },
     "powered": "powered",
     "unpowered": "unpowered"
+  },
+  "rewards": {
+    "claimed": "Reward claimed",
+    "processing": "Reward awaiting confirmation",
+    "playing": "Online attempt in progress",
+    "replay": "Reward pending · Replay online to claim",
+    "available": "Reward available after online completion",
+    "interrupted": "Connection interrupted · Replay online to claim",
+    "restart": "↻ Restart mission from the beginning",
+    "unavailable": "Reward pending · Online service unavailable",
+    "connectionLost": "You can continue the story. Replay the mission from the beginning online to claim its reward.",
+    "duelOfflineRestart": "Connection lost. This duel restarts in story mode without a reward. Replay the mission online to earn it."
   }
 }

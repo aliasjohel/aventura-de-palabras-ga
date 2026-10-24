@@ -138,20 +138,11 @@
                     </label>
                     <p id="estadoVibracion" class="estado-vibracion" aria-live="polite"></p>
                     <button id="btnNuevaAventura" class="secundario oculto" type="button" data-i18n="common.newAdventure">Empezar una nueva aventura</button>
-                    <details id="accesoDesarrollador" class="acceso-desarrollador">
-                        <summary data-i18n="common.developerAccess">Acceso de desarrollador</summary>
-                        <form id="formActivarDesarrollador">
-                            <label for="codigoDesarrollador" data-i18n="common.activationCode">Código de activación</label>
-                            <input id="codigoDesarrollador" type="password" autocomplete="off" autocapitalize="none" spellcheck="false" required placeholder="Ingresá tu código" data-i18n-placeholder="common.codePlaceholder">
-                            <button id="btnActivarDesarrollador" type="submit" data-i18n="common.activateAccess">Activar acceso</button>
-                        </form>
-                        <p id="estadoAccesoDesarrollador" role="status" aria-live="polite"></p>
-                        <div id="accesoUnionOnline" hidden>
-                            <p data-i18n="common.unionHelp">Activá Aren Unión en tu cuenta para probarlo en un duelo online, sin gastar monedas.</p>
-                            <button id="btnUnionOnline" type="button">Activar Aren Unión online</button>
-                            <p id="estadoUnionOnline" role="status" aria-live="polite"></p>
-                        </div>
-                    </details>
+                    <div id="accesoUnionOnline" hidden>
+                        <p data-i18n="common.unionHelp">Activá Aren Unión en tu cuenta para probarlo en un duelo online, sin gastar monedas.</p>
+                        <button id="btnUnionOnline" type="button">Activar Aren Unión online</button>
+                        <p id="estadoUnionOnline" role="status" aria-live="polite"></p>
+                    </div>
                     <label class="control-modo-pruebas" hidden for="modoPruebas">
                         <input id="modoPruebas" type="checkbox">
                         <span data-i18n="common.testMode">Modo Pruebas</span>
@@ -1501,7 +1492,7 @@
                             <div class="acciones-cuenta-versus">
                                 <button id="btnGuardarCuentaVersus" type="button" data-i18n="multiplayer.legacy.s9">Guardar mi jugador</button>
                                 <button id="btnEntrarCuentaVersus" class="secundario" type="button" data-i18n="multiplayer.legacy.s10">Ya tengo cuenta</button>
-                                <button id="btnGoogleCuentaVersus" class="secundario" type="button" data-i18n="multiplayer.legacy.s11">Continuar con Google</button>
+                                <button id="btnGoogleCuentaVersus" hidden disabled class="secundario" type="button" data-i18n="multiplayer.legacy.s11">Continuar con Google</button>
                             </div>
                             <small data-i18n="multiplayer.legacy.s12">Podés seguir jugando como invitado si no querés registrarte.</small>
                         </div>
@@ -1601,6 +1592,11 @@
     <script src="js/i18n-settings.js?v=20261015-3b-1"></script>
     <script src="js/cosmetic-store.js?v=20261021-v386-1"></script>
     <script src="js/game-wallet.js?v=20261021-v386-1"></script>
+    <script src="js/adventure-rewards.js?v=security-draft-1"></script>
+    <script src="js/adventure-gameplay-online.js?v=security-draft-1"></script>
+    <script src="js/adventure-maze-physics.js?v=security-draft-1"></script>
+    <script src="js/adventure-maze-online.js?v=security-draft-1"></script>
+    <script src="js/adventure-duel-online.js?v=security-draft-1"></script>
     <script src="js/character-store.js?v=20261021-v386-1"></script>
     <script src="js/profile-backgrounds.js?v=20261021-v386-1"></script>
     <script src="js/versus-ranks.js?v=20260922-medallas-3"></script>

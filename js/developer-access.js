@@ -1,61 +1,19 @@
 (() => {
   'use strict';
-  const key = 'aventuraAccesoDesarrolladorV1';
-  const expectedHash = '425638c83a8fdbb0920472d04e2ef5f11897e6d69839c360231144c8a4fe7e2a';
-  const expectedCodeHash = '41c991eb6a66242c0454191244278183ce58cf4a6bcd372f799e4b9cc01886af';
-  const local = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) || location.protocol === 'file:';
-  let enabled = local;
-  let credential = '';
-  function normalize(value) {
-    const text = String(value || '').trim();
-    if (/^https?:\/\//i.test(text)) {
-      try { return new URLSearchParams(new URL(text).hash.slice(1)).get('desarrollador') || ''; } catch (_) { return ''; }
-    }
-    const code = text.replace(/[\s-]/g, '').toUpperCase();
-    return /^[A-F0-9]{12}$/.test(code) ? code : text;
+  // The public artifact never enables author tools, including localhost WebViews.
+  // tools/serve-author-local.cjs changes this literal only in a loopback HTTP response.
+  const localAuthorBuild = false;
+  // Author previews are available only on the explicit development server.
+  // Public HTTPS, file/WebView builds, URL fragments and storage cannot enable them.
+  // This flag is never used as a server entitlement.
+  const enabled = localAuthorBuild && ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)
+    && ['http:', 'https:'].includes(location.protocol);
+  try { localStorage.removeItem('aventuraAccesoDesarrolladorV1'); } catch (_) {}
+  const fragment = new URLSearchParams(location.hash.slice(1));
+  if (fragment.has('desarrollador')) {
+    fragment.delete('desarrollador');
+    const hash = fragment.toString();
+    history.replaceState(history.state, '', location.pathname + location.search + (hash ? '#' + hash : ''));
   }
-  async function valid(token) {
-    if (!token || !crypto.subtle) return false;
-    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(token));
-    const hash = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
-    return hash === expectedHash || hash === expectedCodeHash;
-  }
-  async function activate(value) {
-    await ready;
-    const token = normalize(value);
-    if (!await valid(token)) throw Error('Código incorrecto. Revisalo e intentá nuevamente.');
-    credential = token;
-    let persisted = true;
-    try { localStorage.setItem(key, token); } catch (_) { persisted = false; }
-    enabled = true;
-    globalThis.dispatchEvent(new Event('developer-access-changed'));
-    return {persisted};
-  }
-  const ready = (async () => {
-    const fragment = new URLSearchParams(location.hash.slice(1));
-    const supplied = fragment.get('desarrollador');
-    try {
-      const token = supplied || localStorage.getItem(key);
-      if (await valid(normalize(token))) {
-        credential = normalize(token);
-        enabled = true;
-        if (supplied) localStorage.setItem(key, supplied);
-      }
-    } catch (_) { /* La falta de almacenamiento no impide jugar. */ }
-    finally {
-      // El enlace de autor no queda en la barra ni se comparte con la URL normal.
-      if (supplied) {
-        fragment.delete('desarrollador');
-        const hash = fragment.toString();
-        history.replaceState(history.state, '', location.pathname + location.search + (hash ? '#' + hash : ''));
-      }
-    }
-    return enabled;
-  })();
-  async function activateOnline() {
-    await ready;
-    if (!credential) throw Error('Ingresá tu código personal en Acceso de desarrollador antes de activar Aren Unión online.');
-    return globalThis.GameWallet.activateAdmin(credential);
-  }
-  globalThis.AventuraDeveloper = Object.freeze({get enabled() { return enabled; }, ready, activate, activateOnline});
+  globalThis.AventuraDeveloper = Object.freeze({enabled, ready: Promise.resolve(enabled)});
 })();
