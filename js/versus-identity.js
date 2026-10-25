@@ -1,9 +1,6 @@
 (() => {
   "use strict";
-  const mensajes = Object.freeze({
-    buena: "¡Buena jugada! 👏", alcanzo: "¡Ya te alcanzo! ⚡", facil: "Muy fácil 😏",
-    preparate: "¡Preparate! 🔥", revancha: "¡Quiero revancha! ⚔️", suerte: "¡Buena suerte! 🍀",
-  });
+  const stickers = VersusStickers.catalog;
   const el = (id) => document.getElementById(id);
   const control = el("chatRapidoVersus");
   const panel = el("panelMensajesVersus");
@@ -22,34 +19,37 @@
   try { silenciado = localStorage.getItem("aventuraMensajesSilenciados") === "true"; } catch (_) { /* Optional preference. */ }
 
   function cerrarPanel() {
+    if (panel.hidePopover && panel.matches(':popover-open')) panel.hidePopover();
     panel.hidden = true;
     abrir.setAttribute("aria-expanded", "false");
   }
   function limpiarGlobos() {
     temporizadores.forEach(clearTimeout);
     temporizadores.clear();
-    ["Propio", "Rival"].forEach((lado) => { el(`mensajeDuelo${lado}`).hidden = true; });
+    ["Propio", "Rival"].forEach((lado) => { const globo=el(`mensajeDuelo${lado}`); globo.hidden = true; globo.replaceChildren(); });
   }
   function mostrarMensaje(jugador, propio) {
-    const texto = mensajes[jugador.mensajeRapido];
-    if (!texto || (!propio && silenciado)) return;
+    const id = jugador.mensajeRapido;
+    if (!Object.hasOwn(stickers, id) || (!propio && silenciado)) return;
     const lado = propio ? "Propio" : "Rival";
     const globo = el(`mensajeDuelo${lado}`);
     clearTimeout(temporizadores.get(lado));
-    GameUI.text(globo, GameUI.key("multiplayer.quickBubble", {alias: propio ? OnlineUI.value("Vos") : jugador.alias, message: OnlineUI.value(texto)}));
+    const alias = document.createElement('span'); alias.className = 'sticker-alias';
+    GameUI.text(alias, propio ? GameUI.key('multiplayer.stickers.you') : jugador.alias);
+    globo.replaceChildren(alias, VersusStickers.create(id));
     globo.hidden = false;
-    temporizadores.set(lado, setTimeout(() => { globo.hidden = true; }, 4000));
+    temporizadores.set(lado, setTimeout(() => { globo.hidden = true; globo.replaceChildren(); temporizadores.delete(lado); }, 4000));
   }
   function actualizarBotones() {
     const segundos = Math.max(0, Math.ceil((disponibleEn - Date.now()) / 1000));
     el("opcionesMensajesVersus").querySelectorAll("button").forEach((boton) => {
       boton.disabled = enviando || segundos > 0 || !contexto?.activo;
     });
-    OnlineUI.text(abrir, enviando ? "Enviando…" : segundos ? `💬 ${segundos}s` : "💬 Mensajes");
+    GameUI.text(abrir, GameUI.key(enviando ? 'multiplayer.stickers.sending' : segundos ? 'multiplayer.stickers.cooldown' : 'multiplayer.stickers.open', {seconds: segundos}));
     if (!enviando && segundos === 0) { clearInterval(reloj); reloj = null; }
   }
   async function enviar(id) {
-    if (!contexto?.activo || enviando || Date.now() < disponibleEn) return;
+    if (!Object.hasOwn(stickers, id) || !contexto?.activo || enviando || Date.now() < disponibleEn) return;
     const turno = generacion;
     const enviarRemoto = contexto.enviar;
     enviando = true;
@@ -62,7 +62,7 @@
       cerrarPanel();
       abrir.focus({ preventScroll: true });
     } catch (error) {
-      if (turno === generacion) estado.textContent = error.message || "No pudimos enviar el mensaje. Intentá de nuevo.";
+      if (turno === generacion) { console.warn('Sticker send failed', OnlineUI.error(error)); GameUI.text(estado, GameUI.key('multiplayer.stickers.sendError')); }
     } finally {
       if (turno === generacion) {
         enviando = false;
@@ -71,17 +71,23 @@
       }
     }
   }
-  Object.entries(mensajes).forEach(([id, texto]) => {
+  Object.entries(stickers).forEach(([id, sticker]) => {
     const boton = document.createElement("button");
     boton.type = "button";
     boton.dataset.mensaje = id;
-    OnlineUI.text(boton, texto);
+    GameUI.attribute(boton, 'aria-label', GameUI.key(sticker.label));
+    const label = document.createElement('span'); label.className = 'sticker-option-label';
+    GameUI.text(label, GameUI.key(sticker.label));
+    boton.append(VersusStickers.create(id, true), label);
     boton.addEventListener("click", () => { void enviar(id); });
     el("opcionesMensajesVersus").append(boton);
   });
   abrir.addEventListener("click", () => {
-    panel.hidden = !panel.hidden;
-    abrir.setAttribute("aria-expanded", String(!panel.hidden));
+    if (!panel.hidden) { cerrarPanel(); return; }
+    panel.hidden = false;
+    panel.showPopover?.();
+    abrir.setAttribute("aria-expanded", "true");
+    el('opcionesMensajesVersus').querySelector('button:not(:disabled)')?.focus({preventScroll:true});
   });
   document.addEventListener("pointerdown", (event) => { if (!control.contains(event.target)) cerrarPanel(); });
   control.addEventListener("keydown", (event) => {
@@ -89,7 +95,7 @@
   });
   function actualizarSilencio() {
     el("silenciarMensajesVersus").setAttribute("aria-pressed", String(silenciado));
-    OnlineUI.text(el("silenciarMensajesVersus"), silenciado ? "Activar mensajes del rival" : "Silenciar rival");
+    GameUI.text(el("silenciarMensajesVersus"), GameUI.key(silenciado ? 'multiplayer.stickers.unmute' : 'multiplayer.stickers.mute'));
   }
   el("silenciarMensajesVersus").addEventListener("click", () => {
     silenciado = !silenciado;

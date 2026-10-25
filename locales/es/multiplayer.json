@@ -170,5 +170,21 @@
   "actualRanked": "Clasificatorio · Este duelo modifica tus puntos",
   "actualClassic": "Clásico · Este duelo no modifica tus puntos",
   "searchRanked": "Buscar rival · Clasificatorio",
-  "searchClassic": "Buscar rival · Clásico"
+  "searchClassic": "Buscar rival · Clásico",
+  "stickers": {
+    "open": "😊 Stickers",
+    "choose": "Elegir un sticker",
+    "sending": "Enviando…",
+    "cooldown": "😊 {seconds}s",
+    "mute": "Silenciar stickers del rival",
+    "unmute": "Activar stickers del rival",
+    "sendError": "No pudimos enviar el sticker. Intentá de nuevo.",
+    "you": "Vos",
+    "buena": "Zafir · Aplausos",
+    "alcanzo": "Nimbus · Burla",
+    "facil": "Aren · Risa",
+    "preparate": "Shadow · Desafío",
+    "revancha": "Guardiana · Tristeza",
+    "suerte": "Lumen · Guiño"
+  }
 }

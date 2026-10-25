@@ -4,18 +4,29 @@
 .versus-jugador-dos .avatar-duelo { right: auto; left: calc(100% + 8px); }
 .avatar-duelo .player-avatar { width: clamp(36px, 5.2vw, 60px); height: clamp(36px, 5.2vw, 60px); }
 .versus-etiqueta { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mensaje-duelo { position: absolute; top: calc(100% + 8px); left: 0; width: max-content; max-width: min(230px, 28vw); padding: 9px 12px; border: 1px solid #e4c58b; border-radius: 4px 14px 14px; background: #122332f5; color: #fff3d9; font: 600 clamp(11px, 1.4vw, 15px)/1.4 system-ui, sans-serif; text-shadow: none; box-shadow: 0 4px 16px #0008; overflow-wrap: anywhere; }
-.versus-jugador-dos .mensaje-duelo { left: auto; right: 0; border-radius: 14px 4px 14px 14px; }
+.mensaje-duelo { position: absolute; z-index: 24; top: calc(100% + 4px); left: 0; display: grid; justify-items: center; width: clamp(74px, 11vw, 112px); pointer-events: none; text-shadow: none; }
+.versus-jugador-dos .mensaje-duelo { left: auto; right: 0; }
+.sticker-alias { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border-radius: 20px; padding: 2px 8px; background: #091623e8; color: #fff1cf; font: 600 11px/1.3 system-ui, sans-serif; }
+.versus-sticker { display: block; position: relative; overflow: hidden; width: 100%; aspect-ratio: 1; filter: drop-shadow(0 3px 4px #0008); }
+.versus-sticker img { display: block; max-width: none; width: 200%; height: 100%; object-fit: fill; animation: stickerGestoVersus var(--sticker-period, 1100ms) steps(1, end) infinite; }
+.sticker-preview img { animation: none; transform: translateX(-50%); }
+.sticker-fallback { display: grid; height: 100%; place-items: center; background: #122332; border: 1px solid #e4c58b; border-radius: 12px; color: #fff; font: 12px/1.3 system-ui,sans-serif; }
+@keyframes stickerGestoVersus { 0%, 30%, 100% { transform: translateX(0); } 31%, 88% { transform: translateX(-50%); } }
 #chatRapidoVersus { position: relative; pointer-events: auto; text-shadow: none; font-family: system-ui, sans-serif; }
 #marcoVersus.identidad-online .versus-tiempo { clip-path: none; }
 #marcoVersus.identidad-online { overflow: clip; }
 #chatRapidoVersus button { width: auto; min-height: 34px; margin: 0; padding: 6px 10px; border: 1px solid #ba9a61; border-radius: 9px; background: #152839f5; color: #fff1cf; font: 600 12px/1.25 system-ui, sans-serif; cursor: pointer; }
 #chatRapidoVersus button:disabled { opacity: .5; cursor: default; }
 #chatRapidoVersus button:focus-visible { outline: 3px solid #a0eaff; outline-offset: 2px; }
-#panelMensajesVersus { position: absolute; z-index: 20; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); width: min(300px, 72vw); padding: 10px; box-sizing: border-box; border: 1px solid #ba9a61; border-radius: 12px; background: #091623fa; box-shadow: 0 10px 30px #000b; }
-#opcionesMensajesVersus { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-#opcionesMensajesVersus button { width: 100%; min-height: 40px; }
+#panelMensajesVersus { position: fixed; z-index: 60; inset: 50% auto auto 50%; margin: 0; transform: translate(-50%, -50%); width: min(330px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); overflow: auto; padding: 10px; box-sizing: border-box; border: 1px solid #ba9a61; border-radius: 16px; background: #091623fa; color: #fff1cf; box-shadow: 0 10px 30px #000b; }
+#panelMensajesVersus::backdrop { background: transparent; pointer-events: none; }
+#opcionesMensajesVersus { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+#opcionesMensajesVersus button { display: grid; justify-items: center; width: 100%; min-height: 44px; padding: 5px; }
+#opcionesMensajesVersus button:hover .sticker-preview img, #opcionesMensajesVersus button:focus-visible .sticker-preview img { animation: stickerGestoVersus var(--sticker-period) steps(1,end) infinite; }
+.sticker-option-label { font-size: 10px; line-height: 1.2; }
 #chatRapidoVersus #silenciarMensajesVersus { margin-top: 9px; width: 100%; border-color: #61798b; }
 #estadoMensajesVersus:not(:empty) { display: block; margin-top: 8px; padding: 7px; border-radius: 8px; background: #301c16; color: #ffe4cd; font: 12px/1.4 system-ui, sans-serif; }
 #chatRapidoVersus [hidden], #chatRapidoVersus[hidden], .avatar-duelo[hidden], .mensaje-duelo[hidden] { display: none !important; }
 @media (max-height: 450px) { .mensaje-duelo { padding: 5px 8px; } #chatRapidoVersus button { min-height: 30px; padding: 5px 8px; font-size: 11px; } #opcionesMensajesVersus button { min-height: 34px; } }
+@media (max-height: 450px) { #opcionesMensajesVersus .versus-sticker { width: 60px; } #opcionesMensajesVersus button { min-height: 44px; } .mensaje-duelo { padding: 0; width: clamp(68px, 10vw, 94px); } }
+@media (prefers-reduced-motion: reduce) { .versus-sticker img, #opcionesMensajesVersus button:hover .sticker-preview img, #opcionesMensajesVersus button:focus-visible .sticker-preview img { animation: none; transform: translateX(-50%); } }

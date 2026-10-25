@@ -208,7 +208,7 @@
   }
   function combat(paths, fighters) { return ensure(combatPaths(paths, fighters)); }
   function multiplayer(extra = []) {
-    const paths = [...catalogue].filter(path => path.includes('/trajes/')
+      const paths = [...catalogue].filter(path => path.includes('/trajes/') || path.includes('/stickers/')
       || /(?:prueba-aren-union\.html|\/(?:aren-union-preview|aren-union-duel)\.(?:js|css))$/.test(path));
     return prepareWorld(combatPaths([...paths, ...extra], Object.keys(fighterTokens)), undefined, true);
   }

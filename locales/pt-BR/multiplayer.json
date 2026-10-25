@@ -170,5 +170,21 @@
   "actualRanked": "Ranqueado · Este duelo altera seus pontos",
   "actualClassic": "Clássico · Este duelo não altera seus pontos",
   "searchRanked": "Buscar rival · Ranqueado",
-  "searchClassic": "Buscar rival · Clássico"
+  "searchClassic": "Buscar rival · Clássico",
+  "stickers": {
+    "open": "😊 Figurinhas",
+    "choose": "Escolher uma figurinha",
+    "sending": "Enviando…",
+    "cooldown": "😊 {seconds}s",
+    "mute": "Silenciar figurinhas do rival",
+    "unmute": "Ativar figurinhas do rival",
+    "sendError": "Não foi possível enviar a figurinha. Tente novamente.",
+    "you": "Você",
+    "buena": "Zafir · Aplausos",
+    "alcanzo": "Nimbus · Provocação",
+    "facil": "Aren · Risada",
+    "preparate": "Shadow · Desafio",
+    "revancha": "Guardiã · Tristeza",
+    "suerte": "Lumen · Piscadinha"
+  }
 }
