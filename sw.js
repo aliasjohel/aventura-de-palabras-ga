@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v387-multiplayer1`;
+const CACHE_NAME = `${CACHE_PREFIX}v387-guardiana1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1164,7 +1164,7 @@ const ASSET_REVISIONS = {
   "./": "sha256-8c46824588ca40054f7516dd1b7c1407f8ac80e3aad0d75a26de61e6cf5903e1",
   "./index.html": "sha256-8c46824588ca40054f7516dd1b7c1407f8ac80e3aad0d75a26de61e6cf5903e1",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
-  "./css/styles.css": "sha256-e5d70dd545ed32247fa97340e8c5cd81468ad725f9041703ee96500860fb2f91",
+  "./css/styles.css": "sha256-b2a2f7be02818e60f2adbff5e3b9958fc3271ee9e77342c0d047a18ae0c1043e",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
   "./js/azrak-world.js": "sha256-d503df637e79f9e229d44bdfb03831c54086f1abf163ffc0dbdef95486227e10",
   "./assets/images/cinematicas/reino-azrak/primer-shadow-lume-capturada-v1.png": "sha256-190fd4207138436bf0a6b68048a766bce2fe136bebf4051095bc84fe6b6b286c",

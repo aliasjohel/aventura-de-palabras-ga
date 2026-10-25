@@ -7312,11 +7312,8 @@ button:disabled {
 }
 
 .cinematica-mago-atrapado.victima-final-guardiana {
+    /* Base y susto miran hacia la derecha: ambas deben mirar hacia Aren. */
     --direccion-victima-trampa: -1;
-}
-
-.cinematica-mago-atrapado.victima-final-guardiana.reaccion-final-activa {
-    --direccion-victima-trampa: 1;
 }
 
 .cinematica-mago-atrapado.victima-final-mago {
