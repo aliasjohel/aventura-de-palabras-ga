@@ -4547,7 +4547,10 @@ function aplicarDescargaUnionVersus(desdeRival=false) {
     mostrarAvisoAvanceVersus('¡Destello de Sabiduría! Letra revelada y teclado rival bloqueado por 2 segundos.','acierto');
   }
 }
-function usaUnionVersus(desdeRival=false){return trajePersonajeVersus(desdeRival?personajeVersusDos:personajeVersusUno,'explorador')==='aren-union';}
+function usaUnionVersus(desdeRival=false){
+  const personaje = desdeRival ? personajeRivalVersus : personajeJugadorVersus;
+  return personaje === 'explorador' && trajePersonajeVersus(desdeRival?personajeVersusDos:personajeVersusUno,personaje)==='aren-union';
+}
 function descripcionHabilidadVersus(personaje, desdeRival = false) {
   return personaje === 'explorador' && usaUnionVersus(desdeRival)
     ? { ...habilidadesVersus.explorador, nombre: 'Destello de Sabiduría', icono: '💎' }
@@ -6509,7 +6512,7 @@ let imagenesCombateListas = [];
 function recursosPersonajeCombate(personaje) {
   const poses = {
     explorador: [srcExploradorPreparaBumeran, srcExploradorLanzaBumeran, srcExploradorLupaVersus],
-    mago: [srcMagoAtaqueVersus], guardiana: [srcGuardianaAtaqueVersus], dragon: [srcDragonAtaqueVersus],
+    mago: [srcMagoAtaqueVersus], guardiana: [srcGuardianaAtaqueVersus, srcGuardianaImpactoTroncoVersus], dragon: [srcDragonAtaqueVersus],
     hombre_lobo: [srcHombreLoboHumanoVersus, srcHombreLoboTransformacionVersus, srcHombreLoboAullidoVersus, srcHombreLoboZarpazoVersus, srcHombreLoboSaltoVersus],
     t_shadow: [srcShadowAtaqueVersus], guardian_alba: [srcGuardianAlbaAtaqueVersus, srcGuardianAlbaHabilidadVersus],
     dragon_hielo: [srcDragonHieloDescensoAltoVersus, srcDragonHieloDescensoBajoVersus, srcDragonHieloAtaqueVersus, srcDragonHieloVueloVersus],
@@ -8707,6 +8710,11 @@ function crearParticulasEclipseVersus() {
   }
 }
 
+const srcGuardianaImpactoTroncoVersus = 'assets/images/personajes/versus/guardiana-impacto-tronco-frontal-v1.png';
+let secuenciaReaccionFinalVersus = 0;
+function usaImpactoFrontalGuardianaVersus(personaje) {
+  return personaje === 'guardiana' && !trajeFinalVersus(personaje);
+}
 const posesReaccionVictimaVersus = {
   explorador: "assets/images/personajes/versus/explorador-atrapado-eclipse.png",
   mago: "assets/images/personajes/versus/mago-atrapado-trampa.png",
@@ -8741,6 +8749,7 @@ function configurarVictimaFinalVersus(elemento, personaje) {
   elemento.src = imagenTrajeFinalVersus(clave,'base',victima.base);
   elemento.alt = `${victima.nombre}, objetivo de la técnica final`;
   elemento.classList.remove("reaccion-final-activa");
+  elemento.classList.toggle('victima-tronco-frontal', elemento === victimaTrampaVersus && usaImpactoFrontalGuardianaVersus(clave));
   elemento.classList.remove(
     "victima-final-explorador",
     "victima-final-mago",
@@ -8761,8 +8770,16 @@ function configurarVictimaFinalVersus(elemento, personaje) {
 
 function programarReaccionVictimaFinalVersus(elemento, personaje, demora) {
   const clave = configurarVictimaFinalVersus(elemento, personaje);
-  demoVersus.temporizadorReaccionCinematica = setTimeout(() => {
-    elemento.src = imagenTrajeFinalVersus(clave,'impacto',posesReaccionVictimaVersus[clave]);
+  const frontal = elemento === victimaTrampaVersus && usaImpactoFrontalGuardianaVersus(clave);
+  const fuente = frontal ? srcGuardianaImpactoTroncoVersus : imagenTrajeFinalVersus(clave,'impacto',posesReaccionVictimaVersus[clave]);
+  const secuencia = secuenciaReaccionFinalVersus;
+  const precarga = frontal ? new Image() : null;
+  if (precarga) precarga.src = fuente;
+  const lista = precarga ? precarga.decode().then(() => true, () => false) : null;
+  demoVersus.temporizadorReaccionCinematica = setTimeout(async () => {
+    if (frontal && !await lista) return;
+    if (secuencia !== secuenciaReaccionFinalVersus) return;
+    elemento.src = fuente;
     elemento.classList.add("reaccion-final-activa");
     demoVersus.temporizadorReaccionCinematica = null;
   }, demora);
@@ -8837,8 +8854,9 @@ function reproducirTrampaSelvaticaVersus(victima = personajeRivalVersus) {
   if (trajeFinalVersus('explorador',false)==='aren-union') return reproducirJuicioCristalesVersus(victima);
   cancelarCinematicaFinalVersus();
   prepararTrajesFinalVersus('explorador');
+  cinematicaFinalVersus.classList.toggle('trampa-impacto-frontal', usaImpactoFrontalGuardianaVersus(victima));
   crearParticulasEclipseVersus();
-  programarReaccionVictimaFinalVersus(victimaTrampaVersus, victima, trajeFinalVersus(victima) === 'aren-union' ? 2700 : 2200);
+  programarReaccionVictimaFinalVersus(victimaTrampaVersus, victima, trajeFinalVersus(victima) === 'aren-union' || usaImpactoFrontalGuardianaVersus(victima) ? 2700 : 2200);
   fondoCinematicaVersus.src = fondoVersus.src;
   etiquetaCinematicaVersus.textContent = "TÉCNICA SECRETA";
   tituloCinematicaVersus.textContent = "TRAMPA SELVÁTICA";
@@ -9229,6 +9247,8 @@ function completarCinematicaFinalVersus() {
 }
 
 function cancelarCinematicaFinalVersus() {
+  secuenciaReaccionFinalVersus += 1;
+  cinematicaFinalVersus.classList.remove('trampa-impacto-frontal');
   const frameUnion=cinematicaFinalVersus.querySelector(".aren-union-final-integrado");
   frameUnion?.cleanupTitle?.();frameUnion?.remove();
   cinematicaFinalVersus.classList.remove("juicio-cristales");

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v387-guardiana1`;
+const CACHE_NAME = `${CACHE_PREFIX}v387-duel-effects1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -733,6 +733,7 @@ const RESOURCE_ASSETS = [
   "./assets/images/personajes/versus/explorador-lupa.png",
   "./assets/images/elementos/enredaderas-teclado-versus.png",
   "./assets/images/personajes/versus/guardiana-susto-impacto.png",
+  "./assets/images/personajes/versus/guardiana-impacto-tronco-frontal-v1.png",
   "./assets/images/personajes/coleccion/guardiana-bosque-base.png",
   "./assets/images/personajes/versus/dragon-susto-impacto.png",
   "./assets/images/personajes/versus/mama-dragon-pata.png",
@@ -878,7 +879,7 @@ const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
 
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
-  "./js/resource-catalog.js": "sha256-18afb0122209df5a719ec551ebc11d153798f254465a66d50a1c61f322720650",
+  "./js/resource-catalog.js": "sha256-6faa6db3897b1d2f7d802e3e5201e8bfb95263f22d70fbb5c4dcc506673f1e93",
   "./js/resource-loader.js": "sha256-0efe95b4b3d3a10591d1cc88125b0b289797cd0dc1858de86bbafcd6f3740e3e",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
   "./assets/images/perfil/miniaturas/dragon-base.webp": "sha256-f25e547e72384e6edab79d058d145d1dd506e9a62257f29f1a166ebb91db4d2b",
@@ -1164,7 +1165,7 @@ const ASSET_REVISIONS = {
   "./": "sha256-8c46824588ca40054f7516dd1b7c1407f8ac80e3aad0d75a26de61e6cf5903e1",
   "./index.html": "sha256-8c46824588ca40054f7516dd1b7c1407f8ac80e3aad0d75a26de61e6cf5903e1",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
-  "./css/styles.css": "sha256-b2a2f7be02818e60f2adbff5e3b9958fc3271ee9e77342c0d047a18ae0c1043e",
+  "./css/styles.css": "sha256-a0a2d02f07ef253d337dd346e8d7cf4ed04a908e7f0043206906035c87a2493f",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
   "./js/azrak-world.js": "sha256-d503df637e79f9e229d44bdfb03831c54086f1abf163ffc0dbdef95486227e10",
   "./assets/images/cinematicas/reino-azrak/primer-shadow-lume-capturada-v1.png": "sha256-190fd4207138436bf0a6b68048a766bce2fe136bebf4051095bc84fe6b6b286c",
@@ -1262,7 +1263,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-43e00cc02ae767d07d279b864d64e73e6b8914d0d80301dbd8c8c34ec5ac24bf",
+  "./js/app.js": "sha256-0d52c1a310e3a630ff17674b3499a17dba0d72c87ce89f5b173cf7e5441e37d3",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
@@ -1406,6 +1407,7 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/versus/explorador-lupa.png": "sha256-5c1272c2d92e1becb0cec5aa37f07d33df832313a1c24fbe0142206598c93166",
   "./assets/images/elementos/enredaderas-teclado-versus.png": "sha256-984acf9d067041394cb08bc21f018ab4968e66c3768b07baeda1ce6bfad266b0",
   "./assets/images/personajes/versus/guardiana-susto-impacto.png": "sha256-d5173ecb9859a5c0920f6fd0b746cc3dea903b50b17bfcc8536008ac80d84cb4",
+  "./assets/images/personajes/versus/guardiana-impacto-tronco-frontal-v1.png": "sha256-59ccf4d8db8aacb65f01b4a1b97e9e4f49b2a1824967bf2193cc2c1403eb07b6",
   "./assets/images/personajes/coleccion/guardiana-bosque-base.png": "sha256-03e3d2266021eb25185dfac115f650c1112d3f6c795c4ec1153dbd49bfe66d7b",
   "./assets/images/personajes/versus/dragon-susto-impacto.png": "sha256-26d0de0ee3b242061889b3919b95b0db7d4bde2128088fac5ce3770bf6c7d74e",
   "./assets/images/personajes/versus/mama-dragon-pata.png": "sha256-e4a018ab9489c01107a47de7eb00ccbb2a74fc2db90bf362b471fcf0d64934b7",

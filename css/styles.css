@@ -7316,6 +7316,11 @@ button:disabled {
     --direccion-victima-trampa: -1;
 }
 
+.cinematica-mago-atrapado.victima-tronco-frontal.reaccion-final-activa {
+    /* Esta ilustración muestra el pecho y mira a la izquierda sin reflejarse. */
+    --direccion-victima-trampa: 1;
+}
+
 .cinematica-mago-atrapado.victima-final-mago {
     --direccion-victima-trampa: 1;
 }
@@ -7356,6 +7361,12 @@ button:disabled {
     filter: drop-shadow(0 15px 11px rgba(0, 0, 0, 0.72));
     transform-origin: 50% 0;
 }
+
+.cinematica-final-versus.trampa-impacto-frontal .cinematica-tronco-trampa {
+    top: -18%;
+}
+.cinematica-final-versus.trampa-impacto-frontal .trampa-impacto { top: 36%; }
+.cinematica-final-versus.trampa-impacto-frontal .trampa-hojas i { top: 40%; }
 
 .cinematica-mago-eclipse {
     right: -3%;
@@ -7565,6 +7576,19 @@ button:disabled {
 
 .cinematica-final-versus.trampa-selvatica.activa .cinematica-mago-atrapado {
     animation: capturaMagoTrampaVersus 5.2s ease both;
+}
+
+.cinematica-final-versus.trampa-selvatica.activa .victima-tronco-frontal {
+    animation-name: impactoFrontalGuardianaTroncoVersus;
+}
+
+@keyframes impactoFrontalGuardianaTroncoVersus {
+    0%, 13% { opacity: 0; transform: translateY(8%) scale(.86) scaleX(var(--direccion-victima-trampa)); }
+    23%, 49% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg) scaleX(var(--direccion-victima-trampa)); }
+    52% { opacity: 1; transform: translate(3vw, 1vh) scale(1) rotate(12deg) scaleX(var(--direccion-victima-trampa)); }
+    59% { opacity: 1; transform: translate(22vw, 12vh) scale(.94) rotate(38deg) scaleX(var(--direccion-victima-trampa)); }
+    69% { opacity: .65; transform: translate(44vw, 32vh) scale(.8) rotate(70deg) scaleX(var(--direccion-victima-trampa)); }
+    76%, 100% { opacity: 0; transform: translate(60vw, 60vh) scale(.65) rotate(85deg) scaleX(var(--direccion-victima-trampa)); }
 }
 
 .cinematica-final-versus.trampa-selvatica.activa .cinematica-tronco-trampa {
