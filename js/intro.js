@@ -7,14 +7,18 @@
   const DURACION_REDUCIDA = 3000;
   const RETRASO_INICIO = 500;
   const DURACION_SALIDA = 720;
-  const reducirMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const DURACION_FONDO = 3000;
+  const movimiento = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const reducirMovimiento = movimiento.matches;
+  const app = document.querySelector('.app');
+  app.inert = true;
+  const menu = document.getElementById('pantallaMenu');
 
   const intro = document.createElement("div");
   intro.id = "introOficial";
   intro.className = "intro-oficial";
-  intro.setAttribute("role", "dialog");
+  intro.setAttribute("role", "img");
   intro.setAttribute("aria-label", "Presentación de Aventura de Palabras");
-  intro.tabIndex = 0;
   intro.innerHTML = `
     <div class="intro-escena" aria-hidden="true">
       <div class="intro-resplandor"></div>
@@ -27,7 +31,6 @@
         <span class="intro-logo-estudio">GA Games</span>
       </div>
     </div>
-    <span class="intro-omitir" aria-hidden="true">TOCÁ PARA OMITIR</span>
   `;
 
   const contenedorParticulas = intro.querySelector(".intro-particulas");
@@ -57,6 +60,60 @@
   musicaMenu.loop = true;
   sonidoMagico.preload = "auto";
   musicaMenu.preload = "auto";
+  const sonidoBoton = GameAudio.create('assets/sounds/colocar-piezas.mp3', 'effects');
+  sonidoBoton.volume = 0.22;
+  sonidoBoton.preload = 'auto';
+  let fondoVisibleDesde = 0;
+  let fondoRestante = DURACION_FONDO;
+  let temporizadorFondo = 0;
+  let temporizadorEntrada = 0;
+  let fondoIniciado = false;
+  let menuMostrado = false;
+  const botonesSonados = new Set();
+  const botones = ['btnJugar', 'btnModosJuego', 'btnRankingMenu', 'btnTienda', 'btnConfiguracion'];
+
+  function completarEntrada() {
+    clearTimeout(temporizadorEntrada);
+    document.body.classList.remove('menu-entrada');
+    sonidoBoton.pause();
+  }
+  function mostrarMenu() {
+    if (menuMostrado) return;
+    menuMostrado = true;
+    clearTimeout(temporizadorFondo);
+    document.body.classList.remove('menu-fondo-pendiente');
+    if (!movimiento.matches) document.body.classList.add('menu-entrada');
+    app.inert = false;
+    if (!movimiento.matches) temporizadorEntrada = setTimeout(completarEntrada, 2300);
+  }
+  function continuarFondo() {
+    if (!fondoIniciado || menuMostrado || document.hidden) return;
+    if (movimiento.matches) return mostrarMenu();
+    fondoVisibleDesde = performance.now();
+    temporizadorFondo = setTimeout(mostrarMenu, fondoRestante);
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) sonidoBoton.pause();
+    if (!fondoIniciado || menuMostrado) return;
+    if (document.hidden) {
+      clearTimeout(temporizadorFondo);
+      if (fondoVisibleDesde) fondoRestante = Math.max(0, fondoRestante - (performance.now() - fondoVisibleDesde));
+      fondoVisibleDesde = 0;
+    } else continuarFondo();
+  });
+  movimiento.addEventListener('change', () => {
+    if (!movimiento.matches) return;
+    if (fondoIniciado) mostrarMenu();
+    completarEntrada();
+  });
+  menu.addEventListener('animationstart', event => {
+    if (event.animationName !== 'menu-item-arrival' || !botones.includes(event.target.id)
+      || botonesSonados.has(event.target.id) || document.hidden || movimiento.matches
+      || !menu.classList.contains('activa')) return;
+    botonesSonados.add(event.target.id);
+    sonidoBoton.currentTime = 0;
+    void sonidoBoton.play().catch(() => {});
+  });
 
   let finalizada = false;
   let temporizadorFinal = 0;
@@ -74,14 +131,9 @@
     sonidoMagico.currentTime = 0;
   };
 
-  const finalizar = (evento) => {
+  const finalizar = () => {
     if (finalizada) return;
     finalizada = true;
-
-    if (evento) {
-      evento.preventDefault();
-      evento.stopPropagation();
-    }
 
     window.clearTimeout(temporizadorFinal);
     window.clearTimeout(temporizadorSonido);
@@ -92,20 +144,13 @@
     window.setTimeout(() => {
       intro.remove();
       window.dispatchEvent(new CustomEvent("aventura:intro-finalizada"));
+      fondoIniciado = true;
+      continuarFondo();
     }, DURACION_SALIDA);
   };
 
-  const omitir = (evento) => {
-    reproducir(musicaMenu, { reiniciar: false });
-    finalizar(evento);
-  };
-
-  const omitirConTeclado = (evento) => {
-    if (["Enter", " ", "Escape"].includes(evento.key)) omitir(evento);
-  };
-
-  intro.addEventListener("pointerdown", omitir);
-  intro.addEventListener("keydown", omitirConTeclado);
+  // A gesture may unlock audio, but never skips or shortens the presentation.
+  intro.addEventListener('pointerdown', () => reproducir(musicaMenu, { reiniciar: false }));
 
   // El navegador puede cargar el juego en paralelo durante el medio segundo negro.
   window.setTimeout(() => {

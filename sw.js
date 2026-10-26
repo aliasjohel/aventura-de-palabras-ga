@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v387-menu2`;
+const CACHE_NAME = `${CACHE_PREFIX}v387-menu3`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -890,11 +890,11 @@ const RESOURCE_ASSETS = [
 const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
   !/\.(?:png|webp|jpe?g|mp3|wav|ogg|mp4)$/i.test(path)
   || /assets\/images\/(?:intro\/(?:libro-intro-sin-cristal|cristal-icono)\.png|fondos\/menu-inicio-aventura\.png|ui\/menu-(?:logo-fantasia-v2|button-(?:adventure|modes|ranking|shop|settings)-v1)\.webp)/.test(path)
-  || /assets\/sounds\/(?:melodia-menu|cristal-casilla)\.mp3/.test(path));
+  || /assets\/sounds\/(?:melodia-menu|cristal-casilla|colocar-piezas)\.mp3/.test(path));
 
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
-  "./css/menu-fantasy.css": "sha256-c65c29ef8d93e8f3da2fb2f6a97adeab38ad9ef5809ca6475ecdf2cd73eb713e",
+  "./css/menu-fantasy.css": "sha256-537cf5feedce434e5f02fba1827d3e6994544009458de62beeaedb0870d1411b",
   "./js/menu-effects.js": "sha256-bf4bb2a4dc1e47e230d273b5b3a9118adb6d2e4a1d4e18f3bd614f834c635e75",
   "./assets/images/ui/menu-logo-fantasia-v2.webp": "sha256-c18201d7164953aa58101b0c6c07bf3e7f8f32e07e2eb0128c3ffeeb1e5c513d",
   "./assets/images/ui/menu-button-adventure-v1.webp": "sha256-511977b61176cee0e2a204c756c3b798c13640f915d0e2a3dafa64191d5e9a03",
@@ -1192,8 +1192,8 @@ const ASSET_REVISIONS = {
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
   "./js/player-avatar.js": "sha256-6e7278100624b641eef48662f51fa7b104a443f01ff9eb302c4fa8c1a99e009b",
   "./js/public-player-profile.js": "sha256-48d7ac44f3792d9d7754e98037dfd7ec6f9a1ec783be104dc46e7a49e9d5b498",
-  "./": "sha256-a8eb8547403d88d7ffd3b95eea95272b08530910d4703ae38ae59e46eaf7805f",
-  "./index.html": "sha256-a8eb8547403d88d7ffd3b95eea95272b08530910d4703ae38ae59e46eaf7805f",
+  "./": "sha256-790c37efd1c842b81c3c4a9762e720ba40829e58bd14fd90d6e15ad4acbaf20e",
+  "./index.html": "sha256-790c37efd1c842b81c3c4a9762e720ba40829e58bd14fd90d6e15ad4acbaf20e",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-a0a2d02f07ef253d337dd346e8d7cf4ed04a908e7f0043206906035c87a2493f",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1280,8 +1280,8 @@ const ASSET_REVISIONS = {
   "./assets/images/elementos/ardilla-bosque-carrera-v1.png": "sha256-bc5f433b65a95883f99f22599767fe24bf56852c2083774243797cb9e8e89283",
   "./js/prologue-cinematic.js": "sha256-8645ed39120263f1f89818d9e1beae141579102b3e2a60c14bedce21d61820b4",
   "./assets/images/intro/conceptos/prologo-cuatro-escenas-v1.png": "sha256-2b209d5c4a3c1a14c1f6e8ce236fd4cbc9d0c8347fd842164fb3d3b623b11d7e",
-  "./css/intro.css": "sha256-d3cf35e248c8e466193bb2e4f0eafb94b4551fd62f06161ca114ab0115cb1d54",
-  "./js/intro.js": "sha256-6dfd307bd0b1df195cae3f1cfc7917569d8b418f58382eea4f2eeac7a4624922",
+  "./css/intro.css": "sha256-4a173ec8bd6ef5a6a992633d4ad33bece012b20554506c7745442cdc4eafa69f",
+  "./js/intro.js": "sha256-e1e244e24cf0ea81e70de704999308ffe9709e6d2fe44966cfde14f99dc423de",
   "./js/supabase-loader.js": "sha256-52c182c9754dd44411a51a233d0cc4df4e9879d046f90b8af53e6cb939eac5ba",
   "./js/supabase-config.js": "sha256-305eac5a6b712731f4e372cca9f6a4f2af0610e772bd928eaa5e75fc0b427295",
   "./js/supabase-client.js": "sha256-25fedbd5cf0ce2c70266f4e9c17ece167849bbe12abde0ec59d275d497153b4e",
@@ -1894,7 +1894,6 @@ const LEGACY_RESOURCE_REVISIONS = {
   "./assets/images/elementos/ardilla-bosque-carrera-v1.png": "legacy-v93-v95",
   "./js/prologue-cinematic.js": "aventura-palabras-runtime-v347",
   "./assets/images/intro/conceptos/prologo-cuatro-escenas-v1.png": "legacy-v93-v95",
-  "./css/intro.css": "aventura-palabras-runtime-v347",
   "./js/supabase-config.js": "aventura-palabras-runtime-v347",
   "./js/supabase-client.js": "aventura-palabras-runtime-v347",
   "./js/versus-room.js": "aventura-palabras-runtime-v347",

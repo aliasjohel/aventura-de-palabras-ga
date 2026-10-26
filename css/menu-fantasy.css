@@ -1,4 +1,33 @@
 /* Presentation only. The original book/crystal scene and game rules are preserved. */
+body.menu-fondo-pendiente #pantallaMenu .menu-contenido {
+    opacity: 0; visibility: hidden; pointer-events: none; --menu-motion: paused;
+}
+body.menu-fondo-pendiente > .aviso-actualizacion-pwa,
+body.menu-fondo-pendiente > .btn-saltar-narrativa { visibility: hidden; }
+body.menu-entrada #pantallaMenu .menu-contenido {
+    animation: menu-panel-arrival 550ms ease-out both;
+    animation-play-state: var(--menu-motion);
+}
+body.menu-entrada #pantallaMenu .menu-contenido > * {
+    animation: menu-item-arrival 450ms ease-out both;
+    animation-play-state: var(--menu-motion);
+}
+body.menu-entrada #pantallaMenu .menu-contenido > .subtitulo { animation-delay: 150ms; }
+body.menu-entrada #pantallaMenu #btnJugar { animation-delay: 400ms; }
+body.menu-entrada #pantallaMenu #btnModosJuego { animation-delay: 700ms; }
+body.menu-entrada #pantallaMenu #btnRankingMenu { animation-delay: 1000ms; }
+body.menu-entrada #pantallaMenu #btnTienda { animation-delay: 1300ms; }
+body.menu-entrada #pantallaMenu #btnConfiguracion { animation-delay: 1600ms; }
+body.menu-entrada #pantallaMenu .estado-offline-juego { animation-delay: 1800ms; }
+@keyframes menu-panel-arrival { from { opacity: 0; } to { opacity: 1; } }
+@keyframes menu-item-arrival {
+    from { opacity: 0; transform: translateY(8px); visibility: hidden; }
+    to { opacity: 1; transform: translateY(0); visibility: visible; }
+}
+@media (prefers-reduced-motion: reduce) {
+    body.menu-entrada #pantallaMenu .menu-contenido,
+    body.menu-entrada #pantallaMenu .menu-contenido > * { animation: none; }
+}
 #pantallaMenu, #selectorModosJuego { --menu-motion: paused; }
 #pantallaMenu[data-menu-effects="running"],
 #selectorModosJuego[data-menu-effects="running"] { --menu-motion: running; }

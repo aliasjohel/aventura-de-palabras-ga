@@ -20,7 +20,7 @@ body.intro-pendiente > .btn-saltar-narrativa {
     isolation: isolate;
     background: #000;
     color: #fff;
-    cursor: pointer;
+    cursor: default;
     touch-action: manipulation;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -179,21 +179,6 @@ body.intro-pendiente > .btn-saltar-narrativa {
     color: #78f4b3;
 }
 
-.intro-omitir {
-    position: absolute;
-    z-index: 8;
-    right: max(18px, env(safe-area-inset-right));
-    bottom: max(15px, env(safe-area-inset-bottom));
-    opacity: 0;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    color: rgba(255, 255, 255, 0.48);
-}
-
-.intro-iniciada .intro-omitir {
-    animation: introMostrarOmitir 500ms 900ms ease forwards;
-}
-
 .intro-oficial.intro-finalizando {
     cursor: default;
     animation: introSalida 720ms ease-in-out forwards;
@@ -233,8 +218,6 @@ body.intro-pendiente > .btn-saltar-narrativa {
     from { opacity: 0; transform: translate(-50%, -42%) scale(0.94); filter: blur(4px); }
     to { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
 }
-
-@keyframes introMostrarOmitir { to { opacity: 1; } }
 
 @keyframes introSalida {
     0% { opacity: 1; }
