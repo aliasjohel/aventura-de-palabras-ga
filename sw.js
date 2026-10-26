@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v387-menu1`;
+const CACHE_NAME = `${CACHE_PREFIX}v387-menu2`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -207,7 +207,12 @@ const RECURSOS_MODOS_LOCALES = [
 const RESOURCE_ASSETS = [
   "./css/menu-fantasy.css",
   "./js/menu-effects.js",
-  "./assets/images/ui/menu-logo-fantasia-v1.webp",
+  "./assets/images/ui/menu-logo-fantasia-v2.webp",
+  "./assets/images/ui/menu-button-adventure-v1.webp",
+  "./assets/images/ui/menu-button-modes-v1.webp",
+  "./assets/images/ui/menu-button-ranking-v1.webp",
+  "./assets/images/ui/menu-button-shop-v1.webp",
+  "./assets/images/ui/menu-button-settings-v1.webp",
   "./js/resource-catalog.js",
   "./js/resource-loader.js",
   "./assets/images/perfil/miniaturas/azrak-base.webp",
@@ -884,15 +889,20 @@ const RESOURCE_ASSETS = [
 // Optional media remain in the immutable catalogue, downloaded by scene preflight.
 const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
   !/\.(?:png|webp|jpe?g|mp3|wav|ogg|mp4)$/i.test(path)
-  || /assets\/images\/(?:intro\/(?:libro-intro-sin-cristal|cristal-icono)\.png|fondos\/menu-inicio-aventura\.png|ui\/menu-logo-fantasia-v1\.webp)/.test(path)
+  || /assets\/images\/(?:intro\/(?:libro-intro-sin-cristal|cristal-icono)\.png|fondos\/menu-inicio-aventura\.png|ui\/menu-(?:logo-fantasia-v2|button-(?:adventure|modes|ranking|shop|settings)-v1)\.webp)/.test(path)
   || /assets\/sounds\/(?:melodia-menu|cristal-casilla)\.mp3/.test(path));
 
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
-  "./css/menu-fantasy.css": "sha256-257f9d558b0892e1d9579e194dcf04840ed1d2102c4058e65fbfb05149e4a6f1",
+  "./css/menu-fantasy.css": "sha256-c65c29ef8d93e8f3da2fb2f6a97adeab38ad9ef5809ca6475ecdf2cd73eb713e",
   "./js/menu-effects.js": "sha256-bf4bb2a4dc1e47e230d273b5b3a9118adb6d2e4a1d4e18f3bd614f834c635e75",
-  "./assets/images/ui/menu-logo-fantasia-v1.webp": "sha256-068140e72395b151c484c507357fd15d9541e8b0c4b3332d59da25485faaa610",
-  "./js/resource-catalog.js": "sha256-7549ca089391e1bb16e77d9c3d4d8c6c3612343241cbd281c63c364ad2ac30ad",
+  "./assets/images/ui/menu-logo-fantasia-v2.webp": "sha256-c18201d7164953aa58101b0c6c07bf3e7f8f32e07e2eb0128c3ffeeb1e5c513d",
+  "./assets/images/ui/menu-button-adventure-v1.webp": "sha256-511977b61176cee0e2a204c756c3b798c13640f915d0e2a3dafa64191d5e9a03",
+  "./assets/images/ui/menu-button-modes-v1.webp": "sha256-d1643ede7d0dd97ad7f11fe324b9b497b42d11f1c410558a7649dec95ee593de",
+  "./assets/images/ui/menu-button-ranking-v1.webp": "sha256-ab9244074004847b638ea796b9e7792176bdb9ee530b1679a1562047b01a83ab",
+  "./assets/images/ui/menu-button-shop-v1.webp": "sha256-6e828e1a47cf7a4c97b635b00e4010d014f5ee5161668cd4bd35c2e19c55a1de",
+  "./assets/images/ui/menu-button-settings-v1.webp": "sha256-a7dd3fd0d0105ae2032dde8f81ef3c5586b4f4648f93aa01dc7ae1c8aaa64c4f",
+  "./js/resource-catalog.js": "sha256-ab172ea231e67d5ee68e4424c3b80c51d8bc5f281640b28bd8079fabf67cb434",
   "./js/resource-loader.js": "sha256-cada0a2aed6eb37c938fc62b39654ef60bde4667f375c19be9c8c78a2b907714",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
   "./assets/images/perfil/miniaturas/dragon-base.webp": "sha256-f25e547e72384e6edab79d058d145d1dd506e9a62257f29f1a166ebb91db4d2b",
@@ -1182,8 +1192,8 @@ const ASSET_REVISIONS = {
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
   "./js/player-avatar.js": "sha256-6e7278100624b641eef48662f51fa7b104a443f01ff9eb302c4fa8c1a99e009b",
   "./js/public-player-profile.js": "sha256-48d7ac44f3792d9d7754e98037dfd7ec6f9a1ec783be104dc46e7a49e9d5b498",
-  "./": "sha256-9e50bb686a41376aab4a8919a001b841c0ffbcf372a26d83be9250e052c21c99",
-  "./index.html": "sha256-9e50bb686a41376aab4a8919a001b841c0ffbcf372a26d83be9250e052c21c99",
+  "./": "sha256-a8eb8547403d88d7ffd3b95eea95272b08530910d4703ae38ae59e46eaf7805f",
+  "./index.html": "sha256-a8eb8547403d88d7ffd3b95eea95272b08530910d4703ae38ae59e46eaf7805f",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-a0a2d02f07ef253d337dd346e8d7cf4ed04a908e7f0043206906035c87a2493f",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",

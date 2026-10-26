@@ -2,7 +2,12 @@
 globalThis.GameResourceCatalog = Object.freeze([
   "./css/menu-fantasy.css",
   "./js/menu-effects.js",
-  "./assets/images/ui/menu-logo-fantasia-v1.webp",
+  "./assets/images/ui/menu-logo-fantasia-v2.webp",
+  "./assets/images/ui/menu-button-adventure-v1.webp",
+  "./assets/images/ui/menu-button-modes-v1.webp",
+  "./assets/images/ui/menu-button-ranking-v1.webp",
+  "./assets/images/ui/menu-button-shop-v1.webp",
+  "./assets/images/ui/menu-button-settings-v1.webp",
   "./js/resource-catalog.js",
   "./js/resource-loader.js",
   "./assets/images/perfil/miniaturas/azrak-base.webp",
@@ -743,7 +748,12 @@ globalThis.GameResourceCatalog = Object.freeze([
   "./assets/images/elementos/estela-escarcha-nivor.png"
 ]);
 globalThis.GameResourceSizes = Object.freeze({
-  "./assets/images/ui/menu-logo-fantasia-v1.webp": 510424,
+  "./assets/images/ui/menu-logo-fantasia-v2.webp": 291604,
+  "./assets/images/ui/menu-button-adventure-v1.webp": 59452,
+  "./assets/images/ui/menu-button-modes-v1.webp": 51694,
+  "./assets/images/ui/menu-button-ranking-v1.webp": 53094,
+  "./assets/images/ui/menu-button-shop-v1.webp": 60356,
+  "./assets/images/ui/menu-button-settings-v1.webp": 59750,
   "./assets/images/perfil/miniaturas/azrak-base.webp": 3950,
   "./assets/images/perfil/miniaturas/dragon-base.webp": 4338,
   "./assets/images/perfil/miniaturas/dragon-hielo-base.webp": 4722,
