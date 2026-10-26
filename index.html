@@ -51,6 +51,8 @@
     <link rel="stylesheet" href="css/forest-root-trap.css?v=20260907-1">
     <link rel="stylesheet" href="css/prologue-cinematic.css?v=20260907-1">
     <link rel="stylesheet" href="css/intro.css?v=20260804-intro-oficial-5">
+    <link rel="stylesheet" href="css/menu-fantasy.css?v=20261026-v387-menu1">
+    <link rel="preload" as="image" href="assets/images/ui/menu-logo-fantasia-v1.webp" type="image/webp">
 </head>
 
 <body class="intro-pendiente">
@@ -87,7 +89,10 @@
 
             <div class="menu-contenido">
                 <h2 class="studio">GA Games</h2>
-                <h1 class="titulo" data-i18n="menu.title">Aventura de Palabras</h1>
+                <h1 class="titulo menu-logo">
+                    <span class="menu-logo-texto" data-i18n="menu.title">Aventura de Palabras</span>
+                    <span class="menu-logo-arte" aria-hidden="true" hidden><img src="assets/images/ui/menu-logo-fantasia-v1.webp" width="1902" height="827" alt="" decoding="async" fetchpriority="high"><span class="menu-logo-destello"></span></span>
+                </h1>
                 <p class="subtitulo" data-i18n="menu.subtitle">Explorá mundos resolviendo palabras</p>
                 <div class="menu-perfil"><button id="btnMiAvatar" type="button" aria-label="Abrir mi perfil" data-i18n-aria-label="menu.openProfile"><span id="avatarMenu"></span><span><span data-i18n="menu.myProfile">Mi perfil</span> <span aria-hidden="true">›</span></span></button><button id="btnAbrirPruebasMenu" hidden type="button" aria-haspopup="dialog" aria-controls="modalConfiguracion" data-i18n="menu.testMode">Modo prueba</button></div>
 
@@ -1605,6 +1610,7 @@
     <script src="js/avatar-rewards.js?v=20261006-rewards-1"></script>
     <script src="js/player-avatar.js?v=20261021-v386-1"></script>
     <script src="js/multiplayer-i18n.js?v=20261017-3g-1"></script>
+    <script src="js/menu-effects.js?v=20261026-v387-menu1"></script>
     <script src="js/versus-stickers.js?v=20261024-v387-stickers1"></script>
     <script src="js/versus-identity.js?v=20261024-v387-stickers1"></script>
     <script src="js/audio-settings.js?v=20261015-audio-1"></script>
