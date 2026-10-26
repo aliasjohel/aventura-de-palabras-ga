@@ -76,15 +76,19 @@
     clearTimeout(temporizadorEntrada);
     document.body.classList.remove('menu-entrada');
     sonidoBoton.pause();
+    botones.forEach(id => { document.getElementById(id).inert = false; });
   }
   function mostrarMenu() {
     if (menuMostrado) return;
     menuMostrado = true;
     clearTimeout(temporizadorFondo);
     document.body.classList.remove('menu-fondo-pendiente');
-    if (!movimiento.matches) document.body.classList.add('menu-entrada');
+    if (!movimiento.matches) {
+      botones.forEach(id => { document.getElementById(id).inert = true; });
+      document.body.classList.add('menu-entrada');
+    }
     app.inert = false;
-    if (!movimiento.matches) temporizadorEntrada = setTimeout(completarEntrada, 2300);
+    if (!movimiento.matches) temporizadorEntrada = setTimeout(completarEntrada, 6300);
   }
   function continuarFondo() {
     if (!fondoIniciado || menuMostrado || document.hidden) return;
@@ -107,12 +111,21 @@
     completarEntrada();
   });
   menu.addEventListener('animationstart', event => {
-    if (event.animationName !== 'menu-item-arrival' || !botones.includes(event.target.id)
+    if (event.animationName !== 'menu-button-settle' || !botones.includes(event.target.id)
       || botonesSonados.has(event.target.id) || document.hidden || movimiento.matches
       || !menu.classList.contains('activa')) return;
+    event.target.inert = false;
     botonesSonados.add(event.target.id);
     sonidoBoton.currentTime = 0;
     void sonidoBoton.play().catch(() => {});
+  });
+  // Entering a mode during the assembly cancels the remaining pieces and sounds.
+  new MutationObserver(() => {
+    if (!menu.classList.contains('activa')) completarEntrada();
+  }).observe(menu, { attributes: true, attributeFilter: ['class'] });
+  menu.addEventListener('click', event => {
+    if (document.body.classList.contains('menu-entrada')
+      && event.target.closest('.menu-contenido button')) completarEntrada();
   });
 
   let finalizada = false;

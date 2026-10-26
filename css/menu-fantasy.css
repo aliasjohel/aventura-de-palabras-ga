@@ -7,26 +7,46 @@ body.menu-fondo-pendiente > .btn-saltar-narrativa { visibility: hidden; }
 body.menu-entrada #pantallaMenu .menu-contenido {
     animation: menu-panel-arrival 550ms ease-out both;
     animation-play-state: var(--menu-motion);
+    overflow: visible;
 }
 body.menu-entrada #pantallaMenu .menu-contenido > * {
     animation: menu-item-arrival 450ms ease-out both;
     animation-play-state: var(--menu-motion);
 }
 body.menu-entrada #pantallaMenu .menu-contenido > .subtitulo { animation-delay: 150ms; }
-body.menu-entrada #pantallaMenu #btnJugar { animation-delay: 400ms; }
-body.menu-entrada #pantallaMenu #btnModosJuego { animation-delay: 700ms; }
-body.menu-entrada #pantallaMenu #btnRankingMenu { animation-delay: 1000ms; }
-body.menu-entrada #pantallaMenu #btnTienda { animation-delay: 1300ms; }
-body.menu-entrada #pantallaMenu #btnConfiguracion { animation-delay: 1600ms; }
-body.menu-entrada #pantallaMenu .estado-offline-juego { animation-delay: 1800ms; }
+body.menu-entrada #pantallaMenu .menu-contenido > button {
+    z-index: 5; transform-origin: 50% 50%;
+    animation: menu-button-drop 800ms cubic-bezier(.45,.04,.78,.65) var(--piece-delay) both,
+        menu-button-settle 200ms ease-out calc(var(--piece-delay) + 800ms) forwards;
+    animation-play-state: var(--menu-motion), var(--menu-motion);
+}
+body.menu-entrada #pantallaMenu #btnJugar { --piece-delay: 400ms; }
+body.menu-entrada #pantallaMenu #btnModosJuego { --piece-delay: 1500ms; }
+body.menu-entrada #pantallaMenu #btnRankingMenu { --piece-delay: 2600ms; }
+body.menu-entrada #pantallaMenu #btnTienda { --piece-delay: 3700ms; }
+body.menu-entrada #pantallaMenu #btnConfiguracion { --piece-delay: 4800ms; }
+body.menu-entrada #pantallaMenu .estado-offline-juego { animation-delay: 5800ms; }
 @keyframes menu-panel-arrival { from { opacity: 0; } to { opacity: 1; } }
 @keyframes menu-item-arrival {
     from { opacity: 0; transform: translateY(8px); visibility: hidden; }
     to { opacity: 1; transform: translateY(0); visibility: visible; }
 }
+@keyframes menu-button-drop {
+    0% { opacity: 0; visibility: hidden; transform: perspective(700px) translateY(-76px) rotateX(12deg) scale(1.65); }
+    14% { opacity: 1; visibility: visible; }
+    100% { opacity: 1; visibility: visible; transform: perspective(700px) translateY(0) rotateX(0) scale(1); }
+}
+@keyframes menu-button-settle {
+    0% { transform: translate(0, 0) scale(1); }
+    22% { transform: translate(0, 2px) scale(1.025, .95); }
+    45% { transform: translate(-2px, 0) rotate(-.4deg) scale(1.01, .985); }
+    72% { transform: translate(1.5px, 0) rotate(.3deg) scale(1); }
+    100% { transform: translate(0, 0) rotate(0) scale(1); }
+}
 @media (prefers-reduced-motion: reduce) {
     body.menu-entrada #pantallaMenu .menu-contenido,
-    body.menu-entrada #pantallaMenu .menu-contenido > * { animation: none; }
+    body.menu-entrada #pantallaMenu .menu-contenido > *,
+    body.menu-entrada #pantallaMenu .menu-contenido > button { animation: none; }
 }
 #pantallaMenu, #selectorModosJuego { --menu-motion: paused; }
 #pantallaMenu[data-menu-effects="running"],
