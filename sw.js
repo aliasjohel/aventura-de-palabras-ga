@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v387-reactions1`;
+const CACHE_NAME = `${CACHE_PREFIX}v387-reactions2`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1200,7 +1200,7 @@ const ASSET_REVISIONS = {
   "./": "sha256-c950297b742cf0c57131680bd3d942d397f2baa8d01abee404da2a8bcd7c59df",
   "./index.html": "sha256-c950297b742cf0c57131680bd3d942d397f2baa8d01abee404da2a8bcd7c59df",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
-  "./css/styles.css": "sha256-2bc3558fee5099d56ad5cc3557706df47168ee317f1a6271fa0e0b9b933b2ab8",
+  "./css/styles.css": "sha256-aba80fec8d8add8e3fcb1aa82f3895d653929161e23ae75011763a06f501f4dc",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
   "./js/azrak-world.js": "sha256-d503df637e79f9e229d44bdfb03831c54086f1abf163ffc0dbdef95486227e10",
   "./assets/images/cinematicas/reino-azrak/primer-shadow-lume-capturada-v1.png": "sha256-190fd4207138436bf0a6b68048a766bce2fe136bebf4051095bc84fe6b6b286c",
@@ -1298,7 +1298,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-6fdbff11d56082da84cdbe6bed51ad2a89acbc50d9799355bdb43872a5bae0d4",
+  "./js/app.js": "sha256-9e0e10911d5c5315f763fe6d1a27b9c885b37fe1716aafa2d3970e60147b7fd0",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",

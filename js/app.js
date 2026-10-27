@@ -6410,7 +6410,7 @@ function spriteTrajeVersus(elemento, personaje, src, herido=false) {
   const traje=trajePersonajeVersus(elemento,personaje);
   if(!traje)return src;
   // The trunk cinematic keeps its frontal pose; combat faces the opponent.
-  if (traje === 'aren-union' && herido) return 'assets/images/trajes/aren-union-impacto-v1.png';
+  if (traje === 'aren-union' && herido) return CosmeticStore.asset(traje, 'base');
   const posesCriaturas = {
     [srcAzrakAtaqueVersus]:'ataque',
     [srcKalamoAtaqueVersus]:'ataque',
@@ -6512,7 +6512,6 @@ function recursosPersonajeCombate(personaje) {
   };
   const trajes=[trajePersonajeVersus(personajeVersusUno,personaje),trajePersonajeVersus(personajeVersusDos,personaje)].filter(Boolean);
   const extras=trajes.flatMap(id=>(id==='aren-union'?['base','ataque','habilidad','impacto','invocacion','victoria','capa','vidrio','mano','planta','envejecido','anciano']:CosmeticStore.find(id).poses).map(pose=>CosmeticStore.asset(id,pose)));
-  if (trajes.includes('aren-union')) extras.push('assets/images/trajes/aren-union-impacto-v1.png');
   return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || []),...extras].filter(Boolean);
 }
 async function prepararImagenesCombate(personajes) {
@@ -6552,9 +6551,10 @@ function observarPoseDanoPersonajeVersus(elemento, obtenerPersonaje) {
   new MutationObserver(() => {
     const personaje = obtenerPersonaje();
     const pose = posesDanoPersonajeVersus[personaje];
-    if (!pose && !trajePersonajeVersus(elemento,personaje)) return;
     const recibiendoDano = elemento.classList.contains("recibiendo-dano")
       || elemento.classList.contains("recibiendo-dano-magico");
+    elemento.classList.toggle("impacto-combate-activo", recibiendoDano);
+    if (!pose && !trajePersonajeVersus(elemento,personaje)) return;
     if (recibiendoDano) {
       actualizarPoseCombateVersus(elemento, personaje);
     } else if ((pose && elemento.src.endsWith(pose)) || elemento.src.includes('/trajes/')) {

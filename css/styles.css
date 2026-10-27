@@ -17930,3 +17930,18 @@ button:disabled {
 .versus-personaje-uno.personaje-kairos.recibiendo-dano-magico {
   animation: danoExploradorMagicoVersus 330ms ease-out both;
 }
+
+/* Impact uses independent translation so it cannot turn the fighter around. */
+.versus-personaje.personaje-kairos.impacto-combate-activo {
+  --retroceso-impacto: -24px;
+  animation: impactoCombateKairos 420ms ease-out both !important;
+}
+.versus-personaje-dos.personaje-kairos.impacto-combate-activo {
+  --retroceso-impacto: 24px;
+}
+@keyframes impactoCombateKairos {
+  0%, 100% { translate: 0 0; }
+  24% { translate: var(--retroceso-impacto) -3px; filter: brightness(1.9) drop-shadow(0 0 18px #ffd77a); }
+  54% { translate: calc(var(--retroceso-impacto) * -.35) 0; }
+  78% { translate: calc(var(--retroceso-impacto) * .2) 0; }
+}
