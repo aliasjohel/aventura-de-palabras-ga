@@ -60,7 +60,7 @@
   musicaMenu.loop = true;
   sonidoMagico.preload = "auto";
   musicaMenu.preload = "auto";
-  const sonidoBoton = GameAudio.create('assets/sounds/menu-bloque-pesado-v1.wav', 'effects');
+  const sonidoBoton = GameAudio.create('assets/sounds/menu-impacto-roca-v1.wav', 'effects');
   sonidoBoton.volume = 0.22;
   sonidoBoton.preload = 'auto';
   let fondoVisibleDesde = 0;
@@ -71,11 +71,42 @@
   let menuMostrado = false;
   const botonesSonados = new Set();
   const botones = ['btnJugar', 'btnModosJuego', 'btnRankingMenu', 'btnTienda', 'btnConfiguracion'];
+  const capaPolvo = document.createElement('div');
+  capaPolvo.className = 'menu-impact-layer';
+  capaPolvo.setAttribute('aria-hidden', 'true');
+  menu.appendChild(capaPolvo);
+  const polvoTimers = new Set();
+  function limpiarPolvo() {
+    polvoTimers.forEach(clearTimeout);
+    polvoTimers.clear();
+    capaPolvo.replaceChildren();
+  }
+  function soltarPolvo(button) {
+    if (movimiento.matches || document.hidden) return;
+    const rect = button.getBoundingClientRect(), root = menu.getBoundingClientRect();
+    const burst = document.createElement('span');
+    burst.className = 'menu-impact-dust';
+    burst.dataset.button = button.id;
+    burst.style.cssText = `left:${rect.left-root.left}px;top:${rect.bottom-root.top+8}px;width:${rect.width}px`;
+    const positions = [5,16,29,42,58,71,84,95];
+    const offsets = [-30,-22,-14,-8,8,14,22,30];
+    const heights = [-4,-12,-6,-14,-14,-6,-12,-4];
+    positions.forEach((left, i) => {
+      const grain = document.createElement('i');
+      grain.style.cssText = `left:${left}%;--dust-x:${offsets[i]}px;--dust-y:${heights[i]}px`;
+      if ([1,3,4,6].includes(i)) grain.className = 'menu-dust-grain';
+      burst.appendChild(grain);
+    });
+    capaPolvo.appendChild(burst);
+    const timer = setTimeout(() => { burst.remove(); polvoTimers.delete(timer); }, 650);
+    polvoTimers.add(timer);
+  }
 
   function completarEntrada() {
     clearTimeout(temporizadorEntrada);
     document.body.classList.remove('menu-entrada');
     sonidoBoton.pause();
+    limpiarPolvo();
     botones.forEach(id => { document.getElementById(id).inert = false; });
   }
   function mostrarMenu() {
@@ -97,7 +128,7 @@
     temporizadorFondo = setTimeout(mostrarMenu, fondoRestante);
   }
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) sonidoBoton.pause();
+    if (document.hidden) { sonidoBoton.pause(); limpiarPolvo(); }
     if (!fondoIniciado || menuMostrado) return;
     if (document.hidden) {
       clearTimeout(temporizadorFondo);
@@ -116,6 +147,7 @@
       || !menu.classList.contains('activa')) return;
     event.target.inert = false;
     botonesSonados.add(event.target.id);
+    soltarPolvo(event.target);
     sonidoBoton.currentTime = 0;
     void sonidoBoton.play().catch(() => {});
   });

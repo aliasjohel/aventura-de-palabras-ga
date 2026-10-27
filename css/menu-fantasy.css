@@ -44,7 +44,26 @@ body.menu-entrada #pantallaMenu .estado-offline-juego { animation-delay: 5550ms;
     72% { transform: translate(1.5px, 0) rotate(.3deg) scale(1); }
     100% { transform: translate(0, 0) rotate(0) scale(1); }
 }
+.menu-impact-layer {
+    position: absolute; inset: 0; z-index: 8; overflow: hidden; pointer-events: none;
+}
+.menu-impact-dust { position: absolute; height: 1px; pointer-events: none; }
+.menu-impact-dust i {
+    position: absolute; top: -4px; width: 22px; height: 12px; border-radius: 50%; opacity: 0;
+    background: radial-gradient(ellipse, #d4c09ccc, #baa47c66 45%, transparent 73%);
+    animation: menu-dust-scatter 520ms ease-out both;
+}
+.menu-impact-dust .menu-dust-grain {
+    width: 4px; height: 3px; border-radius: 1px; background: #e5cc9fcc;
+}
+@keyframes menu-dust-scatter {
+    0% { opacity: 0; transform: translate(0, 0) scale(.35); }
+    12% { opacity: .75; }
+    45% { opacity: .5; transform: translate(calc(var(--dust-x) * .7), var(--dust-y)) scale(1.15); }
+    100% { opacity: 0; transform: translate(var(--dust-x), 5px) scale(1.65); }
+}
 @media (prefers-reduced-motion: reduce) {
+    .menu-impact-layer { display: none; }
     body.menu-entrada #pantallaMenu .menu-contenido,
     body.menu-entrada #pantallaMenu .menu-contenido > *,
     body.menu-entrada #pantallaMenu .menu-contenido > button { animation: none; }
