@@ -3531,6 +3531,7 @@ btnContinuarHistoria.addEventListener("click", async () => {
         desafiosCompletados === 0;
       presentacionMisionYaCargada = false;
       historiaMisionPendiente = false;
+      reproducirEntradaNarrativaMision();
       if (debeMostrarLlegadaDesierto) {
         requestAnimationFrame(activarLlegadaDesiertoMision);
       }
@@ -3570,18 +3571,7 @@ btnContinuarHistoria.addEventListener("click", async () => {
 
     historiaMisionPendiente = false;
 
-    if (sonidoNarrativoPendiente) {
-      if (sonidoNarrativoPendiente === "piedra") {
-        animarImpactoPiedra();
-      }
-
-      if (sonidoNarrativoPendiente === "ramas") {
-        activarBloqueoTronco();
-      }
-
-      reproducirSonido(sonidoNarrativoPendiente);
-      sonidoNarrativoPendiente = "";
-    }
+    reproducirEntradaNarrativaMision();
 
     if (
       escenarioActual === 1 &&
@@ -6419,6 +6409,8 @@ function trajePersonajeVersus(elemento, personaje) {
 function spriteTrajeVersus(elemento, personaje, src, herido=false) {
   const traje=trajePersonajeVersus(elemento,personaje);
   if(!traje)return src;
+  // The trunk cinematic keeps its frontal pose; combat faces the opponent.
+  if (traje === 'aren-union' && herido) return 'assets/images/trajes/aren-union-impacto-v1.png';
   const posesCriaturas = {
     [srcAzrakAtaqueVersus]:'ataque',
     [srcKalamoAtaqueVersus]:'ataque',
@@ -6520,6 +6512,7 @@ function recursosPersonajeCombate(personaje) {
   };
   const trajes=[trajePersonajeVersus(personajeVersusUno,personaje),trajePersonajeVersus(personajeVersusDos,personaje)].filter(Boolean);
   const extras=trajes.flatMap(id=>(id==='aren-union'?['base','ataque','habilidad','impacto','invocacion','victoria','capa','vidrio','mano','planta','envejecido','anciano']:CosmeticStore.find(id).poses).map(pose=>CosmeticStore.asset(id,pose)));
+  if (trajes.includes('aren-union')) extras.push('assets/images/trajes/aren-union-impacto-v1.png');
   return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || []),...extras].filter(Boolean);
 }
 async function prepararImagenesCombate(personajes) {
@@ -7069,8 +7062,10 @@ function reproducirRayoUnionVersus(lado) {
   }
   alinearRayo();
   reproducirSonidoVersus('versusAtaqueUno',.72);
-  programarPasoAtaqueVersus(()=>{rival.classList.add('recibiendo-dano');reproducirSonidoVersus('versusAtaqueDos',.76);},380,lado);
-  programarPasoAtaqueVersus(()=>{rival.classList.remove('recibiendo-dano');actor.classList.remove('rayo-union-atacando');arco.remove();if(jugador)limpiarAnimacionAtaqueJugadorVersus();else limpiarAnimacionAtaqueRivalVersus();},950,lado);
+  const claseDano = jugador ? 'recibiendo-dano' : 'recibiendo-dano-magico';
+  const vidasRival = jugador ? vidasVersusDos : vidasVersusUno;
+  programarPasoAtaqueVersus(()=>{rival.classList.remove(claseDano);void rival.offsetWidth;rival.classList.add(claseDano);vidasRival.classList.add('recibiendo-dano');reproducirSonidoVersus('versusAtaqueDos',.76);},380,lado);
+  programarPasoAtaqueVersus(()=>{rival.classList.remove(claseDano);vidasRival.classList.remove('recibiendo-dano');actor.classList.remove('rayo-union-atacando');arco.remove();if(jugador)limpiarAnimacionAtaqueJugadorVersus();else limpiarAnimacionAtaqueRivalVersus();},950,lado);
 }
 
 function reproducirAtaqueBumeranVersus() {
@@ -11294,6 +11289,15 @@ function animarPersonajeTemporal(claseAnimacion) {
   );
 }
 
+function reproducirEntradaNarrativaMision() {
+  const sonido = sonidoNarrativoPendiente;
+  sonidoNarrativoPendiente = "";
+  if (!sonido) return;
+  if (sonido === "piedra") animarImpactoPiedra();
+  if (sonido === "ramas") activarBloqueoTronco();
+  reproducirSonido(sonido);
+}
+
 function animarImpactoPiedra() {
   contenedorEscenario.classList.remove("temblor");
 
@@ -11436,6 +11440,10 @@ function logAudioEvento(mensaje, detalle = "") {
 }
 
 async function iniciarMisionAventura({ presentarMision = false } = {}) {
+  if (presentarMision && desafiosCompletados === 0) {
+    historiaMisionPendiente = true;
+    sonidoNarrativoPendiente = escenarioActual === 0 ? sonidosNarrativosPorMision[misionActual] || "" : "";
+  }
   await globalThis.AdventureOnline?.flush();
   iniciarContextoPalabras("adventure");
   let intentoOnline;

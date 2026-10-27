@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v387-replay1`;
+const CACHE_NAME = `${CACHE_PREFIX}v387-reactions1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -331,6 +331,7 @@ const RESOURCE_ASSETS = [
 "./css/aren-union-preview.css",
 "./js/aren-union-duel.js",
 "./assets/images/trajes/aren-union-base-v1.png",
+"./assets/images/trajes/aren-union-impacto-v1.png",
 "./assets/images/trajes/aren-union-impacto-v2.png",
 "./assets/images/trajes/aren-union-capa-v1.png",
 "./assets/images/trajes/aren-union-invocacion-v1.png",
@@ -905,7 +906,7 @@ const ASSET_REVISIONS = {
   "./assets/images/ui/menu-button-ranking-v1.webp": "sha256-ab9244074004847b638ea796b9e7792176bdb9ee530b1679a1562047b01a83ab",
   "./assets/images/ui/menu-button-shop-v1.webp": "sha256-6e828e1a47cf7a4c97b635b00e4010d014f5ee5161668cd4bd35c2e19c55a1de",
   "./assets/images/ui/menu-button-settings-v1.webp": "sha256-a7dd3fd0d0105ae2032dde8f81ef3c5586b4f4648f93aa01dc7ae1c8aaa64c4f",
-  "./js/resource-catalog.js": "sha256-46f56fb18d277eb3ff4515d55d395eadbab133b326a666d79e099eec170bc9ed",
+  "./js/resource-catalog.js": "sha256-b2d4145d73ab6a00bc818311920e4083dfdcb809084abda491f272fde41c085f",
   "./js/resource-loader.js": "sha256-cada0a2aed6eb37c938fc62b39654ef60bde4667f375c19be9c8c78a2b907714",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
   "./assets/images/perfil/miniaturas/dragon-base.webp": "sha256-f25e547e72384e6edab79d058d145d1dd506e9a62257f29f1a166ebb91db4d2b",
@@ -1022,6 +1023,7 @@ const ASSET_REVISIONS = {
   "./css/aren-union-preview.css": "sha256-05d6fe570dcf15b89c651945a425ebe1139dde2ebdc3fc07d244348330df1291",
   "./js/aren-union-duel.js": "sha256-3056b412e6daa2504578fda0c25409c1c1e1a33c329c6028b807f11dc9f2001c",
   "./assets/images/trajes/aren-union-base-v1.png": "sha256-6094233062b3ca009b4fadb7f02e7daa4276bcf03acb034ae006771312d95a9e",
+  "./assets/images/trajes/aren-union-impacto-v1.png": "sha256-8f7b346b4e61f6fd559e359beece7e02bc136ccca9f36ab0937d0f5a2019bda0",
   "./assets/images/trajes/aren-union-impacto-v2.png": "sha256-b8c4880bf71e597b437a6ec3379db2ff2a38b65930b2dc920c3d3767a645b638",
   "./assets/images/trajes/aren-union-capa-v1.png": "sha256-e20d76865f3bd19ab85617c0d0e859fe2264bec437f86b299dfb71adc13886d5",
   "./assets/images/trajes/aren-union-invocacion-v1.png": "sha256-455cd7e235fa2d3d150f703d1725fde8ee0ce8c84cd8a7a58ad103df73a94f7d",
@@ -1198,7 +1200,7 @@ const ASSET_REVISIONS = {
   "./": "sha256-c950297b742cf0c57131680bd3d942d397f2baa8d01abee404da2a8bcd7c59df",
   "./index.html": "sha256-c950297b742cf0c57131680bd3d942d397f2baa8d01abee404da2a8bcd7c59df",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
-  "./css/styles.css": "sha256-a0a2d02f07ef253d337dd346e8d7cf4ed04a908e7f0043206906035c87a2493f",
+  "./css/styles.css": "sha256-2bc3558fee5099d56ad5cc3557706df47168ee317f1a6271fa0e0b9b933b2ab8",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
   "./js/azrak-world.js": "sha256-d503df637e79f9e229d44bdfb03831c54086f1abf163ffc0dbdef95486227e10",
   "./assets/images/cinematicas/reino-azrak/primer-shadow-lume-capturada-v1.png": "sha256-190fd4207138436bf0a6b68048a766bce2fe136bebf4051095bc84fe6b6b286c",
@@ -1284,7 +1286,7 @@ const ASSET_REVISIONS = {
   "./js/prologue-cinematic.js": "sha256-8645ed39120263f1f89818d9e1beae141579102b3e2a60c14bedce21d61820b4",
   "./assets/images/intro/conceptos/prologo-cuatro-escenas-v1.png": "sha256-2b209d5c4a3c1a14c1f6e8ce236fd4cbc9d0c8347fd842164fb3d3b623b11d7e",
   "./css/intro.css": "sha256-4a173ec8bd6ef5a6a992633d4ad33bece012b20554506c7745442cdc4eafa69f",
-  "./js/intro.js": "sha256-aa92f22e203fac9093a19e7408fd70f4f439d273704bfe11298c6a135ac3a01f",
+  "./js/intro.js": "sha256-58e437e8265f9da32b8a0b62d9b1a083b52cdea7a4a67a712ebba314b73d4e9f",
   "./js/supabase-loader.js": "sha256-52c182c9754dd44411a51a233d0cc4df4e9879d046f90b8af53e6cb939eac5ba",
   "./js/supabase-config.js": "sha256-305eac5a6b712731f4e372cca9f6a4f2af0610e772bd928eaa5e75fc0b427295",
   "./js/supabase-client.js": "sha256-25fedbd5cf0ce2c70266f4e9c17ece167849bbe12abde0ec59d275d497153b4e",
@@ -1296,7 +1298,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-f1d539dc6ee73efa7f5996a26066d7d54576e6a1455341b8bbf767a9288cfd34",
+  "./js/app.js": "sha256-6fdbff11d56082da84cdbe6bed51ad2a89acbc50d9799355bdb43872a5bae0d4",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",

@@ -17920,3 +17920,13 @@ button:disabled {
 .audio-settings label { display: flex; justify-content: space-between; gap: 12px; margin-top: 14px; }
 .audio-settings input[type="range"] { width: 100%; min-height: 40px; accent-color: #e8c970; }
 .audio-settings button { margin: 0 0 8px; font-size: .85rem; }
+
+/* Damage must override Kairos's persistent mirrored breathing pose. */
+.versus-personaje-dos.personaje-kairos.recibiendo-dano,
+.versus-personaje-dos.personaje-kairos.recibiendo-dano-magico {
+  animation: danoRivalInvertidoVersus 350ms ease-out both;
+}
+.versus-personaje-uno.personaje-kairos.recibiendo-dano,
+.versus-personaje-uno.personaje-kairos.recibiendo-dano-magico {
+  animation: danoExploradorMagicoVersus 330ms ease-out both;
+}

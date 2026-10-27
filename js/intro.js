@@ -7,7 +7,7 @@
   const DURACION_REDUCIDA = 3000;
   const RETRASO_INICIO = 500;
   const DURACION_SALIDA = 720;
-  const DURACION_FONDO = 3000;
+  const DURACION_FONDO = 2000;
   const movimiento = window.matchMedia("(prefers-reduced-motion: reduce)");
   const reducirMovimiento = movimiento.matches;
   const app = document.querySelector('.app');
