@@ -2346,7 +2346,7 @@ function continuarAventura() {
       || (escenarioActual === 2 && mundoTresCompletado)
       || (escenarioActual === 3 && mundoCuatroCompletado)
       || (escenarioActual === 4 && estadoFinalAzrak === "completo"))) {
-    mostrarPantalla(pantallaMenu);
+    continuarRepeticionAventura();
     return;
   }
   btnSiguiente.classList.add("oculto");
@@ -13316,7 +13316,7 @@ async function ejecutarCinematicaFinalPortal(capaPortal, secuencia) {
 
     detenerMusicaCinematica(musicaCaminaPortal, 0.62);
     if (globalThis.AventuraMapa?.repeticion) {
-      mostrarPantalla(pantallaMenu);
+      continuarAventura();
       return;
     }
     await mostrarIntroduccionMundoDos();
@@ -17117,6 +17117,32 @@ async function seleccionarMisionMapa(mundo, mision,{desdeInicio=false}={}) {
     if (mundo === 0 && mision === 9) cristalesObtenidos = 1;
     prepararMisionElegida(mundo, mision);
   } finally { AventuraMapa.iniciando = false; }
+}
+
+function continuarRepeticionAventura() {
+  const repeticion = AventuraMapa.repeticion;
+  if (!repeticion) return;
+  let mundo = repeticion.mundo;
+  let mision = repeticion.mision + 1;
+  if (mision >= obtenerCantidadMisiones(mundo)) { mundo++; mision = 0; }
+  const estado = mundo < aventura.length ? estadoMisionMapa(mundo, mision) : "bloqueada";
+  if (estado === "bloqueada") {
+    mostrarPantalla(pantallaMenu);
+    return;
+  }
+  btnSiguiente.classList.add("oculto");
+  limpiarCinematicaSantuario();
+  ocultarMensajeDesafioSuperado();
+  if (estado === "actual") {
+    finalizarRepeticionAventura();
+    void continuarDesdeMapa();
+    return;
+  }
+  // Reset temporary puzzle and character state; the saved adventure stays untouched.
+  reiniciarEstadoAventura();
+  AventuraMapa.repeticion = { mundo, mision, completa: false };
+  cristalesObtenidos = mundo;
+  prepararMisionElegida(mundo, mision);
 }
 
 function finalizarRepeticionAventura() {
