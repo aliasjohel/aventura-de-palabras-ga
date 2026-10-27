@@ -60,7 +60,7 @@
   musicaMenu.loop = true;
   sonidoMagico.preload = "auto";
   musicaMenu.preload = "auto";
-  const sonidoBoton = GameAudio.create('assets/sounds/colocar-piezas.mp3', 'effects');
+  const sonidoBoton = GameAudio.create('assets/sounds/menu-bloque-pesado-v1.wav', 'effects');
   sonidoBoton.volume = 0.22;
   sonidoBoton.preload = 'auto';
   let fondoVisibleDesde = 0;

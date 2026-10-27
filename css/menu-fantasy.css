@@ -15,17 +15,18 @@ body.menu-entrada #pantallaMenu .menu-contenido > * {
 }
 body.menu-entrada #pantallaMenu .menu-contenido > .subtitulo { animation-delay: 150ms; }
 body.menu-entrada #pantallaMenu .menu-contenido > button {
+    --piece-duration: 800ms;
     z-index: 5; transform-origin: 50% 50%;
-    animation: menu-button-drop 800ms cubic-bezier(.45,.04,.78,.65) var(--piece-delay) both,
-        menu-button-settle 200ms ease-out calc(var(--piece-delay) + 800ms) forwards;
+    animation: menu-button-drop var(--piece-duration) cubic-bezier(.45,.04,.78,.65) var(--piece-delay) both,
+        menu-button-settle 200ms ease-out calc(var(--piece-delay) + var(--piece-duration)) forwards;
     animation-play-state: var(--menu-motion), var(--menu-motion);
 }
 body.menu-entrada #pantallaMenu #btnJugar { --piece-delay: 400ms; }
 body.menu-entrada #pantallaMenu #btnModosJuego { --piece-delay: 1500ms; }
-body.menu-entrada #pantallaMenu #btnRankingMenu { --piece-delay: 2600ms; }
-body.menu-entrada #pantallaMenu #btnTienda { --piece-delay: 3700ms; }
-body.menu-entrada #pantallaMenu #btnConfiguracion { --piece-delay: 4800ms; }
-body.menu-entrada #pantallaMenu .estado-offline-juego { animation-delay: 5800ms; }
+body.menu-entrada #pantallaMenu #btnRankingMenu { --piece-delay: 2600ms; --piece-duration: 750ms; }
+body.menu-entrada #pantallaMenu #btnTienda { --piece-delay: 3650ms; --piece-duration: 700ms; }
+body.menu-entrada #pantallaMenu #btnConfiguracion { --piece-delay: 4650ms; --piece-duration: 700ms; }
+body.menu-entrada #pantallaMenu .estado-offline-juego { animation-delay: 5550ms; }
 @keyframes menu-panel-arrival { from { opacity: 0; } to { opacity: 1; } }
 @keyframes menu-item-arrival {
     from { opacity: 0; transform: translateY(8px); visibility: hidden; }
