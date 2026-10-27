@@ -5268,6 +5268,7 @@ const srcKalamoHabilidadVersus = "assets/images/personajes/versus/kalamo-habilid
 const srcKalamoImpactoVersus = "assets/images/personajes/versus/kalamo-impacto.png";
 const srcKairosSeleccionVersus = "assets/images/personajes/versus/kairos-seleccion-v2.png";
 const srcKairosBaseVersus = "assets/images/personajes/versus/kairos-combate-v1.png";
+const srcKairosImpactoVersus = "assets/images/personajes/versus/kairos-impacto-duelo-v1.png";
 const srcKairosAtaqueVersus = "assets/images/personajes/versus/kairos-ataque-v2.png";
 const srcExploradorEnvejecidoKairosVersus = "assets/images/personajes/versus/explorador-envejecido-kairos-v2.png";
 const srcExploradorAncianoKairosVersus = "assets/images/personajes/versus/explorador-anciano-kairos-v2.png";
@@ -6410,7 +6411,7 @@ function spriteTrajeVersus(elemento, personaje, src, herido=false) {
   const traje=trajePersonajeVersus(elemento,personaje);
   if(!traje)return src;
   // The trunk cinematic keeps its frontal pose; combat faces the opponent.
-  if (traje === 'aren-union' && herido) return CosmeticStore.asset(traje, 'base');
+  if (traje === 'aren-union' && herido) return 'assets/images/trajes/aren-union-impacto-duelo-v1.png';
   const posesCriaturas = {
     [srcAzrakAtaqueVersus]:'ataque',
     [srcKalamoAtaqueVersus]:'ataque',
@@ -6481,7 +6482,7 @@ window.addEventListener('rival-costume-updated',refrescarTrajesVersus);
 function actualizarPoseCombateVersus(elemento, personaje = elemento === personajeVersusUno ? personajeJugadorVersus : personajeRivalVersus) {
   const poses = posesCombateVersus.get(elemento) || {};
   const herido = elemento.classList.contains("recibiendo-dano") || elemento.classList.contains("recibiendo-dano-magico");
-  const original = poses.habilidad || poses.ataque || (herido && posesDanoPersonajeVersus[personaje]) || personajesVersus[personaje]?.base;
+  const original = (herido && personaje === "kairos" && posesDanoPersonajeVersus[personaje]) || poses.habilidad || poses.ataque || (herido && posesDanoPersonajeVersus[personaje]) || personajesVersus[personaje]?.base;
   const src = spriteTrajeVersus(elemento,personaje,original,herido);
   if (src && !elemento.src.endsWith(src)) {
     const union=src.includes('/aren-union-')||elemento.getAttribute('src')?.includes('/aren-union-');
@@ -6512,6 +6513,7 @@ function recursosPersonajeCombate(personaje) {
   };
   const trajes=[trajePersonajeVersus(personajeVersusUno,personaje),trajePersonajeVersus(personajeVersusDos,personaje)].filter(Boolean);
   const extras=trajes.flatMap(id=>(id==='aren-union'?['base','ataque','habilidad','impacto','invocacion','victoria','capa','vidrio','mano','planta','envejecido','anciano']:CosmeticStore.find(id).poses).map(pose=>CosmeticStore.asset(id,pose)));
+  if (trajes.includes('aren-union')) extras.push('assets/images/trajes/aren-union-impacto-duelo-v1.png');
   return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || []),...extras].filter(Boolean);
 }
 async function prepararImagenesCombate(personajes) {
@@ -6539,6 +6541,7 @@ async function prepararImagenesCombate(personajes) {
 }
 
 const posesDanoPersonajeVersus = {
+  kairos: srcKairosImpactoVersus,
   hombre_lobo: srcHombreLoboImpactoVersus,
   t_shadow: srcShadowImpactoVersus,
   guardian_alba: srcGuardianAlbaImpactoVersus,

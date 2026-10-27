@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v387-reactions2`;
+const CACHE_NAME = `${CACHE_PREFIX}v387-reactions3`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -333,6 +333,8 @@ const RESOURCE_ASSETS = [
 "./assets/images/trajes/aren-union-base-v1.png",
 "./assets/images/trajes/aren-union-impacto-v1.png",
 "./assets/images/trajes/aren-union-impacto-v2.png",
+"./assets/images/trajes/aren-union-impacto-duelo-v1.png",
+"./assets/images/personajes/versus/kairos-impacto-duelo-v1.png",
 "./assets/images/trajes/aren-union-capa-v1.png",
 "./assets/images/trajes/aren-union-invocacion-v1.png",
 "./assets/images/trajes/aren-union-victoria-v1.png",
@@ -906,7 +908,7 @@ const ASSET_REVISIONS = {
   "./assets/images/ui/menu-button-ranking-v1.webp": "sha256-ab9244074004847b638ea796b9e7792176bdb9ee530b1679a1562047b01a83ab",
   "./assets/images/ui/menu-button-shop-v1.webp": "sha256-6e828e1a47cf7a4c97b635b00e4010d014f5ee5161668cd4bd35c2e19c55a1de",
   "./assets/images/ui/menu-button-settings-v1.webp": "sha256-a7dd3fd0d0105ae2032dde8f81ef3c5586b4f4648f93aa01dc7ae1c8aaa64c4f",
-  "./js/resource-catalog.js": "sha256-b2d4145d73ab6a00bc818311920e4083dfdcb809084abda491f272fde41c085f",
+  "./js/resource-catalog.js": "sha256-7cf0d5564606c02e050f36cf26b042bb1c6fc01d65f85785d6b22729944bac74",
   "./js/resource-loader.js": "sha256-cada0a2aed6eb37c938fc62b39654ef60bde4667f375c19be9c8c78a2b907714",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
   "./assets/images/perfil/miniaturas/dragon-base.webp": "sha256-f25e547e72384e6edab79d058d145d1dd506e9a62257f29f1a166ebb91db4d2b",
@@ -1021,10 +1023,12 @@ const ASSET_REVISIONS = {
   "./prueba-aren-union.html": "sha256-ef4ba7ed6ef00f671a462b4fc676b8ba75a46cc10c166a1466eb76e6f24c931f",
   "./js/aren-union-preview.js": "sha256-d97daee349894661d09d64f63d3a2b5cb40d4c74d5b7c6abe0b8153e1c912698",
   "./css/aren-union-preview.css": "sha256-05d6fe570dcf15b89c651945a425ebe1139dde2ebdc3fc07d244348330df1291",
-  "./js/aren-union-duel.js": "sha256-3056b412e6daa2504578fda0c25409c1c1e1a33c329c6028b807f11dc9f2001c",
+  "./js/aren-union-duel.js": "sha256-1ed6a1e94c03ab72a2cd8634c6a54cf461a68452f9f6d9eb709ac86b44575f1c",
   "./assets/images/trajes/aren-union-base-v1.png": "sha256-6094233062b3ca009b4fadb7f02e7daa4276bcf03acb034ae006771312d95a9e",
   "./assets/images/trajes/aren-union-impacto-v1.png": "sha256-8f7b346b4e61f6fd559e359beece7e02bc136ccca9f36ab0937d0f5a2019bda0",
   "./assets/images/trajes/aren-union-impacto-v2.png": "sha256-b8c4880bf71e597b437a6ec3379db2ff2a38b65930b2dc920c3d3767a645b638",
+  "./assets/images/trajes/aren-union-impacto-duelo-v1.png": "sha256-ad46d46ecc86b3736259773b8b62a7152e1dd0412887a19f2c290b93ddcfe751",
+  "./assets/images/personajes/versus/kairos-impacto-duelo-v1.png": "sha256-cc4ad8b277a13956b88b7770249f3821f160ee1da6c27cc62ad500f9850f3d7c",
   "./assets/images/trajes/aren-union-capa-v1.png": "sha256-e20d76865f3bd19ab85617c0d0e859fe2264bec437f86b299dfb71adc13886d5",
   "./assets/images/trajes/aren-union-invocacion-v1.png": "sha256-455cd7e235fa2d3d150f703d1725fde8ee0ce8c84cd8a7a58ad103df73a94f7d",
   "./assets/images/trajes/aren-union-victoria-v1.png": "sha256-a0df2dd7a83fb2f7f617259c67ab3a702d74eca13b84540fafaedc8d1e5e03cd",
@@ -1298,7 +1302,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-9e0e10911d5c5315f763fe6d1a27b9c885b37fe1716aafa2d3970e60147b7fd0",
+  "./js/app.js": "sha256-824a948c7834266bc61cadfb869286d1fdfbfbeee4a572ca964014c2dbf1f60c",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
