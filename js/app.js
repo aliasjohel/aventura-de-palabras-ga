@@ -1264,6 +1264,10 @@ let pisoActualArcade = 0;
 let pisoCombateArcade = 0;
 let pisosDesbloqueadosArcade = 0;
 let ultimoResultadoArcade = "";
+const rotacionTematicasArcade = ArcadeRules.createCategoryRotation({
+  storage:{getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)},
+  random:()=>Math.random(),
+});
 let desfaseServidorVersus = 0;
 let jugadaOnlineEnCurso = false;
 let salidaSalaVersusEnCurso = false;
@@ -5223,7 +5227,8 @@ function obtenerIntervaloJugadaRivalVersus() {
   if (!modoArcadeActivo) return modoPruebasActivo
     ? intervaloJugadaRivalVersus * 4
     : intervaloJugadaRivalVersus;
-  return Math.max(1550, 3550 - pisoCombateArcade * 270);
+  const intervaloBase = Math.max(1550, 3550 - pisoCombateArcade * 270);
+  return ArcadeRules.rivalInterval(intervaloBase, personajeRivalVersus);
 }
 
 function obtenerProbabilidadAciertoRivalVersus() {
@@ -7876,7 +7881,9 @@ function iniciarCombateArcade() {
   pisoCombateArcade = pisoActualArcade;
   personajeRivalVersus = rivalesTorreArcade[pisoCombateArcade];
   const tematicasDisponibles = Object.keys(obtenerBancosPalabrasVersus());
-  const temaRival = tematicasDisponibles[pisoCombateArcade % tematicasDisponibles.length];
+  // Each character deals one shuffled bag of every category across successive combats.
+  // Saved progress, floor order and already prepared matches are independent from this queue.
+  const temaRival = rotacionTematicasArcade.next(personajeJugadorVersus, tematicasDisponibles);
   tematicaVersus.value = temaRival;
   palabrasSecretasVersus = mezclarPalabrasVersus(obtenerBancosPalabrasVersus()[temaRival])
     .slice(0, maximoPalabrasVersus);

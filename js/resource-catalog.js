@@ -399,6 +399,7 @@ globalThis.GameResourceCatalog = Object.freeze([
   "./js/supabase-client.js",
   "./js/word-gameplay.js",
   "./js/versus-engine.js",
+  "./js/arcade-rules.js",
   "./js/versus-room.js",
   "./js/versus-room-supabase.js",
   "./js/puzzle-lessons.js",
