@@ -229,7 +229,8 @@
     "mountainWordsTheme": "☁️ Tema: montanhas e céu",
     "winterWordsTheme": "❄️ Tema: palavras do inverno",
     "wordsThemeHelp": "Todas as palavras estão relacionadas a este tema.",
-    "rankTotal": "Total do ranking: {points} pontos"
+    "rankTotal": "Total do ranking: {points} pontos",
+    "invertebrates": "Insetos e outros invertebrados"
   },
   "narrative": {
     "world1mission1titulo": "A Floresta Encantada",
@@ -972,6 +973,14 @@
     "restart": "↻ Reiniciar missão do início",
     "unavailable": "Recompensa pendente · Serviço online indisponível",
     "connectionLost": "Você pode continuar a história. Repita a missão do começo com conexão para receber a recompensa.",
-    "duelOfflineRestart": "A conexão caiu. Este duelo recomeça no modo história, sem recompensa. Repita a missão online para recebê-la."
+    "duelOfflineRestart": "A conexão caiu. Este duelo recomeça no modo história, sem recompensa. Repita a missão online para recebê-la.",
+    "feedback": {
+      "paid": "Moedas creditadas",
+      "offline": "O progresso offline não credita moedas verificadas. Conclua esta missão online para recebê-las.",
+      "verify": "Aguardando a confirmação do servidor.",
+      "off": "As recompensas estão indisponíveis no momento.",
+      "done": "Recompensa já recebida.",
+      "online": "Moedas disponíveis ao concluir e validar a missão online."
+    }
   }
 }

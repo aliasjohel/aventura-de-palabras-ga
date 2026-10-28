@@ -17945,3 +17945,15 @@ button:disabled {
   54% { translate: calc(var(--retroceso-impacto) * -.35) 0; }
   78% { translate: calc(var(--retroceso-impacto) * .2) 0; }
 }
+
+/* Only a confirmed server receipt opens this feedback. */
+.estado-recompensa-mision{font-size:.78rem;color:#f5d889;margin:.25rem 0 .6rem}
+.recompensa-confirmada{position:fixed;left:50%;top:18%;transform:translateX(-50%);z-index:150;display:grid;gap:6px;justify-items:center;padding:16px 26px;border:1px solid #f8da77;border-radius:18px;background:#142333f5;color:#fff4c4;box-shadow:0 8px 32px #0009;pointer-events:none;max-width:90vw;text-align:center}
+.recompensa-confirmada strong{font-size:1.7rem}.recompensa-confirmada i{position:absolute;font-style:normal;left:50%;top:25%;animation:monedaConfirmada 950ms ease-out both;animation-delay:calc(var(--coin-i)*45ms)}
+@keyframes monedaConfirmada{from{opacity:1;translate:0 0}to{opacity:0;translate:calc((var(--coin-i) - 4.5)*22px) -100px;rotate:180deg}}
+@media(prefers-reduced-motion:reduce){.recompensa-confirmada i{display:none}}
+
+.moneda-confirmada-dibujo{display:inline-block;width:20px;height:20px;border:2px solid #ffe5a0;border-radius:50%;background:linear-gradient(120deg,#fff4af,#e9b132 48%,#b9760d);box-shadow:inset 0 0 0 3px #d99b29,0 1px 5px #0005;vertical-align:middle}.recompensa-confirmada strong b{margin-left:10px;width:25px;height:25px}
+
+/* Keep the complete category name readable on landscape mobile screens. */
+.campo-tematica-versus{flex-wrap:wrap}.campo-tematica-versus>span{flex-basis:100%}.campo-tematica-versus select{width:100%;max-width:100%}

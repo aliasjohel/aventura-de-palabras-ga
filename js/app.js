@@ -838,10 +838,11 @@ function iniciarContextoPalabras(mode, online = false) {
     ? ['es', ...['en', 'pt-BR'].filter(idioma => obtenerBancoPalabrasIdioma(idioma, escenarioActual))]
     : online ? ['es','en','pt-BR']
       : ['es', ...['en', 'pt-BR'].filter(idioma => obtenerBancosVersusIdioma(idioma, mode))];
-  const versionBanco = mode === 'adventure' && I18n.language !== 'es' && idiomasDisponibles.includes(I18n.language)
+  let versionBanco = mode === 'adventure' && I18n.language !== 'es' && idiomasDisponibles.includes(I18n.language)
     ? (escenarioActual === 0 ? ForestWordBanks.version : AdventureWordBanks.version)
     : mode !== 'adventure' && !online && idiomasDisponibles.includes(I18n.language) && I18n.language !== 'es'
       ? (mode === 'versus' ? ExpandedVersusWordBanks.version : LocalVersusWordBanks.version) : undefined;
+  if (mode !== 'adventure' && usarBancoRevisado(mode)) versionBanco = ReviewedWordBanks.version;
   contextoPalabrasCombate = WordGameplay.createContext({mode, online, onlineLanguage: partidaOnlineVersus?.wordLanguage || adaptadorSalasVersus.obtenerSala()?.idioma || 'es', requestedLanguage: idiomaMision || I18n.language, availableLanguages: idiomasDisponibles, bankVersion: versionBanco});
   const bancos = mode === 'adventure' ? [obtenerBancoPalabrasAventura()] : Object.values(obtenerBancosPalabrasVersus());
   for (const banco of bancos) if (!bancosPalabrasValidados.has(banco)) {
@@ -3334,6 +3335,8 @@ function validarPreparacionVersus(mostrarErrores = false) {
 }
 
 function abrirPreparacionVersus() {
+  const opcionInvertebrados = tematicaVersus.querySelector('[value="invertebrados"]');
+  if(opcionInvertebrados){opcionInvertebrados.hidden=opcionInvertebrados.disabled=!usarBancoRevisado();if(opcionInvertebrados.disabled&&tematicaVersus.value==='invertebrados')tematicaVersus.value='animales';}
   if (transicionCombateVersus) clearTimeout(transicionCombateVersus);
   transicionCombateVersus = null;
   palabrasSecretasVersus = [];
@@ -3969,7 +3972,7 @@ function verificarEstado() {
       (cristalesObtenidos === 0 || globalThis.AdventureOnline?.handles(0,8,'word'));
 
     if (completaSantuarioPorPrimeraVez) {
-      reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
+      reproducirSecuenciaSonidos(["acertar", "victoria"]);
       guardarProgreso();
       bloquearTeclado();
       void mensajeSuperadoTerminado.then((mensajeCompleto) => {
@@ -3988,7 +3991,7 @@ function verificarEstado() {
 
     if (completaPortalDeLosMundos) {
       portalAbierto = true;
-      reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
+      reproducirSecuenciaSonidos(["acertar", "victoria"]);
       bloquearTeclado();
       btnPista.disabled = true;
       btnSiguiente.classList.add("oculto");
@@ -4013,7 +4016,7 @@ function verificarEstado() {
       mundoDosCompletado = true;
       historiaMisionPendiente = false;
       actualizarJugador();
-      reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
+      reproducirSecuenciaSonidos(["acertar", "victoria"]);
       bloquearTeclado();
       btnPista.disabled = true;
       GameUI.text(btnSiguiente,GameUI.key("adventure.controls.completed"));
@@ -4046,7 +4049,7 @@ function verificarEstado() {
       cambiarFondoMisionConFundido("bosque-1.png");
     }
 
-    reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
+    reproducirSecuenciaSonidos(["acertar", "victoria"]);
     guardarProgreso();
     bloquearTeclado();
     btnSiguiente.classList.add("oculto");
@@ -5168,14 +5171,19 @@ btnHabilidadVersus.addEventListener("click", activarHabilidadVersus);
 // Duelo local de cinco rondas. En línea, las palabras y jugadas del rival
 // llegan desde el otro dispositivo en lugar de esta simulación.
 const bancosPalabrasVersus = SpanishWordBanks.versus;
+function usarBancoRevisado(mode = contextoPalabrasCombate?.mode || 'versus') {
+  if (mode === 'tutorial') return false;
+  const sala = adaptadorSalasVersus?.proveedor === 'supabase' && !modoArcadeActivo && !dueloAventuraActivo ? adaptadorSalasVersus.obtenerSala() : null;
+  return !sala?.id || (sala.versionPalabras || partidaOnlineVersus?.wordBankVersion) === 'reviewed-v2';
+}
 function obtenerBancosVersusIdioma(idioma, mode = contextoPalabrasCombate?.mode || 'versus') {
+  if (usarBancoRevisado(mode) && globalThis.ReviewedWordBanks?.banks[idioma]) return ReviewedWordBanks.banks[idioma];
   if (idioma === 'es') return bancosPalabrasVersus;
-  // Tower/tutorial retain the original immutable banks. Only Versus uses expansion.
-  const proveedor = mode === 'versus' || mode === 'online'
-    ? globalThis.ExpandedVersusWordBanks : globalThis.LocalVersusWordBanks;
+  const proveedor = mode === 'versus' || mode === 'online' ? globalThis.ExpandedVersusWordBanks : globalThis.LocalVersusWordBanks;
   const bancos = proveedor?.banks[idioma];
   return bancos && Object.keys(bancosPalabrasVersus).every(tema => Array.isArray(bancos[tema]) && bancos[tema].length >= 40) ? bancos : null;
 }
+
 function obtenerBancosPalabrasVersus() {
   const idioma = contextoPalabrasCombate?.language || 'es';
   return obtenerBancosVersusIdioma(idioma) || bancosPalabrasVersus;
@@ -5184,6 +5192,7 @@ const nombresTematicasVersus = {
   paises: "Países",
   frutas: "Frutas",
   animales: "Animales",
+  invertebrados: "Insectos y otros invertebrados",
   comidas: "Comidas",
   profesiones: "Profesiones",
   deportes: "Deportes",
@@ -15370,7 +15379,7 @@ async function completarPruebaEspecialBosque(tipo) {
   botonesPuzzleCumbres.forEach((boton) => (boton.disabled = true));
   modalPruebaBosque.classList.add("prueba-completada");
   cambiarPersonaje("celebrando");
-  reproducirSecuenciaSonidos(["acertar", "moneda", "victoria"]);
+  reproducirSecuenciaSonidos(["acertar", "victoria"]);
 
   await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 700 : 1500);
   if (secuencia !== secuenciaPruebaBosque || pruebaEspecialBosqueActiva !== "completando") return;

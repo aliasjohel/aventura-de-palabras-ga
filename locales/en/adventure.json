@@ -229,7 +229,8 @@
     "mountainWordsTheme": "☁️ Theme: mountains and sky",
     "winterWordsTheme": "❄️ Theme: winter words",
     "wordsThemeHelp": "All words are related to this theme.",
-    "rankTotal": "Ranking total: {points} points"
+    "rankTotal": "Ranking total: {points} points",
+    "invertebrates": "Insects and other invertebrates"
   },
   "narrative": {
     "world1mission1titulo": "The Enchanted Forest",
@@ -972,6 +973,14 @@
     "restart": "↻ Restart mission from the beginning",
     "unavailable": "Reward pending · Online service unavailable",
     "connectionLost": "You can continue the story. Replay the mission from the beginning online to claim its reward.",
-    "duelOfflineRestart": "Connection lost. This duel restarts in story mode without a reward. Replay the mission online to earn it."
+    "duelOfflineRestart": "Connection lost. This duel restarts in story mode without a reward. Replay the mission online to earn it.",
+    "feedback": {
+      "paid": "Coins credited",
+      "offline": "Offline progress does not credit verified coins. Complete this mission online to claim them.",
+      "verify": "Waiting for server confirmation.",
+      "off": "Rewards are currently unavailable.",
+      "done": "Reward already claimed.",
+      "online": "Coins available after completing and verifying this mission online."
+    }
   }
 }

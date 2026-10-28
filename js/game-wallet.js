@@ -5,19 +5,20 @@
 })(globalThis,()=>{
   'use strict';
   function create(store,root){
-    let client=null,userId=null,queue=Promise.resolve(),timer=null;
+    let client=null,userId=null,queue=Promise.resolve(),timer=null,connectionGeneration=0;
     const notify=()=>root.dispatchEvent?.(new Event('wallet-updated'));
     const check=id=>{if(!id||id!==userId||store.read().accountId!==id)throw Error('La cuenta cambió. Volvé a intentar.');};
     function enqueue(operation){
-      const id=userId;
-      const run=()=>{check(id);return operation(id);};
+      const id=userId,generation=connectionGeneration;
+      const run=()=>{check(id);if(generation!==connectionGeneration)throw Error('La sesión cambió. Volvé a intentar.');return operation(id);};
       const next=queue.then(()=>root.navigator?.locks?root.navigator.locks.request('aventura-wallet',run):run());
       queue=next.catch(()=>{});return next;
     }
     async function rpc(id,name,args){
       check(id);
+      const generation=connectionGeneration;
       const {data,error}=await client.rpc(name,args);
-      check(id);
+      check(id);if(generation!==connectionGeneration)throw Error('La sesión cambió. Volvé a intentar.');
       if(error)throw Error(error.message||'No pudimos sincronizar las monedas. Reintentá con conexión.');
       if(data?.activationError)throw Error(data.activationError);
       if(data?.userId!==id)throw Error('No pudimos verificar el saldo de tu cuenta.');
@@ -81,9 +82,10 @@
       });},100);
     }
     function connect(nextClient,id){
+      if(client!==nextClient||userId!==(id||null))connectionGeneration++;
       client=nextClient;userId=id||null;
       store.setPurchaseHandler(null);
-      if(!userId)return;
+      if(!userId){notify();root.dispatchEvent?.(new Event('wallet-session-ended'));return;}
       store.beginAccount(userId);notify();
       store.setPurchaseHandler(skin=>enqueue(async account=>{
         await syncNow(account);

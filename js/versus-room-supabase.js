@@ -362,7 +362,7 @@
       });
       if (identidad !== usuarioId || salaActual?.id !== roomId) return partidaActual;
       if (error) throw traducirError(error, "No pudimos sincronizar el combate.");
-      partidaActual = data;
+      partidaActual = data ? {...data,wordBankVersion:salaActual.versionPalabras || "legacy-v1"} : data;
       emitirPartida(partidaActual);
       return partidaActual;
     }
@@ -418,7 +418,7 @@
     async function cargarSala(roomId) {
       const versionCarga = versionCanalSala;
       const [{ data: sala, error: errorSala }, { data: jugadores, error: errorJugadores }] = await Promise.all([
-        cliente.from("versus_rooms").select("id, code, status, host_id, created_at, updated_at, queue_mode, word_language").eq("id", roomId).maybeSingle(),
+        cliente.from("versus_rooms").select("id, code, status, host_id, created_at, updated_at, queue_mode, word_language, word_bank_version").eq("id", roomId).maybeSingle(),
         cliente.from("versus_players").select("id, user_id, alias, slot, ready, character_key, theme_key, preparation_ready, rematch_ready, joined_at, avatar_key, frame_key, quick_message_key, quick_message_at").eq("room_id", roomId).order("slot"),
       ]);
 
@@ -449,10 +449,15 @@
       }
 
       if (versionCarga !== versionCanalSala) return salaActual;
+      const bankRegistration=await cliente.rpc('register_versus_word_bank',{p_room_id:roomId,p_version:'reviewed-v2'});
+      if(bankRegistration.error)throw traducirError(bankRegistration.error,"No pudimos sincronizar la sala.");
+      if(versionCarga!==versionCanalSala)return salaActual;
+      sala.word_bank_version=bankRegistration.data?.wordBankVersion||sala.word_bank_version||'legacy-v1';
       salaActual = {
         id: sala.id,
         codigo: sala.code,
         idioma: sala.word_language || "es",
+        versionPalabras: sala.word_bank_version || "legacy-v1",
         modo: sala.queue_mode,
         estado: sala.status,
         creadaEn: sala.created_at,

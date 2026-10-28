@@ -229,7 +229,8 @@
     "mountainWordsTheme": "☁️ Tema: montañas y cielo",
     "winterWordsTheme": "❄️ Tema: palabras del invierno",
     "wordsThemeHelp": "Todas las palabras están relacionadas con este tema.",
-    "rankTotal": "Total del ranking: {points} puntos"
+    "rankTotal": "Total del ranking: {points} puntos",
+    "invertebrates": "Insectos y otros invertebrados"
   },
   "narrative": {
     "world1mission1titulo": "El Bosque Encantado",
@@ -972,6 +973,14 @@
     "restart": "↻ Repetir misión desde el inicio",
     "unavailable": "Recompensa pendiente · Servicio online no disponible",
     "connectionLost": "La historia sigue disponible. Repetí la misión desde el principio con conexión para cobrar su recompensa.",
-    "duelOfflineRestart": "Se cortó la conexión. Reiniciamos este duelo en modo historia, sin recompensa. Podés repetir la misión online para cobrarla."
+    "duelOfflineRestart": "Se cortó la conexión. Reiniciamos este duelo en modo historia, sin recompensa. Podés repetir la misión online para cobrarla.",
+    "feedback": {
+      "paid": "Monedas acreditadas",
+      "offline": "El progreso offline no acredita monedas verificadas. Para cobrarlas, completá esta misión online.",
+      "verify": "Esperando la confirmación del servidor.",
+      "off": "Las recompensas no están disponibles en este momento.",
+      "done": "Recompensa ya cobrada.",
+      "online": "Monedas disponibles al completar y validar la misión online."
+    }
   }
 }

@@ -1,7 +1,7 @@
 /* Reward state is independent from the local story save. Browser completions are never proof. */
-(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.AdventureRewards=api.create({storage:root.localStorage,account:()=>root.CosmeticStore.read().accountId,claims:()=>root.CosmeticStore.read().missionClaims,online:()=>root.navigator.onLine,connect:()=>root.AventuraShop.connect(),rpc:args=>root.GameWallet.rewardAttempt(args),id:()=>root.crypto.randomUUID(),changed:()=>root.dispatchEvent(new Event('adventure-rewards-updated'))});})(globalThis,()=>{
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.AdventureRewards=api.create({storage:root.localStorage,account:()=>root.CosmeticStore.read().accountId,claims:()=>root.CosmeticStore.read().missionClaims,online:()=>root.navigator.onLine,connect:()=>root.AventuraShop.connect(),rpc:args=>root.GameWallet.rewardAttempt(args),id:()=>root.crypto.randomUUID(),changed:()=>root.dispatchEvent(new Event('adventure-rewards-updated')),credited:receipt=>root.dispatchEvent(new CustomEvent('adventure-reward-confirmed',{detail:receipt,cancelable:true}))});})(globalThis,()=>{
  'use strict';
- function create({storage,account,claims=()=>[],online,connect=async()=>{},rpc,id,changed=()=>{}}){
+ function create({storage,account,claims=()=>[],online,connect=async()=>{},rpc,id,changed=()=>{},credited=()=>{}}){
   let active=null,generation=0;
   const key=owner=>'aventuraRecompensasOnlineV1:'+owner;
   const missionKey=(w,m)=>w+':'+m;
@@ -19,6 +19,16 @@
    return 'pending';
    }catch{return 'unavailable';}
   }
+  function confirmReceipt(response,owner,world,mission,attemptId){
+   const receipt=response?.rewardReceipt;
+   if(owner!==account()||!receipt||receipt.confirmed!==true||receipt.userId!==owner||receipt.attemptId!==attemptId||receipt.world!==world||receipt.mission!==mission||receipt.amount!==(mission===9?300:50)||typeof receipt.id!=='string'||!receipt.id)return;
+   // Local storage only deduplicates presentation; it never authorizes a payment.
+   const presentationKey='aventuraRecibosMostradosV1:'+owner;
+   let shown;try{shown=JSON.parse(storage.getItem(presentationKey)||'[]');if(!Array.isArray(shown))shown=[];}catch{shown=[];}
+   if(shown.includes(receipt.id))return;
+   if(credited(Object.freeze({...receipt}))===false)return;
+   shown.push(receipt.id);try{storage.setItem(presentationKey,JSON.stringify(shown));}catch{};
+  }
   async function cancel(){
    generation++;const previous=active;active=null;
    if(previous&&!previous.submitted){save(previous.owner,previous.world,previous.mission,{...previous,status:previous.actionPending?'finish_submitted':'retry_required'});
@@ -29,7 +39,7 @@
    if(!valid(world,mission))throw Error('Misión inválida.');
    if(active?.owner===account()&&active.world===world&&active.mission===mission&&!active.interrupted)return active;
    await cancel();const token=++generation;
-   if(!online())return;
+   if(!online()){const owner=account();if(owner)save(owner,world,mission,{status:'retry_required'});return;}
    let owner=null;
    try{
     owner=account();await connect();owner=account();if(!owner||!online()||token!==generation)return;
@@ -52,7 +62,7 @@
    }
    if(run.submitted)return;
    run.submitted=true;save(run.owner,world,mission,{attemptId:run.attemptId,status:'finish_submitted'});
-   try{const response=await rpc({p_action:'finish',p_attempt:run.attemptId});if(account()===run.owner)save(run.owner,world,mission,{attemptId:run.attemptId,status:response.attempt.status});}
+   try{const response=await rpc({p_action:'finish',p_attempt:run.attemptId});if(account()===run.owner){save(run.owner,world,mission,{attemptId:run.attemptId,status:response.attempt.status,receiptId:response.rewardReceipt?.id||null});confirmReceipt(response,run.owner,world,mission,run.attemptId);}}
    catch{ /* Keep the receipt request; recover only with a read/status operation. */ }
    finally{if(active===run)active=null;}
   }
@@ -62,17 +72,25 @@
    changed();
   }
   function actionPending(attemptId){if(active?.attemptId===attemptId){active.actionPending=true;save(active.owner,active.world,active.mission,{attemptId,status:'finish_submitted'});}}
-  function actionConfirmed(attemptId,response){if(active?.attemptId!==attemptId||active.owner!==account())return;active.actionPending=false;save(active.owner,active.world,active.mission,{attemptId,status:['credited','already_claimed'].includes(response.attempt.status)?response.attempt.status:active.interrupted?'retry_required':response.attempt.status});}
+  function actionConfirmed(attemptId,response){if(active?.attemptId!==attemptId||active.owner!==account())return;active.actionPending=false;confirmReceipt(response,active.owner,active.world,active.mission,attemptId);save(active.owner,active.world,active.mission,{attemptId,receiptId:response.rewardReceipt?.id||null,status:['credited','already_claimed'].includes(response.attempt.status)?response.attempt.status:active.interrupted?'retry_required':response.attempt.status});}
   function actionLost(attemptId){if(active?.attemptId!==attemptId)return;active.actionPending=false;active.interrupted=true;active.submitted=true;save(active.owner,active.world,active.mission,{attemptId,status:'finish_submitted'});}
   async function recover(){
    if(!online()||!account())return;const owner=account(),state=read(owner);
    for(const [which,value]of Object.entries(state)){
-    if(!['finish_submitted','awaiting_verification'].includes(value.status)||!value.attemptId)continue;
+    let shown=[];try{shown=JSON.parse(storage.getItem('aventuraRecibosMostradosV1:'+owner)||'[]');}catch{}
+    const presentationDue=value.status==='credited'&&value.receiptId&&(!Array.isArray(shown)||!shown.includes(value.receiptId));
+    if((!['finish_submitted','awaiting_verification'].includes(value.status)&&!presentationDue)||!value.attemptId)continue;
     if(owner!==account())return;
-    try{const response=await rpc({p_action:'status',p_attempt:value.attemptId});if(owner!==account())return;const [w,m]=which.split(':').map(Number);save(owner,w,m,{attemptId:value.attemptId,status:response.attempt.status==='running'?'retry_required':response.attempt.status});}catch{}
+    try{const response=await rpc({p_action:'status',p_attempt:value.attemptId});if(owner!==account())return;const [w,m]=which.split(':').map(Number);save(owner,w,m,{attemptId:value.attemptId,status:response.attempt.status==='running'?'retry_required':response.attempt.status,receiptId:response.rewardReceipt?.id||null});confirmReceipt(response,owner,w,m,value.attemptId);}catch{}
    }
   }
   return Object.freeze({begin,complete,cancel,disconnected,recover,status,read,actionPending,actionConfirmed,actionLost});
  }
  return {create};
+});
+
+if(typeof window!=='undefined')window.addEventListener('wallet-session-ended',()=>{
+  window.AdventureRewards.disconnected();
+  void window.AdventureRewards.cancel().catch(()=>{});
+  window.AdventureOnline?.clear();
 });
