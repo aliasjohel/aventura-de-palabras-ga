@@ -8775,7 +8775,7 @@ const posesReaccionVictimaVersus = {
   dragon_hielo: srcDragonHieloImpactoVersus,
   azrak: srcAzrakImpactoVersus,
   kalamo: srcKalamoImpactoVersus,
-  kairos: srcKairosBaseVersus,
+  kairos: srcKairosImpactoVersus,
 };
 
 const pantallasRotasKalamoVersus = {
@@ -8822,11 +8822,11 @@ function programarReaccionVictimaFinalVersus(elemento, personaje, demora) {
   const frontal = elemento === victimaTrampaVersus && usaImpactoFrontalGuardianaVersus(clave);
   const fuente = frontal ? srcGuardianaImpactoTroncoVersus : imagenTrajeFinalVersus(clave,'impacto',posesReaccionVictimaVersus[clave]);
   const secuencia = secuenciaReaccionFinalVersus;
-  const precarga = frontal ? new Image() : null;
+  const precarga = frontal || clave === 'kairos' ? new Image() : null;
   if (precarga) precarga.src = fuente;
   const lista = precarga ? precarga.decode().then(() => true, () => false) : null;
   demoVersus.temporizadorReaccionCinematica = setTimeout(async () => {
-    if (frontal && !await lista) return;
+    if (lista && !await lista) return;
     if (secuencia !== secuenciaReaccionFinalVersus) return;
     elemento.src = fuente;
     elemento.classList.add("reaccion-final-activa");
@@ -8905,7 +8905,7 @@ function reproducirTrampaSelvaticaVersus(victima = personajeRivalVersus) {
   prepararTrajesFinalVersus('explorador');
   cinematicaFinalVersus.classList.toggle('trampa-impacto-frontal', usaImpactoFrontalGuardianaVersus(victima));
   crearParticulasEclipseVersus();
-  programarReaccionVictimaFinalVersus(victimaTrampaVersus, victima, trajeFinalVersus(victima) === 'aren-union' || usaImpactoFrontalGuardianaVersus(victima) ? 2700 : 2200);
+  programarReaccionVictimaFinalVersus(victimaTrampaVersus, victima, victima === 'kairos' || trajeFinalVersus(victima) === 'aren-union' || usaImpactoFrontalGuardianaVersus(victima) ? 2700 : 2200);
   fondoCinematicaVersus.src = fondoVersus.src;
   etiquetaCinematicaVersus.textContent = "TÉCNICA SECRETA";
   tituloCinematicaVersus.textContent = "TRAMPA SELVÁTICA";
