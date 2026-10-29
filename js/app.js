@@ -4773,7 +4773,7 @@ function prepararBarridoHieloNivorVersus(milisegundos) {
   congelacionNivorVersus.replaceChildren(fragmento, grietas);
 }
 
-function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
+function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos, alTerminar = null) {
   limpiarEfectoVisualHabilidadVersus();
   if (!efecto || milisegundos <= 0) {
     if (adaptadorSalasVersus.proveedor === "supabase" && partidaOnlineVersus) {
@@ -4874,6 +4874,7 @@ function aplicarEfectoVisualHabilidadVersus(efecto, milisegundos) {
     } else {
       sincronizarTecladoDemoVersus();
     }
+    if (alTerminar) alTerminar();
   }, milisegundos);
 }
 
@@ -5112,9 +5113,18 @@ function activarHabilidadLocalVersus() {
   actualizarPanelHabilidadVersus(0);
 }
 
+function esNyborRivalTorre() {
+  return modoArcadeActivo && !dueloAventuraActivo && !partidaOnlineVersus
+    && !tutorialCombateVersus.activo && contextoPalabrasCombate?.mode === 'tower'
+    && personajeRivalVersus === 'dragon_hielo';
+}
+
 function activarHabilidadRivalLocalVersus() {
   if (demoVersus.cargaHabilidadRival < letrasParaHabilidadVersus || demoVersus.partidaFinalizada) return;
   const habilidad = habilidadesVersus[personajeRivalVersus] || habilidadesVersus.mago;
+  const recuperacionHielo = esNyborRivalTorre() ? demoVersus.recuperacionHieloTorre : null;
+  // Reserve before scheduling impact: repeated AI calls cannot queue extra freezes.
+  if (recuperacionHielo && !recuperacionHielo.reserve(Date.now())) return;
   if (habilidad.efecto === "hint") {
     const pista = obtenerPistaLupaVersus(
       obtenerPalabraActualRivalVersus(),
@@ -5136,7 +5146,11 @@ function activarHabilidadRivalLocalVersus() {
   } else {
     reproducirAnimacionHabilidadVersus(personajeRivalVersus, {
       desdeRival: true,
-      alImpactar: () => aplicarEfectoVisualHabilidadVersus(habilidad.efecto, habilidad.duracion),
+      alImpactar: () => aplicarEfectoVisualHabilidadVersus(
+        habilidad.efecto,
+        habilidad.duracion,
+        recuperacionHielo ? () => recuperacionHielo.finish(Date.now()) : null,
+      ),
     });
   }
   demoVersus.cargaHabilidadRival = 0;
@@ -5227,8 +5241,8 @@ function obtenerIntervaloJugadaRivalVersus() {
   if (!modoArcadeActivo) return modoPruebasActivo
     ? intervaloJugadaRivalVersus * 4
     : intervaloJugadaRivalVersus;
-  const intervaloBase = Math.max(1550, 3550 - pisoCombateArcade * 270);
-  return ArcadeRules.rivalInterval(intervaloBase, personajeRivalVersus);
+  const rival = personajeRivalVersus === 'dragon_hielo' && !esNyborRivalTorre() ? null : personajeRivalVersus;
+  return ArcadeRules.rivalInterval(pisoCombateArcade, rival);
 }
 
 function obtenerProbabilidadAciertoRivalVersus() {
@@ -5236,7 +5250,8 @@ function obtenerProbabilidadAciertoRivalVersus() {
     return dueloAventuraActivo.probabilidadRival || probabilidadAciertoRivalVersus;
   }
   if (!modoArcadeActivo) return probabilidadAciertoRivalVersus;
-  return Math.min(.82, .43 + pisoCombateArcade * .055);
+  const precisionBase = Math.min(.82, .43 + pisoCombateArcade * .055);
+  return esNyborRivalTorre() ? ArcadeRules.rivalAccuracy(precisionBase, personajeRivalVersus) : precisionBase;
 }
 const srcExploradorBaseVersus = "assets/images/personajes/versus/explorador-base.png";
 const srcExploradorLupaVersus = "assets/images/personajes/versus/explorador-lupa.png";
@@ -6604,6 +6619,7 @@ const demoVersus = {
   vidasRival: vidasInicialesVersus,
   cargaHabilidadJugador: 0,
   cargaHabilidadRival: 0,
+  recuperacionHieloTorre: ArcadeRules.createNyborFreezeRecovery(),
   pistaLupaJugador: "",
   pistaLupaRival: "",
   efectoRivalHasta: 0,
@@ -7795,12 +7811,27 @@ function mezclarPalabrasVersus(palabras) {
   return copia;
 }
 
+function obtenerPalabrasCandidatasDueloVersus(tema, excluidas = []) {
+  const banco = obtenerBancosPalabrasVersus()[tema] || [];
+  if (!modoArcadeActivo || dueloAventuraActivo || contextoPalabrasCombate?.mode !== 'tower') return banco;
+  const clavesExcluidas = new Set(excluidas.map(obtenerClavePalabraVersus));
+  return ArcadeRules.wordPool({
+    bank: banco,
+    language: contextoPalabrasCombate.language,
+    category: tema,
+    floor: pisoCombateArcade,
+    rival: personajeRivalVersus,
+  }).filter(palabra => !clavesExcluidas.has(obtenerClavePalabraVersus(palabra)));
+}
+
 function agregarPalabraRecuperacionVersus(tipoJugador) {
   const esJugador = tipoJugador === "jugador";
   const tema = esJugador ? demoVersus.tematicaParaJugador : demoVersus.tematicaParaRival;
   const propiedad = esJugador ? "palabrasJugador" : "palabrasRival";
+  const temaOpuesto = esJugador ? demoVersus.tematicaParaRival : demoVersus.tematicaParaJugador;
+  const palabrasOpuestas = esJugador ? demoVersus.palabrasRival : demoVersus.palabrasJugador;
   const palabraExtra = motorDePalabras().elegirPalabraRecuperacion(
-    obtenerBancosPalabrasVersus()[tema] || [],
+    obtenerPalabrasCandidatasDueloVersus(tema, temaOpuesto === tema ? palabrasOpuestas : []),
     demoVersus[propiedad],
   );
   if (palabraExtra) demoVersus[propiedad].push(palabraExtra);
@@ -7825,7 +7856,10 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
     Math.floor(Math.random() * tematicasDisponibles.length)
   ];
   demoVersus.palabrasJugador = mezclarPalabrasVersus(
-    obtenerBancosPalabrasVersus()[demoVersus.tematicaParaJugador],
+    obtenerPalabrasCandidatasDueloVersus(
+      demoVersus.tematicaParaJugador,
+      demoVersus.tematicaParaJugador === demoVersus.tematicaParaRival ? palabrasSecretasVersus : [],
+    ),
   ).slice(0, maximoPalabrasVersus);
   demoVersus.palabrasRival = palabrasSecretasVersus.map(limpiarPalabraParaVersus);
   demoVersus.indiceJugador = 0;
@@ -7885,7 +7919,7 @@ function iniciarCombateArcade() {
   // Saved progress, floor order and already prepared matches are independent from this queue.
   const temaRival = rotacionTematicasArcade.next(personajeJugadorVersus, tematicasDisponibles);
   tematicaVersus.value = temaRival;
-  palabrasSecretasVersus = mezclarPalabrasVersus(obtenerBancosPalabrasVersus()[temaRival])
+  palabrasSecretasVersus = mezclarPalabrasVersus(obtenerPalabrasCandidatasDueloVersus(temaRival))
     .slice(0, maximoPalabrasVersus);
   prepararDueloVersus({ comenzarRonda: false });
   const arena = arenasVersus[pisoCombateArcade % arenasVersus.length];
@@ -7900,6 +7934,7 @@ function iniciarCombateArcade() {
 btnCombatirArcade.addEventListener("click", iniciarCombateArcade);
 
 function detenerRondaVersus({ conservarTemaCalamo = false } = {}) {
+  demoVersus.recuperacionHieloTorre.reset();
   autoridadDueloAventura?.stop();
   limpiarQuemaduraTecladoVersus();
   if (!conservarTemaCalamo) detenerTemaCalamo();
