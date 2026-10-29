@@ -29,6 +29,7 @@
     nervioso: [1024,1536,210,156,735,1369],
     feliz: [1536,1024,568,71,904,757],
     preocupado: [1536,1024,558,43,928,839],
+    pensando: [1536,1024,558,47,931,839],
     acierto: [1024,1536,227,208,728,1151],
     desanimado: [1024,1536,290,243,773,1082],
     triste: [1536,1024,560,91,1041,841],
@@ -44,9 +45,20 @@
       const [w,h,x0,y0,x1,y1] = pose;
       const fit = Math.min(width / w, actor.offsetHeight / h);
       const scale = (width * (1213 / 2304)) / (fit * (y1 - y0));
+      const y = scale * fit * (h-y1)-width*(167/2304);
       actor.style.setProperty('--arena-pose-escala', String(scale));
       actor.style.setProperty('--arena-pose-x', `${-scale * fit * ((x0+x1)/2-w/2)}px`);
-      actor.style.setProperty('--arena-pose-y', `${scale * fit * (h-y1)-width*(167/2304)}px`);
+      actor.style.setProperty('--arena-pose-y', `${y}px`);
+      if (stage && !released) {
+        // Clip at the mound's fixed y=88 base, before the sprite transforms.
+        // Otherwise sinking can expose the boots beneath the mound's front edge.
+        const sceneScale = parseFloat(style.scale) || 1;
+        const ground = width * (.045 + .5 * (1 - .88));
+        const sink = stage * width * .012;
+        actor.style.setProperty('--recorte-arena', `${Math.max(0, (ground + sink + sceneScale * y) / (sceneScale * scale))}px`);
+      } else {
+        actor.style.removeProperty('--recorte-arena');
+      }
     }
     if (sand.hidden) return;
     sand.style.left = `${actor.offsetLeft}px`;
@@ -80,6 +92,7 @@
       released = true;
       sand.classList.add('liberando');
       actor.style.setProperty('--hundimiento-arena', '0px');
+      actor.style.removeProperty('--recorte-arena');
     },
     message() { return enabled ? messages[stage] : ''; },
   };

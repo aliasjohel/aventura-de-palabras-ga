@@ -24,6 +24,9 @@
   animation: none;
   transform: translate(var(--arena-pose-x, 0px), var(--arena-pose-y, 0px)) scale(var(--arena-pose-escala, 1));
 }
+.escenario.arena-atrapando.arena-poses-fijas:not(.llegada-desierto-activa) .personaje-imagen:not(.caminando):not(.oculto-cinematica) {
+  clip-path: inset(0 0 var(--recorte-arena, 0px) 0);
+}
 @media (max-width:700px) {
   .escenario.arena-poses-fijas .personaje-imagen { height:87px; }
 }

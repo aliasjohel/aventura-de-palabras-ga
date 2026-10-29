@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v387-adventurehints1`;
+const CACHE_NAME = `${CACHE_PREFIX}v387-desertsand1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1208,8 +1208,8 @@ const ASSET_REVISIONS = {
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
   "./js/player-avatar.js": "sha256-6e7278100624b641eef48662f51fa7b104a443f01ff9eb302c4fa8c1a99e009b",
   "./js/public-player-profile.js": "sha256-48d7ac44f3792d9d7754e98037dfd7ec6f9a1ec783be104dc46e7a49e9d5b498",
-  "./": "sha256-5fee9aae8999521a287a19693bedb978706f97ad86b38497badd8c011358e63a",
-  "./index.html": "sha256-5fee9aae8999521a287a19693bedb978706f97ad86b38497badd8c011358e63a",
+  "./": "sha256-b119a423548ec87226d67f0032fae80308d9754d2d921c0176968786a610f217",
+  "./index.html": "sha256-b119a423548ec87226d67f0032fae80308d9754d2d921c0176968786a610f217",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-e8bb2f1e0951ec3a52b5bd16fe34dfca530a157a67146c8f5b665d73aeeaa2a2",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1272,10 +1272,10 @@ const ASSET_REVISIONS = {
   "./assets/sounds/azrak-batalla-final-musiclfiles.mp3": "sha256-05cd8312382f076715fd3e03a632cb7bc6a4bf7b66f1f07cf22fe92863d62ad6",
   "./assets/sounds/victoria-mundo5.mp3": "sha256-b225db3633251ef525960d165c65ec25c2972eadfc59a10664939b02b8009d5d",
   "./assets/sounds/azrak-es-vencido.mp3": "sha256-1c5d9b8cc53b0b8be1c061c03063ef24497e4bc570d80fc5580911e0e024b823",
-  "./css/desert-sand-trap.css": "sha256-e8a4073778b33d673abe603f009e678c560abf41c9b29fe26a8f31667559d65c",
+  "./css/desert-sand-trap.css": "sha256-717b8593aeeefb45d315a689e5043d26990d84be814f43da8cbf4667d6436c12",
   "./css/world-word-hazards.css": "sha256-a0c702ded07999839e4f1c95f98a0b92646c05e3f1a8a54b4d040db60881c42a",
   "./js/world-word-hazards.js": "sha256-e03b52359ac253ff3d6bde86b249cde85fd68bef284bd534c8d425277286a279",
-  "./js/desert-sand-trap.js": "sha256-f4d575efeaa9c3b32b0a37bfa5ba656684f15e60f341ac6a9524c22c4c542cb5",
+  "./js/desert-sand-trap.js": "sha256-637a304bfe66acbc71fcd8c01baff030d8717ac040114f7b4f17fe3bda9e5818",
   "./assets/images/personajes/explorador-brazo-arena-v1.png": "sha256-4c2db838858591bf6870d0598895146acb757c773da3c0f765f01e33d8268823",
   "./css/forest-root-trap.css": "sha256-0ae41c5356bb805e0672bb9cf9f66415b1cb1180c285353f191de5cce2373ca1",
   "./js/forest-root-trap.js": "sha256-a71fecacd5cfe6f7f2226c438540d9184fff458b3519db7cb77f2595faeeb085",
@@ -1901,8 +1901,6 @@ const LEGACY_RESOURCE_REVISIONS = {
   "./assets/sounds/azrak-batalla-final-musiclfiles.mp3": "legacy-v93-v95",
   "./assets/sounds/victoria-mundo5.mp3": "legacy-v93-v95",
   "./assets/sounds/azrak-es-vencido.mp3": "legacy-v93-v95",
-  "./css/desert-sand-trap.css": "aventura-palabras-runtime-v347",
-  "./js/desert-sand-trap.js": "aventura-palabras-runtime-v347",
   "./assets/images/personajes/explorador-brazo-arena-v1.png": "legacy-v93-v95",
   "./css/forest-root-trap.css": "aventura-palabras-runtime-v347",
   "./js/forest-root-trap.js": "aventura-palabras-runtime-v347",
