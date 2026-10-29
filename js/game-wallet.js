@@ -74,6 +74,7 @@
         }
         return result;
       });
+    const adventureHelp=args=>enqueue(id=>rpc(id,'adventure_word_help',args));
     function schedule(){
       if(!userId)return;
       root.clearTimeout(timer);
@@ -98,7 +99,7 @@
     root.addEventListener?.('online',schedule);
     root.addEventListener?.('focus',schedule);
     root.document?.addEventListener('visibilitychange',()=>{if(!root.document.hidden)schedule();});
-    return Object.freeze({connect,sync,setArenTrial,backgrounds,characters,rewardAttempt,gameAction});
+    return Object.freeze({connect,sync,setArenTrial,backgrounds,characters,rewardAttempt,gameAction,adventureHelp});
   }
   return {create};
 });

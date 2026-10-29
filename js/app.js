@@ -2335,14 +2335,59 @@ async function ejecutarAccionSalaVersus(accion) {
 // ====================
 // Eventos
 // ====================
-btnPista.addEventListener("click", () => {
-  mostrarReaccionExplorador("pensando");
-
-  textoPista.textContent = `💡 ${pistaActual}`;
-
-  textoPista.classList.remove("oculto");
-
-  btnPista.disabled = true;
+function guardarPalabraConPistas(finalizada=false) {
+  if(contextoPalabrasCombate?.mode==='adventure'&&!modoPruebasActivo){
+    try{globalThis.AdventureHints?.record(letrasElegidas,6-intentos,finalizada);}catch{globalThis.AdventureHints?.disable();}
+  }
+}
+function actualizarAyudasAventura() {
+  if(contextoPalabrasCombate?.mode!=='adventure')return;
+  const ayuda=globalThis.AdventureHints?.snapshot();
+  if(ayuda?.stage>0){textoPista.textContent='💡 '+(ayuda.description||pistaActual);textoPista.classList.remove('oculto');}
+  const completa=palabraCompleta();
+  const disponibles=globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'word')
+    ? AdventureOnline.view().mask.some(l=>!l)
+    : [...motorDePalabras().obtenerClavePalabra(palabraSecreta)].some(l=>!letrasElegidas.includes(l));
+  btnPista.disabled=!ayuda||ayuda.finished||intentos<=0||completa||!disponibles||ayuda.stage>=3||ayuda.balance===0||accionAventuraOnlineEnCurso||AdventureHints.busy();
+  const restante=globalThis.AdventureHints?.remainingMs();
+  GameUI.text(btnPista,GameUI.key(ayuda?.balance===0&&restante!==null?'adventure.hints.refill':'adventure.hints.button',
+    {level:Math.min(3,(ayuda?.stage||0)+1),count:ayuda?.balance??'—',minutes:Math.max(1,Math.ceil((restante||0)/60000))}));
+}
+let temporizadorRecargaPistas=null,secuenciaSaldoPistas=0;
+async function refrescarSaldoPistasAventura(){
+  const secuencia=++secuenciaSaldoPistas;
+  clearTimeout(temporizadorRecargaPistas);temporizadorRecargaPistas=null;
+  if(contextoPalabrasCombate?.mode!=='adventure'||modoPruebasActivo||document.hidden)return;
+  try{await globalThis.AdventureHints?.sync();}catch{ /* Retry on focus or the next server check. */ }
+  if(secuencia!==secuenciaSaldoPistas)return;
+  actualizarAyudasAventura();
+  if(contextoPalabrasCombate?.mode==='adventure'){
+    const restante=globalThis.AdventureHints?.remainingMs();
+    temporizadorRecargaPistas=setTimeout(()=>{void refrescarSaldoPistasAventura();},restante===null||!navigator.onLine?60000:Math.min(60000,Math.max(1000,restante+100)));
+  }
+}
+window.addEventListener('focus',()=>{void refrescarSaldoPistasAventura();});
+window.addEventListener('online',()=>{void refrescarSaldoPistasAventura();});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refrescarSaldoPistasAventura();});
+btnPista.addEventListener('click',async()=>{
+  if(contextoPalabrasCombate?.mode!=='adventure'||modoPruebasActivo||btnPista.disabled||accionAventuraOnlineEnCurso)return;
+  const origen=globalThis.AdventureHints?.snapshot();if(!origen)return;
+  guardarPalabraConPistas();accionAventuraOnlineEnCurso=true;btnPista.disabled=true;
+  try{
+    const ayuda=await AdventureHints.use();
+    if(!ayuda||contextoPalabrasCombate?.mode!=='adventure'||!pantallaJuego.classList.contains('activa')||AdventureHints.snapshot()?.id!==origen.id||escenarioActual!==origen.world||misionActual!==origen.mission||desafiosCompletados!==origen.phase)return;
+    if(globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'word')){
+      const vista=await AdventureOnline.action('heartbeat');
+      if(!vista)throw Error('unavailable');
+      palabraSecreta=vista.mask.map(l=>l||'_').join('');letrasElegidas=[...vista.letters];intentos=6-vista.errors;
+    }else letrasElegidas=[...new Set([...letrasElegidas,...(ayuda.revealed||[])])];
+    teclado.querySelectorAll('.letra').forEach(b=>{if((ayuda.revealed||[]).includes(b.textContent)){b.disabled=true;b.classList.add('correcta');}});
+    mostrarReaccionExplorador('pensando');mostrarPalabra();guardarPalabraConPistas(palabraCompleta());
+    if(palabraCompleta())verificarEstado();
+    else if(ayuda.balance===0){GameUI.text(mensajePersonaje,GameUI.key('adventure.hints.empty'));mensajePersonaje.classList.remove('oculto');}
+  }catch{
+    GameUI.text(mensajePersonaje,GameUI.key('adventure.hints.connection'));mensajePersonaje.classList.remove('oculto');
+  }finally{accionAventuraOnlineEnCurso=false;actualizarAyudasAventura();void refrescarSaldoPistasAventura();}
 });
 
 function continuarAventura() {
@@ -3845,6 +3890,7 @@ btnNuevaAventura.addEventListener("click", () => {
   if (modoPruebasActivo) actualizarModoPruebas(false);
   cerrarConfiguracion();
   reproducirSonidoComenzarAventura();
+  globalThis.AdventureHints?.abandon();
   localStorage.removeItem("progresoAventuraGA");
   localStorage.removeItem("mapaMundoVistoGA");
   reiniciarEstadoAventura();
@@ -3903,7 +3949,7 @@ function crearTeclado() {
 let accionAventuraOnlineEnCurso = false;
 async function elegirLetra(letra, boton) {
   letra = motorDePalabras().reglas.letter(letra);
-  if (!letra || boton.disabled || letrasElegidas.includes(letra) || accionAventuraOnlineEnCurso) return;
+  if (!letra || boton.disabled || letrasElegidas.includes(letra) || accionAventuraOnlineEnCurso || globalThis.AdventureHints?.busy()) return;
   if (globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'word')) {
     const mundoAccion=escenarioActual,misionAccion=misionActual,desafioAccion=desafiosCompletados;
     accionAventuraOnlineEnCurso=true;boton.disabled=true;
@@ -3949,6 +3995,8 @@ async function elegirLetra(letra, boton) {
   }
 
   mostrarPalabra();
+  guardarPalabraConPistas(palabraCompleta()||intentos===0);
+  actualizarAyudasAventura();
   verificarEstado();
 }
 
@@ -10288,9 +10336,17 @@ function palabraCompleta() {
 
 function continuarPalabraAventuraSinConexion(){
   globalThis.AdventureOnline?.clear();
-  const palabra=obtenerPalabraAleatoria();
-  palabraSecreta=motorDePalabras().reglas.display(palabra.palabra);pistaActual=palabra.pista;
-  letrasElegidas=[];intentos=6;actualizarVidas();mostrarPalabra();teclado.innerHTML='';crearTeclado();
+  const ayuda=globalThis.AdventureHints?.snapshot();
+  if(ayuda&&ayuda.world===escenarioActual&&ayuda.mission===misionActual&&ayuda.phase===desafiosCompletados){
+    AdventureHints.localOnly();palabraSecreta=motorDePalabras().reglas.display(ayuda.word);pistaActual=ayuda.hint;
+    letrasElegidas=[...new Set([...ayuda.letters,...(ayuda.revealed||[])])];intentos=6-ayuda.errors;
+  }else{
+    const palabra=obtenerPalabraAleatoria();palabraSecreta=motorDePalabras().reglas.display(palabra.palabra);pistaActual=palabra.pista;
+    letrasElegidas=[];intentos=6;
+  }
+  actualizarVidas();mostrarPalabra();teclado.innerHTML='';crearTeclado();
+  teclado.querySelectorAll('.letra').forEach(b=>{if(letrasElegidas.includes(b.textContent))b.disabled=true;});
+  actualizarAyudasAventura();
   GameUI.text(mensajePersonaje,GameUI.key('adventure.rewards.connectionLost'));
   mensajePersonaje.classList.remove('oculto');
 }
@@ -11500,10 +11556,16 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   }
   await globalThis.AdventureOnline?.flush();
   iniciarContextoPalabras("adventure");
+  const slotAyuda=[escenarioActual,misionActual,desafiosCompletados,contextoPalabrasCombate.language,Boolean(globalThis.AventuraMapa?.repeticion)].join(':');
+  let guardadaAyuda=null;
+  if(!modoPruebasActivo){try{guardadaAyuda=globalThis.AdventureHints?.restore(slotAyuda);if(guardadaAyuda?.finished)guardadaAyuda=null;}catch{}}
+  const ayudaOnlineVigente=guardadaAyuda&&!guardadaAyuda.localOnly&&guardadaAyuda.attemptId===globalThis.AdventureOnline?.view()?.attemptId
+    &&globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'word');
+  if(guardadaAyuda&&!ayudaOnlineVigente){globalThis.AdventureOnline?.clear();try{globalThis.AdventureHints?.localOnly();}catch{globalThis.AdventureHints?.disable();}}
   let intentoOnline;
-  if(!modoPruebasActivo&&desafiosCompletados===0)intentoOnline=await AdventureRewards.begin(escenarioActual,misionActual).catch(()=>{});
+  if(!guardadaAyuda&&!modoPruebasActivo&&desafiosCompletados===0)intentoOnline=await AdventureRewards.begin(escenarioActual,misionActual).catch(()=>{});
   if(modoPruebasActivo)globalThis.AdventureOnline?.clear();
-  const desafioOnline=!modoPruebasActivo?await globalThis.AdventureOnline?.prepare(intentoOnline,escenarioActual,misionActual,desafiosCompletados,contextoPalabrasCombate.language,prefiereReducirMovimiento.matches):null;
+  const desafioOnline=(!guardadaAyuda||ayudaOnlineVigente)&&!modoPruebasActivo?await globalThis.AdventureOnline?.prepare(intentoOnline,escenarioActual,misionActual,desafiosCompletados,contextoPalabrasCombate.language,prefiereReducirMovimiento.matches):null;
   ocultarMensajeDesafioSuperado();
   detenerPolvoImpacto();
   detenerAmbientePuente();
@@ -11528,7 +11590,7 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   const sinPalabraNormal = Boolean(
     pruebaEspecial || dueloAventura || finalMundoCuatroCompletado || cierreAzrak,
   );
-  const palabraSeleccionada = sinPalabraNormal ? null : obtenerPalabraAleatoria();
+  const palabraSeleccionada = sinPalabraNormal ? null : guardadaAyuda ? {palabra:guardadaAyuda.word,pista:guardadaAyuda.hint} : obtenerPalabraAleatoria();
 
   palabraSecreta = motorDePalabras().reglas.display(palabraSeleccionada?.palabra || "");
 
@@ -11537,8 +11599,15 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
     palabraSecreta=desafioOnline.mask.map(l=>l||'_').join('');pistaActual=desafioOnline.hint;
   }
 
-  letrasElegidas = [];
-  intentos = 6;
+  letrasElegidas = desafioOnline?.kind==='word' ? [...desafioOnline.letters] : guardadaAyuda ? [...new Set([...guardadaAyuda.letters,...(guardadaAyuda.revealed||[])])] : [];
+  intentos = desafioOnline?.kind==='word' ? 6-desafioOnline.errors : guardadaAyuda ? 6-guardadaAyuda.errors : 6;
+  if(!sinPalabraNormal&&!modoPruebasActivo){
+    const bancoAyuda=obtenerBancoPalabrasAventura();
+    const entradaAyuda=desafioOnline?.kind==='word'?bancoAyuda.find(p=>p.pista===desafioOnline.hint):palabraSeleccionada;
+    try{globalThis.AdventureHints?.start(slotAyuda,{world:escenarioActual,mission:misionActual,phase:desafiosCompletados,
+      language:contextoPalabrasCombate.language,wordId:bancoAyuda.indexOf(entradaAyuda),word:entradaAyuda?.palabra||palabraSecreta,
+      hint:pistaActual,attemptId:desafioOnline?.attemptId||null});}catch{globalThis.AdventureHints?.disable(); /* Story stays playable without paid help. */ }
+  }
   cancelarRetornoEstadoBaseExplorador();
 
   actualizarVidas();
@@ -11572,6 +11641,9 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   if (!pruebaEspecial) {
     mostrarPalabra();
     crearTeclado();
+    teclado.querySelectorAll('.letra').forEach(b=>{if(letrasElegidas.includes(b.textContent)){b.disabled=true;b.classList.add(motorDePalabras().obtenerClavePalabra(palabraSecreta).includes(b.textContent)?'correcta':'incorrecta');}});
+    actualizarAyudasAventura();
+    void refrescarSaldoPistasAventura();
   }
   const portalFinalizado =
     escenarioActual === 0 && misionActual === 9 && portalAbierto;

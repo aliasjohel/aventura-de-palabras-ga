@@ -982,5 +982,11 @@
       "done": "Recompensa ya cobrada.",
       "online": "Monedas disponibles al completar y validar la misión online."
     }
+  },
+  "hints": {
+    "button": "💡 Pista {level}/3 · {count}",
+    "empty": "No te quedan pistas.",
+    "connection": "Conectate con tu cuenta para usar o recuperar una pista. Si ya se descontó, no volverá a cobrarse.",
+    "refill": "💡 3 pistas en {minutes} min"
   }
 }

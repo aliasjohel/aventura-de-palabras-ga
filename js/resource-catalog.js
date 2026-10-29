@@ -235,6 +235,7 @@ globalThis.GameResourceCatalog = Object.freeze([
   "./js/game-wallet.js",
   "./js/adventure-rewards.js",
   "./js/adventure-reward-feedback.js",
+  "./js/adventure-hints.js",
   "./js/adventure-gameplay-online.js",
   "./js/adventure-maze-physics.js",
   "./js/adventure-maze-online.js",

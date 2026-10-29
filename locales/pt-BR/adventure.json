@@ -982,5 +982,11 @@
       "done": "Recompensa já recebida.",
       "online": "Moedas disponíveis ao concluir e validar a missão online."
     }
+  },
+  "hints": {
+    "button": "💡 Dica {level}/3 · {count}",
+    "empty": "Você não tem mais dicas.",
+    "connection": "Conecte-se à sua conta para usar ou recuperar uma dica. Uma dica já usada não será cobrada novamente.",
+    "refill": "💡 3 dicas em {minutes} min"
   }
 }

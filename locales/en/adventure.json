@@ -982,5 +982,11 @@
       "done": "Reward already claimed.",
       "online": "Coins available after completing and verifying this mission online."
     }
+  },
+  "hints": {
+    "button": "💡 Hint {level}/3 · {count}",
+    "empty": "You have no hints left.",
+    "connection": "Connect with your account to use or recover a hint. A hint already spent will not be charged again.",
+    "refill": "💡 3 hints in {minutes} min"
   }
 }
