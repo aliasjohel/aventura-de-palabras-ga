@@ -19,9 +19,11 @@
     try{
      const args={p_attempt:captured.attemptId,p_request:id(),p_sequence:current?.sequence||0,p_action:action,p_payload:payload};
      pending(captured.attemptId);
-     const response=await rpc(args);confirmed(captured.attemptId,response);
+     const response=await rpc(args);
      if(run!==captured||token!==generation||captured.owner!==account())return null;
      if(!response.game||response.attempt.status==='retry_required'){clear();return null;}
+     if(current&&response.game.sequence<current.sequence)return current;
+     confirmed(captured.attemptId,response);
      current=response.game;
      if(current.complete&&timer!==null){stop(timer);timer=null;}
      return current;

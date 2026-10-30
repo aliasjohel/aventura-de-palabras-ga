@@ -2378,8 +2378,9 @@ btnPista.addEventListener('click',async()=>{
     if(!ayuda||contextoPalabrasCombate?.mode!=='adventure'||!pantallaJuego.classList.contains('activa')||AdventureHints.snapshot()?.id!==origen.id||escenarioActual!==origen.world||misionActual!==origen.mission||desafiosCompletados!==origen.phase)return;
     if(globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'word')){
       const vista=await AdventureOnline.action('heartbeat');
+      if(AdventureHints.snapshot()?.id!==origen.id)return;
       if(!vista)throw Error('unavailable');
-      palabraSecreta=vista.mask.map(l=>l||'_').join('');letrasElegidas=[...vista.letters];intentos=6-vista.errors;
+      sincronizarPalabraAventuraOnline(vista);
     }else letrasElegidas=[...new Set([...letrasElegidas,...(ayuda.revealed||[])])];
     teclado.querySelectorAll('.letra').forEach(b=>{if((ayuda.revealed||[]).includes(b.textContent)){b.disabled=true;b.classList.add('correcta');}});
     mostrarReaccionExplorador('pensando');mostrarPalabra();guardarPalabraConPistas(palabraCompleta());
@@ -3947,22 +3948,43 @@ function crearTeclado() {
 }
 
 let accionAventuraOnlineEnCurso = false;
+function letraVisibleAventuraOnline(vista, letra) {
+  return vista.mask.some(valor => valor && motorDePalabras().reglas.letter(valor) === letra);
+}
+function sincronizarPalabraAventuraOnline(vista) {
+  palabraSecreta = vista.mask.map(letra => letra || '_').join('');
+  const visibles = vista.mask.map(letra => motorDePalabras().reglas.letter(letra)).filter(Boolean);
+  letrasElegidas = [...new Set([...vista.letters, ...visibles])];
+  intentos = 6 - vista.errors;
+  teclado.querySelectorAll('.letra').forEach(boton => {
+    const elegida = letrasElegidas.includes(boton.textContent);
+    const correcta = elegida && letraVisibleAventuraOnline(vista, boton.textContent);
+    boton.disabled = elegida || vista.phaseDone || intentos === 0;
+    boton.classList.toggle('correcta', correcta);
+    boton.classList.toggle('incorrecta', elegida && !correcta);
+  });
+  actualizarVidas();
+}
 async function elegirLetra(letra, boton) {
   letra = motorDePalabras().reglas.letter(letra);
   if (!letra || boton.disabled || letrasElegidas.includes(letra) || accionAventuraOnlineEnCurso || globalThis.AdventureHints?.busy()) return;
+  let vistaOnline = null;
   if (globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'word')) {
     const mundoAccion=escenarioActual,misionAccion=misionActual,desafioAccion=desafiosCompletados;
+    const intentoAccion=AdventureOnline.view().attemptId, palabraAccion=globalThis.AdventureHints?.snapshot()?.id;
     accionAventuraOnlineEnCurso=true;boton.disabled=true;
     const vista=await AdventureOnline.action('letter',{letter:letra});
     accionAventuraOnlineEnCurso=false;
     if(mundoAccion!==escenarioActual||misionAccion!==misionActual||desafioAccion!==desafiosCompletados)return;
+    if(palabraAccion!==globalThis.AdventureHints?.snapshot()?.id || (AdventureOnline.view()&&AdventureOnline.view().attemptId!==intentoAccion))return;
     if(!vista){continuarPalabraAventuraSinConexion();return;}
-    palabraSecreta=vista.mask.map(l=>l||'_').join('');
+    vistaOnline=vista;
+    sincronizarPalabraAventuraOnline(vista);
   }
   boton.disabled = true;
-  letrasElegidas.push(letra);
+  if (!vistaOnline) letrasElegidas.push(letra);
 
-  if (motorDePalabras().obtenerClavePalabra(palabraSecreta).includes(letra)) {
+  if (vistaOnline ? letraVisibleAventuraOnline(vistaOnline, letra) : motorDePalabras().obtenerClavePalabra(palabraSecreta).includes(letra)) {
     boton.classList.add("correcta");
     personaje.textContent = "😁";
     mostrarReaccionExplorador("acierto", "reaccion-acierto");
@@ -3973,7 +3995,7 @@ async function elegirLetra(letra, boton) {
     }
   } else {
     boton.classList.add("incorrecta");
-    intentos--;
+    if (!vistaOnline) intentos--;
 
     if (intentos > 0) {
       reproducirSonido("error");
@@ -9913,7 +9935,7 @@ function prepararMisionElegida(mundoSeleccionado, misionSeleccionada) {
   muralSantuarioCompletado = escenarioActual > 0 || misionActual > 8;
   actualizarJugador();
   const repeticion = AventuraMapa.repeticion;
-  void iniciarMisionAventura({ presentarMision: true }).then(() => {
+  void iniciarMisionAventura({ presentarMision: true, reiniciarIntento: true }).then(() => {
     if (AventuraMapa.repeticion !== repeticion || escenarioActual !== mundoSeleccionado || misionActual !== misionSeleccionada) return;
     mostrarHistoriaMision({ misionYaCargada: true });
   });
@@ -11549,12 +11571,27 @@ function logAudioEvento(mensaje, detalle = "") {
   console.log(`[audio-evento] ${mensaje}`, detalle);
 }
 
-async function iniciarMisionAventura({ presentarMision = false } = {}) {
+async function iniciarMisionAventura({ presentarMision = false, reiniciarIntento = false } = {}) {
   if (presentarMision && desafiosCompletados === 0) {
     historiaMisionPendiente = true;
     sonidoNarrativoPendiente = escenarioActual === 0 ? sonidosNarrativosPorMision[misionActual] || "" : "";
   }
   await globalThis.AdventureOnline?.flush();
+  if (reiniciarIntento && !modoPruebasActivo && desafiosCompletados === 0) {
+    // An explicit restart is a new run. Continuing a saved word takes the normal path below.
+    await AdventureRewards.recover().catch(() => {});
+    await AdventureRewards.cancel();
+    globalThis.AdventureOnline?.clear();
+    // Retire every old word in this run, including a later phase interrupted previously.
+    // This only uses the existing local word lifecycle; inventory and refill stay on the server.
+    for (const idioma of ["es", "en", "pt-BR"]) {
+      for (let fase = 0; fase < obtenerCantidadDesafiosMision(); fase++) {
+        const slot = [escenarioActual, misionActual, fase, idioma, Boolean(globalThis.AventuraMapa?.repeticion)].join(':');
+        globalThis.AdventureHints?.restore(slot);
+        globalThis.AdventureHints?.abandon();
+      }
+    }
+  }
   iniciarContextoPalabras("adventure");
   const slotAyuda=[escenarioActual,misionActual,desafiosCompletados,contextoPalabrasCombate.language,Boolean(globalThis.AventuraMapa?.repeticion)].join(':');
   let guardadaAyuda=null;
@@ -11641,7 +11678,8 @@ async function iniciarMisionAventura({ presentarMision = false } = {}) {
   if (!pruebaEspecial) {
     mostrarPalabra();
     crearTeclado();
-    teclado.querySelectorAll('.letra').forEach(b=>{if(letrasElegidas.includes(b.textContent)){b.disabled=true;b.classList.add(motorDePalabras().obtenerClavePalabra(palabraSecreta).includes(b.textContent)?'correcta':'incorrecta');}});
+    if (desafioOnline?.kind === 'word') sincronizarPalabraAventuraOnline(desafioOnline);
+    else teclado.querySelectorAll('.letra').forEach(b=>{if(letrasElegidas.includes(b.textContent)){b.disabled=true;b.classList.add(motorDePalabras().obtenerClavePalabra(palabraSecreta).includes(b.textContent)?'correcta':'incorrecta');}});
     actualizarAyudasAventura();
     void refrescarSaldoPistasAventura();
   }

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v387-desertsand1`;
+const CACHE_NAME = `${CACHE_PREFIX}v387-adventurerewards1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1139,7 +1139,7 @@ const ASSET_REVISIONS = {
   "./js/adventure-rewards.js": "sha256-80ecf24ddb53f7095431afe7c05cc5bc0a39eae84845d561f7d5d5a3f4ab4db6",
   "./js/adventure-reward-feedback.js": "sha256-c22d52159e296783e3fa5ddd9fa4f4fee241859d95f3a1af455a03522cfc738a",
   "./js/adventure-hints.js": "sha256-2837efbd8c3934eae089a53dcaaa0ea4497766ae464731bc756e84706696e5a4",
-  "./js/adventure-gameplay-online.js": "sha256-6125279fb8e260aab0ec9f119c702fb1c778f344c125315571dd1ac0a142a9d3",
+  "./js/adventure-gameplay-online.js": "sha256-a7b8943b54b24d7c15c4c72769ed0cadd0edf46b17dda3e869e5d1b5595e489b",
   "./js/adventure-maze-physics.js": "sha256-7097c6d88ea2c1052d9466ccec4584f787d1b891ac7ee0868696f310c61e86e6",
   "./js/adventure-maze-online.js": "sha256-f3ef81881cca6d8438401dd36552b0cf9be36a5e10261b9c0955ffac4ccec9d1",
   "./js/adventure-duel-online.js": "sha256-ebccea26b2008b870e988bd9a75a74455263616d408a31eed47c8718e86bb36d",
@@ -1208,8 +1208,8 @@ const ASSET_REVISIONS = {
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
   "./js/player-avatar.js": "sha256-6e7278100624b641eef48662f51fa7b104a443f01ff9eb302c4fa8c1a99e009b",
   "./js/public-player-profile.js": "sha256-48d7ac44f3792d9d7754e98037dfd7ec6f9a1ec783be104dc46e7a49e9d5b498",
-  "./": "sha256-b119a423548ec87226d67f0032fae80308d9754d2d921c0176968786a610f217",
-  "./index.html": "sha256-b119a423548ec87226d67f0032fae80308d9754d2d921c0176968786a610f217",
+  "./": "sha256-50b863807b075d10b9365f9bc3fce9bbafc06d01a696f861c1aeb3f02fb289cd",
+  "./index.html": "sha256-50b863807b075d10b9365f9bc3fce9bbafc06d01a696f861c1aeb3f02fb289cd",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-e8bb2f1e0951ec3a52b5bd16fe34dfca530a157a67146c8f5b665d73aeeaa2a2",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1310,7 +1310,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-9f2d58013639efd3621cff587c9749fb60343f81ba62c8f248be73f1de94598b",
+  "./js/app.js": "sha256-77a4e45ff522d4937d24f0a27f96cf2d3a16565a072d4b9aebdad9c09b51446d",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
