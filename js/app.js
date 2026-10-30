@@ -3980,6 +3980,8 @@ async function elegirLetra(letra, boton) {
     if(!vista){continuarPalabraAventuraSinConexion();return;}
     vistaOnline=vista;
     sincronizarPalabraAventuraOnline(vista);
+    // An older ignored reply does not acknowledge this key. Leave it available to retry.
+    if (!vista.letters.includes(letra) && !letraVisibleAventuraOnline(vista, letra)) return;
   }
   boton.disabled = true;
   if (!vistaOnline) letrasElegidas.push(letra);

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v387-adventurerewards1`;
+const CACHE_NAME = `${CACHE_PREFIX}v387-adventurerewards2`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1208,8 +1208,8 @@ const ASSET_REVISIONS = {
   "./js/avatar-rewards.js": "sha256-d3ed9753ebc6250d6ee53986719f9bb36eabae0496188e454b8d24964bf2147f",
   "./js/player-avatar.js": "sha256-6e7278100624b641eef48662f51fa7b104a443f01ff9eb302c4fa8c1a99e009b",
   "./js/public-player-profile.js": "sha256-48d7ac44f3792d9d7754e98037dfd7ec6f9a1ec783be104dc46e7a49e9d5b498",
-  "./": "sha256-50b863807b075d10b9365f9bc3fce9bbafc06d01a696f861c1aeb3f02fb289cd",
-  "./index.html": "sha256-50b863807b075d10b9365f9bc3fce9bbafc06d01a696f861c1aeb3f02fb289cd",
+  "./": "sha256-d086ca67cd454ab87045081795a68208fafc577484e2f4e82bfa798d6d1a55b5",
+  "./index.html": "sha256-d086ca67cd454ab87045081795a68208fafc577484e2f4e82bfa798d6d1a55b5",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-e8bb2f1e0951ec3a52b5bd16fe34dfca530a157a67146c8f5b665d73aeeaa2a2",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1310,7 +1310,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-77a4e45ff522d4937d24f0a27f96cf2d3a16565a072d4b9aebdad9c09b51446d",
+  "./js/app.js": "sha256-efe7c1c45c22d5a8b222c058fad1054c00cb63b29d281aaa67f6dbc5f6c33d86",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
