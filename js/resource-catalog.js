@@ -11,6 +11,7 @@ globalThis.GameResourceCatalog = Object.freeze([
   "./assets/images/ui/menu-button-settings-v1.webp",
   "./js/resource-catalog.js",
   "./js/resource-loader.js",
+  "./js/costume-resources.js",
   "./assets/images/perfil/miniaturas/azrak-base.webp",
   "./assets/images/perfil/miniaturas/dragon-base.webp",
   "./assets/images/perfil/miniaturas/dragon-hielo-base.webp",

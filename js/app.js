@@ -2065,8 +2065,7 @@ function actualizarPartidaOnline(partida) {
     mostrarPantalla(pantallaVersus);
     const tiempoTranscurrido = Date.parse(partida.serverTime) - Date.parse(partida.startedAt);
     if (tiempoTranscurrido > duracionEntradaDueloVersus + 1000) {
-      configurarPersonajesCombateVersus();
-      comenzarRondaVersus();
+      void iniciarEntradaDueloVersus({omitirAnimacion:true});
     } else {
       requestAnimationFrame(iniciarEntradaDueloVersus);
     }
@@ -6496,8 +6495,20 @@ const victimasFaucesVersus = {
 const posesCombateVersus = new WeakMap();
 let ladoGanadorCinematicaVersus = 'jugador';
 function pruebasTrajesActivas() { return modoPruebasActivo && !partidaOnlineVersus; }
+let trajesListosCombateOnline = null;
 function trajePersonajeVersus(elemento, personaje) {
   if (!globalThis.CosmeticStore) return null;
+  const activo=elemento===personajeVersusUno?personajeJugadorVersus:personajeRivalVersus;
+  if(personaje!==activo)return null;
+  // Keep the verified pair's appearance stable until the next preparation.
+  const listos=trajesListosCombateOnline;
+  if(!modoArcadeActivo&&adaptadorSalasVersus.proveedor==='supabase'
+    &&listos?.roomId===adaptadorSalasVersus.obtenerSala()?.id
+    &&listos.usuarioId===adaptadorSalasVersus.obtenerUsuarioId?.()
+    &&adaptadorSalasVersus.obtenerSala()?.jugadores.some(p=>p.id===listos.rivalId&&p.id!==listos.usuarioId)){
+    const lado=elemento===personajeVersusUno?0:1;
+    if(personaje===listos.personajes[lado])return listos.trajes[lado];
+  }
   if (modoArcadeActivo) {
     if (elemento !== personajeVersusUno) return null;
     if (modoPruebasActivo && herramientasAutorDisponibles && Object.hasOwn(trajesPruebaArcade, personaje)) return trajesPruebaArcade[personaje];
@@ -6610,7 +6621,7 @@ function establecerPoseCombateVersus(elemento, tipo, src) {
 let secuenciaPreparacionCombate = 0;
 let preparandoImagenesCombate = false;
 let imagenesCombateListas = [];
-function recursosPersonajeCombate(personaje) {
+function recursosPersonajeCombate(personaje, equipoConfirmado) {
   const poses = {
     explorador: [srcExploradorPreparaBumeran, srcExploradorLanzaBumeran, srcExploradorLupaVersus],
     mago: [srcMagoAtaqueVersus], guardiana: [srcGuardianaAtaqueVersus, srcGuardianaImpactoTroncoVersus], dragon: [srcDragonAtaqueVersus],
@@ -6619,17 +6630,36 @@ function recursosPersonajeCombate(personaje) {
     dragon_hielo: [srcDragonHieloDescensoAltoVersus, srcDragonHieloDescensoBajoVersus, srcDragonHieloAtaqueVersus, srcDragonHieloVueloVersus],
     azrak: [srcAzrakAtaqueVersus], kalamo: [srcKalamoAtaqueVersus, srcKalamoHabilidadVersus], kairos: [srcKairosAtaqueVersus],
   };
-  const trajes=[trajePersonajeVersus(personajeVersusUno,personaje),trajePersonajeVersus(personajeVersusDos,personaje)].filter(Boolean);
-  const extras=trajes.flatMap(id=>(id==='aren-union'?['base','ataque','habilidad','impacto','invocacion','victoria','capa','vidrio','mano','planta','envejecido','anciano']:CosmeticStore.find(id).poses).map(pose=>CosmeticStore.asset(id,pose)));
-  if (trajes.includes('aren-union')) extras.push('assets/images/trajes/aren-union-impacto-duelo-v1.png');
+  const trajes=equipoConfirmado
+    ? equipoConfirmado.personajes.flatMap((id,lado)=>id===personaje?[equipoConfirmado.trajes[lado]]:[])
+    : [personaje===personajeJugadorVersus?trajePersonajeVersus(personajeVersusUno,personaje):null,
+       personaje===personajeRivalVersus?trajePersonajeVersus(personajeVersusDos,personaje):null];
+  const extras=trajes.filter(Boolean).flatMap(id=>CostumeResources.combat(id).map(p=>p.slice(2)));
   return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || []),...extras].filter(Boolean);
 }
 async function prepararImagenesCombate(personajes) {
-  await GameResources.combat(personajes.flatMap(recursosPersonajeCombate).concat(
+  const adaptador=adaptadorSalasVersus,online=!modoArcadeActivo&&adaptador.proveedor==='supabase';
+  const fallo=cambio=>new Error((I18n.language==='en'
+    ? ['The duel changed. Prepare its resources again.','Outfits changed during preparation. Please retry.']
+    : I18n.language==='pt-BR'?['O duelo mudou. Prepare os recursos novamente.','Os trajes mudaram durante a preparação. Tente novamente.']
+    : ['El duelo cambió. Volvé a preparar los recursos.','Los trajes cambiaron durante la preparación. Reintentá.'])[cambio?1:0]);
+  const confirmar=async()=>{
+    const equipo=await adaptador.confirmarTrajesSala();
+    const sala=adaptador.obtenerSala(),propio=sala?.jugadores.find(p=>p.id===equipo.usuarioId),rival=sala?.jugadores.find(p=>p.id===equipo.rivalId);
+    if(adaptador!==adaptadorSalasVersus||sala?.id!==equipo.roomId||!propio||!rival
+      ||propio.personaje!==personajeJugadorVersus||rival.personaje!==personajeRivalVersus
+      ||personajes[0]!==propio.personaje||personajes[1]!==rival.personaje)throw fallo(false);
+    const chars=[propio.personaje,rival.personaje],trajes=[equipo.propios[chars[0]]||null,equipo.rival[chars[1]]||null];
+    return {roomId:equipo.roomId,usuarioId:equipo.usuarioId,rivalId:equipo.rivalId,personajes:chars,trajes};
+  };
+  for(let intento=0;intento<3;intento++){
+  const equipo=online?await confirmar():null;
+  const recursos=personajes.flatMap(personaje=>recursosPersonajeCombate(personaje,equipo));
+  await GameResources.combat(recursos.concat(
     arenasVersus.map(arena => arena.src), fondoVersus.getAttribute("src"),
     personajes.map(id => CharacterMusic.tracks[id])), personajes);
   // Retain decoded frames for this pair only, instead of all fighters on mobile.
-  const urls = [...new Set(personajes.flatMap(recursosPersonajeCombate))];
+  const urls = [...new Set(recursos)];
   const images = await Promise.all(urls.map(src => new Promise((resolve, reject) => {
     const image = new Image(); image.decoding = "async";
     let settled = false;
@@ -6645,7 +6675,14 @@ async function prepararImagenesCombate(personajes) {
     };
     image.src = src;
   })));
+  if(online){
+    const vigente=await confirmar();
+    if(JSON.stringify(equipo)!==JSON.stringify(vigente))continue;
+    trajesListosCombateOnline=equipo;
+  }
   return images;
+  }
+  throw fallo(true);
 }
 
 const posesDanoPersonajeVersus = {
@@ -7051,7 +7088,7 @@ function prepararTrajeEntradaKalamo() {
   }
 }
 
-async function iniciarEntradaDueloVersus() {
+async function iniciarEntradaDueloVersus(opciones = {}) {
   document.querySelector(".versus-insignia").hidden = false;
   if (demoVersus.partidaFinalizada || demoVersus.entradaActiva) return;
   prepararTrajeEntradaKalamo();
@@ -7074,10 +7111,15 @@ async function iniciarEntradaDueloVersus() {
     if (sequence !== secuenciaPreparacionCombate) return;
     CombatUI.text(notice.querySelector('p'), 'No se pudieron preparar las imágenes. Reintentá para comenzar.');
     const retry = notice.querySelector('button'); retry.hidden = false;
-    retry.onclick = () => { limpiarEntradaDueloVersus(); void iniciarEntradaDueloVersus(); };
+    retry.onclick = () => { limpiarEntradaDueloVersus(); void iniciarEntradaDueloVersus(opciones); };
     return;
   }
   preparandoImagenesCombate = false; notice.remove();
+  prepararTrajeEntradaKalamo();
+  if(opciones.omitirAnimacion){
+    demoVersus.entradaActiva=false;
+    configurarPersonajesCombateVersus();comenzarRondaVersus();return;
+  }
   const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const duracion = movimientoReducido ? 450 : duracionEntradaDueloVersus;
   demoVersus.entradaActiva = true;

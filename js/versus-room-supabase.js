@@ -124,16 +124,20 @@
     }
     raiz.addEventListener?.('costume-equipped',enviarTrajes);
     raiz.addEventListener?.('wallet-updated',enviarTrajes);
-    async function cargarTrajesSala() {
+    async function cargarTrajesSala(estricto = false) {
       const roomId=salaActual?.id;
       const rival=salaActual?.jugadores.find(player=>player.id!==usuarioId)?.id;
-      if(!roomId||!rival)return;
+      const fallo = () => { if(estricto)throw new Error(raiz.I18n?.language==='en'?'Could not confirm the duel outfits. Please retry.':raiz.I18n?.language==='pt-BR'?'Não foi possível confirmar os trajes do duelo. Tente novamente.':'No pudimos confirmar los trajes del duelo. Reintentá.'); };
+      if(!roomId||!rival)return fallo();
       const {data,error}=await cliente.rpc('get_versus_room_costumes',{p_room_id:roomId});
-      if(error||salaActual?.id!==roomId||!salaActual.jugadores.some(player=>player.id===rival))return;
+      if(error||salaActual?.id!==roomId||!salaActual.jugadores.some(player=>player.id===rival)
+        ||!data||typeof data!=='object'||!Object.hasOwn(data,rival)||!Object.hasOwn(data,usuarioId))return fallo();
       const next=raiz.CosmeticStore.normalizeSkins(data?.[rival]);
-      if(propietarioTrajesRival===rival&&JSON.stringify(next)===JSON.stringify(trajesRival))return;
-      trajesRival=next;propietarioTrajesRival=rival;
-      raiz.dispatchEvent?.(new Event('rival-costume-updated'));
+      if(propietarioTrajesRival!==rival||JSON.stringify(next)!==JSON.stringify(trajesRival)){
+        trajesRival=next;propietarioTrajesRival=rival;
+        raiz.dispatchEvent?.(new Event('rival-costume-updated'));
+      }
+      return {roomId,usuarioId,rivalId:rival,propios:raiz.CosmeticStore.normalizeSkins(data[usuarioId]),rival:next};
     }
     let canalSocial = null;
     let suscripcionAuth = null;
@@ -398,6 +402,8 @@
         });
         suscripcionAuth = data.subscription;
       }
+      // Initial identity cleanup must finish before restoring a duel and its outfits.
+      await colaSala;
       const roomId = obtenerSalaRecordada();
       if (roomId && /^[0-9a-f-]{36}$/i.test(roomId)) {
         await cargarSala(roomId);
@@ -924,6 +930,7 @@
       responderInvitacion,
       obtenerSala: () => salaActual,
       obtenerTrajesRival: () => salaActual?.jugadores.some(player=>player.id===propietarioTrajesRival&&player.id!==usuarioId) ? {...trajesRival} : {},
+      confirmarTrajesSala: () => cargarTrajesSala(true),
       obtenerPartida: () => partidaActual,
       obtenerUsuarioId: () => usuarioId,
       obtenerUsuario: () => usuarioActual,

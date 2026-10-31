@@ -197,18 +197,17 @@
     const tokens = fighters.flatMap(id => fighterTokens[id] || []);
     const allTokens = Object.values(fighterTokens).flat();
     const matches = (path, values) => values.some(token => path.includes(token));
-    const costumes = paths.filter(p => p.includes('/trajes/')).map(p => p.replace(/-(?:base|ataque|habilidad|impacto|victoria|capa|vidrio|mano|planta|envejecido|anciano|invocacion)-v\d+\.png$/, ''));
-    return [...new Set([...paths, ...[...catalogue].filter(p =>
+    const costumes = CostumeResources.fromPaths(paths.map(canonical));
+    return [...new Set([...paths, ...costumes, ...[...catalogue].filter(p =>
       /assets\/sounds\/(?:ataque-[12]|fight|finish|acertar|error|victoria|derrota|seleccion-personaje)\./.test(p)
       || (p.includes('/sounds/character-') && matches(p, tokens))
       || (/assets\/images\/personajes\/(?:versus|coleccion)\//.test(p) && (!matches(p, allTokens) || matches(p, tokens)))
       || (p.includes('/elementos/') && matches(p, tokens))
-      || (costumes.length > 0 && /elements\/cristal-sabiduria-esmeralda\.png|fondos\/reino-azrak\/trono-v1\.png/.test(p))
-      || (p.includes('/trajes/') && costumes.some(prefix => p.startsWith(canonical(prefix)))))])];
+      )])];
   }
   function combat(paths, fighters) { return ensure(combatPaths(paths, fighters)); }
   function multiplayer(extra = []) {
-      const paths = [...catalogue].filter(path => path.includes('/trajes/') || path.includes('/stickers/')
+      const paths = [...catalogue].filter(path => path.includes('/stickers/')
       || /(?:prueba-aren-union\.html|\/(?:aren-union-preview|aren-union-duel)\.(?:js|css))$/.test(path));
     return prepareWorld(combatPaths([...paths, ...extra], Object.keys(fighterTokens)), undefined, true);
   }
