@@ -2350,8 +2350,14 @@ function actualizarAyudasAventura() {
     : [...motorDePalabras().obtenerClavePalabra(palabraSecreta)].some(l=>!letrasElegidas.includes(l));
   btnPista.disabled=!ayuda||ayuda.finished||intentos<=0||completa||!disponibles||ayuda.stage>=3||ayuda.balance===0||accionAventuraOnlineEnCurso||AdventureHints.busy();
   const restante=globalThis.AdventureHints?.remainingMs();
-  GameUI.text(btnPista,GameUI.key(ayuda?.balance===0&&restante!==null?'adventure.hints.refill':'adventure.hints.button',
-    {level:Math.min(3,(ayuda?.stage||0)+1),count:ayuda?.balance??'—',minutes:Math.max(1,Math.ceil((restante||0)/60000))}));
+  GameUI.text(btnPista,GameUI.key('adventure.hints.button',
+    {level:Math.min(3,(ayuda?.stage||0)+1),count:ayuda?.balance==null?'—':Math.min(3,Math.max(0,ayuda.balance))}));
+  const recarga=document.getElementById('estadoRecargaPistas');
+  if(recarga){
+    recarga.hidden=!(ayuda?.balance<3&&ayuda.refillAt);
+    if(!recarga.hidden)GameUI.text(recarga,GameUI.key(restante===null?'adventure.hints.checkRefill':restante<=0?'adventure.hints.confirmRefill':'adventure.hints.refill',
+      {minutes:Math.max(1,Math.ceil((restante||0)/60000))}));
+  }
 }
 let temporizadorRecargaPistas=null,secuenciaSaldoPistas=0;
 async function refrescarSaldoPistasAventura(){

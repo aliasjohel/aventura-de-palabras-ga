@@ -13527,7 +13527,8 @@ button:disabled {
 
 .devoradunas-desierto {
     z-index: 1;
-    filter: drop-shadow(0 14px 14px rgba(45, 18, 3, .72)) drop-shadow(0 0 14px rgba(58, 239, 230, .28));
+    /* Clipping the filtered PNG during emergence produced a dark rectangle. */
+    filter: none;
 }
 
 .devoradunas-emerge {
@@ -17957,3 +17958,6 @@ button:disabled {
 
 /* Keep the complete category name readable on landscape mobile screens. */
 .campo-tematica-versus{flex-wrap:wrap}.campo-tematica-versus>span{flex-basis:100%}.campo-tematica-versus select{width:100%;max-width:100%}
+
+.estado-recarga-pistas{margin:6px auto 10px;max-width:94%;font-size:.85rem;line-height:1.4;color:#e7d7a8;text-align:center}
+.estado-recarga-pistas[hidden]{display:none}

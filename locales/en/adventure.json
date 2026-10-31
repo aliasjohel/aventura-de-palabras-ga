@@ -984,9 +984,11 @@
     }
   },
   "hints": {
-    "button": "💡 Hint {level}/3 · {count}",
+    "button": "💡 Hint {level}/3 · {count}/3 free",
     "empty": "You have no hints left.",
     "connection": "Connect with your account to use or recover a hint. A hint already spent will not be charged again.",
-    "refill": "💡 3 hints in {minutes} min"
+    "refill": "Refill to 3 hints in {minutes} min",
+    "checkRefill": "Connect to check your refill.",
+    "confirmRefill": "Confirming your refill with the server…"
   }
 }

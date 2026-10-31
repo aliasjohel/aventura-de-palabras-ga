@@ -984,9 +984,11 @@
     }
   },
   "hints": {
-    "button": "💡 Pista {level}/3 · {count}",
+    "button": "💡 Pista {level}/3 · {count}/3 gratis",
     "empty": "No te quedan pistas.",
     "connection": "Conectate con tu cuenta para usar o recuperar una pista. Si ya se descontó, no volverá a cobrarse.",
-    "refill": "💡 3 pistas en {minutes} min"
+    "refill": "Recarga a 3 pistas en {minutes} min",
+    "checkRefill": "Conectate para consultar la recarga.",
+    "confirmRefill": "Confirmando la recarga con el servidor…"
   }
 }

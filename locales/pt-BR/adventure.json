@@ -984,9 +984,11 @@
     }
   },
   "hints": {
-    "button": "💡 Dica {level}/3 · {count}",
+    "button": "💡 Dica {level}/3 · {count}/3 grátis",
     "empty": "Você não tem mais dicas.",
     "connection": "Conecte-se à sua conta para usar ou recuperar uma dica. Uma dica já usada não será cobrada novamente.",
-    "refill": "💡 3 dicas em {minutes} min"
+    "refill": "Recarga para 3 dicas em {minutes} min",
+    "checkRefill": "Conecte-se para consultar a recarga.",
+    "confirmRefill": "Confirmando a recarga com o servidor…"
   }
 }
