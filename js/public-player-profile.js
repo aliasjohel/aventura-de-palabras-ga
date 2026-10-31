@@ -23,6 +23,7 @@
       GameUI.text(el("aparienciaPerfilPublico"), GameUI.key('profile.frame', {frame:K("profile.frames."+(frames.has(profile.frame)?profile.frame:"clasico"))}));
       GameUI.text(el("rankingPerfilPublico"), GameUI.key('profile.publicRanking', {position:profile.position?K("profile.position",{position:profile.position}):K("profile.noPosition"),points:profile.points||0}));
       el("rangoPerfilPublico").replaceChildren(U.rankBadge(profile.points, true));
+      globalThis.PlayerXP?.publicProfile(profile.xp);
       el("estadisticasPerfilPublico").replaceChildren();
       for (const [key,label] of [["played",K("profile.played")],["wins",K("profile.wins")],["losses",K("profile.losses")],["draws",K("profile.draws")]]) {
         const tile = document.createElement("div"); tile.append(text("dd",profile[key] || 0),text("dt",label)); el("estadisticasPerfilPublico").append(tile);

@@ -304,6 +304,8 @@ globalThis.GameResourceCatalog = Object.freeze([
   "./css/player-avatar.css",
   "./js/avatar-rewards.js",
   "./js/player-avatar.js",
+  "./js/player-xp.js",
+  "./css/player-xp.css",
   "./js/public-player-profile.js",
   "./",
   "./index.html",

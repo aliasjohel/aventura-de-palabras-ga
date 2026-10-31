@@ -13,18 +13,19 @@
   const rewardKey='aventuraMarcosDesbloqueadosV1';
   const unlocked=new Set(['clasico']);
   function readRewards(){
-    try { const ids=JSON.parse(localStorage.getItem(rewardKey));if(Array.isArray(ids))ids.forEach(id=>{if(frames.some(([known])=>known===id))unlocked.add(id);}); }catch(_){}
+    try { const ids=JSON.parse(localStorage.getItem(rewardKey));if(Array.isArray(ids))ids.forEach(id=>{if(!id.startsWith('xp_')&&frames.some(([known])=>known===id))unlocked.add(id);}); }catch(_){}
   }
   function updateRewards(progress,points=0){
     readRewards();
     if(!progress){try{progress=JSON.parse(localStorage.getItem('progresoAventuraGA'))||{};}catch(_){progress={};}}
-    const added=AvatarRewards.earned(progress,points).filter(id=>!unlocked.has(id));
+    const added=AvatarRewards.earned(progress,points).filter(id=>!frameOwned(id));
     added.forEach(id=>unlocked.add(id));
     try{localStorage.setItem(rewardKey,JSON.stringify([...unlocked]));}catch(_){}
     renderPreview();
     return added;
   }
   readRewards();
+  const frameOwned=id=>id.startsWith('xp_')?Boolean(globalThis.PlayerXP?.ownedFrame(id)):unlocked.has(id);
   const defaults = { avatar: "explorador", frame: "clasico" };
   function normalize(value) {
     return {
@@ -32,8 +33,9 @@
       frame: frames.some(([id]) => id === value?.frame) ? value.frame : defaults.frame,
     };
   }
+  function normalizeOwn(value){const normalized=normalize(value);if(normalized.frame.startsWith('xp_')&&!frameOwned(normalized.frame))normalized.frame='clasico';return normalized;}
   let saved = { ...defaults };
-  try { saved = normalize(JSON.parse(localStorage.getItem(key))); } catch (_) { /* Invalid or unavailable storage uses defaults. */ }
+  try { saved = normalizeOwn(JSON.parse(localStorage.getItem(key))); } catch (_) { /* Invalid or unavailable storage uses defaults. */ }
   // Preserve a frame already equipped before rewards were introduced.
   if(['clasico','bosque','hielo','fuego','arcano','real'].includes(saved.frame))unlocked.add(saved.frame);
   let draft = { ...saved };
@@ -184,6 +186,7 @@
       face.append(img);
       badge.append(face);
     }
+    if(frame.startsWith('xp_'))return badge;
     const ranked=AvatarRewards.catalog.find(item=>item.id===frame)?.rank;
     const ornament = document.createElement("img");ornament.loading='lazy';ornament.decoding='async';
     ornament.className = "player-avatar-frame";
@@ -204,9 +207,10 @@
   // Shared by the room adapter and multiplayer UI. Only catalog IDs reach the DOM.
   globalThis.PlayerAvatar = Object.freeze({
     desbloquear:updateRewards,
+    aplicarXP: value=>{if(!value?.frame?.startsWith('xp_')||!frameOwned(value.frame))return; saved=normalize(value);draft={...saved};try{localStorage.setItem(key,JSON.stringify(saved));}catch{} renderMenu();renderPreview();},
     nombreMarco:id=>U.resolve(K('profile.frames.'+id)),
     obtener: () => {
-      try { return normalize(JSON.parse(localStorage.getItem(key))); }
+      try { return normalizeOwn(JSON.parse(localStorage.getItem(key))); }
       catch (_) { return { ...saved }; }
     },
     normalizar: normalize,
@@ -222,9 +226,9 @@
       const selected = draft[button.dataset.choice] === button.dataset.value;
       button.setAttribute("aria-pressed", String(selected));
       if(button.dataset.choice==='frame'){
-        const owned=unlocked.has(button.dataset.value),reward=AvatarRewards.catalog.find(frame=>frame.id===button.dataset.value);
+        const owned=frameOwned(button.dataset.value),reward=AvatarRewards.catalog.find(frame=>frame.id===button.dataset.value);
         button.disabled=!owned;
-        U.text(button.querySelector('small'),owned?K('profile.rewards.unlocked'):reward.world?K('profile.rewards.world',{world:reward.world}):K('profile.rewards.rank',{rank:K('profile.frames.'+reward.id)}));
+        U.text(button.querySelector('small'),owned?K('profile.rewards.unlocked'):reward.xp?globalThis.PlayerXP?.text('locked',{n:reward.level})||('Nivel '+reward.level):reward.world?K('profile.rewards.world',{world:reward.world}):K('profile.rewards.rank',{rank:K('profile.frames.'+reward.id)}));
       }
     });
   }
@@ -242,6 +246,7 @@
     try {
       const profile = await globalThis.PlayerProfile.cargar();
       if (request !== profileRequest || !dialog.open) return;
+      globalThis.PlayerXP?.apply(profile.xp);
       updateRewards(null,profile.points);
       if(!globalThis.AventuraShop?.testing())void B.sync().then(()=>{if(!previewTouched)preview=B.read().equipped;renderBackground();}).catch(()=>{if(dialog.open){backgroundNotice=B.text('connect');renderBackground();}});
       U.text(el("perfilNombre"), profile.aliasIsFallback ? K("profile.adventurer") : profile.alias || K("profile.adventurer"));
@@ -290,7 +295,7 @@
       button.append(name);
       if(property==='frame')button.append(document.createElement('small'));
       button.addEventListener("click", () => {
-        if(property==='frame'&&!unlocked.has(id))return;
+        if(property==='frame'&&!frameOwned(id))return;
         draft[property] = id;
         el("estadoAvatar").textContent = "";
         renderPreview();
@@ -312,7 +317,7 @@
   });
   ["cerrarAvatar", "cancelarAvatar"].forEach((id) => el(id).addEventListener("click", () => dialog.close()));
   el("guardarAvatar").addEventListener("click", () => {
-    if(!unlocked.has(draft.frame))return;
+    if(!frameOwned(draft.frame))return;
     try { localStorage.setItem(key, JSON.stringify(draft)); }
     catch (_) {
       GameUI.text(el("estadoAvatar"), GameUI.key('errors.avatarSave'));
@@ -323,6 +328,7 @@
     renderMenu();
     dialog.close();
   });
+  window.addEventListener('player-xp-updated',()=>{saved=normalizeOwn(saved);draft=normalizeOwn(draft);renderMenu();renderPreview();});
   renderMenu();
   window.addEventListener('storage',event=>{if(event.key==='progresoAventuraGA'||event.key===rewardKey)updateRewards();});
   updateRewards();

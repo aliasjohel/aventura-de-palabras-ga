@@ -24,6 +24,16 @@
       if(data?.userId!==id)throw Error('No pudimos verificar el saldo de tu cuenta.');
       return data;
     }
+    async function syncXP(id){
+      if(!root.PlayerXP)return null;
+      try{const result=await rpc(id,'player_xp',{p_action:'sync'});root.PlayerXP.apply(result.xp);if(result.appearance?.frame?.startsWith('xp_'))root.PlayerAvatar?.aplicarXP(result.appearance);return result;}catch{return null;}
+    }
+    const xp=(action='sync',reward=null,frame=null,title=null)=>enqueue(async id=>{
+      const result=await rpc(id,'player_xp',{p_action:action,p_reward:reward,p_frame:frame,p_title:title});
+      root.PlayerXP?.apply(result.xp);
+      if(action==='claim')await syncNow(id);
+      return result;
+    });
     async function syncNow(id,matchId=null){
       let result;
       {
@@ -38,6 +48,7 @@
         const inventory=await rpc(id,'game_characters',{p_action:'sync',p_character:null});
         root.CharacterStore.apply(inventory.characters,id);
       }
+      await syncXP(id);
       return result;
     }
     const sync=matchId=>enqueue(id=>syncNow(id,matchId));
@@ -72,6 +83,7 @@
         if(!before.securityReady||before.revision!==result.revision||before.coins!==result.coins||Boolean(before.world5Complete)!==Boolean(result.world5Complete)){
           store.applyAccount(result);notify();
         }
+        if(result.game?.complete)await syncXP(id);
         return result;
       });
     const adventureHelp=args=>enqueue(id=>rpc(id,'adventure_word_help',args));
@@ -99,7 +111,7 @@
     root.addEventListener?.('online',schedule);
     root.addEventListener?.('focus',schedule);
     root.document?.addEventListener('visibilitychange',()=>{if(!root.document.hidden)schedule();});
-    return Object.freeze({connect,sync,setArenTrial,backgrounds,characters,rewardAttempt,gameAction,adventureHelp});
+    return Object.freeze({connect,sync,xp,setArenTrial,backgrounds,characters,rewardAttempt,gameAction,adventureHelp});
   }
   return {create};
 });

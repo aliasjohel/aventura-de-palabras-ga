@@ -3892,6 +3892,7 @@ btnNuevaAventura.addEventListener("click", () => {
   cerrarConfiguracion();
   reproducirSonidoComenzarAventura();
   globalThis.AdventureHints?.abandon();
+  globalThis.PlayerXP?.preserveHistorical();
   localStorage.removeItem("progresoAventuraGA");
   localStorage.removeItem("mapaMundoVistoGA");
   reiniciarEstadoAventura();

@@ -7,6 +7,7 @@
     {id:'real',name:'Real',world:3,requirement:'Completá el mundo 3 · Cumbres'},
     {id:'hielo',name:'Hielo',world:4,requirement:'Completá el mundo 4 · Reino del Invierno Eterno'},
     {id:'fuego',name:'Fuego',world:5,requirement:'Completá el mundo 5 · Azrak'},
+    ...[['xp_tinta',10],['xp_constelacion',20],['xp_codice',30],['xp_infinito',50]].map(([id,level])=>({id,xp:true,level})),
     ...[['bronce','Bronce',10],['plata','Plata',30],['oro','Oro',60],['platino','Platino',120],['diamante','Diamante',240],['leyenda','Leyenda',480]].map(([id,name,points])=>({id,name,points,rank:true,requirement:`Alcanzá el rango ${name}`})),
   ].map(Object.freeze));
   function earned(progress={},points=0){

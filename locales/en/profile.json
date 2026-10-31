@@ -80,7 +80,11 @@
     "oro": "Gold",
     "platino": "Platinum",
     "diamante": "Diamond",
-    "leyenda": "Legend"
+    "leyenda": "Legend",
+    "xp_tinta": "Rising Ink",
+    "xp_constelacion": "Letter Constellation",
+    "xp_codice": "Luminous Codex",
+    "xp_infinito": "Infinite Alphabet"
   },
   "ranks": {
     "novato": {

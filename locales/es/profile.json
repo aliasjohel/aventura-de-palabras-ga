@@ -80,7 +80,11 @@
     "oro": "Oro",
     "platino": "Platino",
     "diamante": "Diamante",
-    "leyenda": "Leyenda"
+    "leyenda": "Leyenda",
+    "xp_tinta": "Tinta naciente",
+    "xp_constelacion": "Constelación de letras",
+    "xp_codice": "Códice luminoso",
+    "xp_infinito": "Alfabeto infinito"
   },
   "ranks": {
     "novato": {
