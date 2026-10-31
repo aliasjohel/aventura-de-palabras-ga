@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <base href="../">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#061923">
+    <meta name="description" content="Explorá mundos, resolvé palabras y enfrentá desafíos mágicos.">
+    <meta name="application-name" content="Aventura de Palabras">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Aventura">
+    <title>Piloto Torre · Aventura de Palabras - GA Games</title>
+    <style>
+        /* Evita que el menú llegue a verse antes de cargar los estilos de la introducción. */
+        html {
+            background: #000;
+        }
+
+        body.intro-pendiente {
+            margin: 0;
+            background: #000;
+            overflow: hidden;
+        }
+
+        body.intro-pendiente>.app {
+            visibility: hidden;
+        }
+    </style>
+    <link rel="stylesheet" href="css/i18n-settings.css?v=20261006-i18n-2a-1">
+    <link rel="stylesheet" href="css/character-music.css?v=20261014-character-music-1">
+    <link rel="stylesheet" href="css/versus-ranks.css?v=20260922-medallas-3">
+    <link rel="stylesheet" href="css/player-xp.css?v=20261030-xplevels1">
+    <link rel="stylesheet" href="css/player-avatar.css?v=20261021-v386-1">
+    <link rel="stylesheet" href="css/versus-identity.css?v=20261024-v387-stickers1">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+    <link rel="preload" as="script" href="js/vendor/supabase-2.116.0.js" crossorigin="anonymous" fetchpriority="high">
+    <link rel="preload" as="image" href="assets/images/fondos/menu-inicio-aventura.png">
+    <link rel="stylesheet" href="css/styles.css?v=20261030-xpfeedback1">
+    <link rel="stylesheet" href="css/menu-navigation.css?v=20260921-social-mapa-1">
+    <link rel="stylesheet" href="css/cosmetic-shop.css?v=20261022-v387-1">
+    <link rel="stylesheet" href="css/azrak-world.css?v=20260913-runas-viento-captura-1">
+    <link rel="stylesheet" href="css/kairos-forest.css?v=20260908-cinematicas-1">
+    <link rel="preload" as="image" href="assets/images/intro/libro-intro-sin-cristal.png">
+    <link rel="preload" as="image" href="assets/images/intro/cristal-icono.png">
+    <link rel="stylesheet" href="css/desert-sand-trap.css?v=20261029-desertsand1">
+    <link rel="stylesheet" href="css/world-word-hazards.css?v=20261020-v381-1">
+    <link rel="stylesheet" href="css/forest-wildlife.css?v=20261014-wildlife-2">
+    <link rel="stylesheet" href="css/forest-root-trap.css?v=20260907-1">
+    <link rel="stylesheet" href="css/prologue-cinematic.css?v=20260907-1">
+    <link rel="stylesheet" href="css/intro.css?v=20261026-v387-menu3">
+    <link rel="stylesheet" href="css/menu-fantasy.css?v=20261026-v387-menu6">
+    <link rel="preload" as="image" href="assets/images/ui/menu-logo-fantasia-v2.webp" type="image/webp">
+</head>
+
+<body class="intro-pendiente menu-fondo-pendiente">
+
+    <main class="app">
+
+        <section id="pantallaMenu" class="pantalla activa">
+            <div class="menu-escena-animada" aria-hidden="true">
+                <div class="menu-niebla menu-niebla-uno"></div>
+                <div class="menu-niebla menu-niebla-dos"></div>
+                <div class="menu-antorcha menu-antorcha-izquierda"><i></i></div>
+                <div class="menu-antorcha menu-antorcha-derecha"><i></i></div>
+                <img loading="lazy" decoding="async" class="menu-cristal-flotante" src="assets/images/intro/cristal-icono.png" alt="">
+                <div class="menu-particulas">
+                    <i style="--x: 18%; --y: 72%; --d: 0s"></i>
+                    <i style="--x: 27%; --y: 58%; --d: -2.7s"></i>
+                    <i style="--x: 36%; --y: 77%; --d: -5.1s"></i>
+                    <i style="--x: 44%; --y: 62%; --d: -1.4s"></i>
+                    <i style="--x: 52%; --y: 73%; --d: -4.2s"></i>
+                    <i style="--x: 60%; --y: 55%; --d: -6.3s"></i>
+                    <i style="--x: 68%; --y: 79%; --d: -3.4s"></i>
+                    <i style="--x: 76%; --y: 64%; --d: -0.8s"></i>
+                    <i style="--x: 83%; --y: 75%; --d: -5.7s"></i>
+                    <i style="--x: 49%; --y: 47%; --d: -7.2s"></i>
+                </div>
+                <div class="menu-hojas">
+                    <i style="--x: 8%; --d: -1s; --r: 18deg"></i>
+                    <i style="--x: 23%; --d: -6s; --r: -28deg"></i>
+                    <i style="--x: 67%; --d: -3.5s; --r: 36deg"></i>
+                    <i style="--x: 88%; --d: -8s; --r: -14deg"></i>
+                    <i style="--x: 47%; --d: -10s; --r: 52deg"></i>
+                </div>
+            </div>
+
+            <div class="menu-contenido">
+                <h2 class="studio">GA Games</h2>
+                <h1 class="titulo menu-logo">
+                    <span class="menu-logo-texto" data-i18n="menu.title">Aventura de Palabras</span>
+                    <span class="menu-logo-arte" aria-hidden="true" hidden><img src="assets/images/ui/menu-logo-fantasia-v2.webp" width="1280" height="512" alt="" decoding="async" fetchpriority="high"><span class="menu-logo-destello"></span></span>
+                </h1>
+                <p class="subtitulo" data-i18n="menu.subtitle">Explorá mundos resolviendo palabras</p>
+                <div class="menu-perfil"><button id="btnMiAvatar" type="button" aria-label="Abrir mi perfil" data-i18n-aria-label="menu.openProfile"><span id="avatarMenu"></span><span><span data-i18n="menu.myProfile">Mi perfil</span> <span aria-hidden="true">›</span></span></button><button id="btnAbrirPruebasMenu" hidden type="button" aria-haspopup="dialog" aria-controls="modalConfiguracion" data-i18n="menu.testMode">Modo prueba</button></div>
+
+                <button id="btnJugar" data-i18n="menu.adventure" type="button" aria-haspopup="dialog" aria-controls="mapaAventura">🗺️ Aventura</button>
+                <button id="btnModosJuego" data-i18n="menu.modes" type="button" aria-haspopup="dialog">⚔️ Modos de juego</button>
+                <button id="btnRankingMenu" data-i18n="menu.ranking" type="button" aria-haspopup="dialog" aria-controls="rankingMenu">🏆 Ranking</button>
+                <button id="btnTienda" data-i18n="menu.shop" type="button" aria-haspopup="dialog">✦ Tienda</button>
+                <button id="btnConfiguracion" data-i18n="menu.configuration" type="button">Configuración</button>
+
+                <p id="estadoOfflineJuego" class="estado-offline-juego" role="status" aria-live="polite">
+                    Preparando los modos sin conexión…
+                </p>
+                <a href="actualizar.html" class="estado-offline-juego" data-i18n="menu.updates">Buscar actualizaciones</a>
+
+
+            </div>
+            <dialog id="mapaAventura" class="menu-dialogo mapa-aventura" aria-labelledby="tituloMapaAventura">
+                <header class="menu-dialogo-cabecera"><div><small>EL VIAJE DE AREN</small><h2 id="tituloMapaAventura">Tu aventura</h2></div><button id="cerrarMapaAventura" type="button" aria-label="Cerrar mapa">×</button></header>
+                <p class="mapa-intro">Seguí el camino de los cristales o volvé a tus misiones favoritas.</p>
+                <button id="continuarMapaAventura" type="button">Continuar aventura</button>
+                <p id="estadoMapaAventura" class="mapa-estado" role="status"></p>
+                <div id="caminoMapaAventura" class="mapa-camino" aria-label="Mundos de la aventura"></div>
+                <section id="misionesMapaAventura" class="mapa-misiones" aria-labelledby="tituloMisionesMapa"></section>
+                <footer class="mapa-pie"><p>Volver a jugar conserva tu partida. Las recompensas de la repetición no se suman a tu progreso.</p><button id="nuevaDesdeMapa" class="secundario" type="button">Empezar una nueva aventura</button></footer>
+            </dialog>
+            <div id="modalConfiguracion" class="modal-configuracion oculto" role="dialog" aria-modal="true"
+                aria-labelledby="tituloConfiguracion">
+                <div class="panel-configuracion">
+                    <span class="etiqueta-configuracion" data-i18n="common.settings">AJUSTES</span>
+                    <h2 id="tituloConfiguracion" data-i18n="menu.configuration">Configuración</h2>
+                    <label class="idioma-configuracion" for="idiomaJuego">
+                        <strong data-i18n="common.language">Idioma</strong>
+                        <select id="idiomaJuego" disabled><option value="auto" data-i18n="common.automatic">Automático</option></select>
+                        <small data-i18n="common.languageSample">El idioma se aplica a los menús, la historia, los cinco mundos, Torre, duelos locales, puzzles y tutorial. El multijugador online sigue en español.</small>
+                    </label>
+                    <p id="estadoIdioma" role="status" aria-live="polite"></p>
+<fieldset class="audio-settings"><legend data-i18n="common.audioTitle">Sonido</legend><p data-i18n="common.audioHelp">Ajustá los sonidos cuando quieras. También revisá el volumen multimedia de tu celular.</p>
+<label for="volume-music"><span data-i18n="common.audioMusic">Música</span><output id="value-music" for="volume-music"></output></label><input id="volume-music" type="range" min="0" max="100" step="1"><button type="button" class="secundario" data-audio-test="music" data-i18n="common.audioTestMusic">Probar música</button>
+<label for="volume-keyboard"><span data-i18n="common.audioKeyboard">Teclado</span><output id="value-keyboard" for="volume-keyboard"></output></label><input id="volume-keyboard" type="range" min="0" max="100" step="1"><button type="button" class="secundario" data-audio-test="keyboard" data-i18n="common.audioTestKeyboard">Probar teclado</button>
+<label for="volume-effects"><span data-i18n="common.audioEffects">Efectos y ambiente</span><output id="value-effects" for="volume-effects"></output></label><input id="volume-effects" type="range" min="0" max="100" step="1"><button type="button" class="secundario" data-audio-test="effects" data-i18n="common.audioTestEffects">Probar efectos</button>
+</fieldset>
+                    <label class="opcion-configuracion" for="vibracionAtaques">
+                        <span>
+                            <strong data-i18n="common.vibration">Vibración en ataques</strong>
+                            <small data-i18n="common.vibrationHelp">El celular vibra en el momento en que recibís el impacto de un ataque.</small>
+                        </span>
+                        <input id="vibracionAtaques" type="checkbox" role="switch">
+                    </label>
+                    <p id="estadoVibracion" class="estado-vibracion" aria-live="polite"></p>
+                    <button id="btnNuevaAventura" class="secundario oculto" type="button" data-i18n="common.newAdventure">Empezar una nueva aventura</button>
+                    <div id="accesoUnionOnline" hidden>
+                        <p data-i18n="common.unionHelp">Activá Aren Unión en tu cuenta para probarlo en un duelo online, sin gastar monedas.</p>
+                        <button id="btnUnionOnline" type="button">Activar Aren Unión online</button>
+                        <p id="estadoUnionOnline" role="status" aria-live="polite"></p>
+                    </div>
+                    <label class="control-modo-pruebas" hidden for="modoPruebas">
+                        <input id="modoPruebas" type="checkbox">
+                        <span data-i18n="common.testMode">Modo Pruebas</span>
+                    </label>
+
+                    <div id="panelModoPruebas" class="panel-modo-pruebas oculto" aria-label="Herramientas de prueba" data-i18n-aria-label="common.testTools">
+                        <label for="selectorMundoPruebas" data-i18n="common.world">Mundo</label>
+                        <select id="selectorMundoPruebas"></select>
+
+                        <label for="selectorMisionPruebas" data-i18n="common.mission">Misión</label>
+                        <select id="selectorMisionPruebas"></select>
+
+                        <button id="btnIniciarMisionPruebas" type="button" data-i18n="common.startMission">Iniciar misión</button>
+                    </div>
+                    <button id="btnCerrarConfiguracion" data-i18n="common.done" type="button">Listo</button>
+                    <details class="creditos-musicales">
+                        <summary>Créditos musicales / Music credits</summary>
+                        <p>“Goliath” by Scott Buckley — released under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. <a href="https://www.scottbuckley.com.au" target="_blank" rel="noopener">www.scottbuckley.com.au</a>. Audio normalizado y convertido a MP3 para el juego.</p>
+                        <a href="assets/licenses/character-music.txt" target="_blank" rel="noopener">Autores y licencias de los temas de personajes</a>
+                    </details>
+                </div>
+            </div>
+
+            <div id="modalTutorialVersus" class="modal-tutorial-versus oculto" role="dialog" aria-modal="true"
+                aria-labelledby="tituloTutorialVersus">
+                <div class="panel-tutorial-versus">
+                    <header class="cabecera-tutorial-versus">
+                        <span id="progresoTutorialVersus">GUÍA DE COMBATE</span>
+                        <button id="btnCerrarTutorialVersus" type="button" aria-label="Cerrar tutorial">×</button>
+                    </header>
+
+                    <section id="bienvenidaTutorialVersus" class="bienvenida-tutorial-versus">
+                        <div class="insignia-tutorial-versus" aria-hidden="true">⚔️</div>
+                        <h2 id="tituloTutorialVersus">¿Es tu primera batalla?</h2>
+                        <p>Practicá en la arena real, a tu ritmo. El reloj y el rival esperan mientras aprendés.</p>
+                        <div class="acciones-bienvenida-tutorial-versus">
+                            <button id="btnComenzarTutorialVersus" type="button">Jugar tutorial</button>
+                            <button id="btnOmitirTutorialVersus" type="button">Omitir por ahora</button>
+                        </div>
+                    </section>
+
+                    <section id="pasoTutorialVersus" class="paso-tutorial-versus oculto">
+                        <div class="texto-paso-tutorial-versus">
+                            <small id="numeroPasoTutorialVersus">PASO 1 DE 8</small>
+                            <h2 id="tituloPasoTutorialVersus">Completá la palabra</h2>
+                            <p id="descripcionPasoTutorialVersus">Elegí la A para completar GATO. Cada palabra terminada
+                                le quita un corazón al rival.</p>
+                            <p id="accionPasoTutorialVersus" class="accion-paso-tutorial-versus" aria-live="polite">Tocá la letra A para
+                                continuar.</p>
+                            <button id="btnSiguienteTutorialVersus" type="button" disabled>Siguiente</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+        <section id="pantallaArcade" class="pantalla pantalla-arcade" aria-labelledby="tituloArcade">
+            <div class="arcade-marco">
+                <button id="btnSalirArcade" class="versus-volver" type="button" data-i18n="adventure.controls.backArrow">← Volver al menú</button>
+
+                <header class="arcade-cabecera">
+                    <p data-i18n="adventure.controls.towerTag">TORRE DE LOS CAMPEONES</p>
+                    <h2 id="tituloArcade" data-i18n="adventure.controls.tower">Torre</h2>
+                    <span id="estadoArcade" data-i18n="adventure.controls.intro">Vencé a todos los rivales y alcanzá la cima.</span>
+                </header>
+
+                <div class="arcade-contenido">
+                    <ol data-i18n-aria-label="adventure.controls.floors" id="pisosArcade" class="pisos-arcade" aria-label="Pisos de la torre"></ol>
+
+                    <article class="rival-actual-arcade">
+                        <span id="etiquetaPisoArcade">PISO 1 DE 8</span>
+                        <div class="retrato-rival-arcade">
+                            <img loading="lazy" decoding="async" id="imagenRivalArcade" src="assets/images/personajes/versus/mago-base.png"
+                                alt="Rival del primer piso">
+                        </div>
+                        <h3 id="nombreRivalArcade">Zafir</h3>
+                        <p id="habilidadRivalArcade">Habilidad: Caos arcano</p>
+                        <div class="dificultad-arcade">
+                            <small data-i18n="adventure.controls.difficulty">DIFICULTAD</small>
+                            <strong id="dificultadArcade">APRENDIZ</strong>
+                        </div>
+                        <button id="btnCombatirArcade" type="button">Entrar al combate</button>
+                    </article>
+                </div>
+            </div>
+
+            <div class="versus-aviso-orientacion" role="status">
+                <span>↻</span>
+                <strong data-i18n="adventure.controls.rotate">Girá el celular</strong>
+                <p data-i18n="adventure.controls.landscape">La Torre se juega en horizontal.</p>
+                <button id="btnSalirArcadeVertical" type="button" data-i18n="adventure.controls.back">Volver al menú</button>
+            </div>
+        </section>
+
+        <section id="pantallaJuego" class="pantalla">
+            <div class="barraJugador">
+
+                <span id="textoMonedas">
+                    🪙 0
+                </span>
+
+                <span id="textoXP">
+                    ⭐ 0 XP
+                </span>
+
+                <span id="textoCristales">
+                    💎 0
+                </span>
+
+            </div>
+
+            <div id="panelCristales" class="panel-cristales" aria-label="Cristales de la Sabiduría">
+                <span id="ranuraCristalBosque" class="ranura-cristal ranura-bosque" title="Bosque Encantado">
+                    <img loading="lazy" decoding="async" id="cristalPanelBosque" class="cristal-panel oculto"
+                        src="assets/images/elements/cristal-sabiduria-esmeralda.png" alt="Cristal del Bosque Encantado">
+                    <span class="marca-ranura" aria-hidden="true">1</span>
+                </span>
+                <span id="ranuraCristalDesierto" class="ranura-cristal ranura-desierto bloqueada"
+                    title="Desierto Perdido" aria-label="Cristal del Desierto bloqueado">
+                    <img loading="lazy" decoding="async" id="cristalPanelDesierto" class="cristal-panel cristal-panel-dorado oculto"
+                        src="assets/images/elements/cristal-sabiduria-dorado-v2.png" alt="Cristal Dorado del Desierto">
+                    <span class="marca-ranura" aria-hidden="true">2</span>
+                </span>
+                <span id="ranuraCristalCumbres" class="ranura-cristal ranura-cumbres bloqueada"
+                    title="Cumbres Celestes" aria-label="Cristal Celeste bloqueado">
+                    <img loading="lazy" decoding="async" id="cristalPanelCumbres" class="cristal-panel cristal-panel-celeste oculto"
+                        src="assets/images/elements/cristal-celeste-v1.png" alt="Cristal Celeste">
+                    <span class="marca-ranura" aria-hidden="true">3</span>
+                </span>
+                <span id="ranuraCristalHielo" class="ranura-cristal ranura-hielo bloqueada"
+                    title="Reino del Invierno Eterno" aria-label="Cristal Glacial Violeta bloqueado">
+                    <img loading="lazy" decoding="async" id="cristalPanelHielo" class="cristal-panel cristal-panel-glacial oculto"
+                        src="assets/images/elements/cristal-celeste-v1.png" alt="Cristal Glacial Violeta">
+                    <span class="marca-ranura" aria-hidden="true">4</span>
+                </span>
+                <span id="ranuraCristalAzrak" class="ranura-cristal bloqueada" title="Cristal de la Unión" aria-label="Cristal de la Unión bloqueado"><img loading="lazy" decoding="async" id="cristalPanelAzrak" class="cristal-panel cristal-panel-union oculto" src="assets/images/elements/cristal-celeste-v1.png" alt="Cristal de la Unión"><span class="marca-ranura" aria-hidden="true">5</span></span>
+            </div>
+
+            <div class="top-juego">
+                <div class="resumen-mision">
+                    <strong id="categoriaActual" data-i18n="adventure.combat.forestWordsTheme">🌲 Tema: palabras del bosque</strong>
+                    <span id="detalleMision">Misión 1 · Desafío 1 de 3</span>
+                    <small data-i18n="adventure.combat.wordsThemeHelp">Todas las palabras están relacionadas con este tema.</small>
+                </div>
+                <span id="vidas" class="vidas" hidden aria-hidden="true"></span>
+            </div>
+
+            <div class="escenario">
+
+                <img loading="lazy" decoding="async" id="fondoEscenario" class="fondo-escenario" src="assets/images/fondos/bosque-0.png" alt="Bosque">
+
+                <img loading="lazy" decoding="async" id="personajeImagen" class="personaje-imagen" src="assets/images/personajes/explorador-feliz.png"
+                    alt="Aren">
+
+                <div id="mensajeDesafioSuperado" class="mensaje-desafio-superado" role="status" aria-live="polite"
+                    aria-atomic="true"></div>
+
+            </div>
+
+            <div class="personaje oculto" id="personaje"></div>
+
+            <p class="mensaje-personaje" id="mensajePersonaje"></p>
+
+            <div class="palabra" id="palabraOculta">
+                _ _ _ _ _
+            </div>
+
+            <button id="btnPista" class="btn-pista" data-i18n="adventure.controls.hint">
+                💡 Pista
+            </button>
+
+            <p id="estadoRecargaPistas" class="estado-recarga-pistas" hidden></p>
+            <p id="textoPista" class="texto-pista oculto"></p>
+
+            <div class="teclado" id="teclado"></div>
+
+            <button id="btnSiguiente" class="oculto" data-i18n="adventure.controls.nextMission">
+                ▶️ Siguiente misión
+            </button>
+
+            <button id="btnReintentar" class="oculto" data-i18n="adventure.controls.retryMission">
+                🔄 Reintentar misión
+            </button>
+
+            <button id="btnSalirJuego" class="secundario" data-i18n="adventure.controls.menu">Menú</button>
+
+            <div id="herramientasPruebasJuego" class="dev-tools oculto" aria-label="Navegación temporal de misiones">
+                <button id="btnMisionAnterior" type="button" data-i18n="adventure.controls.previousMission">◀ Misión anterior</button>
+                <button id="btnMisionSiguiente" type="button" data-i18n="adventure.controls.nextMissionDev">▶ Misión siguiente</button>
+                <button id="btnProbarPruebaBosque" type="button">🧩 Probar puzzle</button>
+                <button id="btnProbarMuralSantuario" type="button">🧩 Probar mural</button>
+                <button id="btnProbarEscenaPersonaje" type="button">🎬 Probar escena</button>
+            </div>
+
+            <div id="modalMuralSantuario" class="modal-mural-santuario oculto" role="dialog" aria-modal="true"
+                aria-labelledby="tituloMuralSantuario" aria-describedby="instruccionMuralSantuario">
+                <section class="panel-mural-santuario">
+                    <header class="cabecera-mural-santuario">
+                        <span class="etiqueta-mural-santuario">PRUEBA DEL GUARDIÁN</span>
+                        <h2 id="tituloMuralSantuario">Reconstruí el mural del dragón</h2>
+                        <p id="instruccionMuralSantuario">Reconstruí la imagen a tu manera: podés colocar cualquier
+                            fragmento, moverlo, intercambiarlo o retirarlo hasta descubrir la forma verdadera.</p>
+                    </header>
+                    <div class="zona-rompecabezas-mural">
+                        <div id="tableroMuralSantuario" class="tablero-mural-santuario" role="grid"
+                            aria-label="Mural del dragón guardián, dividido en dieciséis espacios"></div>
+                        <div class="sector-piezas-mural">
+                            <strong>Fragmentos del mural</strong>
+                            <div id="bandejaMuralSantuario" class="bandeja-mural-santuario"
+                                aria-label="Piezas disponibles"></div>
+                        </div>
+                    </div>
+                    <p id="estadoMuralSantuario" class="estado-mural-santuario" role="status" aria-live="polite">0 de 9
+                        espacios ocupados</p>
+                    <div class="acciones-mural-santuario">
+                        <button id="btnAyudaMuralSantuario" type="button">✨ Mostrar guía</button>
+                        <button id="btnRetirarPiezaMural" type="button" disabled>↩ Retirar pieza</button>
+                        <button id="btnSalirMuralSantuario" class="secundario" type="button" data-i18n="multiplayer.legacy.s52">Volver al menú</button>
+                    </div>
+                </section>
+            </div>
+
+            <div id="modalPruebaBosque" class="modal-prueba-bosque oculto" role="dialog" aria-modal="true"
+                aria-labelledby="tituloPruebaBosque" aria-describedby="instruccionPruebaBosque">
+                <section class="panel-prueba-bosque">
+                    <header class="cabecera-prueba-bosque">
+                        <span id="etiquetaPruebaBosque" class="etiqueta-prueba-bosque">PRUEBA DEL SENDERO</span>
+                        <h2 id="tituloPruebaBosque">Abrí un paso junto al árbol caído</h2>
+                        <p id="instruccionPruebaBosque">Armá las filas 1-2-3, 4-5-6 y 7-8-vacío. Tocá una pieza
+                            iluminada para moverla al espacio que dice ACÁ.</p>
+                    </header>
+
+                    <div id="puzzleRamasDeslizante" class="puzzle-ramas-deslizante">
+                        <div id="tableroRamasDeslizante" class="tablero-ramas-deslizante" role="grid"
+                            aria-label="Rompecabezas deslizante del sendero, con ocho piezas"></div>
+                    </div>
+
+                    <div id="puzzleMemoriaLobos" class="puzzle-memoria-lobos oculto">
+                        <div id="escenaMemoriaLobos" class="escena-memoria-lobos"
+                            aria-label="Cuatro lobos observando desde el bosque">
+                            <button type="button" class="lobo-memoria lobo-memoria-1" data-lobo="0"
+                                aria-label="Lobos de la izquierda"><span></span></button>
+                            <button type="button" class="lobo-memoria lobo-memoria-2" data-lobo="1"
+                                aria-label="Lobos de la derecha"><span></span></button>
+                            <button type="button" class="lobo-memoria lobo-memoria-3" data-lobo="2"
+                                aria-label="Lobos del centro, a la izquierda"><span></span></button>
+                            <button type="button" class="lobo-memoria lobo-memoria-4" data-lobo="3"
+                                aria-label="Lobos del centro, a la derecha"><span></span></button>
+                        </div>
+                        <div id="progresoMemoriaLobos" class="progreso-memoria-lobos"
+                            aria-label="Tres rondas de memoria">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+
+                    <div id="puzzleVientosDesierto" class="puzzle-vientos-desierto oculto">
+                        <div id="tableroVientosDesierto" class="tablero-vientos-desierto"
+                            role="grid" aria-label="Laberinto de canales de energía hacia el núcleo central">
+                        </div>
+                    </div>
+
+                    <div id="puzzleOasisDesierto" class="puzzle-oasis-desierto oculto">
+                        <div id="opcionesOasisDesierto" class="opciones-oasis-desierto"
+                            aria-label="Cuatro oasis posibles">
+                            <button type="button" class="oasis-opcion" data-oasis="0"><span></span><strong>Oasis A</strong></button>
+                            <button type="button" class="oasis-opcion" data-oasis="1"><span></span><strong>Oasis B</strong></button>
+                            <button type="button" class="oasis-opcion" data-oasis="2"><span></span><strong>Oasis C</strong></button>
+                            <button type="button" class="oasis-opcion" data-oasis="3"><span></span><strong>Oasis D</strong></button>
+                        </div>
+                        <p id="pistaOasisDesierto" class="pista-oasis-desierto"></p>
+                    </div>
+
+                    <div id="puzzleEspejosDesierto" class="puzzle-espejos-desierto oculto">
+                        <div id="rutaLuzEspejos" class="ruta-luz-espejos" aria-hidden="true"><span></span></div>
+                        <div id="controlesEspejosDesierto" class="controles-espejos-desierto"
+                            aria-label="Cinco espejos solares vinculados">
+                            <button type="button" class="espejo-solar" data-espejo="0" aria-label="Primer espejo solar"><span></span></button>
+                            <button type="button" class="espejo-solar" data-espejo="1" aria-label="Segundo espejo solar"><span></span></button>
+                            <button type="button" class="espejo-solar" data-espejo="2" aria-label="Tercer espejo solar"><span></span></button>
+                            <button type="button" class="espejo-solar" data-espejo="3" aria-label="Cuarto espejo solar"><span></span></button>
+                            <button type="button" class="espejo-solar" data-espejo="4" aria-label="Quinto espejo solar"><span></span></button>
+                        </div>
+                    </div>
+
+                    <p id="estadoPruebaBosque" class="estado-prueba-bosque" role="status" aria-live="polite"></p>
+                    <div class="acciones-prueba-bosque">
+                        <button id="btnRepetirPruebaBosque" type="button">↻ Mezclar de nuevo</button>
+                        <button id="btnSalirPruebaBosque" class="secundario" type="button" data-i18n="multiplayer.legacy.s52">Volver al menú</button>
+                    </div>
+                </section>
+            </div>
+
+            <div id="modalHistoria" class="modal-historia oculto" role="dialog" aria-modal="true"
+                aria-labelledby="numeroCapitulo" aria-describedby="textoCapitulo">
+                <div class="presentacion-historia">
+                    <div class="soporte-mision" aria-hidden="true">
+                        <img loading="lazy" decoding="async" id="imagenSoporteMision" src="assets/images/ui/presentacion-mision-tronco.png" alt="">
+                    </div>
+
+                    <article class="pergamino-mision">
+                        <span class="rollo-pergamino rollo-superior" aria-hidden="true"></span>
+                        <span class="clavo-pergamino clavo-izquierdo" aria-hidden="true"></span>
+                        <span class="clavo-pergamino clavo-derecho" aria-hidden="true"></span>
+
+                        <div class="contenido-pergamino">
+                            <p id="numeroCapitulo" class="numero-capitulo"></p>
+                            <h2 id="tituloCapitulo"></h2>
+                            <span class="separador-pergamino" aria-hidden="true">◆</span>
+                            <p id="textoCapitulo"></p>
+                        </div>
+
+                        <span class="rollo-pergamino rollo-inferior" aria-hidden="true"></span>
+                    </article>
+
+                    <button id="btnContinuarHistoria" class="control-presentacion-mision" type="button" tabindex="-1"
+                        aria-hidden="true" hidden>Comenzar misión</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="pantallaSalaVersus" class="pantalla pantalla-sala-versus" aria-labelledby="tituloSalaVersus">
+            <div class="sala-versus-marco">
+                <button id="btnSalirSalaVersus" class="versus-volver" type="button" data-i18n="multiplayer.legacy.s53">← Volver</button>
+
+                <header class="sala-versus-cabecera">
+                    <p data-i18n="multiplayer.legacy.s0">DUELO ENTRE JUGADORES</p>
+                    <h2 id="tituloSalaVersus" data-i18n="multiplayer.legacy.s1">Sala multijugador</h2>
+                    <span data-i18n="multiplayer.legacy.s2">Desafiá a un amigo o jugá con un código de sala.</span>
+                </header>
+
+                <p id="idiomaSalaOnline" role="status"></p>
+                <div id="inicioSalaVersus" class="inicio-sala-versus">
+                    <button id="btnAmigosSala" type="button" data-i18n="profile.friends.open">Amigos y desafíos</button>
+
+                    <label class="campo-sala-versus campo-alias-versus" for="aliasSalaVersus">
+                        <span data-i18n="multiplayer.legacy.s24">Tu nombre</span>
+                        <input id="aliasSalaVersus" type="text" minlength="2" maxlength="16" autocomplete="nickname"
+                            placeholder="Ej: Gabi" data-i18n-placeholder="multiplayer.legacy.s15">
+                    </label>
+
+                    <section class="opcion-sala-versus" aria-label="Partidas públicas" data-i18n-aria-label="multiplayer.legacy.s25">
+                        <h3 data-i18n="multiplayer.legacy.s26">Buscar partida</h3>
+                        <p data-i18n="multiplayer.legacy.s27">Elegí cómo querés jugar. Después preparan el duelo en la sala.</p>
+                        <fieldset class="modos-online"><legend data-i18n="multiplayer.legacy.s28">Modo de juego</legend>
+                          <label class="modo-online"><input type="radio" name="modoOnline" value="classic" checked><span><strong data-i18n="multiplayer.legacy.s29">Clásico</strong><small data-i18n="multiplayer.legacy.s30">Jugá por diversión, sin cambiar tus puntos.</small></span></label>
+                          <label class="modo-online"><input type="radio" name="modoOnline" value="ranked"><span><strong data-i18n="multiplayer.legacy.s31">Clasificatorio</strong><small data-i18n="multiplayer.legacy.s32">Rivales de nivel cercano. Ganá puntos y subí de rango.</small></span></label>
+                        </fieldset>
+                        <div id="rangoSalaVersus" aria-live="polite"></div>
+                        <p id="reglasModoOnline" data-i18n="multiplayer.legacy.s33">Las victorias y los personajes usados se guardan en tu historial.</p>
+                        <details><summary data-i18n="multiplayer.legacy.s34">Rangos y títulos</summary><div id="catalogoRangos" class="rangos-catalogo"></div></details>
+                        <button id="btnBuscarPartida" type="button" data-i18n="multiplayer.legacy.s35">Buscar rival</button>
+                        <button id="btnCancelarBusqueda" type="button" class="oculto" data-i18n="multiplayer.legacy.s36">Cancelar búsqueda</button>
+                        <p id="estadoBusqueda" role="status" aria-live="polite"></p>
+                        <button id="btnRankingSala" type="button" aria-haspopup="dialog" aria-controls="rankingMenu" data-i18n="multiplayer.legacy.s37">🏆 Ver ranking</button>
+                    </section>
+                    <details class="salas-manuales-versus">
+                        <summary data-i18n="multiplayer.legacy.s38">Clásico con código de sala</summary>
+                        <div class="acciones-sala-versus">
+                            <article class="opcion-sala-versus">
+                                <span class="icono-opcion-sala" aria-hidden="true">&#10022;</span>
+                                <h3 data-i18n="multiplayer.legacy.s39">Crear sala</h3>
+                                <p data-i18n="multiplayer.legacy.s40">Generá un código para compartir con tu rival.</p>
+                                <button id="btnCrearSalaVersus" type="button" data-i18n="multiplayer.legacy.s41">Crear partida</button>
+                            </article>
+
+                            <article class="opcion-sala-versus">
+                                <span class="icono-opcion-sala" aria-hidden="true">&#9876;</span>
+                                <h3 data-i18n="multiplayer.legacy.s42">Unirse</h3>
+                                <p data-i18n="multiplayer.legacy.s43">Ingresá el código de seis caracteres.</p>
+                                <label class="campo-codigo-versus" for="codigoSalaVersus">
+                                    <span class="sr-only" data-i18n="multiplayer.legacy.s44">Código de sala</span>
+                                    <input id="codigoSalaVersus" type="text" maxlength="6" inputmode="text"
+                                        autocomplete="off" autocapitalize="characters" placeholder="ABC123">
+                                </label>
+                                <button id="btnUnirseSalaVersus" type="button" data-i18n="multiplayer.legacy.s45">Ingresar a sala</button>
+                            </article>
+                        </div>
+                    </details>
+                    <p id="errorSalaVersus" class="error-sala-versus" role="alert" aria-live="polite"></p>
+                </div>
+
+                <div id="esperaSalaVersus" class="espera-sala-versus oculto">
+                    <div class="codigo-creado-versus">
+                        <span data-i18n="multiplayer.legacy.s46">CÓDIGO DE SALA</span>
+                        <strong id="codigoCreadoVersus">------</strong>
+                        <button id="btnCopiarCodigoVersus" class="btn-copiar-codigo-versus"
+                            type="button" data-i18n="multiplayer.legacy.s18">Copiar</button>
+                    </div>
+
+                    <div id="jugadoresSalaVersus" class="jugadores-sala-versus"></div>
+                    <p id="estadoSalaVersus" class="estado-sala-versus" role="status" aria-live="polite" data-i18n="multiplayer.legacy.s47">Esperando al segundo jugador…</p>
+                    <button id="btnRivalPruebaVersus" class="btn-rival-prueba-versus oculto" type="button" data-i18n="multiplayer.legacy.s48">Agregar rival de prueba</button>
+                    <button id="btnContinuarSalaVersus" class="btn-continuar-sala-versus" type="button" disabled data-i18n="multiplayer.legacy.s49">Elegir personaje</button>
+                    <small class="nota-adaptador-versus">Vista local de desarrollo. La conexi&oacute;n entre celulares
+                        se activar&aacute; con Supabase.</small>
+                </div>
+            </div>
+
+            <div class="versus-aviso-orientacion" role="status">
+                <span aria-hidden="true">&#8635;</span>
+                <strong data-i18n="multiplayer.legacy.s50">Girá tu celular</strong>
+                <small data-i18n="multiplayer.legacy.s51">La sala multijugador se disfruta en horizontal.</small>
+                <button id="btnSalirSalaVersusVertical" type="button" data-i18n="multiplayer.legacy.s52">Volver al menú</button>
+            </div>
+        </section>
+
+        <section id="pantallaSeleccionPersonajeVersus" class="pantalla pantalla-seleccion-personaje-versus"
+            aria-labelledby="tituloSeleccionPersonajeVersus">
+            <div class="seleccion-personaje-marco">
+                <button id="btnSalirSeleccionPersonajeVersus" class="versus-volver" type="button" data-i18n="multiplayer.legacy.s53">← Volver</button>
+
+                <header class="seleccion-personaje-cabecera">
+                    <p id="etiquetaSeleccionPersonajeVersus" data-i18n="multiplayer.legacy.extra0">ELIGE A TU CAMPEÓN</p>
+                    <h2 id="tituloSeleccionPersonajeVersus" data-i18n="multiplayer.legacy.extra1">Selección de personaje</h2>
+                    <p data-modo-sala hidden role="status"></p>
+                    <span id="detalleSeleccionPersonajeVersus" data-i18n="multiplayer.legacy.extra2">Todos están disponibles durante el desarrollo.</span>
+                </header>
+
+                <div class="lista-personajes-versus" role="radiogroup" aria-label="Personajes disponibles">
+                    <button class="tarjeta-personaje-versus seleccionada" type="button" role="radio" aria-checked="true"
+                        data-personaje="explorador">
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/explorador-base.png" alt="Aren">
+                        <strong>Aren</strong>
+                        <small>Bumer&aacute;n &middot; Trampa Selv&aacute;tica</small>
+                    </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="mago">
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/mago-base.png" alt="Zafir">
+                        <strong>Zafir</strong>
+                        <small>Fuego arcano &middot; Eclipse Violeta</small>
+                    </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="guardiana">
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/coleccion/guardiana-bosque-base.png"
+                            alt="Guardiana del Bosque">
+                        <strong>Guardiana</strong>
+                        <small>Halc&oacute;n esmeralda &middot; Fauces Esmeralda</small>
+                    </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="dragon">
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/dragon-base.png" alt="Nimbus, dragón joven">
+                        <strong>Nimbus</strong>
+                        <small>Rugido drac&oacute;nico &middot; Llamado de la Matriarca</small>
+                    </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="hombre_lobo">
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/hombre-lobo-base.png" alt="Hombre lobo">
+                        <strong>Hombre Lobo</strong>
+                        <small>Zarpazo Feral &middot; Cacer&iacute;a de Luna Llena</small>
+                    </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="t_shadow">
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/t-shadow-base.png" alt="T. Shadow">
+                        <strong>T. Shadow</strong>
+                        <small>Corte sombr&iacute;o &middot; Legi&oacute;n Umbr&iacute;a</small>
+                    </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="guardian_alba">
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/guardian-alba-base.png"
+                            alt="Guardi&aacute;n del Alba">
+                        <strong>A. Lumen</strong>
+                        <small>Corte solar &middot; Juicio del Amanecer</small>
+                    </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="dragon_hielo">
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/dragon-hielo-base.png"
+                            alt="Nivor, drag&oacute;n boreal">
+                        <strong>Nivor</strong>
+                        <small>Aliento glacial &middot; Cero Absoluto</small>
+                    </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="azrak">
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/azrak-base.png" alt="Azrak, guerrero infernal">
+                        <strong>Azrak</strong>
+                        <small>Corte Infernal &middot; Eclipse Infernal</small>
+                    </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="kalamo">
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/kalamo-base.png"
+                            alt="K&aacute;lamo, ladr&oacute;n de letras">
+                        <strong>K&aacute;lamo</strong>
+                        <small>Latigazo de tinta &middot; Libro de las Palabras Perdidas</small>
+                    </button>
+                    <button class="tarjeta-personaje-versus" type="button" role="radio" aria-checked="false"
+                        data-personaje="kairos">
+                        <span class="estado-personaje-versus" data-i18n="multiplayer.legacy.extra4">DISPONIBLE</span>
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/kairos-seleccion-v2.png"
+                            alt="Kair&oacute;s, ladr&oacute;n de instantes">
+                        <strong>Kair&oacute;s</strong>
+                        <small>Aguja fugaz &middot; Siglos en un Segundo</small>
+                    </button>
+                </div>
+
+                <button id="btnPersonajeAleatorio" type="button">🎲 Aleatorio</button>
+                <p id="seleccionAleatoriaEstado" role="status" aria-live="polite"></p>
+                <fieldset id="selectorTrajesDuelo" hidden>
+                    <legend data-i18n="multiplayer.legacy.extra10">Elegí tu traje</legend>
+                    <div id="opcionesTrajesDuelo"></div>
+                </fieldset>
+                <div class="estado-personajes-remotos" aria-live="polite">
+                    <span id="estadoPersonajePropioVersus" data-i18n="multiplayer.legacy.s82">Elegí tu personaje.</span>
+                    <span id="estadoPersonajeRivalVersus">Tu rival est&aacute; eligiendo&hellip;</span>
+                </div>
+
+                <button id="btnConfirmarPersonajeVersus" class="btn-confirmar-personaje-versus" type="button">
+                    Luchar con Aren
+                </button>
+            </div>
+
+            <div class="versus-aviso-orientacion" role="status">
+                <span>&#8635;</span>
+                <strong data-i18n="adventure.combat.rotate">Girá el celular</strong>
+                <p data-i18n="adventure.combat.landscape">El modo versus se juega en horizontal.</p>
+                <button id="btnSalirSeleccionPersonajeVersusVertical" type="button" data-i18n="multiplayer.legacy.s52">Volver al menú</button>
+            </div>
+        </section>
+
+        <section id="pantallaPreparacionVersus" class="pantalla pantalla-preparacion-versus"
+            aria-labelledby="tituloPreparacionVersus">
+            <div class="preparacion-versus-marco">
+                <button id="btnSalirPreparacionVersus" class="versus-volver" type="button" data-i18n="common.duelPreparation.back">← Volver</button>
+
+                <header class="preparacion-versus-cabecera">
+                    <p data-i18n="common.duelPreparation.eyebrow">DUELO DE PALABRAS</p>
+                    <h2 id="tituloPreparacionVersus" data-i18n="common.duelPreparation.title">Prepará tus palabras secretas</h2>
+                    <p data-modo-sala hidden role="status"></p>
+                    <span data-i18n="common.duelPreparation.subtitle">Elegí una temática y cinco palabras para desafiar al rival.</span>
+                </header>
+
+                <div class="preparacion-versus-cuerpo">
+                    <form id="formPreparacionVersus" class="form-preparacion-versus" novalidate>
+                        <label class="campo-tematica-versus" for="tematicaVersus">
+                            <span data-i18n="common.duelPreparation.topic">Temática que resolverá tu rival</span>
+                            <select id="tematicaVersus">
+                                <option value="paises" data-i18n="common.duelPreparation.topics.paises">🌎 Países</option>
+                                <option value="frutas" data-i18n="common.duelPreparation.topics.frutas">🍎 Frutas</option>
+                                <option value="animales" data-i18n="common.duelPreparation.topics.animales">🐾 Animales</option>
+                                <option value="invertebrados" data-i18n="common.duelPreparation.topics.invertebrados">🐞 Insectos y otros invertebrados</option>
+                                <option value="comidas" data-i18n="common.duelPreparation.topics.comidas">🍴 Comidas</option>
+                                <option value="profesiones" data-i18n="common.duelPreparation.topics.profesiones">🧰 Profesiones</option>
+                                <option value="deportes" data-i18n="common.duelPreparation.topics.deportes">⚽ Deportes</option>
+                                <option value="transportes" data-i18n="common.duelPreparation.topics.transportes">🚲 Transportes</option>
+                                <option value="objetos" data-i18n="common.duelPreparation.topics.objetos">🧩 Objetos</option>
+                                <option value="naturaleza" data-i18n="common.duelPreparation.topics.naturaleza">🌿 Naturaleza</option>
+                                <option value="nombres" data-i18n="common.duelPreparation.topics.nombres">🔤 Nombres</option>
+                            </select>
+                        </label>
+
+                        <fieldset class="palabras-secretas-versus">
+                            <legend data-i18n="common.duelPreparation.legend">Tus cinco palabras para el rival</legend>
+
+                            <div class="campo-palabra-secreta">
+                                <b>1</b>
+                                <input id="palabraSecretaVersus1" class="input-palabra-versus" type="text" minlength="3"
+                                    data-i18n-aria-label="common.duelPreparation.word1" aria-label="Primera palabra"
+                                    maxlength="12" autocomplete="off" spellcheck="false" data-i18n-placeholder="common.duelPreparation.word1" placeholder="Primera palabra">
+                                <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
+                                    data-i18n-aria-label="common.duelPreparation.pin1" aria-label="Conservar la primera palabra al volver a elegir" data-i18n-title="common.duelPreparation.pin" title="Conservar palabra">📌</button>
+                                <small class="contador-palabra-versus">0 letras</small>
+                                <em class="error-palabra-versus" aria-live="polite"></em>
+                            </div>
+
+                            <div class="campo-palabra-secreta">
+                                <b>2</b>
+                                <input id="palabraSecretaVersus2" class="input-palabra-versus" type="text" minlength="3"
+                                    data-i18n-aria-label="common.duelPreparation.word2" aria-label="Segunda palabra"
+                                    maxlength="12" autocomplete="off" spellcheck="false" data-i18n-placeholder="common.duelPreparation.word2" placeholder="Segunda palabra">
+                                <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
+                                    data-i18n-aria-label="common.duelPreparation.pin2" aria-label="Conservar la segunda palabra al volver a elegir" data-i18n-title="common.duelPreparation.pin" title="Conservar palabra">📌</button>
+                                <small class="contador-palabra-versus">0 letras</small>
+                                <em class="error-palabra-versus" aria-live="polite"></em>
+                            </div>
+
+                            <div class="campo-palabra-secreta">
+                                <b>3</b>
+                                <input id="palabraSecretaVersus3" class="input-palabra-versus" type="text" minlength="3"
+                                    data-i18n-aria-label="common.duelPreparation.word3" aria-label="Tercera palabra"
+                                    maxlength="12" autocomplete="off" spellcheck="false" data-i18n-placeholder="common.duelPreparation.word3" placeholder="Tercera palabra">
+                                <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
+                                    data-i18n-aria-label="common.duelPreparation.pin3" aria-label="Conservar la tercera palabra al volver a elegir" data-i18n-title="common.duelPreparation.pin" title="Conservar palabra">📌</button>
+                                <small class="contador-palabra-versus">0 letras</small>
+                                <em class="error-palabra-versus" aria-live="polite"></em>
+                            </div>
+
+                            <div class="campo-palabra-secreta">
+                                <b>4</b>
+                                <input id="palabraSecretaVersus4" class="input-palabra-versus" type="text" minlength="3"
+                                    data-i18n-aria-label="common.duelPreparation.word4" aria-label="Cuarta palabra"
+                                    maxlength="12" autocomplete="off" spellcheck="false" data-i18n-placeholder="common.duelPreparation.word4" placeholder="Cuarta palabra">
+                                <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
+                                    data-i18n-aria-label="common.duelPreparation.pin4" aria-label="Conservar la cuarta palabra al volver a elegir" data-i18n-title="common.duelPreparation.pin" title="Conservar palabra">📌</button>
+                                <small class="contador-palabra-versus">0 letras</small>
+                                <em class="error-palabra-versus" aria-live="polite"></em>
+                            </div>
+
+                            <div class="campo-palabra-secreta">
+                                <b>5</b>
+                                <input id="palabraSecretaVersus5" class="input-palabra-versus" type="text" minlength="3"
+                                    data-i18n-aria-label="common.duelPreparation.word5" aria-label="Quinta palabra"
+                                    maxlength="12" autocomplete="off" spellcheck="false" data-i18n-placeholder="common.duelPreparation.word5" placeholder="Quinta palabra">
+                                <button class="btn-fijar-palabra-versus" type="button" aria-pressed="false"
+                                    data-i18n-aria-label="common.duelPreparation.pin5" aria-label="Conservar la quinta palabra al volver a elegir" data-i18n-title="common.duelPreparation.pin" title="Conservar palabra">📌</button>
+                                <small class="contador-palabra-versus">0 letras</small>
+                                <em class="error-palabra-versus" aria-live="polite"></em>
+                            </div>
+                        </fieldset>
+
+                        <button id="btnPalabrasAleatoriasVersus" class="btn-palabras-aleatorias-versus" type="button" data-i18n="common.duelPreparation.random">✨ Elegir palabras por mí</button>
+                        <p class="ayuda-fijar-palabras-versus" data-i18n="common.duelPreparation.pinHelp">Tocá 📌 en las palabras que quieras conservar antes de volver a elegir.</p>
+
+                        <button id="btnConfirmarPalabrasVersus" class="btn-confirmar-palabras-versus" type="submit"
+                            disabled data-i18n="common.duelPreparation.confirm">Confirmar palabras</button>
+                        <p id="estadoPreparacionRivalVersus" class="estado-preparacion-rival-versus" aria-live="polite" data-i18n="common.duelPreparation.preparing">Tu rival está preparando su desafío…</p>
+                        <button id="btnCompletarPalabrasPruebasVersus" class="btn-prueba-preparacion-versus oculto"
+                            type="button" data-i18n="common.duelPreparation.test">⚡ Completar palabras de prueba</button>
+                    </form>
+
+                    <aside class="reglas-preparacion-versus" data-i18n-aria-label="common.duelPreparation.rulesLabel" aria-label="Reglas para elegir palabras">
+                        <div class="tiempo-preparacion-versus">
+                            <span data-i18n="common.duelPreparation.time">TIEMPO PARA ELEGIR</span>
+                            <strong>01:30</strong>
+                        </div>
+                        <h3 data-i18n="common.duelPreparation.rules">Reglas</h3>
+                        <ul>
+                            <li data-i18n="common.duelPreparation.lengthRule">Entre 3 y 12 letras.</li>
+                            <li data-i18n="common.duelPreparation.charactersRule">Sin espacios ni números.</li>
+                            <li data-i18n="common.duelPreparation.repeatRule">No se pueden repetir.</li>
+                            <li data-i18n="common.duelPreparation.dictionaryRule">Deben figurar en el diccionario de la temática.</li>
+                            <li data-i18n="common.duelPreparation.secretRule">Tu rival no podrá verlas.</li>
+                            <li data-i18n="common.duelPreparation.attemptsRule">Agotar los 6 intentos quita un corazón.</li>
+                        </ul>
+
+                        <div id="esperaRivalVersus" class="espera-rival-versus oculto" role="status" aria-live="polite">
+                            <span aria-hidden="true">⌛</span>
+                            <strong data-i18n="common.duelPreparation.ready">Palabras listas</strong>
+                            <p data-i18n="common.duelPreparation.waitingDots">Esperando al rival...</p>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+
+            <div class="versus-aviso-orientacion" role="status">
+                <span>↻</span>
+                <strong data-i18n="adventure.combat.rotate">Girá el celular</strong>
+                <p data-i18n="adventure.combat.landscape">El modo versus se juega en horizontal.</p>
+                <button id="btnSalirPreparacionVersusVertical" type="button" data-i18n="common.duelPreparation.menu">Volver al menú</button>
+            </div>
+        </section>
+
+        <section id="pantallaVersus" class="pantalla pantalla-versus" aria-labelledby="tituloVersus">
+            <div id="marcoVersus" class="versus-marco">
+                <header class="versus-cabecera">
+                    <div class="versus-jugador versus-jugador-uno">
+                        <span id="avatarDueloPropio" class="avatar-duelo" hidden></span>
+                        <span id="mensajeDueloPropio" class="mensaje-duelo" role="status" hidden></span>
+                        <span class="versus-etiqueta">JUGADOR 1</span>
+                        <div id="vidasVersusUno" class="versus-corazones" aria-label="Jugador 1: cinco vidas">♥ ♥ ♥ ♥ ♥
+                        </div>
+                        <div id="tiempoVersusUno" class="versus-tiempo-personal"
+                            aria-label="Tiempo del jugador 1: 4 minutos">
+                            <span data-i18n="adventure.combat.time">TIEMPO</span><strong id="textoTiempoVersusUno">04:00</strong>
+                        </div>
+                    </div>
+
+                    <div class="versus-tiempo versus-estado-combate" aria-label="Duelo en curso" data-i18n-aria-label="adventure.combat.ongoing">
+                        <span data-i18n="adventure.combat.duel">DUELO</span>
+                        <strong>VS</strong>
+                        <button id="btnMusicaDuelo" type="button" aria-pressed="false">🎵 Silenciar música</button>
+                        <div id="chatRapidoVersus" hidden>
+                            <button id="abrirMensajesVersus" type="button" aria-expanded="false" aria-controls="panelMensajesVersus" data-i18n="multiplayer.stickers.open">😊 Stickers</button>
+                            <div id="panelMensajesVersus" popover="manual" hidden aria-label="Elegir un sticker" data-i18n-aria-label="multiplayer.stickers.choose">
+                                <div id="opcionesMensajesVersus"></div>
+                                <button id="silenciarMensajesVersus" type="button" aria-pressed="false" data-i18n="multiplayer.stickers.mute">Silenciar stickers del rival</button>
+                                <span id="estadoMensajesVersus" role="status" aria-live="polite"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="versus-jugador versus-jugador-dos">
+                        <button id="avatarDueloRival" type="button" class="avatar-duelo" aria-label="Ver perfil del rival" hidden></button>
+                        <span id="mensajeDueloRival" class="mensaje-duelo" role="status" hidden></span>
+                        <span class="versus-etiqueta">JUGADOR 2</span>
+                        <div id="vidasVersusDos" class="versus-corazones" aria-label="Jugador 2: cinco vidas">♥ ♥ ♥ ♥ ♥
+                        </div>
+                        <div id="tiempoVersusDos" class="versus-tiempo-personal"
+                            aria-label="Tiempo del jugador 2: 4 minutos">
+                            <span data-i18n="adventure.combat.time">TIEMPO</span><strong id="textoTiempoVersusDos">04:00</strong>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="versus-arena">
+                    <img loading="lazy" decoding="async" class="versus-fondo" src="assets/images/fondos/desierto-1.png" alt="Ruinas del desierto">
+                    <div class="versus-sombra versus-sombra-uno" aria-hidden="true"></div>
+                    <div class="versus-sombra versus-sombra-dos" aria-hidden="true"></div>
+
+                    <img loading="lazy" decoding="async" id="personajeVersusUno" class="versus-personaje versus-personaje-uno"
+                        src="assets/images/personajes/versus/explorador-base.png" alt="Aren, personaje del jugador 1">
+                    <img loading="lazy" decoding="async" id="personajeVersusDos" class="versus-personaje versus-personaje-dos"
+                        src="assets/images/personajes/versus/mago-base.png" alt="Zafir, personaje del jugador 2">
+                    <img loading="lazy" decoding="async" id="bumeranVersus" class="bumeran-versus"
+                        src="assets/images/personajes/versus/bumeran-explorador.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="proyectilMagoVersus" class="proyectil-mago-versus"
+                        src="assets/images/personajes/versus/bola-fuego-mago.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="proyectilMagoJugadorVersus" class="proyectil-mago-versus desde-jugador"
+                        src="assets/images/personajes/versus/bola-fuego-mago.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="proyectilGuardianaVersus" class="proyectil-guardiana-versus"
+                        src="assets/images/personajes/versus/halcon-espiritual-guardiana.png" alt="" aria-hidden="true">
+                    <div id="rugidoDragonVersus" class="rugido-dragon-versus" aria-hidden="true">
+                        <i></i><i></i><i></i>
+                    </div>
+                    <div id="zarpazoLoboVersus" class="zarpazo-lobo-versus" aria-hidden="true">
+                        <i></i><i></i><i></i>
+                    </div>
+                    <div id="corteShadowVersus" class="corte-shadow-versus" aria-hidden="true">
+                        <i></i><i></i><i></i>
+                    </div>
+                    <div id="corteLumenVersus" class="corte-lumen-versus" aria-hidden="true">
+                        <i></i><b></b><span></span>
+                    </div>
+                    <img loading="lazy" decoding="async" id="alientoHieloVersus" class="aliento-hielo-versus"
+                        src="assets/images/personajes/versus/orbe-hielo-nivor.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="corteInfernalVersus" class="corte-infernal-versus"
+                        src="assets/images/personajes/versus/corte-infernal-azrak.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="latigazoTintaKalamoVersus" class="latigazo-tinta-kalamo-versus"
+                        src="assets/images/personajes/versus/proyectil-palabras-kalamo.png" alt="" aria-hidden="true">
+                    <div id="agujaTiempoKairosVersus" class="aguja-tiempo-kairos-versus" aria-hidden="true">
+                        <i></i><b></b>
+                    </div>
+
+                    <div id="entradaDueloVersus" class="entrada-duelo-versus oculto" aria-live="polite">
+                        <div class="entrada-efecto entrada-efecto-uno" aria-hidden="true">
+                            <i></i><i></i><i></i><i></i><i></i>
+                        </div>
+                        <div class="entrada-efecto entrada-efecto-dos" aria-hidden="true">
+                            <i></i><i></i><i></i><i></i><i></i>
+                        </div>
+                        <div class="entrada-infernal-azrak entrada-infernal-uno" aria-hidden="true">
+                            <i></i><i></i><i></i><i></i><i></i><b></b>
+                        </div>
+                        <div class="entrada-infernal-azrak entrada-infernal-dos" aria-hidden="true">
+                            <i></i><i></i><i></i><i></i><i></i><b></b>
+                        </div>
+                        <div class="entrada-tinta-kalamo entrada-tinta-uno" aria-hidden="true">
+                            <img loading="lazy" decoding="async" class="entrada-chorro-kalamo"
+                                src="assets/images/personajes/versus/entrada-chorro-tinta-kalamo.png" alt="">
+                            <img loading="lazy" decoding="async" class="entrada-formacion-kalamo entrada-formacion-kalamo-1"
+                                src="assets/images/personajes/versus/kalamo-entrada-formacion-1.png" alt="">
+                            <img loading="lazy" decoding="async" class="entrada-formacion-kalamo entrada-formacion-kalamo-2"
+                                src="assets/images/personajes/versus/kalamo-entrada-formacion-2.png" alt="">
+                            <img loading="lazy" decoding="async" class="entrada-formacion-kalamo entrada-formacion-kalamo-3"
+                                src="assets/images/personajes/versus/kalamo-entrada-formacion-3.png" alt="">
+                        </div>
+                        <div class="entrada-tinta-kalamo entrada-tinta-dos" aria-hidden="true">
+                            <img loading="lazy" decoding="async" class="entrada-chorro-kalamo"
+                                src="assets/images/personajes/versus/entrada-chorro-tinta-kalamo.png" alt="">
+                            <img loading="lazy" decoding="async" class="entrada-formacion-kalamo entrada-formacion-kalamo-1"
+                                src="assets/images/personajes/versus/kalamo-entrada-formacion-1.png" alt="">
+                            <img loading="lazy" decoding="async" class="entrada-formacion-kalamo entrada-formacion-kalamo-2"
+                                src="assets/images/personajes/versus/kalamo-entrada-formacion-2.png" alt="">
+                            <img loading="lazy" decoding="async" class="entrada-formacion-kalamo entrada-formacion-kalamo-3"
+                                src="assets/images/personajes/versus/kalamo-entrada-formacion-3.png" alt="">
+                        </div>
+                        <img loading="lazy" decoding="async" class="entrada-ave-guardiana"
+                            src="assets/images/personajes/versus/halcon-espiritual-guardiana.png" alt=""
+                            aria-hidden="true">
+                        <div class="entrada-anuncio-versus">
+                            <small data-i18n="adventure.combat.prepare">PREPÁRATE</small>
+                            <strong data-i18n="adventure.combat.duelStart">¡DUELO!</strong>
+                        </div>
+                        <button id="btnSaltarEntradaVersus" class="btn-saltar-entrada-versus" type="button" data-i18n="adventure.combat.skipIntro">
+                            Saltar entrada
+                        </button>
+                    </div>
+
+                    <div class="versus-insignia" aria-hidden="true" hidden>VS</div>
+
+                    <div class="versus-progresos" aria-label="Progreso de ambos jugadores" data-i18n-aria-label="adventure.combat.bothProgress">
+                        <section id="desafioJugadorVersus" class="versus-palabra versus-palabra-uno"
+                            aria-labelledby="tituloProgresoUno">
+                            <div class="versus-palabra-cabecera">
+                                <span id="tituloProgresoUno">TU PALABRA 1/5</span>
+                                <small id="estadoProgresoUno" aria-live="polite">Eleg&iacute; una letra</small>
+                            </div>
+                            <p id="revelacionPalabraVersusUno" class="versus-palabra-revelada" role="status"
+                                aria-live="polite" hidden></p>
+                            <strong id="palabraVersusUno" aria-label="Palabra sin descubrir">_ _ _ _ _ _ _ _</strong>
+                            <div id="intentosVersusUno" class="versus-intentos" aria-label="Ten&eacute;s seis intentos">
+                                <i aria-hidden="true">◆</i><i aria-hidden="true">◆</i><i aria-hidden="true">◆</i>
+                                <i aria-hidden="true">◆</i><i aria-hidden="true">◆</i><i aria-hidden="true">◆</i>
+                            </div>
+                        </section>
+
+                        <section class="versus-palabra versus-palabra-dos" aria-labelledby="tituloProgresoDos">
+                            <div class="versus-palabra-cabecera">
+                                <span id="tituloProgresoDos">RIVAL: PALABRA 1/5</span>
+                                <small id="estadoProgresoDos" aria-live="polite">Esperando jugada...</small>
+                            </div>
+                            <p id="revelacionPalabraVersusDos" class="versus-palabra-revelada" role="status"
+                                aria-live="polite" hidden></p>
+                            <strong id="palabraVersusDos" aria-label="El rival no descubri&oacute; ninguna letra">_ _ _
+                                _ _ _ _ _</strong>
+                            <div id="intentosVersusDos" class="versus-intentos"
+                                aria-label="El rival tiene seis intentos">
+                                <i aria-hidden="true">◆</i><i aria-hidden="true">◆</i><i aria-hidden="true">◆</i>
+                                <i aria-hidden="true">◆</i><i aria-hidden="true">◆</i><i aria-hidden="true">◆</i>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <div id="animacionHabilidadVersus" class="animacion-habilidad-versus" aria-hidden="true">
+                    <div class="habilidad-lupa-versus"></div>
+                    <div class="habilidad-magia-versus"><i></i><b></b><span></span></div>
+                    <div class="habilidad-rugido-versus"><i></i><i></i><i></i></div>
+                    <div class="habilidad-raices-versus">
+                        <img loading="lazy" decoding="async" src="assets/images/elementos/enredaderas-teclado-versus.png" alt="">
+                    </div>
+                    <div class="habilidad-lobo-versus"><i></i><i></i><i></i></div>
+                    <div class="habilidad-agujero-negro-versus"><i></i><b></b><span></span></div>
+                    <div class="habilidad-rayo-lumen-versus"><i></i><b></b><span></span></div>
+                    <div class="habilidad-nivor-versus">
+                        <img loading="lazy" decoding="async" class="nivor-vuelo-medio" src="assets/images/personajes/versus/dragon-hielo-vuelo.png"
+                            alt="">
+                        <img loading="lazy" decoding="async" class="nivor-vuelo-alto" src="assets/images/personajes/versus/dragon-hielo-aleteo-alto.png"
+                            alt="">
+                        <img loading="lazy" decoding="async" class="nivor-vuelo-bajo" src="assets/images/personajes/versus/dragon-hielo-aleteo-bajo.png"
+                            alt="">
+                        <i></i><i></i><i></i>
+                    </div>
+                    <div class="habilidad-azrak-versus">
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/calavera-ignea-azrak.png" alt="">
+                    </div>
+                    <div class="habilidad-kalamo-versus">
+                        <div class="chorro-tinta-codigo-kalamo" aria-hidden="true">
+                            <i></i><i></i><i></i><b></b><b></b><b></b><span></span>
+                        </div>
+                    </div>
+                    <div class="habilidad-kairos-versus" aria-hidden="true">
+                        <i class="kairos-habilidad-reloj"></i>
+                        <b class="kairos-habilidad-arena"></b>
+                        <strong>-20 s</strong>
+                    </div>
+                    <div class="impacto-habilidad-versus"></div>
+                </div>
+
+                <aside id="vistaImpactoRivalVersus" class="vista-impacto-rival-versus" role="status" aria-live="polite"
+                    aria-hidden="true">
+                    <div class="vista-impacto-rival-cabecera">
+                        <span>IMPACTO EN EL RIVAL</span>
+                        <strong id="nombreImpactoRivalVersus">Habilidad activada</strong>
+                    </div>
+                    <div id="miniTecladoRivalVersus" class="mini-teclado-rival-versus" aria-hidden="true"></div>
+                    <p id="detalleImpactoRivalVersus">El rival recibi&oacute; tu ataque.</p>
+                </aside>
+
+                <div id="congelacionNivorVersus" class="congelacion-nivor-versus" aria-hidden="true">
+                    <b></b>
+                </div>
+
+                <div id="teclasRotasVersus" class="teclas-rotas-versus" aria-hidden="true"></div>
+                <div id="hurtoTeclasKalamoVersus" class="hurto-teclas-kalamo-versus" aria-hidden="true"></div>
+
+                <div class="versus-controles">
+                    <div class="versus-panel-accion">
+                        <div class="versus-turno">
+                            <span>⚔️</span>
+                            <p id="mensajeRondaVersus" data-i18n="adventure.combat.errorAttempt">Cada error gasta un intento</p>
+                        </div>
+                        <button id="btnHabilidadVersus" class="btn-habilidad-versus" type="button" disabled>
+                            <span id="iconoHabilidadVersus" aria-hidden="true">🔍</span>
+                            <span class="habilidad-versus-texto">
+                                <strong id="nombreHabilidadVersus">Lupa</strong>
+                                <small id="cargaHabilidadVersus">0/8 letras</small>
+                            </span>
+                            <i class="barra-habilidad-versus" aria-hidden="true"><b
+                                    id="progresoHabilidadVersus"></b></i>
+                        </button>
+                    </div>
+                    <div id="tecladoVersus" class="teclado-versus" aria-label="Teclado de combate" data-i18n-aria-label="adventure.combat.keyboard"></div>
+                </div>
+
+                <button id="btnSalirVersus" class="versus-volver" type="button" data-i18n="adventure.combat.back">← Volver</button>
+                <p id="tituloVersus" class="versus-prototipo">J1 0/5 · J2 0/5</p>
+
+                <div id="herramientasPruebasVersus" class="herramientas-pruebas-versus oculto"
+                    aria-label="Herramientas de prueba del modo versus">
+                    <span>MODO PRUEBAS · Los trajes de prueba no gastan monedas</span>
+                    <label>Traje del atacante <select id="trajePruebaAtacante"><option value="equipado">Equipado</option><option value="nuevo">Nuevo (prueba gratis)</option><option value="union">Aren · Cinco Cristales (prueba)</option><option value="original">Original</option></select></label>
+                    <label>Traje de la víctima <select id="trajePruebaVictima"><option value="equipado">Equipado</option><option value="nuevo">Nuevo (prueba gratis)</option><option value="union">Aren · Cinco Cristales (prueba)</option><option value="original">Original</option></select></label>
+                    <button id="btnProbarUnionIntegrado" type="button">✨ Probar Aren · Cinco Cristales</button>
+                    <button id="btnProbarCinematicaExplorador" type="button">🌿 Probar a Aren</button>
+                    <button id="btnProbarCinematicaMago" type="button">🔮 Probar a Zafir</button>
+                    <label class="selector-victima-pruebas-versus" for="victimaPruebaFaucesVersus">
+                        Víctima
+                        <select id="victimaPruebaFaucesVersus" aria-label="Víctima de Fauces Esmeralda">
+                            <option value="explorador">Aren</option>
+                            <option value="mago" selected>Zafir</option>
+                            <option value="guardiana">Guardiana</option>
+                            <option value="dragon">Nimbus</option>
+                            <option value="hombre_lobo">Hombre Lobo</option>
+                            <option value="t_shadow">T. Shadow</option>
+                            <option value="guardian_alba">A. Lumen</option>
+                            <option value="dragon_hielo">Nivor</option>
+                            <option value="azrak">Azrak</option>
+                            <option value="kalamo">K&aacute;lamo</option>
+                            <option value="kairos">Kair&oacute;s</option>
+                        </select>
+                    </label>
+                    <button id="btnProbarCinematicaGuardiana" type="button">🌱 Probar guardiana</button>
+                    <button id="btnProbarCinematicaDragon" type="button">&#128009; Probar drag&oacute;n</button>
+                    <button id="btnProbarCinematicaHombreLobo" type="button">&#127769; Probar hombre lobo</button>
+                    <button id="btnProbarCinematicaShadow" type="button">&#127761; Probar T. Shadow</button>
+                    <button id="btnProbarCinematicaGuardianAlba" type="button">&#9728; Probar A. Lumen</button>
+                    <button id="btnProbarCinematicaDragonHielo" type="button">&#10052; Probar Nivor</button>
+                    <button id="btnProbarCinematicaAzrak" type="button">&#128293; Probar Azrak</button>
+                    <button id="btnProbarCinematicaKalamo" type="button">&#128394; Probar K&aacute;lamo</button>
+                    <button id="btnProbarCinematicaKairos" type="button">&#9203; Probar Kair&oacute;s</button>
+                    <button id="btnProbarAtaqueElegido" type="button">⚡ Probar ataque elegido</button>
+                </div>
+
+                <div id="herramientasHabilidadesPruebasVersus" class="herramientas-habilidades-pruebas-versus oculto"
+                    aria-label="Pruebas de habilidades especiales">
+                    <span>HABILIDADES</span>
+                    <label for="origenHabilidadPruebaVersus">
+                        Vista
+                        <select id="origenHabilidadPruebaVersus" aria-label="Origen de la habilidad de prueba">
+                            <option value="jugador">Desde mi personaje</option>
+                            <option value="rival">Desde el rival</option>
+                        </select>
+                    </label>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="explorador" type="button">🔍
+                        Lupa</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="guardiana" type="button">🌿
+                        Raíces</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="dragon" type="button">🐉 Rugido</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="mago" type="button">🔮 Caos</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="hombre_lobo" type="button">🌕
+                        Inversi&oacute;n</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="t_shadow" type="button">&#127761;
+                        Vac&iacute;o</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="guardian_alba" type="button">&#9728;
+                        Ruptura</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="dragon_hielo" type="button">&#10052;
+                        Invierno</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="azrak" type="button">&#128128;
+                        Calavera</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="kalamo" type="button">&#129423; Bestia del
+                        Tintero</button>
+                    <button class="btn-probar-habilidad-versus" data-habilidad="kairos" type="button">&#9203;
+                        Robo de instantes</button>
+                </div>
+
+                <div id="avisoAvanceVersus" class="aviso-avance-versus oculto" role="status" aria-live="polite"></div>
+
+                <div id="anuncioFinVersus" class="anuncio-fin-versus oculto" role="status" aria-live="assertive">
+                    <svg id="relampagoFinalVersus" class="relampago-final-versus" aria-hidden="true" preserveAspectRatio="none">
+                        <path class="relampago-aura" />
+                        <path class="relampago-nucleo" />
+                        <path class="relampago-ramas" />
+                    </svg>
+                    <div class="relampago-impacto" aria-hidden="true"></div>
+                    <div class="relampago-destello" aria-hidden="true"></div>
+                    <div class="anuncio-fin-versus-contenido">
+                        <span>EL DUELO HA TERMINADO</span>
+                        <strong data-i18n="adventure.combat.finish">FIN DEL DUELO</strong>
+                        <p id="palabraFinalVersus" hidden></p>
+                    </div>
+                </div>
+
+                <div id="cinematicaFinalVersus" class="cinematica-final-versus oculto" role="dialog" aria-modal="true"
+                    aria-labelledby="tituloCinematicaVersus">
+                    <img loading="lazy" decoding="async" id="fondoCinematicaVersus" class="cinematica-final-fondo"
+                        src="assets/images/fondos/desierto-1.png" alt="">
+                    <div class="eclipse-resplandor" aria-hidden="true"></div>
+                    <div class="eclipse-runa" aria-hidden="true"></div>
+                    <div class="trampa-polvo" aria-hidden="true"></div>
+                    <div class="trampa-impacto" aria-hidden="true"></div>
+                    <div class="trampa-hojas" aria-hidden="true">
+                        <i></i><i></i><i></i><i></i><i></i><i></i>
+                    </div>
+                    <div class="prision-resplandor" aria-hidden="true"></div>
+                    <div class="fauces-aspiracion" aria-hidden="true">
+                        <i></i><i></i><i></i><i></i><i></i><i></i>
+                    </div>
+                    <div class="prision-hojas" aria-hidden="true">
+                        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                    </div>
+                    <div id="particulasEclipseVersus" class="eclipse-particulas" aria-hidden="true"></div>
+                    <div class="cinematica-remolino-arcano remolino-arcano-fondo" aria-hidden="true">
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/remolino-arcano-mago.png" alt="">
+                    </div>
+                    <img loading="lazy" decoding="async" id="victimaEclipseVersus" class="cinematica-explorador-atrapado victima-final-explorador"
+                        src="assets/images/personajes/versus/explorador-atrapado-eclipse.png" alt="" aria-hidden="true">
+                    <div class="cinematica-remolino-arcano remolino-arcano-frente" aria-hidden="true">
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/remolino-arcano-mago.png" alt="">
+                    </div>
+                    <div class="remolino-lineas-viento" aria-hidden="true">
+                        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                    </div>
+                    <img loading="lazy" decoding="async" class="cinematica-mago-eclipse" src="assets/images/personajes/versus/mago-eclipse-violeta.png"
+                        alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-explorador-trampa"
+                        src="assets/images/personajes/versus/explorador-trampa-ancestral.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="victimaTrampaVersus" class="cinematica-mago-atrapado victima-final-mago"
+                        src="assets/images/personajes/versus/mago-atrapado-trampa.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-tronco-trampa"
+                        src="assets/images/personajes/versus/tronco-trampa-selvatica.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-guardiana-prision cinematica-guardiana-ataque"
+                        src="assets/images/personajes/coleccion/guardiana-bosque-ataque-raices.png" alt=""
+                        aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-guardiana-prision cinematica-guardiana-victoria"
+                        src="assets/images/personajes/coleccion/guardiana-bosque-victoria.png" alt=""
+                        aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="victimaFaucesVersus" class="cinematica-victima-fauces victima-fauces-mago"
+                        src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-carnivora cinematica-carnivora-brote"
+                        src="assets/images/personajes/versus/carnivora-brote.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-carnivora cinematica-carnivora-abierta"
+                        src="assets/images/personajes/versus/carnivora-abierta.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="carnivoraDevorandoVersus" class="cinematica-carnivora cinematica-carnivora-devorando"
+                        src="assets/images/personajes/versus/carnivora-devorando.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-carnivora cinematica-carnivora-cerrada"
+                        src="assets/images/personajes/versus/carnivora-cerrada.png" alt="" aria-hidden="true">
+                    <div class="matriarca-cielo" aria-hidden="true">
+                        <i></i><i></i>
+                    </div>
+                    <img loading="lazy" decoding="async" class="cinematica-dragon-llamando" src="assets/images/personajes/versus/dragon-llamando.png"
+                        alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-rival-matriarca" src="assets/images/personajes/versus/mago-base.png" alt=""
+                        aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-pata-matriarca" src="assets/images/personajes/versus/mama-dragon-pata.png"
+                        alt="" aria-hidden="true">
+                    <div class="matriarca-impacto" aria-hidden="true"></div>
+                    <div class="matriarca-polvo" aria-hidden="true"></div>
+                    <img loading="lazy" decoding="async" class="cinematica-dragon-victoria" src="assets/images/personajes/versus/dragon-victoria.png"
+                        alt="" aria-hidden="true">
+                    <div class="matriarca-llamado" aria-hidden="true">&iexcl;Mam&aacute;&aacute;&aacute;!</div>
+                    <div class="luna-llena-lobo" aria-hidden="true"></div>
+                    <img loading="lazy" decoding="async" class="lobos-espectrales-final" src="assets/images/personajes/versus/lobos-espectrales.png"
+                        alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="victimaCaceriaVersus" class="cinematica-victima-caceria victima-final-mago"
+                        src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-lobo-salto" src="assets/images/personajes/versus/hombre-lobo-salto-lunar.png"
+                        alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="garra-pantalla-caceria" src="assets/images/personajes/versus/garra-pantalla-rota.png"
+                        alt="" aria-hidden="true">
+                    <div class="oscuridad-caceria-final" aria-hidden="true"></div>
+                    <div class="shadow-final-vortice" aria-hidden="true"></div>
+                    <img loading="lazy" decoding="async" id="victimaShadowVersus" class="cinematica-victima-shadow victima-final-mago"
+                        src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-shadow-clon sombra-clon-uno"
+                        src="assets/images/personajes/versus/t-shadow-ataque.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-shadow-clon sombra-clon-dos"
+                        src="assets/images/personajes/versus/t-shadow-ataque.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-shadow-clon sombra-clon-tres"
+                        src="assets/images/personajes/versus/t-shadow-ataque.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-shadow-clon sombra-clon-cuatro"
+                        src="assets/images/personajes/versus/t-shadow-ataque.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-shadow-clon sombra-clon-cinco"
+                        src="assets/images/personajes/versus/t-shadow-ataque.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-shadow-clon sombra-clon-seis"
+                        src="assets/images/personajes/versus/t-shadow-ataque.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-shadow-clon sombra-clon-siete"
+                        src="assets/images/personajes/versus/t-shadow-ataque.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-shadow-clon sombra-clon-ocho"
+                        src="assets/images/personajes/versus/t-shadow-ataque.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-shadow-clon sombra-clon-nueve"
+                        src="assets/images/personajes/versus/t-shadow-ataque.png" alt="" aria-hidden="true">
+                    <div class="shadow-final-cortes" aria-hidden="true"><i></i><i></i><i></i></div>
+                    <div class="shadow-final-fusion" aria-hidden="true"></div>
+                    <img loading="lazy" decoding="async" class="shadow-final-ojos" src="assets/images/personajes/versus/t-shadow-ojos.png" alt=""
+                        aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-shadow-victoria" src="assets/images/personajes/versus/t-shadow-victoria.png"
+                        alt="" aria-hidden="true">
+                    <div class="alba-final-cielo" aria-hidden="true"><i></i><i></i><i></i></div>
+                    <div class="alba-final-sello" aria-hidden="true"></div>
+                    <img loading="lazy" decoding="async" id="victimaGuardianAlbaVersus" class="cinematica-victima-alba victima-final-mago"
+                        src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-alba-ataque"
+                        src="assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png" alt=""
+                        aria-hidden="true">
+                    <div class="alba-final-rayo-carga" aria-hidden="true"><i></i><b></b></div>
+                    <img loading="lazy" decoding="async" class="alba-final-esfera-solar"
+                        src="assets/images/personajes/versus/guardian-alba-esfera-solar.png" alt="" aria-hidden="true">
+                    <div class="alba-final-rayos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+                    <div class="alba-final-impacto" aria-hidden="true"></div>
+                    <img loading="lazy" decoding="async" class="cinematica-alba-victoria"
+                        src="assets/images/personajes/versus/guardian-alba-victoria.png" alt="" aria-hidden="true">
+                    <div class="nivor-final-ventisca" aria-hidden="true">
+                        <img loading="lazy" decoding="async" src="assets/images/elementos/ventisca-nivor.png" alt="">
+                    </div>
+                    <img loading="lazy" decoding="async" id="victimaNivorVersus" class="cinematica-victima-nivor victima-final-mago"
+                        src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="nivor-final-prision" src="assets/images/elementos/prision-hielo-nivor.png" alt=""
+                        aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-nivor-ataque-final"
+                        src="assets/images/personajes/versus/dragon-hielo-ataque-v2.png" alt="" aria-hidden="true">
+                    <div class="nivor-final-astro" aria-hidden="true">
+                        <img loading="lazy" decoding="async" src="assets/images/personajes/versus/dragon-hielo-frontal-alas.png" alt="">
+                    </div>
+                    <div class="nivor-final-onda" aria-hidden="true"></div>
+                    <div class="nivor-final-estallido" aria-hidden="true">
+                        <img loading="lazy" decoding="async" src="assets/images/elementos/cubos-hielo-nivor.png" alt="">
+                    </div>
+                    <img loading="lazy" decoding="async" class="cinematica-nivor-victoria"
+                        src="assets/images/personajes/versus/dragon-hielo-victoria.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="cinematica-azrak-invocacion"
+                        src="assets/images/personajes/versus/azrak-invocacion-portal.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="azrak-mano-emergiendo"
+                        src="assets/images/personajes/versus/mano-abismo-emergiendo-azrak.png" alt=""
+                        aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="azrak-mano-abierta" src="assets/images/personajes/versus/mano-abismo-abierta-azrak.png"
+                        alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="victimaPortalAzrakVersus" class="cinematica-victima-portal-azrak victima-final-mago"
+                        src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="manoVictimaAzrakVersus" class="azrak-mano-victima"
+                        src="assets/images/personajes/versus/mano-abismo-atrapa-mago.png" alt="" aria-hidden="true">
+                    <div class="azrak-final-restos" aria-hidden="true">
+                        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                    </div>
+                    <div class="azrak-final-explosion" aria-hidden="true"></div>
+                    <img loading="lazy" decoding="async" class="cinematica-azrak-victoria" src="assets/images/personajes/versus/azrak-victoria.png"
+                        alt="" aria-hidden="true">
+                    <div class="kalamo-final-resplandor" aria-hidden="true"></div>
+                    <img loading="lazy" decoding="async" id="victimaLibroKalamoVersus" class="cinematica-victima-libro-kalamo victima-final-mago"
+                        src="assets/images/personajes/versus/mago-base.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="kalamo-final-libro" src="assets/images/personajes/versus/libro-sello-kalamo.png" alt=""
+                        aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="kalamo-final-fase kalamo-final-alcanza"
+                        src="assets/images/personajes/versus/kalamo-final-alcanza-libro.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="kalamo-final-fase kalamo-final-extrae"
+                        src="assets/images/personajes/versus/kalamo-final-extrae-armas.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="kalamo-final-fase kalamo-final-prepara"
+                        src="assets/images/personajes/versus/kalamo-final-prepara-golpe-v1.png" alt=""
+                        aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="kalamo-final-fase kalamo-final-lanza-explorador"
+                        src="assets/images/personajes/versus/kalamo-final-lanza-explorador-v1.png" alt=""
+                        aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="pantallaRotaKalamoVersus" class="kalamo-final-fase kalamo-final-pantalla-rota"
+                        src="assets/images/personajes/versus/explorador-pantalla-rota-kalamo-v1.png" alt=""
+                        aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="kalamo-final-fase kalamo-final-golpea"
+                        src="assets/images/personajes/versus/kalamo-final-golpe-impulso.png" alt="" aria-hidden="true">
+                    <div class="kalamo-final-impactos" aria-hidden="true"><i></i><b></b></div>
+                    <div class="kalamo-final-cierre" aria-hidden="true"></div>
+                    <img loading="lazy" decoding="async" class="cinematica-kalamo-victoria" src="assets/images/personajes/versus/kalamo-victoria.png"
+                        alt="" aria-hidden="true">
+                    <div class="kairos-final-resplandor" aria-hidden="true"></div>
+                    <div class="kairos-final-reloj" aria-hidden="true">
+                        <i></i><b></b><span></span>
+                    </div>
+                    <img loading="lazy" decoding="async" id="kairosFinalInvocadorVersus" class="kairos-final-invocador"
+                        src="assets/images/personajes/versus/kairos-combate-v1.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="kairosFinalConceptoVersus" class="kairos-final-concepto"
+                        src="assets/images/personajes/versus/kairos-final-explorador-concepto-v1.png" alt=""
+                        aria-hidden="true">
+                    <img loading="lazy" decoding="async" class="kairos-final-victoria"
+                        src="assets/images/personajes/versus/kairos-seleccion-v2.png"
+                        alt="Kairós en su pose final de victoria" aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="victimaKairosVersus" class="kairos-final-victima victima-final-explorador"
+                        src="assets/images/personajes/versus/explorador-base.png" alt="" aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="victimaKairosEnvejecidaVersus" class="kairos-final-victima kairos-edad-intermedia"
+                        src="assets/images/personajes/versus/explorador-envejecido-kairos-v2.png" alt=""
+                        aria-hidden="true">
+                    <img loading="lazy" decoding="async" id="victimaKairosAncianaVersus" class="kairos-final-victima kairos-edad-final"
+                        src="assets/images/personajes/versus/explorador-anciano-kairos-v2.png" alt=""
+                        aria-hidden="true">
+                    <div class="kairos-final-00" aria-hidden="true">00:00</div>
+                    <div class="eclipse-destello" aria-hidden="true"></div>
+                    <div class="cinematica-final-titulos">
+                        <span id="etiquetaCinematicaVersus">GOLPE LEGENDARIO</span>
+                        <h2 id="tituloCinematicaVersus">ECLIPSE VIOLETA</h2>
+                    </div>
+                    <button id="btnSaltarCinematicaVersus" class="saltar-cinematica-versus" type="button" data-i18n="adventure.combat.skipFinal">
+                        Saltar
+                    </button>
+                </div>
+
+                <div id="resultadoRondaVersus" class="resultado-ronda-versus oculto" role="dialog" aria-modal="true"
+                    aria-labelledby="tituloResultadoVersus">
+                    <div class="tarjeta-resultado-versus">
+                        <span id="iconoResultadoVersus" class="icono-resultado-versus" aria-hidden="true">⚔️</span>
+                        <p id="etiquetaResultadoVersus">RONDA 1</p>
+                        <h2 id="tituloResultadoVersus">¡Ganaste la ronda!</h2>
+                        <p id="detalleResultadoVersus">Completaste la palabra antes que tu rival.</p>
+                        <div id="resultadoRangoVersus" role="status" hidden></div>
+                        <p id="resultadoMonedasVersus" role="status" hidden></p>
+                        <button id="btnRevanchaVersus" class="oculto" type="button">Jugar revancha</button>
+                        <button id="verPerfilRival" class="secundario" type="button" hidden>Ver perfil del rival</button>
+                        <button id="btnMenuResultadoVersus" class="secundario" type="button" data-i18n="adventure.combat.backMenu">Volver al menú</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="versus-aviso-orientacion" role="status">
+                <span>↻</span>
+                <strong data-i18n="adventure.combat.rotate">Girá el celular</strong>
+                <p data-i18n="adventure.combat.landscape">El modo versus se juega en horizontal.</p>
+                <button id="btnSalirVersusVertical" type="button" data-i18n="adventure.combat.backMenu">Volver al menú</button>
+            </div>
+        </section>
+
+        <div id="modalPrologo" class="modal-prologo oculto" role="dialog" aria-modal="true"
+            aria-labelledby="tituloPrologo">
+            <div class="prologo-cine">
+                <header class="prologo-cabecera"><span>Aventura de Palabras</span><button id="prologoOmitir" type="button">Omitir</button></header>
+                <div class="prologo-ventana"><div id="prologoIlustracion" class="prologo-ilustracion" role="img" aria-label="Los cinco cristales iluminan un antiguo santuario."></div></div>
+                <div class="prologo-relato" aria-live="polite" aria-atomic="true">
+                    <span id="prologoContador">1 / 4</span>
+                    <h2 id="tituloPrologo">La leyenda de los cinco cristales</h2>
+                    <p id="textoPrologo">Hace muchos años, cinco Cristales de la Sabiduría mantenían el equilibrio entre los mundos. Sus guardianes habían jurado protegerlos para que su poder nunca cayera en manos equivocadas.</p>
+                </div>
+                <nav class="prologo-controles" aria-label="Controles de la cinemática">
+                    <button id="prologoAnterior" type="button" disabled>Anterior</button>
+                    <button id="prologoPausa" type="button" aria-pressed="false">Pausar</button>
+                    <button id="prologoSiguiente" type="button">Siguiente</button>
+                    <button id="btnComenzarPrologo" type="button" hidden>Comenzar la aventura</button>
+                </nav>
+            </div>
+        </div>
+
+        <div id="modalIntroduccionMundo2" class="modal-prologo introduccion-mundo-2 oculto" role="dialog"
+            aria-modal="true" aria-labelledby="tituloIntroduccionMundo2">
+            <div class="tarjeta-prologo">
+                <p class="leyenda-prologo">Aventura de Palabras</p>
+                <h2 id="tituloIntroduccionMundo2">🌵 Mundo 2 – Desierto Perdido</h2>
+
+                <div class="texto-prologo">
+                    <p>El Cristal Verde ya descansa en su lugar.</p>
+
+                    <p>Gracias a tu valentía, el Bosque Encantado ha recuperado parte de su antigua magia. Pero la
+                        aventura está lejos de terminar.</p>
+
+                    <p>Al atravesar el portal, una ráfaga de aire caliente reemplaza el fresco aroma del bosque. Frente
+                        a ti se extiende un inmenso océano de arena, donde el viento borra los caminos y oculta antiguos
+                        secretos.</p>
+
+                    <p>Las leyendas hablan de un poderoso cristal escondido bajo las dunas. Muchos exploradores
+                        intentaron encontrarlo... pero ninguno regresó para contar su historia.</p>
+
+                    <p>Ahora solo tú puedes descubrir el Cristal Dorado del Desierto y continuar restaurando el
+                        equilibrio de los cinco mundos.</p>
+
+                    <p class="mision-prologo">La expedición continúa...</p>
+                </div>
+
+                <button id="btnComenzarMundo2">🏜️ Comenzar la expedición</button>
+            </div>
+        </div>
+
+    </main>
+
+    <aside id="avisoActualizacionPwa" class="aviso-actualizacion-pwa" role="status" aria-live="polite"
+        aria-labelledby="tituloActualizacionPwa" hidden>
+        <div id="iconoActualizacionPwa" class="aviso-actualizacion-icono" aria-hidden="true">&#8635;</div>
+        <div class="aviso-actualizacion-texto">
+            <strong id="tituloActualizacionPwa">Actualizaci&oacute;n disponible</strong>
+            <span id="textoActualizacionPwa">Hay una nueva versi&oacute;n de Aventura de Palabras.</span>
+            <div id="progresoActualizacionPwa" class="progreso-actualizacion-pwa" hidden>
+                <div class="progreso-actualizacion-cabecera">
+                    <span id="detalleProgresoActualizacionPwa">Preparando descarga…</span>
+                    <strong id="porcentajeActualizacionPwa">0%</strong>
+                </div>
+                <progress id="barraActualizacionPwa" max="100" value="0"
+                    aria-label="Progreso de descarga de la actualización" data-i18n-aria-label="common.pwa.downloadLabel">0%</progress>
+            </div>
+        </div>
+        <div id="accionesActualizacionPwa" class="aviso-actualizacion-acciones">
+            <button id="btnActualizarAplicacion" type="button" data-i18n="common.pwa.updateNow">Actualizar ahora</button>
+            <button id="btnPosponerActualizacion" class="secundario" type="button" data-i18n="common.pwa.later">Más tarde</button>
+        </div>
+    </aside>
+
+    <button id="btnSaltarNarrativa" class="btn-saltar-narrativa oculto" type="button"
+        aria-label="Saltar secuencia narrativa">Saltar</button>
+
+    <dialog id="rankingMenu" class="menu-dialogo ranking-dialogo" aria-labelledby="tituloRankingMenu">
+        <header class="menu-dialogo-cabecera"><div><small data-i18n="menu.ranked">CLASIFICATORIO</small><h2 id="tituloRankingMenu" data-i18n="menu.leaderboardTitle">Ranking de aventureros</h2></div><button id="cerrarRankingMenu" type="button" aria-label="Cerrar ranking" data-i18n-aria-label="menu.closeLeaderboard">×</button></header>
+        <section class="ranking-resumen" aria-labelledby="tituloMiRanking"><h3 id="tituloMiRanking" data-i18n="menu.yourPlace">Tu lugar en la aventura</h3><div id="miRanking" aria-live="polite"></div></section>
+        <p class="ranking-reglas" data-i18n="menu.rankingRules">Victoria +3 · Empate +1 · Derrota −1. En Novato no perdés puntos. Clásico no modifica tu rango.</p>
+        <details><summary data-i18n="menu.medals">Conocé las medallas</summary><div id="medallasRanking" class="rangos-catalogo"></div></details>
+        <div class="ranking-cabecera-lista"><h3 data-i18n="menu.overallRanking">Clasificación general</h3><button id="btnActualizarRanking" type="button" data-i18n="menu.refresh">Actualizar</button></div>
+        <div id="listaRanking" aria-live="polite"></div>
+    </dialog>
+    <dialog id="selectorModosJuego" class="menu-dialogo" aria-labelledby="tituloModosJuego">
+        <header class="menu-dialogo-cabecera"><div><small data-i18n="menu.chooseChallenge">ELEGÍ TU DESAFÍO</small><h2 id="tituloModosJuego" data-i18n="menu.modesTitle">Modos de juego</h2></div><button id="cerrarModosJuego" type="button" aria-label="Volver al menú" data-i18n-aria-label="menu.backLabel">×</button></header>
+        <div class="tarjetas-modos">
+            <button id="btnArcade" class="tarjeta-modo tarjeta-modo-torre" type="button">
+                <span class="modo-ilustracion" aria-hidden="true"></span>
+                <span class="modo-etiqueta" data-i18n="menu.singleOffline">UN JUGADOR · SIN CONEXIÓN</span>
+                <span class="modo-textos"><strong data-i18n="menu.tower">Torre</strong><span data-i18n="menu.towerDescription">Elegí tu personaje, vencé a cada rival y conquistá la cima.</span><span class="modo-entrar"><span data-i18n="menu.climbTower">Subir a la torre</span> <b aria-hidden="true">→</b></span></span>
+            </button>
+            <button id="btnVersus" class="tarjeta-modo tarjeta-modo-versus" type="button">
+                <span class="modo-ilustracion" aria-hidden="true"><img loading="lazy" decoding="async" class="modo-heroe" src="assets/images/personajes/versus/explorador-base.png" alt=""><img loading="lazy" decoding="async" class="modo-rival" src="assets/images/personajes/versus/t-shadow-base.png" alt=""><b>VS</b></span>
+                <span class="modo-etiqueta" data-i18n="menu.twoOnline">DOS JUGADORES · ONLINE</span>
+                <span class="modo-textos"><strong data-i18n="menu.multiplayer">Multijugador</strong><span data-i18n="menu.multiplayerDescription">Desafiá a tus amigos o encontrá un rival para tu próximo duelo.</span><span class="modo-entrar"><span data-i18n="menu.enterArena">Entrar a la arena</span> <b aria-hidden="true">→</b></span></span>
+            </button>
+        </div>
+        <button id="btnTutorialVersus" class="modos-guia" type="button"><span data-i18n="menu.versusGuide">❔ Cómo jugar modo versus</span> <span aria-hidden="true">→</span></button>
+    </dialog>
+    <dialog id="elegirTrajeAntesDuelo" aria-labelledby="tituloElegirTraje" aria-describedby="detalleElegirTraje">
+        <h2 id="tituloElegirTraje" data-i18n="multiplayer.legacy.extra10">Elegí tu traje</h2>
+        <p id="detalleElegirTraje"></p>
+        <div id="opcionesTrajesAntesDuelo"></div>
+        <button id="confirmarTrajeAntesDuelo" type="button">Usar este traje</button>
+    </dialog>
+    <dialog id="tiendaMenu" class="menu-dialogo tienda-dialogo" aria-labelledby="tituloTiendaMenu">
+        <header class="menu-dialogo-cabecera"><div><small data-i18n="shop.bazaar">EL BAZAR DE LOS REINOS</small><h2 id="tituloTiendaMenu" data-i18n="shop.title">Tienda</h2></div><button id="cerrarTiendaMenu" type="button" data-i18n="menu.back">← Volver al menú</button></header>
+        <p data-i18n="shop.intro">Conseguí personajes, trajes y fondos con las monedas de tu aventura.</p>
+        <div class="tienda-saldo"><strong id="tiendaSaldo">🪙 — monedas</strong><span data-i18n="shop.earnCoins">Conseguí monedas completando desafíos y misiones.</span></div>
+        <h3 class="tienda-seccion" data-i18n="shop.outfitCollection">Trajes · Colección de los reinos</h3>
+        <div id="tiendaTrajesCatalogo" class="tienda-trajes-catalogo" aria-label="Elegí un traje para verlo" data-i18n-aria-label="shop.choosePreview"></div>
+        <section class="tienda-traje-vista" aria-labelledby="tiendaTrajeNombre">
+          <div class="tienda-traje-escena"><img loading="lazy" decoding="async" id="tiendaTrajeImagen" alt="Vista previa del traje" data-i18n-alt="shop.preview"></div>
+          <div class="tienda-traje-ficha"><small id="tiendaTrajeHeroe"></small><h3 id="tiendaTrajeNombre"></h3><p id="tiendaTrajeDetalle"></p><p class="avatar-note" data-i18n="shop.newLook">Nueva apariencia.</p><button id="comprarTraje" type="button">Comprar traje</button><button id="equiparTraje" type="button" hidden>Equipar traje</button><button id="restaurarTraje" class="secundario" type="button" hidden data-i18n="shop.restore">Usar traje original</button></div>
+        </section>
+        <p id="tiendaTrajesEstado" role="status" aria-live="polite"></p>
+        <p class="avatar-note" data-i18n="shop.syncHelp">Al conectarte, tus monedas y trajes se sincronizan con tu cuenta de jugador. Conservás las recompensas de Aventura sin conexión; las compras necesitan internet después de sincronizar.</p>
+        <p class="avatar-note" data-i18n="shop.rewardFramesHelp">Los marcos se consiguen completando mundos de Aventura y subiendo de rango. Elegilos desde Mi perfil.</p>
+        <button id="tiendaIrPerfil" type="button" data-i18n="shop.goProfile">Ir a Mi perfil</button>
+    </dialog>
+
+    <dialog id="amigosPerfil" aria-labelledby="tituloAmigosVersus"><section class="panel-amigos-versus" aria-labelledby="tituloAmigosVersus">
+                        <div class="cabecera-amigos-versus">
+                            <div>
+                                <small data-i18n="multiplayer.legacy.s3">CUENTA DE JUGADOR</small>
+                                <h3 id="tituloAmigosVersus" data-i18n="profile.friends.title">Amigos</h3>
+                            </div>
+                            <button id="cerrarAmigosPerfil" type="button" data-i18n="profile.friends.back">← Volver</button></div><div class="amigos-conexion"><span id="estadoCuentaVersus" class="estado-cuenta-versus" data-i18n="multiplayer.legacy.s5">Conectando…</span>
+                        </div>
+
+                        <p id="conexionAmigosPerfil" role="status" aria-live="polite"></p><button id="reintentarAmigosPerfil" hidden type="button" class="secundario" data-i18n="profile.retryConnection">Reintentar conexión</button>
+                        <div id="registroCuentaVersus" class="registro-cuenta-versus oculto">
+                            <p data-i18n="multiplayer.legacy.s6">Guardá tu jugador para tener amigos y recibir desafíos en cualquier dispositivo.</p>
+                            <label for="correoCuentaVersus">
+                                <span data-i18n="multiplayer.legacy.s7">Tu correo</span>
+                                <input id="correoCuentaVersus" type="email" autocomplete="email"
+                                    placeholder="tu@correo.com" data-i18n-placeholder="multiplayer.legacy.s8">
+                            </label>
+                            <div class="acciones-cuenta-versus">
+                                <button id="btnGuardarCuentaVersus" type="button" data-i18n="multiplayer.legacy.s9">Guardar mi jugador</button>
+                                <button id="btnEntrarCuentaVersus" class="secundario" type="button" data-i18n="multiplayer.legacy.s10">Ya tengo cuenta</button>
+                                <button id="btnGoogleCuentaVersus" hidden disabled class="secundario" type="button" data-i18n="multiplayer.legacy.s11">Continuar con Google</button>
+                            </div>
+                            <small data-i18n="multiplayer.legacy.s12">Podés seguir jugando como invitado si no querés registrarte.</small>
+                        </div>
+
+                        <div id="crearPerfilVersus" class="crear-perfil-versus oculto">
+                            <p data-i18n="multiplayer.legacy.s13">Elegí el nombre que verán tus amigos.</p>
+                            <label for="aliasPerfilVersus">
+                                <span data-i18n="multiplayer.legacy.s14">Nombre de jugador</span>
+                                <input id="aliasPerfilVersus" type="text" minlength="2" maxlength="16"
+                                    autocomplete="nickname" placeholder="Ej: Gabi" data-i18n-placeholder="multiplayer.legacy.s15">
+                            </label>
+                            <button id="btnGuardarPerfilVersus" type="button" data-i18n="multiplayer.legacy.s16">Crear perfil de Amigos</button>
+                        </div>
+
+<div id="contenidoAmigosVersus" class="contenido-amigos-versus oculto">
+ <div class="amigos-tabs" role="tablist" aria-label="Amigos" data-i18n-aria-label="profile.friends.title">
+ <button id="tabAmigos-lista" type="button" role="tab" aria-controls="amigos-lista" aria-selected="true" tabindex="0" data-amigos-tab="lista" data-i18n="profile.friends.list">Mis amigos</button>
+<button id="tabAmigos-solicitudes" type="button" role="tab" aria-controls="amigos-solicitudes" aria-selected="false" tabindex="-1" data-amigos-tab="solicitudes" data-i18n="profile.friends.requests">Solicitudes</button>
+<button id="tabAmigos-agregar" type="button" role="tab" aria-controls="amigos-agregar" aria-selected="false" tabindex="-1" data-amigos-tab="agregar" data-i18n="profile.friends.add">Agregar</button>
+ </div>
+ <section id="amigos-lista" role="tabpanel" aria-labelledby="tabAmigos-lista">
+  <div id="listaAmigosVersus" class="lista-social-versus"></div>
+  <h4 data-i18n="profile.friends.invites">Desafíos</h4><div id="invitacionesVersus" class="lista-social-versus"></div>
+ </section>
+ <section id="amigos-solicitudes" role="tabpanel" aria-labelledby="tabAmigos-solicitudes" hidden>
+  <h4 data-i18n="profile.friends.received">Recibidas</h4><div id="solicitudesAmigosVersus" class="lista-social-versus"></div>
+  <h4 data-i18n="profile.friends.sent">Enviadas</h4><div id="solicitudesEnviadasAmigos" class="lista-social-versus"></div>
+ </section>
+ <section id="amigos-agregar" role="tabpanel" aria-labelledby="tabAmigos-agregar" hidden>
+  <p data-i18n="profile.friends.codeHelp">Compartí tu código o escribí el de otro jugador.</p>                            <div class="identidad-amigos-versus">
+                                <div>
+                                    <small data-i18n="multiplayer.legacy.s17">TU CÓDIGO DE AMIGO</small>
+                                    <strong id="codigoAmigoVersus">--------</strong>
+                                </div>
+                                <button id="btnCopiarCodigoAmigoVersus" class="secundario" type="button" data-i18n="multiplayer.legacy.s18">Copiar</button>
+                            </div>
+                            <form id="formAgregarAmigoVersus" class="agregar-amigo-versus">
+                                <label for="codigoNuevoAmigoVersus" class="sr-only" data-i18n="multiplayer.legacy.s19">Código de amigo</label>
+                                <input id="codigoNuevoAmigoVersus" type="text" maxlength="8" autocomplete="off"
+                                    autocapitalize="characters" placeholder="C&Oacute;DIGO DE AMIGO" data-i18n-placeholder="multiplayer.legacy.s20">
+                                <button type="submit" data-i18n="multiplayer.legacy.s21">Agregar</button>
+                            </form>
+
+ </section>
+</div>
+                        <p id="mensajeAmigosVersus" class="mensaje-amigos-versus" role="status" aria-live="polite"></p>
+                    </section></dialog>
+    <dialog id="editorAvatar" aria-labelledby="tituloAvatar">
+        <header class="avatar-header"><div><small>AVENTURA DE PALABRAS</small><h2 id="tituloAvatar" data-i18n="menu.myProfile">Mi perfil</h2></div><button id="cerrarAvatar" type="button" data-i18n="menu.back">← Volver al menú</button></header>
+        <section class="perfil-cabecera" aria-label="Identidad del jugador" data-i18n-aria-label="profile.identity">
+            <span id="avatarPreview"></span>
+            <div class="perfil-identidad"><small data-i18n="profile.player">JUGADOR</small><h3 id="perfilNombre">Aventurero</h3><p class="perfil-id"><span data-i18n="profile.friendCode">Código de amigo:</span> <span id="perfilId" data-i18n="multiplayer.legacy.s5">Conectando…</span></p><p id="avatarDescripcion"></p></div>
+        </section>
+        <section class="perfil-amigos-acceso" aria-labelledby="tituloAmigosPerfil"><div><h3 id="tituloAmigosPerfil" data-i18n="profile.friends.title">Amigos</h3><p data-i18n="profile.friends.intro">Compartí la aventura, consultá perfiles y desafiá a tus amigos.</p></div><button id="btnAmigosPerfil" type="button" data-i18n="profile.friends.open">Amigos y desafíos</button></section>
+        <section class="perfil-historial" aria-labelledby="tituloHistorialPerfil">
+            <h3 id="tituloHistorialPerfil" data-i18n="profile.history">Historial multijugador</h3>
+            <p id="perfilEstado" role="status" aria-live="polite">Cargando tu historial…</p>
+            <dl class="perfil-estadisticas">
+                <div><dd id="perfilJugadas">—</dd><dt data-i18n="profile.played">Partidas</dt></div>
+                <div><dd id="perfilVictorias">—</dd><dt data-i18n="profile.wins">Victorias</dt></div>
+                <div><dd id="perfilDerrotas">—</dd><dt data-i18n="profile.losses">Derrotas</dt></div>
+                <div><dd id="perfilEmpates">—</dd><dt data-i18n="profile.draws">Empates</dt></div>
+            </dl>
+            <div id="rangoPerfilPropio"></div>
+            <p id="perfilRanking" class="perfil-ranking"></p>
+            <button id="verHistorialRivales" class="secundario" type="button" data-i18n="profile.matchesRivals">Ver mis partidas y rivales</button>
+            <h4 data-i18n="profile.favorites">Personajes favoritos</h4><div id="perfilFavoritos" class="perfil-favoritos"></div>
+            <p class="avatar-note" data-i18n="profile.favoritesHelp">Tus favoritos son los personajes que más usás en partidas multijugador terminadas.</p>
+            <button id="reintentarPerfil" class="secundario" type="button" hidden data-i18n="profile.retryConnection">Reintentar conexión</button>
+        </section>
+        <fieldset><legend data-i18n="profile.chooseAvatar">Elegí tu avatar</legend><div id="opcionesAvatar" class="avatar-grid"></div></fieldset>
+        <fieldset><legend data-i18n="profile.chooseFrame">Elegí tu marco</legend><div id="opcionesMarco" class="avatar-grid avatar-frames"></div></fieldset>
+        <p class="avatar-note" data-i18n="profile.savedHere">Tu elección se guarda en este dispositivo.</p>
+        <p id="estadoAvatar" role="status" aria-live="polite"></p>
+        <footer><button id="cancelarAvatar" class="secundario" type="button" data-i18n="profile.cancel">Cancelar</button><button id="guardarAvatar" type="button" data-i18n="profile.saveAppearance">Guardar apariencia</button></footer>
+    </dialog>
+    <dialog id="perfilPublico" class="menu-dialogo perfil-publico" aria-labelledby="nombrePerfilPublico">
+      <header class="menu-dialogo-cabecera"><div><small data-i18n="profile.community">COMUNIDAD DE AVENTUREROS</small><h2 id="nombrePerfilPublico">Perfil del jugador</h2></div><button id="cerrarPerfilPublico" type="button" aria-label="Cerrar perfil" data-i18n-aria-label="profile.close">×</button></header>
+      <button id="volverPerfilPublico" class="enlace-perfil-jugador" type="button" hidden data-i18n="profile.previous">← Volver al perfil anterior</button>
+      <p id="estadoPerfilPublico" role="status" aria-live="polite"></p>
+      <div id="contenidoPerfilPublico" hidden>
+        <div id="rangoPerfilPublico"></div>
+        <div class="perfil-publico-identidad"><span id="avatarPerfilPublico"></span><div><p id="rankingPerfilPublico" class="perfil-ranking"></p><p id="aparienciaPerfilPublico"></p></div></div>
+        <dl id="estadisticasPerfilPublico" class="perfil-estadisticas"></dl>
+        <h3 data-i18n="profile.trophies">Trofeos</h3><div id="trofeosPerfilPublico" class="perfil-publico-trofeos"></div>
+        <h3 data-i18n="profile.favorite">Personaje favorito</h3><div id="favoritoPerfilPublico" class="perfil-publico-favorito"></div>
+        <h3 data-i18n="profile.matchHistory">Historial de partidas</h3><p class="avatar-note" data-i18n="profile.visitHelp">Tocá un rival para visitar su perfil. Los resultados se conservan al cerrar la sala.</p>
+        <div id="partidasPerfilPublico" class="perfil-publico-partidas"></div>
+        <button id="masPartidasPerfil" class="secundario" type="button" hidden data-i18n="profile.moreMatches">Ver más partidas</button>
+      </div>
+      <button id="reintentarPerfilPublico" class="secundario" type="button" hidden data-i18n="profile.retry">Reintentar</button>
+    </dialog>
+    <script src="js/i18n.js?v=20261015-3b-1"></script>
+    <script src="js/i18n-es-fallback.js?v=20261030-hintsfirst1"></script>
+    <script src="js/i18n-ui.js?v=20261024-v387-security2"></script>
+    <script src="js/narrative-i18n.js?v=20261015-narrative-1"></script>
+    <script src="js/i18n-settings.js?v=20261015-3b-1"></script>
+    <script src="js/cosmetic-store.js?v=20261024-v387-security3"></script>
+    <script src="torre-piloto/js/game-wallet.js?v=20261031-towerpilot2"></script>
+    <script src="torre-piloto/js/tower-online.js?v=20261031-towerpilot2"></script>
+    <script src="js/adventure-rewards.js?v=security-draft-1"></script>
+    <script src="js/adventure-xp-feedback.js?v=20261030-xpfeedback1"></script>
+    <script src="js/adventure-reward-feedback.js?v=20261030-xpfeedback1"></script>
+    <script src="js/adventure-hints.js?v=20261029-adventure-hints1"></script>
+    <script src="js/adventure-gameplay-online.js?v=security-draft-1"></script>
+    <script src="js/adventure-maze-physics.js?v=security-draft-1"></script>
+    <script src="js/adventure-maze-online.js?v=security-draft-1"></script>
+    <script src="js/adventure-duel-online.js?v=security-draft-1"></script>
+    <script src="js/character-store.js?v=20261021-v386-1"></script>
+    <script src="js/profile-backgrounds.js?v=20261021-v386-1"></script>
+    <script src="js/versus-ranks.js?v=20260922-medallas-3"></script>
+    <script src="js/avatar-rewards.js?v=20261030-xplevels1"></script>
+    <script src="js/player-avatar.js?v=20261030-xplevels1"></script>
+    <script src="js/player-xp.js?v=20261030-xplevels1"></script>
+    <script src="js/multiplayer-i18n.js?v=20261017-3g-1"></script>
+    <script src="js/menu-effects.js?v=20261026-v387-menu1"></script>
+    <script src="js/versus-stickers.js?v=20261024-v387-stickers1"></script>
+    <script src="js/versus-identity.js?v=20261024-v387-stickers1"></script>
+    <script src="js/audio-settings.js?v=20261015-audio-1"></script>
+    <script src="js/resource-catalog.js?v=20261031-selectiveoutfits1"></script>
+    <script src="js/costume-resources.js?v=20261031-selectiveoutfits1"></script>
+    <script src="js/resource-loader.js?v=20261031-selectiveoutfits1"></script>
+    <script src="js/intro.js?v=20261026-v387-menu6"></script>
+    <script src="js/supabase-loader.js?v=20260922-local-sdk-1"></script>
+    <script src="js/supabase-config.js?v=20260805-supabase-1"></script>
+    <script src="js/supabase-client.js?v=20260817-amigos-cuentas-1"></script>
+    <script src="js/word-gameplay.js?v=20261017-3g-1"></script>
+    <script src="js/versus-engine.js?v=20261015-3b-1"></script>
+    <script src="js/arcade-rules.js?v=20261028-tower-accessibility1"></script>
+    <script src="js/versus-room.js?v=20260922-alias-1"></script>
+    <script src="js/versus-room-supabase.js?v=20261031-selectiveoutfits1"></script>
+    <script src="js/puzzle-lessons.js?v=20261016-3f-1"></script>
+    <script src="js/adventure-puzzles.js?v=20260827-puzzles-cumbres-1"></script>
+    <script src="js/word-banks-versus.js?v=20261016-3e-1"></script>
+    <script src="js/word-banks-versus-expanded.js?v=versus-expanded-v1"></script>
+    <script src="js/word-banks-reviewed.js?v=reviewed-v2-draft"></script>
+    <script src="js/word-banks-worlds.js?v=20261015-3d-1"></script>
+    <script src="js/word-banks-forest.js?v=20261015-3c-1"></script>
+    <script src="js/word-banks-es.js?v=20261007-word-banks-3a-1"></script>
+    <script src="js/azrak-world.js?v=20261015-audio-1"></script>
+    <script src="js/prologue-cinematic.js?v=20260921-tienda-1"></script>
+    <script src="js/forest-wildlife.js?v=20261015-audio-1"></script>
+    <script src="js/forest-root-trap.js?v=20260907-1"></script>
+    <script src="js/desert-sand-trap.js?v=20261029-desertsand1"></script>
+    <script src="js/kairos-forest.js?v=20261014-kairos-victory-music-1"></script>
+    <script src="js/kalamo-desert.js?v=20260909-arco-aren-1"></script>
+    <script src="js/world-word-hazards.js?v=20261020-v381-1"></script>
+    <script src="js/developer-access.js?v=20261002-cinematicas-escala-1"></script>
+    <script src="js/i18n-combat.js?v=20261007-i18n-2c-1"></script>
+    <script src="js/world-music.js?v=20261015-audio-1"></script>
+    <script src="js/character-music.js?v=20261015-audio-1"></script>
+    <script src="torre-piloto/js/app.js?v=20261031-towerpilot2"></script>
+    <script src="js/lessons-i18n.js?v=20261016-3f-1"></script>
+    <script src="js/cosmetic-shop.js?v=20261022-v387-1"></script>
+    <script src="js/character-shop.js?v=20261022-v387-1"></script>
+    <script src="js/profile-background-shop.js?v=20261021-v386-1"></script>
+    <script src="js/public-player-profile.js?v=20261030-xplevels1"></script>
+    <script src="js/aren-union-duel.js?v=20261024-v387-security3"></script>
+</body>
+
+</html>
