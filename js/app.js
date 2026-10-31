@@ -11843,11 +11843,19 @@ function avanzarMision() {
 function actualizarJugador() {
   textoMonedas.textContent = `🪙 ${monedas}`;
 
-  textoXP.textContent = `⭐ ${experiencia} XP`;
+  const xpGeneral=globalThis.PlayerXP?.read();
+  textoXP.textContent=xpGeneral?`⭐ ${xpGeneral.total} XP`:'⭐ XP · —';
+  textoXP.title=xpGeneral?PlayerXP.text('heading')+' · '+PlayerXP.text('level',{n:xpGeneral.level}):globalThis.PlayerXP?.text('connect')||'';
+  textoXP.setAttribute('aria-label',textoXP.title+' · '+textoXP.textContent);
+  textoXP.dataset.xpSource=xpGeneral?'server':'unavailable';
 
   textoCristales.textContent = `💎 ${cristalesObtenidos}`;
   actualizarPanelCristales();
 }
+
+window.addEventListener('player-xp-updated',actualizarJugador);
+window.addEventListener('wallet-session-ended',actualizarJugador);
+globalThis.I18n?.subscribe(actualizarJugador);
 
 function actualizarPanelCristales() {
   const unionObtenida = estadoFinalAzrak === "completo";

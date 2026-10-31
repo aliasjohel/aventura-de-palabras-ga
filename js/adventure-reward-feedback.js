@@ -11,6 +11,7 @@
   note.textContent=text(status==='claimed'?'done':status==='processing'?'verify':status==='unavailable'?'off':!navigator.onLine||status==='replay_required'?'offline':'online');
  }
  function show(receipt){
+  if(globalThis.AdventureXPFeedback){AdventureXPFeedback.coin(receipt);return;}
   if(receipt.userId!==globalThis.CosmeticStore?.read().accountId)return;
   if(document.hidden)return;
   toast?.remove();clearTimeout(timer);toast=document.createElement('div');toast.className='recompensa-confirmada';toast.setAttribute('role','status');toast.dataset.receipt=receipt.id;toast.dataset.owner=receipt.userId;

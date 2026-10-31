@@ -28,6 +28,14 @@
       if(!root.PlayerXP)return null;
       try{const result=await rpc(id,'player_xp',{p_action:'sync'});root.PlayerXP.apply(result.xp);if(result.appearance?.frame?.startsWith('xp_'))root.PlayerAvatar?.aplicarXP(result.appearance);return result;}catch{return null;}
     }
+    async function adventureXP(id,attempt,before=null){
+      if(!root.PlayerXP||!attempt)return null;
+      try{
+        const result=await rpc(id,'adventure_xp_feedback',{p_attempt:attempt,p_from:Number.isSafeInteger(before?.total)?before.total:null});
+        if(result.attemptId!==attempt||!root.PlayerXP.apply(result.xp))return null;
+        root.dispatchEvent?.(new CustomEvent('adventure-xp-confirmed',{detail:result}));return result;
+      }catch{return null;} // Presentation failure never changes mission settlement.
+    }
     const xp=(action='sync',reward=null,frame=null,title=null)=>enqueue(async id=>{
       const result=await rpc(id,'player_xp',{p_action:action,p_reward:reward,p_frame:frame,p_title:title});
       root.PlayerXP?.apply(result.xp);
@@ -74,16 +82,20 @@
       store.applyAccount(result);notify();return result.characters;
     });
     const rewardAttempt=args=>enqueue(async id=>{
+      const previous=root.PlayerXP?.read?.();
       const result=await rpc(id,'adventure_reward_attempt',args);
-      store.applyAccount(result);notify();return result;
+      store.applyAccount(result);notify();
+      if(['finish','status'].includes(args.p_action))await adventureXP(id,args.p_attempt,previous);
+      return result;
     });
       const gameAction=args=>enqueue(async id=>{
+        const previous=root.PlayerXP?.read?.();
         const result=await rpc(id,'adventure_game_action',args);
         const before=store.read();
         if(!before.securityReady||before.revision!==result.revision||before.coins!==result.coins||Boolean(before.world5Complete)!==Boolean(result.world5Complete)){
           store.applyAccount(result);notify();
         }
-        if(result.game?.complete)await syncXP(id);
+        if(result.game?.complete&&!await adventureXP(id,args.p_attempt,previous))await syncXP(id);
         return result;
       });
     const adventureHelp=args=>enqueue(id=>rpc(id,'adventure_word_help',args));

@@ -17961,3 +17961,17 @@ button:disabled {
 
 .estado-recarga-pistas{margin:6px auto 10px;max-width:94%;font-size:.85rem;line-height:1.4;color:#e7d7a8;text-align:center}
 .estado-recarga-pistas[hidden]{display:none}
+
+/* One nonblocking receipt for verified coins and general account XP. */
+.recompensa-confirmada.recompensa-xp{top:max(66px,12vh);width:min(360px,88vw);box-sizing:border-box;padding:18px 20px;gap:10px;border-color:#b7a1ff;background:radial-gradient(ellipse at 50% 0,#44336df5,#142333fa 78%);box-shadow:0 12px 40px #0008,0 0 22px #9875f533;animation:xpReceiptIn .3s ease-out both}
+.recompensa-xp[hidden]{display:none!important}
+.xp-celebration-heading{font-size:.78rem;letter-spacing:.12em;color:#f8db84}
+.xp-celebration-amounts{display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap}.recompensa-xp .xp-earned{color:#f3dcff;text-shadow:0 0 14px #c496ff99}
+.xp-announcement{font-size:.8rem;color:#d7d0e7}.xp-celebration-progress{width:100%;display:grid;gap:8px}.recompensa-xp .xp-celebration-level{font-size:1rem;color:#fff0b4}
+.xp-celebration-track{height:15px;border-radius:20px;overflow:hidden;background:#0b122b;border:1px solid #9b8cba;box-shadow:inset 0 2px 4px #0009}
+.xp-celebration-fill{height:100%;width:100%;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,#8658e6,#d9b6ff 70%,#fff2b2);box-shadow:0 0 12px #dcc5ff;will-change:transform}
+.xp-celebration-numbers{font-size:.72rem;font-variant-numeric:tabular-nums;color:#e5d8fa}.xp-celebration-prizes{margin:0;font-size:.8rem;line-height:1.5;color:#ffe9a3}.xp-celebration-prizes:empty{display:none}
+.xp-level-up .xp-announcement{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.recompensa-xp.xp-level-up{border-color:#ffe49a;box-shadow:0 0 28px #d8a84f66,0 12px 40px #0008}.xp-level-up .xp-celebration-heading{color:#fff2bc;text-shadow:0 0 12px #f6c960;animation:xpLevelShine .75s ease-out}
+@keyframes xpReceiptIn{from{opacity:0;translate:0 10px;scale:.96}to{opacity:1;translate:0 0;scale:1}}@keyframes xpLevelShine{50%{scale:1.08}}
+@media(prefers-reduced-motion:reduce){.recompensa-confirmada.recompensa-xp,.xp-level-up .xp-celebration-heading{animation:none}.xp-celebration-fill{will-change:auto}}
