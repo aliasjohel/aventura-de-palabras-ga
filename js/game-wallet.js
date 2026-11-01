@@ -59,6 +59,14 @@
       await syncXP(id);
       return result;
     }
+    const multiplayerRewards=matchId=>enqueue(async id=>{
+      const result=await rpc(id,'multiplayer_reward_feedback',{p_match:matchId});
+      if(result.matchId!==matchId)throw Error('Invalid duel receipt');
+      root.PlayerXP?.apply(result.xp);
+      // Preserve the normal wallet refresh after a duel. Settlement is never
+      // requested by this presentation read; refresh failures do not hide it.
+      schedule();return result;
+    });
     const sync=matchId=>enqueue(id=>syncNow(id,matchId));
     const adminAction=(name,args)=>enqueue(async id=>{
       await syncNow(id);
@@ -123,7 +131,7 @@
     root.addEventListener?.('online',schedule);
     root.addEventListener?.('focus',schedule);
     root.document?.addEventListener('visibilitychange',()=>{if(!root.document.hidden)schedule();});
-    return Object.freeze({connect,sync,xp,setArenTrial,backgrounds,characters,rewardAttempt,gameAction,adventureHelp});
+    return Object.freeze({connect,sync,xp,multiplayerRewards,setArenTrial,backgrounds,characters,rewardAttempt,gameAction,adventureHelp});
   }
   return {create};
 });

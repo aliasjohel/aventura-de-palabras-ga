@@ -3,9 +3,9 @@
  'use strict';
  const root=globalThis,queue=new Map();let active=null,wake=null;
  const messages={
-  es:{complete:'MISIÓN COMPLETADA',confirmed:'XP confirmado',up:'¡SUBISTE DE NIVEL!',available:'Premios disponibles en tu perfil',total:'{n} XP totales',coins:'{n} monedas'},
-  en:{complete:'MISSION COMPLETE',confirmed:'XP confirmed',up:'LEVEL UP!',available:'Rewards available in your profile',total:'{n} total XP',coins:'{n} coins'},
-  'pt-BR':{complete:'MISSÃO CONCLUÍDA',confirmed:'XP confirmado',up:'VOCÊ SUBIU DE NÍVEL!',available:'Prêmios disponíveis no seu perfil',total:'{n} XP no total',coins:'{n} moedas'}
+  es:{duel:'DUELO FINALIZADO',complete:'MISIÓN COMPLETADA',confirmed:'XP confirmado',up:'¡SUBISTE DE NIVEL!',available:'Premios disponibles en tu perfil',total:'{n} XP totales',coins:'{n} monedas'},
+  en:{duel:'DUEL COMPLETE',complete:'MISSION COMPLETE',confirmed:'XP confirmed',up:'LEVEL UP!',available:'Rewards available in your profile',total:'{n} total XP',coins:'{n} coins'},
+  'pt-BR':{duel:'DUELO CONCLUÍDO',complete:'MISSÃO CONCLUÍDA',confirmed:'XP confirmado',up:'VOCÊ SUBIU DE NÍVEL!',available:'Prêmios disponíveis no seu perfil',total:'{n} XP no total',coins:'{n} moedas'}
  };
  const t=(key,n)=>((messages[root.I18n?.language]||messages.es)[key]||key).replace('{n}',String(n));
  const owner=()=>root.CosmeticStore?.read().accountId;
@@ -26,17 +26,17 @@
   const a=audio[kind]||(audio[kind]=GameAudio.create('assets/sounds/'+files[kind]));a.volume=.45;a.currentTime=0;void a.play().catch(()=>{});
  }
  function silence(){Object.values(audio).forEach(a=>a.pause());}
- function enqueue(attempt,userId,kind,value){
+ function enqueue(attempt,userId,kind,value,valid=null){
   if(userId!==owner())return;
   if(active?.attempt===attempt&&active.userId===userId){active[kind]=value;active.refresh=true;return;}
   let item=queue.get(attempt);
   if(!item){item={attempt,userId,notBefore:performance.now()+350};queue.set(attempt,item);}
-  item[kind]=value;
+  item[kind]=value;if(valid)item.valid=valid;
   if(!wake)wake=setTimeout(pump,100);
  }
  async function pump(){
   clearTimeout(wake);wake=null;if(active||!queue.size)return;
-  for(const [id,item]of queue)if(item.userId!==owner())queue.delete(id);
+  for(const [id,item]of queue)if(item.userId!==owner()||(item.valid&&!item.valid()))queue.delete(id);
   const item=queue.values().next().value;if(!item)return;
   if(blocked()||performance.now()<item.notBefore){wake=setTimeout(pump,250);return;}
   queue.delete(item.attempt);active=item;
@@ -47,7 +47,7 @@
   if(!item.coin&&!hasXP)return;
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches||(hasXP&&!reward.levels?.length);
   const card=existing||node('section');card.className='recompensa-confirmada recompensa-xp';card.replaceChildren();card.dataset.owner=item.userId;card.dataset.attempt=item.attempt;
-  const heading=node('small',t('complete'),'xp-celebration-heading'),amounts=node('div',null,'xp-celebration-amounts');card.append(heading,amounts);
+  const heading=node('small',t(item.duel?'duel':'complete'),'xp-celebration-heading'),amounts=node('div',null,'xp-celebration-amounts');card.append(heading,amounts);
   if(item.coin){const c=node('strong','+'+item.coin.amount);c.append(node('b',null,'moneda-confirmada-dibujo'));amounts.append(c);}
   if(hasXP)amounts.append(node('strong','+'+reward.earned+' XP','xp-earned'));
   const announce=node('span',null,'xp-announcement');announce.setAttribute('role','status');announce.textContent=hasXP?t('confirmed'):root.I18n?.resolve?.('adventure.rewards.feedback.paid')||t('complete');card.append(announce);
@@ -75,7 +75,7 @@
   if(hasXP&&reduced){draw(reward.xp,reward.xp.total);if(reward.xp.level>reward.from.level){leveled=true;heading.textContent=t('up');announce.textContent=t('up')+' '+PlayerXP.text('level',{n:reward.xp.level});card.classList.add('xp-level-up');sound('level');}prizesText();}
   const outcome=await new Promise(resolve=>{
    function frame(now){
-    if(item.userId!==owner()||!card.isConnected){card.remove();resolve();return;}
+    if(item.userId!==owner()||!card.isConnected||(item.valid&&!item.valid())){card.remove();resolve();return;}
     if(item.refresh){item.refresh=false;resolve('refresh');return;}
     if(now-lastCheck>150){paused=blocked();lastCheck=now;card.hidden=Boolean(paused);if(paused)silence();}
     const delta=Math.min(64,now-last);last=now;
@@ -86,7 +86,7 @@
       if(f===1){index++;elapsed=0;if(index<steps.length){leveled=true;heading.textContent=t('up');card.classList.add('xp-level-up');card.dataset.levelUps=String(index);announce.textContent=t('up')+' '+PlayerXP.text('level',{n:steps[index].level});sound('level');}else{draw(reward.xp,reward.xp.total);prizesText();}}
      }else hold+=delta;
      if(hold>=(hasXP?2100:3000)){card.remove();resolve();return;}
-     if(!leveled)heading.textContent=t('complete');
+     if(!leveled)heading.textContent=t(item.duel?'duel':'complete');
     }
     requestAnimationFrame(frame);
    }
@@ -94,7 +94,15 @@
   });
   if(outcome==='refresh')return present(item,card);
  }
- root.AdventureXPFeedback=Object.freeze({coin:r=>enqueue(r.attemptId,r.userId,'coin',r)});
+ root.AdventureXPFeedback=Object.freeze({coin:r=>enqueue(r.attemptId,r.userId,'coin',r),duel:(r,valid)=>{
+  if(r?.confirmed!==true||r.userId!==owner())return;
+  const attempt='duel:'+r.matchId;
+  if(r.coins>0)enqueue(attempt,r.userId,'coin',{amount:r.coins},valid);
+  if(r.earned>0&&r.animation?.xp&&r.animation?.from){
+   enqueue(attempt,r.userId,'xp',{...r.animation,earned:r.earned,event:r.event},valid);
+  }
+  const item=queue.get(attempt);if(item)item.duel=true;
+ }});
  root.addEventListener('adventure-xp-confirmed',e=>{
   const r=e.detail;
   if(r?.confirmed!==true||r.userId!==owner()||!Number.isInteger(r.earned)||r.earned<=0||typeof r.event!=='string'||shown().includes(r.event))return;

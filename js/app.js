@@ -8716,21 +8716,9 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
 }
 
 let animacionResultadoRango = 0;
-let versionPremioVersus = 0;
 async function mostrarPremioVersus(matchId) {
-  const version=++versionPremioVersus;
-  const nodo=document.getElementById('resultadoMonedasVersus');
-  nodo.hidden=false;CombatUI.text(nodo, 'Consultando premio…');
-  try {
-    const estado=await GameWallet.sync(matchId);
-    if(version!==versionPremioVersus||partidaOnlineVersus?.matchId!==matchId)return;
-    CombatUI.text(nodo, estado.reward?`🪙 +${estado.reward.amount} monedas · Saldo: ${CosmeticStore.read().coins}`:'Este duelo no otorgó monedas.');
-  } catch (_) {
-    if(version!==versionPremioVersus||partidaOnlineVersus?.matchId!==matchId)return;
-    CombatUI.text(nodo, 'No pudimos consultar el premio. ');
-    const boton=document.createElement('button');boton.type='button';CombatUI.text(boton, 'Reintentar');
-    boton.addEventListener('click',()=>void mostrarPremioVersus(matchId));nodo.append(boton);
-  }
+  return MultiplayerXPFeedback.show(matchId,document.getElementById('resultadoMonedasVersus'),
+    ()=>partidaOnlineVersus?.matchId===matchId&&!resultadoRondaVersus.classList.contains('oculto'));
 }
 async function mostrarResultadoRango(matchId) {
   const version = ++animacionResultadoRango;
@@ -8777,7 +8765,7 @@ async function mostrarResultadoRango(matchId) {
   } catch (_) { if (partidaOnlineVersus?.matchId === matchId) CombatUI.text(nodo, 'Podés consultar tus puntos en tu perfil cuando vuelva la conexión.'); }
 }
 function mostrarResultadoPartidaVersus(ganador, detalle) {
-  ++versionPremioVersus;
+  globalThis.MultiplayerXPFeedback?.clear();
   document.getElementById('resultadoMonedasVersus').hidden = true;
   ++animacionResultadoRango;
   document.getElementById('resultadoRangoVersus').hidden = true;
