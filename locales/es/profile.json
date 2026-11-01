@@ -81,10 +81,10 @@
     "platino": "Platino",
     "diamante": "Diamante",
     "leyenda": "Leyenda",
-    "xp_tinta": "Tinta naciente",
-    "xp_constelacion": "Constelación de letras",
-    "xp_codice": "Códice luminoso",
-    "xp_infinito": "Alfabeto infinito"
+    "xp_tinta": "Guardián Esmeralda",
+    "xp_constelacion": "Guardián Celestial",
+    "xp_codice": "Maestro Arcano",
+    "xp_infinito": "Leyenda de los Cristales"
   },
   "ranks": {
     "novato": {

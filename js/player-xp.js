@@ -9,9 +9,9 @@
  'pt-BR':{heading:'Nível geral',level:'Nível {n}',progress:'{xp} / {next} XP',daily:'Atividade diária: {used} / 300 XP · reinício 00:00 UTC',collection:'Maestria das palavras · Prêmios de XP',claim:'Receber prêmio',claimed:'Recebido',locked:'Nível {n}',equip:'Equipar',equipped:'Equipado',noTitle:'Sem título especial',connect:'Conecte sua conta para consultar seus níveis.',paused:'Os níveis estão temporariamente pausados.',saved:'Alteração salva.',reward:'Prêmio recebido.',failed:'Não foi possível salvar. Conecte-se e tente novamente.',legacy:'XP histórico neste dispositivo: {n} · não concede prêmios',coins:'{n} moedas',title:'Título',frame:'Moldura'}
  };
  const names={
- es:{xp_tinta:'Tinta naciente',xp_constelacion:'Constelación de letras',xp_codice:'Códice luminoso',xp_infinito:'Alfabeto infinito',xp_buscapalabras:'Buscapalabras',xp_tejedor:'Tejedor de vocablos',xp_cronista:'Cronista estelar',xp_voz:'Voz de las mil historias'},
- en:{xp_tinta:'Rising Ink',xp_constelacion:'Letter Constellation',xp_codice:'Luminous Codex',xp_infinito:'Infinite Alphabet',xp_buscapalabras:'Word Seeker',xp_tejedor:'Word Weaver',xp_cronista:'Star Chronicler',xp_voz:'Voice of a Thousand Stories'},
- 'pt-BR':{xp_tinta:'Tinta nascente',xp_constelacion:'Constelação de letras',xp_codice:'Códice luminoso',xp_infinito:'Alfabeto infinito',xp_buscapalabras:'Buscador de palavras',xp_tejedor:'Tecelão de palavras',xp_cronista:'Cronista estelar',xp_voz:'Voz de mil histórias'}
+ es:{xp_tinta:'Guardián Esmeralda',xp_constelacion:'Guardián Celestial',xp_codice:'Maestro Arcano',xp_infinito:'Leyenda de los Cristales',xp_buscapalabras:'Buscapalabras',xp_tejedor:'Tejedor de vocablos',xp_cronista:'Cronista estelar',xp_voz:'Voz de las mil historias'},
+ en:{xp_tinta:'Emerald Guardian',xp_constelacion:'Celestial Guardian',xp_codice:'Arcane Master',xp_infinito:'Legend of the Crystals',xp_buscapalabras:'Word Seeker',xp_tejedor:'Word Weaver',xp_cronista:'Star Chronicler',xp_voz:'Voice of a Thousand Stories'},
+ 'pt-BR':{xp_tinta:'Guardião Esmeralda',xp_constelacion:'Guardião Celestial',xp_codice:'Mestre Arcano',xp_infinito:'Lenda dos Cristais',xp_buscapalabras:'Buscador de palavras',xp_tejedor:'Tecelão de palavras',xp_cronista:'Cronista estelar',xp_voz:'Voz de mil histórias'}
  };
  const lang=()=>messages[root.I18n?.language]?root.I18n.language:'es';
  const text=(key,args={})=>Object.entries(args).reduce((s,[k,v])=>s.replaceAll('{'+k+'}',String(v)),messages[lang()][key]||key);

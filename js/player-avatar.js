@@ -186,7 +186,20 @@
       face.append(img);
       badge.append(face);
     }
-    if(frame.startsWith('xp_'))return badge;
+    const xpArt=AvatarRewards.catalog.find(item=>item.id===frame&&item.xp);
+    if(xpArt){
+      badge.classList.add('xp-frame-art');badge.dataset.xpArt='loading';
+      const art=document.createElement('img');art.className='player-avatar-frame xp-frame-image';
+      art.alt='';art.setAttribute('aria-hidden','true');art.loading='lazy';art.decoding='async';
+      art.width=art.height=miniatura?128:512;
+      art.addEventListener('load',()=>{badge.dataset.xpArt='ready';});
+      art.addEventListener('error',()=>{badge.dataset.xpArt='failed';art.hidden=true;});
+      art.src=miniatura?xpArt.thumbnail:xpArt.asset;badge.append(art);
+      if(!miniatura)for(const cls of ['xp-frame-energy','xp-frame-sparkles']){
+        const effect=document.createElement('span');effect.className=cls;effect.setAttribute('aria-hidden','true');badge.append(effect);
+      }
+      return badge;
+    }
     const ranked=AvatarRewards.catalog.find(item=>item.id===frame)?.rank;
     const ornament = document.createElement("img");ornament.loading='lazy';ornament.decoding='async';
     ornament.className = "player-avatar-frame";

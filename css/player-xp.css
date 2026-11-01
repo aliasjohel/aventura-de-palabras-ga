@@ -8,3 +8,25 @@
 
 .duel-xp-summary{padding:.8rem;margin:.8rem 0;border:1px solid #b7a5e377;border-radius:12px;background:#18213a;color:#f5f0ff;text-align:left}
 .duel-xp-summary h3,.duel-xp-summary h4,.duel-xp-summary p{margin:.35rem 0}.duel-xp-summary progress{display:block;width:100%;height:14px;accent-color:#bf9dff}.duel-xp-summary button{min-height:44px;padding:.5rem 1rem}.duel-xp-summary small{display:block}
+
+/* XP art only. Ranked, Adventure, shop and Tower cosmetics keep their existing styles. */
+.player-avatar.xp-frame-art{overflow:visible;--xp-ink:#71d9a0;--xp-edge:#246c50}
+.player-avatar.xp-frame-art.frame-xp_constelacion{--xp-ink:#9ad9fa;--xp-edge:#4b80a5}
+.player-avatar.xp-frame-art.frame-xp_codice{--xp-ink:#cda0f7;--xp-edge:#9168c0}
+.player-avatar.xp-frame-art.frame-xp_infinito{--xp-ink:#f2d086;--xp-edge:#ad813b}
+.xp-frame-art .player-avatar-portrait{inset:22%}
+.player-avatar.xp-frame-art[data-xp-art="ready"]::after{display:none}
+.player-avatar>.xp-frame-image{filter:drop-shadow(0 1px 1px #0005)}
+.player-avatar>.xp-frame-image[hidden]{display:none!important}
+.xp-frame-energy,.xp-frame-sparkles{display:none;position:absolute;inset:3%;z-index:2;pointer-events:none;opacity:.22}
+.xp-frame-energy{background:conic-gradient(from 0deg,transparent 0 25%,var(--xp-ink) 28%,transparent 32% 74%,var(--xp-ink) 78%,transparent 83%);mask:radial-gradient(circle closest-side,transparent 65%,#000 68% 89%,transparent 93%)}
+.xp-frame-sparkles{inset:0;background:radial-gradient(ellipse 4% 1% at 50% 8%,#fff7ce 15%,transparent 90%),radial-gradient(ellipse 1% 4% at 50% 8%,#fff7ce 15%,transparent 90%),radial-gradient(ellipse 3% 1% at 91% 51%,var(--xp-ink) 15%,transparent 90%)}
+@supports(mask:radial-gradient(circle,#000,transparent)){
+ :is(#editorAvatar[open]:not(.perfil-movimiento-pausado) #avatarPreview,#perfilPublico[open]:not(.perfil-movimiento-pausado) #avatarPerfilPublico) .xp-frame-art[data-xp-art="ready"]>.xp-frame-energy{display:block;animation:xpFrameOrbit 12s linear infinite}
+ :is(#editorAvatar[open]:not(.perfil-movimiento-pausado) #avatarPreview,#perfilPublico[open]:not(.perfil-movimiento-pausado) #avatarPerfilPublico) .xp-frame-art.frame-xp_tinta[data-xp-art="ready"]>.xp-frame-energy{animation:xpFramePulse 5s ease-in-out infinite}
+}
+:is(#editorAvatar[open]:not(.perfil-movimiento-pausado) #avatarPreview,#perfilPublico[open]:not(.perfil-movimiento-pausado) #avatarPerfilPublico) .xp-frame-art[data-xp-art="ready"]>.xp-frame-sparkles{display:block;animation:xpFrameGleam 7s ease-in-out infinite}
+@keyframes xpFrameOrbit{to{transform:rotate(360deg)}}
+@keyframes xpFramePulse{0%,100%{opacity:.12}50%{opacity:.38}}
+@keyframes xpFrameGleam{0%,100%{opacity:.12}50%{opacity:.65}}
+@media(prefers-reduced-motion:reduce){.xp-frame-art>.xp-frame-energy,.xp-frame-art>.xp-frame-sparkles{animation:none!important;opacity:.18!important}}
