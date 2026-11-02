@@ -9014,7 +9014,8 @@ function reproducirTrampaSelvaticaVersus(victima = personajeRivalVersus) {
   prepararTrajesFinalVersus('explorador');
   cinematicaFinalVersus.classList.toggle('trampa-impacto-frontal', usaImpactoFrontalGuardianaVersus(victima));
   crearParticulasEclipseVersus();
-  programarReaccionVictimaFinalVersus(victimaTrampaVersus, victima, victima === 'kairos' || trajeFinalVersus(victima) === 'aren-union' || usaImpactoFrontalGuardianaVersus(victima) ? 2700 : 2200);
+  // El tronco alcanza a la víctima al 52% de los 5,2 s: misma reacción para todos.
+  programarReaccionVictimaFinalVersus(victimaTrampaVersus, victima, 2700);
   fondoCinematicaVersus.src = fondoVersus.src;
   etiquetaCinematicaVersus.textContent = "TÉCNICA SECRETA";
   tituloCinematicaVersus.textContent = "TRAMPA SELVÁTICA";
