@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v387-trunkcontact1`;
+const CACHE_NAME = `${CACHE_PREFIX}v388-arenchampion1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -205,6 +205,19 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/elementos/estela-escarcha-nivor.png",
 ];
 const RESOURCE_ASSETS = [
+  "./js/tower-outfit-preview.js",
+  "./css/tower-outfit-preview.css",
+  "./assets/images/tower-preview/aren-campeon-anciano-v1.webp",
+  "./assets/images/tower-preview/aren-campeon-ataque-v1.webp",
+  "./assets/images/tower-preview/aren-campeon-base-v1.webp",
+  "./assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+  "./assets/images/tower-preview/aren-campeon-final-v1.webp",
+  "./assets/images/tower-preview/aren-campeon-habilidad-v1.webp",
+  "./assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+  "./assets/images/tower-preview/aren-campeon-mano-v1.webp",
+  "./assets/images/tower-preview/aren-campeon-planta-v1.webp",
+  "./assets/images/tower-preview/aren-campeon-preparacion-v1.webp",
+  "./assets/images/tower-preview/aren-campeon-vidrio-v1.webp",
   "./assets/sounds/menu-impacto-roca-v1.wav",
   "./css/menu-fantasy.css",
   "./js/menu-effects.js",
@@ -916,6 +929,19 @@ const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
 
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
+  "./js/tower-outfit-preview.js": "sha256-da5780c8f2d4bf5b2363d0ee2d5c7ded0e73ee82174cce84434ed3dc1f566d3d",
+  "./css/tower-outfit-preview.css": "sha256-69d36f38fb48153cbd8a75d385694e1880a91f4178d81eb178c61a84ff58b67d",
+  "./assets/images/tower-preview/aren-campeon-anciano-v1.webp": "sha256-d3c4bb786276ee70ed297b154b3ac6ed0f0801b4c194d65da6d8a29dfdaaf804",
+  "./assets/images/tower-preview/aren-campeon-ataque-v1.webp": "sha256-b63a72cf8932bf88cef50eb7049332c9349416ab4c85225712db425aa6e62e07",
+  "./assets/images/tower-preview/aren-campeon-base-v1.webp": "sha256-0ae61f7eaa748cec76ee3ed9bede181b56845356c75f3c20a5a7c600ad5e75f2",
+  "./assets/images/tower-preview/aren-campeon-envejecido-v1.webp": "sha256-3b4ba35e8d32bebe2eaea6b8d568bd182d6c5372c3c69b7fc0c70212ca96c4be",
+  "./assets/images/tower-preview/aren-campeon-final-v1.webp": "sha256-c52c360dfbe313790a49a4e9008e31a4be205375781ff8bcc0da65da55390cb6",
+  "./assets/images/tower-preview/aren-campeon-habilidad-v1.webp": "sha256-afa33da3f345febbe51117364f3b589fcae449ae77d1d81ab72db80c811ec8fc",
+  "./assets/images/tower-preview/aren-campeon-impacto-v1.webp": "sha256-e6ba276f428b330caf44c7c69ac409b51fdc4d3524e88e86831b8b70c0684801",
+  "./assets/images/tower-preview/aren-campeon-mano-v1.webp": "sha256-e2a74593b426751a5e059fd52aafcc846becb4aa6e6ada70c03a3d5104211109",
+  "./assets/images/tower-preview/aren-campeon-planta-v1.webp": "sha256-8799193b9a88e214778c1549b3b219b94a8f1d9dc2e4bdc539c54b9b399deb44",
+  "./assets/images/tower-preview/aren-campeon-preparacion-v1.webp": "sha256-dab04457978fd2258feb286264a731286b8836f8ba0d16c89fb7d71594ac48ac",
+  "./assets/images/tower-preview/aren-campeon-vidrio-v1.webp": "sha256-3fc110321c34224e8084b34548d8d7fdb6538e14dbde7d5ca8ea2cd6399b402c",
   "./assets/sounds/menu-impacto-roca-v1.wav": "sha256-265389468bc81c463150fa08ca2d60114807e87afc2966ef18636554a370395f",
   "./css/menu-fantasy.css": "sha256-d4af62ab9938d15e1a710edad2122ae7557e6840ef23888b10cae28cec70045d",
   "./js/menu-effects.js": "sha256-bf4bb2a4dc1e47e230d273b5b3a9118adb6d2e4a1d4e18f3bd614f834c635e75",
@@ -925,7 +951,7 @@ const ASSET_REVISIONS = {
   "./assets/images/ui/menu-button-ranking-v1.webp": "sha256-ab9244074004847b638ea796b9e7792176bdb9ee530b1679a1562047b01a83ab",
   "./assets/images/ui/menu-button-shop-v1.webp": "sha256-6e828e1a47cf7a4c97b635b00e4010d014f5ee5161668cd4bd35c2e19c55a1de",
   "./assets/images/ui/menu-button-settings-v1.webp": "sha256-a7dd3fd0d0105ae2032dde8f81ef3c5586b4f4648f93aa01dc7ae1c8aaa64c4f",
-  "./js/resource-catalog.js": "sha256-092d8912524b311158c7526d1dcfac96546fb9aa76523a6d2870088d0d992c1f",
+  "./js/resource-catalog.js": "sha256-22bd2c0161070812ee2f98efd4c6cabb639d4ed54f98dd3d6d78a53e8443d7bb",
   "./js/resource-loader.js": "sha256-ed51b00161c62f3017b9459a3aa78797cdc3da62537d9325b1d45ebcf2aadf38",
   "./js/costume-resources.js": "sha256-11448139f739560c5e2e07ac1c01f8f966bb15f042c1c83ca3495ead7a448d38",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
@@ -1234,8 +1260,8 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/miniaturas/marco-xp_infinito-v1.webp": "sha256-7df6d8d229b0b2e828e95ffba3c4a87dfe2841664a5c303dcd80e6ab51097f27",
   "./css/player-xp.css": "sha256-4c9fcdf5db7d3765f6697694dd4c6af32070347e0a378027b65ee9e90a1cde12",
   "./js/public-player-profile.js": "sha256-6664f31217b51181f745a789d507aa8ceda33313b290123de2c8499cb74f8a8b",
-  "./": "sha256-bcde6ab94c6c7d3b80e00c5e24f82e4af8b395a02d7c3546102792acaade89ab",
-  "./index.html": "sha256-bcde6ab94c6c7d3b80e00c5e24f82e4af8b395a02d7c3546102792acaade89ab",
+  "./": "sha256-d6581a2295293d527a5619bd9d3ce4f0757c8cd540846c5ce29fb259de400df8",
+  "./index.html": "sha256-d6581a2295293d527a5619bd9d3ce4f0757c8cd540846c5ce29fb259de400df8",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-bd8fc848eb4a19dbcf6a6f76dd1d1823d824d5546baa1ac32084e87342a2096e",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1336,7 +1362,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-d6d5f711db447843afa8cb6e9f0e1533c6a0b169ca610cafe52c067b5f54ba1c",
+  "./js/app.js": "sha256-98c384221ac1ac4a39dfbd05b5fb7472baaf978d3c54e4e882aec3ed5858f47e",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",

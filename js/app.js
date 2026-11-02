@@ -6527,6 +6527,11 @@ function trajePersonajeVersus(elemento, personaje) {
   return adaptadorSalasVersus.obtenerTrajesRival?.()[personaje] || null;
 }
 function spriteTrajeVersus(elemento, personaje, src, herido=false) {
+  if(elemento===personajeVersusUno){
+    const pose=herido?'impacto':src===srcExploradorLupaVersus?'habilidad':src===srcExploradorPreparaBumeran?'preparacion':src===srcExploradorLanzaBumeran?'ataque':'base';
+    const visual=globalThis.TowerOutfitPreview?.asset(personaje,pose);
+    if(visual)return visual;
+  }
   const traje=trajePersonajeVersus(elemento,personaje);
   if(!traje)return src;
   // The trunk cinematic keeps its frontal pose; combat faces the opponent.
@@ -6555,6 +6560,9 @@ function trajeFinalVersus(personaje, victima=true) {
   return trajePersonajeVersus(lado==='jugador'?personajeVersusUno:personajeVersusDos,personaje);
 }
 function imagenTrajeFinalVersus(personaje,pose,original,victima=true) {
+  const lado=victima?(ladoGanadorCinematicaVersus==='jugador'?'rival':'jugador'):ladoGanadorCinematicaVersus;
+  const visual=lado==='jugador'&&personaje===personajeJugadorVersus?globalThis.TowerOutfitPreview?.asset(personaje,pose):null;
+  if(visual)return visual;
   return CosmeticStore.asset(trajeFinalVersus(personaje,victima),pose)||original;
 }
 function prepararTrajesFinalVersus(ganador) {
@@ -6598,6 +6606,7 @@ victimaPruebaFaucesVersus.addEventListener('change',()=>{
 });
 window.addEventListener('costume-equipped',refrescarTrajesVersus);
 window.addEventListener('rival-costume-updated',refrescarTrajesVersus);
+window.addEventListener('tower-outfit-preview-changed',refrescarTrajesVersus);
 function actualizarPoseCombateVersus(elemento, personaje = elemento === personajeVersusUno ? personajeJugadorVersus : personajeRivalVersus) {
   const poses = posesCombateVersus.get(elemento) || {};
   const herido = elemento.classList.contains("recibiendo-dano") || elemento.classList.contains("recibiendo-dano-magico");
@@ -6635,6 +6644,7 @@ function recursosPersonajeCombate(personaje, equipoConfirmado) {
     : [personaje===personajeJugadorVersus?trajePersonajeVersus(personajeVersusUno,personaje):null,
        personaje===personajeRivalVersus?trajePersonajeVersus(personajeVersusDos,personaje):null];
   const extras=trajes.filter(Boolean).flatMap(id=>CostumeResources.combat(id).map(p=>p.slice(2)));
+  if(personaje===personajeJugadorVersus)extras.push(...(globalThis.TowerOutfitPreview?.combat(personaje)||[]));
   return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || []),...extras].filter(Boolean);
 }
 async function prepararImagenesCombate(personajes) {
@@ -6702,10 +6712,10 @@ function observarPoseDanoPersonajeVersus(elemento, obtenerPersonaje) {
     const recibiendoDano = elemento.classList.contains("recibiendo-dano")
       || elemento.classList.contains("recibiendo-dano-magico");
     elemento.classList.toggle("impacto-combate-activo", recibiendoDano);
-    if (!pose && !trajePersonajeVersus(elemento,personaje)) return;
+    if (!pose && !trajePersonajeVersus(elemento,personaje) && !(elemento===personajeVersusUno&&globalThis.TowerOutfitPreview?.asset(personaje))) return;
     if (recibiendoDano) {
       actualizarPoseCombateVersus(elemento, personaje);
-    } else if ((pose && elemento.src.endsWith(pose)) || elemento.src.includes('/trajes/')) {
+    } else if ((pose && elemento.src.endsWith(pose)) || elemento.src.includes('/trajes/') || elemento.src.includes('/tower-preview/')) {
       actualizarPoseCombateVersus(elemento, personaje);
     }
   }).observe(elemento, { attributes: true, attributeFilter: ["class"] });
@@ -8570,6 +8580,13 @@ function finalizarPartidaVersus(ganador, detalle, palabraPerdida = "") {
 }
 
 function obtenerReproductorFinalVersus(personajeGanador, personajeVictima) {
+  const play=obtenerReproductorFinalSinVistaVersus(personajeGanador,personajeVictima);
+  return async()=>{
+    await globalThis.TowerOutfitPreview?.prepareFinal(personajeGanador,personajeVictima,personajeJugadorVersus);
+    return play();
+  };
+}
+function obtenerReproductorFinalSinVistaVersus(personajeGanador, personajeVictima) {
   const finalElegido = personajesVersus[personajeGanador]?.final;
   if (finalElegido === "prision-esmeralda") {
     return () => reproducirPrisionEsmeraldaVersus(personajeVictima);
@@ -9333,7 +9350,8 @@ function configurarVictimaKairosVersus(personaje = personajeRivalVersus) {
   kairosFinalMontajeVersus.src = imagenesFinalKairosVersus[victimaFinal]
     || imagenesFinalKairosVersus.explorador;
   kairosFinalMontajeVersus.alt = `Las tres edades de ${nombre}: original, envejecido y anciano`;
-  const trajeEnEscena=Boolean(trajeFinalVersus(victimaFinal)||trajeFinalVersus('kairos',false));
+  const trajeEnEscena=Boolean(trajeFinalVersus(victimaFinal)||trajeFinalVersus('kairos',false)
+    ||(victimaFinal===personajeJugadorVersus&&globalThis.TowerOutfitPreview?.asset(victimaFinal)));
   cinematicaFinalVersus.classList.toggle('kairos-trajes',trajeEnEscena);
   let montaje=cinematicaFinalVersus.querySelector('.kairos-edades-trajes');
   if(!montaje){montaje=document.createElement('div');montaje.className='kairos-edades-trajes';montaje.setAttribute('aria-hidden','true');cinematicaFinalVersus.append(montaje);}
