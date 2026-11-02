@@ -72,7 +72,10 @@
     const pose=match[1];img.dataset.championPose=pose;
     if(img.classList.contains('versus-personaje')&&calibration[pose]){
       const height=img.clientHeight,renderHeight=Math.min(height,img.clientWidth*1024/683),origin=.88*height;
-      const [top,foot]=calibration[pose],scale=1406/(foot-top),baseFoot=height-renderHeight+renderHeight*1443/1536,poseFoot=height-renderHeight+renderHeight*foot/1536;
+      // Original Aren and Forest use a 1024x1536 canvas: opaque y=120..1381.
+      // Match their visible height and ground, not the larger Champion drawing.
+      const referenceHeight=Math.min(height,img.clientWidth*1536/1024);
+      const [top,foot]=calibration[pose],scale=referenceHeight/renderHeight*1261/(foot-top),baseFoot=height-referenceHeight+referenceHeight*1381/1536,poseFoot=height-renderHeight+renderHeight*foot/1536;
       img.style.setProperty('--champion-scale',String(scale));img.style.setProperty('--champion-y',(baseFoot-(origin+scale*(poseFoot-origin)))+'px');
     }
   }

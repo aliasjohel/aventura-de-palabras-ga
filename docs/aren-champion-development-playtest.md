@@ -1,4 +1,6 @@
-# Aren · Campeón del Último Piso · v388-arenchampion1
+# Aren · Campeón del Último Piso · v389-arenchampionscale1
+
+Corrección del 2 de noviembre de 2026 tras la revisión en Android: el traje nuevo ocupaba aproximadamente un 11 % más de altura visible que Aren original. Se normalizan las cinco poses de combate a la altura opaca y apoyo de Aren original y Guardián del Bosque, reduciendo su escala aproximadamente un 10,3 %. No se modificaron las imágenes ni las cinemáticas. La comparación de alfa renderizado de 15 poses en tres pantallas obtuvo diferencias inferiores a 0,75 px de altura y 0,45 px de apoyo. `tools/check-tower-preview-scale.cjs` reproduce la comprobación. La actualización desde v388 descarga solo HTML y el módulo de presentación; conserva medios y datos guardados.
 
 Esta publicación de desarrollo ofrece una apariencia temporal, sin autorización individual por UUID y sin cambios de Supabase. No concede un derecho de propiedad ni habilita el desbloqueo definitivo de Torre.
 

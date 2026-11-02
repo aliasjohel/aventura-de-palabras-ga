@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v388-arenchampion1`;
+const CACHE_NAME = `${CACHE_PREFIX}v389-arenchampionscale1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -929,7 +929,7 @@ const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
 
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
-  "./js/tower-outfit-preview.js": "sha256-da5780c8f2d4bf5b2363d0ee2d5c7ded0e73ee82174cce84434ed3dc1f566d3d",
+  "./js/tower-outfit-preview.js": "sha256-10e96d810904e0b88796f01f822203b8a8c8a4c1cef83f2e363cc90d08a97fe3",
   "./css/tower-outfit-preview.css": "sha256-69d36f38fb48153cbd8a75d385694e1880a91f4178d81eb178c61a84ff58b67d",
   "./assets/images/tower-preview/aren-campeon-anciano-v1.webp": "sha256-d3c4bb786276ee70ed297b154b3ac6ed0f0801b4c194d65da6d8a29dfdaaf804",
   "./assets/images/tower-preview/aren-campeon-ataque-v1.webp": "sha256-b63a72cf8932bf88cef50eb7049332c9349416ab4c85225712db425aa6e62e07",
@@ -1260,8 +1260,8 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/miniaturas/marco-xp_infinito-v1.webp": "sha256-7df6d8d229b0b2e828e95ffba3c4a87dfe2841664a5c303dcd80e6ab51097f27",
   "./css/player-xp.css": "sha256-4c9fcdf5db7d3765f6697694dd4c6af32070347e0a378027b65ee9e90a1cde12",
   "./js/public-player-profile.js": "sha256-6664f31217b51181f745a789d507aa8ceda33313b290123de2c8499cb74f8a8b",
-  "./": "sha256-d6581a2295293d527a5619bd9d3ce4f0757c8cd540846c5ce29fb259de400df8",
-  "./index.html": "sha256-d6581a2295293d527a5619bd9d3ce4f0757c8cd540846c5ce29fb259de400df8",
+  "./": "sha256-0c6e4debc7c8a5a567a57bcf7e4bd2570168628fc397fa32303fad78eb859998",
+  "./index.html": "sha256-0c6e4debc7c8a5a567a57bcf7e4bd2570168628fc397fa32303fad78eb859998",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-bd8fc848eb4a19dbcf6a6f76dd1d1823d824d5546baa1ac32084e87342a2096e",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
