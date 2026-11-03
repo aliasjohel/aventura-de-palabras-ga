@@ -1,6 +1,7 @@
 #towerOutfitPreview{margin:12px 0;padding:12px;border:1px solid #c39a52;border-radius:8px;text-align:left;min-width:0}
 #towerOutfitPreview legend{font-weight:bold;color:#f1d29a}#towerOutfitPreview p,#towerOutfitPreview small{font-size:.82rem;line-height:1.45}#towerOutfitPreview label,#towerOutfitPreview select,#towerOutfitPreview small{display:block;margin-top:8px}#towerOutfitPreview select,#towerOutfitPreview button{width:100%;max-width:100%;white-space:normal;min-height:44px}#towerOutfitPreviewStatus{color:#f1d29a}
 .versus-personaje[data-champion-pose]{scale:var(--champion-scale,1);translate:0 var(--champion-y,0px)}
+.tarjeta-personaje-versus img[data-champion-pose]{scale:var(--champion-scale,1);translate:0 var(--champion-y,0px);transform-origin:center bottom}
 #cinematicaFinalVersus .cinematica-explorador-trampa[data-champion-pose="final"]{left:2%;bottom:3%;height:88%;width:46%;object-fit:contain;object-position:center bottom}
 #cinematicaFinalVersus .cinematica-carnivora-devorando[data-champion-pose="planta"]{left:auto;right:2%;bottom:5%;width:62%;height:76%;object-fit:contain;object-position:center bottom;scale:.92;transform-origin:center bottom}
 #cinematicaFinalVersus .azrak-mano-victima[data-champion-pose="mano"]{right:3%;bottom:4%;width:47%;height:87%;object-fit:contain;object-position:center bottom;animation-name:championHandCapture;transform-origin:center bottom}

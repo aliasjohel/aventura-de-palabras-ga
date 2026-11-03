@@ -1,7 +1,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const {chromium}=require('C:/Users/User/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const root=path.resolve(__dirname,'..'),expected=process.argv[2],baseline='26d6c31f27717d397093235ec8e74190e129bebe',out=path.join(root,'.local-developer/aren-champion-qa');assert(/^[0-9a-f]{40}$/.test(expected||''));fs.mkdirSync(out,{recursive:true});
+const root=path.resolve(__dirname,'..'),expected=process.argv[2],baseline='a4608c5d4024d7dd4bc9bad923d4af78953328a5',out=path.join(root,'.local-developer/aren-champion-qa');assert(/^[0-9a-f]{40}$/.test(expected||''));fs.mkdirSync(out,{recursive:true});
 const git=(args,opts={})=>cp.execFileSync('git',args,{cwd:root,windowsHide:true,stdio:['pipe','pipe','pipe'],maxBuffer:10e6,...opts});
 let browser;
 (async()=>{try{
@@ -23,6 +23,9 @@ let browser;
  await page.evaluate(()=>{document.getElementById('introOficial')?.remove();document.body.classList.remove('intro-pendiente');});await page.click('#btnConfiguracion');await page.selectOption('#towerOutfitPreviewSelect','aren-campeon');await page.click('#towerOutfitPreviewApply');await page.waitForFunction(()=>TowerOutfitPreview.selection()==='aren-campeon');assert.equal(new Set(art).size,5);assert.equal(await page.evaluate(()=>CosmeticStore.catalog.some(p=>p.id==='aren-campeon')),false);
  await page.screenshot({path:path.join(out,'public-android-selector.png')});
  const sprite=await page.evaluate(()=>{personajeJugadorVersus='explorador';return spriteTrajeVersus(personajeVersusUno,'explorador',srcExploradorBaseVersus);});assert(sprite.endsWith('/aren-campeon-base-v1.webp'));
+ await page.evaluate(()=>{cerrarConfiguracion();mostrarPantalla(pantallaSeleccionPersonajeVersus);});
+ const card=page.locator('.tarjeta-personaje-versus[data-personaje="explorador"] img');await card.evaluate(i=>i.decode());await page.waitForFunction(()=>{const i=document.querySelector('.tarjeta-personaje-versus[data-personaje="explorador"] img');return i.clientHeight>0&&parseFloat(getComputedStyle(i).scale)<.91;});
+ const cardScale=await card.evaluate(i=>parseFloat(getComputedStyle(i).scale));assert(cardScale>.89&&cardScale<.91);await page.screenshot({path:path.join(out,'public-character-selection.png')});
  await page.evaluate(()=>TowerOutfitPreview.select(''));assert.equal(await page.evaluate(()=>TowerOutfitPreview.selection()),null);assert.deepEqual(errors,[]);
- const result={passed:true,checkedAt:new Date().toISOString(),commit:expected,baseline,version:'v389-arenchampionscale1',url:pages.html_url,pagesBuiltExpectedCommit:true,files,publicAndroidEmulationSelectorPassed:true,beforeSelectionArtRequests:0,selectedUniqueImages:5,permanentInventoryEntry:false,serverWrites:0,physicalAndroidTest:false,pageErrors:errors};fs.writeFileSync(path.join(out,'public-verification.json'),JSON.stringify(result,null,2));console.log(JSON.stringify({passed:true,commit:expected,version:result.version,publicHashesVerified:files.length,url:result.url,pageErrors:errors}));
+ const result={passed:true,checkedAt:new Date().toISOString(),commit:expected,baseline,version:'v390-arenchampionselector1',url:pages.html_url,pagesBuiltExpectedCommit:true,files,publicAndroidEmulationSelectorPassed:true,beforeSelectionArtRequests:0,selectedUniqueImages:5,permanentInventoryEntry:false,serverWrites:0,physicalAndroidTest:false,pageErrors:errors};fs.writeFileSync(path.join(out,'public-verification.json'),JSON.stringify(result,null,2));console.log(JSON.stringify({passed:true,commit:expected,version:result.version,publicHashesVerified:files.length,url:result.url,pageErrors:errors}));
 }finally{await browser?.close();}})().catch(e=>{console.error('Public verification failed: '+e.message);process.exitCode=1;});

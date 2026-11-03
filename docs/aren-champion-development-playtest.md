@@ -1,4 +1,6 @@
-# Aren · Campeón del Último Piso · v389-arenchampionscale1
+# Aren · Campeón del Último Piso · v390-arenchampionselector1
+
+Corrección del 3 de noviembre de 2026: se aplica también la calibración de tamaño a la tarjeta de selección de Aren, con origen inferior y apoyo alineado. La escala se recalcula al mostrar la pantalla y al cambiar su tamaño; al retirar la prueba se limpian los ajustes. Tres tamaños de selección (667×375, 844×390 y 1280×820) coinciden con Aren original y Guardián del Bosque con menos de un píxel de diferencia. Las quince comprobaciones de poses de combate siguen aprobadas. La actualización desde v389 descarga solo HTML, CSS y el módulo de presentación; no descarga nuevamente las imágenes y conserva los datos guardados.
 
 Corrección del 2 de noviembre de 2026 tras la revisión en Android: el traje nuevo ocupaba aproximadamente un 11 % más de altura visible que Aren original. Se normalizan las cinco poses de combate a la altura opaca y apoyo de Aren original y Guardián del Bosque, reduciendo su escala aproximadamente un 10,3 %. No se modificaron las imágenes ni las cinemáticas. La comparación de alfa renderizado de 15 poses en tres pantallas obtuvo diferencias inferiores a 0,75 px de altura y 0,45 px de apoyo. `tools/check-tower-preview-scale.cjs` reproduce la comprobación. La actualización desde v388 descarga solo HTML y el módulo de presentación; conserva medios y datos guardados.
 

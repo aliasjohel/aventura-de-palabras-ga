@@ -70,8 +70,10 @@
     const match=(img.getAttribute('src')||'').match(/(?:^|\/)tower-preview\/aren-campeon-([a-z]+)-v1\.webp$/);
     if(!match){if(img.dataset.championPose){delete img.dataset.championPose;img.style.removeProperty('--champion-scale');img.style.removeProperty('--champion-y');}return;}
     const pose=match[1];img.dataset.championPose=pose;
-    if(img.classList.contains('versus-personaje')&&calibration[pose]){
-      const height=img.clientHeight,renderHeight=Math.min(height,img.clientWidth*1024/683),origin=.88*height;
+    const card=img.matches('.tarjeta-personaje-versus img');
+    if((img.classList.contains('versus-personaje')||card)&&calibration[pose]){
+      if(!img.clientHeight||!img.clientWidth)return;
+      const height=img.clientHeight,renderHeight=Math.min(height,img.clientWidth*1024/683),origin=(card?1:.88)*height;
       // Original Aren and Forest use a 1024x1536 canvas: opaque y=120..1381.
       // Match their visible height and ground, not the larger Champion drawing.
       const referenceHeight=Math.min(height,img.clientWidth*1536/1024);
@@ -79,6 +81,6 @@
       img.style.setProperty('--champion-scale',String(scale));img.style.setProperty('--champion-y',(baseFoot-(origin+scale*(poseFoot-origin)))+'px');
     }
   }
-  function syncAll(){for(const img of document.querySelectorAll('.versus-personaje, #cinematicaFinalVersus img'))sync(img);}
-  if(DEVELOPMENT_OUTFIT_PREVIEW){new MutationObserver(records=>{for(const {target}of records)if(target.tagName==='IMG')sync(target);}).observe(document.body,{subtree:true,attributes:true,attributeFilter:['src']});globalThis.addEventListener('resize',syncAll);globalThis.addEventListener('tower-outfit-preview-changed',syncAll);const resize=new ResizeObserver(syncAll);for(const img of document.querySelectorAll('.versus-personaje'))resize.observe(img);}
+  function syncAll(){for(const img of document.querySelectorAll('.versus-personaje, .tarjeta-personaje-versus img, #cinematicaFinalVersus img'))sync(img);}
+  if(DEVELOPMENT_OUTFIT_PREVIEW){new MutationObserver(records=>{for(const {target}of records)if(target.tagName==='IMG')sync(target);}).observe(document.body,{subtree:true,attributes:true,attributeFilter:['src']});globalThis.addEventListener('resize',syncAll);globalThis.addEventListener('tower-outfit-preview-changed',syncAll);const resize=new ResizeObserver(syncAll);for(const img of document.querySelectorAll('.versus-personaje, .tarjeta-personaje-versus img'))resize.observe(img);}
 })();
