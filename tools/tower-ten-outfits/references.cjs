@@ -1,0 +1,7 @@
+'use strict';
+const fs=require('fs'),path=require('path'),sharp=require('C:/Users/User/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp');
+const root=path.resolve(__dirname,'../..'),out=path.join(root,'.local-developer/tower-ten-outfits'),audit=JSON.parse(fs.readFileSync(path.join(out,'audit.json')));
+(async()=>{for(const c of audit.characters){const dir=path.join(out,c.id);fs.mkdirSync(path.join(dir,'masters'),{recursive:true});const composite=[];const entries=[...c.poses,{pose:'existing-costume',source:c.existing[0].files.find(f=>f.endsWith('-base-v1.png'))}];
+ for(let i=0;i<entries.length;i++){const p=entries[i],x=i%4*320,y=Math.floor(i/4)*340;const thumb=await sharp(path.join(root,p.source)).resize(300,300,{fit:'contain',background:'#293340'}).flatten({background:'#293340'}).png().toBuffer();composite.push({input:thumb,left:x+10,top:y+35});composite.push({input:Buffer.from(`<svg width="320" height="30"><text x="10" y="22" fill="white" font-size="17" font-family="Arial">${i+1}. ${p.pose}</text></svg>`),left:x,top:y});}
+ await sharp({create:{width:1280,height:Math.ceil(entries.length/4)*340,channels:3,background:'#19212d'}}).composite(composite).png().toFile(path.join(dir,'references.png'));
+ }console.log(JSON.stringify(audit.characters.map(c=>({id:c.id,reference:path.join(out,c.id,'references.png'),direction:c.direction,base:c.poses.find(p=>p.pose==='base').source}))));})().catch(e=>{console.error(e);process.exitCode=1;});

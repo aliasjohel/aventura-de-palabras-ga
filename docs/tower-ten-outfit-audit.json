@@ -1,0 +1,2035 @@
+{
+  "baseline": "ee8fbefb3efe26fd5bfb10e6cdd2af877b7efd5c",
+  "characters": [
+    {
+      "character": "mago",
+      "hero": "Zafir",
+      "attack": "magia",
+      "final": "eclipse-violeta",
+      "ability": {
+        "nombre": "Caos arcano",
+        "icono": "🔮",
+        "efecto": "shuffle",
+        "duracion": 5000
+      },
+      "existing": [
+        {
+          "id": "zafir-celestial",
+          "name": "Celestial",
+          "poses": [
+            "base",
+            "ataque",
+            "impacto"
+          ],
+          "files": [
+            "./assets/images/trajes/zafir-celestial-anciano-v1.png",
+            "./assets/images/trajes/zafir-celestial-ataque-v1.png",
+            "./assets/images/trajes/zafir-celestial-base-v1.png",
+            "./assets/images/trajes/zafir-celestial-envejecido-v1.png",
+            "./assets/images/trajes/zafir-celestial-final-v1.png",
+            "./assets/images/trajes/zafir-celestial-impacto-v1.png",
+            "./assets/images/trajes/zafir-celestial-mano-v1.png",
+            "./assets/images/trajes/zafir-celestial-planta-v1.png",
+            "./assets/images/trajes/zafir-celestial-vidrio-v1.png"
+          ]
+        }
+      ],
+      "id": "zafir-vitral",
+      "name": "Custodio del Vitral",
+      "direction": "Ivory layered robes, deep teal stained-glass panels, rose-copper window lattice, ivory hood with teal lining, rosette staff with four teal glass petals. Black faceless hood and bright teal eyes. No blue stars or purple/gold.",
+      "poses": [
+        {
+          "pose": "base",
+          "source": "assets/images/personajes/versus/mago-base.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 409,
+            "y": 46,
+            "width": 739,
+            "height": 891,
+            "foot": 936
+          },
+          "bytes": 741167
+        },
+        {
+          "pose": "ataque",
+          "source": "assets/images/personajes/versus/mago-ataque.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 387,
+            "y": 9,
+            "width": 942,
+            "height": 943,
+            "foot": 951
+          },
+          "bytes": 1639696
+        },
+        {
+          "pose": "final",
+          "source": "assets/images/personajes/versus/mago-eclipse-violeta.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 369,
+            "y": 43,
+            "width": 837,
+            "height": 913,
+            "foot": 955
+          },
+          "bytes": 767897
+        },
+        {
+          "pose": "impacto",
+          "source": "assets/images/personajes/versus/mago-atrapado-trampa.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 115,
+            "y": 60,
+            "width": 731,
+            "height": 1203,
+            "foot": 1262
+          },
+          "bytes": 932003
+        },
+        {
+          "pose": "planta",
+          "source": "assets/images/personajes/versus/carnivora-devorando.png",
+          "width": 1672,
+          "height": 941,
+          "bounds": {
+            "x": 196,
+            "y": 40,
+            "width": 1280,
+            "height": 889,
+            "foot": 928
+          },
+          "bytes": 1164910
+        },
+        {
+          "pose": "mano",
+          "source": "assets/images/personajes/versus/mano-abismo-atrapa-mago.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 336,
+            "y": 28,
+            "width": 839,
+            "height": 968,
+            "foot": 995
+          },
+          "bytes": 1270083
+        },
+        {
+          "pose": "vidrio",
+          "source": "assets/images/personajes/versus/mago-pantalla-rota-kalamo-v1.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 3,
+            "y": 0,
+            "width": 1526,
+            "height": 1024,
+            "foot": 1023
+          },
+          "bytes": 3735355
+        },
+        {
+          "pose": "envejecido",
+          "source": "assets/images/personajes/versus/mago-envejecido-kairos-v1.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 391,
+            "y": 27,
+            "width": 760,
+            "height": 919,
+            "foot": 945
+          },
+          "bytes": 1006811
+        },
+        {
+          "pose": "anciano",
+          "source": "assets/images/personajes/versus/mago-anciano-kairos-v1.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 441,
+            "y": 22,
+            "width": 642,
+            "height": 959,
+            "foot": 980
+          },
+          "bytes": 1011119
+        }
+      ]
+    },
+    {
+      "character": "guardiana",
+      "hero": "Guardiana",
+      "attack": "raices",
+      "final": "prision-esmeralda",
+      "ability": {
+        "nombre": "Enredo de raíces",
+        "icono": "🌿",
+        "efecto": "roots",
+        "duracion": 5000
+      },
+      "existing": [
+        {
+          "id": "guardiana-otono",
+          "name": "Guardiana de Otoño",
+          "poses": [
+            "base",
+            "ataque",
+            "impacto"
+          ],
+          "files": [
+            "./assets/images/trajes/guardiana-otono-anciano-v1.png",
+            "./assets/images/trajes/guardiana-otono-ataque-v1.png",
+            "./assets/images/trajes/guardiana-otono-base-v1.png",
+            "./assets/images/trajes/guardiana-otono-envejecido-v1.png",
+            "./assets/images/trajes/guardiana-otono-final-v1.png",
+            "./assets/images/trajes/guardiana-otono-impacto-v1.png",
+            "./assets/images/trajes/guardiana-otono-mano-v1.png",
+            "./assets/images/trajes/guardiana-otono-planta-v1.png",
+            "./assets/images/trajes/guardiana-otono-vidrio-v1.png"
+          ]
+        }
+      ],
+      "id": "guardiana-orquidea",
+      "name": "Soberana de la Orquídea",
+      "direction": "Living orchid regalia, deep plum petal layers, pearlescent white petals, jade stems, restrained silver dew beads. Keep her face, hairstyle, slender elven anatomy and staff. Orchid crown and flowering staff; no autumn leaves or crimson cape.",
+      "poses": [
+        {
+          "pose": "base",
+          "source": "assets/images/personajes/coleccion/guardiana-bosque-base.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 85,
+            "y": 102,
+            "width": 844,
+            "height": 1335,
+            "foot": 1436
+          },
+          "bytes": 1385607
+        },
+        {
+          "pose": "ataque",
+          "source": "assets/images/personajes/coleccion/guardiana-bosque-ataque-raices.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 24,
+            "y": 321,
+            "width": 978,
+            "height": 910,
+            "foot": 1230
+          },
+          "bytes": 849159
+        },
+        {
+          "pose": "final",
+          "source": "assets/images/personajes/coleccion/guardiana-bosque-victoria.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 151,
+            "y": 22,
+            "width": 751,
+            "height": 1466,
+            "foot": 1487
+          },
+          "bytes": 1245113
+        },
+        {
+          "pose": "impacto-tronco",
+          "source": "assets/images/personajes/versus/guardiana-impacto-tronco-frontal-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 73,
+            "y": 53,
+            "width": 951,
+            "height": 1420,
+            "foot": 1472
+          },
+          "bytes": 2267711
+        },
+        {
+          "pose": "impacto",
+          "source": "assets/images/personajes/versus/guardiana-susto-impacto.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 48,
+            "y": 89,
+            "width": 946,
+            "height": 1364,
+            "foot": 1452
+          },
+          "bytes": 1376867
+        },
+        {
+          "pose": "planta",
+          "source": "assets/images/personajes/versus/carnivora-devorando-guardiana.png",
+          "width": 1672,
+          "height": 941,
+          "bounds": {
+            "x": 198,
+            "y": 41,
+            "width": 1227,
+            "height": 889,
+            "foot": 929
+          },
+          "bytes": 1074812
+        },
+        {
+          "pose": "mano",
+          "source": "assets/images/personajes/versus/mano-abismo-atrapa-guardiana.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 329,
+            "y": 45,
+            "width": 859,
+            "height": 964,
+            "foot": 1008
+          },
+          "bytes": 1222867
+        },
+        {
+          "pose": "vidrio",
+          "source": "assets/images/personajes/versus/guardiana-pantalla-rota-kalamo-v1.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1530,
+            "height": 1024,
+            "foot": 1023
+          },
+          "bytes": 3904398
+        },
+        {
+          "pose": "envejecido",
+          "source": "assets/images/personajes/versus/guardiana-envejecida-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 90,
+            "y": 109,
+            "width": 839,
+            "height": 1328,
+            "foot": 1436
+          },
+          "bytes": 1711427
+        },
+        {
+          "pose": "anciano",
+          "source": "assets/images/personajes/versus/guardiana-anciana-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 84,
+            "y": 60,
+            "width": 889,
+            "height": 1400,
+            "foot": 1459
+          },
+          "bytes": 1762158
+        }
+      ]
+    },
+    {
+      "character": "dragon",
+      "hero": "Nimbus",
+      "attack": "rugido-dragon",
+      "final": "llamado-matriarca",
+      "ability": {
+        "nombre": "Rugido",
+        "icono": "🐉",
+        "efecto": "roar",
+        "duracion": 5000
+      },
+      "existing": [
+        {
+          "id": "nimbus-aviador",
+          "name": "Aviador de las Cumbres",
+          "poses": [
+            "base",
+            "ataque",
+            "impacto",
+            "llamado"
+          ],
+          "files": [
+            "./assets/images/trajes/nimbus-aviador-anciano-v1.png",
+            "./assets/images/trajes/nimbus-aviador-ataque-v1.png",
+            "./assets/images/trajes/nimbus-aviador-base-v1.png",
+            "./assets/images/trajes/nimbus-aviador-envejecido-v1.png",
+            "./assets/images/trajes/nimbus-aviador-final-v1.png",
+            "./assets/images/trajes/nimbus-aviador-impacto-v1.png",
+            "./assets/images/trajes/nimbus-aviador-llamado-v1.png",
+            "./assets/images/trajes/nimbus-aviador-mano-v1.png",
+            "./assets/images/trajes/nimbus-aviador-planta-v1.png",
+            "./assets/images/trajes/nimbus-aviador-vidrio-v1.png"
+          ]
+        }
+      ],
+      "id": "nimbus-farero",
+      "name": "Farero de las Nubes",
+      "direction": "Nimbus wears a deep navy and warm coral lighthouse-keeper capelet, cream canvas harness, brass tiny lantern and nautical rope knots. Preserve original dragon body color, wings, horns and baby-dragon face. No aviator goggles or scarf. A small coral beacon crest and lighthouse medallion.",
+      "poses": [
+        {
+          "pose": "base",
+          "source": "assets/images/personajes/versus/dragon-base.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 20,
+            "y": 160,
+            "width": 975,
+            "height": 1189,
+            "foot": 1348
+          },
+          "bytes": 1223290
+        },
+        {
+          "pose": "ataque",
+          "source": "assets/images/personajes/versus/dragon-ataque.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 9,
+            "y": 198,
+            "width": 905,
+            "height": 1113,
+            "foot": 1310
+          },
+          "bytes": 1139906
+        },
+        {
+          "pose": "llamado",
+          "source": "assets/images/personajes/versus/dragon-llamando.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 7,
+            "y": 178,
+            "width": 1007,
+            "height": 1183,
+            "foot": 1360
+          },
+          "bytes": 1203211
+        },
+        {
+          "pose": "final",
+          "source": "assets/images/personajes/versus/dragon-victoria.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 26,
+            "y": 143,
+            "width": 985,
+            "height": 1212,
+            "foot": 1354
+          },
+          "bytes": 1293945
+        },
+        {
+          "pose": "impacto",
+          "source": "assets/images/personajes/versus/dragon-susto-impacto.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 69,
+            "y": 173,
+            "width": 903,
+            "height": 1178,
+            "foot": 1350
+          },
+          "bytes": 1341208
+        },
+        {
+          "pose": "planta",
+          "source": "assets/images/personajes/versus/carnivora-devorando-dragon.png",
+          "width": 1672,
+          "height": 941,
+          "bounds": {
+            "x": 94,
+            "y": 43,
+            "width": 1348,
+            "height": 887,
+            "foot": 929
+          },
+          "bytes": 1187874
+        },
+        {
+          "pose": "mano",
+          "source": "assets/images/personajes/versus/mano-abismo-atrapa-dragon.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 328,
+            "y": 44,
+            "width": 860,
+            "height": 964,
+            "foot": 1007
+          },
+          "bytes": 1205076
+        },
+        {
+          "pose": "vidrio",
+          "source": "assets/images/personajes/versus/dragon-pantalla-rota-kalamo-v1.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 12,
+            "y": 0,
+            "width": 1516,
+            "height": 1024,
+            "foot": 1023
+          },
+          "bytes": 3720626
+        },
+        {
+          "pose": "envejecido",
+          "source": "assets/images/personajes/versus/dragon-adulto-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 0,
+            "y": 33,
+            "width": 1023,
+            "height": 1489,
+            "foot": 1521
+          },
+          "bytes": 2289281
+        },
+        {
+          "pose": "anciano",
+          "source": "assets/images/personajes/versus/dragon-anciano-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 0,
+            "y": 246,
+            "width": 1018,
+            "height": 1231,
+            "foot": 1476
+          },
+          "bytes": 2318030
+        }
+      ]
+    },
+    {
+      "character": "hombre_lobo",
+      "hero": "Hombre Lobo",
+      "attack": "zarpazo-feral",
+      "final": "caceria-luna-llena",
+      "ability": {
+        "nombre": "Inversión lunar",
+        "icono": "🌕",
+        "efecto": "invert",
+        "duracion": 5000
+      },
+      "existing": [
+        {
+          "id": "lobo-lunar",
+          "name": "Centinela Lunar",
+          "poses": [
+            "base",
+            "ataque",
+            "impacto",
+            "humano",
+            "transformacion",
+            "aullido",
+            "salto"
+          ],
+          "files": [
+            "./assets/images/trajes/lobo-lunar-anciano-v1.png",
+            "./assets/images/trajes/lobo-lunar-ataque-v1.png",
+            "./assets/images/trajes/lobo-lunar-aullido-v1.png",
+            "./assets/images/trajes/lobo-lunar-base-v1.png",
+            "./assets/images/trajes/lobo-lunar-envejecido-v1.png",
+            "./assets/images/trajes/lobo-lunar-humano-v1.png",
+            "./assets/images/trajes/lobo-lunar-impacto-v1.png",
+            "./assets/images/trajes/lobo-lunar-mano-v1.png",
+            "./assets/images/trajes/lobo-lunar-planta-v1.png",
+            "./assets/images/trajes/lobo-lunar-salto-v1.png",
+            "./assets/images/trajes/lobo-lunar-transformacion-v1.png",
+            "./assets/images/trajes/lobo-lunar-vidrio-v1.png"
+          ]
+        }
+      ],
+      "id": "lobo-basaltico",
+      "name": "Vigía del Basalto",
+      "direction": "Basalt guardian: rugged black volcanic-stone shoulder plates with dull red magma fissures, dark oxblood woven wraps and bone-white clasp, preserve the original fur, face, anatomy and claws. Costume must remain recognizable on human, transforming and wolf forms. No silver lunar armor or blue leather.",
+      "poses": [
+        {
+          "pose": "base",
+          "source": "assets/images/personajes/versus/hombre-lobo-base.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 13,
+            "y": 175,
+            "width": 994,
+            "height": 1192,
+            "foot": 1366
+          },
+          "bytes": 1512828
+        },
+        {
+          "pose": "humano",
+          "source": "assets/images/personajes/versus/hombre-lobo-humano.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 156,
+            "y": 67,
+            "width": 721,
+            "height": 1400,
+            "foot": 1466
+          },
+          "bytes": 2208973
+        },
+        {
+          "pose": "transformacion",
+          "source": "assets/images/personajes/versus/hombre-lobo-transformacion.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 103,
+            "y": 124,
+            "width": 876,
+            "height": 1327,
+            "foot": 1450
+          },
+          "bytes": 2511239
+        },
+        {
+          "pose": "aullido",
+          "source": "assets/images/personajes/versus/hombre-lobo-aullido.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 2,
+            "y": 100,
+            "width": 1022,
+            "height": 1320,
+            "foot": 1419
+          },
+          "bytes": 1398579
+        },
+        {
+          "pose": "ataque",
+          "source": "assets/images/personajes/versus/hombre-lobo-zarpazo.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 22,
+            "y": 218,
+            "width": 979,
+            "height": 1119,
+            "foot": 1336
+          },
+          "bytes": 1217348
+        },
+        {
+          "pose": "salto",
+          "source": "assets/images/personajes/versus/hombre-lobo-salto-lunar.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 9,
+            "y": 147,
+            "width": 1007,
+            "height": 1242,
+            "foot": 1388
+          },
+          "bytes": 1240406
+        },
+        {
+          "pose": "impacto",
+          "source": "assets/images/personajes/versus/hombre-lobo-impacto-v2.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 29,
+            "y": 363,
+            "width": 976,
+            "height": 847,
+            "foot": 1209
+          },
+          "bytes": 1065982
+        },
+        {
+          "pose": "planta",
+          "source": "assets/images/personajes/versus/carnivora-devorando-hombre-lobo-v2.png",
+          "width": 1672,
+          "height": 941,
+          "bounds": {
+            "x": 204,
+            "y": 43,
+            "width": 1240,
+            "height": 881,
+            "foot": 923
+          },
+          "bytes": 1077545
+        },
+        {
+          "pose": "mano",
+          "source": "assets/images/personajes/versus/mano-abismo-atrapa-hombre-lobo.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 328,
+            "y": 40,
+            "width": 861,
+            "height": 969,
+            "foot": 1008
+          },
+          "bytes": 1197198
+        },
+        {
+          "pose": "vidrio",
+          "source": "assets/images/personajes/versus/hombre-lobo-pantalla-rota-kalamo-v1.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 4,
+            "y": 0,
+            "width": 1516,
+            "height": 1024,
+            "foot": 1023
+          },
+          "bytes": 3505651
+        },
+        {
+          "pose": "envejecido",
+          "source": "assets/images/personajes/versus/hombre-lobo-envejecido-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 11,
+            "y": 176,
+            "width": 994,
+            "height": 1199,
+            "foot": 1374
+          },
+          "bytes": 1771460
+        },
+        {
+          "pose": "anciano",
+          "source": "assets/images/personajes/versus/hombre-lobo-anciano-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 24,
+            "y": 233,
+            "width": 993,
+            "height": 1134,
+            "foot": 1366
+          },
+          "bytes": 1723379
+        }
+      ]
+    },
+    {
+      "character": "t_shadow",
+      "hero": "T. Shadow",
+      "attack": "corte-sombrio",
+      "final": "legion-umbria",
+      "ability": {
+        "nombre": "Vacío devorador",
+        "icono": "🌑",
+        "efecto": "black_hole",
+        "duracion": 5000
+      },
+      "existing": [
+        {
+          "id": "shadow-carmesi",
+          "name": "Sombra Carmesí",
+          "poses": [
+            "base",
+            "ataque",
+            "impacto"
+          ],
+          "files": [
+            "./assets/images/trajes/shadow-carmesi-anciano-v1.png",
+            "./assets/images/trajes/shadow-carmesi-ataque-v1.png",
+            "./assets/images/trajes/shadow-carmesi-base-v1.png",
+            "./assets/images/trajes/shadow-carmesi-envejecido-v1.png",
+            "./assets/images/trajes/shadow-carmesi-final-v1.png",
+            "./assets/images/trajes/shadow-carmesi-impacto-v1.png",
+            "./assets/images/trajes/shadow-carmesi-mano-v1.png",
+            "./assets/images/trajes/shadow-carmesi-planta-v1.png",
+            "./assets/images/trajes/shadow-carmesi-vidrio-v1.png"
+          ]
+        }
+      ],
+      "id": "shadow-porcelana",
+      "name": "Máscara de Porcelana",
+      "direction": "Shattered porcelain sentinel: matte white ceramic hood plates and half-mask with subtle black ink cracks, charcoal fabric, muted celadon cloth ties, pale ceramic blades. Preserve his shadow-face, luminous eyes, assassin silhouette and weapons. No crimson hood or red daggers.",
+      "poses": [
+        {
+          "pose": "base",
+          "source": "assets/images/personajes/versus/t-shadow-base.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 50,
+            "y": 192,
+            "width": 967,
+            "height": 1103,
+            "foot": 1294
+          },
+          "bytes": 1870011
+        },
+        {
+          "pose": "ataque",
+          "source": "assets/images/personajes/versus/t-shadow-ataque.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 31,
+            "y": 276,
+            "width": 986,
+            "height": 981,
+            "foot": 1256
+          },
+          "bytes": 1178715
+        },
+        {
+          "pose": "final",
+          "source": "assets/images/personajes/versus/t-shadow-victoria.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 43,
+            "y": 50,
+            "width": 853,
+            "height": 1395,
+            "foot": 1444
+          },
+          "bytes": 1496681
+        },
+        {
+          "pose": "impacto",
+          "source": "assets/images/personajes/versus/t-shadow-impacto.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 20,
+            "y": 272,
+            "width": 992,
+            "height": 1024,
+            "foot": 1295
+          },
+          "bytes": 1168443
+        },
+        {
+          "pose": "planta",
+          "source": "assets/images/personajes/versus/carnivora-devorando-t-shadow.png",
+          "width": 1672,
+          "height": 941,
+          "bounds": {
+            "x": 172,
+            "y": 38,
+            "width": 1237,
+            "height": 896,
+            "foot": 933
+          },
+          "bytes": 1449972
+        },
+        {
+          "pose": "mano",
+          "source": "assets/images/personajes/versus/mano-abismo-atrapa-t-shadow.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 474,
+            "y": 51,
+            "width": 591,
+            "height": 931,
+            "foot": 981
+          },
+          "bytes": 980313
+        },
+        {
+          "pose": "vidrio",
+          "source": "assets/images/personajes/versus/t-shadow-cara-vidrio-kalamo-v2.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 32,
+            "y": 9,
+            "width": 1495,
+            "height": 983,
+            "foot": 991
+          },
+          "bytes": 2667381
+        },
+        {
+          "pose": "envejecido",
+          "source": "assets/images/personajes/versus/t-shadow-envejecido-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 18,
+            "y": 183,
+            "width": 1006,
+            "height": 1162,
+            "foot": 1344
+          },
+          "bytes": 1557209
+        },
+        {
+          "pose": "anciano",
+          "source": "assets/images/personajes/versus/t-shadow-anciano-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 49,
+            "y": 183,
+            "width": 962,
+            "height": 1245,
+            "foot": 1427
+          },
+          "bytes": 1849177
+        }
+      ]
+    },
+    {
+      "character": "guardian_alba",
+      "hero": "A. Lumen",
+      "attack": "corte-solar",
+      "final": "juicio-amanecer",
+      "ability": {
+        "nombre": "Ruptura celeste",
+        "icono": "☀️",
+        "efecto": "key_bounce",
+        "duracion": 5000
+      },
+      "existing": [
+        {
+          "id": "alba-lunar",
+          "name": "Alba Lunar",
+          "poses": [
+            "base",
+            "ataque",
+            "habilidad",
+            "carga",
+            "impacto"
+          ],
+          "files": [
+            "./assets/images/trajes/alba-lunar-anciano-v1.png",
+            "./assets/images/trajes/alba-lunar-ataque-v1.png",
+            "./assets/images/trajes/alba-lunar-base-v1.png",
+            "./assets/images/trajes/alba-lunar-carga-v1.png",
+            "./assets/images/trajes/alba-lunar-envejecido-v1.png",
+            "./assets/images/trajes/alba-lunar-final-v1.png",
+            "./assets/images/trajes/alba-lunar-habilidad-v1.png",
+            "./assets/images/trajes/alba-lunar-impacto-v1.png",
+            "./assets/images/trajes/alba-lunar-mano-v1.png",
+            "./assets/images/trajes/alba-lunar-planta-v1.png",
+            "./assets/images/trajes/alba-lunar-vidrio-v1.png"
+          ]
+        }
+      ],
+      "id": "lumen-cardenal",
+      "name": "Paladín del Cardenal",
+      "direction": "Ceremonial cardinal paladin: deep burgundy lacquered armor, ivory engraved pauldrons, warm rose-brass borders, white feather crest, folded wine-colored cape, ivory blade with warm white core. Preserve the original youthful face, hair and knight proportions. No silver-blue lunar uniform and no Aren green-gold.",
+      "poses": [
+        {
+          "pose": "base",
+          "source": "assets/images/personajes/versus/guardian-alba-base.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 41,
+            "y": 77,
+            "width": 889,
+            "height": 1364,
+            "foot": 1440
+          },
+          "bytes": 1639643
+        },
+        {
+          "pose": "ataque",
+          "source": "assets/images/personajes/versus/guardian-alba-ataque.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 13,
+            "y": 176,
+            "width": 951,
+            "height": 1198,
+            "foot": 1373
+          },
+          "bytes": 1475493
+        },
+        {
+          "pose": "habilidad",
+          "source": "assets/images/personajes/versus/guardian-alba-habilidad.png",
+          "width": 1023,
+          "height": 1537,
+          "bounds": {
+            "x": 0,
+            "y": 95,
+            "width": 1023,
+            "height": 1289,
+            "foot": 1383
+          },
+          "bytes": 1801786
+        },
+        {
+          "pose": "carga",
+          "source": "assets/images/personajes/versus/guardian-alba-final-carga-sin-rayo.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 66,
+            "y": 133,
+            "width": 837,
+            "height": 1251,
+            "foot": 1383
+          },
+          "bytes": 1131774
+        },
+        {
+          "pose": "final",
+          "source": "assets/images/personajes/versus/guardian-alba-victoria.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 263,
+            "y": 30,
+            "width": 554,
+            "height": 1396,
+            "foot": 1425
+          },
+          "bytes": 927877
+        },
+        {
+          "pose": "impacto",
+          "source": "assets/images/personajes/versus/guardian-alba-impacto.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 62,
+            "y": 156,
+            "width": 879,
+            "height": 1223,
+            "foot": 1378
+          },
+          "bytes": 1314245
+        },
+        {
+          "pose": "planta",
+          "source": "assets/images/personajes/versus/carnivora-devorando-guardian-alba.png",
+          "width": 1672,
+          "height": 941,
+          "bounds": {
+            "x": 141,
+            "y": 24,
+            "width": 1227,
+            "height": 854,
+            "foot": 877
+          },
+          "bytes": 1618104
+        },
+        {
+          "pose": "mano",
+          "source": "assets/images/personajes/versus/mano-abismo-atrapa-guardian-alba.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 478,
+            "y": 38,
+            "width": 583,
+            "height": 946,
+            "foot": 983
+          },
+          "bytes": 927954
+        },
+        {
+          "pose": "vidrio",
+          "source": "assets/images/personajes/versus/guardian-alba-cara-vidrio-kalamo-v2.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 36,
+            "y": 0,
+            "width": 1477,
+            "height": 1016,
+            "foot": 1015
+          },
+          "bytes": 2520721
+        },
+        {
+          "pose": "envejecido",
+          "source": "assets/images/personajes/versus/guardian-alba-envejecido-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 40,
+            "y": 68,
+            "width": 901,
+            "height": 1399,
+            "foot": 1466
+          },
+          "bytes": 1815599
+        },
+        {
+          "pose": "anciano",
+          "source": "assets/images/personajes/versus/guardian-alba-anciano-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 237,
+            "y": 93,
+            "width": 661,
+            "height": 1369,
+            "foot": 1461
+          },
+          "bytes": 1953376
+        }
+      ]
+    },
+    {
+      "character": "dragon_hielo",
+      "hero": "Nivor",
+      "attack": "aliento-glacial",
+      "final": "cero-absoluto",
+      "ability": {
+        "nombre": "Invierno absoluto",
+        "icono": "❄️",
+        "efecto": "ice_screen",
+        "duracion": 5000
+      },
+      "existing": [
+        {
+          "id": "nivor-boreal",
+          "name": "Soberano Boreal",
+          "poses": [
+            "base",
+            "ataque",
+            "impacto",
+            "vuelo",
+            "descenso-alto",
+            "descenso-bajo",
+            "frontal"
+          ],
+          "files": [
+            "./assets/images/trajes/nivor-boreal-anciano-v1.png",
+            "./assets/images/trajes/nivor-boreal-ataque-v1.png",
+            "./assets/images/trajes/nivor-boreal-base-v1.png",
+            "./assets/images/trajes/nivor-boreal-descenso-alto-v1.png",
+            "./assets/images/trajes/nivor-boreal-descenso-bajo-v1.png",
+            "./assets/images/trajes/nivor-boreal-envejecido-v1.png",
+            "./assets/images/trajes/nivor-boreal-final-v1.png",
+            "./assets/images/trajes/nivor-boreal-frontal-v1.png",
+            "./assets/images/trajes/nivor-boreal-impacto-v1.png",
+            "./assets/images/trajes/nivor-boreal-mano-v1.png",
+            "./assets/images/trajes/nivor-boreal-planta-v1.png",
+            "./assets/images/trajes/nivor-boreal-vidrio-v1.png",
+            "./assets/images/trajes/nivor-boreal-vuelo-v1.png"
+          ]
+        }
+      ],
+      "id": "nivor-amatista",
+      "name": "Monarca de la Geoda",
+      "direction": "Ancient geode sovereign: translucent amethyst crystal crown and shoulder geodes, dark graphite stone bands, pale lavender mineral facets and tiny white quartz inlays. Preserve Nivor original icy dragon anatomy, wing membranes, silhouette and face. No sapphire-silver aurora armor. Purple crystal accents attached securely, no floating pieces.",
+      "poses": [
+        {
+          "pose": "base",
+          "source": "assets/images/personajes/versus/dragon-hielo-base.png",
+          "width": 1023,
+          "height": 1537,
+          "bounds": {
+            "x": 9,
+            "y": 163,
+            "width": 1002,
+            "height": 1212,
+            "foot": 1374
+          },
+          "bytes": 1710472
+        },
+        {
+          "pose": "ataque",
+          "source": "assets/images/personajes/versus/dragon-hielo-ataque-v2.png",
+          "width": 1402,
+          "height": 1122,
+          "bounds": {
+            "x": 50,
+            "y": 130,
+            "width": 1139,
+            "height": 895,
+            "foot": 1024
+          },
+          "bytes": 1232706
+        },
+        {
+          "pose": "vuelo",
+          "source": "assets/images/personajes/versus/dragon-hielo-vuelo.png",
+          "width": 1537,
+          "height": 1023,
+          "bounds": {
+            "x": 36,
+            "y": 142,
+            "width": 1483,
+            "height": 745,
+            "foot": 886
+          },
+          "bytes": 1108249
+        },
+        {
+          "pose": "aleteo-alto",
+          "source": "assets/images/personajes/versus/dragon-hielo-aleteo-alto.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 151,
+            "y": 26,
+            "width": 1159,
+            "height": 890,
+            "foot": 915
+          },
+          "bytes": 908668
+        },
+        {
+          "pose": "aleteo-bajo",
+          "source": "assets/images/personajes/versus/dragon-hielo-aleteo-bajo.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 41,
+            "y": 136,
+            "width": 1444,
+            "height": 772,
+            "foot": 907
+          },
+          "bytes": 995777
+        },
+        {
+          "pose": "descenso-alto",
+          "source": "assets/images/personajes/versus/dragon-hielo-aterrizaje-alto-v2.png",
+          "width": 1024,
+          "height": 1024,
+          "bounds": {
+            "x": 202,
+            "y": 23,
+            "width": 609,
+            "height": 970,
+            "foot": 992
+          },
+          "bytes": 780652
+        },
+        {
+          "pose": "descenso-bajo",
+          "source": "assets/images/personajes/versus/dragon-hielo-aterrizaje-bajo-v2.png",
+          "width": 1024,
+          "height": 1024,
+          "bounds": {
+            "x": 31,
+            "y": 340,
+            "width": 983,
+            "height": 651,
+            "foot": 990
+          },
+          "bytes": 659837
+        },
+        {
+          "pose": "frontal",
+          "source": "assets/images/personajes/versus/dragon-hielo-frontal-alas.png",
+          "width": 1254,
+          "height": 1254,
+          "bounds": {
+            "x": 20,
+            "y": 23,
+            "width": 1206,
+            "height": 1213,
+            "foot": 1235
+          },
+          "bytes": 1288238
+        },
+        {
+          "pose": "final",
+          "source": "assets/images/personajes/versus/dragon-hielo-victoria.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 14,
+            "y": 220,
+            "width": 995,
+            "height": 1157,
+            "foot": 1376
+          },
+          "bytes": 1741549
+        },
+        {
+          "pose": "impacto",
+          "source": "assets/images/personajes/versus/dragon-hielo-impacto.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 10,
+            "y": 234,
+            "width": 992,
+            "height": 1091,
+            "foot": 1324
+          },
+          "bytes": 1477915
+        },
+        {
+          "pose": "planta",
+          "source": "assets/images/personajes/versus/carnivora-devorando-dragon-hielo.png",
+          "width": 1672,
+          "height": 941,
+          "bounds": {
+            "x": 90,
+            "y": 42,
+            "width": 1367,
+            "height": 887,
+            "foot": 928
+          },
+          "bytes": 1255169
+        },
+        {
+          "pose": "mano",
+          "source": "assets/images/personajes/versus/mano-abismo-atrapa-dragon-hielo.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 329,
+            "y": 47,
+            "width": 859,
+            "height": 962,
+            "foot": 1008
+          },
+          "bytes": 1243076
+        },
+        {
+          "pose": "vidrio",
+          "source": "assets/images/personajes/versus/dragon-hielo-pantalla-rota-kalamo-v1.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1536,
+            "height": 1024,
+            "foot": 1023
+          },
+          "bytes": 4186357
+        },
+        {
+          "pose": "envejecido",
+          "source": "assets/images/personajes/versus/dragon-hielo-envejecido-kairos-v1.png",
+          "width": 1023,
+          "height": 1537,
+          "bounds": {
+            "x": 8,
+            "y": 121,
+            "width": 1010,
+            "height": 1261,
+            "foot": 1381
+          },
+          "bytes": 2145487
+        },
+        {
+          "pose": "anciano",
+          "source": "assets/images/personajes/versus/dragon-hielo-anciano-kairos-v1.png",
+          "width": 1023,
+          "height": 1537,
+          "bounds": {
+            "x": 29,
+            "y": 329,
+            "width": 981,
+            "height": 1015,
+            "foot": 1343
+          },
+          "bytes": 1782001
+        }
+      ]
+    },
+    {
+      "character": "azrak",
+      "hero": "Azrak",
+      "attack": "corte-infernal",
+      "final": "eclipse-infernal",
+      "ability": {
+        "nombre": "Calavera Ígnea",
+        "icono": "💀",
+        "efecto": "forced_miss",
+        "duracion": 0
+      },
+      "existing": [
+        {
+          "id": "azrak-eclipse",
+          "name": "Señor del Eclipse",
+          "poses": [
+            "base",
+            "ataque",
+            "impacto",
+            "invocacion",
+            "susto"
+          ],
+          "files": [
+            "./assets/images/trajes/azrak-eclipse-anciano-v1.png",
+            "./assets/images/trajes/azrak-eclipse-ataque-v1.png",
+            "./assets/images/trajes/azrak-eclipse-base-v1.png",
+            "./assets/images/trajes/azrak-eclipse-envejecido-v1.png",
+            "./assets/images/trajes/azrak-eclipse-final-v1.png",
+            "./assets/images/trajes/azrak-eclipse-impacto-v1.png",
+            "./assets/images/trajes/azrak-eclipse-invocacion-v1.png",
+            "./assets/images/trajes/azrak-eclipse-mano-v1.png",
+            "./assets/images/trajes/azrak-eclipse-planta-v1.png",
+            "./assets/images/trajes/azrak-eclipse-susto-v1.png",
+            "./assets/images/trajes/azrak-eclipse-vidrio-v1.png"
+          ]
+        }
+      ],
+      "id": "azrak-brasa",
+      "name": "Soberano de la Brasa Blanca",
+      "direction": "White-ember infernal regalia: bone ceramic segmented armor with soot-black joints, aged red-copper edges, restrained hot white cracks, charcoal cape lined burnt orange, bone blade with white ember core. Preserve Azrak horns, demonic face, stature and sword pose. No obsidian-purple eclipse armor.",
+      "poses": [
+        {
+          "pose": "base",
+          "source": "assets/images/personajes/versus/azrak-base.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 107,
+            "y": 65,
+            "width": 806,
+            "height": 1366,
+            "foot": 1430
+          },
+          "bytes": 1150870
+        },
+        {
+          "pose": "ataque",
+          "source": "assets/images/personajes/versus/azrak-ataque.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 42,
+            "y": 88,
+            "width": 934,
+            "height": 1277,
+            "foot": 1364
+          },
+          "bytes": 1072091
+        },
+        {
+          "pose": "invocacion",
+          "source": "assets/images/personajes/versus/azrak-invocacion-portal.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 77,
+            "y": 43,
+            "width": 858,
+            "height": 1408,
+            "foot": 1450
+          },
+          "bytes": 1265521
+        },
+        {
+          "pose": "susto",
+          "source": "assets/images/personajes/versus/azrak-susto-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 7,
+            "y": 153,
+            "width": 1009,
+            "height": 1043,
+            "foot": 1195
+          },
+          "bytes": 1900791
+        },
+        {
+          "pose": "final",
+          "source": "assets/images/personajes/versus/azrak-victoria.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 93,
+            "y": 84,
+            "width": 862,
+            "height": 1360,
+            "foot": 1443
+          },
+          "bytes": 1162185
+        },
+        {
+          "pose": "impacto",
+          "source": "assets/images/personajes/versus/azrak-impacto.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 58,
+            "y": 120,
+            "width": 899,
+            "height": 1305,
+            "foot": 1424
+          },
+          "bytes": 1163013
+        },
+        {
+          "pose": "planta",
+          "source": "assets/images/personajes/versus/carnivora-devorando-azrak.png",
+          "width": 1672,
+          "height": 941,
+          "bounds": {
+            "x": 218,
+            "y": 40,
+            "width": 1315,
+            "height": 861,
+            "foot": 900
+          },
+          "bytes": 1100309
+        },
+        {
+          "pose": "mano",
+          "source": "assets/images/personajes/versus/mano-abismo-atrapa-azrak.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 330,
+            "y": 42,
+            "width": 857,
+            "height": 966,
+            "foot": 1007
+          },
+          "bytes": 1187321
+        },
+        {
+          "pose": "vidrio",
+          "source": "assets/images/personajes/versus/azrak-pantalla-rota-kalamo-v1.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1528,
+            "height": 1024,
+            "foot": 1023
+          },
+          "bytes": 3510415
+        },
+        {
+          "pose": "envejecido",
+          "source": "assets/images/personajes/versus/azrak-envejecido-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 106,
+            "y": 66,
+            "width": 806,
+            "height": 1365,
+            "foot": 1430
+          },
+          "bytes": 1366553
+        },
+        {
+          "pose": "anciano",
+          "source": "assets/images/personajes/versus/azrak-anciano-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 216,
+            "y": 69,
+            "width": 727,
+            "height": 1383,
+            "foot": 1451
+          },
+          "bytes": 1300142
+        }
+      ]
+    },
+    {
+      "character": "kalamo",
+      "hero": "Kálamo",
+      "attack": "latigazo-tinta",
+      "final": "libro-palabras-perdidas",
+      "ability": {
+        "nombre": "Bestia del Tintero",
+        "icono": "🦏",
+        "efecto": "key_theft",
+        "duracion": 5000
+      },
+      "existing": [
+        {
+          "id": "kalamo-astral",
+          "name": "Escriba Astral",
+          "poses": [
+            "base",
+            "ataque",
+            "habilidad",
+            "impacto",
+            "alcanza",
+            "extrae",
+            "prepara",
+            "lanza",
+            "golpea",
+            "formacion-1",
+            "formacion-2",
+            "formacion-3"
+          ],
+          "files": [
+            "./assets/images/trajes/kalamo-astral-alcanza-v1.png",
+            "./assets/images/trajes/kalamo-astral-anciano-v1.png",
+            "./assets/images/trajes/kalamo-astral-ataque-v1.png",
+            "./assets/images/trajes/kalamo-astral-base-v1.png",
+            "./assets/images/trajes/kalamo-astral-envejecido-v1.png",
+            "./assets/images/trajes/kalamo-astral-extrae-v1.png",
+            "./assets/images/trajes/kalamo-astral-final-v1.png",
+            "./assets/images/trajes/kalamo-astral-formacion-1-v1.png",
+            "./assets/images/trajes/kalamo-astral-formacion-2-v1.png",
+            "./assets/images/trajes/kalamo-astral-formacion-3-v1.png",
+            "./assets/images/trajes/kalamo-astral-golpea-v1.png",
+            "./assets/images/trajes/kalamo-astral-habilidad-v1.png",
+            "./assets/images/trajes/kalamo-astral-impacto-v1.png",
+            "./assets/images/trajes/kalamo-astral-lanza-v1.png",
+            "./assets/images/trajes/kalamo-astral-mano-v1.png",
+            "./assets/images/trajes/kalamo-astral-planta-v1.png",
+            "./assets/images/trajes/kalamo-astral-prepara-v1.png",
+            "./assets/images/trajes/kalamo-astral-vidrio-v1.png"
+          ]
+        }
+      ],
+      "id": "kalamo-cartografo",
+      "name": "Maestro de las Mil Tintas",
+      "direction": "Radiant master of a thousand inks: a richly saturated turquoise tailored coat with coral-red layered inner panels and violet sash, lapis-blue sleeves, bright gold pen-nib buttons and elegant gold edging. Original curled parchment hat silhouette becomes painted turquoise and coral with gilded scroll edges and a violet feather flourish. Vibrant cyan, magenta and amber ribbons flow within his existing four ink tentacles; keep all original quill and book endpoints. Jewel-like colorful details, cheerful mischievous face, polished prestigious Tower-champion look. Preserve Kálamo's original face, brown hair, exact body proportions, pose and inky-paper mage identity. Avoid beige-dominant maps, drab sepia, navy/silver stars, random rainbow armor or more limbs.",
+      "poses": [
+        {
+          "pose": "base",
+          "source": "assets/images/personajes/versus/kalamo-base.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 40,
+            "y": 48,
+            "width": 935,
+            "height": 1393,
+            "foot": 1440
+          },
+          "bytes": 2451620
+        },
+        {
+          "pose": "ataque",
+          "source": "assets/images/personajes/versus/kalamo-ataque.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 17,
+            "y": 210,
+            "width": 976,
+            "height": 1140,
+            "foot": 1349
+          },
+          "bytes": 2038052
+        },
+        {
+          "pose": "habilidad",
+          "source": "assets/images/personajes/versus/kalamo-habilidad.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 36,
+            "y": 144,
+            "width": 966,
+            "height": 1274,
+            "foot": 1417
+          },
+          "bytes": 2210293
+        },
+        {
+          "pose": "alcanza",
+          "source": "assets/images/personajes/versus/kalamo-final-alcanza-libro.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 28,
+            "y": 157,
+            "width": 1467,
+            "height": 743,
+            "foot": 899
+          },
+          "bytes": 2061654
+        },
+        {
+          "pose": "extrae",
+          "source": "assets/images/personajes/versus/kalamo-final-extrae-armas.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 46,
+            "y": 107,
+            "width": 1424,
+            "height": 863,
+            "foot": 969
+          },
+          "bytes": 2384443
+        },
+        {
+          "pose": "prepara",
+          "source": "assets/images/personajes/versus/kalamo-final-prepara-golpe-v1.png",
+          "width": 1586,
+          "height": 992,
+          "bounds": {
+            "x": 120,
+            "y": 48,
+            "width": 1311,
+            "height": 879,
+            "foot": 926
+          },
+          "bytes": 2768473
+        },
+        {
+          "pose": "lanza",
+          "source": "assets/images/personajes/versus/kalamo-final-lanza-explorador-v1.png",
+          "width": 1586,
+          "height": 992,
+          "bounds": {
+            "x": 18,
+            "y": 19,
+            "width": 1552,
+            "height": 922,
+            "foot": 940
+          },
+          "bytes": 3037076
+        },
+        {
+          "pose": "golpea",
+          "source": "assets/images/personajes/versus/kalamo-final-golpe-impulso.png",
+          "width": 1672,
+          "height": 941,
+          "bounds": {
+            "x": 2,
+            "y": 39,
+            "width": 1647,
+            "height": 850,
+            "foot": 888
+          },
+          "bytes": 3147517
+        },
+        {
+          "pose": "formacion-1",
+          "source": "assets/images/personajes/versus/kalamo-entrada-formacion-1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 26,
+            "y": 63,
+            "width": 970,
+            "height": 1407,
+            "foot": 1469
+          },
+          "bytes": 2482140
+        },
+        {
+          "pose": "formacion-2",
+          "source": "assets/images/personajes/versus/kalamo-entrada-formacion-2.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 37,
+            "y": 89,
+            "width": 930,
+            "height": 1416,
+            "foot": 1504
+          },
+          "bytes": 2183804
+        },
+        {
+          "pose": "formacion-3",
+          "source": "assets/images/personajes/versus/kalamo-entrada-formacion-3.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 40,
+            "y": 89,
+            "width": 945,
+            "height": 1393,
+            "foot": 1481
+          },
+          "bytes": 2327389
+        },
+        {
+          "pose": "final",
+          "source": "assets/images/personajes/versus/kalamo-victoria.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 63,
+            "y": 35,
+            "width": 864,
+            "height": 1419,
+            "foot": 1453
+          },
+          "bytes": 2307095
+        },
+        {
+          "pose": "impacto",
+          "source": "assets/images/personajes/versus/kalamo-impacto.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 67,
+            "y": 113,
+            "width": 876,
+            "height": 1267,
+            "foot": 1379
+          },
+          "bytes": 2177718
+        },
+        {
+          "pose": "planta",
+          "source": "assets/images/personajes/versus/carnivora-devorando-kalamo.png",
+          "width": 1672,
+          "height": 941,
+          "bounds": {
+            "x": 186,
+            "y": 40,
+            "width": 1358,
+            "height": 888,
+            "foot": 927
+          },
+          "bytes": 1987080
+        },
+        {
+          "pose": "mano",
+          "source": "assets/images/personajes/versus/mano-abismo-atrapa-kalamo.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 86,
+            "y": 74,
+            "width": 855,
+            "height": 1352,
+            "foot": 1425
+          },
+          "bytes": 2421249
+        },
+        {
+          "pose": "vidrio",
+          "source": "assets/images/personajes/versus/kalamo-pantalla-rota-kalamo-v1.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 3,
+            "y": 0,
+            "width": 1523,
+            "height": 1024,
+            "foot": 1023
+          },
+          "bytes": 3990801
+        },
+        {
+          "pose": "envejecido",
+          "source": "assets/images/personajes/versus/kalamo-envejecido-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 51,
+            "y": 42,
+            "width": 927,
+            "height": 1402,
+            "foot": 1443
+          },
+          "bytes": 2286196
+        },
+        {
+          "pose": "anciano",
+          "source": "assets/images/personajes/versus/kalamo-anciano-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 41,
+            "y": 161,
+            "width": 948,
+            "height": 1294,
+            "foot": 1454
+          },
+          "bytes": 2145025
+        }
+      ]
+    },
+    {
+      "character": "kairos",
+      "hero": "Kairós",
+      "attack": "aguja-tiempo",
+      "final": "siglos-en-un-segundo",
+      "ability": {
+        "nombre": "Robo de instantes",
+        "icono": "⏳",
+        "efecto": "time_steal",
+        "duracion": 0,
+        "segundos": 20
+      },
+      "existing": [
+        {
+          "id": "kairos-real",
+          "name": "Relojero Real",
+          "poses": [
+            "base",
+            "ataque",
+            "impacto"
+          ],
+          "files": [
+            "./assets/images/trajes/kairos-real-anciano-v1.png",
+            "./assets/images/trajes/kairos-real-ataque-v1.png",
+            "./assets/images/trajes/kairos-real-base-v1.png",
+            "./assets/images/trajes/kairos-real-envejecido-v1.png",
+            "./assets/images/trajes/kairos-real-impacto-v1.png",
+            "./assets/images/trajes/kairos-real-mano-v1.png",
+            "./assets/images/trajes/kairos-real-planta-v1.png",
+            "./assets/images/trajes/kairos-real-vidrio-v1.png"
+          ]
+        }
+      ],
+      "id": "kairos-clepsidra",
+      "name": "Maestro de la Clepsidra",
+      "direction": "Water-clock chronomancer: oxidized verdigris framework, sand-colored layered coat, clear turquoise water-clock vessels built into belt and staff, dark brown gloves and brass hourglass clasps. Preserve Kairós face, age, hair, body proportions and silhouette. No golden gear royal coat, no generic full armor.",
+      "poses": [
+        {
+          "pose": "seleccion",
+          "source": "assets/images/personajes/versus/kairos-seleccion-v2.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 86,
+            "y": 113,
+            "width": 822,
+            "height": 1267,
+            "foot": 1379
+          },
+          "bytes": 1361920
+        },
+        {
+          "pose": "base",
+          "source": "assets/images/personajes/versus/kairos-combate-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 69,
+            "y": 130,
+            "width": 866,
+            "height": 1273,
+            "foot": 1402
+          },
+          "bytes": 1476493
+        },
+        {
+          "pose": "ataque",
+          "source": "assets/images/personajes/versus/kairos-ataque-v2.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 187,
+            "y": 71,
+            "width": 1130,
+            "height": 884,
+            "foot": 954
+          },
+          "bytes": 1453054
+        },
+        {
+          "pose": "impacto",
+          "source": "assets/images/personajes/versus/kairos-impacto-duelo-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 62,
+            "y": 59,
+            "width": 951,
+            "height": 1368,
+            "foot": 1426
+          },
+          "bytes": 2148378
+        },
+        {
+          "pose": "planta",
+          "source": "assets/images/personajes/versus/carnivora-devorando-kairos-v1.png",
+          "width": 1671,
+          "height": 941,
+          "bounds": {
+            "x": 188,
+            "y": 37,
+            "width": 1284,
+            "height": 897,
+            "foot": 933
+          },
+          "bytes": 1186397
+        },
+        {
+          "pose": "mano",
+          "source": "assets/images/personajes/versus/mano-abismo-atrapa-kairos-escena-v1.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1536,
+            "height": 1024,
+            "foot": 1023
+          },
+          "bytes": 2820051
+        },
+        {
+          "pose": "vidrio",
+          "source": "assets/images/personajes/versus/kairos-cara-vidrio-kalamo-v2.png",
+          "width": 1536,
+          "height": 1024,
+          "bounds": {
+            "x": 16,
+            "y": 11,
+            "width": 1510,
+            "height": 1006,
+            "foot": 1016
+          },
+          "bytes": 2704258
+        },
+        {
+          "pose": "envejecido",
+          "source": "assets/images/personajes/versus/kairos-envejecido-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 56,
+            "y": 114,
+            "width": 906,
+            "height": 1325,
+            "foot": 1438
+          },
+          "bytes": 1736862
+        },
+        {
+          "pose": "anciano",
+          "source": "assets/images/personajes/versus/kairos-anciano-kairos-v1.png",
+          "width": 1024,
+          "height": 1536,
+          "bounds": {
+            "x": 136,
+            "y": 134,
+            "width": 751,
+            "height": 1295,
+            "foot": 1428
+          },
+          "bytes": 1736516
+        }
+      ]
+    }
+  ],
+  "requiredImages": 114
+}

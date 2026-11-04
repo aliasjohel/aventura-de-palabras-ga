@@ -5,14 +5,18 @@
   const DEVELOPMENT_OUTFIT_PREVIEW = true;
   const poses = ['base','preparacion','ataque','habilidad','impacto','final','planta','mano','vidrio','envejecido','anciano'];
   // Separate from CosmeticStore.catalog and CostumeResources: no ownership or RPC ID.
-  const catalog = Object.freeze([Object.freeze({id:'aren-campeon',character:'explorador',name:'Campeón del Último Piso',poses:Object.freeze(poses)})]);
+  const catalog = Object.freeze([Object.freeze({id:'aren-campeon',character:'explorador',hero:'Aren',name:'Campeón del Último Piso',poses:Object.freeze(poses)}),...(globalThis.TowerOutfitArtwork||[]).map(item=>Object.freeze({...item,poses:Object.freeze(Object.keys(item.assets))}))]);
   let selected = null, account = null, generation = 0;
   const loaded = new Map();
+  // Keep the worker's optional file cache, but release decoded Image references
+  // from other outfits when switching. Ten complete sets must not stay in RAM.
+  function releaseDecoded(){const prefix=selected?'assets/images/tower-preview/'+selected.id+'-':null;for(const src of loaded.keys())if(!prefix||!src.startsWith(prefix))loaded.delete(src);}
   const identity = () => { try { return globalThis.CosmeticStore?.read().accountId || null; } catch (_) { return null; } };
   const current = character => DEVELOPMENT_OUTFIT_PREVIEW && selected?.character === character && account === identity() && globalThis.CosmeticStore?.read().equipped[character]!=='aren-union' ? selected : null;
-  const path = (item,pose) => 'assets/images/tower-preview/'+item.id+'-'+(item.poses.includes(pose)?pose:'base')+'-v1.webp';
+  const path = (item,pose) => item.assets ? item.assets[pose]||null : 'assets/images/tower-preview/'+item.id+'-'+(item.poses.includes(pose)?pose:'base')+'-v1.webp';
   const asset = (character,pose='base') => { const item=current(character);return item?path(item,pose):null; };
-  const combat = character => {const item=current(character);return item?item.poses.slice(0,5).map(p=>path(item,p)):[];};
+  const combat = character => {const item=current(character);return item?(item.combat||item.poses.slice(0,5)).map(p=>path(item,p)).filter(Boolean):[];};
+  const source = (character,original,herido=false) => {const item=current(character);return item?.sourceMap?(herido?item.assets.impacto:item.sourceMap[original])||null:null;};
   async function prepare(paths) {
     if(!paths.length)return;
     const missing=paths.filter(src=>!loaded.has(src));
@@ -24,11 +28,12 @@
   }
   async function prepareFinal(winner,victim,player) {
     if(!current(player))return;
-    const wanted=winner===player?['final']:victim!==player?[]:winner==='guardiana'?['planta']:winner==='azrak'?['mano']:winner==='kalamo'?['vidrio']:winner==='kairos'?['envejecido','anciano']:['base','impacto'];
-    await prepare(wanted.map(p=>asset(player,p)).filter(Boolean));
+    const item=current(player);
+    const wanted=winner===player?(item.finals||['final']):victim!==player?[]:winner==='guardiana'?['base','impacto','planta']:winner==='azrak'?['base','impacto','mano']:winner==='kalamo'?['base','impacto','vidrio']:winner==='kairos'?['base','envejecido','anciano']:['base','impacto','impacto-tronco'];
+    try{await prepare(wanted.map(p=>asset(player,p)).filter(Boolean));}finally{releaseDecoded();}
   }
   function changed(){globalThis.dispatchEvent(new Event('tower-outfit-preview-changed'));render();}
-  function reset(){generation++;selected=null;account=null;changed();}
+  function reset(){generation++;selected=null;account=null;loaded.clear();changed();}
   async function select(id) {
     if(!DEVELOPMENT_OUTFIT_PREVIEW)return false;
     if(!id){reset();return true;}
@@ -36,14 +41,14 @@
     // Aren Union is a different server-authorized character with its own effects.
     if(globalThis.CosmeticStore?.read().equipped[item.character]==='aren-union')throw Error(labels().union);
     const version=++generation,owner=identity();
-    await prepare(item.poses.slice(0,5).map(p=>path(item,p)));
-    if(version!==generation||owner!==identity())return false;
-    selected=item;account=owner;changed();return true;
+    try{await prepare((item.combat||item.poses.slice(0,5)).map(p=>path(item,p)).filter(Boolean));}catch(error){releaseDecoded();throw error;}
+    if(version!==generation||owner!==identity()){releaseDecoded();return false;}
+    selected=item;account=owner;releaseDecoded();changed();return true;
   }
   const translations={
-    es:{title:'Trajes de Torre · Prueba visual',help:'Acceso temporal de desarrollo. No agrega premios ni cambia tu inventario. La selección se borra al recargar o cambiar de cuenta.',choose:'Traje de prueba',off:'Desactivado · Usar mi traje habitual',on:'Aren · Campeón del Último Piso',apply:'Aplicar a esta sesión',busy:'Preparando cinco poses…',ready:'Aren Campeón activo en esta sesión.',inactive:'Prueba visual desactivada.',scope:'Se aplica a Aren en combates de Aventura, Torre y Versus. En Multijugador solo cambia tu vista: el rival ve tu traje habitual. No cambia habilidades ni reglas.',union:'Desactivá Aren Unión antes de probar el traje de Aren normal.',failed:'No se pudo preparar el traje. Reintentá con conexión.'},
-    en:{title:'Tower outfits · Visual playtest',help:'Temporary development access. No rewards or inventory changes. Selection resets on reload or account change.',choose:'Test outfit',off:'Off · Use my usual outfit',on:'Aren · Champion of the Final Floor',apply:'Apply for this session',busy:'Preparing five poses…',ready:'Champion Aren is active for this session.',inactive:'Visual playtest is off.',scope:'Applies to Aren in Adventure, Tower and Versus battles. In Multiplayer only your view changes: opponents see your usual outfit. Abilities and rules stay the same.',union:'Turn off Aren Union before testing the normal Aren outfit.',failed:'Could not prepare the outfit. Retry with a connection.'},
-    'pt-BR':{title:'Trajes da Torre · Teste visual',help:'Acesso temporário de desenvolvimento. Não concede prêmios nem altera o inventário. A seleção é apagada ao recarregar ou trocar de conta.',choose:'Traje de teste',off:'Desativado · Usar meu traje habitual',on:'Aren · Campeão do Último Andar',apply:'Aplicar nesta sessão',busy:'Preparando cinco poses…',ready:'Aren Campeão ativo nesta sessão.',inactive:'Teste visual desativado.',scope:'Aplica-se a Aren nos combates de Aventura, Torre e Versus. No Multijogador só muda sua visão: o rival vê seu traje habitual. Não altera habilidades nem regras.',union:'Desative Aren União antes de testar o traje de Aren normal.',failed:'Não foi possível preparar o traje. Tente novamente com conexão.'}
+    es:{title:'Trajes de Torre · Prueba visual',help:'Acceso temporal de desarrollo. No agrega premios ni cambia tu inventario. La selección se borra al recargar o cambiar de cuenta.',choose:'Traje de prueba',off:'Desactivado · Usar mi traje habitual',on:'Aren · Campeón del Último Piso',apply:'Aplicar a esta sesión',busy:'Preparando las poses de combate…',ready:'Traje de Torre activo en esta sesión.',inactive:'Prueba visual desactivada.',scope:'Se aplica al personaje elegido en combates de Aventura, Torre y Versus. En Multijugador solo cambia tu vista: el rival ve tu traje habitual. No cambia habilidades ni reglas.',union:'Desactivá Aren Unión antes de probar el traje de Aren normal.',failed:'No se pudo preparar el traje. Reintentá con conexión.'},
+    en:{title:'Tower outfits · Visual playtest',help:'Temporary development access. No rewards or inventory changes. Selection resets on reload or account change.',choose:'Test outfit',off:'Off · Use my usual outfit',on:'Aren · Champion of the Final Floor',apply:'Apply for this session',busy:'Preparing combat poses…',ready:'Tower outfit is active for this session.',inactive:'Visual playtest is off.',scope:'Applies to the selected character in Adventure, Tower and Versus battles. In Multiplayer only your view changes: opponents see your usual outfit. Abilities and rules stay the same.',union:'Turn off Aren Union before testing the normal Aren outfit.',failed:'Could not prepare the outfit. Retry with a connection.'},
+    'pt-BR':{title:'Trajes da Torre · Teste visual',help:'Acesso temporário de desenvolvimento. Não concede prêmios nem altera o inventário. A seleção é apagada ao recarregar ou trocar de conta.',choose:'Traje de teste',off:'Desativado · Usar meu traje habitual',on:'Aren · Campeão do Último Andar',apply:'Aplicar nesta sessão',busy:'Preparando as poses de combate…',ready:'Traje da Torre ativo nesta sessão.',inactive:'Teste visual desativado.',scope:'Aplica-se ao personagem escolhido nos combates de Aventura, Torre e Versus. No Multijogador só muda sua visão: o rival vê seu traje habitual. Não altera habilidades nem regras.',union:'Desative Aren União antes de testar o traje de Aren normal.',failed:'Não foi possível preparar o traje. Tente novamente com conexão.'}
   };
   const labels=()=>translations[globalThis.I18n?.language]||translations.es;
   let section,selector,status,button;
@@ -55,14 +60,14 @@
     section.innerHTML='<legend data-preview-label="title"></legend><p data-preview-label="help"></p><label for="towerOutfitPreviewSelect" data-preview-label="choose"></label><select id="towerOutfitPreviewSelect"><option value="" data-preview-label="off"></option></select><button id="towerOutfitPreviewApply" type="button" data-preview-label="apply"></button><p id="towerOutfitPreviewStatus" role="status" aria-live="polite"></p><small data-preview-label="scope"></small>';
     panel.querySelector('.audio-settings')?.before(section);if(!section.isConnected)panel.append(section);
     selector=section.querySelector('select');status=section.querySelector('[role=status]');button=section.querySelector('button');
-    for(const item of catalog){const option=document.createElement('option');option.value=item.id;option.textContent=item.name;if(item.id==='aren-campeon')option.dataset.previewLabel='on';selector.append(option);}
+    for(const item of catalog){const option=document.createElement('option');option.value=item.id;option.textContent=item.hero+' · '+item.name;if(item.id==='aren-campeon')option.dataset.previewLabel='on';selector.append(option);}
     button.onclick=async()=>{const choice=selector.value;button.disabled=true;status.textContent=labels().busy;try{await select(choice);status.textContent=selected?labels().ready:labels().inactive;}catch(e){status.textContent=e.message===labels().union?e.message:labels().failed;}finally{button.disabled=false;selector.value=selected?.id||'';}};
     new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});render();
   }
   // Clear before another account can inherit the session-only visual selection.
   globalThis.addEventListener('wallet-session-ended',reset);
   globalThis.addEventListener('wallet-updated',()=>{if(selected&&(account!==identity()||globalThis.CosmeticStore?.read().equipped[selected.character]==='aren-union'))reset();});
-  globalThis.TowerOutfitPreview=Object.freeze({enabled:DEVELOPMENT_OUTFIT_PREVIEW,catalog,asset,combat,prepareFinal,select,reset,selection:()=>current(selected?.character)?.id||null});
+  globalThis.TowerOutfitPreview=Object.freeze({enabled:DEVELOPMENT_OUTFIT_PREVIEW,catalog,asset,source,combat,prepareFinal,select,reset,stats:()=>({decodedPoses:loaded.size}),selection:()=>current(selected?.character)?.id||null});
   mount();
   // Outfit-specific calibration composes with the existing engine transforms.
   const calibration={base:[37,1443],preparacion:[107,1402],ataque:[104,1359],habilidad:[55,1471],impacto:[66,1465]};

@@ -6528,6 +6528,8 @@ function trajePersonajeVersus(elemento, personaje) {
 }
 function spriteTrajeVersus(elemento, personaje, src, herido=false) {
   if(elemento===personajeVersusUno){
+    const matched=globalThis.TowerOutfitPreview?.source?.(personaje,src,herido);
+    if(matched)return matched;
     const pose=herido?'impacto':src===srcExploradorLupaVersus?'habilidad':src===srcExploradorPreparaBumeran?'preparacion':src===srcExploradorLanzaBumeran?'ataque':'base';
     const visual=globalThis.TowerOutfitPreview?.asset(personaje,pose);
     if(visual)return visual;
@@ -6563,6 +6565,8 @@ function imagenTrajeFinalVersus(personaje,pose,original,victima=true) {
   const lado=victima?(ladoGanadorCinematicaVersus==='jugador'?'rival':'jugador'):ladoGanadorCinematicaVersus;
   const visual=lado==='jugador'&&personaje===personajeJugadorVersus?globalThis.TowerOutfitPreview?.asset(personaje,pose):null;
   if(visual)return visual;
+  const matched=lado==='jugador'&&personaje===personajeJugadorVersus?globalThis.TowerOutfitPreview?.source?.(personaje,original):null;
+  if(matched)return matched;
   return CosmeticStore.asset(trajeFinalVersus(personaje,victima),pose)||original;
 }
 function prepararTrajesFinalVersus(ganador) {
@@ -6592,7 +6596,7 @@ function refrescarTrajesVersus() {
   actualizarPoseCombateVersus(personajeVersusDos);
   for(const button of document.querySelectorAll('button[data-personaje]')) {
     const img=button.querySelector('img'),character=button.dataset.personaje;
-    if(img&&personajesVersus[character])img.src=trajePersonajeVersus(personajeVersusUno,character)==='aren-union'?CosmeticStore.previewAsset('aren-union'):spriteTrajeVersus(personajeVersusUno,character,personajesVersus[character].base);
+    if(img&&personajesVersus[character])img.src=globalThis.TowerOutfitPreview?.asset(character,'seleccion')|| (trajePersonajeVersus(personajeVersusUno,character)==='aren-union'?CosmeticStore.previewAsset('aren-union'):spriteTrajeVersus(personajeVersusUno,character,personajesVersus[character].base));
   }
 }
 for(const id of ['trajePruebaAtacante','trajePruebaVictima'])document.getElementById(id)?.addEventListener('change',()=>{
@@ -6715,7 +6719,7 @@ function observarPoseDanoPersonajeVersus(elemento, obtenerPersonaje) {
     if (!pose && !trajePersonajeVersus(elemento,personaje) && !(elemento===personajeVersusUno&&globalThis.TowerOutfitPreview?.asset(personaje))) return;
     if (recibiendoDano) {
       actualizarPoseCombateVersus(elemento, personaje);
-    } else if ((pose && elemento.src.endsWith(pose)) || elemento.src.includes('/trajes/') || elemento.src.includes('/tower-preview/')) {
+    } else if ((pose && elemento.src.endsWith(pose)) || elemento.src.includes('/trajes/') || elemento.getAttribute('src')===globalThis.TowerOutfitPreview?.asset(personaje,'impacto')) {
       actualizarPoseCombateVersus(elemento, personaje);
     }
   }).observe(elemento, { attributes: true, attributeFilter: ["class"] });
@@ -7093,7 +7097,7 @@ function prepararTrajeEntradaKalamo() {
       const img = marcoVersus.querySelector(`.entrada-tinta-${lado} .entrada-formacion-kalamo-${fase}`);
       if (!img) continue;
       img.dataset.original ||= img.getAttribute('src');
-      img.src = traje ? CosmeticStore.asset(traje, `formacion-${fase}`) : img.dataset.original;
+      img.src = (elemento===personajeVersusUno?globalThis.TowerOutfitPreview?.asset('kalamo',`formacion-${fase}`):null) || (traje ? CosmeticStore.asset(traje, `formacion-${fase}`) : img.dataset.original);
     }
   }
 }
@@ -8946,7 +8950,7 @@ function configurarVictimaFinalVersus(elemento, personaje) {
 function programarReaccionVictimaFinalVersus(elemento, personaje, demora) {
   const clave = configurarVictimaFinalVersus(elemento, personaje);
   const frontal = elemento === victimaTrampaVersus && usaImpactoFrontalGuardianaVersus(clave);
-  const fuente = frontal ? srcGuardianaImpactoTroncoVersus : imagenTrajeFinalVersus(clave,'impacto',posesReaccionVictimaVersus[clave]);
+  const fuente = frontal ? imagenTrajeFinalVersus(clave,'impacto-tronco',srcGuardianaImpactoTroncoVersus) : imagenTrajeFinalVersus(clave,'impacto',posesReaccionVictimaVersus[clave]);
   const secuencia = secuenciaReaccionFinalVersus;
   const precarga = frontal || clave === 'kairos' ? new Image() : null;
   if (precarga) precarga.src = fuente;
