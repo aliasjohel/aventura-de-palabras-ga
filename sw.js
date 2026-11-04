@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v392-tower-character-playtest1`;
+const CACHE_NAME = `${CACHE_PREFIX}v393-tower-pose-fixes1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -220,7 +220,7 @@ const RESOURCE_ASSETS = [
   "./assets/images/tower-preview/guardiana-orquidea-ataque-v1.webp",
   "./assets/images/tower-preview/guardiana-orquidea-final-v1.webp",
   "./assets/images/tower-preview/guardiana-orquidea-impacto-tronco-v1.webp",
-  "./assets/images/tower-preview/guardiana-orquidea-impacto-v1.webp",
+  "./assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
   "./assets/images/tower-preview/guardiana-orquidea-planta-v1.webp",
   "./assets/images/tower-preview/guardiana-orquidea-mano-v1.webp",
   "./assets/images/tower-preview/guardiana-orquidea-vidrio-v1.webp",
@@ -1048,7 +1048,7 @@ const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
 
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
-  "./js/tower-outfit-catalog.js": "sha256-82ea648150f26d9f177516677a11fe6055f023c60578b708001f49ea158f2e7a",
+  "./js/tower-outfit-catalog.js": "sha256-0ddaa2f30f74b3095e3b66993e8c49b28b5f3d180f5b0f968dc07d82a90fbb67",
   "./assets/images/tower-preview/zafir-vitral-base-v1.webp": "sha256-6014269ca1e6008391b5d725fecd4603d960502aebebc855603fcc895e510fa8",
   "./assets/images/tower-preview/zafir-vitral-ataque-v1.webp": "sha256-0db4a539f1b050ae8d6e30524e7fa35e2b7f61448fedfaba7cab1f81af9ba786",
   "./assets/images/tower-preview/zafir-vitral-final-v1.webp": "sha256-0b4ee0fabd4de92f177262880ad5bec8c4b822e0f67c30600574c3804d2eafb6",
@@ -1062,7 +1062,7 @@ const ASSET_REVISIONS = {
   "./assets/images/tower-preview/guardiana-orquidea-ataque-v1.webp": "sha256-70c38570f2bd578c02e64f229dcd65ce413f7c7c9dfbf5dbf720837165403ec8",
   "./assets/images/tower-preview/guardiana-orquidea-final-v1.webp": "sha256-9128657babadcdb8740c94294abe1ce0c905d929fbbf816df8abf552e056ff80",
   "./assets/images/tower-preview/guardiana-orquidea-impacto-tronco-v1.webp": "sha256-8d89429da459d928c54f5fcfee7c7d37c88e1c4d7d31ae380d2cbe765fc822c0",
-  "./assets/images/tower-preview/guardiana-orquidea-impacto-v1.webp": "sha256-57e0249788e2ed71b3f2a6867024067058e8d1a8eb499fc81dcd4d5ca81527cb",
+  "./assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp": "sha256-7e52c533abe9c791ebc0d5a1c4e74fb294888095b803c93319f22efcd255d0f9",
   "./assets/images/tower-preview/guardiana-orquidea-planta-v1.webp": "sha256-1c12bf5bd03be20ce211fcba6c9adec7d562ceefe7085969e15e506bffd8f10b",
   "./assets/images/tower-preview/guardiana-orquidea-mano-v1.webp": "sha256-0a300a8a3a81dd6af80daca4b3c899999bee04455db9bd91da0fa12ad141f96f",
   "./assets/images/tower-preview/guardiana-orquidea-vidrio-v1.webp": "sha256-4a4133b520e75a08b1332b2dd5822a6d251f237742f9180c68725013522f71ea",
@@ -1164,7 +1164,7 @@ const ASSET_REVISIONS = {
   "./assets/images/tower-preview/kairos-clepsidra-envejecido-v1.webp": "sha256-e88f0093829ce932c95a12f8dd80b29a86760974fa26407ef736f1c313443d72",
   "./assets/images/tower-preview/kairos-clepsidra-anciano-v1.webp": "sha256-cc2c2766863810f262d54a6d714b9faf7d889cb83045f73b3c9ca753f3cb7850",
   "./js/tower-outfit-preview.js": "sha256-6ec9f5bd7598283901da68e34ccbf9db18c128829200bec0bd260229eb8f583a",
-  "./css/tower-outfit-preview.css": "sha256-f1e099df64eebe41b153f1e07cb44a157dd23d0d990d38db1969d159f69591ad",
+  "./css/tower-outfit-preview.css": "sha256-aa3909bff465074426b3888d74d1833c6befa5b9675579d201146469e4d2442f",
   "./assets/images/tower-preview/aren-campeon-anciano-v1.webp": "sha256-d3c4bb786276ee70ed297b154b3ac6ed0f0801b4c194d65da6d8a29dfdaaf804",
   "./assets/images/tower-preview/aren-campeon-ataque-v1.webp": "sha256-b63a72cf8932bf88cef50eb7049332c9349416ab4c85225712db425aa6e62e07",
   "./assets/images/tower-preview/aren-campeon-base-v1.webp": "sha256-0ae61f7eaa748cec76ee3ed9bede181b56845356c75f3c20a5a7c600ad5e75f2",
@@ -1185,7 +1185,7 @@ const ASSET_REVISIONS = {
   "./assets/images/ui/menu-button-ranking-v1.webp": "sha256-ab9244074004847b638ea796b9e7792176bdb9ee530b1679a1562047b01a83ab",
   "./assets/images/ui/menu-button-shop-v1.webp": "sha256-6e828e1a47cf7a4c97b635b00e4010d014f5ee5161668cd4bd35c2e19c55a1de",
   "./assets/images/ui/menu-button-settings-v1.webp": "sha256-a7dd3fd0d0105ae2032dde8f81ef3c5586b4f4648f93aa01dc7ae1c8aaa64c4f",
-  "./js/resource-catalog.js": "sha256-b82a5cdf37e3ea3115225b1e4cdfb5204b37cc2d9ddbb8f299ac9d365b66a5bf",
+  "./js/resource-catalog.js": "sha256-cd35fb8705b433063258755b976e5b49dac537cb2d8c4ac6288038a7ee4b31fa",
   "./js/resource-loader.js": "sha256-ed51b00161c62f3017b9459a3aa78797cdc3da62537d9325b1d45ebcf2aadf38",
   "./js/costume-resources.js": "sha256-11448139f739560c5e2e07ac1c01f8f966bb15f042c1c83ca3495ead7a448d38",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
@@ -1494,8 +1494,8 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/miniaturas/marco-xp_infinito-v1.webp": "sha256-7df6d8d229b0b2e828e95ffba3c4a87dfe2841664a5c303dcd80e6ab51097f27",
   "./css/player-xp.css": "sha256-4c9fcdf5db7d3765f6697694dd4c6af32070347e0a378027b65ee9e90a1cde12",
   "./js/public-player-profile.js": "sha256-6664f31217b51181f745a789d507aa8ceda33313b290123de2c8499cb74f8a8b",
-  "./": "sha256-ca869051453ce1d31fa5cc3a15a52fe57b7665c03ea00a444305048573450687",
-  "./index.html": "sha256-ca869051453ce1d31fa5cc3a15a52fe57b7665c03ea00a444305048573450687",
+  "./": "sha256-2a5c0194a81338b63b6efbdcbb98b43ed9492d7b58f81c8ea4a17b1b018017c1",
+  "./index.html": "sha256-2a5c0194a81338b63b6efbdcbb98b43ed9492d7b58f81c8ea4a17b1b018017c1",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-bd8fc848eb4a19dbcf6a6f76dd1d1823d824d5546baa1ac32084e87342a2096e",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",

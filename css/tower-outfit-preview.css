@@ -2,6 +2,10 @@
 #towerOutfitPreview legend{font-weight:bold;color:#f1d29a}#towerOutfitPreview p,#towerOutfitPreview small{font-size:.82rem;line-height:1.45}#towerOutfitPreview label,#towerOutfitPreview select,#towerOutfitPreview small{display:block;margin-top:8px}#towerOutfitPreview select,#towerOutfitPreview button{width:100%;max-width:100%;white-space:normal;min-height:44px}#towerOutfitPreviewStatus{color:#f1d29a}
 .versus-personaje[data-champion-pose]{scale:var(--champion-scale,1);translate:0 var(--champion-y,0px)}
 .tarjeta-personaje-versus img[data-champion-pose]{scale:var(--champion-scale,1);translate:0 var(--champion-y,0px);transform-origin:center bottom}
+/* Roots use the attack drawing, whose crouched canvas needs the same
+   calibration as the wind attack. The ability pulse only animates filters. */
+.versus-personaje-uno.personaje-guardiana.usando-habilidad:where([src*="/tower-preview/guardiana-orquidea-ataque-"]){transform:translateY(13.3%) scale(1.39);transform-origin:50% 80%}
+.versus-personaje-uno.personaje-guardiana.impacto-combate-activo:where([src*="/tower-preview/guardiana-orquidea-impacto-v2"]){transform:none;transform-origin:50% 100%;animation:danoExploradorMagicoVersus 330ms ease-out both}
 #cinematicaFinalVersus .cinematica-explorador-trampa[data-champion-pose="final"]{left:2%;bottom:3%;height:88%;width:46%;object-fit:contain;object-position:center bottom}
 #cinematicaFinalVersus .cinematica-carnivora-devorando[data-champion-pose="planta"]{left:auto;right:2%;bottom:5%;width:62%;height:76%;object-fit:contain;object-position:center bottom;scale:.92;transform-origin:center bottom}
 #cinematicaFinalVersus .azrak-mano-victima[data-champion-pose="mano"]{right:3%;bottom:4%;width:47%;height:87%;object-fit:contain;object-position:center bottom;animation-name:championHandCapture;transform-origin:center bottom}
