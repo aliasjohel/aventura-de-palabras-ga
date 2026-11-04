@@ -2556,8 +2556,15 @@ function cargarPersonajesDesbloqueados() {
   }
 }
 
+function personajeEnPruebaTorre(personaje) {
+  return modoArcadeActivo && adaptadorSalasVersus === adaptadorLocalSalasVersus
+    && !partidaOnlineVersus && !partidaOnlineIniciada
+    && Boolean(globalThis.TowerOutfitPreview?.asset(personaje));
+}
+
 function personajeDisponibleVersus(personaje) {
   if (modoPruebasActivo) return true;
+  if (personajeEnPruebaTorre(personaje)) return true;
   if (globalThis.CharacterStore?.catalog.some(item=>item.id===personaje)) return CharacterStore.owns(personaje);
   if (personaje === "guardiana") return guardianaDesbloqueada;
   if (personaje === "mago") return magoDesbloqueado;
@@ -2623,6 +2630,7 @@ function actualizarDisponibilidadPersonajesVersus({ seleccionBloqueada = false }
           ? 2
           : 1;
       const paid=globalThis.CharacterStore?.catalog.find(item=>item.id===tarjeta.dataset.personaje);
+      if(personajeEnPruebaTorre(tarjeta.dataset.personaje)){estado.textContent=({es:'PRUEBA TEMPORAL',en:'TEMPORARY PLAYTEST','pt-BR':'TESTE TEMPORÁRIO'}[I18n.language]||'PRUEBA TEMPORAL');return;}
       if(paid&&!disponible){estado.textContent=({es:'TIENDA · {n} MONEDAS',en:'SHOP · {n} COINS','pt-BR':'LOJA · {n} MOEDAS'}[I18n.language]||'TIENDA · {n} MONEDAS').replace('{n}',paid.price);return;}
       OnlineUI.text(estado, disponible
         ? "DISPONIBLE"
@@ -2674,6 +2682,7 @@ function obtenerClaveProgresoArcade() {
 }
 
 function leerProgresoArcade() {
+  if (personajeEnPruebaTorre(personajeJugadorVersus)) return 0;
   try {
     return Math.max(0, Number.parseInt(localStorage.getItem(obtenerClaveProgresoArcade()), 10) || 0);
   } catch {
@@ -2683,6 +2692,7 @@ function leerProgresoArcade() {
 
 function guardarProgresoArcade(pisosSuperados) {
   pisosDesbloqueadosArcade = Math.max(pisosDesbloqueadosArcade, pisosSuperados);
+  if (personajeEnPruebaTorre(personajeJugadorVersus)) return;
   try {
     localStorage.setItem(obtenerClaveProgresoArcade(), `${pisosDesbloqueadosArcade}`);
   } catch {
@@ -6610,7 +6620,16 @@ victimaPruebaFaucesVersus.addEventListener('change',()=>{
 });
 window.addEventListener('costume-equipped',refrescarTrajesVersus);
 window.addEventListener('rival-costume-updated',refrescarTrajesVersus);
-window.addEventListener('tower-outfit-preview-changed',refrescarTrajesVersus);
+window.addEventListener('tower-outfit-preview-changed',()=>{
+  if(modoArcadeActivo){
+    if(!personajeDisponibleVersus(personajeJugadorVersus)){
+      detenerRondaVersus();cancelarCinematicaFinalVersus();abrirSeleccionPersonajeVersus();
+    }else if(pantallaSeleccionPersonajeVersus.classList.contains('activa')){
+      actualizarDisponibilidadPersonajesVersus();seleccionarPersonajeVersus(personajeJugadorVersus);
+    }
+  }
+  refrescarTrajesVersus();
+});
 function actualizarPoseCombateVersus(elemento, personaje = elemento === personajeVersusUno ? personajeJugadorVersus : personajeRivalVersus) {
   const poses = posesCombateVersus.get(elemento) || {};
   const herido = elemento.classList.contains("recibiendo-dano") || elemento.classList.contains("recibiendo-dano-magico");

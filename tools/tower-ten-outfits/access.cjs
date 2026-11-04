@@ -1,0 +1,27 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
+const {chromium}=require('C:/Users/User/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const root=path.resolve(__dirname,'../..'),out=path.join(root,'.local-developer/tower-ten-outfits'),live=process.argv.includes('--live');let browser;
+const server=http.createServer((req,res)=>{try{const name=decodeURIComponent(new URL(req.url,'http://local').pathname),file=path.resolve(root,'.'+(name==='/'?'/index.html':name));assert(file.startsWith(root+path.sep));res.setHeader('Content-Type',({'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.webp':'image/webp','.png':'image/png','.svg':'image/svg+xml'})[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file));}catch{res.writeHead(404).end();}});
+(async()=>{try{
+ await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin=live?'https://aliasjohel.github.io/aventura-de-palabras-ga/':'http://127.0.0.1:'+server.address().port+'/';
+ browser=await chromium.launch({channel:'msedge',headless:true});const context=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true,serviceWorkers:'block'}),page=await context.newPage(),errors=[],failed=[],writes=[];
+ page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(origin)&&r.status()>=400)failed.push(r.url());});page.on('request',r=>{if(!['GET','HEAD'].includes(r.method()))writes.push(r.url());});
+ await context.route('**/*',r=>r.request().url().startsWith(origin)?r.continue():r.abort());await page.goto(origin,{waitUntil:'domcontentloaded'});await page.evaluate(()=>I18n.ready);
+ await page.evaluate(()=>{document.getElementById('introOficial')?.remove();document.body.classList.remove('intro-pendiente','menu-fondo-pendiente','menu-entrada');localStorage.setItem('personajesDesbloqueadosAventuraGA',JSON.stringify(['guardiana']));cargarPersonajesDesbloqueados();});
+ const snapshot=()=>page.evaluate(()=>Object.fromEntries(Object.keys(localStorage).filter(k=>/^(progreso|personajes|aventuraTienda|aventuraPersonajes|wallet|ranking|multiplayerXP)/i.test(k)).sort().map(k=>[k,localStorage.getItem(k)])));const before=await snapshot();const rows=[];
+ for(const item of await page.evaluate(()=>TowerOutfitPreview.catalog.map(c=>({id:c.id,character:c.character})))){
+  await page.locator('#btnConfiguracion').click();await page.locator('#towerOutfitPreviewSelect').selectOption(item.id);await page.locator('#towerOutfitPreviewApply').click();await page.waitForFunction(id=>TowerOutfitPreview.selection()===id,item.id);
+  await page.evaluate(()=>cerrarConfiguracion());await page.locator('#btnModosJuego').click();await page.locator('#btnArcade').click();
+  const card=page.locator('.tarjeta-personaje-versus[data-personaje="'+item.character+'"]');assert.equal(await card.isEnabled(),true,item.id);await card.click();await page.evaluate(()=>document.getElementById('elegirTrajeAntesDuelo').close());await page.locator('#btnConfirmarPersonajeVersus').click();
+  assert.equal(await page.evaluate(()=>personajeJugadorVersus),item.character);assert.equal(await page.evaluate(()=>leerProgresoArcade()),0);
+  await page.locator('#btnCombatirArcade').click();await page.waitForFunction(()=>pantallaVersus.classList.contains('activa'));assert((await page.locator('#personajeVersusUno').getAttribute('src')).includes(item.id));
+  await page.evaluate(()=>{guardarProgresoArcade(2);detenerRondaVersus();});assert.deepEqual(await snapshot(),before,'No saved trial progress or ownership for '+item.id);
+  await page.evaluate(()=>salirModoArcade());assert.equal(await page.evaluate(character=>personajeDisponibleVersus(character),item.character),['explorador','guardiana'].includes(item.character),'Normal ownership restored');
+  rows.push(item.id);
+ }
+ // Revoking a borrowed character during combat must stop that trial and restore selection.
+ await page.evaluate(async()=>{await TowerOutfitPreview.select('kalamo-cartografo');iniciarModoArcade();seleccionarPersonajeVersus('kalamo');prepararRecorridoArcade();iniciarCombateArcade();});await page.waitForFunction(()=>pantallaVersus.classList.contains('activa'));await page.evaluate(()=>TowerOutfitPreview.reset());assert.equal(await page.evaluate(()=>personajeJugadorVersus),'explorador');assert.equal(await page.evaluate(()=>pantallaSeleccionPersonajeVersus.classList.contains('activa')),true);
+ assert.deepEqual(await snapshot(),before);await page.reload({waitUntil:'domcontentloaded'});await page.waitForFunction(()=>globalThis.TowerOutfitPreview);assert.equal(await page.evaluate(()=>TowerOutfitPreview.selection()),null);assert.equal(await page.evaluate(()=>personajeDisponibleVersus('kalamo')),false);
+ assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);assert.deepEqual(writes,[]);const result={passed:true,live,onlyGuardianaUnlocked:true,uiSelectedAndEnteredCombat:rows,trialProgressNotPersisted:true,normalOwnershipRestored:true,revocationStopsBorrowedCombat:true,reloadRevokesAccess:true,pageErrors:errors,failedResponses:failed,remoteWrites:writes,physicalAndroidTest:false};fs.writeFileSync(path.join(out,live?'access-live.json':'access.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result));
+ }finally{await browser?.close();server.closeAllConnections();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e.stack);process.exitCode=1;});

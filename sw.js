@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v391-towerten-candidate1`;
+const CACHE_NAME = `${CACHE_PREFIX}v392-tower-character-playtest1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1163,7 +1163,7 @@ const ASSET_REVISIONS = {
   "./assets/images/tower-preview/kairos-clepsidra-vidrio-v1.webp": "sha256-1355c7548085c5639e84a2ce4056a52ff02e90f47bac184f7c4641def511d5cd",
   "./assets/images/tower-preview/kairos-clepsidra-envejecido-v1.webp": "sha256-e88f0093829ce932c95a12f8dd80b29a86760974fa26407ef736f1c313443d72",
   "./assets/images/tower-preview/kairos-clepsidra-anciano-v1.webp": "sha256-cc2c2766863810f262d54a6d714b9faf7d889cb83045f73b3c9ca753f3cb7850",
-  "./js/tower-outfit-preview.js": "sha256-4d2a7633ed2ffb563dcc4cfb679ab91fdfc722b4b987cbccea8c234d1ba2ab2c",
+  "./js/tower-outfit-preview.js": "sha256-6ec9f5bd7598283901da68e34ccbf9db18c128829200bec0bd260229eb8f583a",
   "./css/tower-outfit-preview.css": "sha256-f1e099df64eebe41b153f1e07cb44a157dd23d0d990d38db1969d159f69591ad",
   "./assets/images/tower-preview/aren-campeon-anciano-v1.webp": "sha256-d3c4bb786276ee70ed297b154b3ac6ed0f0801b4c194d65da6d8a29dfdaaf804",
   "./assets/images/tower-preview/aren-campeon-ataque-v1.webp": "sha256-b63a72cf8932bf88cef50eb7049332c9349416ab4c85225712db425aa6e62e07",
@@ -1494,8 +1494,8 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/miniaturas/marco-xp_infinito-v1.webp": "sha256-7df6d8d229b0b2e828e95ffba3c4a87dfe2841664a5c303dcd80e6ab51097f27",
   "./css/player-xp.css": "sha256-4c9fcdf5db7d3765f6697694dd4c6af32070347e0a378027b65ee9e90a1cde12",
   "./js/public-player-profile.js": "sha256-6664f31217b51181f745a789d507aa8ceda33313b290123de2c8499cb74f8a8b",
-  "./": "sha256-890cae737799690753c09eb3f5266ef759760b5a8e5e63729d1838d5ff328e1e",
-  "./index.html": "sha256-890cae737799690753c09eb3f5266ef759760b5a8e5e63729d1838d5ff328e1e",
+  "./": "sha256-ca869051453ce1d31fa5cc3a15a52fe57b7665c03ea00a444305048573450687",
+  "./index.html": "sha256-ca869051453ce1d31fa5cc3a15a52fe57b7665c03ea00a444305048573450687",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-bd8fc848eb4a19dbcf6a6f76dd1d1823d824d5546baa1ac32084e87342a2096e",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1596,7 +1596,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-fe884d5e56091ab3a5adf5a977d393eccece4cd026218ad8e7062a5f1b0419f5",
+  "./js/app.js": "sha256-70e12838d87827b9628473091d48c2f1baf2cf66fe4ee6373f8a56e69f6837bb",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
