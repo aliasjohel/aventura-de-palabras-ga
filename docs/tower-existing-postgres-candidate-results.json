@@ -1,0 +1,122 @@
+{
+  "database": "isolated real PostgreSQL",
+  "syntheticAccounts": 53,
+  "productionWrites": 0,
+  "migration": "20261031183634_tower_authoritative_combat_and_coins.sql",
+  "checks": [
+    "Default rollout and payments OFF; installation preserves every existing table and function",
+    "Empty pilot list fails closed; global activation requires its explicit flag",
+    "New character Tower starts at floor 1; direct RPC skips denied",
+    "Anonymous and unowned characters denied; private state, clock, configuration and ledgers inaccessible",
+    "Server-only outcome, payload validation, ownership, stale sequence and lost-response idempotency",
+    "Winning unlocks next floor before settlement; no cross-character or cross-account progress",
+    "Concurrent settlements, reconnection and replayed floors pay exactly once",
+    "All 11 characters × 10 floors × 3 languages finish through legal letters; cap 110 rewards / 5720 coins",
+    "NPC advances without client moves; server timeout cannot be submitted as a win",
+    "Prepared expiry and abandonment release the active slot without payouts",
+    "All 11 player abilities: authoritative charge, windup, effects and Kairos time subtraction",
+    "A wallet constraint failure rolls back both ledgers atomically; no partial reward survives",
+    "Payment gate preserves verified proof and recovers one credit without replaying gameplay",
+    "Failed wallet credit does not roll back an already verified floor unlock",
+    "All 11 NPC abilities execute on server turns; Azrak delayed error and Nybor cooldown enforced",
+    "Six wrong letters cost a life and add a distinct recovery word without exposing future words",
+    "Simultaneous begins serialize to one active attempt per account",
+    "53 account fixture unchanged; XP, purchases, hints, profiles, progress and other-mode rewards byte-for-byte unchanged; wallet changes exactly the authorized Tower payouts"
+  ],
+  "completedFights": 332,
+  "languageConfigurations": 330,
+  "maximumCoins": 5720,
+  "abilities": [
+    {
+      "character": "explorador",
+      "effect": "hint"
+    },
+    {
+      "character": "mago",
+      "effect": "shuffle"
+    },
+    {
+      "character": "guardiana",
+      "effect": "roots"
+    },
+    {
+      "character": "dragon",
+      "effect": "roar"
+    },
+    {
+      "character": "hombre_lobo",
+      "effect": "invert"
+    },
+    {
+      "character": "guardian_alba",
+      "effect": "key_bounce"
+    },
+    {
+      "character": "dragon_hielo",
+      "effect": "ice_screen"
+    },
+    {
+      "character": "kalamo",
+      "effect": "key_theft"
+    },
+    {
+      "character": "kairos",
+      "effect": "time_steal"
+    },
+    {
+      "character": "t_shadow",
+      "effect": "black_hole"
+    },
+    {
+      "character": "azrak",
+      "effect": "forced_miss"
+    }
+  ],
+  "npcAbilities": [
+    {
+      "rival": "explorador",
+      "effect": "hint"
+    },
+    {
+      "rival": "mago",
+      "effect": "shuffle"
+    },
+    {
+      "rival": "guardiana",
+      "effect": "roots"
+    },
+    {
+      "rival": "dragon",
+      "effect": "roar"
+    },
+    {
+      "rival": "hombre_lobo",
+      "effect": "invert"
+    },
+    {
+      "rival": "guardian_alba",
+      "effect": "key_bounce"
+    },
+    {
+      "rival": "dragon_hielo",
+      "effect": "ice_screen"
+    },
+    {
+      "rival": "kalamo",
+      "effect": "key_theft"
+    },
+    {
+      "rival": "kairos",
+      "effect": "time_steal"
+    },
+    {
+      "rival": "t_shadow",
+      "effect": "black_hole"
+    },
+    {
+      "rival": "azrak",
+      "effect": "forced_miss"
+    }
+  ],
+  "ok": true
+}

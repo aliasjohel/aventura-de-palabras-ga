@@ -51,8 +51,8 @@ test('late literal assignments and cleared statuses cannot be overwritten by a p
 test('known and unknown error notices switch language without changing errors or operations',async()=>{
  const {api,U}=await ui(),node=element(),error=Error('No pudimos leer tus compras. No se cobró ninguna moneda.');
  U.text(node,U.error(error));await api.setPreference('en');assert.equal(node.textContent,'We could not load your purchases. No coins were charged.');assert.equal(error.message,'No pudimos leer tus compras. No se cobró ninguna moneda.');
- await api.setPreference('es');U.text(node,U.error(Error('backend diagnostic'),'errors.publicProfile'));assert.equal(node.textContent,'backend diagnostic');
- await api.setPreference('pt-BR');assert.equal(node.textContent,'Não foi possível carregar este perfil.');await api.setPreference('es');assert.equal(node.textContent,'backend diagnostic');
+ await api.setPreference('es');U.text(node,U.error(Error('backend diagnostic'),'errors.publicProfile'));assert.equal(node.textContent,'No pudimos cargar este perfil.');
+ await api.setPreference('pt-BR');assert.equal(node.textContent,'Não foi possível carregar este perfil.');await api.setPreference('es');assert.equal(node.textContent,'No pudimos cargar este perfil.');
 });
 test('complete catalog failure leaves a usable, exact Spanish dynamic interface',async()=>{
  const {U}=await ui({failed:true}),node=element();U.text(node,U.key('shop.buyPrice',{coins:200}));assert.equal(node.textContent,'Comprar por 200 monedas');

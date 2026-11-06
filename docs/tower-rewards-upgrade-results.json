@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "from": "v394-nivor-lobo-fixes1",
+  "to": "v395-tower-rewards-candidate1",
+  "downloadedFiles": [
+    "css/tower-rewards.css",
+    "index.html",
+    "js/app.js",
+    "js/avatar-rewards.js",
+    "js/game-wallet.js",
+    "js/i18n-es-fallback.js",
+    "js/player-avatar.js",
+    "js/resource-catalog.js",
+    "js/tower-online.js",
+    "js/tower-rewards-ui.js",
+    "js/tower-rewards.js",
+    "js/versus-room-supabase.js",
+    "locales/en/profile.json",
+    "locales/es/profile.json",
+    "locales/pt-BR/profile.json"
+  ],
+  "championImagesDownloadedOnUpdate": 0,
+  "oldVersionActiveUntilActivation": true,
+  "offlineReloadPassed": true,
+  "selectedOutfitCacheFiles": [
+    "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+    "assets/images/tower-preview/zafir-vitral-ataque-v1.webp",
+    "assets/images/tower-preview/zafir-vitral-impacto-v1.webp"
+  ],
+  "cachedOutfitWorksOffline": true,
+  "localBusinessAndSettingsStatePreserved": true,
+  "indexedDBPreserved": true,
+  "previewOffAfterReload": true,
+  "physicalAndroidTest": false,
+  "pageErrors": []
+}

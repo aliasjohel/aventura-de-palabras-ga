@@ -1,0 +1,190 @@
+-- Revela la respuesta solamente después de agotar los seis intentos de una palabra.
+-- El evento final conserva la última jugada para que también se vea la quinta palabra perdida.
+create or replace function public.finish_versus_match(
+  p_match_id uuid,
+  p_reason text
+)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_first public.versus_match_players%rowtype;
+  v_second public.versus_match_players%rowtype;
+  v_winner uuid;
+begin
+  select * into v_first
+  from public.versus_match_players
+  where match_id = p_match_id
+  order by user_id
+  limit 1;
+
+  select * into v_second
+  from public.versus_match_players
+  where match_id = p_match_id
+  order by user_id
+  offset 1 limit 1;
+
+  if v_first.lives > v_second.lives then v_winner := v_first.user_id;
+  elsif v_second.lives > v_first.lives then v_winner := v_second.user_id;
+  elsif v_first.completed_words > v_second.completed_words then v_winner := v_first.user_id;
+  elsif v_second.completed_words > v_first.completed_words then v_winner := v_second.user_id;
+  elsif v_first.score_letters > v_second.score_letters then v_winner := v_first.user_id;
+  elsif v_second.score_letters > v_first.score_letters then v_winner := v_second.user_id;
+  elsif v_first.current_word_index > v_second.current_word_index then v_winner := v_first.user_id;
+  elsif v_second.current_word_index > v_first.current_word_index then v_winner := v_second.user_id;
+  else v_winner := null;
+  end if;
+
+  update public.versus_matches
+  set status = 'finished',
+      winner_id = v_winner,
+      event_sequence = event_sequence + 1,
+      last_event = jsonb_build_object(
+        'type', 'match_finished',
+        'reason', p_reason,
+        'winnerId', v_winner,
+        'previousEvent', last_event
+      ),
+      updated_at = now()
+  where id = p_match_id and status = 'playing';
+end;
+$$;
+
+create or replace function public.play_versus_letter(
+  p_room_id uuid,
+  p_letter text
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_user_id uuid := auth.uid();
+  v_match public.versus_matches%rowtype;
+  v_me public.versus_match_players%rowtype;
+  v_opponent public.versus_match_players%rowtype;
+  v_word text;
+  v_letter text := public.versus_letter_key(btrim(coalesce(p_letter, '')));
+  v_letters text[];
+  v_occurrences integer;
+  v_word_complete boolean;
+  v_event jsonb;
+  v_should_finish boolean;
+begin
+  if char_length(v_letter) <> 1 or v_letter !~ '^[A-ZÑ]$' then
+    raise exception 'La letra enviada no es válida.';
+  end if;
+  if not public.is_versus_room_member(p_room_id) then
+    raise exception 'No perteneces a esta sala.';
+  end if;
+
+  select * into v_match from public.versus_matches
+  where room_id = p_room_id for update;
+  if not found then raise exception 'La partida todavía no fue creada.'; end if;
+  if v_match.status <> 'playing' then return public.get_versus_match_state(p_room_id); end if;
+  if now() >= v_match.deadline_at then
+    perform public.finish_versus_match(v_match.id, 'time');
+    return public.get_versus_match_state(p_room_id);
+  end if;
+  if now() < v_match.started_at then return public.get_versus_match_state(p_room_id); end if;
+
+  select * into v_me from public.versus_match_players
+  where match_id = v_match.id and user_id = v_user_id for update;
+  select * into v_opponent from public.versus_match_players
+  where match_id = v_match.id and user_id <> v_user_id for update;
+  if v_me.finished then return public.get_versus_match_state(p_room_id); end if;
+
+  select words[v_me.current_word_index + 1] into v_word
+  from public.versus_challenges
+  where room_id = p_room_id and target_id = v_user_id;
+  if v_word is null then raise exception 'No encontramos la palabra actual.'; end if;
+  if v_letter = any(v_me.guessed_letters) then return public.get_versus_match_state(p_room_id); end if;
+
+  v_letters := array_append(v_me.guessed_letters, v_letter);
+  select count(*) into v_occurrences
+  from unnest(string_to_array(v_word, null)) as character
+  where public.versus_letter_key(character) = v_letter;
+
+  if v_occurrences > 0 then
+    select not exists (
+      select 1 from unnest(string_to_array(v_word, null)) as character
+      where public.versus_letter_key(character) <> all(v_letters)
+    ) into v_word_complete;
+
+    if v_word_complete then
+      update public.versus_match_players
+      set current_word_index = current_word_index + 1,
+          guessed_letters = '{}', errors = 0,
+          completed_words = completed_words + 1,
+          score_letters = score_letters + v_occurrences,
+          finished = current_word_index + 1 >= 5,
+          finish_reason = case when current_word_index + 1 >= 5 then 'complete' else null end,
+          updated_at = now()
+      where match_id = v_match.id and user_id = v_user_id;
+
+      update public.versus_match_players
+      set lives = greatest(0, lives - 1),
+          finished = finished or lives - 1 <= 0,
+          finish_reason = case when lives - 1 <= 0 then 'lives' else finish_reason end,
+          updated_at = now()
+      where match_id = v_match.id and user_id = v_opponent.user_id;
+      v_event := jsonb_build_object(
+        'type', 'word_complete', 'actorId', v_user_id,
+        'wordNumber', v_me.current_word_index + 1
+      );
+    else
+      update public.versus_match_players
+      set guessed_letters = v_letters,
+          score_letters = score_letters + v_occurrences,
+          updated_at = now()
+      where match_id = v_match.id and user_id = v_user_id;
+      v_event := jsonb_build_object('type', 'hit', 'actorId', v_user_id, 'letter', v_letter);
+    end if;
+  else
+    if v_me.errors + 1 >= 6 then
+      update public.versus_match_players
+      set current_word_index = current_word_index + 1,
+          guessed_letters = '{}', errors = 0,
+          lives = greatest(0, lives - 1),
+          finished = current_word_index + 1 >= 5 or lives - 1 <= 0,
+          finish_reason = case
+            when lives - 1 <= 0 then 'lives'
+            when current_word_index + 1 >= 5 then 'complete'
+            else null
+          end,
+          updated_at = now()
+      where match_id = v_match.id and user_id = v_user_id;
+      v_event := jsonb_build_object(
+        'type', 'word_failed', 'actorId', v_user_id,
+        'wordNumber', v_me.current_word_index + 1,
+        'word', v_word
+      );
+    else
+      update public.versus_match_players
+      set guessed_letters = v_letters, errors = errors + 1, updated_at = now()
+      where match_id = v_match.id and user_id = v_user_id;
+      v_event := jsonb_build_object('type', 'miss', 'actorId', v_user_id, 'letter', v_letter);
+    end if;
+  end if;
+
+  update public.versus_matches
+  set event_sequence = event_sequence + 1, last_event = v_event, updated_at = now()
+  where id = v_match.id;
+
+  select exists (
+    select 1 from public.versus_match_players
+    where match_id = v_match.id and lives <= 0
+  ) or (
+    select bool_and(finished) from public.versus_match_players where match_id = v_match.id
+  ) into v_should_finish;
+
+  if v_should_finish then perform public.finish_versus_match(v_match.id, 'rules'); end if;
+  return public.get_versus_match_state(p_room_id);
+end;
+$$;
+
+revoke execute on function public.play_versus_letter(uuid, text) from public, anon;
+grant execute on function public.play_versus_letter(uuid, text) to authenticated;

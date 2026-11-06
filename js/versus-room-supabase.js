@@ -132,12 +132,12 @@
       const {data,error}=await cliente.rpc('get_versus_room_costumes',{p_room_id:roomId});
       if(error||salaActual?.id!==roomId||!salaActual.jugadores.some(player=>player.id===rival)
         ||!data||typeof data!=='object'||!Object.hasOwn(data,rival)||!Object.hasOwn(data,usuarioId))return fallo();
-      const next=raiz.CosmeticStore.normalizeSkins(data?.[rival]);
+      const next={...raiz.CosmeticStore.normalizeSkins(data?.[rival]),...raiz.TowerRewards?.normalizeSkins(data?.[rival])};
       if(propietarioTrajesRival!==rival||JSON.stringify(next)!==JSON.stringify(trajesRival)){
         trajesRival=next;propietarioTrajesRival=rival;
         raiz.dispatchEvent?.(new Event('rival-costume-updated'));
       }
-      return {roomId,usuarioId,rivalId:rival,propios:raiz.CosmeticStore.normalizeSkins(data[usuarioId]),rival:next};
+      return {roomId,usuarioId,rivalId:rival,propios:{...raiz.CosmeticStore.normalizeSkins(data[usuarioId]),...raiz.TowerRewards?.normalizeSkins(data[usuarioId])},rival:next};
     }
     let canalSocial = null;
     let suscripcionAuth = null;

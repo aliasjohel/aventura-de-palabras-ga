@@ -1,0 +1,543 @@
+{
+  "passed": true,
+  "sealedAt": "2026-11-06T23:27:50.913Z",
+  "baseline": "f327875d4900ee344fb2006661ec0893e58d7d62",
+  "branch": "candidate/tower-rewards-20261106",
+  "productionConnections": 0,
+  "productionWrites": 0,
+  "productionMigrationInstalled": false,
+  "globalRewardsActivated": false,
+  "published": false,
+  "physicalAndroidTest": false,
+  "hostedSupabaseAuthTest": false,
+  "migration": {
+    "path": "supabase/migrations/20261106221752_tower_exclusive_rewards_inventory.sql",
+    "sha256": "3c92450855f918ad1760996107e8009cd13f2c4cc561208d1651ce65b288d49b",
+    "canonicalLF": "3c92450855f918ad1760996107e8009cd13f2c4cc561208d1651ce65b288d49b"
+  },
+  "nodeTests": {
+    "specific": 54,
+    "compatibility": 45,
+    "failed": 0
+  },
+  "cacheManifestResources": 907,
+  "incrementalBrowserPassed": true,
+  "reports": {
+    "postgres": {
+      "path": "docs/tower-rewards-postgres-results.json",
+      "sha256": "50bed2053a66aeef6cc00c5f1587df1bf053f83b5da57c568332ba90a7fac215"
+    },
+    "browser": {
+      "path": "docs/tower-rewards-browser-results.json",
+      "sha256": "565a0bcbe4425737e90062ac169cdebc1eed4300b215fde88bca0d0dc322e075"
+    },
+    "cinematics": {
+      "path": "docs/tower-rewards-cinematics-results.json",
+      "sha256": "d06a91e80f4154829009915f2ae00d72ee20a01f3a2f6daf5eb587134012952c"
+    },
+    "upgrade": {
+      "path": "docs/tower-rewards-upgrade-results.json",
+      "sha256": "503b979b91f264c22e74ea98549ca6516cc80b16ed378c693e5a7362e61ad70d"
+    }
+  },
+  "frameAssets": [
+    {
+      "path": "assets/images/perfil/marco-tower_conquistador-v1.webp",
+      "bytes": 57114,
+      "sha256": "fb09665c95467f8f10097846721e0dd1ac112be4a92161bee6a4a4487fbab5dc"
+    },
+    {
+      "path": "assets/images/perfil/miniaturas/marco-tower_conquistador-v1.webp",
+      "bytes": 8530,
+      "sha256": "debc825dc1c4adace1d6eceb627b4f3ba857abffb76bc054d7cf2bb6f81dc13d"
+    },
+    {
+      "path": "assets/images/perfil/marco-tower_leyenda-v1.webp",
+      "bytes": 69734,
+      "sha256": "946a433f5204b3798640aba4ebf168bc95aaa948258024767cd0f737a8d11c08"
+    },
+    {
+      "path": "assets/images/perfil/miniaturas/marco-tower_leyenda-v1.webp",
+      "bytes": 9590,
+      "sha256": "5fb2bcf7790a28da3529a0bfe4ca87d036fdd3017a173a005c374e8c1d62aa24"
+    },
+    {
+      "path": "assets/images/perfil/marco-tower_maestro-v1.webp",
+      "bytes": 65598,
+      "sha256": "301a18225d9210fd431cb57db35913c301de4a1771139c4ce61ac74f348e6590"
+    },
+    {
+      "path": "assets/images/perfil/miniaturas/marco-tower_maestro-v1.webp",
+      "bytes": 9888,
+      "sha256": "6469746a1c3a706fb8ee431ef1cbc28005bb118a2969b7f95526a359983419d5"
+    }
+  ],
+  "sources": [
+    {
+      "path": "assets/images/perfil/marco-tower_conquistador-v1.webp",
+      "sha256CanonicalLF": "fb09665c95467f8f10097846721e0dd1ac112be4a92161bee6a4a4487fbab5dc"
+    },
+    {
+      "path": "assets/images/perfil/marco-tower_leyenda-v1.webp",
+      "sha256CanonicalLF": "946a433f5204b3798640aba4ebf168bc95aaa948258024767cd0f737a8d11c08"
+    },
+    {
+      "path": "assets/images/perfil/marco-tower_maestro-v1.webp",
+      "sha256CanonicalLF": "301a18225d9210fd431cb57db35913c301de4a1771139c4ce61ac74f348e6590"
+    },
+    {
+      "path": "assets/images/perfil/miniaturas/marco-tower_conquistador-v1.webp",
+      "sha256CanonicalLF": "debc825dc1c4adace1d6eceb627b4f3ba857abffb76bc054d7cf2bb6f81dc13d"
+    },
+    {
+      "path": "assets/images/perfil/miniaturas/marco-tower_leyenda-v1.webp",
+      "sha256CanonicalLF": "5fb2bcf7790a28da3529a0bfe4ca87d036fdd3017a173a005c374e8c1d62aa24"
+    },
+    {
+      "path": "assets/images/perfil/miniaturas/marco-tower_maestro-v1.webp",
+      "sha256CanonicalLF": "6469746a1c3a706fb8ee431ef1cbc28005bb118a2969b7f95526a359983419d5"
+    },
+    {
+      "path": "css/tower-rewards.css",
+      "sha256CanonicalLF": "fddeb0d94532c92b8112ca649221b77814d6c5b96edb3ce9724cb6ba6cd4376c"
+    },
+    {
+      "path": "index.html",
+      "sha256CanonicalLF": "9558853c08dbc75d2cf37109563a9ecbdd51e2ca435ed123536c29dc69a1505c"
+    },
+    {
+      "path": "js/app.js",
+      "sha256CanonicalLF": "3aab53e0aba9529487b0e914270130114c20d628e26f3e392843a1987a170435"
+    },
+    {
+      "path": "js/avatar-rewards.js",
+      "sha256CanonicalLF": "f27c88970ae312692ff4c1275cace575b3c80ffeaf019068a7be601f4f852ea0"
+    },
+    {
+      "path": "js/game-wallet.js",
+      "sha256CanonicalLF": "ead41f75a39c07bbf25902dead7f5db1a9d790f5cabddd81952aafd29a15d2a9"
+    },
+    {
+      "path": "js/i18n-es-fallback.js",
+      "sha256CanonicalLF": "7785aa080e9da2e465e1172503ebbc8573250ee19c74c3a40525a13a7591171c"
+    },
+    {
+      "path": "js/player-avatar.js",
+      "sha256CanonicalLF": "9216faf87684bf746bd8a1e90ef28696deb1aa1a1256d2c1a9c52e6f5a4af444"
+    },
+    {
+      "path": "js/resource-catalog.js",
+      "sha256CanonicalLF": "8bb5ca40db0698d3f2e20aab078e14eef4c6af1e099ac260190e751ab489cb31"
+    },
+    {
+      "path": "js/tower-online.js",
+      "sha256CanonicalLF": "774f9b164f7b1bbc7818c0528664cd11d2c8b2132089825846ba6867684606cc"
+    },
+    {
+      "path": "js/tower-rewards-ui.js",
+      "sha256CanonicalLF": "bb1e7d66ac94d394b11228addcbecab237bd9c6214206cb44a20247db32466fd"
+    },
+    {
+      "path": "js/tower-rewards.js",
+      "sha256CanonicalLF": "ba3d39d0d3001069c25c0da1dc951e0cc3b39fb3488d0db44d4011c3c4afcfc0"
+    },
+    {
+      "path": "js/versus-room-supabase.js",
+      "sha256CanonicalLF": "9aabd91d3212e83c68b5b0efa8114c9a1e79bb26c305a1ffe005c6602da8694e"
+    },
+    {
+      "path": "locales/en/profile.json",
+      "sha256CanonicalLF": "3ac53d93a4ccc09528eb28ff748e3bcb7424fc551d7b279c07dfffbb069ccb4f"
+    },
+    {
+      "path": "locales/es/profile.json",
+      "sha256CanonicalLF": "9ceea6bb8b2e80a0d975023948c5e4b09536cc33a5ca10ad5b9ecff1f9a427cd"
+    },
+    {
+      "path": "locales/pt-BR/profile.json",
+      "sha256CanonicalLF": "b192e001f99ac8e38aa5a65d71041704d2f5af0749fefcd41a67793b3b7cc250"
+    },
+    {
+      "path": "supabase/migrations/20261106221752_tower_exclusive_rewards_inventory.sql",
+      "sha256CanonicalLF": "3c92450855f918ad1760996107e8009cd13f2c4cc561208d1651ce65b288d49b"
+    },
+    {
+      "path": "sw.js",
+      "sha256CanonicalLF": "13fec69f6273a6ac3c9e50bdcde4a1bc208359e24730c688c2fedfc42e51bcab"
+    },
+    {
+      "path": "tests/cosmetic-store.test.cjs",
+      "sha256CanonicalLF": "fe3e195435358db108c7f04d870243ac19de5d0c1d8924abe94aae0eaaa528b1"
+    },
+    {
+      "path": "tests/game-wallet.test.cjs",
+      "sha256CanonicalLF": "e9cc212d3cf134249080cd41b9e2c1aeead7569687abf4fa10a8561b609bb688"
+    },
+    {
+      "path": "tests/i18n-interface.test.cjs",
+      "sha256CanonicalLF": "530f1722e08156d0e9abc32715264133666a57a2b2e579ee02159401a3c3449d"
+    },
+    {
+      "path": "tests/tower-character-playtest.test.cjs",
+      "sha256CanonicalLF": "fdbf329edc4b715ef3cfcd41d1c7e9a1f63389cd36e6d3612ba3b0842fd8ff46"
+    },
+    {
+      "path": "tests/tower-rewards.test.cjs",
+      "sha256CanonicalLF": "ef30220ae2eed0f24a4bed5dc23f10fee4dc1f43206de952afced5ad2b74e42a"
+    },
+    {
+      "path": "tests/versus-keyboard-time.test.cjs",
+      "sha256CanonicalLF": "2f5445164184bf57a49f8286eb7cc27ef811919dba793ec217042cdff8241caa"
+    },
+    {
+      "path": "tests/versus-social.test.cjs",
+      "sha256CanonicalLF": "fe864dcf4b565e13cd288a3c2efa05663f54a542a7f523dfcf3fb65165528a40"
+    },
+    {
+      "path": "tools/audit-tower-existing-qa-20261106.cjs",
+      "sha256CanonicalLF": "087512ffbf12327471b49bd5ea71301dd87d5fe12dcf9fb65835219e31c07c54"
+    },
+    {
+      "path": "tools/audit-tower-rewards-20261106.cjs",
+      "sha256CanonicalLF": "1a4f3e1c5f1468e9f9ffed18ad5f23aa4cf47a9bdc7d74cfb51d9e8a806a9534"
+    },
+    {
+      "path": "tools/build-tower-rewards-migration.cjs",
+      "sha256CanonicalLF": "aa2c2c9e8102a5189b902f023c92c0e9d174f0a61ce65ea8c380b85568812f37"
+    },
+    {
+      "path": "tools/check-tower-audit-contract-20261106.cjs",
+      "sha256CanonicalLF": "8af218b006383f28d854266d1f119cfe07b299482d0e9da856bfe257ae88656e"
+    },
+    {
+      "path": "tools/postgres-qa/load-schema.cjs",
+      "sha256CanonicalLF": "fd8abd9ca520804b7ce2a6f4bc62a87f58e40f3445956ff20c2d68250b1da08f"
+    },
+    {
+      "path": "tools/postgres-qa/package-lock.json",
+      "sha256CanonicalLF": "4859abd57a1b6028d4c75e318fdba5ebb84dc495325a34d1b552fdab1cdf7fa2"
+    },
+    {
+      "path": "tools/postgres-qa/package.json",
+      "sha256CanonicalLF": "eba7ef4abbed4db72f7e5a42e24bfd96afa9659e4244961e3447dac75ec57f02"
+    },
+    {
+      "path": "tools/postgres-qa/runtime.cjs",
+      "sha256CanonicalLF": "488564665fe03830b928f0812ccbb50dce550f9efcfb8a5eb85d5128404283b9"
+    },
+    {
+      "path": "tools/prepare-tower-rewards-plan-20261106.cjs",
+      "sha256CanonicalLF": "860ccb23ed391726fa205552c9958bc42bf5423c5db62670e5136fc0b4548a74"
+    },
+    {
+      "path": "tools/tower-rewards-qa/check-browser.cjs",
+      "sha256CanonicalLF": "7012d93afeb87affceb78cf2b0f327c24e1e8f359488a7ebc85e180906712211"
+    },
+    {
+      "path": "tools/tower-rewards-qa/check-cinematics.cjs",
+      "sha256CanonicalLF": "bb9f31ba7d04b25bec00cace59d3a1f0cbdf5d1b44eb9fb2c0bbf973645a383b"
+    },
+    {
+      "path": "tools/tower-rewards-qa/check-postgres.cjs",
+      "sha256CanonicalLF": "e357679583f04d7efef006515e1324a16795d9df3d73ca9d4411e366690ab1bf"
+    },
+    {
+      "path": "tools/tower-rewards-qa/check-upgrade.cjs",
+      "sha256CanonicalLF": "9c922729f594f0a3d73ca9891ce9fa6c484f3240c676ffc966a9863e86509f7a"
+    },
+    {
+      "path": "tools/tower-rewards-qa/fixture-manifest.json",
+      "sha256CanonicalLF": "b10ddb8032e732141b564a167fced9d7d2745af8fe7fb8387c71b2f0ac119e07"
+    },
+    {
+      "path": "tools/tower-rewards-qa/legacy-suite.cjs",
+      "sha256CanonicalLF": "eae631aca7fb8ec9c3bbbe187f20fe65060782ade77551645eeafacf959489e9"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260805_versus_challenges.sql",
+      "sha256CanonicalLF": "9549fb1595df082f21dd069b0bb88ca6641f73ba00b9b1635712dff5db62d4a6"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260805_versus_characters.sql",
+      "sha256CanonicalLF": "7544c37e06a68c0c569105d398d6d64f217420d381bc6daf7d81ba49cda8b3cc"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260805_versus_lobby.sql",
+      "sha256CanonicalLF": "bf146aee038f38490a91f4abea4c7dc6d157d6e9bb4a682f85971a1bd1b74063"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260805_versus_matches.sql",
+      "sha256CanonicalLF": "5413ee81b0c1524a448b6718740f3d09f540ecebc4cdd95fdee7ec608344ebbd"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260805_versus_resilience.sql",
+      "sha256CanonicalLF": "bd7a700ce739532181499d75bc5cbc2b20219ccbc4e606f6dc04f4507b0fe163"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260808222835_versus_accent_equivalence.sql",
+      "sha256CanonicalLF": "0fc56af80016c3224f4163e59d05bd127578361f0d8a81b90271be3a8603e83a"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260808222843_versus_five_rounds.sql",
+      "sha256CanonicalLF": "f5ba3951288c1f8a28eb3d1045762045e5eb1bd09c5eba763ba2cc3ad9f2af82"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260808222852_versus_character_abilities.sql",
+      "sha256CanonicalLF": "8b41f0f3d5e723a1b0b27ab5dc2b498c40d6d109cc8527f6b88b8e0c8c51d5a3"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260808230456_versus_ability_effect_durations.sql",
+      "sha256CanonicalLF": "4388d6bbe57c28bdf5e062a5f4760076a2a56090dd4683258fd20837911c41e1"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260808233756_versus_guardian_roots_four_seconds.sql",
+      "sha256CanonicalLF": "fdfca5785795e3c0be9cd1706fce220b7aa6e07821da5a47f25d3a4b1ee1be09"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260809001114_versus_werewolf_full_moon_hunt.sql",
+      "sha256CanonicalLF": "120a031fb0b80c5301f63b296af3dbbf2a2bb817cfb5d654a96a25823f3e5437"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260809015253_versus_thematic_dictionary.sql",
+      "sha256CanonicalLF": "81c9bc63bd306686a33381e8e344ce1ec56d0661f6e12f72ef2663e0522b5e23"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260809194727_versus_t_shadow_black_hole.sql",
+      "sha256CanonicalLF": "4bda5dcb27c6e9a7e197332c84e365cbf9fef635ccd9a770f4a9a6343cbc4311"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260809194802_versus_ability_duration_five_seconds.sql",
+      "sha256CanonicalLF": "31f3222bac389178d99852fe4375c68d06451e4c9eec3531ce37249bcff502cc"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260809194812_add_guardian_alba.sql",
+      "sha256CanonicalLF": "c859f6070b580bc122f85ad5c9ab334cff7b034bf6879eea5bed2426233a1d97"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260811014047_reveal_failed_versus_word.sql",
+      "sha256CanonicalLF": "747975d141aab63dfe19088abcb4cd1ad45cd0f43a04881831471bde0fc73066"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260812222516_add_nivor_ice_dragon.sql",
+      "sha256CanonicalLF": "51d14276173a82d8c4d8bfccf3283a4f7beaf9b08f6e3ec165dbc0e88c97e114"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260812230407_add_azrak_forced_miss.sql",
+      "sha256CanonicalLF": "f8593da00ded4d08cbe8117b710dbfe5d83418941444543eb7e5f3920705b6eb"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260817172734_versus_social_accounts_and_invites.sql",
+      "sha256CanonicalLF": "d32b009818fdd30098a289d9b76c4f4160de833efd75ad9f1f698b09f869a993"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260817173417_versus_social_hardening.sql",
+      "sha256CanonicalLF": "5d971f1e144752623f6d7b5941ba87e741fadb3058ac46c397823d239178d357"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260817175049_versus_rematch_and_recovery_words.sql",
+      "sha256CanonicalLF": "38b50ba0465838e9f1fd20cbdd961fa7a1a9c424499783e8a4ae1befb6486548"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260818194315_add_kalamo_key_theft.sql",
+      "sha256CanonicalLF": "31b9cbe4f0438f87f5fb8bec306be592e66c6f72e0912f5a335899b60ac493ad"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260823010000_add_kairos_time_steal.sql",
+      "sha256CanonicalLF": "ee76e92d300c8e0db7bc1a10778a4aa9ef6b86ad866948dfcc4aaa795e574b59"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260825214904_finish_match_on_individual_timeout.sql",
+      "sha256CanonicalLF": "4b6bdb1855b1f9f2dce8d5fb5f0c5c6b267b56ed2b509c43a3419f1a4f4da301"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260829172605_repair_kairos_online_selection_and_time_steal.sql",
+      "sha256CanonicalLF": "2a36575d764f84bcde9687fb5a1141950380fb45180bee7f44470f711471bbd3"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260830133000_expand_versus_dictionary.sql",
+      "sha256CanonicalLF": "912d122a20eec1030add367c0abc770c3218d8e14cf63c7739221e9f44fae7c1"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260914025118_public_matchmaking_ranking.sql",
+      "sha256CanonicalLF": "871b8dca06b152d081781a5b656482470d8f11566c3395e8700309435a460cb9"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260914025239_fix_matchmaking_room_alias.sql",
+      "sha256CanonicalLF": "5fab8847ddaa5e19b923578b98ff206b89db1ac18c7f5f49392a3fe7e1a73fab"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260915205954_versus_avatars_quick_messages.sql",
+      "sha256CanonicalLF": "65bb2cf72450a4c04eb7fe447eadd05230692760b66deba2cbfd395ea63b469f"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260920190501_player_profile_history.sql",
+      "sha256CanonicalLF": "5eea5d17edaefab38972a0bb56d87fc3e4aff8b8bb181300ecd353b932887796"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260921051546_expand_versus_dictionary_2000.sql",
+      "sha256CanonicalLF": "6889e8c89b4dc1eb74a33146f31609d8af076c74cd6721d4d8ffd88752c2e51b"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260921202815_moderate_player_aliases.sql",
+      "sha256CanonicalLF": "c0d548fdb54f66e8d7c02ed8f43e2373f5cefe03d2714015bcda23a93f256ccb"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260921202828_public_player_profiles.sql",
+      "sha256CanonicalLF": "739d9aed73b90d5a457795d806568a49069a5e5ed69288124e4da42a5f121b67"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260921203927_refine_alias_word_boundaries.sql",
+      "sha256CanonicalLF": "341ce18d7ebcdf834b702ae90e0138d789c727c3a30ddb31bc6860ddf5b22932"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260922012832_extend_alias_moderation.sql",
+      "sha256CanonicalLF": "17ec4cf3613d4a33281987f5fad75d0a45a8e10e871a3e9dd83492df85311c7d"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260922015020_ranked_modes_and_fair_matchmaking.sql",
+      "sha256CanonicalLF": "f7168e989ad54aff04dacaa2e9db0ee6eb8768432288551899a1859ccfe9bfe0"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260924154955_versus_coin_rewards.sql",
+      "sha256CanonicalLF": "dc402f506fa4016c4a755bae145cc8c4fdd45ca812b98ded5409d45fa79b19f5"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260927204829_ranked_adjacent_tiers.sql",
+      "sha256CanonicalLF": "b81122ae86a266224974f18342365cbc4ebaa3513739512326450983ffa04be6"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260928013057_earnable_costume_collection.sql",
+      "sha256CanonicalLF": "959ab533fb615195715f8325519fd02813cbf7dd8e41c0a512a5ac0962d218c7"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260929013243_creature_costume_collection.sql",
+      "sha256CanonicalLF": "89b09d2916aafb6cbae9c7b4c2b06fba1ee67202aff08def0746f8b4841f427f"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20260929204553_final_costume_collection.sql",
+      "sha256CanonicalLF": "c43f98685c30c95cf100b046681808f45463799fdc7f64345c8db5518ce4e10f"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261002204206_admin_union_online.sql",
+      "sha256CanonicalLF": "c54f023420e695b4da4c7fc2fb096048a62137dd16bb19feb6e873179b7df102"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261007015431_avatar_reward_frames_catalog.sql",
+      "sha256CanonicalLF": "ab3eaa07fce8cebed1bfe11b28227ef5c33749f86584fca93a4875638bcf18aa"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261018005734_online_word_languages.sql",
+      "sha256CanonicalLF": "87436899f4c8ab4ea2b4f0388ed7d74ba50b1073946d97345644551721f8ac01"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261018151602_versus_stage1_integrity.sql",
+      "sha256CanonicalLF": "eb1d7e6895958bfb8e25793d694664d9995b07b329b776dec888846e9e6c5c4d"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261018153728_versus_stage2_invites_reconnect.sql",
+      "sha256CanonicalLF": "5212efa963f6ed290bb9a52c311357b7e439b1d214f590eb00f3b6c8b13acade"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261018171043_profile_friends_summary_and_requests.sql",
+      "sha256CanonicalLF": "ef9ff06ee523349956b31c6d772316b79678d925f1924d979f0bdee17ddc6a55"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261019005111_expand_versus_localized_vocabulary.sql",
+      "sha256CanonicalLF": "720a1e4b3923868848281dc4b2fd19c9f4d385b72eaecb664ad709f5f195b445"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261021002155_profile_background_inventory_and_unlocks.sql",
+      "sha256CanonicalLF": "b05d0a4420f5ad831e84924763215e34917de0a4ae1755ab9d87bcd01bb3f51d"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261021202337_character_shop_inventory.sql",
+      "sha256CanonicalLF": "8926c94cd1ac152d3a096540665b30768a62a2b7401a871dc8be1176f9203231"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261022022552_economy_scale_ten.sql",
+      "sha256CanonicalLF": "d7e42068d4e5b01bcc53740bdbb246d04be1beeced0259a90b169e1fa9161afa"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261022022905_import_adventure_mission_claims.sql",
+      "sha256CanonicalLF": "abcc19542d05902e590ef6d87a34cdb5f439757f8b7507f1b26ed753158aa9b0"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261023212659_economy_authoritative_claims.sql",
+      "sha256CanonicalLF": "2a6692cf270572be9da523e6912141313125e8b48530625277f287489dc27ff9"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261023222817_adventure_action_validator.sql",
+      "sha256CanonicalLF": "87222b9f89e0adb878a6e7bb138f3a58b7bb7cb475624655d232fe7741b6fc1c"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261023232013_adventure_discrete_puzzle_rules.sql",
+      "sha256CanonicalLF": "ab234d29bce4a6c5ad1e1b6842b04025e8738545701cdc2991aed31f46123cef"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261023233900_adventure_authoritative_motion_and_duels.sql",
+      "sha256CanonicalLF": "144b741778e6c5b29b0f159d4c8d82d2da8b67175e87b04e37bb670e9fd98d92"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261024162616_aren_scoped_entitlements_v387.sql",
+      "sha256CanonicalLF": "9f49cc1d78252267966ace4b0036b56e2f3c472b4517343a3daf571a24ad2bf0"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261027223855_adventure_confirmed_reward_receipts.sql",
+      "sha256CanonicalLF": "c18f7760b5706d713cbc706b073d5865af2e4b3b66284e47087694d1807bab35"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261027223857_reviewed_word_categories.sql",
+      "sha256CanonicalLF": "f85dbeca279ed8caa6326126ff0a684dd20dfcddd01dab5f985d92ceeb772f45"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261028024303_adventure_account_reward_pilot.sql",
+      "sha256CanonicalLF": "0a796945bdc1f8b38c8d415ea57eb7e4da35a0da953efdaf0849277520da491c"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261029213504_adventure_progressive_hints.sql",
+      "sha256CanonicalLF": "3f6ea4cab92bf554592271109d2c32a8d95210c7baf2c598a5da2604f86c67bb"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261031002955_general_player_xp.sql",
+      "sha256CanonicalLF": "7837a2c3e8314ba2e18bc32850c0ab85ad3f4dcaed87330e5d638a777acc076c"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261031014022_adventure_hints_refill_from_first_use.sql",
+      "sha256CanonicalLF": "8356695589594ce804ba3249b39cf1f2c8e4592b69d4dfae867ef021913a5c58"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261031020956_adventure_xp_presentation.sql",
+      "sha256CanonicalLF": "ea827db0bc064efa7c4b36e52addf94a516f00cefe0fc3f6101c67506bc1f9d5"
+    },
+    {
+      "path": "tools/tower-rewards-qa/migrations/20261031183634_tower_authoritative_combat_and_coins.sql",
+      "sha256CanonicalLF": "944f3492393328c501f480817dd0912edfa6024f4260dce38e6fd5cdb15f0353"
+    },
+    {
+      "path": "tools/tower-rewards-qa/rollback-grants.sql",
+      "sha256CanonicalLF": "1e16885ce04d062e5686a541e5efb46202fbebdffaeaee798ba8abc9171c3b15"
+    },
+    {
+      "path": "tools/tower-rewards-qa/seal-results.cjs",
+      "sha256CanonicalLF": "942697d91a0773a1ffab04530cf10832caae7517d7de1f5bb588a59e96a3df0b"
+    },
+    {
+      "path": "tools/tower-rewards-qa/server-functions-baseline.json",
+      "sha256CanonicalLF": "7637a68835a0508cb01b46f61d46a3608f7c7841d172833a0b67815e37bd74cf"
+    },
+    {
+      "path": "tools/tower-rewards-schema.sql",
+      "sha256CanonicalLF": "c73ed342c8cfbaa8fdc95b461cab20749bff089bb4a93bb21efedd5b1efbb10d"
+    },
+    {
+      "path": "tools/verify-tower-audit-readonly-20261106.cjs",
+      "sha256CanonicalLF": "9f81f9e9783294b1178c63685d8fa1e7c392b939bb4615ee1ce6a92a980e3ca6"
+    }
+  ],
+  "commands": {
+    "specific": "node --test tests/tower-rewards.test.cjs tests/game-wallet.test.cjs tests/cosmetic-store.test.cjs tests/i18n-interface.test.cjs tests/versus-social.test.cjs tests/tower-character-playtest.test.cjs tests/pwa-incremental-cache.test.cjs tests/media-offline-ranges.test.cjs",
+    "compatibility": "node --test tests/avatar-rewards.test.cjs tests/tower-outfit-preview.test.cjs tests/versus-engine.test.cjs tests/versus-recovery.test.cjs tests/versus-room.test.cjs tests/versus-kairos.test.cjs tests/versus-azrak-keyboard.test.cjs tests/versus-keyboard-time.test.cjs tests/i18n-combat.test.cjs tests/i18n-combat-lock.test.cjs tests/i18n.test.cjs tests/i18n-preferences.test.cjs",
+    "manifest": "node tools/build-cache-manifest.cjs --check",
+    "incremental": "node tools/check-incremental-update.cjs"
+  }
+}

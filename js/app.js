@@ -1237,6 +1237,34 @@ let estadoEncuentroCalamo = "pendiente";
 let secuenciaCalamoActiva = false;
 let dueloAventuraActivo = null;
 let autoridadDueloAventura = null;
+let torreEnCurso = false, preparandoTorre = false, relojTorre = null;
+let torreAutoritativa = null;
+let progresoServidorTorre = null;
+function torreUsaProgresoServidor(){return !modoPruebasActivo&&!globalThis.TowerOutfitPreview?.selection()&&progresoServidorTorre?.userId===CosmeticStore.read().accountId&&progresoServidorTorre?.managed===true;}
+function estadoCombateAutoritativo(){return modoArcadeActivo&&torreEnCurso?torreAutoritativa?.view()?.detail:globalThis.AdventureOnline?.view()?.detail;}
+function detenerRelojTorre(){clearTimeout(relojTorre);relojTorre=null;}
+function mensajeTorre(clave){return globalThis.TowerOnline?.text(clave,I18n.language)||'';}
+function informarTorre(clave){
+  let nota=document.getElementById('estadoValidacionTorre');
+  if(!nota){nota=document.createElement('p');nota.id='estadoValidacionTorre';nota.setAttribute('role','status');estadoArcade.after(nota);}
+  nota.textContent=mensajeTorre(clave);
+  let retry=document.getElementById('btnReconectarTorre');
+  if(!retry){
+    retry=document.createElement('button');retry.id='btnReconectarTorre';retry.type='button';retry.className='btn-secundario';btnHabilidadVersus.after(retry);
+    retry.addEventListener('click',async()=>{retry.disabled=true;try{const result=await torreAutoritativa?.recover();if(result){informarTorre(result.pending?'pending':result.attempt?.detail.finished?'confirmed':'ready');continuarRelojTorre();}}finally{retry.disabled=false;}});
+  }
+  retry.textContent=mensajeTorre('retry');retry.hidden=clave!=='waiting'||!torreEnCurso;
+}
+function esperarConexionTorre(){detenerRelojTorre();bloquearTecladoDemoVersus();btnHabilidadVersus.disabled=true;informarTorre('waiting');if(modoArcadeActivo&&torreEnCurso)mostrarAvisoAvanceVersus(mensajeTorre('waiting'),'error');}
+function continuarRelojTorre(){
+  detenerRelojTorre();
+  if(!modoArcadeActivo||!torreEnCurso||!torreAutoritativa?.active()||torreAutoritativa.view()?.detail.finished)return;
+  const pulse=relojTorre=setTimeout(async()=>{
+    if(!modoArcadeActivo||!torreEnCurso){detenerRelojTorre();return;}
+    const result=await torreAutoritativa.send('tick');
+    if(result&&relojTorre===pulse)continuarRelojTorre();
+  },500);
+}
 let ultimoEventoDueloAventura = 0;
 let efectoDueloAventura = '';
 const letrasPendientesDueloAventura = new Set();
@@ -2682,6 +2710,7 @@ function obtenerClaveProgresoArcade() {
 }
 
 function leerProgresoArcade() {
+  if(torreUsaProgresoServidor())return Math.max(0,Math.min(10,Number(progresoServidorTorre.completed[personajeJugadorVersus])||0));
   if (personajeEnPruebaTorre(personajeJugadorVersus)) return 0;
   try {
     return Math.max(0, Number.parseInt(localStorage.getItem(obtenerClaveProgresoArcade()), 10) || 0);
@@ -2691,13 +2720,13 @@ function leerProgresoArcade() {
 }
 
 function guardarProgresoArcade(pisosSuperados) {
-  pisosDesbloqueadosArcade = Math.max(pisosDesbloqueadosArcade, pisosSuperados);
-  if (personajeEnPruebaTorre(personajeJugadorVersus)) return;
-  try {
-    localStorage.setItem(obtenerClaveProgresoArcade(), `${pisosDesbloqueadosArcade}`);
-  } catch {
-    // La torre continúa en esta sesión aunque no haya almacenamiento local.
+  if(torreUsaProgresoServidor()){
+    if(!torreEnCurso)return;
+    progresoServidorTorre=torreAutoritativa.progress();
+    pisosDesbloqueadosArcade=leerProgresoArcade();return;
   }
+  pisosDesbloqueadosArcade = Math.max(pisosDesbloqueadosArcade, pisosSuperados);
+  // Practice is session-only. Historical local progress is never rewritten.
 }
 
 function crearOrdenRivalesArcade() {
@@ -2788,7 +2817,13 @@ function iniciarModoArcade() {
   abrirSeleccionPersonajeVersus();
 }
 
-function prepararRecorridoArcade() {
+async function prepararRecorridoArcade() {
+  const owner=CosmeticStore.read().accountId,character=personajeJugadorVersus;
+  if(torreAutoritativa&&owner&&!modoPruebasActivo&&!globalThis.TowerOutfitPreview?.selection()){
+    const server=await torreAutoritativa.refresh();
+    if(!modoArcadeActivo||owner!==CosmeticStore.read().accountId||character!==personajeJugadorVersus)return;
+    progresoServidorTorre=server;
+  }else progresoServidorTorre=null;
   rivalesTorreArcade = crearOrdenRivalesArcade();
   pisosDesbloqueadosArcade = Math.min(leerProgresoArcade(), rivalesTorreArcade.length);
   pisoActualArcade = Math.min(pisosDesbloqueadosArcade, rivalesTorreArcade.length - 1);
@@ -2797,6 +2832,7 @@ function prepararRecorridoArcade() {
 }
 
 function salirModoArcade() {
+  torreEnCurso=false;detenerRelojTorre();torreAutoritativa?.stop();
   detenerRondaVersus();
   cancelarCinematicaFinalVersus();
   modoArcadeActivo = false;
@@ -4642,6 +4678,7 @@ function descripcionHabilidadVersus(personaje, desdeRival = false) {
     : habilidadesVersus[personaje] || habilidadesVersus.explorador;
 }
 function sincronizarTecladoDemoVersus() {
+  if (modoArcadeActivo&&torreEnCurso) return sincronizarTecladoDueloAventura();
   if (autoridadDueloAventura?.active()) return sincronizarTecladoDueloAventura();
   const bloqueado = demoVersus.finalizadoJugador
     || demoVersus.partidaFinalizada
@@ -5251,6 +5288,7 @@ async function activarHabilidadVersus() {
     if (pasoActualTutorialVersus === 4) lanzarHabilidadTutorialVersus();
     return;
   }
+  if (modoArcadeActivo&&torreEnCurso) {btnHabilidadVersus.disabled=true;await torreAutoritativa.send('ability');return;}
   if (autoridadDueloAventura?.active()) {
     btnHabilidadVersus.disabled = true;
     await autoridadDueloAventura.send({op:'ability'});
@@ -5592,10 +5630,10 @@ const configuracionesDuelosAventura = Object.freeze({
 });
 
 function sincronizarTecladoDueloAventura() {
-  const estado = globalThis.AdventureOnline?.view()?.detail;
+  const estado = estadoCombateAutoritativo();
   if (!estado?.player) return;
   const jugador = estado.player;
-  const bloqueado = !estado.started || estado.finished || jugador.finished
+  const bloqueado = (modoArcadeActivo&&torreEnCurso&&(!torreAutoritativa.active()||torreAutoritativa.paused()||!navigator.onLine)) || !estado.started || estado.finished || jugador.finished
     || ['roots','black_hole','key_bounce','ice_screen','key_theft','time_steal','forced_miss'].includes(jugador.effect);
   tecladoVersus.querySelectorAll('button').forEach(boton => {
     boton.disabled = bloqueado || jugador.letters.includes(boton.textContent)
@@ -5621,7 +5659,7 @@ function mostrarProgresoDueloAventura(estado) {
 }
 
 function renderizarDueloAventuraAutoritativo(estado) {
-  if (!dueloAventuraActivo || !estado?.player) return;
+  if ((!dueloAventuraActivo&&!(modoArcadeActivo&&torreEnCurso)) || !estado?.player) return;
   for (const [actor, sufijo] of [['player','Jugador'],['npc','Rival']]) {
     const jugador = estado[actor];
     demoVersus['vidas'+sufijo] = jugador.lives;
@@ -5647,8 +5685,12 @@ function renderizarDueloAventuraAutoritativo(estado) {
       if (evento.actor === 'player') reproducirAtaqueJugadorVersus();
       else reproducirAtaqueRivalVersus();
     }
+    if(modoArcadeActivo&&torreEnCurso&&evento.type==='word'&&!evento.correct&&evento.reveal){
+      const player=evento.actor==='player';
+      mostrarRevelacionPalabraVersus(player?revelacionPalabraVersusUno:revelacionPalabraVersusDos,evento.reveal,estado[evento.actor].theme,player?'temporizadorRevelacionJugador':'temporizadorRevelacionRival');
+    }
     if (evento.type === 'ability') reproducirAnimacionHabilidadVersus(
-      evento.actor === 'player' ? 'explorador' : estado.character,
+      evento.actor === 'player' ? (estado.playerCharacter||'explorador') : estado.character,
       {desdeRival:evento.actor === 'npc', alImpactar:()=>{}});
     if (evento.type === 'letter' && evento.actor === 'npc') reproducirPulsacionTeclaVersus('rival');
   }
@@ -5685,6 +5727,21 @@ autoridadDueloAventura = globalThis.AdventureDuelOnline?.create({
   render: renderizarDueloAventuraAutoritativo,
   fallback: continuarDueloAventuraSinConexion,
 });
+torreAutoritativa=globalThis.TowerOnline?.create({
+  rpc:args=>GameWallet.tower(args),account:()=>CosmeticStore.read().accountId,
+  storage:localStorage,online:()=>navigator.onLine,id:()=>crypto.randomUUID(),
+  onView:(attempt,response)=>{
+    if(!modoArcadeActivo||!torreEnCurso)return;
+    renderizarDueloAventuraAutoritativo(attempt.detail);
+    if(response.pending)informarTorre('pending');
+    if(attempt.detail.finished)detenerRelojTorre();
+  },
+  onReward:receipt=>globalThis.AdventureXPFeedback?.coin({...receipt,attemptId:'tower:'+receipt.attemptId}),
+  onProblem:()=>{if(modoArcadeActivo&&torreEnCurso)esperarConexionTorre();},
+});
+window.addEventListener('online',()=>{if(modoArcadeActivo&&torreEnCurso)void torreAutoritativa.recover().then(result=>{if(result)continuarRelojTorre();});});
+window.addEventListener('offline',()=>{if(modoArcadeActivo&&torreEnCurso)esperarConexionTorre();});
+window.addEventListener('wallet-session-ended',()=>{if(torreEnCurso){torreAutoritativa.stop();if(modoArcadeActivo)esperarConexionTorre();}});
 
 async function presentarDueloAventura(tipo) {
   if (tipo === "shadow_primero") {
@@ -6519,6 +6576,9 @@ function trajePersonajeVersus(elemento, personaje) {
     const lado=elemento===personajeVersusUno?0:1;
     if(personaje===listos.personajes[lado])return listos.trajes[lado];
   }
+  if(elemento===personajeVersusUno&&!modoPruebasActivo&&personaje==='explorador'&&CosmeticStore.read().equipped.explorador==='aren-union')return 'aren-union';
+  const tower=elemento===personajeVersusUno&&!modoPruebasActivo?globalThis.TowerRewards?.equipped(personaje):null;
+  if(tower)return tower;
   if (modoArcadeActivo) {
     if (elemento !== personajeVersusUno) return null;
     if (modoPruebasActivo && herramientasAutorDisponibles && Object.hasOwn(trajesPruebaArcade, personaje)) return trajesPruebaArcade[personaje];
@@ -6546,6 +6606,8 @@ function spriteTrajeVersus(elemento, personaje, src, herido=false) {
   }
   const traje=trajePersonajeVersus(elemento,personaje);
   if(!traje)return src;
+  const earned=globalThis.TowerRewards?.source(traje,src,herido);
+  if(earned)return earned;
   // The trunk cinematic keeps its frontal pose; combat faces the opponent.
   if (traje === 'aren-union' && herido) return 'assets/images/trajes/aren-union-impacto-duelo-v1.png';
   const posesCriaturas = {
@@ -6577,6 +6639,8 @@ function imagenTrajeFinalVersus(personaje,pose,original,victima=true) {
   if(visual)return visual;
   const matched=lado==='jugador'&&personaje===personajeJugadorVersus?globalThis.TowerOutfitPreview?.source?.(personaje,original):null;
   if(matched)return matched;
+  const earned=globalThis.TowerRewards?.asset(trajeFinalVersus(personaje,victima),pose)||globalThis.TowerRewards?.source(trajeFinalVersus(personaje,victima),original);
+  if(earned)return earned;
   if(personaje==='hombre_lobo'&&pose==='victoria-humana')return original;
   return CosmeticStore.asset(trajeFinalVersus(personaje,victima),pose)||original;
 }
@@ -6671,7 +6735,7 @@ function recursosPersonajeCombate(personaje, equipoConfirmado) {
     ? equipoConfirmado.personajes.flatMap((id,lado)=>id===personaje?[equipoConfirmado.trajes[lado]]:[])
     : [personaje===personajeJugadorVersus?trajePersonajeVersus(personajeVersusUno,personaje):null,
        personaje===personajeRivalVersus?trajePersonajeVersus(personajeVersusDos,personaje):null];
-  const extras=trajes.filter(Boolean).flatMap(id=>CostumeResources.combat(id).map(p=>p.slice(2)));
+  const extras=trajes.filter(Boolean).flatMap(id=>globalThis.TowerRewards?.find(id)?TowerRewards.combat(id):CostumeResources.combat(id).map(p=>p.slice(2)));
   if(personaje===personajeJugadorVersus)extras.push(...(globalThis.TowerOutfitPreview?.combat(personaje)||[]));
   return [personajesVersus[personaje]?.base, posesDanoPersonajeVersus[personaje], ...(poses[personaje] || []),...extras].filter(Boolean);
 }
@@ -6743,7 +6807,7 @@ function observarPoseDanoPersonajeVersus(elemento, obtenerPersonaje) {
     if (!pose && !trajePersonajeVersus(elemento,personaje) && !(elemento===personajeVersusUno&&globalThis.TowerOutfitPreview?.asset(personaje))) return;
     if (recibiendoDano) {
       actualizarPoseCombateVersus(elemento, personaje);
-    } else if ((pose && elemento.src.endsWith(pose)) || elemento.src.includes('/trajes/') || elemento.getAttribute('src')===globalThis.TowerOutfitPreview?.asset(personaje,'impacto')) {
+    } else if ((pose && elemento.src.endsWith(pose)) || elemento.src.includes('/trajes/') || elemento.src.includes('/tower-preview/') || elemento.getAttribute('src')===globalThis.TowerOutfitPreview?.asset(personaje,'impacto')) {
       actualizarPoseCombateVersus(elemento, personaje);
     }
   }).observe(elemento, { attributes: true, attributeFilter: ["class"] });
@@ -7043,6 +7107,10 @@ function limpiarEntradaDueloVersus() {
 function comenzarRondaVersus() {
   document.querySelector(".versus-insignia").hidden = true;
   if (tutorialCombateVersus.activo) return;
+  if (modoArcadeActivo&&torreEnCurso) {
+    bloquearTecladoDemoVersus();
+    void torreAutoritativa.send('start').then(result=>{if(result)continuarRelojTorre();});return;
+  }
   if (autoridadDueloAventura?.active()) {
     bloquearTecladoDemoVersus();
     void autoridadDueloAventura.start();
@@ -7073,6 +7141,11 @@ async function jugarLetraVersus(letra, boton) {
   if (tutorialCombateVersus.activo) {
     jugarLetraTutorialVersus(letra, boton);
     return;
+  }
+  if (modoArcadeActivo&&torreEnCurso) {
+    if(boton.disabled||demoVersus.partidaFinalizada)return;
+    const word=torreAutoritativa.view()?.detail.player.index;
+    boton.disabled=true;await torreAutoritativa.send('letter',{letter:letra,word});return;
   }
   if (autoridadDueloAventura?.active()) {
     if (boton.disabled || demoVersus.partidaFinalizada) return;
@@ -7121,7 +7194,7 @@ function prepararTrajeEntradaKalamo() {
       const img = marcoVersus.querySelector(`.entrada-tinta-${lado} .entrada-formacion-kalamo-${fase}`);
       if (!img) continue;
       img.dataset.original ||= img.getAttribute('src');
-      img.src = (elemento===personajeVersusUno?globalThis.TowerOutfitPreview?.asset('kalamo',`formacion-${fase}`):null) || (traje ? CosmeticStore.asset(traje, `formacion-${fase}`) : img.dataset.original);
+      img.src = (elemento===personajeVersusUno?globalThis.TowerOutfitPreview?.asset('kalamo',`formacion-${fase}`):null) || globalThis.TowerRewards?.asset(traje,`formacion-${fase}`) || (traje ? CosmeticStore.asset(traje, `formacion-${fase}`) : img.dataset.original);
     }
   }
 }
@@ -7950,6 +8023,7 @@ function bloquearTecladoDemoVersus() {
 }
 
 function habilitarTecladoVersus() {
+  if (modoArcadeActivo&&torreEnCurso) return sincronizarTecladoDueloAventura();
   if (autoridadDueloAventura?.active()) return sincronizarTecladoDueloAventura();
   const bloqueadoPorRaices = tecladoVersus.classList.contains("efecto-raices")
     || tecladoVersus.classList.contains("efecto-agujero-negro")
@@ -8068,8 +8142,23 @@ function prepararDueloVersus({ comenzarRonda = true } = {}) {
   }
 }
 
-function iniciarCombateArcade() {
+async function iniciarCombateArcade() {
   if (!modoArcadeActivo || rivalesTorreArcade.length === 0) return;
+  if(preparandoTorre)return;
+  preparandoTorre=true;btnCombatirArcade.disabled=true;
+  const character=personajeJugadorVersus,floor=pisoActualArcade;
+  try{
+    torreEnCurso=false;detenerRelojTorre();
+    if(torreAutoritativa&&!modoPruebasActivo&&!globalThis.TowerOutfitPreview?.selection()&&CosmeticStore.read().accountId&&navigator.onLine){
+      const result=await torreAutoritativa.prepare(character,floor+1,I18n.language,matchMedia('(prefers-reduced-motion: reduce)').matches);
+      if(!modoArcadeActivo||character!==personajeJugadorVersus||floor!==pisoActualArcade)return;
+      if(result.waiting){informarTorre('waiting');return;}
+      progresoServidorTorre=torreAutoritativa.progress()||progresoServidorTorre;
+      if(result.locked){pisosDesbloqueadosArcade=leerProgresoArcade();pisoActualArcade=Math.min(pisosDesbloqueadosArcade,9);renderizarTorreArcade();informarTorre('locked');return;}
+      torreEnCurso=Boolean(result.attempt);informarTorre(result.practice?result.reason:'ready');
+      ultimoEventoDueloAventura=0;efectoDueloAventura='';letrasPendientesDueloAventura.clear();
+    }else informarTorre('practice');
+  }finally{preparandoTorre=false;btnCombatirArcade.disabled=false;}
   iniciarContextoPalabras('tower');
   pisoCombateArcade = pisoActualArcade;
   personajeRivalVersus = rivalesTorreArcade[pisoCombateArcade];
@@ -8081,6 +8170,7 @@ function iniciarCombateArcade() {
   palabrasSecretasVersus = mezclarPalabrasVersus(obtenerPalabrasCandidatasDueloVersus(temaRival))
     .slice(0, maximoPalabrasVersus);
   prepararDueloVersus({ comenzarRonda: false });
+  if(torreEnCurso)renderizarDueloAventuraAutoritativo(torreAutoritativa.view().detail);
   const arena = arenasVersus[pisoCombateArcade % arenasVersus.length];
   fondoVersus.src = arena.src;
   CombatUI.attribute(fondoVersus, 'alt', arena.alt);
@@ -8093,6 +8183,8 @@ function iniciarCombateArcade() {
 btnCombatirArcade.addEventListener("click", iniciarCombateArcade);
 
 function detenerRondaVersus({ conservarTemaCalamo = false } = {}) {
+  detenerRelojTorre();
+  const retryTorre=document.getElementById('btnReconectarTorre');if(retryTorre)retryTorre.hidden=true;
   demoVersus.recuperacionHieloTorre.reset();
   autoridadDueloAventura?.stop();
   limpiarQuemaduraTecladoVersus();
@@ -8257,6 +8349,7 @@ function contarLetrasDescubiertasVersus(palabra, letras) {
 }
 
 function actualizarProgresosVersus() {
+  if (modoArcadeActivo&&torreEnCurso) return mostrarProgresoDueloAventura(torreAutoritativa.view()?.detail);
   if (autoridadDueloAventura?.active()) return mostrarProgresoDueloAventura(AdventureOnline.view().detail);
   const palabraJugador = document.getElementById("palabraVersusUno");
   const palabraRival = document.getElementById("palabraVersusDos");
@@ -8592,6 +8685,10 @@ function verificarFinNaturalVersus() {
 }
 
 function finalizarPartidaVersus(ganador, detalle, palabraPerdida = "") {
+  if(modoArcadeActivo&&torreEnCurso){
+    const estado=torreAutoritativa.view()?.detail;if(!estado?.finished)return;
+    ganador=estado.winner==='player'?'jugador':estado.winner==='npc'?'rival':'empate';
+  }
   if (autoridadDueloAventura?.active()) {
     const estado = AdventureOnline.view().detail;
     if (!estado.finished) return;
@@ -8611,6 +8708,13 @@ function obtenerReproductorFinalVersus(personajeGanador, personajeVictima) {
   const play=obtenerReproductorFinalSinVistaVersus(personajeGanador,personajeVictima);
   return async()=>{
     await globalThis.TowerOutfitPreview?.prepareFinal(personajeGanador,personajeVictima,personajeJugadorVersus);
+    const earnedPaths=[];
+    for(const [character,victim] of [[personajeGanador,false],[personajeVictima,true]]){
+      const item=globalThis.TowerRewards?.find(trajeFinalVersus(character,victim));if(!item)continue;
+      const poses=!victim?(item.finals||['final']):personajeGanador==='guardiana'?['base','impacto','planta']:personajeGanador==='azrak'?['base','impacto','mano']:personajeGanador==='kalamo'?['base','impacto','vidrio']:personajeGanador==='kairos'?['base','envejecido','anciano']:['base','impacto','impacto-tronco'];
+      earnedPaths.push(...poses.map(p=>item.assets[p]).filter(Boolean));
+    }
+    if(earnedPaths.length)await GameResources.ensure(earnedPaths);
     if(personajeGanador==='hombre_lobo'){
       prepararTrajesFinalVersus('hombre_lobo');
       const images=[...cinematicaFinalVersus.querySelectorAll('.cinematica-lobo-regreso')];
@@ -8853,6 +8957,11 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
     CombatUI.text(iconoResultadoVersus, ganador === "jugador" ? "🏆" : "🏰");
     CombatUI.text(etiquetaResultadoVersus, `PISO ${pisoCombateArcade + 1} DE ${total}`);
     if (ganador === "jugador") {
+      if(torreUsaProgresoServidor()&&!torreEnCurso){
+        CombatUI.text(tituloResultadoVersus,mensajeTorre('practiceOnly'));CombatUI.text(detalleResultadoVersus,mensajeTorre('practiceOnly'));
+        pisoActualArcade=Math.min(leerProgresoArcade(),total-1);btnRevanchaVersus.classList.remove('oculto');btnRevanchaVersus.disabled=false;
+        CombatUI.text(btnRevanchaVersus,'Volver a la torre');CombatUI.text(btnMenuResultadoVersus,'Abandonar torre');resultadoRondaVersus.classList.remove('oculto');return;
+      }
       const repeticion = pisoCombateArcade < pisosDesbloqueadosArcade;
       guardarProgresoArcade(pisoCombateArcade + 1);
       const completoLaTorre = pisoCombateArcade >= total - 1;
@@ -8922,7 +9031,7 @@ function crearParticulasEclipseVersus() {
 const srcGuardianaImpactoTroncoVersus = 'assets/images/personajes/versus/guardiana-impacto-tronco-frontal-v1.png';
 let secuenciaReaccionFinalVersus = 0;
 function usaImpactoFrontalGuardianaVersus(personaje) {
-  return personaje === 'guardiana' && !trajeFinalVersus(personaje);
+  return personaje === 'guardiana' && (!trajeFinalVersus(personaje)||Boolean(globalThis.TowerRewards?.find(trajeFinalVersus(personaje))));
 }
 const posesReaccionVictimaVersus = {
   explorador: "assets/images/personajes/versus/explorador-atrapado-eclipse.png",

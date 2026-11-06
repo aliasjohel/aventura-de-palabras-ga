@@ -1,6 +1,7 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.AvatarRewards=api;})(globalThis,()=>{
   'use strict';
   const catalog = Object.freeze([
+    ...(globalThis.TowerRewards?.frames||[]),
     {id:'clasico',name:'Clásico',requirement:'Disponible desde el inicio'},
     {id:'bosque',name:'Hojas',world:1,requirement:'Completá el mundo 1 · Bosque'},
     {id:'arcano',name:'Arcano',world:2,requirement:'Completá el mundo 2 · Desierto'},

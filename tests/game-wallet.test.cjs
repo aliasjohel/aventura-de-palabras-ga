@@ -1,60 +1,23 @@
-const test=require('node:test');
-const assert=require('node:assert/strict');
-const {create:createStore}=require('../js/cosmetic-store.js');
-const {create:createWallet}=require('../js/game-wallet.js');
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict');
+const {create:createStore}=require('../js/cosmetic-store.js'),{create:createWallet}=require('../js/game-wallet.js');
 function fixture(){
-  const data=new Map([['progresoAventuraGA','{"currencyVersion":2,"monedas":5000}']]);
-  const store=createStore({getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v)});
-  const wallet=createWallet(store,{setTimeout:()=>0,clearTimeout:()=>{}});
-  let fail=false,after=null;const calls=[];
-  const server={currencyVersion:2,userId:'one',coins:0,owned:[],equipped:{},revision:0};
-  const seen=new Set();let imported=false;
-  const client={rpc:async(name,args)=>{
-    calls.push([name,args]);if(fail)throw Error('Sin conexión');
-    if(name==='sync_game_wallet_v2'){
-      if(!imported){server.coins+=args.p_legacy?.coins||0;server.owned=args.p_legacy?.owned||[];imported=true;}
-      for(const e of args.p_events){if(!seen.has(e.id)){seen.add(e.id);server.coins+=e.amount;}}
-      if(args.p_equipped)server.equipped=args.p_equipped;
-    }else if(!server.owned.includes(args.p_skin)){
-      server.coins-=store.find(args.p_skin).price;server.owned.push(args.p_skin);
-    }
-    server.revision++;
-    const response=structuredClone({...server,acknowledged:args.p_events?.map(e=>e.id)||[],reward:args.p_match_id?{amount:100}:null});
-    if(after){const fn=after;after=null;await fn();}
-    return {data:response,error:null};
-  }};
-  wallet.connect(client,'one');
-  return {store,wallet,server,client,calls,fail:v=>fail=v,after:fn=>after=fn};
+ const data=new Map([['progresoAventuraGA','{"currencyVersion":2,"monedas":900000}']]),store=createStore({getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v)}),root={setTimeout:()=>0,clearTimeout(){}};
+ const wallet=createWallet(store,root),accounts={one:{coins:5000,owned:[],equipped:{},revision:0},two:{coins:50,owned:[],equipped:{},revision:0}},calls=[];let user='one',fail=false,after=null,towerPaid=false;
+ const client={rpc:async(name,args)=>{const owner=user,s=accounts[owner];calls.push([name,structuredClone(args)]);if(fail)throw Error('Sin conexión');let response;
+  if(name==='sync_game_wallet_v3'){assert.deepEqual(args.p_missions,[]);assert(!Object.hasOwn(args,'p_legacy'));assert(!Object.hasOwn(args,'p_events'));if(args.p_equipped){s.equipped=structuredClone(args.p_equipped);s.revision++;}}
+  else if(name==='purchase_game_costume'){const item=store.find(args.p_skin);if(!item)throw Error('No disponible');if(!s.owned.includes(item.id)){if(s.coins<item.price)throw Error('Saldo insuficiente');s.coins-=item.price;s.owned.push(item.id);s.revision++;}}
+  else if(name==='tower_game'){if(!towerPaid){towerPaid=true;s.coins+=30;s.revision++;}response={userId:owner,wallet:{coins:s.coins,revision:s.revision},receipt:{amount:30,confirmed:true}};}
+  else throw Error('Unexpected RPC '+name);
+  response=structuredClone(response||{...s,userId:owner,currencyVersion:2,securityVersion:3,missionClaims:[],world5Complete:false});
+  if(after&&after.name===name){const fn=after.fn;after=null;await fn();}return{data:response,error:null};
+ }};
+ function connect(id){user=id;wallet.connect(client,id);}connect('one');
+ return{data,store,wallet,root,accounts,calls,connect,fail:v=>{fail=v;},after:(name,fn)=>{after={name,fn};}};
 }
-test('importa saldo y conserva recompensas ganadas durante la sincronización',async()=>{
-  const f=fixture();f.after(()=>f.store.earn(100,'aventura:bosque:palabra'));
-  await f.wallet.sync();assert.equal(f.store.read().coins,5100);assert.equal(f.server.coins,5100);assert.equal(f.store.read().pending.length,0);
-});
-test('fallo de red mantiene eventos; reintento no duplica monedas',async()=>{
-  const f=fixture();await f.wallet.sync();f.store.earn(300,'aventura:bosque:duelo');
-  f.fail(true);await assert.rejects(f.wallet.sync(),/conexión/);assert.equal(f.store.read().coins,5300);assert.equal(f.store.read().pending.length,1);
-  f.fail(false);await f.wallet.sync();await f.wallet.sync();assert.equal(f.store.read().coins,5300);assert.equal(f.server.coins,5300);
-});
-test('respuesta perdida tras compra se recupera sin doble cobro',async()=>{
-  const f=fixture();await f.wallet.sync();
-  f.after(()=>f.after(()=>{throw Error('Respuesta perdida');}));
-  await assert.rejects(f.store.purchase('aren-bosque'),/perdida/);
-  assert.equal(f.server.coins,3000);await f.store.purchase('aren-bosque');
-  assert.equal(f.store.read().coins,3000);assert.equal(f.server.coins,3000);assert.deepEqual(f.store.read().owned,['aren-bosque']);
-});
-test('cambiar de cuenta durante petición no aplica saldo de la anterior',async()=>{
-  const f=fixture();f.after(()=>f.wallet.connect(f.client,'two'));
-  await assert.rejects(f.wallet.sync(),/cuenta cambió/);assert.equal(f.store.read().accountId,'two');assert.equal(f.store.read().coins,0);
-  f.wallet.connect(f.client,'one');await f.wallet.sync();assert.equal(f.store.read().coins,5000);
-});
-test('equipo cambiado durante sincronización permanece pendiente',async()=>{
-  const f=fixture();await f.store.purchase('aren-bosque');
-  f.after(()=>f.store.equip('explorador','aren-bosque'));await f.wallet.sync();
-  assert.equal(f.store.read().equipmentDirty,true);assert.equal(f.store.read().equipped.explorador,'aren-bosque');
-  await f.wallet.sync();assert.equal(f.store.read().equipmentDirty,false);assert.equal(f.server.equipped.explorador,'aren-bosque');
-});
-test('cola de más de 100 premios se envía en lotes y premio versus viene del servidor',async()=>{
-  const f=fixture();for(let i=0;i<105;i++)f.store.earn(100,'aventura:bosque:palabra');
-  const result=await f.wallet.sync('match');assert.equal(result.reward.amount,100);assert.equal(f.store.read().coins,15500);
-  assert.deepEqual(f.calls.map(([,args])=>args.p_events.length),[100,5]);
-});
+test('wallet v3 uses server balance without importing historical local coins',async()=>{const f=fixture();await f.wallet.sync();assert.equal(f.store.read().coins,5000);assert.equal(f.data.get('progresoAventuraGA'),'{"currencyVersion":2,"monedas":900000}');assert.deepEqual(f.calls.map(c=>c[0]),['sync_game_wallet_v3']);assert.throws(()=>f.store.earn(100),/desactivados/);});
+test('network failure preserves verified balance and purchases; retries cannot invent credits',async()=>{const f=fixture();await f.wallet.sync();await f.store.purchase('aren-bosque');f.fail(true);await assert.rejects(f.wallet.sync(),/conexión/);assert.equal(f.store.read().coins,3000);assert.deepEqual(f.store.read().owned,['aren-bosque']);f.fail(false);await f.wallet.sync();await f.wallet.sync();assert.equal(f.store.read().coins,3000);});
+test('lost purchase response recovers server ownership without a second charge',async()=>{const f=fixture();await f.wallet.sync();f.after('purchase_game_costume',()=>{throw Error('Respuesta perdida');});await assert.rejects(f.store.purchase('aren-bosque'),/perdida/);assert.equal(f.accounts.one.coins,3000);await f.store.purchase('aren-bosque');assert.equal(f.accounts.one.coins,3000);assert.deepEqual(f.store.read().owned,['aren-bosque']);});
+test('account change in flight rejects previous account response',async()=>{const f=fixture();f.after('sync_game_wallet_v3',()=>f.connect('two'));await assert.rejects(f.wallet.sync(),/cuenta cambió|sesión cambió/);assert.equal(f.store.read().accountId,'two');assert.equal(f.store.read().coins,0);await f.wallet.sync();assert.equal(f.store.read().coins,50);f.connect('one');await f.wallet.sync();assert.equal(f.store.read().coins,5000);});
+test('equipment changed while sync is in flight remains pending until acknowledged',async()=>{const f=fixture();await f.wallet.sync();await f.store.purchase('aren-bosque');f.after('sync_game_wallet_v3',()=>f.store.equip('explorador','aren-bosque'));await f.wallet.sync();assert.equal(f.store.read().equipmentDirty,true);assert.equal(f.store.read().equipped.explorador,'aren-bosque');await f.wallet.sync();assert.equal(f.store.read().equipmentDirty,false);assert.equal(f.accounts.one.equipped.explorador,'aren-bosque');});
+test('Tower credit updates only confirmed balance and preserves shop ownership/equipment and XP',async()=>{const f=fixture();await f.wallet.sync();await f.store.purchase('aren-bosque');f.store.equip('explorador','aren-bosque');await f.wallet.sync();const before=f.store.read();f.root.PlayerXP={apply(){throw Error('Tower must not update XP');}};const at=f.calls.length;await f.wallet.tower({p_action:'settle'});await f.wallet.tower({p_action:'settle'});assert.equal(f.store.read().coins,before.coins+30);assert.deepEqual(f.store.read().owned,before.owned);assert.deepEqual(f.store.read().equipped,before.equipped);assert.deepEqual(f.calls.slice(at).map(c=>c[0]),['tower_game','tower_game']);});

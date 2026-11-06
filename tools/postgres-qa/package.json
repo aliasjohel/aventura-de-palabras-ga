@@ -1,0 +1,10 @@
+{
+  "name": "aventura-isolated-postgres-qa",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Pinned local-only PostgreSQL runtime for independent-connection security tests",
+  "dependencies": {
+    "embedded-postgres": "17.10.0-beta.17",
+    "pg": "8.23.1"
+  }
+}

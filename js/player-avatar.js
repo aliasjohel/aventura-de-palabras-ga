@@ -13,7 +13,7 @@
   const rewardKey='aventuraMarcosDesbloqueadosV1';
   const unlocked=new Set(['clasico']);
   function readRewards(){
-    try { const ids=JSON.parse(localStorage.getItem(rewardKey));if(Array.isArray(ids))ids.forEach(id=>{if(!id.startsWith('xp_')&&frames.some(([known])=>known===id))unlocked.add(id);}); }catch(_){}
+    try { const ids=JSON.parse(localStorage.getItem(rewardKey));if(Array.isArray(ids))ids.forEach(id=>{if(!id.startsWith('xp_')&&!id.startsWith('tower_')&&frames.some(([known])=>known===id))unlocked.add(id);}); }catch(_){}
   }
   function updateRewards(progress,points=0){
     readRewards();
@@ -25,7 +25,7 @@
     return added;
   }
   readRewards();
-  const frameOwned=id=>id.startsWith('xp_')?Boolean(globalThis.PlayerXP?.ownedFrame(id)):unlocked.has(id);
+  const frameOwned=id=>id.startsWith('tower_')?Boolean(globalThis.TowerRewards?.owns(id)):id.startsWith('xp_')?Boolean(globalThis.PlayerXP?.ownedFrame(id)):unlocked.has(id);
   const defaults = { avatar: "explorador", frame: "clasico" };
   function normalize(value) {
     return {
@@ -33,7 +33,7 @@
       frame: frames.some(([id]) => id === value?.frame) ? value.frame : defaults.frame,
     };
   }
-  function normalizeOwn(value){const normalized=normalize(value);if(normalized.frame.startsWith('xp_')&&!frameOwned(normalized.frame))normalized.frame='clasico';return normalized;}
+  function normalizeOwn(value){const normalized=normalize(value);if((normalized.frame.startsWith('xp_')||normalized.frame.startsWith('tower_'))&&!frameOwned(normalized.frame))normalized.frame='clasico';return normalized;}
   let saved = { ...defaults };
   try { saved = normalizeOwn(JSON.parse(localStorage.getItem(key))); } catch (_) { /* Invalid or unavailable storage uses defaults. */ }
   // Preserve a frame already equipped before rewards were introduced.
@@ -186,7 +186,7 @@
       face.append(img);
       badge.append(face);
     }
-    const xpArt=AvatarRewards.catalog.find(item=>item.id===frame&&item.xp);
+    const xpArt=AvatarRewards.catalog.find(item=>item.id===frame&&(item.xp||item.tower));
     if(xpArt){
       badge.classList.add('xp-frame-art');badge.dataset.xpArt='loading';
       const art=document.createElement('img');art.className='player-avatar-frame xp-frame-image';
@@ -195,7 +195,7 @@
       art.addEventListener('load',()=>{badge.dataset.xpArt='ready';});
       art.addEventListener('error',()=>{badge.dataset.xpArt='failed';art.hidden=true;});
       art.src=miniatura?xpArt.thumbnail:xpArt.asset;badge.append(art);
-      if(!miniatura)for(const cls of ['xp-frame-energy','xp-frame-sparkles']){
+      if(!miniatura&&!xpArt.tower)for(const cls of ['xp-frame-energy','xp-frame-sparkles']){
         const effect=document.createElement('span');effect.className=cls;effect.setAttribute('aria-hidden','true');badge.append(effect);
       }
       return badge;
@@ -220,10 +220,10 @@
   // Shared by the room adapter and multiplayer UI. Only catalog IDs reach the DOM.
   globalThis.PlayerAvatar = Object.freeze({
     desbloquear:updateRewards,
-    aplicarXP: value=>{if(!value?.frame?.startsWith('xp_')||!frameOwned(value.frame))return; saved=normalize(value);draft={...saved};try{localStorage.setItem(key,JSON.stringify(saved));}catch{} renderMenu();renderPreview();},
+    aplicarXP: value=>{if(globalThis.TowerRewards?.read().frame||!value?.frame?.startsWith('xp_')||!frameOwned(value.frame))return; saved=normalize(value);draft={...saved};try{localStorage.setItem(key,JSON.stringify(saved));}catch{} renderMenu();renderPreview();},
     nombreMarco:id=>U.resolve(K('profile.frames.'+id)),
     obtener: () => {
-      try { return normalizeOwn(JSON.parse(localStorage.getItem(key))); }
+      try { const value=JSON.parse(localStorage.getItem(key)),tower=globalThis.TowerRewards?.read().frame;return normalizeOwn({...value,frame:tower||(value?.frame?.startsWith('tower_')?'clasico':value?.frame)}); }
       catch (_) { return { ...saved }; }
     },
     normalizar: normalize,
@@ -241,7 +241,7 @@
       if(button.dataset.choice==='frame'){
         const owned=frameOwned(button.dataset.value),reward=AvatarRewards.catalog.find(frame=>frame.id===button.dataset.value);
         button.disabled=!owned;
-        U.text(button.querySelector('small'),owned?K('profile.rewards.unlocked'):reward.xp?globalThis.PlayerXP?.text('locked',{n:reward.level})||('Nivel '+reward.level):reward.world?K('profile.rewards.world',{world:reward.world}):K('profile.rewards.rank',{rank:K('profile.frames.'+reward.id)}));
+        U.text(button.querySelector('small'),owned?K('profile.rewards.unlocked'):reward.tower?(reward.count===1?K('profile.rewards.towerOne'):K('profile.rewards.tower',{n:reward.count})):reward.xp?globalThis.PlayerXP?.text('locked',{n:reward.level})||('Nivel '+reward.level):reward.world?K('profile.rewards.world',{world:reward.world}):K('profile.rewards.rank',{rank:K('profile.frames.'+reward.id)}));
       }
     });
   }
@@ -329,8 +329,14 @@
     void loadProfile();
   });
   ["cerrarAvatar", "cancelarAvatar"].forEach((id) => el(id).addEventListener("click", () => dialog.close()));
-  el("guardarAvatar").addEventListener("click", () => {
+  el("guardarAvatar").addEventListener("click", async () => {
     if(!frameOwned(draft.frame))return;
+    const desired={...draft};
+    const button=el('guardarAvatar');if(button.disabled)return;button.disabled=true;
+    try{if(draft.frame.startsWith('tower_')||globalThis.TowerRewards?.read().frame)await TowerRewards.equip('frame',draft.frame.startsWith('tower_')?draft.frame:null);}
+    catch(error){U.text(el('estadoAvatar'),K('profile.rewards.towerSaveFailed'));button.disabled=false;return;}
+    button.disabled=false;
+    draft=desired;
     try { localStorage.setItem(key, JSON.stringify(draft)); }
     catch (_) {
       GameUI.text(el("estadoAvatar"), GameUI.key('errors.avatarSave'));
@@ -342,6 +348,7 @@
     dialog.close();
   });
   window.addEventListener('player-xp-updated',()=>{saved=normalizeOwn(saved);draft=normalizeOwn(draft);renderMenu();renderPreview();});
+  window.addEventListener('tower-rewards-updated',()=>{const frame=globalThis.TowerRewards?.read().frame;saved=normalizeOwn({...saved,frame:frame||(saved.frame.startsWith('tower_')?'clasico':saved.frame)});draft={...saved};renderMenu();renderPreview();});
   renderMenu();
   window.addEventListener('storage',event=>{if(event.key==='progresoAventuraGA'||event.key===rewardKey)updateRewards();});
   updateRewards();

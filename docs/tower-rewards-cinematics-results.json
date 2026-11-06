@@ -1,0 +1,1148 @@
+{
+  "passed": true,
+  "syntheticVisualFixture": true,
+  "productionWrites": 0,
+  "characters": 11,
+  "sceneCases": 61,
+  "selectorUsed": false,
+  "scenes": [
+    {
+      "character": "explorador",
+      "winner": "explorador",
+      "own": true,
+      "sources": [
+        "assets/images/tower-preview/aren-campeon-final-v1.webp"
+      ]
+    },
+    {
+      "character": "explorador",
+      "winner": "guardiana",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-planta-v1.webp"
+      ]
+    },
+    {
+      "character": "explorador",
+      "winner": "azrak",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-planta-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-mano-v1.webp"
+      ]
+    },
+    {
+      "character": "explorador",
+      "winner": "kalamo",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-planta-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-mano-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-vidrio-v1.webp"
+      ]
+    },
+    {
+      "character": "explorador",
+      "winner": "kairos",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-planta-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-mano-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-vidrio-v1.webp",
+        "assets/images/tower-preview/aren-campeon-base-v1.webp",
+        "assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+        "assets/images/tower-preview/aren-campeon-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "mago",
+      "winner": "mago",
+      "own": true,
+      "sources": [
+        "assets/images/tower-preview/zafir-vitral-final-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-planta-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-mano-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-vidrio-v1.webp",
+        "assets/images/tower-preview/aren-campeon-base-v1.webp",
+        "assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+        "assets/images/tower-preview/aren-campeon-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "mago",
+      "winner": "explorador",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-planta-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-mano-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-vidrio-v1.webp",
+        "assets/images/tower-preview/aren-campeon-base-v1.webp",
+        "assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+        "assets/images/tower-preview/aren-campeon-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "mago",
+      "winner": "guardiana",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-planta-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-mano-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-vidrio-v1.webp",
+        "assets/images/tower-preview/aren-campeon-base-v1.webp",
+        "assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+        "assets/images/tower-preview/aren-campeon-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "mago",
+      "winner": "azrak",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-planta-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-mano-v1.webp",
+        "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+        "assets/images/tower-preview/aren-campeon-vidrio-v1.webp",
+        "assets/images/tower-preview/aren-campeon-base-v1.webp",
+        "assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+        "assets/images/tower-preview/aren-campeon-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "mago",
+      "winner": "kalamo",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-planta-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-mano-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-vidrio-v1.webp",
+        "assets/images/tower-preview/aren-campeon-base-v1.webp",
+        "assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+        "assets/images/tower-preview/aren-campeon-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/aren-campeon-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "mago",
+      "winner": "kairos",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-planta-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-mano-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-vidrio-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-envejecido-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "guardiana",
+      "winner": "guardiana",
+      "own": true,
+      "sources": [
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-ataque-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-final-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-mano-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-vidrio-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-envejecido-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "guardiana",
+      "winner": "explorador",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/guardiana-orquidea-impacto-tronco-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-mano-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-vidrio-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-envejecido-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "guardiana",
+      "winner": "azrak",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/guardiana-orquidea-impacto-tronco-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+        "assets/images/tower-preview/guardiana-orquidea-mano-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-vidrio-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-envejecido-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "guardiana",
+      "winner": "kalamo",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/guardiana-orquidea-impacto-tronco-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+        "assets/images/tower-preview/guardiana-orquidea-mano-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+        "assets/images/tower-preview/guardiana-orquidea-vidrio-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-envejecido-v1.webp",
+        "assets/images/tower-preview/zafir-vitral-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/zafir-vitral-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "guardiana",
+      "winner": "kairos",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/guardiana-orquidea-impacto-tronco-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+        "assets/images/tower-preview/guardiana-orquidea-mano-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+        "assets/images/tower-preview/guardiana-orquidea-vidrio-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-envejecido-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "dragon",
+      "winner": "dragon",
+      "own": true,
+      "sources": [
+        "assets/images/tower-preview/guardiana-orquidea-impacto-tronco-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-llamado-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-final-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+        "assets/images/tower-preview/guardiana-orquidea-mano-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+        "assets/images/tower-preview/guardiana-orquidea-vidrio-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-envejecido-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "dragon",
+      "winner": "explorador",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+        "assets/images/tower-preview/guardiana-orquidea-mano-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+        "assets/images/tower-preview/guardiana-orquidea-vidrio-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-envejecido-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "dragon",
+      "winner": "guardiana",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-planta-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+        "assets/images/tower-preview/guardiana-orquidea-mano-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+        "assets/images/tower-preview/guardiana-orquidea-vidrio-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-envejecido-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "dragon",
+      "winner": "azrak",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-planta-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-mano-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+        "assets/images/tower-preview/guardiana-orquidea-vidrio-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-envejecido-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "dragon",
+      "winner": "kalamo",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-planta-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-mano-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-vidrio-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-envejecido-v1.webp",
+        "assets/images/tower-preview/guardiana-orquidea-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/guardiana-orquidea-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "dragon",
+      "winner": "kairos",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-planta-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-mano-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-vidrio-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-envejecido-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "hombre_lobo",
+      "winner": "hombre_lobo",
+      "own": true,
+      "sources": [
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-planta-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-salto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-aullido-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-transformacion-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-humano-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-victoria-humana-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-mano-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-vidrio-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-envejecido-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "hombre_lobo",
+      "winner": "explorador",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-planta-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-mano-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-vidrio-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-envejecido-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "hombre_lobo",
+      "winner": "guardiana",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-planta-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-mano-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-vidrio-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-envejecido-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "hombre_lobo",
+      "winner": "azrak",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-planta-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-mano-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-vidrio-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-envejecido-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "hombre_lobo",
+      "winner": "kalamo",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-planta-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-mano-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-vidrio-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-envejecido-v1.webp",
+        "assets/images/tower-preview/nimbus-farero-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nimbus-farero-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "hombre_lobo",
+      "winner": "kairos",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-planta-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-mano-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-vidrio-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "t_shadow",
+      "winner": "t_shadow",
+      "own": true,
+      "sources": [
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-planta-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-ataque-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-ataque-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-ataque-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-ataque-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-ataque-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-ataque-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-ataque-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-ataque-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-ataque-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-final-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-mano-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-vidrio-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "t_shadow",
+      "winner": "explorador",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-planta-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-mano-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-vidrio-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "t_shadow",
+      "winner": "guardiana",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-planta-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-mano-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-vidrio-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "t_shadow",
+      "winner": "azrak",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-planta-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-mano-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-vidrio-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "t_shadow",
+      "winner": "kalamo",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-planta-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-mano-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-vidrio-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
+        "assets/images/tower-preview/lobo-basaltico-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lobo-basaltico-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "t_shadow",
+      "winner": "kairos",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-planta-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-mano-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-vidrio-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-envejecido-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "guardian_alba",
+      "winner": "guardian_alba",
+      "own": true,
+      "sources": [
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-planta-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-carga-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-final-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-mano-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-vidrio-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-envejecido-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "guardian_alba",
+      "winner": "explorador",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-planta-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-mano-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-vidrio-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-envejecido-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "guardian_alba",
+      "winner": "guardiana",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-planta-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-mano-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-vidrio-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-envejecido-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "guardian_alba",
+      "winner": "azrak",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-planta-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-mano-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-vidrio-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-envejecido-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "guardian_alba",
+      "winner": "kalamo",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-planta-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-mano-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-vidrio-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-envejecido-v1.webp",
+        "assets/images/tower-preview/shadow-porcelana-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/shadow-porcelana-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "guardian_alba",
+      "winner": "kairos",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-planta-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-mano-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-vidrio-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-envejecido-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "dragon_hielo",
+      "winner": "dragon_hielo",
+      "own": true,
+      "sources": [
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-planta-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-ataque-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-frontal-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-final-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-mano-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-vidrio-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-envejecido-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "dragon_hielo",
+      "winner": "explorador",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-planta-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-mano-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-vidrio-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-envejecido-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "dragon_hielo",
+      "winner": "guardiana",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-planta-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-mano-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-vidrio-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-envejecido-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "dragon_hielo",
+      "winner": "azrak",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-planta-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-mano-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-vidrio-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-envejecido-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "dragon_hielo",
+      "winner": "kalamo",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-planta-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-mano-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-vidrio-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-envejecido-v1.webp",
+        "assets/images/tower-preview/lumen-cardenal-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/lumen-cardenal-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "dragon_hielo",
+      "winner": "kairos",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-planta-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-mano-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-vidrio-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-envejecido-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "azrak",
+      "winner": "azrak",
+      "own": true,
+      "sources": [
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-planta-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-invocacion-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-final-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-vidrio-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-envejecido-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "azrak",
+      "winner": "explorador",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-planta-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-vidrio-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-envejecido-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "azrak",
+      "winner": "guardiana",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-planta-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+        "assets/images/tower-preview/nivor-amatista-vidrio-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-envejecido-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "azrak",
+      "winner": "kalamo",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-planta-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-vidrio-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-envejecido-v1.webp",
+        "assets/images/tower-preview/nivor-amatista-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/nivor-amatista-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "azrak",
+      "winner": "kairos",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-planta-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-vidrio-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-envejecido-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "kalamo",
+      "winner": "kalamo",
+      "own": true,
+      "sources": [
+        "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-planta-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-alcanza-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-extrae-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-prepara-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-lanza-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-golpea-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-final-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-envejecido-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "kalamo",
+      "winner": "explorador",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-planta-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-envejecido-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "kalamo",
+      "winner": "guardiana",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-planta-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-envejecido-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "kalamo",
+      "winner": "azrak",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-planta-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-mano-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-envejecido-v1.webp",
+        "assets/images/tower-preview/azrak-brasa-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/azrak-brasa-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "kalamo",
+      "winner": "kairos",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-planta-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-mano-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-base-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-envejecido-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-anciano-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/kalamo-cartografo-base-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/kalamo-cartografo-envejecido-v1.webp",
+        "http://127.0.0.1:53344/assets/images/tower-preview/kalamo-cartografo-anciano-v1.webp"
+      ]
+    },
+    {
+      "character": "kairos",
+      "winner": "kairos",
+      "own": true,
+      "sources": [
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-planta-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-mano-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-ataque-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-base-v1.webp"
+      ]
+    },
+    {
+      "character": "kairos",
+      "winner": "explorador",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-planta-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-mano-v1.webp"
+      ]
+    },
+    {
+      "character": "kairos",
+      "winner": "guardiana",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-planta-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+        "assets/images/tower-preview/kalamo-cartografo-mano-v1.webp"
+      ]
+    },
+    {
+      "character": "kairos",
+      "winner": "azrak",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-planta-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-base-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-mano-v1.webp"
+      ]
+    },
+    {
+      "character": "kairos",
+      "winner": "kalamo",
+      "own": false,
+      "sources": [
+        "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-planta-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-base-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-mano-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-base-v1.webp",
+        "assets/images/tower-preview/kairos-clepsidra-vidrio-v1.webp"
+      ]
+    }
+  ],
+  "pageErrors": []
+}

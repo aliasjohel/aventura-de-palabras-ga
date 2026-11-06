@@ -84,7 +84,10 @@
     "xp_tinta": "Emerald Guardian",
     "xp_constelacion": "Celestial Guardian",
     "xp_codice": "Arcane Master",
-    "xp_infinito": "Legend of the Crystals"
+    "xp_infinito": "Legend of the Crystals",
+    "tower_conquistador": "Conqueror",
+    "tower_maestro": "Master",
+    "tower_leyenda": "Legend"
   },
   "ranks": {
     "novato": {
@@ -120,7 +123,10 @@
     "unlocked": "Unlocked",
     "world": "Complete World {world}",
     "rank": "Reach {rank} rank",
-    "gift": "🎁 Frames unlocked: {frames}. Choose them in My Profile."
+    "gift": "🎁 Frames unlocked: {frames}. Choose them in My Profile.",
+    "tower": "Clear the Tower with {n} distinct characters",
+    "towerOne": "Clear ten floors with one character",
+    "towerSaveFailed": "Could not save this frame. Refresh rewards and try again."
   },
   "friends": {
     "title": "Friends",

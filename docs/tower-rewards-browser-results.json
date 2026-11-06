@@ -1,0 +1,238 @@
+{
+  "passed": true,
+  "productionConnections": 0,
+  "productionWrites": 0,
+  "transport": "loopback HTTP to real PostgreSQL roles; synthetic session tokens, not production Auth",
+  "browser": "Edge Chromium, 844x390",
+  "physicalAndroidTest": false,
+  "checks": [
+    "Actual main-game keyboard uses PostgreSQL authority; lost committed letter/offline recovery work, one 30-coin payout, no costume after floor 1, legacy progress preserved",
+    "Normal inventory equips all 11 costumes; profile editor equips all 3 approved frames; independent browser device restores both",
+    "44 real equipped combat pose checks across all 11 characters use approved sprites with selector disabled",
+    "Visual selector stays enabled, runs separately as practice and grants no money/proofs/equipment"
+  ],
+  "states": [
+    {
+      "character": "explorador",
+      "pose": "base",
+      "src": "assets/images/tower-preview/aren-campeon-base-v1.webp"
+    },
+    {
+      "character": "explorador",
+      "pose": "attack",
+      "src": "assets/images/tower-preview/aren-campeon-preparacion-v1.webp"
+    },
+    {
+      "character": "explorador",
+      "pose": "ability",
+      "src": "assets/images/tower-preview/aren-campeon-habilidad-v1.webp"
+    },
+    {
+      "character": "explorador",
+      "pose": "damage",
+      "src": "assets/images/tower-preview/aren-campeon-impacto-v1.webp"
+    },
+    {
+      "character": "mago",
+      "pose": "base",
+      "src": "assets/images/tower-preview/zafir-vitral-base-v1.webp"
+    },
+    {
+      "character": "mago",
+      "pose": "attack",
+      "src": "assets/images/tower-preview/zafir-vitral-base-v1.webp"
+    },
+    {
+      "character": "mago",
+      "pose": "ability",
+      "src": "assets/images/tower-preview/zafir-vitral-ataque-v1.webp"
+    },
+    {
+      "character": "mago",
+      "pose": "damage",
+      "src": "assets/images/tower-preview/zafir-vitral-impacto-v1.webp"
+    },
+    {
+      "character": "guardiana",
+      "pose": "base",
+      "src": "assets/images/tower-preview/guardiana-orquidea-base-v1.webp"
+    },
+    {
+      "character": "guardiana",
+      "pose": "attack",
+      "src": "assets/images/tower-preview/guardiana-orquidea-ataque-v1.webp"
+    },
+    {
+      "character": "guardiana",
+      "pose": "ability",
+      "src": "assets/images/tower-preview/guardiana-orquidea-ataque-v1.webp"
+    },
+    {
+      "character": "guardiana",
+      "pose": "damage",
+      "src": "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp"
+    },
+    {
+      "character": "dragon",
+      "pose": "base",
+      "src": "assets/images/tower-preview/nimbus-farero-base-v1.webp"
+    },
+    {
+      "character": "dragon",
+      "pose": "attack",
+      "src": "assets/images/tower-preview/nimbus-farero-ataque-v1.webp"
+    },
+    {
+      "character": "dragon",
+      "pose": "ability",
+      "src": "assets/images/tower-preview/nimbus-farero-ataque-v1.webp"
+    },
+    {
+      "character": "dragon",
+      "pose": "damage",
+      "src": "assets/images/tower-preview/nimbus-farero-impacto-v1.webp"
+    },
+    {
+      "character": "hombre_lobo",
+      "pose": "base",
+      "src": "assets/images/tower-preview/lobo-basaltico-base-v1.webp"
+    },
+    {
+      "character": "hombre_lobo",
+      "pose": "attack",
+      "src": "assets/images/tower-preview/lobo-basaltico-ataque-v1.webp"
+    },
+    {
+      "character": "hombre_lobo",
+      "pose": "ability",
+      "src": "assets/images/tower-preview/lobo-basaltico-salto-v1.webp"
+    },
+    {
+      "character": "hombre_lobo",
+      "pose": "damage",
+      "src": "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp"
+    },
+    {
+      "character": "t_shadow",
+      "pose": "base",
+      "src": "assets/images/tower-preview/shadow-porcelana-base-v1.webp"
+    },
+    {
+      "character": "t_shadow",
+      "pose": "attack",
+      "src": "assets/images/tower-preview/shadow-porcelana-ataque-v1.webp"
+    },
+    {
+      "character": "t_shadow",
+      "pose": "ability",
+      "src": "assets/images/tower-preview/shadow-porcelana-ataque-v1.webp"
+    },
+    {
+      "character": "t_shadow",
+      "pose": "damage",
+      "src": "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp"
+    },
+    {
+      "character": "guardian_alba",
+      "pose": "base",
+      "src": "assets/images/tower-preview/lumen-cardenal-base-v1.webp"
+    },
+    {
+      "character": "guardian_alba",
+      "pose": "attack",
+      "src": "assets/images/tower-preview/lumen-cardenal-ataque-v1.webp"
+    },
+    {
+      "character": "guardian_alba",
+      "pose": "ability",
+      "src": "assets/images/tower-preview/lumen-cardenal-habilidad-v1.webp"
+    },
+    {
+      "character": "guardian_alba",
+      "pose": "damage",
+      "src": "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp"
+    },
+    {
+      "character": "dragon_hielo",
+      "pose": "base",
+      "src": "assets/images/tower-preview/nivor-amatista-base-v1.webp"
+    },
+    {
+      "character": "dragon_hielo",
+      "pose": "attack",
+      "src": "assets/images/tower-preview/nivor-amatista-ataque-v1.webp"
+    },
+    {
+      "character": "dragon_hielo",
+      "pose": "ability",
+      "src": "assets/images/tower-preview/nivor-amatista-vuelo-v1.webp"
+    },
+    {
+      "character": "dragon_hielo",
+      "pose": "damage",
+      "src": "assets/images/tower-preview/nivor-amatista-impacto-v2.webp"
+    },
+    {
+      "character": "azrak",
+      "pose": "base",
+      "src": "assets/images/tower-preview/azrak-brasa-base-v1.webp"
+    },
+    {
+      "character": "azrak",
+      "pose": "attack",
+      "src": "assets/images/tower-preview/azrak-brasa-ataque-v1.webp"
+    },
+    {
+      "character": "azrak",
+      "pose": "ability",
+      "src": "assets/images/tower-preview/azrak-brasa-ataque-v1.webp"
+    },
+    {
+      "character": "azrak",
+      "pose": "damage",
+      "src": "assets/images/tower-preview/azrak-brasa-impacto-v1.webp"
+    },
+    {
+      "character": "kalamo",
+      "pose": "base",
+      "src": "assets/images/tower-preview/kalamo-cartografo-base-v1.webp"
+    },
+    {
+      "character": "kalamo",
+      "pose": "attack",
+      "src": "assets/images/tower-preview/kalamo-cartografo-ataque-v1.webp"
+    },
+    {
+      "character": "kalamo",
+      "pose": "ability",
+      "src": "assets/images/tower-preview/kalamo-cartografo-habilidad-v1.webp"
+    },
+    {
+      "character": "kalamo",
+      "pose": "damage",
+      "src": "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp"
+    },
+    {
+      "character": "kairos",
+      "pose": "base",
+      "src": "assets/images/tower-preview/kairos-clepsidra-base-v1.webp"
+    },
+    {
+      "character": "kairos",
+      "pose": "attack",
+      "src": "assets/images/tower-preview/kairos-clepsidra-ataque-v1.webp"
+    },
+    {
+      "character": "kairos",
+      "pose": "ability",
+      "src": "assets/images/tower-preview/kairos-clepsidra-ataque-v1.webp"
+    },
+    {
+      "character": "kairos",
+      "pose": "damage",
+      "src": "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp"
+    }
+  ],
+  "rpcCalls": 146,
+  "pageErrors": []
+}

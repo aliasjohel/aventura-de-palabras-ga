@@ -62,7 +62,7 @@ assert.match(migration, /insert into public\.versus_rooms[\s\S]+values \(v_code,
 assert.match(migration, /insert into public\.versus_players[\s\S]+v_invite\.challenger_id[\s\S]+v_user_id/);
 assert.match(hardening, /create index versus_invites_room_idx/);
 assert.match(hardening, /select public\.is_permanent_versus_user\(\)/);
-assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v\d+`/);
+assert.match(sw, /CACHE_NAME = `\$\{CACHE_PREFIX\}v\d+(?:-[a-z0-9]+)*`/);
 const revisionAdaptador = html.match(/js\/versus-room-supabase\.js\?v=([^" ]+)/)?.[1];
 assert.ok(revisionAdaptador, "El adaptador online tiene una revisión para la caché.");
 const hashAdaptador = require('node:crypto').createHash('sha256').update(adapter.replace(/\r\n/g, '\n')).digest('hex');

@@ -37,7 +37,13 @@
       }catch{return null;} // Presentation failure never changes mission settlement.
     }
     const xp=(action='sync',reward=null,frame=null,title=null)=>enqueue(async id=>{
-      const result=await rpc(id,'player_xp',{p_action:action,p_reward:reward,p_frame:frame,p_title:title});
+      let result;
+      if(action==='equip'&&frame&&root.TowerRewards?.read().frame){
+        const current=await rpc(id,'tower_cosmetics',{p_action:'status',p_item:null,p_character:null,p_request:null,p_revision:null});
+        const selected=await rpc(id,'tower_cosmetics',{p_action:'use_xp_frame',p_item:frame,p_character:null,p_request:root.crypto.randomUUID(),p_revision:current.revision});
+        root.TowerRewards.apply(selected);result=selected.xpResult;
+      }
+      else result=await rpc(id,'player_xp',{p_action:action,p_reward:reward,p_frame:frame,p_title:title});
       root.PlayerXP?.apply(result.xp);
       if(action==='claim')await syncNow(id);
       return result;
@@ -56,7 +62,9 @@
         const inventory=await rpc(id,'game_characters',{p_action:'sync',p_character:null});
         root.CharacterStore.apply(inventory.characters,id);
       }
-      await syncXP(id);
+      const towerBefore=root.TowerRewards?.read().frame,xpState=await syncXP(id);
+      if(root.TowerRewards){try{const rewards=await rpc(id,'tower_cosmetics',{p_action:'sync',p_item:null,p_character:null,p_request:root.crypto.randomUUID(),p_revision:null});root.TowerRewards.apply(rewards);}catch{/* Previous servers keep the existing wallet usable. */}}
+      if(towerBefore&&!root.TowerRewards?.read().frame&&xpState?.appearance)root.PlayerAvatar?.aplicarXP(xpState.appearance);
       return result;
     }
     const multiplayerRewards=matchId=>enqueue(async id=>{
@@ -107,6 +115,13 @@
         return result;
       });
     const adventureHelp=args=>enqueue(id=>rpc(id,'adventure_word_help',args));
+    const cosmetics=args=>enqueue(id=>rpc(id,'tower_cosmetics',args));
+    const tower=args=>enqueue(async id=>{
+      const result=await rpc(id,'tower_game',args);
+      if(result.wallet){const before=store.read();store.applyAccount({...before,userId:id,securityVersion:3,currencyVersion:2,coins:result.wallet.coins,revision:result.wallet.revision});notify();}
+      if(result.towerCosmetics)root.TowerRewards?.apply(result.towerCosmetics);
+      return result;
+    });
     function schedule(){
       if(!userId)return;
       root.clearTimeout(timer);
@@ -131,7 +146,7 @@
     root.addEventListener?.('online',schedule);
     root.addEventListener?.('focus',schedule);
     root.document?.addEventListener('visibilitychange',()=>{if(!root.document.hidden)schedule();});
-    return Object.freeze({connect,sync,xp,multiplayerRewards,setArenTrial,backgrounds,characters,rewardAttempt,gameAction,adventureHelp});
+    return Object.freeze({connect,sync,xp,multiplayerRewards,setArenTrial,backgrounds,characters,rewardAttempt,gameAction,adventureHelp,tower,cosmetics});
   }
   return {create};
 });

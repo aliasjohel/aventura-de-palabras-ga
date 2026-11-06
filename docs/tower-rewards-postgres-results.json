@@ -1,0 +1,688 @@
+{
+  "passed": true,
+  "productionConnections": 0,
+  "productionWrites": 0,
+  "fixture": "ephemeral real PostgreSQL; synthetic accounts",
+  "migration": "20261106221752_tower_exclusive_rewards_inventory.sql",
+  "globalRewardsActivated": false,
+  "floorCases": 110,
+  "languageConfigurations": 330,
+  "maximumCoins": 5720,
+  "ownedCosmetics": 14,
+  "checks": [
+    "Migration preserves every existing row; grants default OFF and global access unchanged",
+    "Private RLS/ACL, unowned equipment, anonymous and unconfirmed accounts rejected; two-account pilot only",
+    "330 legal wins, all 110 distinct floors: exact coins once, 11 costumes and cumulative 1/6/11 frames; concurrent settlement/replay/lost responses idempotent",
+    "One floor and replay cannot complete a character; another account receives no prizes",
+    "Cosmetic storage failure rolls back floor certificate, receipt, coins and grants together; reconnect settlement recovers exactly once",
+    "Distinct concurrent final settlements cross 6/11 thresholds once; missing tenth certificates and completed progress alone cannot grant a costume",
+    "Switching to an already-owned XP frame is atomic; invalid XP frame cannot clear Tower; existing XP total and coins unchanged",
+    "Room identity preserves frames against old clients; public room costumes/profile show only verified equipped items, never private ownership; outsiders denied",
+    "Aren Union retains its authorized visuals/mechanics; Tower selection cannot hide Union and dormant Tower equipment survives unchanged",
+    "All 11 costumes/3 frames equip on A and persist on B; old wallet/appearance clients preserve new equipment; stale/cross-character/foreign/unowned and purchase attempts rejected",
+    "Two-device equipment race commits one revision; lost successful response replays its exact receipt",
+    "Rollback flag disables grants without removing ownership, equipment, coins or progress"
+  ],
+  "floors": [
+    {
+      "character": "explorador",
+      "floor": 1,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "explorador",
+      "floor": 2,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "explorador",
+      "floor": 3,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "explorador",
+      "floor": 4,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "explorador",
+      "floor": 5,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "explorador",
+      "floor": 6,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "explorador",
+      "floor": 7,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "explorador",
+      "floor": 8,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "explorador",
+      "floor": 9,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "explorador",
+      "floor": 10,
+      "amount": 150,
+      "costume": true
+    },
+    {
+      "character": "mago",
+      "floor": 1,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "mago",
+      "floor": 2,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "mago",
+      "floor": 3,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "mago",
+      "floor": 4,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "mago",
+      "floor": 5,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "mago",
+      "floor": 6,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "mago",
+      "floor": 7,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "mago",
+      "floor": 8,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "mago",
+      "floor": 9,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "mago",
+      "floor": 10,
+      "amount": 150,
+      "costume": true
+    },
+    {
+      "character": "guardiana",
+      "floor": 1,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "guardiana",
+      "floor": 2,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "guardiana",
+      "floor": 3,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "guardiana",
+      "floor": 4,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "guardiana",
+      "floor": 5,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "guardiana",
+      "floor": 6,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "guardiana",
+      "floor": 7,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "guardiana",
+      "floor": 8,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "guardiana",
+      "floor": 9,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "guardiana",
+      "floor": 10,
+      "amount": 150,
+      "costume": true
+    },
+    {
+      "character": "dragon",
+      "floor": 1,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "dragon",
+      "floor": 2,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "dragon",
+      "floor": 3,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "dragon",
+      "floor": 4,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "dragon",
+      "floor": 5,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "dragon",
+      "floor": 6,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "dragon",
+      "floor": 7,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "dragon",
+      "floor": 8,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "dragon",
+      "floor": 9,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "dragon",
+      "floor": 10,
+      "amount": 150,
+      "costume": true
+    },
+    {
+      "character": "hombre_lobo",
+      "floor": 1,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "hombre_lobo",
+      "floor": 2,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "hombre_lobo",
+      "floor": 3,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "hombre_lobo",
+      "floor": 4,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "hombre_lobo",
+      "floor": 5,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "hombre_lobo",
+      "floor": 6,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "hombre_lobo",
+      "floor": 7,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "hombre_lobo",
+      "floor": 8,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "hombre_lobo",
+      "floor": 9,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "hombre_lobo",
+      "floor": 10,
+      "amount": 150,
+      "costume": true
+    },
+    {
+      "character": "guardian_alba",
+      "floor": 1,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "guardian_alba",
+      "floor": 2,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "guardian_alba",
+      "floor": 3,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "guardian_alba",
+      "floor": 4,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "guardian_alba",
+      "floor": 5,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "guardian_alba",
+      "floor": 6,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "guardian_alba",
+      "floor": 7,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "guardian_alba",
+      "floor": 8,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "guardian_alba",
+      "floor": 9,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "guardian_alba",
+      "floor": 10,
+      "amount": 150,
+      "costume": true
+    },
+    {
+      "character": "dragon_hielo",
+      "floor": 1,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "dragon_hielo",
+      "floor": 2,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "dragon_hielo",
+      "floor": 3,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "dragon_hielo",
+      "floor": 4,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "dragon_hielo",
+      "floor": 5,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "dragon_hielo",
+      "floor": 6,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "dragon_hielo",
+      "floor": 7,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "dragon_hielo",
+      "floor": 8,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "dragon_hielo",
+      "floor": 9,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "dragon_hielo",
+      "floor": 10,
+      "amount": 150,
+      "costume": true
+    },
+    {
+      "character": "kalamo",
+      "floor": 1,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "kalamo",
+      "floor": 2,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "kalamo",
+      "floor": 3,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "kalamo",
+      "floor": 4,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "kalamo",
+      "floor": 5,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "kalamo",
+      "floor": 6,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "kalamo",
+      "floor": 7,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "kalamo",
+      "floor": 8,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "kalamo",
+      "floor": 9,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "kalamo",
+      "floor": 10,
+      "amount": 150,
+      "costume": true
+    },
+    {
+      "character": "kairos",
+      "floor": 1,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "kairos",
+      "floor": 2,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "kairos",
+      "floor": 3,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "kairos",
+      "floor": 4,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "kairos",
+      "floor": 5,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "kairos",
+      "floor": 6,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "kairos",
+      "floor": 7,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "kairos",
+      "floor": 8,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "kairos",
+      "floor": 9,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "kairos",
+      "floor": 10,
+      "amount": 150,
+      "costume": true
+    },
+    {
+      "character": "t_shadow",
+      "floor": 1,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "t_shadow",
+      "floor": 2,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "t_shadow",
+      "floor": 3,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "t_shadow",
+      "floor": 4,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "t_shadow",
+      "floor": 5,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "t_shadow",
+      "floor": 6,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "t_shadow",
+      "floor": 7,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "t_shadow",
+      "floor": 8,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "t_shadow",
+      "floor": 9,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "t_shadow",
+      "floor": 10,
+      "amount": 150,
+      "costume": true
+    },
+    {
+      "character": "azrak",
+      "floor": 1,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "azrak",
+      "floor": 2,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "azrak",
+      "floor": 3,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "azrak",
+      "floor": 4,
+      "amount": 30,
+      "costume": false
+    },
+    {
+      "character": "azrak",
+      "floor": 5,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "azrak",
+      "floor": 6,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "azrak",
+      "floor": 7,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "azrak",
+      "floor": 8,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "azrak",
+      "floor": 9,
+      "amount": 50,
+      "costume": false
+    },
+    {
+      "character": "azrak",
+      "floor": 10,
+      "amount": 150,
+      "costume": true
+    }
+  ]
+}

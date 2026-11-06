@@ -84,7 +84,10 @@
     "xp_tinta": "Guardião Esmeralda",
     "xp_constelacion": "Guardião Celestial",
     "xp_codice": "Mestre Arcano",
-    "xp_infinito": "Lenda dos Cristais"
+    "xp_infinito": "Lenda dos Cristais",
+    "tower_conquistador": "Conquistador",
+    "tower_maestro": "Mestre",
+    "tower_leyenda": "Lenda"
   },
   "ranks": {
     "novato": {
@@ -120,7 +123,10 @@
     "unlocked": "Desbloqueado",
     "world": "Conclua o mundo {world}",
     "rank": "Alcance o rank {rank}",
-    "gift": "🎁 Molduras desbloqueadas: {frames}. Escolha em Meu perfil."
+    "gift": "🎁 Molduras desbloqueadas: {frames}. Escolha em Meu perfil.",
+    "tower": "Complete a Torre com {n} personagens diferentes",
+    "towerOne": "Complete os dez andares com um personagem",
+    "towerSaveFailed": "Não foi possível salvar esta moldura. Atualize os prêmios e tente novamente."
   },
   "friends": {
     "title": "Amigos",

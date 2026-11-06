@@ -84,7 +84,10 @@
     "xp_tinta": "Guardián Esmeralda",
     "xp_constelacion": "Guardián Celestial",
     "xp_codice": "Maestro Arcano",
-    "xp_infinito": "Leyenda de los Cristales"
+    "xp_infinito": "Leyenda de los Cristales",
+    "tower_conquistador": "Conquistador",
+    "tower_maestro": "Maestro",
+    "tower_leyenda": "Leyenda"
   },
   "ranks": {
     "novato": {
@@ -120,7 +123,10 @@
     "unlocked": "Desbloqueado",
     "world": "Completá el mundo {world}",
     "rank": "Alcanzá el rango {rank}",
-    "gift": "🎁 Marcos desbloqueados: {frames}. Elegilos en Mi perfil."
+    "gift": "🎁 Marcos desbloqueados: {frames}. Elegilos en Mi perfil.",
+    "tower": "Completá la Torre con {n} personajes distintos",
+    "towerOne": "Completá los diez pisos con un personaje",
+    "towerSaveFailed": "No pudimos guardar este marco. Actualizá los premios y volvé a intentar."
   },
   "friends": {
     "title": "Amigos",

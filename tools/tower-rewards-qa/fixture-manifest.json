@@ -1,0 +1,268 @@
+{
+  "testOnly": true,
+  "productionUse": false,
+  "cutoff": "20261031183634",
+  "excludesMultiplayerLab": true,
+  "migrations": [
+    {
+      "file": "20260805_versus_challenges.sql",
+      "sha256": "9549fb1595df082f21dd069b0bb88ca6641f73ba00b9b1635712dff5db62d4a6"
+    },
+    {
+      "file": "20260805_versus_characters.sql",
+      "sha256": "7544c37e06a68c0c569105d398d6d64f217420d381bc6daf7d81ba49cda8b3cc"
+    },
+    {
+      "file": "20260805_versus_lobby.sql",
+      "sha256": "bf146aee038f38490a91f4abea4c7dc6d157d6e9bb4a682f85971a1bd1b74063"
+    },
+    {
+      "file": "20260805_versus_matches.sql",
+      "sha256": "5413ee81b0c1524a448b6718740f3d09f540ecebc4cdd95fdee7ec608344ebbd"
+    },
+    {
+      "file": "20260805_versus_resilience.sql",
+      "sha256": "bd7a700ce739532181499d75bc5cbc2b20219ccbc4e606f6dc04f4507b0fe163"
+    },
+    {
+      "file": "20260808222835_versus_accent_equivalence.sql",
+      "sha256": "0fc56af80016c3224f4163e59d05bd127578361f0d8a81b90271be3a8603e83a"
+    },
+    {
+      "file": "20260808222843_versus_five_rounds.sql",
+      "sha256": "f5ba3951288c1f8a28eb3d1045762045e5eb1bd09c5eba763ba2cc3ad9f2af82"
+    },
+    {
+      "file": "20260808222852_versus_character_abilities.sql",
+      "sha256": "8b41f0f3d5e723a1b0b27ab5dc2b498c40d6d109cc8527f6b88b8e0c8c51d5a3"
+    },
+    {
+      "file": "20260808230456_versus_ability_effect_durations.sql",
+      "sha256": "4388d6bbe57c28bdf5e062a5f4760076a2a56090dd4683258fd20837911c41e1"
+    },
+    {
+      "file": "20260808233756_versus_guardian_roots_four_seconds.sql",
+      "sha256": "fdfca5785795e3c0be9cd1706fce220b7aa6e07821da5a47f25d3a4b1ee1be09"
+    },
+    {
+      "file": "20260809001114_versus_werewolf_full_moon_hunt.sql",
+      "sha256": "120a031fb0b80c5301f63b296af3dbbf2a2bb817cfb5d654a96a25823f3e5437"
+    },
+    {
+      "file": "20260809015253_versus_thematic_dictionary.sql",
+      "sha256": "81c9bc63bd306686a33381e8e344ce1ec56d0661f6e12f72ef2663e0522b5e23"
+    },
+    {
+      "file": "20260809194727_versus_t_shadow_black_hole.sql",
+      "sha256": "4bda5dcb27c6e9a7e197332c84e365cbf9fef635ccd9a770f4a9a6343cbc4311"
+    },
+    {
+      "file": "20260809194802_versus_ability_duration_five_seconds.sql",
+      "sha256": "31f3222bac389178d99852fe4375c68d06451e4c9eec3531ce37249bcff502cc"
+    },
+    {
+      "file": "20260809194812_add_guardian_alba.sql",
+      "sha256": "c859f6070b580bc122f85ad5c9ab334cff7b034bf6879eea5bed2426233a1d97"
+    },
+    {
+      "file": "20260811014047_reveal_failed_versus_word.sql",
+      "sha256": "747975d141aab63dfe19088abcb4cd1ad45cd0f43a04881831471bde0fc73066"
+    },
+    {
+      "file": "20260812222516_add_nivor_ice_dragon.sql",
+      "sha256": "51d14276173a82d8c4d8bfccf3283a4f7beaf9b08f6e3ec165dbc0e88c97e114"
+    },
+    {
+      "file": "20260812230407_add_azrak_forced_miss.sql",
+      "sha256": "f8593da00ded4d08cbe8117b710dbfe5d83418941444543eb7e5f3920705b6eb"
+    },
+    {
+      "file": "20260817172734_versus_social_accounts_and_invites.sql",
+      "sha256": "d32b009818fdd30098a289d9b76c4f4160de833efd75ad9f1f698b09f869a993"
+    },
+    {
+      "file": "20260817173417_versus_social_hardening.sql",
+      "sha256": "5d971f1e144752623f6d7b5941ba87e741fadb3058ac46c397823d239178d357"
+    },
+    {
+      "file": "20260817175049_versus_rematch_and_recovery_words.sql",
+      "sha256": "38b50ba0465838e9f1fd20cbdd961fa7a1a9c424499783e8a4ae1befb6486548"
+    },
+    {
+      "file": "20260818194315_add_kalamo_key_theft.sql",
+      "sha256": "31b9cbe4f0438f87f5fb8bec306be592e66c6f72e0912f5a335899b60ac493ad"
+    },
+    {
+      "file": "20260823010000_add_kairos_time_steal.sql",
+      "sha256": "ee76e92d300c8e0db7bc1a10778a4aa9ef6b86ad866948dfcc4aaa795e574b59"
+    },
+    {
+      "file": "20260825214904_finish_match_on_individual_timeout.sql",
+      "sha256": "4b6bdb1855b1f9f2dce8d5fb5f0c5c6b267b56ed2b509c43a3419f1a4f4da301"
+    },
+    {
+      "file": "20260829172605_repair_kairos_online_selection_and_time_steal.sql",
+      "sha256": "2a36575d764f84bcde9687fb5a1141950380fb45180bee7f44470f711471bbd3"
+    },
+    {
+      "file": "20260830133000_expand_versus_dictionary.sql",
+      "sha256": "912d122a20eec1030add367c0abc770c3218d8e14cf63c7739221e9f44fae7c1"
+    },
+    {
+      "file": "20260914025118_public_matchmaking_ranking.sql",
+      "sha256": "871b8dca06b152d081781a5b656482470d8f11566c3395e8700309435a460cb9"
+    },
+    {
+      "file": "20260914025239_fix_matchmaking_room_alias.sql",
+      "sha256": "5fab8847ddaa5e19b923578b98ff206b89db1ac18c7f5f49392a3fe7e1a73fab"
+    },
+    {
+      "file": "20260915205954_versus_avatars_quick_messages.sql",
+      "sha256": "65bb2cf72450a4c04eb7fe447eadd05230692760b66deba2cbfd395ea63b469f"
+    },
+    {
+      "file": "20260920190501_player_profile_history.sql",
+      "sha256": "5eea5d17edaefab38972a0bb56d87fc3e4aff8b8bb181300ecd353b932887796"
+    },
+    {
+      "file": "20260921051546_expand_versus_dictionary_2000.sql",
+      "sha256": "6889e8c89b4dc1eb74a33146f31609d8af076c74cd6721d4d8ffd88752c2e51b"
+    },
+    {
+      "file": "20260921202815_moderate_player_aliases.sql",
+      "sha256": "c0d548fdb54f66e8d7c02ed8f43e2373f5cefe03d2714015bcda23a93f256ccb"
+    },
+    {
+      "file": "20260921202828_public_player_profiles.sql",
+      "sha256": "739d9aed73b90d5a457795d806568a49069a5e5ed69288124e4da42a5f121b67"
+    },
+    {
+      "file": "20260921203927_refine_alias_word_boundaries.sql",
+      "sha256": "341ce18d7ebcdf834b702ae90e0138d789c727c3a30ddb31bc6860ddf5b22932"
+    },
+    {
+      "file": "20260922012832_extend_alias_moderation.sql",
+      "sha256": "17ec4cf3613d4a33281987f5fad75d0a45a8e10e871a3e9dd83492df85311c7d"
+    },
+    {
+      "file": "20260922015020_ranked_modes_and_fair_matchmaking.sql",
+      "sha256": "f7168e989ad54aff04dacaa2e9db0ee6eb8768432288551899a1859ccfe9bfe0"
+    },
+    {
+      "file": "20260924154955_versus_coin_rewards.sql",
+      "sha256": "dc402f506fa4016c4a755bae145cc8c4fdd45ca812b98ded5409d45fa79b19f5"
+    },
+    {
+      "file": "20260927204829_ranked_adjacent_tiers.sql",
+      "sha256": "b81122ae86a266224974f18342365cbc4ebaa3513739512326450983ffa04be6"
+    },
+    {
+      "file": "20260928013057_earnable_costume_collection.sql",
+      "sha256": "959ab533fb615195715f8325519fd02813cbf7dd8e41c0a512a5ac0962d218c7"
+    },
+    {
+      "file": "20260929013243_creature_costume_collection.sql",
+      "sha256": "89b09d2916aafb6cbae9c7b4c2b06fba1ee67202aff08def0746f8b4841f427f"
+    },
+    {
+      "file": "20260929204553_final_costume_collection.sql",
+      "sha256": "c43f98685c30c95cf100b046681808f45463799fdc7f64345c8db5518ce4e10f"
+    },
+    {
+      "file": "20261002204206_admin_union_online.sql",
+      "sha256": "c54f023420e695b4da4c7fc2fb096048a62137dd16bb19feb6e873179b7df102"
+    },
+    {
+      "file": "20261007015431_avatar_reward_frames_catalog.sql",
+      "sha256": "ab3eaa07fce8cebed1bfe11b28227ef5c33749f86584fca93a4875638bcf18aa"
+    },
+    {
+      "file": "20261018005734_online_word_languages.sql",
+      "sha256": "87436899f4c8ab4ea2b4f0388ed7d74ba50b1073946d97345644551721f8ac01"
+    },
+    {
+      "file": "20261018151602_versus_stage1_integrity.sql",
+      "sha256": "eb1d7e6895958bfb8e25793d694664d9995b07b329b776dec888846e9e6c5c4d"
+    },
+    {
+      "file": "20261018153728_versus_stage2_invites_reconnect.sql",
+      "sha256": "5212efa963f6ed290bb9a52c311357b7e439b1d214f590eb00f3b6c8b13acade"
+    },
+    {
+      "file": "20261018171043_profile_friends_summary_and_requests.sql",
+      "sha256": "ef9ff06ee523349956b31c6d772316b79678d925f1924d979f0bdee17ddc6a55"
+    },
+    {
+      "file": "20261019005111_expand_versus_localized_vocabulary.sql",
+      "sha256": "720a1e4b3923868848281dc4b2fd19c9f4d385b72eaecb664ad709f5f195b445"
+    },
+    {
+      "file": "20261021002155_profile_background_inventory_and_unlocks.sql",
+      "sha256": "b05d0a4420f5ad831e84924763215e34917de0a4ae1755ab9d87bcd01bb3f51d"
+    },
+    {
+      "file": "20261021202337_character_shop_inventory.sql",
+      "sha256": "8926c94cd1ac152d3a096540665b30768a62a2b7401a871dc8be1176f9203231"
+    },
+    {
+      "file": "20261022022552_economy_scale_ten.sql",
+      "sha256": "d7e42068d4e5b01bcc53740bdbb246d04be1beeced0259a90b169e1fa9161afa"
+    },
+    {
+      "file": "20261022022905_import_adventure_mission_claims.sql",
+      "sha256": "abcc19542d05902e590ef6d87a34cdb5f439757f8b7507f1b26ed753158aa9b0"
+    },
+    {
+      "file": "20261023212659_economy_authoritative_claims.sql",
+      "sha256": "2a6692cf270572be9da523e6912141313125e8b48530625277f287489dc27ff9"
+    },
+    {
+      "file": "20261023222817_adventure_action_validator.sql",
+      "sha256": "87222b9f89e0adb878a6e7bb138f3a58b7bb7cb475624655d232fe7741b6fc1c"
+    },
+    {
+      "file": "20261023232013_adventure_discrete_puzzle_rules.sql",
+      "sha256": "ab234d29bce4a6c5ad1e1b6842b04025e8738545701cdc2991aed31f46123cef"
+    },
+    {
+      "file": "20261023233900_adventure_authoritative_motion_and_duels.sql",
+      "sha256": "144b741778e6c5b29b0f159d4c8d82d2da8b67175e87b04e37bb670e9fd98d92"
+    },
+    {
+      "file": "20261024162616_aren_scoped_entitlements_v387.sql",
+      "sha256": "9f49cc1d78252267966ace4b0036b56e2f3c472b4517343a3daf571a24ad2bf0"
+    },
+    {
+      "file": "20261027223855_adventure_confirmed_reward_receipts.sql",
+      "sha256": "c18f7760b5706d713cbc706b073d5865af2e4b3b66284e47087694d1807bab35"
+    },
+    {
+      "file": "20261027223857_reviewed_word_categories.sql",
+      "sha256": "f85dbeca279ed8caa6326126ff0a684dd20dfcddd01dab5f985d92ceeb772f45"
+    },
+    {
+      "file": "20261028024303_adventure_account_reward_pilot.sql",
+      "sha256": "0a796945bdc1f8b38c8d415ea57eb7e4da35a0da953efdaf0849277520da491c"
+    },
+    {
+      "file": "20261029213504_adventure_progressive_hints.sql",
+      "sha256": "3f6ea4cab92bf554592271109d2c32a8d95210c7baf2c598a5da2604f86c67bb"
+    },
+    {
+      "file": "20261031002955_general_player_xp.sql",
+      "sha256": "7837a2c3e8314ba2e18bc32850c0ab85ad3f4dcaed87330e5d638a777acc076c"
+    },
+    {
+      "file": "20261031014022_adventure_hints_refill_from_first_use.sql",
+      "sha256": "8356695589594ce804ba3249b39cf1f2c8e4592b69d4dfae867ef021913a5c58"
+    },
+    {
+      "file": "20261031020956_adventure_xp_presentation.sql",
+      "sha256": "ea827db0bc064efa7c4b36e52addf94a516f00cefe0fc3f6101c67506bc1f9d5"
+    },
+    {
+      "file": "20261031183634_tower_authoritative_combat_and_coins.sql",
+      "sha256": "944f3492393328c501f480817dd0912edfa6024f4260dce38e6fd5cdb15f0353"
+    }
+  ]
+}
