@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v393-tower-pose-fixes1`;
+const CACHE_NAME = `${CACHE_PREFIX}v394-nivor-lobo-fixes1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -205,6 +205,7 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/elementos/estela-escarcha-nivor.png",
 ];
 const RESOURCE_ASSETS = [
+  "./assets/images/personajes/versus/hombre-lobo-victoria-humana-v1.webp",
   // BEGIN TOWER TEN DEVELOPMENT RESOURCES
   "./js/tower-outfit-catalog.js",
   "./assets/images/tower-preview/zafir-vitral-base-v1.webp",
@@ -248,6 +249,7 @@ const RESOURCE_ASSETS = [
   "./assets/images/tower-preview/lobo-basaltico-vidrio-v1.webp",
   "./assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
   "./assets/images/tower-preview/lobo-basaltico-anciano-v1.webp",
+  "./assets/images/tower-preview/lobo-basaltico-victoria-humana-v1.webp",
   "./assets/images/tower-preview/shadow-porcelana-base-v1.webp",
   "./assets/images/tower-preview/shadow-porcelana-ataque-v1.webp",
   "./assets/images/tower-preview/shadow-porcelana-final-v1.webp",
@@ -277,7 +279,7 @@ const RESOURCE_ASSETS = [
   "./assets/images/tower-preview/nivor-amatista-descenso-bajo-v1.webp",
   "./assets/images/tower-preview/nivor-amatista-frontal-v1.webp",
   "./assets/images/tower-preview/nivor-amatista-final-v1.webp",
-  "./assets/images/tower-preview/nivor-amatista-impacto-v1.webp",
+  "./assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
   "./assets/images/tower-preview/nivor-amatista-planta-v1.webp",
   "./assets/images/tower-preview/nivor-amatista-mano-v1.webp",
   "./assets/images/tower-preview/nivor-amatista-vidrio-v1.webp",
@@ -322,6 +324,7 @@ const RESOURCE_ASSETS = [
   "./assets/images/tower-preview/kairos-clepsidra-envejecido-v1.webp",
   "./assets/images/tower-preview/kairos-clepsidra-anciano-v1.webp",
   // END TOWER TEN DEVELOPMENT RESOURCES
+
 
 
   "./js/tower-outfit-preview.js",
@@ -1048,7 +1051,8 @@ const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
 
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
-  "./js/tower-outfit-catalog.js": "sha256-0ddaa2f30f74b3095e3b66993e8c49b28b5f3d180f5b0f968dc07d82a90fbb67",
+  "./assets/images/personajes/versus/hombre-lobo-victoria-humana-v1.webp": "sha256-ad0d3b96884800a80d0e40325fbf776c1415895cebe477f6b3eb1a2ff12756a1",
+  "./js/tower-outfit-catalog.js": "sha256-531ba248f53bd8b5dcdc171b21a4c8ba5dd8846941f1f0ba6c57890e2de1a3e5",
   "./assets/images/tower-preview/zafir-vitral-base-v1.webp": "sha256-6014269ca1e6008391b5d725fecd4603d960502aebebc855603fcc895e510fa8",
   "./assets/images/tower-preview/zafir-vitral-ataque-v1.webp": "sha256-0db4a539f1b050ae8d6e30524e7fa35e2b7f61448fedfaba7cab1f81af9ba786",
   "./assets/images/tower-preview/zafir-vitral-final-v1.webp": "sha256-0b4ee0fabd4de92f177262880ad5bec8c4b822e0f67c30600574c3804d2eafb6",
@@ -1090,6 +1094,7 @@ const ASSET_REVISIONS = {
   "./assets/images/tower-preview/lobo-basaltico-vidrio-v1.webp": "sha256-3bf8ab8399fb818ee8b42f5a96ba880ace2bd6099b10dd0cf46241f32fb18e41",
   "./assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp": "sha256-bb531e86e84c82b8cd42326e3b6e98a71f2e8122857e2ffd015ed2798b3fe4b6",
   "./assets/images/tower-preview/lobo-basaltico-anciano-v1.webp": "sha256-b2a1f7a6e969f23f7254894e80455e221a739b060d3815bb069872a607e783d0",
+  "./assets/images/tower-preview/lobo-basaltico-victoria-humana-v1.webp": "sha256-0ada8b815feb17a7214260774b8e5f63fa2bd065b6a2ec47425fb638454b983f",
   "./assets/images/tower-preview/shadow-porcelana-base-v1.webp": "sha256-bf6a7afcbd913c1c81beb867e05d9589893effa4762fa37fdf54c0d8fafb80ab",
   "./assets/images/tower-preview/shadow-porcelana-ataque-v1.webp": "sha256-205fada1aa015d5a8163b1f095b39ce75cc7e81186d7e14321d9beb491ad4bd8",
   "./assets/images/tower-preview/shadow-porcelana-final-v1.webp": "sha256-40a1483eb82365dd2107e516ba2ea077b52e8b1c4dd987b29c1cd53b98ae82ad",
@@ -1119,7 +1124,7 @@ const ASSET_REVISIONS = {
   "./assets/images/tower-preview/nivor-amatista-descenso-bajo-v1.webp": "sha256-32ecddb091aa2d94d0a00ac88606a8ff39fb5434d43681396d6c2b7ca8b51ff3",
   "./assets/images/tower-preview/nivor-amatista-frontal-v1.webp": "sha256-1b00a33f06339510584c1890537e3807ba3cedf6bface81ab07c89c8a3fe2271",
   "./assets/images/tower-preview/nivor-amatista-final-v1.webp": "sha256-8f684799e63d0e6be9579a026b40896d84d5e521dd0923be13a775ec81c32ab1",
-  "./assets/images/tower-preview/nivor-amatista-impacto-v1.webp": "sha256-5a8c6b17669747c3d2c77a46ded054598e5eb63fe23412a770838cdb53cc561f",
+  "./assets/images/tower-preview/nivor-amatista-impacto-v2.webp": "sha256-3c274b3f8c80023b693797373aef80a32f0d77e6f2c4af6942047271ee16f658",
   "./assets/images/tower-preview/nivor-amatista-planta-v1.webp": "sha256-826b7f2ee6843bc7d6c517b6d45d5660fb1fcaf7e13dc4acc004b7dd8b8a5c5c",
   "./assets/images/tower-preview/nivor-amatista-mano-v1.webp": "sha256-48ff8666ef255c231bce11440d20a3a85aef57955a12d36d622bea109f8a4905",
   "./assets/images/tower-preview/nivor-amatista-vidrio-v1.webp": "sha256-2859de54644125929a11ad76986ae17f29e7191519d07f6be19e12119f87cc86",
@@ -1185,7 +1190,7 @@ const ASSET_REVISIONS = {
   "./assets/images/ui/menu-button-ranking-v1.webp": "sha256-ab9244074004847b638ea796b9e7792176bdb9ee530b1679a1562047b01a83ab",
   "./assets/images/ui/menu-button-shop-v1.webp": "sha256-6e828e1a47cf7a4c97b635b00e4010d014f5ee5161668cd4bd35c2e19c55a1de",
   "./assets/images/ui/menu-button-settings-v1.webp": "sha256-a7dd3fd0d0105ae2032dde8f81ef3c5586b4f4648f93aa01dc7ae1c8aaa64c4f",
-  "./js/resource-catalog.js": "sha256-cd35fb8705b433063258755b976e5b49dac537cb2d8c4ac6288038a7ee4b31fa",
+  "./js/resource-catalog.js": "sha256-f0424e650107f4f5e279940cbe54ec3a87025a2f1abf224f7831fa3647f85ac9",
   "./js/resource-loader.js": "sha256-ed51b00161c62f3017b9459a3aa78797cdc3da62537d9325b1d45ebcf2aadf38",
   "./js/costume-resources.js": "sha256-11448139f739560c5e2e07ac1c01f8f966bb15f042c1c83ca3495ead7a448d38",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
@@ -1494,10 +1499,10 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/miniaturas/marco-xp_infinito-v1.webp": "sha256-7df6d8d229b0b2e828e95ffba3c4a87dfe2841664a5c303dcd80e6ab51097f27",
   "./css/player-xp.css": "sha256-4c9fcdf5db7d3765f6697694dd4c6af32070347e0a378027b65ee9e90a1cde12",
   "./js/public-player-profile.js": "sha256-6664f31217b51181f745a789d507aa8ceda33313b290123de2c8499cb74f8a8b",
-  "./": "sha256-2a5c0194a81338b63b6efbdcbb98b43ed9492d7b58f81c8ea4a17b1b018017c1",
-  "./index.html": "sha256-2a5c0194a81338b63b6efbdcbb98b43ed9492d7b58f81c8ea4a17b1b018017c1",
+  "./": "sha256-e3663c01cdc1eb92498ab81d1a4205cba52504c38bbd5ff96623f290c1c2a370",
+  "./index.html": "sha256-e3663c01cdc1eb92498ab81d1a4205cba52504c38bbd5ff96623f290c1c2a370",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
-  "./css/styles.css": "sha256-bd8fc848eb4a19dbcf6a6f76dd1d1823d824d5546baa1ac32084e87342a2096e",
+  "./css/styles.css": "sha256-feb3911f5c898bc400f4a82a999fb6b182f342a5c801944aaf52ea9bd346ca7a",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
   "./js/azrak-world.js": "sha256-d503df637e79f9e229d44bdfb03831c54086f1abf163ffc0dbdef95486227e10",
   "./assets/images/cinematicas/reino-azrak/primer-shadow-lume-capturada-v1.png": "sha256-190fd4207138436bf0a6b68048a766bce2fe136bebf4051095bc84fe6b6b286c",
@@ -1596,7 +1601,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-70e12838d87827b9628473091d48c2f1baf2cf66fe4ee6373f8a56e69f6837bb",
+  "./js/app.js": "sha256-a039a3b27effe75696385898f8f4a0ade4d319f44d2ff9c6bcda686fc89ae0fe",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",

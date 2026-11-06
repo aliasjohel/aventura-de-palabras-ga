@@ -8,6 +8,6 @@ test('production gate removes UI, assets and all selection paths even with stale
 test('development artwork never becomes a wallet costume or initial media download',()=>{
  const store=require('../js/cosmetic-store.js'),resourceSource=fs.readFileSync(path.join(__dirname,'../sw.js'),'utf8');const art={};vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../js/tower-outfit-catalog.js'),'utf8'),art);assert.equal(art.TowerOutfitArtwork.length,10);for(const id of ['aren-campeon',...art.TowerOutfitArtwork.map(c=>c.id)]){assert.equal(store.catalog.some(p=>p.id===id),false);assert.equal(store.asset(id),null);}
  const context={self:{addEventListener(){}},URL,Request,Response};vm.createContext(context);vm.runInContext(resourceSource+';globalThis.core=CORE_ASSETS;globalThis.all=RESOURCE_ASSETS;',context);
- assert.equal(context.core.filter(p=>p.includes('/tower-preview/')).length,0);const count=11+art.TowerOutfitArtwork.reduce((n,c)=>n+Object.keys(c.assets).length,0);assert.equal(count,125);assert.equal(context.all.filter(p=>p.includes('/tower-preview/')).length,count);
+ assert.equal(context.core.filter(p=>p.includes('/tower-preview/')).length,0);const count=11+art.TowerOutfitArtwork.reduce((n,c)=>n+Object.keys(c.assets).length,0);assert.equal(count,126);assert.equal(context.all.filter(p=>p.includes('/tower-preview/')).length,count);
  assert(!/setItem\(|\.rpc\(|\.equip\(|\.purchase\(|applyAccount\(/.test(source));
 });

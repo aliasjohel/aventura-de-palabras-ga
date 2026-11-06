@@ -6577,16 +6577,21 @@ function imagenTrajeFinalVersus(personaje,pose,original,victima=true) {
   if(visual)return visual;
   const matched=lado==='jugador'&&personaje===personajeJugadorVersus?globalThis.TowerOutfitPreview?.source?.(personaje,original):null;
   if(matched)return matched;
+  if(personaje==='hombre_lobo'&&pose==='victoria-humana')return original;
   return CosmeticStore.asset(trajeFinalVersus(personaje,victima),pose)||original;
 }
 function prepararTrajesFinalVersus(ganador) {
   const actores=[['.cinematica-mago-eclipse','mago','final'],['.cinematica-explorador-trampa','explorador','final'],['.kairos-final-invocador','kairos','ataque'],['.kairos-final-victoria','kairos','base'],['.cinematica-guardiana-ataque','guardiana','ataque'],['.cinematica-guardiana-victoria','guardiana','final'],['.cinematica-shadow-clon','t_shadow','ataque'],['.cinematica-shadow-victoria','t_shadow','final'],['.cinematica-alba-ataque','guardian_alba','carga'],['.cinematica-alba-victoria','guardian_alba','final']];
   actores.push(['.cinematica-dragon-llamando','dragon','llamado'],['.cinematica-dragon-victoria','dragon','final'],['.cinematica-lobo-salto','hombre_lobo','salto'],['.cinematica-nivor-ataque-final','dragon_hielo','ataque'],['.nivor-final-astro img','dragon_hielo','frontal'],['.cinematica-nivor-victoria','dragon_hielo','final']);
+  for(const pose of ['base','aullido','transformacion','humano','victoria-humana'])actores.push(['.lobo-regreso-'+pose,'hombre_lobo',pose]);
   actores.push(['.cinematica-azrak-invocacion','azrak','invocacion'],['.cinematica-azrak-victoria','azrak','final'],['.kalamo-final-alcanza','kalamo','alcanza'],['.kalamo-final-extrae','kalamo','extrae'],['.kalamo-final-prepara','kalamo','prepara'],['.kalamo-final-lanza-explorador','kalamo','lanza'],['.kalamo-final-golpea','kalamo','golpea'],['.cinematica-kalamo-victoria','kalamo','final']);
   for(const [selector,personaje,pose] of actores){
     for(const img of cinematicaFinalVersus.querySelectorAll(selector)){
       img.dataset.original ||= img.getAttribute('src');
-      img.src=imagenTrajeFinalVersus(personaje,pose,img.dataset.original,false);
+      // Older shop outfits have a human sprite but no human victory drawing.
+      const original=personaje==='hombre_lobo'&&pose==='victoria-humana'
+        ? CosmeticStore.asset(trajeFinalVersus(personaje,false),'humano')||img.dataset.original : img.dataset.original;
+      img.src=imagenTrajeFinalVersus(personaje,pose,original,false);
     }
   }
   const celestial=ganador==='mago'&&trajeFinalVersus('mago',false)==='zafir-celestial';
@@ -8606,6 +8611,12 @@ function obtenerReproductorFinalVersus(personajeGanador, personajeVictima) {
   const play=obtenerReproductorFinalSinVistaVersus(personajeGanador,personajeVictima);
   return async()=>{
     await globalThis.TowerOutfitPreview?.prepareFinal(personajeGanador,personajeVictima,personajeJugadorVersus);
+    if(personajeGanador==='hombre_lobo'){
+      prepararTrajesFinalVersus('hombre_lobo');
+      const images=[...cinematicaFinalVersus.querySelectorAll('.cinematica-lobo-regreso')];
+      await globalThis.GameResources?.ensure(images.map(img=>img.getAttribute('src')));
+      await Promise.all(images.map(img=>img.decode()));
+    }
     return play();
   };
 }
@@ -9191,7 +9202,7 @@ function reproducirCaceriaLunaLlenaVersus(victima = personajeRivalVersus) {
     demoVersus.resolverCinematica = resolve;
     demoVersus.temporizadorCinematica = setTimeout(
       completarCinematicaFinalVersus,
-      6800,
+      10400,
     );
   });
 }
