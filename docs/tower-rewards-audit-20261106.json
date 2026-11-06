@@ -1,0 +1,2617 @@
+{
+  "checkedAt": "2026-11-06T21:21:35.763Z",
+  "project": "hlixavucxdxevbbhlxkc",
+  "productionWrites": 0,
+  "rpcInvocations": 0,
+  "migrationsInstalled": 0,
+  "attemptStatuses": {},
+  "constraints": [
+    {
+      "definition": "CHECK ((frame_key = ANY (ARRAY['clasico'::text, 'bosque'::text, 'hielo'::text, 'fuego'::text, 'arcano'::text, 'real'::text, 'bronce'::text, 'plata'::text, 'oro'::text, 'platino'::text, 'diamante'::text, 'leyenda'::text, 'xp_tinta'::text, 'xp_constelacion'::text, 'xp_codice'::text, 'xp_infinito'::text])))",
+      "name": "player_appearance_frame_key_check",
+      "table": "versus_private.player_appearance"
+    },
+    {
+      "definition": "FOREIGN KEY (attempt_id) REFERENCES versus_private.tower_attempts(id) ON DELETE CASCADE",
+      "name": "tower_action_receipts_attempt_id_fkey",
+      "table": "versus_private.tower_action_receipts"
+    },
+    {
+      "definition": "PRIMARY KEY (attempt_id, request_id)",
+      "name": "tower_action_receipts_pkey",
+      "table": "versus_private.tower_action_receipts"
+    },
+    {
+      "definition": "FOREIGN KEY (definition) REFERENCES versus_private.tower_definitions(key)",
+      "name": "tower_attempts_definition_fkey",
+      "table": "versus_private.tower_attempts"
+    },
+    {
+      "definition": "CHECK ((language = ANY (ARRAY['es'::text, 'en'::text, 'pt-BR'::text])))",
+      "name": "tower_attempts_language_check",
+      "table": "versus_private.tower_attempts"
+    },
+    {
+      "definition": "PRIMARY KEY (id)",
+      "name": "tower_attempts_pkey",
+      "table": "versus_private.tower_attempts"
+    },
+    {
+      "definition": "CHECK (((sequence >= 0) AND (sequence <= 4096)))",
+      "name": "tower_attempts_sequence_check",
+      "table": "versus_private.tower_attempts"
+    },
+    {
+      "definition": "CHECK ((status = ANY (ARRAY['prepared'::text, 'playing'::text, 'won'::text, 'lost'::text, 'draw'::text, 'abandoned'::text, 'expired'::text])))",
+      "name": "tower_attempts_status_check",
+      "table": "versus_private.tower_attempts"
+    },
+    {
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "name": "tower_attempts_user_id_fkey",
+      "table": "versus_private.tower_attempts"
+    },
+    {
+      "definition": "UNIQUE (user_id, request_id)",
+      "name": "tower_attempts_user_id_request_id_key",
+      "table": "versus_private.tower_attempts"
+    },
+    {
+      "definition": "PRIMARY KEY (user_id, character_key)",
+      "name": "tower_category_rotation_pkey",
+      "table": "versus_private.tower_category_rotation"
+    },
+    {
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "name": "tower_category_rotation_user_id_fkey",
+      "table": "versus_private.tower_category_rotation"
+    },
+    {
+      "definition": "FOREIGN KEY (attempt_id) REFERENCES versus_private.tower_attempts(id)",
+      "name": "tower_coin_receipts_attempt_id_fkey",
+      "table": "versus_private.tower_coin_receipts"
+    },
+    {
+      "definition": "CHECK ((amount =\nCASE\n    WHEN (floor <= 4) THEN 30\n    WHEN (floor <= 9) THEN 50\n    ELSE 150\nEND))",
+      "name": "tower_coin_receipts_check",
+      "table": "versus_private.tower_coin_receipts"
+    },
+    {
+      "definition": "CHECK (((floor >= 1) AND (floor <= 10)))",
+      "name": "tower_coin_receipts_floor_check",
+      "table": "versus_private.tower_coin_receipts"
+    },
+    {
+      "definition": "UNIQUE (id)",
+      "name": "tower_coin_receipts_id_key",
+      "table": "versus_private.tower_coin_receipts"
+    },
+    {
+      "definition": "PRIMARY KEY (user_id, character_key, floor)",
+      "name": "tower_coin_receipts_pkey",
+      "table": "versus_private.tower_coin_receipts"
+    },
+    {
+      "definition": "FOREIGN KEY (user_id, character_key, floor) REFERENCES versus_private.tower_verified_floors(user_id, character_key, floor)",
+      "name": "tower_coin_receipts_user_id_character_key_floor_fkey",
+      "table": "versus_private.tower_coin_receipts"
+    },
+    {
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "name": "tower_coin_receipts_user_id_fkey",
+      "table": "versus_private.tower_coin_receipts"
+    },
+    {
+      "definition": "UNIQUE (character_key, floor)",
+      "name": "tower_definitions_character_key_floor_key",
+      "table": "versus_private.tower_definitions"
+    },
+    {
+      "definition": "CHECK (((floor >= 1) AND (floor <= 10)))",
+      "name": "tower_definitions_floor_check",
+      "table": "versus_private.tower_definitions"
+    },
+    {
+      "definition": "PRIMARY KEY (key)",
+      "name": "tower_definitions_pkey",
+      "table": "versus_private.tower_definitions"
+    },
+    {
+      "definition": "FOREIGN KEY (definition) REFERENCES versus_private.tower_definitions(key)",
+      "name": "tower_pools_definition_fkey",
+      "table": "versus_private.tower_pools"
+    },
+    {
+      "definition": "PRIMARY KEY (definition, language, theme)",
+      "name": "tower_pools_pkey",
+      "table": "versus_private.tower_pools"
+    },
+    {
+      "definition": "CHECK ((cardinality(word_ids) >= 9))",
+      "name": "tower_pools_word_ids_check",
+      "table": "versus_private.tower_pools"
+    },
+    {
+      "definition": "CHECK ((character_key = ANY (ARRAY['explorador'::text, 'mago'::text, 'guardiana'::text, 'dragon'::text, 'hombre_lobo'::text, 'guardian_alba'::text, 'dragon_hielo'::text, 'kalamo'::text, 'kairos'::text, 't_shadow'::text, 'azrak'::text])))",
+      "name": "tower_progress_character_key_check",
+      "table": "versus_private.tower_progress"
+    },
+    {
+      "definition": "CHECK (((completed >= 0) AND (completed <= 10)))",
+      "name": "tower_progress_completed_check",
+      "table": "versus_private.tower_progress"
+    },
+    {
+      "definition": "PRIMARY KEY (user_id, character_key)",
+      "name": "tower_progress_pkey",
+      "table": "versus_private.tower_progress"
+    },
+    {
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "name": "tower_progress_user_id_fkey",
+      "table": "versus_private.tower_progress"
+    },
+    {
+      "definition": "CHECK ((array_position(pilot_users, NULL::uuid) IS NULL))",
+      "name": "tower_rollout_pilot_users_check",
+      "table": "versus_private.tower_rollout"
+    },
+    {
+      "definition": "PRIMARY KEY (singleton)",
+      "name": "tower_rollout_pkey",
+      "table": "versus_private.tower_rollout"
+    },
+    {
+      "definition": "CHECK (singleton)",
+      "name": "tower_rollout_singleton_check",
+      "table": "versus_private.tower_rollout"
+    },
+    {
+      "definition": "FOREIGN KEY (attempt_id) REFERENCES versus_private.tower_attempts(id)",
+      "name": "tower_verified_floors_attempt_id_fkey",
+      "table": "versus_private.tower_verified_floors"
+    },
+    {
+      "definition": "FOREIGN KEY (character_key, floor) REFERENCES versus_private.tower_definitions(character_key, floor)",
+      "name": "tower_verified_floors_character_key_floor_fkey",
+      "table": "versus_private.tower_verified_floors"
+    },
+    {
+      "definition": "CHECK (((floor >= 1) AND (floor <= 10)))",
+      "name": "tower_verified_floors_floor_check",
+      "table": "versus_private.tower_verified_floors"
+    },
+    {
+      "definition": "PRIMARY KEY (user_id, character_key, floor)",
+      "name": "tower_verified_floors_pkey",
+      "table": "versus_private.tower_verified_floors"
+    },
+    {
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "name": "tower_verified_floors_user_id_fkey",
+      "table": "versus_private.tower_verified_floors"
+    },
+    {
+      "definition": "CHECK ((language = ANY (ARRAY['es'::text, 'en'::text, 'pt-BR'::text])))",
+      "name": "tower_words_language_check",
+      "table": "versus_private.tower_words"
+    },
+    {
+      "definition": "PRIMARY KEY (word_id)",
+      "name": "tower_words_pkey",
+      "table": "versus_private.tower_words"
+    }
+  ],
+  "counts": {
+    "accounts": 54,
+    "attempts": 0,
+    "coinReceipts": 0,
+    "completedCharacters": 0,
+    "definitions": 110,
+    "progressRows": 0,
+    "towerCoins": 0,
+    "verifiedFloors": 0,
+    "walletCoins": 1760,
+    "wallets": 21
+  },
+  "databaseVersion": "PostgreSQL 17.6 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 15.2.0, 64-bit",
+  "definitions": [
+    {
+      "character_key": "azrak",
+      "config": {
+        "interval": 3550,
+        "npcEffect": "hint",
+        "nyborRecovery": 0,
+        "player": "azrak",
+        "playerEffect": "forced_miss",
+        "playerWindup": 620,
+        "probability": 0.43,
+        "rival": "explorador",
+        "windup": 560
+      },
+      "floor": 1,
+      "key": "azrak:1",
+      "rival": "explorador"
+    },
+    {
+      "character_key": "azrak",
+      "config": {
+        "interval": 3425,
+        "npcEffect": "shuffle",
+        "nyborRecovery": 0,
+        "player": "azrak",
+        "playerEffect": "forced_miss",
+        "playerWindup": 620,
+        "probability": 0.485,
+        "rival": "mago",
+        "windup": 560
+      },
+      "floor": 2,
+      "key": "azrak:2",
+      "rival": "mago"
+    },
+    {
+      "character_key": "azrak",
+      "config": {
+        "interval": 3300,
+        "npcEffect": "roots",
+        "nyborRecovery": 0,
+        "player": "azrak",
+        "playerEffect": "forced_miss",
+        "playerWindup": 620,
+        "probability": 0.54,
+        "rival": "guardiana",
+        "windup": 560
+      },
+      "floor": 3,
+      "key": "azrak:3",
+      "rival": "guardiana"
+    },
+    {
+      "character_key": "azrak",
+      "config": {
+        "interval": 3175,
+        "npcEffect": "roar",
+        "nyborRecovery": 0,
+        "player": "azrak",
+        "playerEffect": "forced_miss",
+        "playerWindup": 620,
+        "probability": 0.595,
+        "rival": "dragon",
+        "windup": 560
+      },
+      "floor": 4,
+      "key": "azrak:4",
+      "rival": "dragon"
+    },
+    {
+      "character_key": "azrak",
+      "config": {
+        "interval": 3050,
+        "npcEffect": "invert",
+        "nyborRecovery": 0,
+        "player": "azrak",
+        "playerEffect": "forced_miss",
+        "playerWindup": 620,
+        "probability": 0.65,
+        "rival": "hombre_lobo",
+        "windup": 560
+      },
+      "floor": 5,
+      "key": "azrak:5",
+      "rival": "hombre_lobo"
+    },
+    {
+      "character_key": "azrak",
+      "config": {
+        "interval": 2925,
+        "npcEffect": "key_bounce",
+        "nyborRecovery": 0,
+        "player": "azrak",
+        "playerEffect": "forced_miss",
+        "playerWindup": 620,
+        "probability": 0.7050000000000001,
+        "rival": "guardian_alba",
+        "windup": 560
+      },
+      "floor": 6,
+      "key": "azrak:6",
+      "rival": "guardian_alba"
+    },
+    {
+      "character_key": "azrak",
+      "config": {
+        "interval": 3200,
+        "npcEffect": "ice_screen",
+        "nyborRecovery": 12000,
+        "player": "azrak",
+        "playerEffect": "forced_miss",
+        "playerWindup": 620,
+        "probability": 0.62,
+        "rival": "dragon_hielo",
+        "windup": 140
+      },
+      "floor": 7,
+      "key": "azrak:7",
+      "rival": "dragon_hielo"
+    },
+    {
+      "character_key": "azrak",
+      "config": {
+        "interval": 2800,
+        "npcEffect": "key_theft",
+        "nyborRecovery": 0,
+        "player": "azrak",
+        "playerEffect": "forced_miss",
+        "playerWindup": 620,
+        "probability": 0.815,
+        "rival": "kalamo",
+        "windup": 720
+      },
+      "floor": 8,
+      "key": "azrak:8",
+      "rival": "kalamo"
+    },
+    {
+      "character_key": "azrak",
+      "config": {
+        "interval": 2700,
+        "npcEffect": "time_steal",
+        "nyborRecovery": 0,
+        "player": "azrak",
+        "playerEffect": "forced_miss",
+        "playerWindup": 620,
+        "probability": 0.82,
+        "rival": "kairos",
+        "windup": 700
+      },
+      "floor": 9,
+      "key": "azrak:9",
+      "rival": "kairos"
+    },
+    {
+      "character_key": "azrak",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "black_hole",
+        "nyborRecovery": 0,
+        "player": "azrak",
+        "playerEffect": "forced_miss",
+        "playerWindup": 620,
+        "probability": 0.82,
+        "rival": "t_shadow",
+        "windup": 560
+      },
+      "floor": 10,
+      "key": "azrak:10",
+      "rival": "t_shadow"
+    },
+    {
+      "character_key": "dragon",
+      "config": {
+        "interval": 3550,
+        "npcEffect": "hint",
+        "nyborRecovery": 0,
+        "player": "dragon",
+        "playerEffect": "roar",
+        "playerWindup": 560,
+        "probability": 0.43,
+        "rival": "explorador",
+        "windup": 560
+      },
+      "floor": 1,
+      "key": "dragon:1",
+      "rival": "explorador"
+    },
+    {
+      "character_key": "dragon",
+      "config": {
+        "interval": 3425,
+        "npcEffect": "shuffle",
+        "nyborRecovery": 0,
+        "player": "dragon",
+        "playerEffect": "roar",
+        "playerWindup": 560,
+        "probability": 0.485,
+        "rival": "mago",
+        "windup": 560
+      },
+      "floor": 2,
+      "key": "dragon:2",
+      "rival": "mago"
+    },
+    {
+      "character_key": "dragon",
+      "config": {
+        "interval": 3300,
+        "npcEffect": "roots",
+        "nyborRecovery": 0,
+        "player": "dragon",
+        "playerEffect": "roar",
+        "playerWindup": 560,
+        "probability": 0.54,
+        "rival": "guardiana",
+        "windup": 560
+      },
+      "floor": 3,
+      "key": "dragon:3",
+      "rival": "guardiana"
+    },
+    {
+      "character_key": "dragon",
+      "config": {
+        "interval": 3175,
+        "npcEffect": "invert",
+        "nyborRecovery": 0,
+        "player": "dragon",
+        "playerEffect": "roar",
+        "playerWindup": 560,
+        "probability": 0.595,
+        "rival": "hombre_lobo",
+        "windup": 560
+      },
+      "floor": 4,
+      "key": "dragon:4",
+      "rival": "hombre_lobo"
+    },
+    {
+      "character_key": "dragon",
+      "config": {
+        "interval": 3050,
+        "npcEffect": "key_bounce",
+        "nyborRecovery": 0,
+        "player": "dragon",
+        "playerEffect": "roar",
+        "playerWindup": 560,
+        "probability": 0.65,
+        "rival": "guardian_alba",
+        "windup": 560
+      },
+      "floor": 5,
+      "key": "dragon:5",
+      "rival": "guardian_alba"
+    },
+    {
+      "character_key": "dragon",
+      "config": {
+        "interval": 3200,
+        "npcEffect": "ice_screen",
+        "nyborRecovery": 12000,
+        "player": "dragon",
+        "playerEffect": "roar",
+        "playerWindup": 560,
+        "probability": 0.62,
+        "rival": "dragon_hielo",
+        "windup": 140
+      },
+      "floor": 6,
+      "key": "dragon:6",
+      "rival": "dragon_hielo"
+    },
+    {
+      "character_key": "dragon",
+      "config": {
+        "interval": 2800,
+        "npcEffect": "key_theft",
+        "nyborRecovery": 0,
+        "player": "dragon",
+        "playerEffect": "roar",
+        "playerWindup": 560,
+        "probability": 0.76,
+        "rival": "kalamo",
+        "windup": 720
+      },
+      "floor": 7,
+      "key": "dragon:7",
+      "rival": "kalamo"
+    },
+    {
+      "character_key": "dragon",
+      "config": {
+        "interval": 2700,
+        "npcEffect": "time_steal",
+        "nyborRecovery": 0,
+        "player": "dragon",
+        "playerEffect": "roar",
+        "playerWindup": 560,
+        "probability": 0.815,
+        "rival": "kairos",
+        "windup": 700
+      },
+      "floor": 8,
+      "key": "dragon:8",
+      "rival": "kairos"
+    },
+    {
+      "character_key": "dragon",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "black_hole",
+        "nyborRecovery": 0,
+        "player": "dragon",
+        "playerEffect": "roar",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "t_shadow",
+        "windup": 560
+      },
+      "floor": 9,
+      "key": "dragon:9",
+      "rival": "t_shadow"
+    },
+    {
+      "character_key": "dragon",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "forced_miss",
+        "nyborRecovery": 0,
+        "player": "dragon",
+        "playerEffect": "roar",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "azrak",
+        "windup": 620
+      },
+      "floor": 10,
+      "key": "dragon:10",
+      "rival": "azrak"
+    },
+    {
+      "character_key": "dragon_hielo",
+      "config": {
+        "interval": 3550,
+        "npcEffect": "hint",
+        "nyborRecovery": 0,
+        "player": "dragon_hielo",
+        "playerEffect": "ice_screen",
+        "playerWindup": 140,
+        "probability": 0.43,
+        "rival": "explorador",
+        "windup": 560
+      },
+      "floor": 1,
+      "key": "dragon_hielo:1",
+      "rival": "explorador"
+    },
+    {
+      "character_key": "dragon_hielo",
+      "config": {
+        "interval": 3425,
+        "npcEffect": "shuffle",
+        "nyborRecovery": 0,
+        "player": "dragon_hielo",
+        "playerEffect": "ice_screen",
+        "playerWindup": 140,
+        "probability": 0.485,
+        "rival": "mago",
+        "windup": 560
+      },
+      "floor": 2,
+      "key": "dragon_hielo:2",
+      "rival": "mago"
+    },
+    {
+      "character_key": "dragon_hielo",
+      "config": {
+        "interval": 3300,
+        "npcEffect": "roots",
+        "nyborRecovery": 0,
+        "player": "dragon_hielo",
+        "playerEffect": "ice_screen",
+        "playerWindup": 140,
+        "probability": 0.54,
+        "rival": "guardiana",
+        "windup": 560
+      },
+      "floor": 3,
+      "key": "dragon_hielo:3",
+      "rival": "guardiana"
+    },
+    {
+      "character_key": "dragon_hielo",
+      "config": {
+        "interval": 3175,
+        "npcEffect": "roar",
+        "nyborRecovery": 0,
+        "player": "dragon_hielo",
+        "playerEffect": "ice_screen",
+        "playerWindup": 140,
+        "probability": 0.595,
+        "rival": "dragon",
+        "windup": 560
+      },
+      "floor": 4,
+      "key": "dragon_hielo:4",
+      "rival": "dragon"
+    },
+    {
+      "character_key": "dragon_hielo",
+      "config": {
+        "interval": 3050,
+        "npcEffect": "invert",
+        "nyborRecovery": 0,
+        "player": "dragon_hielo",
+        "playerEffect": "ice_screen",
+        "playerWindup": 140,
+        "probability": 0.65,
+        "rival": "hombre_lobo",
+        "windup": 560
+      },
+      "floor": 5,
+      "key": "dragon_hielo:5",
+      "rival": "hombre_lobo"
+    },
+    {
+      "character_key": "dragon_hielo",
+      "config": {
+        "interval": 2925,
+        "npcEffect": "key_bounce",
+        "nyborRecovery": 0,
+        "player": "dragon_hielo",
+        "playerEffect": "ice_screen",
+        "playerWindup": 140,
+        "probability": 0.7050000000000001,
+        "rival": "guardian_alba",
+        "windup": 560
+      },
+      "floor": 6,
+      "key": "dragon_hielo:6",
+      "rival": "guardian_alba"
+    },
+    {
+      "character_key": "dragon_hielo",
+      "config": {
+        "interval": 2800,
+        "npcEffect": "key_theft",
+        "nyborRecovery": 0,
+        "player": "dragon_hielo",
+        "playerEffect": "ice_screen",
+        "playerWindup": 140,
+        "probability": 0.76,
+        "rival": "kalamo",
+        "windup": 720
+      },
+      "floor": 7,
+      "key": "dragon_hielo:7",
+      "rival": "kalamo"
+    },
+    {
+      "character_key": "dragon_hielo",
+      "config": {
+        "interval": 2700,
+        "npcEffect": "time_steal",
+        "nyborRecovery": 0,
+        "player": "dragon_hielo",
+        "playerEffect": "ice_screen",
+        "playerWindup": 140,
+        "probability": 0.815,
+        "rival": "kairos",
+        "windup": 700
+      },
+      "floor": 8,
+      "key": "dragon_hielo:8",
+      "rival": "kairos"
+    },
+    {
+      "character_key": "dragon_hielo",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "black_hole",
+        "nyborRecovery": 0,
+        "player": "dragon_hielo",
+        "playerEffect": "ice_screen",
+        "playerWindup": 140,
+        "probability": 0.82,
+        "rival": "t_shadow",
+        "windup": 560
+      },
+      "floor": 9,
+      "key": "dragon_hielo:9",
+      "rival": "t_shadow"
+    },
+    {
+      "character_key": "dragon_hielo",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "forced_miss",
+        "nyborRecovery": 0,
+        "player": "dragon_hielo",
+        "playerEffect": "ice_screen",
+        "playerWindup": 140,
+        "probability": 0.82,
+        "rival": "azrak",
+        "windup": 620
+      },
+      "floor": 10,
+      "key": "dragon_hielo:10",
+      "rival": "azrak"
+    },
+    {
+      "character_key": "explorador",
+      "config": {
+        "interval": 3550,
+        "npcEffect": "shuffle",
+        "nyborRecovery": 0,
+        "player": "explorador",
+        "playerEffect": "hint",
+        "playerWindup": 560,
+        "probability": 0.43,
+        "rival": "mago",
+        "windup": 560
+      },
+      "floor": 1,
+      "key": "explorador:1",
+      "rival": "mago"
+    },
+    {
+      "character_key": "explorador",
+      "config": {
+        "interval": 3425,
+        "npcEffect": "roots",
+        "nyborRecovery": 0,
+        "player": "explorador",
+        "playerEffect": "hint",
+        "playerWindup": 560,
+        "probability": 0.485,
+        "rival": "guardiana",
+        "windup": 560
+      },
+      "floor": 2,
+      "key": "explorador:2",
+      "rival": "guardiana"
+    },
+    {
+      "character_key": "explorador",
+      "config": {
+        "interval": 3300,
+        "npcEffect": "roar",
+        "nyborRecovery": 0,
+        "player": "explorador",
+        "playerEffect": "hint",
+        "playerWindup": 560,
+        "probability": 0.54,
+        "rival": "dragon",
+        "windup": 560
+      },
+      "floor": 3,
+      "key": "explorador:3",
+      "rival": "dragon"
+    },
+    {
+      "character_key": "explorador",
+      "config": {
+        "interval": 3175,
+        "npcEffect": "invert",
+        "nyborRecovery": 0,
+        "player": "explorador",
+        "playerEffect": "hint",
+        "playerWindup": 560,
+        "probability": 0.595,
+        "rival": "hombre_lobo",
+        "windup": 560
+      },
+      "floor": 4,
+      "key": "explorador:4",
+      "rival": "hombre_lobo"
+    },
+    {
+      "character_key": "explorador",
+      "config": {
+        "interval": 3050,
+        "npcEffect": "key_bounce",
+        "nyborRecovery": 0,
+        "player": "explorador",
+        "playerEffect": "hint",
+        "playerWindup": 560,
+        "probability": 0.65,
+        "rival": "guardian_alba",
+        "windup": 560
+      },
+      "floor": 5,
+      "key": "explorador:5",
+      "rival": "guardian_alba"
+    },
+    {
+      "character_key": "explorador",
+      "config": {
+        "interval": 3200,
+        "npcEffect": "ice_screen",
+        "nyborRecovery": 12000,
+        "player": "explorador",
+        "playerEffect": "hint",
+        "playerWindup": 560,
+        "probability": 0.62,
+        "rival": "dragon_hielo",
+        "windup": 140
+      },
+      "floor": 6,
+      "key": "explorador:6",
+      "rival": "dragon_hielo"
+    },
+    {
+      "character_key": "explorador",
+      "config": {
+        "interval": 2800,
+        "npcEffect": "key_theft",
+        "nyborRecovery": 0,
+        "player": "explorador",
+        "playerEffect": "hint",
+        "playerWindup": 560,
+        "probability": 0.76,
+        "rival": "kalamo",
+        "windup": 720
+      },
+      "floor": 7,
+      "key": "explorador:7",
+      "rival": "kalamo"
+    },
+    {
+      "character_key": "explorador",
+      "config": {
+        "interval": 2700,
+        "npcEffect": "time_steal",
+        "nyborRecovery": 0,
+        "player": "explorador",
+        "playerEffect": "hint",
+        "playerWindup": 560,
+        "probability": 0.815,
+        "rival": "kairos",
+        "windup": 700
+      },
+      "floor": 8,
+      "key": "explorador:8",
+      "rival": "kairos"
+    },
+    {
+      "character_key": "explorador",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "black_hole",
+        "nyborRecovery": 0,
+        "player": "explorador",
+        "playerEffect": "hint",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "t_shadow",
+        "windup": 560
+      },
+      "floor": 9,
+      "key": "explorador:9",
+      "rival": "t_shadow"
+    },
+    {
+      "character_key": "explorador",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "forced_miss",
+        "nyborRecovery": 0,
+        "player": "explorador",
+        "playerEffect": "hint",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "azrak",
+        "windup": 620
+      },
+      "floor": 10,
+      "key": "explorador:10",
+      "rival": "azrak"
+    },
+    {
+      "character_key": "guardian_alba",
+      "config": {
+        "interval": 3550,
+        "npcEffect": "hint",
+        "nyborRecovery": 0,
+        "player": "guardian_alba",
+        "playerEffect": "key_bounce",
+        "playerWindup": 560,
+        "probability": 0.43,
+        "rival": "explorador",
+        "windup": 560
+      },
+      "floor": 1,
+      "key": "guardian_alba:1",
+      "rival": "explorador"
+    },
+    {
+      "character_key": "guardian_alba",
+      "config": {
+        "interval": 3425,
+        "npcEffect": "shuffle",
+        "nyborRecovery": 0,
+        "player": "guardian_alba",
+        "playerEffect": "key_bounce",
+        "playerWindup": 560,
+        "probability": 0.485,
+        "rival": "mago",
+        "windup": 560
+      },
+      "floor": 2,
+      "key": "guardian_alba:2",
+      "rival": "mago"
+    },
+    {
+      "character_key": "guardian_alba",
+      "config": {
+        "interval": 3300,
+        "npcEffect": "roots",
+        "nyborRecovery": 0,
+        "player": "guardian_alba",
+        "playerEffect": "key_bounce",
+        "playerWindup": 560,
+        "probability": 0.54,
+        "rival": "guardiana",
+        "windup": 560
+      },
+      "floor": 3,
+      "key": "guardian_alba:3",
+      "rival": "guardiana"
+    },
+    {
+      "character_key": "guardian_alba",
+      "config": {
+        "interval": 3175,
+        "npcEffect": "roar",
+        "nyborRecovery": 0,
+        "player": "guardian_alba",
+        "playerEffect": "key_bounce",
+        "playerWindup": 560,
+        "probability": 0.595,
+        "rival": "dragon",
+        "windup": 560
+      },
+      "floor": 4,
+      "key": "guardian_alba:4",
+      "rival": "dragon"
+    },
+    {
+      "character_key": "guardian_alba",
+      "config": {
+        "interval": 3050,
+        "npcEffect": "invert",
+        "nyborRecovery": 0,
+        "player": "guardian_alba",
+        "playerEffect": "key_bounce",
+        "playerWindup": 560,
+        "probability": 0.65,
+        "rival": "hombre_lobo",
+        "windup": 560
+      },
+      "floor": 5,
+      "key": "guardian_alba:5",
+      "rival": "hombre_lobo"
+    },
+    {
+      "character_key": "guardian_alba",
+      "config": {
+        "interval": 3200,
+        "npcEffect": "ice_screen",
+        "nyborRecovery": 12000,
+        "player": "guardian_alba",
+        "playerEffect": "key_bounce",
+        "playerWindup": 560,
+        "probability": 0.62,
+        "rival": "dragon_hielo",
+        "windup": 140
+      },
+      "floor": 6,
+      "key": "guardian_alba:6",
+      "rival": "dragon_hielo"
+    },
+    {
+      "character_key": "guardian_alba",
+      "config": {
+        "interval": 2800,
+        "npcEffect": "key_theft",
+        "nyborRecovery": 0,
+        "player": "guardian_alba",
+        "playerEffect": "key_bounce",
+        "playerWindup": 560,
+        "probability": 0.76,
+        "rival": "kalamo",
+        "windup": 720
+      },
+      "floor": 7,
+      "key": "guardian_alba:7",
+      "rival": "kalamo"
+    },
+    {
+      "character_key": "guardian_alba",
+      "config": {
+        "interval": 2700,
+        "npcEffect": "time_steal",
+        "nyborRecovery": 0,
+        "player": "guardian_alba",
+        "playerEffect": "key_bounce",
+        "playerWindup": 560,
+        "probability": 0.815,
+        "rival": "kairos",
+        "windup": 700
+      },
+      "floor": 8,
+      "key": "guardian_alba:8",
+      "rival": "kairos"
+    },
+    {
+      "character_key": "guardian_alba",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "black_hole",
+        "nyborRecovery": 0,
+        "player": "guardian_alba",
+        "playerEffect": "key_bounce",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "t_shadow",
+        "windup": 560
+      },
+      "floor": 9,
+      "key": "guardian_alba:9",
+      "rival": "t_shadow"
+    },
+    {
+      "character_key": "guardian_alba",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "forced_miss",
+        "nyborRecovery": 0,
+        "player": "guardian_alba",
+        "playerEffect": "key_bounce",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "azrak",
+        "windup": 620
+      },
+      "floor": 10,
+      "key": "guardian_alba:10",
+      "rival": "azrak"
+    },
+    {
+      "character_key": "guardiana",
+      "config": {
+        "interval": 3550,
+        "npcEffect": "hint",
+        "nyborRecovery": 0,
+        "player": "guardiana",
+        "playerEffect": "roots",
+        "playerWindup": 560,
+        "probability": 0.43,
+        "rival": "explorador",
+        "windup": 560
+      },
+      "floor": 1,
+      "key": "guardiana:1",
+      "rival": "explorador"
+    },
+    {
+      "character_key": "guardiana",
+      "config": {
+        "interval": 3425,
+        "npcEffect": "shuffle",
+        "nyborRecovery": 0,
+        "player": "guardiana",
+        "playerEffect": "roots",
+        "playerWindup": 560,
+        "probability": 0.485,
+        "rival": "mago",
+        "windup": 560
+      },
+      "floor": 2,
+      "key": "guardiana:2",
+      "rival": "mago"
+    },
+    {
+      "character_key": "guardiana",
+      "config": {
+        "interval": 3300,
+        "npcEffect": "roar",
+        "nyborRecovery": 0,
+        "player": "guardiana",
+        "playerEffect": "roots",
+        "playerWindup": 560,
+        "probability": 0.54,
+        "rival": "dragon",
+        "windup": 560
+      },
+      "floor": 3,
+      "key": "guardiana:3",
+      "rival": "dragon"
+    },
+    {
+      "character_key": "guardiana",
+      "config": {
+        "interval": 3175,
+        "npcEffect": "invert",
+        "nyborRecovery": 0,
+        "player": "guardiana",
+        "playerEffect": "roots",
+        "playerWindup": 560,
+        "probability": 0.595,
+        "rival": "hombre_lobo",
+        "windup": 560
+      },
+      "floor": 4,
+      "key": "guardiana:4",
+      "rival": "hombre_lobo"
+    },
+    {
+      "character_key": "guardiana",
+      "config": {
+        "interval": 3050,
+        "npcEffect": "key_bounce",
+        "nyborRecovery": 0,
+        "player": "guardiana",
+        "playerEffect": "roots",
+        "playerWindup": 560,
+        "probability": 0.65,
+        "rival": "guardian_alba",
+        "windup": 560
+      },
+      "floor": 5,
+      "key": "guardiana:5",
+      "rival": "guardian_alba"
+    },
+    {
+      "character_key": "guardiana",
+      "config": {
+        "interval": 3200,
+        "npcEffect": "ice_screen",
+        "nyborRecovery": 12000,
+        "player": "guardiana",
+        "playerEffect": "roots",
+        "playerWindup": 560,
+        "probability": 0.62,
+        "rival": "dragon_hielo",
+        "windup": 140
+      },
+      "floor": 6,
+      "key": "guardiana:6",
+      "rival": "dragon_hielo"
+    },
+    {
+      "character_key": "guardiana",
+      "config": {
+        "interval": 2800,
+        "npcEffect": "key_theft",
+        "nyborRecovery": 0,
+        "player": "guardiana",
+        "playerEffect": "roots",
+        "playerWindup": 560,
+        "probability": 0.76,
+        "rival": "kalamo",
+        "windup": 720
+      },
+      "floor": 7,
+      "key": "guardiana:7",
+      "rival": "kalamo"
+    },
+    {
+      "character_key": "guardiana",
+      "config": {
+        "interval": 2700,
+        "npcEffect": "time_steal",
+        "nyborRecovery": 0,
+        "player": "guardiana",
+        "playerEffect": "roots",
+        "playerWindup": 560,
+        "probability": 0.815,
+        "rival": "kairos",
+        "windup": 700
+      },
+      "floor": 8,
+      "key": "guardiana:8",
+      "rival": "kairos"
+    },
+    {
+      "character_key": "guardiana",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "black_hole",
+        "nyborRecovery": 0,
+        "player": "guardiana",
+        "playerEffect": "roots",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "t_shadow",
+        "windup": 560
+      },
+      "floor": 9,
+      "key": "guardiana:9",
+      "rival": "t_shadow"
+    },
+    {
+      "character_key": "guardiana",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "forced_miss",
+        "nyborRecovery": 0,
+        "player": "guardiana",
+        "playerEffect": "roots",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "azrak",
+        "windup": 620
+      },
+      "floor": 10,
+      "key": "guardiana:10",
+      "rival": "azrak"
+    },
+    {
+      "character_key": "hombre_lobo",
+      "config": {
+        "interval": 3550,
+        "npcEffect": "hint",
+        "nyborRecovery": 0,
+        "player": "hombre_lobo",
+        "playerEffect": "invert",
+        "playerWindup": 560,
+        "probability": 0.43,
+        "rival": "explorador",
+        "windup": 560
+      },
+      "floor": 1,
+      "key": "hombre_lobo:1",
+      "rival": "explorador"
+    },
+    {
+      "character_key": "hombre_lobo",
+      "config": {
+        "interval": 3425,
+        "npcEffect": "shuffle",
+        "nyborRecovery": 0,
+        "player": "hombre_lobo",
+        "playerEffect": "invert",
+        "playerWindup": 560,
+        "probability": 0.485,
+        "rival": "mago",
+        "windup": 560
+      },
+      "floor": 2,
+      "key": "hombre_lobo:2",
+      "rival": "mago"
+    },
+    {
+      "character_key": "hombre_lobo",
+      "config": {
+        "interval": 3300,
+        "npcEffect": "roots",
+        "nyborRecovery": 0,
+        "player": "hombre_lobo",
+        "playerEffect": "invert",
+        "playerWindup": 560,
+        "probability": 0.54,
+        "rival": "guardiana",
+        "windup": 560
+      },
+      "floor": 3,
+      "key": "hombre_lobo:3",
+      "rival": "guardiana"
+    },
+    {
+      "character_key": "hombre_lobo",
+      "config": {
+        "interval": 3175,
+        "npcEffect": "roar",
+        "nyborRecovery": 0,
+        "player": "hombre_lobo",
+        "playerEffect": "invert",
+        "playerWindup": 560,
+        "probability": 0.595,
+        "rival": "dragon",
+        "windup": 560
+      },
+      "floor": 4,
+      "key": "hombre_lobo:4",
+      "rival": "dragon"
+    },
+    {
+      "character_key": "hombre_lobo",
+      "config": {
+        "interval": 3050,
+        "npcEffect": "key_bounce",
+        "nyborRecovery": 0,
+        "player": "hombre_lobo",
+        "playerEffect": "invert",
+        "playerWindup": 560,
+        "probability": 0.65,
+        "rival": "guardian_alba",
+        "windup": 560
+      },
+      "floor": 5,
+      "key": "hombre_lobo:5",
+      "rival": "guardian_alba"
+    },
+    {
+      "character_key": "hombre_lobo",
+      "config": {
+        "interval": 3200,
+        "npcEffect": "ice_screen",
+        "nyborRecovery": 12000,
+        "player": "hombre_lobo",
+        "playerEffect": "invert",
+        "playerWindup": 560,
+        "probability": 0.62,
+        "rival": "dragon_hielo",
+        "windup": 140
+      },
+      "floor": 6,
+      "key": "hombre_lobo:6",
+      "rival": "dragon_hielo"
+    },
+    {
+      "character_key": "hombre_lobo",
+      "config": {
+        "interval": 2800,
+        "npcEffect": "key_theft",
+        "nyborRecovery": 0,
+        "player": "hombre_lobo",
+        "playerEffect": "invert",
+        "playerWindup": 560,
+        "probability": 0.76,
+        "rival": "kalamo",
+        "windup": 720
+      },
+      "floor": 7,
+      "key": "hombre_lobo:7",
+      "rival": "kalamo"
+    },
+    {
+      "character_key": "hombre_lobo",
+      "config": {
+        "interval": 2700,
+        "npcEffect": "time_steal",
+        "nyborRecovery": 0,
+        "player": "hombre_lobo",
+        "playerEffect": "invert",
+        "playerWindup": 560,
+        "probability": 0.815,
+        "rival": "kairos",
+        "windup": 700
+      },
+      "floor": 8,
+      "key": "hombre_lobo:8",
+      "rival": "kairos"
+    },
+    {
+      "character_key": "hombre_lobo",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "black_hole",
+        "nyborRecovery": 0,
+        "player": "hombre_lobo",
+        "playerEffect": "invert",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "t_shadow",
+        "windup": 560
+      },
+      "floor": 9,
+      "key": "hombre_lobo:9",
+      "rival": "t_shadow"
+    },
+    {
+      "character_key": "hombre_lobo",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "forced_miss",
+        "nyborRecovery": 0,
+        "player": "hombre_lobo",
+        "playerEffect": "invert",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "azrak",
+        "windup": 620
+      },
+      "floor": 10,
+      "key": "hombre_lobo:10",
+      "rival": "azrak"
+    },
+    {
+      "character_key": "kairos",
+      "config": {
+        "interval": 3550,
+        "npcEffect": "hint",
+        "nyborRecovery": 0,
+        "player": "kairos",
+        "playerEffect": "time_steal",
+        "playerWindup": 700,
+        "probability": 0.43,
+        "rival": "explorador",
+        "windup": 560
+      },
+      "floor": 1,
+      "key": "kairos:1",
+      "rival": "explorador"
+    },
+    {
+      "character_key": "kairos",
+      "config": {
+        "interval": 3425,
+        "npcEffect": "shuffle",
+        "nyborRecovery": 0,
+        "player": "kairos",
+        "playerEffect": "time_steal",
+        "playerWindup": 700,
+        "probability": 0.485,
+        "rival": "mago",
+        "windup": 560
+      },
+      "floor": 2,
+      "key": "kairos:2",
+      "rival": "mago"
+    },
+    {
+      "character_key": "kairos",
+      "config": {
+        "interval": 3300,
+        "npcEffect": "roots",
+        "nyborRecovery": 0,
+        "player": "kairos",
+        "playerEffect": "time_steal",
+        "playerWindup": 700,
+        "probability": 0.54,
+        "rival": "guardiana",
+        "windup": 560
+      },
+      "floor": 3,
+      "key": "kairos:3",
+      "rival": "guardiana"
+    },
+    {
+      "character_key": "kairos",
+      "config": {
+        "interval": 3175,
+        "npcEffect": "roar",
+        "nyborRecovery": 0,
+        "player": "kairos",
+        "playerEffect": "time_steal",
+        "playerWindup": 700,
+        "probability": 0.595,
+        "rival": "dragon",
+        "windup": 560
+      },
+      "floor": 4,
+      "key": "kairos:4",
+      "rival": "dragon"
+    },
+    {
+      "character_key": "kairos",
+      "config": {
+        "interval": 3050,
+        "npcEffect": "invert",
+        "nyborRecovery": 0,
+        "player": "kairos",
+        "playerEffect": "time_steal",
+        "playerWindup": 700,
+        "probability": 0.65,
+        "rival": "hombre_lobo",
+        "windup": 560
+      },
+      "floor": 5,
+      "key": "kairos:5",
+      "rival": "hombre_lobo"
+    },
+    {
+      "character_key": "kairos",
+      "config": {
+        "interval": 2925,
+        "npcEffect": "key_bounce",
+        "nyborRecovery": 0,
+        "player": "kairos",
+        "playerEffect": "time_steal",
+        "playerWindup": 700,
+        "probability": 0.7050000000000001,
+        "rival": "guardian_alba",
+        "windup": 560
+      },
+      "floor": 6,
+      "key": "kairos:6",
+      "rival": "guardian_alba"
+    },
+    {
+      "character_key": "kairos",
+      "config": {
+        "interval": 3200,
+        "npcEffect": "ice_screen",
+        "nyborRecovery": 12000,
+        "player": "kairos",
+        "playerEffect": "time_steal",
+        "playerWindup": 700,
+        "probability": 0.62,
+        "rival": "dragon_hielo",
+        "windup": 140
+      },
+      "floor": 7,
+      "key": "kairos:7",
+      "rival": "dragon_hielo"
+    },
+    {
+      "character_key": "kairos",
+      "config": {
+        "interval": 2800,
+        "npcEffect": "key_theft",
+        "nyborRecovery": 0,
+        "player": "kairos",
+        "playerEffect": "time_steal",
+        "playerWindup": 700,
+        "probability": 0.815,
+        "rival": "kalamo",
+        "windup": 720
+      },
+      "floor": 8,
+      "key": "kairos:8",
+      "rival": "kalamo"
+    },
+    {
+      "character_key": "kairos",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "black_hole",
+        "nyborRecovery": 0,
+        "player": "kairos",
+        "playerEffect": "time_steal",
+        "playerWindup": 700,
+        "probability": 0.82,
+        "rival": "t_shadow",
+        "windup": 560
+      },
+      "floor": 9,
+      "key": "kairos:9",
+      "rival": "t_shadow"
+    },
+    {
+      "character_key": "kairos",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "forced_miss",
+        "nyborRecovery": 0,
+        "player": "kairos",
+        "playerEffect": "time_steal",
+        "playerWindup": 700,
+        "probability": 0.82,
+        "rival": "azrak",
+        "windup": 620
+      },
+      "floor": 10,
+      "key": "kairos:10",
+      "rival": "azrak"
+    },
+    {
+      "character_key": "kalamo",
+      "config": {
+        "interval": 3550,
+        "npcEffect": "hint",
+        "nyborRecovery": 0,
+        "player": "kalamo",
+        "playerEffect": "key_theft",
+        "playerWindup": 720,
+        "probability": 0.43,
+        "rival": "explorador",
+        "windup": 560
+      },
+      "floor": 1,
+      "key": "kalamo:1",
+      "rival": "explorador"
+    },
+    {
+      "character_key": "kalamo",
+      "config": {
+        "interval": 3425,
+        "npcEffect": "shuffle",
+        "nyborRecovery": 0,
+        "player": "kalamo",
+        "playerEffect": "key_theft",
+        "playerWindup": 720,
+        "probability": 0.485,
+        "rival": "mago",
+        "windup": 560
+      },
+      "floor": 2,
+      "key": "kalamo:2",
+      "rival": "mago"
+    },
+    {
+      "character_key": "kalamo",
+      "config": {
+        "interval": 3300,
+        "npcEffect": "roots",
+        "nyborRecovery": 0,
+        "player": "kalamo",
+        "playerEffect": "key_theft",
+        "playerWindup": 720,
+        "probability": 0.54,
+        "rival": "guardiana",
+        "windup": 560
+      },
+      "floor": 3,
+      "key": "kalamo:3",
+      "rival": "guardiana"
+    },
+    {
+      "character_key": "kalamo",
+      "config": {
+        "interval": 3175,
+        "npcEffect": "roar",
+        "nyborRecovery": 0,
+        "player": "kalamo",
+        "playerEffect": "key_theft",
+        "playerWindup": 720,
+        "probability": 0.595,
+        "rival": "dragon",
+        "windup": 560
+      },
+      "floor": 4,
+      "key": "kalamo:4",
+      "rival": "dragon"
+    },
+    {
+      "character_key": "kalamo",
+      "config": {
+        "interval": 3050,
+        "npcEffect": "invert",
+        "nyborRecovery": 0,
+        "player": "kalamo",
+        "playerEffect": "key_theft",
+        "playerWindup": 720,
+        "probability": 0.65,
+        "rival": "hombre_lobo",
+        "windup": 560
+      },
+      "floor": 5,
+      "key": "kalamo:5",
+      "rival": "hombre_lobo"
+    },
+    {
+      "character_key": "kalamo",
+      "config": {
+        "interval": 2925,
+        "npcEffect": "key_bounce",
+        "nyborRecovery": 0,
+        "player": "kalamo",
+        "playerEffect": "key_theft",
+        "playerWindup": 720,
+        "probability": 0.7050000000000001,
+        "rival": "guardian_alba",
+        "windup": 560
+      },
+      "floor": 6,
+      "key": "kalamo:6",
+      "rival": "guardian_alba"
+    },
+    {
+      "character_key": "kalamo",
+      "config": {
+        "interval": 3200,
+        "npcEffect": "ice_screen",
+        "nyborRecovery": 12000,
+        "player": "kalamo",
+        "playerEffect": "key_theft",
+        "playerWindup": 720,
+        "probability": 0.62,
+        "rival": "dragon_hielo",
+        "windup": 140
+      },
+      "floor": 7,
+      "key": "kalamo:7",
+      "rival": "dragon_hielo"
+    },
+    {
+      "character_key": "kalamo",
+      "config": {
+        "interval": 2700,
+        "npcEffect": "time_steal",
+        "nyborRecovery": 0,
+        "player": "kalamo",
+        "playerEffect": "key_theft",
+        "playerWindup": 720,
+        "probability": 0.815,
+        "rival": "kairos",
+        "windup": 700
+      },
+      "floor": 8,
+      "key": "kalamo:8",
+      "rival": "kairos"
+    },
+    {
+      "character_key": "kalamo",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "black_hole",
+        "nyborRecovery": 0,
+        "player": "kalamo",
+        "playerEffect": "key_theft",
+        "playerWindup": 720,
+        "probability": 0.82,
+        "rival": "t_shadow",
+        "windup": 560
+      },
+      "floor": 9,
+      "key": "kalamo:9",
+      "rival": "t_shadow"
+    },
+    {
+      "character_key": "kalamo",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "forced_miss",
+        "nyborRecovery": 0,
+        "player": "kalamo",
+        "playerEffect": "key_theft",
+        "playerWindup": 720,
+        "probability": 0.82,
+        "rival": "azrak",
+        "windup": 620
+      },
+      "floor": 10,
+      "key": "kalamo:10",
+      "rival": "azrak"
+    },
+    {
+      "character_key": "mago",
+      "config": {
+        "interval": 3550,
+        "npcEffect": "hint",
+        "nyborRecovery": 0,
+        "player": "mago",
+        "playerEffect": "shuffle",
+        "playerWindup": 560,
+        "probability": 0.43,
+        "rival": "explorador",
+        "windup": 560
+      },
+      "floor": 1,
+      "key": "mago:1",
+      "rival": "explorador"
+    },
+    {
+      "character_key": "mago",
+      "config": {
+        "interval": 3425,
+        "npcEffect": "roots",
+        "nyborRecovery": 0,
+        "player": "mago",
+        "playerEffect": "shuffle",
+        "playerWindup": 560,
+        "probability": 0.485,
+        "rival": "guardiana",
+        "windup": 560
+      },
+      "floor": 2,
+      "key": "mago:2",
+      "rival": "guardiana"
+    },
+    {
+      "character_key": "mago",
+      "config": {
+        "interval": 3300,
+        "npcEffect": "roar",
+        "nyborRecovery": 0,
+        "player": "mago",
+        "playerEffect": "shuffle",
+        "playerWindup": 560,
+        "probability": 0.54,
+        "rival": "dragon",
+        "windup": 560
+      },
+      "floor": 3,
+      "key": "mago:3",
+      "rival": "dragon"
+    },
+    {
+      "character_key": "mago",
+      "config": {
+        "interval": 3175,
+        "npcEffect": "invert",
+        "nyborRecovery": 0,
+        "player": "mago",
+        "playerEffect": "shuffle",
+        "playerWindup": 560,
+        "probability": 0.595,
+        "rival": "hombre_lobo",
+        "windup": 560
+      },
+      "floor": 4,
+      "key": "mago:4",
+      "rival": "hombre_lobo"
+    },
+    {
+      "character_key": "mago",
+      "config": {
+        "interval": 3050,
+        "npcEffect": "key_bounce",
+        "nyborRecovery": 0,
+        "player": "mago",
+        "playerEffect": "shuffle",
+        "playerWindup": 560,
+        "probability": 0.65,
+        "rival": "guardian_alba",
+        "windup": 560
+      },
+      "floor": 5,
+      "key": "mago:5",
+      "rival": "guardian_alba"
+    },
+    {
+      "character_key": "mago",
+      "config": {
+        "interval": 3200,
+        "npcEffect": "ice_screen",
+        "nyborRecovery": 12000,
+        "player": "mago",
+        "playerEffect": "shuffle",
+        "playerWindup": 560,
+        "probability": 0.62,
+        "rival": "dragon_hielo",
+        "windup": 140
+      },
+      "floor": 6,
+      "key": "mago:6",
+      "rival": "dragon_hielo"
+    },
+    {
+      "character_key": "mago",
+      "config": {
+        "interval": 2800,
+        "npcEffect": "key_theft",
+        "nyborRecovery": 0,
+        "player": "mago",
+        "playerEffect": "shuffle",
+        "playerWindup": 560,
+        "probability": 0.76,
+        "rival": "kalamo",
+        "windup": 720
+      },
+      "floor": 7,
+      "key": "mago:7",
+      "rival": "kalamo"
+    },
+    {
+      "character_key": "mago",
+      "config": {
+        "interval": 2700,
+        "npcEffect": "time_steal",
+        "nyborRecovery": 0,
+        "player": "mago",
+        "playerEffect": "shuffle",
+        "playerWindup": 560,
+        "probability": 0.815,
+        "rival": "kairos",
+        "windup": 700
+      },
+      "floor": 8,
+      "key": "mago:8",
+      "rival": "kairos"
+    },
+    {
+      "character_key": "mago",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "black_hole",
+        "nyborRecovery": 0,
+        "player": "mago",
+        "playerEffect": "shuffle",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "t_shadow",
+        "windup": 560
+      },
+      "floor": 9,
+      "key": "mago:9",
+      "rival": "t_shadow"
+    },
+    {
+      "character_key": "mago",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "forced_miss",
+        "nyborRecovery": 0,
+        "player": "mago",
+        "playerEffect": "shuffle",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "azrak",
+        "windup": 620
+      },
+      "floor": 10,
+      "key": "mago:10",
+      "rival": "azrak"
+    },
+    {
+      "character_key": "t_shadow",
+      "config": {
+        "interval": 3550,
+        "npcEffect": "hint",
+        "nyborRecovery": 0,
+        "player": "t_shadow",
+        "playerEffect": "black_hole",
+        "playerWindup": 560,
+        "probability": 0.43,
+        "rival": "explorador",
+        "windup": 560
+      },
+      "floor": 1,
+      "key": "t_shadow:1",
+      "rival": "explorador"
+    },
+    {
+      "character_key": "t_shadow",
+      "config": {
+        "interval": 3425,
+        "npcEffect": "shuffle",
+        "nyborRecovery": 0,
+        "player": "t_shadow",
+        "playerEffect": "black_hole",
+        "playerWindup": 560,
+        "probability": 0.485,
+        "rival": "mago",
+        "windup": 560
+      },
+      "floor": 2,
+      "key": "t_shadow:2",
+      "rival": "mago"
+    },
+    {
+      "character_key": "t_shadow",
+      "config": {
+        "interval": 3300,
+        "npcEffect": "roots",
+        "nyborRecovery": 0,
+        "player": "t_shadow",
+        "playerEffect": "black_hole",
+        "playerWindup": 560,
+        "probability": 0.54,
+        "rival": "guardiana",
+        "windup": 560
+      },
+      "floor": 3,
+      "key": "t_shadow:3",
+      "rival": "guardiana"
+    },
+    {
+      "character_key": "t_shadow",
+      "config": {
+        "interval": 3175,
+        "npcEffect": "roar",
+        "nyborRecovery": 0,
+        "player": "t_shadow",
+        "playerEffect": "black_hole",
+        "playerWindup": 560,
+        "probability": 0.595,
+        "rival": "dragon",
+        "windup": 560
+      },
+      "floor": 4,
+      "key": "t_shadow:4",
+      "rival": "dragon"
+    },
+    {
+      "character_key": "t_shadow",
+      "config": {
+        "interval": 3050,
+        "npcEffect": "invert",
+        "nyborRecovery": 0,
+        "player": "t_shadow",
+        "playerEffect": "black_hole",
+        "playerWindup": 560,
+        "probability": 0.65,
+        "rival": "hombre_lobo",
+        "windup": 560
+      },
+      "floor": 5,
+      "key": "t_shadow:5",
+      "rival": "hombre_lobo"
+    },
+    {
+      "character_key": "t_shadow",
+      "config": {
+        "interval": 2925,
+        "npcEffect": "key_bounce",
+        "nyborRecovery": 0,
+        "player": "t_shadow",
+        "playerEffect": "black_hole",
+        "playerWindup": 560,
+        "probability": 0.7050000000000001,
+        "rival": "guardian_alba",
+        "windup": 560
+      },
+      "floor": 6,
+      "key": "t_shadow:6",
+      "rival": "guardian_alba"
+    },
+    {
+      "character_key": "t_shadow",
+      "config": {
+        "interval": 3200,
+        "npcEffect": "ice_screen",
+        "nyborRecovery": 12000,
+        "player": "t_shadow",
+        "playerEffect": "black_hole",
+        "playerWindup": 560,
+        "probability": 0.62,
+        "rival": "dragon_hielo",
+        "windup": 140
+      },
+      "floor": 7,
+      "key": "t_shadow:7",
+      "rival": "dragon_hielo"
+    },
+    {
+      "character_key": "t_shadow",
+      "config": {
+        "interval": 2800,
+        "npcEffect": "key_theft",
+        "nyborRecovery": 0,
+        "player": "t_shadow",
+        "playerEffect": "black_hole",
+        "playerWindup": 560,
+        "probability": 0.815,
+        "rival": "kalamo",
+        "windup": 720
+      },
+      "floor": 8,
+      "key": "t_shadow:8",
+      "rival": "kalamo"
+    },
+    {
+      "character_key": "t_shadow",
+      "config": {
+        "interval": 2700,
+        "npcEffect": "time_steal",
+        "nyborRecovery": 0,
+        "player": "t_shadow",
+        "playerEffect": "black_hole",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "kairos",
+        "windup": 700
+      },
+      "floor": 9,
+      "key": "t_shadow:9",
+      "rival": "kairos"
+    },
+    {
+      "character_key": "t_shadow",
+      "config": {
+        "interval": 2500,
+        "npcEffect": "forced_miss",
+        "nyborRecovery": 0,
+        "player": "t_shadow",
+        "playerEffect": "black_hole",
+        "playerWindup": 560,
+        "probability": 0.82,
+        "rival": "azrak",
+        "windup": 620
+      },
+      "floor": 10,
+      "key": "t_shadow:10",
+      "rival": "azrak"
+    }
+  ],
+  "fingerprints": {
+    "characters": "13663c4d0ce79de90c7c6e0f682864ec",
+    "towerProgress": "d751713988987e9331980363e24189ce",
+    "towerReceipts": "d751713988987e9331980363e24189ce",
+    "towerVerified": "d751713988987e9331980363e24189ce",
+    "wallets": "96ce4b58f360ce32a709ee72683b84ab",
+    "xpCosmetics": "d751713988987e9331980363e24189ce"
+  },
+  "indexes": [
+    {
+      "definition": "CREATE UNIQUE INDEX tower_action_receipts_pkey ON versus_private.tower_action_receipts USING btree (attempt_id, request_id)",
+      "name": "tower_action_receipts_pkey"
+    },
+    {
+      "definition": "CREATE INDEX tower_attempts_owner_status ON versus_private.tower_attempts USING btree (user_id, status, created_at)",
+      "name": "tower_attempts_owner_status"
+    },
+    {
+      "definition": "CREATE UNIQUE INDEX tower_attempts_pkey ON versus_private.tower_attempts USING btree (id)",
+      "name": "tower_attempts_pkey"
+    },
+    {
+      "definition": "CREATE UNIQUE INDEX tower_attempts_user_id_request_id_key ON versus_private.tower_attempts USING btree (user_id, request_id)",
+      "name": "tower_attempts_user_id_request_id_key"
+    },
+    {
+      "definition": "CREATE UNIQUE INDEX tower_category_rotation_pkey ON versus_private.tower_category_rotation USING btree (user_id, character_key)",
+      "name": "tower_category_rotation_pkey"
+    },
+    {
+      "definition": "CREATE UNIQUE INDEX tower_coin_receipts_id_key ON versus_private.tower_coin_receipts USING btree (id)",
+      "name": "tower_coin_receipts_id_key"
+    },
+    {
+      "definition": "CREATE UNIQUE INDEX tower_coin_receipts_pkey ON versus_private.tower_coin_receipts USING btree (user_id, character_key, floor)",
+      "name": "tower_coin_receipts_pkey"
+    },
+    {
+      "definition": "CREATE UNIQUE INDEX tower_definitions_character_key_floor_key ON versus_private.tower_definitions USING btree (character_key, floor)",
+      "name": "tower_definitions_character_key_floor_key"
+    },
+    {
+      "definition": "CREATE UNIQUE INDEX tower_definitions_pkey ON versus_private.tower_definitions USING btree (key)",
+      "name": "tower_definitions_pkey"
+    },
+    {
+      "definition": "CREATE UNIQUE INDEX tower_one_active_attempt ON versus_private.tower_attempts USING btree (user_id) WHERE (status = ANY (ARRAY['prepared'::text, 'playing'::text]))",
+      "name": "tower_one_active_attempt"
+    },
+    {
+      "definition": "CREATE UNIQUE INDEX tower_pools_pkey ON versus_private.tower_pools USING btree (definition, language, theme)",
+      "name": "tower_pools_pkey"
+    },
+    {
+      "definition": "CREATE UNIQUE INDEX tower_progress_pkey ON versus_private.tower_progress USING btree (user_id, character_key)",
+      "name": "tower_progress_pkey"
+    },
+    {
+      "definition": "CREATE UNIQUE INDEX tower_rollout_pkey ON versus_private.tower_rollout USING btree (singleton)",
+      "name": "tower_rollout_pkey"
+    },
+    {
+      "definition": "CREATE UNIQUE INDEX tower_verified_floors_pkey ON versus_private.tower_verified_floors USING btree (user_id, character_key, floor)",
+      "name": "tower_verified_floors_pkey"
+    },
+    {
+      "definition": "CREATE UNIQUE INDEX tower_words_pkey ON versus_private.tower_words USING btree (word_id)",
+      "name": "tower_words_pkey"
+    }
+  ],
+  "integrity": {
+    "invalidCoinAmounts": 0,
+    "invalidVerifiedEvidence": 0,
+    "progressWithoutCompleteProof": 0
+  },
+  "migrations": [
+    {
+      "name": "tower_authoritative_combat_and_coins",
+      "version": "20261031183634"
+    }
+  ],
+  "progressByCharacter": [],
+  "readOnly": "on",
+  "relevantFunctions": [
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "f1c1e4841afc9c5d0dcac518fe956baeb6858844e3793be2b8018cbf82e0fdaf",
+      "signature": "get_versus_player_profile()"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "cf2ae17e4a382bb4508e13dfc691f2b37e5a6fa147e417c6666d74531f6d6451",
+      "signature": "get_versus_public_profile(uuid,integer)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "c2e80667aab48494a233ca7bfb1368f3608d1647f3f3c1c5950005e3c85d6ca6",
+      "signature": "get_versus_room_costumes(uuid)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "4d82d3ec1220fae81ab7bb8c84992fd5acd7086d31b4e834f33a092b3496f5d4",
+      "signature": "profile_backgrounds(text,text,integer)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "506bf965a49c89c170067984938f51ee1afa1790961c67d7ebbb4ae2f683bcc1",
+      "signature": "purchase_game_costume(text)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "5dbe7946379ed0a2aaa2ff956b4240609458c82b455510f8c124e4beb54c3412",
+      "signature": "save_versus_appearance(text,text)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "f1efa8722487d0c26ca2dab029042df1dcf04d0f7b0dcf65f77a08437e6d65b3",
+      "signature": "sync_game_wallet_v2(jsonb,jsonb,jsonb,uuid)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "3e43cab3e3305a96cbeef7f6f224c14d7d8881d98d8415b2fdfbac248d02dcc7",
+      "signature": "sync_game_wallet_v3(jsonb,jsonb,uuid)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "664a057d5afbba254d3b1273f8ffb288bd37e43faf170ed552ec0f404c019cad",
+      "signature": "sync_game_wallet(jsonb,jsonb,jsonb,uuid)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "96fe2222aa878ff5d4ba1b7b654b4eac82624239fe128dfc3460e10041a04e83",
+      "signature": "tower_game(text,uuid,uuid,bigint,jsonb)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "417e01891f76c2a673a940e8ebac987fd7f8e7f4f8270f5465d1e8c0fe650d76",
+      "signature": "upsert_versus_profile(text)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "f5dd1caec346cf39e4b734dc4ed3726f3288fc33e09be3a45669631e6e4fc6e6",
+      "signature": "versus_private.get_versus_room_costumes(uuid)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "5f5a9fc9f2782cef16fb7eae95df103e4a0e255928c1116acc2e3a9f3aad5ce1",
+      "signature": "versus_private.player_profile_before_xp()"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "8bc52117976006f1abedc3ccf2339cd03040618fb3108a6eafa7b2a40a09249f",
+      "signature": "versus_private.player_profile()"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "ac272da21a52e3593e60dc3b48ca52b97391fd5f0e20689f72363b636a0744ca",
+      "signature": "versus_private.profile_backgrounds(text,text,integer)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "95bd2b8799b2eece1cd6aff8641b626bdb7c19f8246063d089d15b9de4b47683",
+      "signature": "versus_private.public_player_profile_before_xp(uuid,integer)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "c4b07a55bf8b0e80c5afc5edacebf04326c49c5365f19c2d7ff897a9f6a16477",
+      "signature": "versus_private.public_player_profile(uuid,integer)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "2095c9a78ba2b5baea851981b1a2642e45e6c49e84ddd144942b0d4b714dd80f",
+      "signature": "versus_private.purchase_game_costume(text)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "a70124225f3d7e1f94a20c588354079a22a19a4a0c63cd986ce45f22e746034b",
+      "signature": "versus_private.save_player_appearance(text,text)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "b24d9bc07a961e4b5a348ec5c2481b064e6065f17883c5d141f3fbbe9601e7fe",
+      "signature": "versus_private.sync_game_wallet_v3(jsonb,jsonb,uuid)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "127bd367d47a8d99573bac5780b2bdae098cd341a95b81c7742e9b87f0263fcb",
+      "signature": "versus_private.sync_game_wallet(jsonb,jsonb,jsonb,uuid)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "4226f9c993164e651c4c4bd36a4e5cbb6401fd6ad2e15a241ff2ab074e35a720",
+      "signature": "versus_private.tower_attempt_view(versus_private.tower_attempts,timestamp with time zone)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "716db865a75b95fe7647ab4a40cc94932c9526fec4bc83ec7212237f814c7b1f",
+      "signature": "versus_private.tower_character_allowed(uuid,text)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "d64ded92d1f536a73cd8af36edec5fbdc832fc75d2e3b74f27135c2a7ffe81e9",
+      "signature": "versus_private.tower_duel_ability(jsonb,text,timestamp with time zone)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "bfaaeffa7f6b34a095becb89d47e68dc6ea957f3997f345ca759ae940d01cc02",
+      "signature": "versus_private.tower_duel_actor(text,text,text)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "f8933172277cb5e54d1bab721c88e2bddfa0b20a28df3e4c33fff3c185a3e79b",
+      "signature": "versus_private.tower_duel_advance(jsonb,timestamp with time zone)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "69d42efcaa73cf8f0d76f4bd6c13f451aff55d8009015e0e8d094100c21d1c81",
+      "signature": "versus_private.tower_duel_bank(text,text)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "3aaa0f1383360d163e9f370318ae0737071a8255d20036bcb81c9a3add9d6e5e",
+      "signature": "versus_private.tower_duel_event(jsonb,jsonb)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "799505ab877d58ca88b97c441c0a2715fe2a46be68530b3ad17fcda826b6503a",
+      "signature": "versus_private.tower_duel_impact(jsonb,jsonb,timestamp with time zone)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "bde0e9df64ea870f6acbffd4cfe4fac04b483f7136861c5372a65aa005fe1f68",
+      "signature": "versus_private.tower_duel_input(jsonb,text,jsonb,timestamp with time zone)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "711709daeabdd3dcc94b4eee235440ffa0142b588f173aba4bf9c7b00d636aba",
+      "signature": "versus_private.tower_duel_letter(jsonb,text,text,timestamp with time zone)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "19f4793f1e1b55e0a112bf5677a135565edb73e2e41d2775d8ce776dd01eae20",
+      "signature": "versus_private.tower_duel_resolve(jsonb,timestamp with time zone)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "795c55d5542641de2bdcfb979932a28e7aea28babdbfc9e3472b2913d1050423",
+      "signature": "versus_private.tower_duel_view(jsonb,timestamp with time zone)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "88d402762db6c1928dfe1f614e2af3961e132e6b625d639d5b01fb75156843ea",
+      "signature": "versus_private.tower_duel_word(jsonb,text)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": true,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "9078298f35258c25e760a0eafa7b60935ace4a69218b5ea47091c91f0efeb7e7",
+      "signature": "versus_private.tower_game(text,uuid,uuid,bigint,jsonb)"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "222b9073e79b02df786bb62ee4f6a537877f7171f6e67c09a0f2cf7007b196c2",
+      "signature": "versus_private.tower_server_now()"
+    },
+    {
+      "anonExecute": false,
+      "authExecute": false,
+      "definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "sha256": "ca2e774f888e5fb0fa44ae99570a7be1fc8c3dfb895b40bcae40e58272ebaf8e",
+      "signature": "versus_private.xp_cosmetic_guard()"
+    }
+  ],
+  "rollout": {
+    "enabled": true,
+    "globalEnabled": false,
+    "onlyPreviouslyApprovedOwner": true,
+    "paymentsEnabled": true,
+    "pilotCount": 1
+  },
+  "towerFramesEquipped": 0,
+  "towerFramesInXPCatalog": 0,
+  "towerItemsInWallet": 0,
+  "towerTables": [
+    {
+      "anonAccess": false,
+      "authenticatedAccess": false,
+      "name": "tower_action_receipts",
+      "rls": true
+    },
+    {
+      "anonAccess": false,
+      "authenticatedAccess": false,
+      "name": "tower_attempts",
+      "rls": true
+    },
+    {
+      "anonAccess": false,
+      "authenticatedAccess": false,
+      "name": "tower_category_rotation",
+      "rls": true
+    },
+    {
+      "anonAccess": false,
+      "authenticatedAccess": false,
+      "name": "tower_coin_receipts",
+      "rls": true
+    },
+    {
+      "anonAccess": false,
+      "authenticatedAccess": false,
+      "name": "tower_definitions",
+      "rls": true
+    },
+    {
+      "anonAccess": false,
+      "authenticatedAccess": false,
+      "name": "tower_pools",
+      "rls": true
+    },
+    {
+      "anonAccess": false,
+      "authenticatedAccess": false,
+      "name": "tower_progress",
+      "rls": true
+    },
+    {
+      "anonAccess": false,
+      "authenticatedAccess": false,
+      "name": "tower_rollout",
+      "rls": true
+    },
+    {
+      "anonAccess": false,
+      "authenticatedAccess": false,
+      "name": "tower_verified_floors",
+      "rls": true
+    },
+    {
+      "anonAccess": false,
+      "authenticatedAccess": false,
+      "name": "tower_words",
+      "rls": true
+    }
+  ]
+}

@@ -1,0 +1,2154 @@
+{
+  "createdAt": "2026-11-06T21:24:15.711Z",
+  "phase": "audit and integration contract only",
+  "runtimeModified": false,
+  "migrationsCreated": false,
+  "migrationsInstalled": false,
+  "globalRewardsActivated": false,
+  "previewMustRemainEnabled": true,
+  "legacyProgressPolicy": "preserve all existing data; never import browser wins as verified evidence; consult user before any alteration or migration of legacy progress",
+  "characters": [
+    {
+      "character": "explorador",
+      "name": "Aren",
+      "proposedItemId": "tower_explorador",
+      "previewId": "aren-campeon",
+      "assets": [
+        {
+          "pose": "base",
+          "file": "assets/images/tower-preview/aren-campeon-base-v1.webp",
+          "bytes": 136670,
+          "sha256": "0ae61f7eaa748cec76ee3ed9bede181b56845356c75f3c20a5a7c600ad5e75f2"
+        },
+        {
+          "pose": "preparacion",
+          "file": "assets/images/tower-preview/aren-campeon-preparacion-v1.webp",
+          "bytes": 141348,
+          "sha256": "dab04457978fd2258feb286264a731286b8836f8ba0d16c89fb7d71594ac48ac"
+        },
+        {
+          "pose": "ataque",
+          "file": "assets/images/tower-preview/aren-campeon-ataque-v1.webp",
+          "bytes": 127596,
+          "sha256": "b63a72cf8932bf88cef50eb7049332c9349416ab4c85225712db425aa6e62e07"
+        },
+        {
+          "pose": "habilidad",
+          "file": "assets/images/tower-preview/aren-campeon-habilidad-v1.webp",
+          "bytes": 146794,
+          "sha256": "afa33da3f345febbe51117364f3b589fcae449ae77d1d81ab72db80c811ec8fc"
+        },
+        {
+          "pose": "impacto",
+          "file": "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+          "bytes": 143416,
+          "sha256": "e6ba276f428b330caf44c7c69ac409b51fdc4d3524e88e86831b8b70c0684801"
+        },
+        {
+          "pose": "final",
+          "file": "assets/images/tower-preview/aren-campeon-final-v1.webp",
+          "bytes": 131962,
+          "sha256": "c52c360dfbe313790a49a4e9008e31a4be205375781ff8bcc0da65da55390cb6"
+        },
+        {
+          "pose": "planta",
+          "file": "assets/images/tower-preview/aren-campeon-planta-v1.webp",
+          "bytes": 156352,
+          "sha256": "8799193b9a88e214778c1549b3b219b94a8f1d9dc2e4bdc539c54b9b399deb44"
+        },
+        {
+          "pose": "mano",
+          "file": "assets/images/tower-preview/aren-campeon-mano-v1.webp",
+          "bytes": 285020,
+          "sha256": "e2a74593b426751a5e059fd52aafcc846becb4aa6e6ada70c03a3d5104211109"
+        },
+        {
+          "pose": "vidrio",
+          "file": "assets/images/tower-preview/aren-campeon-vidrio-v1.webp",
+          "bytes": 358714,
+          "sha256": "3fc110321c34224e8084b34548d8d7fdb6538e14dbde7d5ca8ea2cd6399b402c"
+        },
+        {
+          "pose": "envejecido",
+          "file": "assets/images/tower-preview/aren-campeon-envejecido-v1.webp",
+          "bytes": 147958,
+          "sha256": "3b4ba35e8d32bebe2eaea6b8d568bd182d6c5372c3c69b7fc0c70212ca96c4be"
+        },
+        {
+          "pose": "anciano",
+          "file": "assets/images/tower-preview/aren-campeon-anciano-v1.webp",
+          "bytes": 145902,
+          "sha256": "d3c4bb786276ee70ed297b154b3ac6ed0f0801b4c194d65da6d8a29dfdaaf804"
+        }
+      ],
+      "requiredDistinctFloors": 10,
+      "status": "Android visual production accepted by user; server ownership not integrated"
+    },
+    {
+      "character": "mago",
+      "name": "Zafir",
+      "proposedItemId": "tower_mago",
+      "previewId": "zafir-vitral",
+      "assets": [
+        {
+          "pose": "base",
+          "file": "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+          "bytes": 92492,
+          "sha256": "6014269ca1e6008391b5d725fecd4603d960502aebebc855603fcc895e510fa8"
+        },
+        {
+          "pose": "ataque",
+          "file": "assets/images/tower-preview/zafir-vitral-ataque-v1.webp",
+          "bytes": 113776,
+          "sha256": "0db4a539f1b050ae8d6e30524e7fa35e2b7f61448fedfaba7cab1f81af9ba786"
+        },
+        {
+          "pose": "final",
+          "file": "assets/images/tower-preview/zafir-vitral-final-v1.webp",
+          "bytes": 93196,
+          "sha256": "0b4ee0fabd4de92f177262880ad5bec8c4b822e0f67c30600574c3804d2eafb6"
+        },
+        {
+          "pose": "impacto",
+          "file": "assets/images/tower-preview/zafir-vitral-impacto-v1.webp",
+          "bytes": 110266,
+          "sha256": "5a89c095762147279a57c9f63eef031d211e09e35cce53d6092df3c9a5983b7a"
+        },
+        {
+          "pose": "planta",
+          "file": "assets/images/tower-preview/zafir-vitral-planta-v1.webp",
+          "bytes": 127694,
+          "sha256": "22dd7fe01c9a260038cf580c77c85f91c4f67be2c0b76f04d4c433bae145ac90"
+        },
+        {
+          "pose": "mano",
+          "file": "assets/images/tower-preview/zafir-vitral-mano-v1.webp",
+          "bytes": 145764,
+          "sha256": "d91435e84b09f9639a87b4eda7759a8026a1c6e28c1df3b652537f9f1ae91eb8"
+        },
+        {
+          "pose": "vidrio",
+          "file": "assets/images/tower-preview/zafir-vitral-vidrio-v1.webp",
+          "bytes": 306990,
+          "sha256": "d8a30340a71795ed36a8b26cf86a198e80f42c472a298c223b5b9842903de48e"
+        },
+        {
+          "pose": "envejecido",
+          "file": "assets/images/tower-preview/zafir-vitral-envejecido-v1.webp",
+          "bytes": 97370,
+          "sha256": "d7658f1cd457b6e054d009e0a2008736cce8f5198221761c01fbd0439201136d"
+        },
+        {
+          "pose": "anciano",
+          "file": "assets/images/tower-preview/zafir-vitral-anciano-v1.webp",
+          "bytes": 90112,
+          "sha256": "196a3dc3950074eb6389da7f19ede0f86d59f1e0a43cf6ea0e5ce65555b68a73"
+        }
+      ],
+      "requiredDistinctFloors": 10,
+      "status": "Android visual production accepted by user; server ownership not integrated"
+    },
+    {
+      "character": "guardiana",
+      "name": "Guardiana",
+      "proposedItemId": "tower_guardiana",
+      "previewId": "guardiana-orquidea",
+      "assets": [
+        {
+          "pose": "base",
+          "file": "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+          "bytes": 143162,
+          "sha256": "26b718eaad3cd5cd109bf34a3862f425344831f44214e611981a14dec9080979"
+        },
+        {
+          "pose": "ataque",
+          "file": "assets/images/tower-preview/guardiana-orquidea-ataque-v1.webp",
+          "bytes": 102244,
+          "sha256": "70c38570f2bd578c02e64f229dcd65ce413f7c7c9dfbf5dbf720837165403ec8"
+        },
+        {
+          "pose": "final",
+          "file": "assets/images/tower-preview/guardiana-orquidea-final-v1.webp",
+          "bytes": 149838,
+          "sha256": "9128657babadcdb8740c94294abe1ce0c905d929fbbf816df8abf552e056ff80"
+        },
+        {
+          "pose": "impacto-tronco",
+          "file": "assets/images/tower-preview/guardiana-orquidea-impacto-tronco-v1.webp",
+          "bytes": 180866,
+          "sha256": "8d89429da459d928c54f5fcfee7c7d37c88e1c4d7d31ae380d2cbe765fc822c0"
+        },
+        {
+          "pose": "impacto",
+          "file": "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+          "bytes": 150884,
+          "sha256": "7e52c533abe9c791ebc0d5a1c4e74fb294888095b803c93319f22efcd255d0f9"
+        },
+        {
+          "pose": "planta",
+          "file": "assets/images/tower-preview/guardiana-orquidea-planta-v1.webp",
+          "bytes": 119984,
+          "sha256": "1c12bf5bd03be20ce211fcba6c9adec7d562ceefe7085969e15e506bffd8f10b"
+        },
+        {
+          "pose": "mano",
+          "file": "assets/images/tower-preview/guardiana-orquidea-mano-v1.webp",
+          "bytes": 144380,
+          "sha256": "0a300a8a3a81dd6af80daca4b3c899999bee04455db9bd91da0fa12ad141f96f"
+        },
+        {
+          "pose": "vidrio",
+          "file": "assets/images/tower-preview/guardiana-orquidea-vidrio-v1.webp",
+          "bytes": 415096,
+          "sha256": "4a4133b520e75a08b1332b2dd5822a6d251f237742f9180c68725013522f71ea"
+        },
+        {
+          "pose": "envejecido",
+          "file": "assets/images/tower-preview/guardiana-orquidea-envejecido-v1.webp",
+          "bytes": 158264,
+          "sha256": "b54733b39ab39bd43a9d43fd18b7cd546783f3c401147a5d70f31ae4bc389603"
+        },
+        {
+          "pose": "anciano",
+          "file": "assets/images/tower-preview/guardiana-orquidea-anciano-v1.webp",
+          "bytes": 161544,
+          "sha256": "e774c133f173695142875e981412df4b17b3fbb0075fd04aa02b09a3a5044dc7"
+        }
+      ],
+      "requiredDistinctFloors": 10,
+      "status": "Android visual production accepted by user; server ownership not integrated"
+    },
+    {
+      "character": "dragon",
+      "name": "Nimbus",
+      "proposedItemId": "tower_dragon",
+      "previewId": "nimbus-farero",
+      "assets": [
+        {
+          "pose": "base",
+          "file": "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+          "bytes": 149340,
+          "sha256": "6d8e4ef56cf01d55848ba3aa5f64da5bd76cf7c72f9bb600cae1b25205f39cbf"
+        },
+        {
+          "pose": "ataque",
+          "file": "assets/images/tower-preview/nimbus-farero-ataque-v1.webp",
+          "bytes": 132394,
+          "sha256": "af9ac044f2f10f8f8545bcc5e11d23a426362a77ba0ab163d6f4d747161526de"
+        },
+        {
+          "pose": "llamado",
+          "file": "assets/images/tower-preview/nimbus-farero-llamado-v1.webp",
+          "bytes": 144400,
+          "sha256": "2ab612f54ae272be5e0dbab0bee402028bb15cbb2972d5ead93837f932680563"
+        },
+        {
+          "pose": "final",
+          "file": "assets/images/tower-preview/nimbus-farero-final-v1.webp",
+          "bytes": 148814,
+          "sha256": "f3412554d1fd9e2a5480b7202607d474b2c958218d7b7ad57549542acefa0d05"
+        },
+        {
+          "pose": "impacto",
+          "file": "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+          "bytes": 140226,
+          "sha256": "0cb989c9c515d124b6c2bf455a15c53c9e46bbaaa496eae20fc297e46bcd381f"
+        },
+        {
+          "pose": "planta",
+          "file": "assets/images/tower-preview/nimbus-farero-planta-v1.webp",
+          "bytes": 131770,
+          "sha256": "1faee5de50f6f3700b355f4af1cfda2029506e73b15013bcbc0541509458f8e1"
+        },
+        {
+          "pose": "mano",
+          "file": "assets/images/tower-preview/nimbus-farero-mano-v1.webp",
+          "bytes": 149226,
+          "sha256": "1a884aafd20fe328f81c324560ebabdb8cf0810b306b579dbe908fe66303e10a"
+        },
+        {
+          "pose": "vidrio",
+          "file": "assets/images/tower-preview/nimbus-farero-vidrio-v1.webp",
+          "bytes": 345760,
+          "sha256": "17b85c46b6fc14ac8472e297c518d6e83191fb92fd94b2c6d471cfa2069ac2bf"
+        },
+        {
+          "pose": "envejecido",
+          "file": "assets/images/tower-preview/nimbus-farero-envejecido-v1.webp",
+          "bytes": 192304,
+          "sha256": "f4d4fab08349b39c37b1905bb41df4ddb9be01d83c9e51abcfcd17fdf2ff37ec"
+        },
+        {
+          "pose": "anciano",
+          "file": "assets/images/tower-preview/nimbus-farero-anciano-v1.webp",
+          "bytes": 201790,
+          "sha256": "28b715c2d740800ac0665a8b358b777e7845be5f9cfa8b268d38d5483c67f442"
+        }
+      ],
+      "requiredDistinctFloors": 10,
+      "status": "Android visual production accepted by user; server ownership not integrated"
+    },
+    {
+      "character": "hombre_lobo",
+      "name": "Hombre Lobo",
+      "proposedItemId": "tower_hombre_lobo",
+      "previewId": "lobo-basaltico",
+      "assets": [
+        {
+          "pose": "base",
+          "file": "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+          "bytes": 162420,
+          "sha256": "3c561f021c92b0c69b0496118ba61a99ca4f707db34e6bc79d15839f6b925778"
+        },
+        {
+          "pose": "humano",
+          "file": "assets/images/tower-preview/lobo-basaltico-humano-v1.webp",
+          "bytes": 178086,
+          "sha256": "5efc77c36860944e7d93e3e865b518afd680e0b2ad63b6dfad9be98847af2763"
+        },
+        {
+          "pose": "transformacion",
+          "file": "assets/images/tower-preview/lobo-basaltico-transformacion-v1.webp",
+          "bytes": 168648,
+          "sha256": "8caa8b527e8a29ca0ce08ef1d6e5559ddad2bf358497101d609c81d1845740d0"
+        },
+        {
+          "pose": "aullido",
+          "file": "assets/images/tower-preview/lobo-basaltico-aullido-v1.webp",
+          "bytes": 151598,
+          "sha256": "3508775af63a7a45c896c4f0ede98e7706e6b9f39a0a2cb0eb285100bb897a1e"
+        },
+        {
+          "pose": "ataque",
+          "file": "assets/images/tower-preview/lobo-basaltico-ataque-v1.webp",
+          "bytes": 130614,
+          "sha256": "2f19005a35a3caf4ed711a23fb1f7809a004fa04996f97118f8f1861082bd7fb"
+        },
+        {
+          "pose": "salto",
+          "file": "assets/images/tower-preview/lobo-basaltico-salto-v1.webp",
+          "bytes": 136066,
+          "sha256": "d911a66686b2665eba9bcd829ef938192455880f4e8ce389e8af442591656d66"
+        },
+        {
+          "pose": "impacto",
+          "file": "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+          "bytes": 113544,
+          "sha256": "a0b9b5fcd23be4d3a45d5698891f3220e8306c6c9bf91fada74d3b8f7d4316a5"
+        },
+        {
+          "pose": "planta",
+          "file": "assets/images/tower-preview/lobo-basaltico-planta-v1.webp",
+          "bytes": 140820,
+          "sha256": "cd0dca1a04d47cfedbd2d3ae13bcec3e8fc642fa56428545bdeab9a8cb526d0e"
+        },
+        {
+          "pose": "mano",
+          "file": "assets/images/tower-preview/lobo-basaltico-mano-v1.webp",
+          "bytes": 139034,
+          "sha256": "de34bf4863c3c8fe2e1ece58e0746df57b91d086431d684937711a31f720dbd7"
+        },
+        {
+          "pose": "vidrio",
+          "file": "assets/images/tower-preview/lobo-basaltico-vidrio-v1.webp",
+          "bytes": 385748,
+          "sha256": "3bf8ab8399fb818ee8b42f5a96ba880ace2bd6099b10dd0cf46241f32fb18e41"
+        },
+        {
+          "pose": "envejecido",
+          "file": "assets/images/tower-preview/lobo-basaltico-envejecido-v1.webp",
+          "bytes": 170902,
+          "sha256": "bb531e86e84c82b8cd42326e3b6e98a71f2e8122857e2ffd015ed2798b3fe4b6"
+        },
+        {
+          "pose": "anciano",
+          "file": "assets/images/tower-preview/lobo-basaltico-anciano-v1.webp",
+          "bytes": 164674,
+          "sha256": "b2a1f7a6e969f23f7254894e80455e221a739b060d3815bb069872a607e783d0"
+        },
+        {
+          "pose": "victoria-humana",
+          "file": "assets/images/tower-preview/lobo-basaltico-victoria-humana-v1.webp",
+          "bytes": 125006,
+          "sha256": "0ada8b815feb17a7214260774b8e5f63fa2bd065b6a2ec47425fb638454b983f"
+        }
+      ],
+      "requiredDistinctFloors": 10,
+      "status": "Android visual production accepted by user; server ownership not integrated"
+    },
+    {
+      "character": "t_shadow",
+      "name": "T. Shadow",
+      "proposedItemId": "tower_t_shadow",
+      "previewId": "shadow-porcelana",
+      "assets": [
+        {
+          "pose": "base",
+          "file": "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+          "bytes": 109076,
+          "sha256": "bf6a7afcbd913c1c81beb867e05d9589893effa4762fa37fdf54c0d8fafb80ab"
+        },
+        {
+          "pose": "ataque",
+          "file": "assets/images/tower-preview/shadow-porcelana-ataque-v1.webp",
+          "bytes": 100440,
+          "sha256": "205fada1aa015d5a8163b1f095b39ce75cc7e81186d7e14321d9beb491ad4bd8"
+        },
+        {
+          "pose": "final",
+          "file": "assets/images/tower-preview/shadow-porcelana-final-v1.webp",
+          "bytes": 136472,
+          "sha256": "40a1483eb82365dd2107e516ba2ea077b52e8b1c4dd987b29c1cd53b98ae82ad"
+        },
+        {
+          "pose": "impacto",
+          "file": "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+          "bytes": 104944,
+          "sha256": "e557e62823c880b43b9be59d10b02c3618d03486a755cabd33ede49c28111c95"
+        },
+        {
+          "pose": "planta",
+          "file": "assets/images/tower-preview/shadow-porcelana-planta-v1.webp",
+          "bytes": 123356,
+          "sha256": "8c2991d2674e3ef6e6d84ba3d529df9736e74974efba90514639314d692e4161"
+        },
+        {
+          "pose": "mano",
+          "file": "assets/images/tower-preview/shadow-porcelana-mano-v1.webp",
+          "bytes": 101680,
+          "sha256": "a539b4b8ee6d35b1c0ff1cac3f25163b7fd1ae9fdf69e417a0cc88d7eb8c70df"
+        },
+        {
+          "pose": "vidrio",
+          "file": "assets/images/tower-preview/shadow-porcelana-vidrio-v1.webp",
+          "bytes": 233928,
+          "sha256": "a0e98766646bea42d89e7da16807741c2ebd3d1dacb9dac60e576f5686fabd45"
+        },
+        {
+          "pose": "envejecido",
+          "file": "assets/images/tower-preview/shadow-porcelana-envejecido-v1.webp",
+          "bytes": 125068,
+          "sha256": "960b347ef1464755c474e95a81e7a9abd97dbeeaa1a002fffef83c225a84a9b2"
+        },
+        {
+          "pose": "anciano",
+          "file": "assets/images/tower-preview/shadow-porcelana-anciano-v1.webp",
+          "bytes": 153966,
+          "sha256": "3040cd48d5abdd36853fa0be63cf1841e5da47289b81a2e6fab48e146cdc59ce"
+        }
+      ],
+      "requiredDistinctFloors": 10,
+      "status": "Android visual production accepted by user; server ownership not integrated"
+    },
+    {
+      "character": "guardian_alba",
+      "name": "A. Lumen",
+      "proposedItemId": "tower_guardian_alba",
+      "previewId": "lumen-cardenal",
+      "assets": [
+        {
+          "pose": "base",
+          "file": "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+          "bytes": 156936,
+          "sha256": "8eb749cdded5e639569dc4df95a187d6fee3a1fc817a7d3c52cad9ed577cb5dd"
+        },
+        {
+          "pose": "ataque",
+          "file": "assets/images/tower-preview/lumen-cardenal-ataque-v1.webp",
+          "bytes": 146124,
+          "sha256": "fea25ad830b87d7f373f88d254ce764343f461a9b5f3e8c4b69c222f846df070"
+        },
+        {
+          "pose": "habilidad",
+          "file": "assets/images/tower-preview/lumen-cardenal-habilidad-v1.webp",
+          "bytes": 178354,
+          "sha256": "89801afb99b79ab650a8c9098d07a8decbf1ec0ee037ad85c0591ef7d85a27bd"
+        },
+        {
+          "pose": "carga",
+          "file": "assets/images/tower-preview/lumen-cardenal-carga-v1.webp",
+          "bytes": 122514,
+          "sha256": "ab00577477b28631414989b76a2266b4168d1be78860bc4cf245c6671c34c06f"
+        },
+        {
+          "pose": "final",
+          "file": "assets/images/tower-preview/lumen-cardenal-final-v1.webp",
+          "bytes": 94066,
+          "sha256": "4d0b28fae6e992da53874da8d4fd10ba5a10246fcc568fe7ffadab3825770d09"
+        },
+        {
+          "pose": "impacto",
+          "file": "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+          "bytes": 123662,
+          "sha256": "146bd9eece064ab49e1224d802f03db0deb96dc299d7f47b537e6ac271f13b66"
+        },
+        {
+          "pose": "planta",
+          "file": "assets/images/tower-preview/lumen-cardenal-planta-v1.webp",
+          "bytes": 125828,
+          "sha256": "1af2c169cb280f28303f9e340eb1d45339bd6fe76c57b7fe611abf10015b6b7d"
+        },
+        {
+          "pose": "mano",
+          "file": "assets/images/tower-preview/lumen-cardenal-mano-v1.webp",
+          "bytes": 99416,
+          "sha256": "102cf312ce3b92588ad8928afa81f287805bb32fcd538f580c3e41f3bf933b10"
+        },
+        {
+          "pose": "vidrio",
+          "file": "assets/images/tower-preview/lumen-cardenal-vidrio-v1.webp",
+          "bytes": 219394,
+          "sha256": "edfd0288709577a61f59586f150d7b3e4f604afdcaaf18c6b59d784fe7138d0a"
+        },
+        {
+          "pose": "envejecido",
+          "file": "assets/images/tower-preview/lumen-cardenal-envejecido-v1.webp",
+          "bytes": 158368,
+          "sha256": "eae9191c3b36fdf8e4cb9fccfc823ff2c53cbd8c438c4bd82425a38ed658bbce"
+        },
+        {
+          "pose": "anciano",
+          "file": "assets/images/tower-preview/lumen-cardenal-anciano-v1.webp",
+          "bytes": 141526,
+          "sha256": "d4aab978f769baef884ec9f2cdbf9a84ed301b0e063f8b52d608503a652be78e"
+        }
+      ],
+      "requiredDistinctFloors": 10,
+      "status": "Android visual production accepted by user; server ownership not integrated"
+    },
+    {
+      "character": "dragon_hielo",
+      "name": "Nivor",
+      "proposedItemId": "tower_dragon_hielo",
+      "previewId": "nivor-amatista",
+      "assets": [
+        {
+          "pose": "base",
+          "file": "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+          "bytes": 211498,
+          "sha256": "4eae09b36f4d24025101401a316ec5a6d96eec7c8f2dfdb610044126effa07ce"
+        },
+        {
+          "pose": "ataque",
+          "file": "assets/images/tower-preview/nivor-amatista-ataque-v1.webp",
+          "bytes": 204098,
+          "sha256": "c4b34c2992c7b0b13f70c4a69699c36524e510bd632206298d20f194c0255018"
+        },
+        {
+          "pose": "vuelo",
+          "file": "assets/images/tower-preview/nivor-amatista-vuelo-v1.webp",
+          "bytes": 158500,
+          "sha256": "2a3089b8cdfae973bdd3c1235e82cde2e16e98e7381993eb73b80b631903e6ab"
+        },
+        {
+          "pose": "aleteo-alto",
+          "file": "assets/images/tower-preview/nivor-amatista-aleteo-alto-v1.webp",
+          "bytes": 120416,
+          "sha256": "73cc6bd9c427b5945eb243c3135e62e9ca96be99ff5bc798a289205fc9c303d4"
+        },
+        {
+          "pose": "aleteo-bajo",
+          "file": "assets/images/tower-preview/nivor-amatista-aleteo-bajo-v1.webp",
+          "bytes": 120582,
+          "sha256": "f7a3461064f0bcc68365b5183fb4c3ce3fcffbb722bc6bf69c5744fd51a55d78"
+        },
+        {
+          "pose": "descenso-alto",
+          "file": "assets/images/tower-preview/nivor-amatista-descenso-alto-v1.webp",
+          "bytes": 180648,
+          "sha256": "b94c972bbb11b08ce01a744c919094cfafaa4841d54cd5133a3ab890454fe648"
+        },
+        {
+          "pose": "descenso-bajo",
+          "file": "assets/images/tower-preview/nivor-amatista-descenso-bajo-v1.webp",
+          "bytes": 228178,
+          "sha256": "32ecddb091aa2d94d0a00ac88606a8ff39fb5434d43681396d6c2b7ca8b51ff3"
+        },
+        {
+          "pose": "frontal",
+          "file": "assets/images/tower-preview/nivor-amatista-frontal-v1.webp",
+          "bytes": 215830,
+          "sha256": "1b00a33f06339510584c1890537e3807ba3cedf6bface81ab07c89c8a3fe2271"
+        },
+        {
+          "pose": "final",
+          "file": "assets/images/tower-preview/nivor-amatista-final-v1.webp",
+          "bytes": 212972,
+          "sha256": "8f684799e63d0e6be9579a026b40896d84d5e521dd0923be13a775ec81c32ab1"
+        },
+        {
+          "pose": "impacto",
+          "file": "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+          "bytes": 205194,
+          "sha256": "3c274b3f8c80023b693797373aef80a32f0d77e6f2c4af6942047271ee16f658"
+        },
+        {
+          "pose": "planta",
+          "file": "assets/images/tower-preview/nivor-amatista-planta-v1.webp",
+          "bytes": 144278,
+          "sha256": "826b7f2ee6843bc7d6c517b6d45d5660fb1fcaf7e13dc4acc004b7dd8b8a5c5c"
+        },
+        {
+          "pose": "mano",
+          "file": "assets/images/tower-preview/nivor-amatista-mano-v1.webp",
+          "bytes": 143872,
+          "sha256": "48ff8666ef255c231bce11440d20a3a85aef57955a12d36d622bea109f8a4905"
+        },
+        {
+          "pose": "vidrio",
+          "file": "assets/images/tower-preview/nivor-amatista-vidrio-v1.webp",
+          "bytes": 418020,
+          "sha256": "2859de54644125929a11ad76986ae17f29e7191519d07f6be19e12119f87cc86"
+        },
+        {
+          "pose": "envejecido",
+          "file": "assets/images/tower-preview/nivor-amatista-envejecido-v1.webp",
+          "bytes": 209256,
+          "sha256": "c26ace3c09480802f26edfe03498138d71b44ac4d85dd53f0eb349a8cdd8690a"
+        },
+        {
+          "pose": "anciano",
+          "file": "assets/images/tower-preview/nivor-amatista-anciano-v1.webp",
+          "bytes": 162848,
+          "sha256": "ec2e71724dcf108f99ff9696566ab4f022b8b4695d1a67d93cd310305e3fbfd3"
+        }
+      ],
+      "requiredDistinctFloors": 10,
+      "status": "Android visual production accepted by user; server ownership not integrated"
+    },
+    {
+      "character": "azrak",
+      "name": "Azrak",
+      "proposedItemId": "tower_azrak",
+      "previewId": "azrak-brasa",
+      "assets": [
+        {
+          "pose": "base",
+          "file": "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+          "bytes": 140710,
+          "sha256": "53124b41ef4a141cd932aa9a142d5fafff43fc70238933c706ebac8810440129"
+        },
+        {
+          "pose": "ataque",
+          "file": "assets/images/tower-preview/azrak-brasa-ataque-v1.webp",
+          "bytes": 148018,
+          "sha256": "8efeed14de93ecb6516aa49c82c55d7f384377102f358276ed466ebd47a3573d"
+        },
+        {
+          "pose": "invocacion",
+          "file": "assets/images/tower-preview/azrak-brasa-invocacion-v1.webp",
+          "bytes": 146892,
+          "sha256": "a0032bbbfeb28a2a8d1d9f4c8447a033f2f9e75ca420b886ce8950d9d0865425"
+        },
+        {
+          "pose": "susto",
+          "file": "assets/images/tower-preview/azrak-brasa-susto-v1.webp",
+          "bytes": 139924,
+          "sha256": "a033416b601427be4b570bc5c50f67385fad90565c502f9bcaee9d8a84a1d8ed"
+        },
+        {
+          "pose": "final",
+          "file": "assets/images/tower-preview/azrak-brasa-final-v1.webp",
+          "bytes": 163736,
+          "sha256": "789145dc4fbc4074227ff0dda5da06ac21ffe6669f2e19c5d4a0c75d5d34f762"
+        },
+        {
+          "pose": "impacto",
+          "file": "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+          "bytes": 151328,
+          "sha256": "9aebc863fe2a4c13dc429be25d67239c5c98b8d9c08d025051b874d9769cd2dd"
+        },
+        {
+          "pose": "planta",
+          "file": "assets/images/tower-preview/azrak-brasa-planta-v1.webp",
+          "bytes": 123422,
+          "sha256": "a6f31181b1c8bc7a29b14b80e60a18ab3ace019135542ed7c438308e667480b2"
+        },
+        {
+          "pose": "mano",
+          "file": "assets/images/tower-preview/azrak-brasa-mano-v1.webp",
+          "bytes": 147562,
+          "sha256": "c82d236ce75fda921e058efe511778523a168fa67144fedd7f807fad6bcfdd6a"
+        },
+        {
+          "pose": "vidrio",
+          "file": "assets/images/tower-preview/azrak-brasa-vidrio-v1.webp",
+          "bytes": 360248,
+          "sha256": "662e605fd2cbf40f68297ee434ffcddbbae8e2b96fe4edfdc225f2fda3d2a027"
+        },
+        {
+          "pose": "envejecido",
+          "file": "assets/images/tower-preview/azrak-brasa-envejecido-v1.webp",
+          "bytes": 139146,
+          "sha256": "c8ae75e92abfb3f8f26a7fa0388fd38916b8aa15ea2e367744927418de7f364a"
+        },
+        {
+          "pose": "anciano",
+          "file": "assets/images/tower-preview/azrak-brasa-anciano-v1.webp",
+          "bytes": 142386,
+          "sha256": "ed138d7410f22bb59d679460d3c9a984c271f16db1b59def6d80ede54304920f"
+        }
+      ],
+      "requiredDistinctFloors": 10,
+      "status": "Android visual production accepted by user; server ownership not integrated"
+    },
+    {
+      "character": "kalamo",
+      "name": "Kálamo",
+      "proposedItemId": "tower_kalamo",
+      "previewId": "kalamo-cartografo",
+      "assets": [
+        {
+          "pose": "base",
+          "file": "assets/images/tower-preview/kalamo-cartografo-base-v1.webp",
+          "bytes": 307186,
+          "sha256": "88580a740dff07dd459c71cf9bd88d3ca2135f220c1c1c5e8123b91608168cfc"
+        },
+        {
+          "pose": "ataque",
+          "file": "assets/images/tower-preview/kalamo-cartografo-ataque-v1.webp",
+          "bytes": 198962,
+          "sha256": "0349570d4b1173bfd33c6761bd9c9071dda0b51d7e7ef9d3c5bc446614ac6fdc"
+        },
+        {
+          "pose": "habilidad",
+          "file": "assets/images/tower-preview/kalamo-cartografo-habilidad-v1.webp",
+          "bytes": 213152,
+          "sha256": "f6ec59263d269db94a516e67eaa1e3ba78ddd37fa9ef8eeb2a3ad7b2149f5fb8"
+        },
+        {
+          "pose": "alcanza",
+          "file": "assets/images/tower-preview/kalamo-cartografo-alcanza-v1.webp",
+          "bytes": 238816,
+          "sha256": "f68f496676a85e09ed521b729cdf268ae4fb5d83db44f40fe49967358747ad41"
+        },
+        {
+          "pose": "extrae",
+          "file": "assets/images/tower-preview/kalamo-cartografo-extrae-v1.webp",
+          "bytes": 347278,
+          "sha256": "deff8b4661c6ecbe3e3856a15d67441646559fb1264ee81ad5b440e9b7d3f0a6"
+        },
+        {
+          "pose": "prepara",
+          "file": "assets/images/tower-preview/kalamo-cartografo-prepara-v1.webp",
+          "bytes": 284466,
+          "sha256": "de270bcf8db7b983aa63167254e45d176d77d12254e0081646ad2bb48929b369"
+        },
+        {
+          "pose": "lanza",
+          "file": "assets/images/tower-preview/kalamo-cartografo-lanza-v1.webp",
+          "bytes": 280626,
+          "sha256": "c6991a935642580b537dd82ac79f108650329620f793ef712bdd339fb970e202"
+        },
+        {
+          "pose": "golpea",
+          "file": "assets/images/tower-preview/kalamo-cartografo-golpea-v1.webp",
+          "bytes": 323380,
+          "sha256": "7a1b954f139c5d9c8b1ff9236de817e48c6047f472d416fd0d2f2ddb7ab8b0b5"
+        },
+        {
+          "pose": "formacion-1",
+          "file": "assets/images/tower-preview/kalamo-cartografo-formacion-1-v1.webp",
+          "bytes": 289844,
+          "sha256": "9f2a00bf2b4bb6821b963ddddcdefe14f01cb4f8d85e2d7110d233b73ec81bf5"
+        },
+        {
+          "pose": "formacion-2",
+          "file": "assets/images/tower-preview/kalamo-cartografo-formacion-2-v1.webp",
+          "bytes": 274622,
+          "sha256": "72ded1376ebde74a690303cafea31ce7ebd3271132ff35ea41b2d9b50ed80d3a"
+        },
+        {
+          "pose": "formacion-3",
+          "file": "assets/images/tower-preview/kalamo-cartografo-formacion-3-v1.webp",
+          "bytes": 360662,
+          "sha256": "51be76fcbe387c100b270ff8fa7df61e5b6d6e560a9360a6f75ccebee90fff32"
+        },
+        {
+          "pose": "final",
+          "file": "assets/images/tower-preview/kalamo-cartografo-final-v1.webp",
+          "bytes": 253124,
+          "sha256": "2c7e97fa27b4d2dcfcd6c8afc30351e9a85b703741b301f7b2ad451c6b0940cc"
+        },
+        {
+          "pose": "impacto",
+          "file": "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+          "bytes": 221312,
+          "sha256": "e693669340262101295e5102a4741df099b018dfb16b5bde09794e464e14c166"
+        },
+        {
+          "pose": "planta",
+          "file": "assets/images/tower-preview/kalamo-cartografo-planta-v1.webp",
+          "bytes": 148346,
+          "sha256": "02402f614bf2e92565a61f3afd6c56b1a2ea3488850adfbb72412812d98b6ae9"
+        },
+        {
+          "pose": "mano",
+          "file": "assets/images/tower-preview/kalamo-cartografo-mano-v1.webp",
+          "bytes": 225898,
+          "sha256": "355869eb26ee161e05403d00ddbd3bf2d15f7ef502387a8c559f06636439fa1d"
+        },
+        {
+          "pose": "vidrio",
+          "file": "assets/images/tower-preview/kalamo-cartografo-vidrio-v1.webp",
+          "bytes": 399712,
+          "sha256": "d0f7e94e8a38b5c0d67a3c1277068ab9074667cd582ff29cdc06ddc8ff0a3c4e"
+        },
+        {
+          "pose": "envejecido",
+          "file": "assets/images/tower-preview/kalamo-cartografo-envejecido-v1.webp",
+          "bytes": 284666,
+          "sha256": "13793646a2a56c82aaef934f3742f5be3a3267ab3b75a9915769802ca321cef1"
+        },
+        {
+          "pose": "anciano",
+          "file": "assets/images/tower-preview/kalamo-cartografo-anciano-v1.webp",
+          "bytes": 272878,
+          "sha256": "105bf83167d68cd1c3148613879e8b71728015dc206cb0b02e0a0755f953cdb2"
+        }
+      ],
+      "requiredDistinctFloors": 10,
+      "status": "Android visual production accepted by user; server ownership not integrated"
+    },
+    {
+      "character": "kairos",
+      "name": "Kairós",
+      "proposedItemId": "tower_kairos",
+      "previewId": "kairos-clepsidra",
+      "assets": [
+        {
+          "pose": "seleccion",
+          "file": "assets/images/tower-preview/kairos-clepsidra-seleccion-v1.webp",
+          "bytes": 164006,
+          "sha256": "d1639aa7236a6a151cc4d4feec3c5255dd7ee576ded24d812e6e773f39a4a522"
+        },
+        {
+          "pose": "base",
+          "file": "assets/images/tower-preview/kairos-clepsidra-base-v1.webp",
+          "bytes": 160582,
+          "sha256": "ea4aaa709766675a3c3af7f39400357e9d3562e2214ad0e4dfb3df87772efb5c"
+        },
+        {
+          "pose": "ataque",
+          "file": "assets/images/tower-preview/kairos-clepsidra-ataque-v1.webp",
+          "bytes": 204376,
+          "sha256": "d69a5bb98dff1cafb6c09b588add022c0fb654327d30e3062d58e4327b7bf146"
+        },
+        {
+          "pose": "impacto",
+          "file": "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+          "bytes": 174638,
+          "sha256": "12d0cda2a1cff26dc0aae6e082b327e308ef9cb4ec13679498e822311d0bb5c3"
+        },
+        {
+          "pose": "planta",
+          "file": "assets/images/tower-preview/kairos-clepsidra-planta-v1.webp",
+          "bytes": 125866,
+          "sha256": "5008f76f584d544f4ef7f49a722c775e3c9173dcff534d9fc3bead79fd5896ca"
+        },
+        {
+          "pose": "mano",
+          "file": "assets/images/tower-preview/kairos-clepsidra-mano-v1.webp",
+          "bytes": 313538,
+          "sha256": "874395c3666b709dca66af6786a5b55d7773f6c1f4cf3f8cc28472abcd3a74c9"
+        },
+        {
+          "pose": "vidrio",
+          "file": "assets/images/tower-preview/kairos-clepsidra-vidrio-v1.webp",
+          "bytes": 231192,
+          "sha256": "1355c7548085c5639e84a2ce4056a52ff02e90f47bac184f7c4641def511d5cd"
+        },
+        {
+          "pose": "envejecido",
+          "file": "assets/images/tower-preview/kairos-clepsidra-envejecido-v1.webp",
+          "bytes": 190984,
+          "sha256": "e88f0093829ce932c95a12f8dd80b29a86760974fa26407ef736f1c313443d72"
+        },
+        {
+          "pose": "anciano",
+          "file": "assets/images/tower-preview/kairos-clepsidra-anciano-v1.webp",
+          "bytes": 156776,
+          "sha256": "cc2c2766863810f262d54a6d714b9faf7d889cb83045f73b3c9ca753f3cb7850"
+        }
+      ],
+      "requiredDistinctFloors": 10,
+      "status": "Android visual production accepted by user; server ownership not integrated"
+    }
+  ],
+  "frames": [
+    {
+      "itemId": "tower_conquistador",
+      "kind": "frame",
+      "completedCharacters": 1,
+      "names": {
+        "es": "Conquistador",
+        "en": "Conqueror",
+        "pt-BR": "Conquistador"
+      },
+      "files": [
+        {
+          "role": "image",
+          "source": "E:\\Proyectos\\Aventura-de-Palabras-i18n-stage2b\\.local-developer\\tower-cosmetics\\gallery-v1\\frames\\marco-tower_conquistador-v1.webp",
+          "destination": "assets/images/perfil/marco-tower_conquistador-v1.webp",
+          "bytes": 57114,
+          "sha256": "fb09665c95467f8f10097846721e0dd1ac112be4a92161bee6a4a4487fbab5dc",
+          "hasAlpha": true,
+          "width": 512,
+          "height": 512
+        },
+        {
+          "role": "thumbnail",
+          "source": "E:\\Proyectos\\Aventura-de-Palabras-i18n-stage2b\\.local-developer\\tower-cosmetics\\gallery-v1\\thumbnails\\marco-tower_conquistador-v1.webp",
+          "destination": "assets/images/perfil/miniaturas/marco-tower_conquistador-v1.webp",
+          "bytes": 8530,
+          "sha256": "debc825dc1c4adace1d6eceb627b4f3ba857abffb76bc054d7cf2bb6f81dc13d",
+          "hasAlpha": true,
+          "width": 128,
+          "height": 128
+        }
+      ],
+      "status": "designed, not installed or claimable"
+    },
+    {
+      "itemId": "tower_maestro",
+      "kind": "frame",
+      "completedCharacters": 6,
+      "names": {
+        "es": "Maestro",
+        "en": "Master",
+        "pt-BR": "Mestre"
+      },
+      "files": [
+        {
+          "role": "image",
+          "source": "E:\\Proyectos\\Aventura-de-Palabras-i18n-stage2b\\.local-developer\\tower-cosmetics\\gallery-v1\\frames\\marco-tower_maestro-v1.webp",
+          "destination": "assets/images/perfil/marco-tower_maestro-v1.webp",
+          "bytes": 65598,
+          "sha256": "301a18225d9210fd431cb57db35913c301de4a1771139c4ce61ac74f348e6590",
+          "hasAlpha": true,
+          "width": 512,
+          "height": 512
+        },
+        {
+          "role": "thumbnail",
+          "source": "E:\\Proyectos\\Aventura-de-Palabras-i18n-stage2b\\.local-developer\\tower-cosmetics\\gallery-v1\\thumbnails\\marco-tower_maestro-v1.webp",
+          "destination": "assets/images/perfil/miniaturas/marco-tower_maestro-v1.webp",
+          "bytes": 9888,
+          "sha256": "6469746a1c3a706fb8ee431ef1cbc28005bb118a2969b7f95526a359983419d5",
+          "hasAlpha": true,
+          "width": 128,
+          "height": 128
+        }
+      ],
+      "status": "designed, not installed or claimable"
+    },
+    {
+      "itemId": "tower_leyenda",
+      "kind": "frame",
+      "completedCharacters": 11,
+      "names": {
+        "es": "Leyenda",
+        "en": "Legend",
+        "pt-BR": "Lenda"
+      },
+      "files": [
+        {
+          "role": "image",
+          "source": "E:\\Proyectos\\Aventura-de-Palabras-i18n-stage2b\\.local-developer\\tower-cosmetics\\gallery-v1\\frames\\marco-tower_leyenda-v1.webp",
+          "destination": "assets/images/perfil/marco-tower_leyenda-v1.webp",
+          "bytes": 69734,
+          "sha256": "946a433f5204b3798640aba4ebf168bc95aaa948258024767cd0f737a8d11c08",
+          "hasAlpha": true,
+          "width": 512,
+          "height": 512
+        },
+        {
+          "role": "thumbnail",
+          "source": "E:\\Proyectos\\Aventura-de-Palabras-i18n-stage2b\\.local-developer\\tower-cosmetics\\gallery-v1\\thumbnails\\marco-tower_leyenda-v1.webp",
+          "destination": "assets/images/perfil/miniaturas/marco-tower_leyenda-v1.webp",
+          "bytes": 9590,
+          "sha256": "5fb2bcf7790a28da3529a0bfe4ca87d036fdd3017a173a005c374e8c1d62aa24",
+          "hasAlpha": true,
+          "width": 128,
+          "height": 128
+        }
+      ],
+      "status": "designed, not installed or claimable"
+    }
+  ],
+  "floorMatrix": [
+    {
+      "caseId": "explorador:1",
+      "character": "explorador",
+      "floor": 1,
+      "rival": "mago",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "explorador:2",
+      "character": "explorador",
+      "floor": 2,
+      "rival": "guardiana",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "explorador:3",
+      "character": "explorador",
+      "floor": 3,
+      "rival": "dragon",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "explorador:4",
+      "character": "explorador",
+      "floor": 4,
+      "rival": "hombre_lobo",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "explorador:5",
+      "character": "explorador",
+      "floor": 5,
+      "rival": "guardian_alba",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "explorador:6",
+      "character": "explorador",
+      "floor": 6,
+      "rival": "dragon_hielo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "explorador:7",
+      "character": "explorador",
+      "floor": 7,
+      "rival": "kalamo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "explorador:8",
+      "character": "explorador",
+      "floor": 8,
+      "rival": "kairos",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "explorador:9",
+      "character": "explorador",
+      "floor": 9,
+      "rival": "t_shadow",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "explorador:10",
+      "character": "explorador",
+      "floor": 10,
+      "rival": "azrak",
+      "coins": 150,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": "tower_explorador",
+      "requiresAllTenDistinctProofs": true
+    },
+    {
+      "caseId": "mago:1",
+      "character": "mago",
+      "floor": 1,
+      "rival": "explorador",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "mago:2",
+      "character": "mago",
+      "floor": 2,
+      "rival": "guardiana",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "mago:3",
+      "character": "mago",
+      "floor": 3,
+      "rival": "dragon",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "mago:4",
+      "character": "mago",
+      "floor": 4,
+      "rival": "hombre_lobo",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "mago:5",
+      "character": "mago",
+      "floor": 5,
+      "rival": "guardian_alba",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "mago:6",
+      "character": "mago",
+      "floor": 6,
+      "rival": "dragon_hielo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "mago:7",
+      "character": "mago",
+      "floor": 7,
+      "rival": "kalamo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "mago:8",
+      "character": "mago",
+      "floor": 8,
+      "rival": "kairos",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "mago:9",
+      "character": "mago",
+      "floor": 9,
+      "rival": "t_shadow",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "mago:10",
+      "character": "mago",
+      "floor": 10,
+      "rival": "azrak",
+      "coins": 150,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": "tower_mago",
+      "requiresAllTenDistinctProofs": true
+    },
+    {
+      "caseId": "guardiana:1",
+      "character": "guardiana",
+      "floor": 1,
+      "rival": "explorador",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardiana:2",
+      "character": "guardiana",
+      "floor": 2,
+      "rival": "mago",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardiana:3",
+      "character": "guardiana",
+      "floor": 3,
+      "rival": "dragon",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardiana:4",
+      "character": "guardiana",
+      "floor": 4,
+      "rival": "hombre_lobo",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardiana:5",
+      "character": "guardiana",
+      "floor": 5,
+      "rival": "guardian_alba",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardiana:6",
+      "character": "guardiana",
+      "floor": 6,
+      "rival": "dragon_hielo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardiana:7",
+      "character": "guardiana",
+      "floor": 7,
+      "rival": "kalamo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardiana:8",
+      "character": "guardiana",
+      "floor": 8,
+      "rival": "kairos",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardiana:9",
+      "character": "guardiana",
+      "floor": 9,
+      "rival": "t_shadow",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardiana:10",
+      "character": "guardiana",
+      "floor": 10,
+      "rival": "azrak",
+      "coins": 150,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": "tower_guardiana",
+      "requiresAllTenDistinctProofs": true
+    },
+    {
+      "caseId": "dragon:1",
+      "character": "dragon",
+      "floor": 1,
+      "rival": "explorador",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon:2",
+      "character": "dragon",
+      "floor": 2,
+      "rival": "mago",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon:3",
+      "character": "dragon",
+      "floor": 3,
+      "rival": "guardiana",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon:4",
+      "character": "dragon",
+      "floor": 4,
+      "rival": "hombre_lobo",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon:5",
+      "character": "dragon",
+      "floor": 5,
+      "rival": "guardian_alba",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon:6",
+      "character": "dragon",
+      "floor": 6,
+      "rival": "dragon_hielo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon:7",
+      "character": "dragon",
+      "floor": 7,
+      "rival": "kalamo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon:8",
+      "character": "dragon",
+      "floor": 8,
+      "rival": "kairos",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon:9",
+      "character": "dragon",
+      "floor": 9,
+      "rival": "t_shadow",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon:10",
+      "character": "dragon",
+      "floor": 10,
+      "rival": "azrak",
+      "coins": 150,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": "tower_dragon",
+      "requiresAllTenDistinctProofs": true
+    },
+    {
+      "caseId": "hombre_lobo:1",
+      "character": "hombre_lobo",
+      "floor": 1,
+      "rival": "explorador",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "hombre_lobo:2",
+      "character": "hombre_lobo",
+      "floor": 2,
+      "rival": "mago",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "hombre_lobo:3",
+      "character": "hombre_lobo",
+      "floor": 3,
+      "rival": "guardiana",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "hombre_lobo:4",
+      "character": "hombre_lobo",
+      "floor": 4,
+      "rival": "dragon",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "hombre_lobo:5",
+      "character": "hombre_lobo",
+      "floor": 5,
+      "rival": "guardian_alba",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "hombre_lobo:6",
+      "character": "hombre_lobo",
+      "floor": 6,
+      "rival": "dragon_hielo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "hombre_lobo:7",
+      "character": "hombre_lobo",
+      "floor": 7,
+      "rival": "kalamo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "hombre_lobo:8",
+      "character": "hombre_lobo",
+      "floor": 8,
+      "rival": "kairos",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "hombre_lobo:9",
+      "character": "hombre_lobo",
+      "floor": 9,
+      "rival": "t_shadow",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "hombre_lobo:10",
+      "character": "hombre_lobo",
+      "floor": 10,
+      "rival": "azrak",
+      "coins": 150,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": "tower_hombre_lobo",
+      "requiresAllTenDistinctProofs": true
+    },
+    {
+      "caseId": "t_shadow:1",
+      "character": "t_shadow",
+      "floor": 1,
+      "rival": "explorador",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "t_shadow:2",
+      "character": "t_shadow",
+      "floor": 2,
+      "rival": "mago",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "t_shadow:3",
+      "character": "t_shadow",
+      "floor": 3,
+      "rival": "guardiana",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "t_shadow:4",
+      "character": "t_shadow",
+      "floor": 4,
+      "rival": "dragon",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "t_shadow:5",
+      "character": "t_shadow",
+      "floor": 5,
+      "rival": "hombre_lobo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "t_shadow:6",
+      "character": "t_shadow",
+      "floor": 6,
+      "rival": "guardian_alba",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "t_shadow:7",
+      "character": "t_shadow",
+      "floor": 7,
+      "rival": "dragon_hielo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "t_shadow:8",
+      "character": "t_shadow",
+      "floor": 8,
+      "rival": "kalamo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "t_shadow:9",
+      "character": "t_shadow",
+      "floor": 9,
+      "rival": "kairos",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "t_shadow:10",
+      "character": "t_shadow",
+      "floor": 10,
+      "rival": "azrak",
+      "coins": 150,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": "tower_t_shadow",
+      "requiresAllTenDistinctProofs": true
+    },
+    {
+      "caseId": "guardian_alba:1",
+      "character": "guardian_alba",
+      "floor": 1,
+      "rival": "explorador",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardian_alba:2",
+      "character": "guardian_alba",
+      "floor": 2,
+      "rival": "mago",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardian_alba:3",
+      "character": "guardian_alba",
+      "floor": 3,
+      "rival": "guardiana",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardian_alba:4",
+      "character": "guardian_alba",
+      "floor": 4,
+      "rival": "dragon",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardian_alba:5",
+      "character": "guardian_alba",
+      "floor": 5,
+      "rival": "hombre_lobo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardian_alba:6",
+      "character": "guardian_alba",
+      "floor": 6,
+      "rival": "dragon_hielo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardian_alba:7",
+      "character": "guardian_alba",
+      "floor": 7,
+      "rival": "kalamo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardian_alba:8",
+      "character": "guardian_alba",
+      "floor": 8,
+      "rival": "kairos",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardian_alba:9",
+      "character": "guardian_alba",
+      "floor": 9,
+      "rival": "t_shadow",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "guardian_alba:10",
+      "character": "guardian_alba",
+      "floor": 10,
+      "rival": "azrak",
+      "coins": 150,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": "tower_guardian_alba",
+      "requiresAllTenDistinctProofs": true
+    },
+    {
+      "caseId": "dragon_hielo:1",
+      "character": "dragon_hielo",
+      "floor": 1,
+      "rival": "explorador",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon_hielo:2",
+      "character": "dragon_hielo",
+      "floor": 2,
+      "rival": "mago",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon_hielo:3",
+      "character": "dragon_hielo",
+      "floor": 3,
+      "rival": "guardiana",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon_hielo:4",
+      "character": "dragon_hielo",
+      "floor": 4,
+      "rival": "dragon",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon_hielo:5",
+      "character": "dragon_hielo",
+      "floor": 5,
+      "rival": "hombre_lobo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon_hielo:6",
+      "character": "dragon_hielo",
+      "floor": 6,
+      "rival": "guardian_alba",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon_hielo:7",
+      "character": "dragon_hielo",
+      "floor": 7,
+      "rival": "kalamo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon_hielo:8",
+      "character": "dragon_hielo",
+      "floor": 8,
+      "rival": "kairos",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon_hielo:9",
+      "character": "dragon_hielo",
+      "floor": 9,
+      "rival": "t_shadow",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "dragon_hielo:10",
+      "character": "dragon_hielo",
+      "floor": 10,
+      "rival": "azrak",
+      "coins": 150,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": "tower_dragon_hielo",
+      "requiresAllTenDistinctProofs": true
+    },
+    {
+      "caseId": "azrak:1",
+      "character": "azrak",
+      "floor": 1,
+      "rival": "explorador",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "azrak:2",
+      "character": "azrak",
+      "floor": 2,
+      "rival": "mago",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "azrak:3",
+      "character": "azrak",
+      "floor": 3,
+      "rival": "guardiana",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "azrak:4",
+      "character": "azrak",
+      "floor": 4,
+      "rival": "dragon",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "azrak:5",
+      "character": "azrak",
+      "floor": 5,
+      "rival": "hombre_lobo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "azrak:6",
+      "character": "azrak",
+      "floor": 6,
+      "rival": "guardian_alba",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "azrak:7",
+      "character": "azrak",
+      "floor": 7,
+      "rival": "dragon_hielo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "azrak:8",
+      "character": "azrak",
+      "floor": 8,
+      "rival": "kalamo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "azrak:9",
+      "character": "azrak",
+      "floor": 9,
+      "rival": "kairos",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "azrak:10",
+      "character": "azrak",
+      "floor": 10,
+      "rival": "t_shadow",
+      "coins": 150,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": "tower_azrak",
+      "requiresAllTenDistinctProofs": true
+    },
+    {
+      "caseId": "kalamo:1",
+      "character": "kalamo",
+      "floor": 1,
+      "rival": "explorador",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kalamo:2",
+      "character": "kalamo",
+      "floor": 2,
+      "rival": "mago",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kalamo:3",
+      "character": "kalamo",
+      "floor": 3,
+      "rival": "guardiana",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kalamo:4",
+      "character": "kalamo",
+      "floor": 4,
+      "rival": "dragon",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kalamo:5",
+      "character": "kalamo",
+      "floor": 5,
+      "rival": "hombre_lobo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kalamo:6",
+      "character": "kalamo",
+      "floor": 6,
+      "rival": "guardian_alba",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kalamo:7",
+      "character": "kalamo",
+      "floor": 7,
+      "rival": "dragon_hielo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kalamo:8",
+      "character": "kalamo",
+      "floor": 8,
+      "rival": "kairos",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kalamo:9",
+      "character": "kalamo",
+      "floor": 9,
+      "rival": "t_shadow",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kalamo:10",
+      "character": "kalamo",
+      "floor": 10,
+      "rival": "azrak",
+      "coins": 150,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": "tower_kalamo",
+      "requiresAllTenDistinctProofs": true
+    },
+    {
+      "caseId": "kairos:1",
+      "character": "kairos",
+      "floor": 1,
+      "rival": "explorador",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kairos:2",
+      "character": "kairos",
+      "floor": 2,
+      "rival": "mago",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kairos:3",
+      "character": "kairos",
+      "floor": 3,
+      "rival": "guardiana",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kairos:4",
+      "character": "kairos",
+      "floor": 4,
+      "rival": "dragon",
+      "coins": 30,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kairos:5",
+      "character": "kairos",
+      "floor": 5,
+      "rival": "hombre_lobo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kairos:6",
+      "character": "kairos",
+      "floor": 6,
+      "rival": "guardian_alba",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kairos:7",
+      "character": "kairos",
+      "floor": 7,
+      "rival": "dragon_hielo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kairos:8",
+      "character": "kairos",
+      "floor": 8,
+      "rival": "kalamo",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kairos:9",
+      "character": "kairos",
+      "floor": 9,
+      "rival": "t_shadow",
+      "coins": 50,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": null,
+      "requiresAllTenDistinctProofs": false
+    },
+    {
+      "caseId": "kairos:10",
+      "character": "kairos",
+      "floor": 10,
+      "rival": "azrak",
+      "coins": 150,
+      "maximumCoinReceipts": 1,
+      "eligibleCostume": "tower_kairos",
+      "requiresAllTenDistinctProofs": true
+    }
+  ],
+  "maximumCoinsPerCharacter": 520,
+  "maximumCoinsAllCharacters": 5720,
+  "requiredTestGroups": [
+    {
+      "id": "authority-coins-110",
+      "status": "existing suite being rerun",
+      "requirements": [
+        "11 characters x 10 floors x 3 languages",
+        "legal server actions",
+        "one receipt per account/character/floor",
+        "concurrent settlement",
+        "lost response",
+        "replayed floor",
+        "foreign account",
+        "floor jump",
+        "failed wallet transaction"
+      ]
+    },
+    {
+      "id": "cosmetic-grants-110",
+      "status": "pending implementation",
+      "requirements": [
+        "no costume for floors 1-9",
+        "only corresponding costume at 10 with all ten proofs",
+        "14 maximum items: 11 costumes + 3 cumulative frames",
+        "thresholds 0/1/5/6/10/11 complete characters",
+        "replay one character never increases distinct count",
+        "global OFF and empty pilot fail closed",
+        "direct RPC/SQL attempts cannot mint ownership"
+      ]
+    },
+    {
+      "id": "recovery-and-atomicity",
+      "status": "pending extension for cosmetics",
+      "requirements": [
+        "same request resent after commit",
+        "new request ID cannot duplicate reward",
+        "two devices and concurrent final wins crossing frame thresholds",
+        "disconnect before and after settle",
+        "wallet failure and reward transaction rollback",
+        "recover missing pending cosmetic without paying coins again",
+        "persist after reload and on second clean device",
+        "account switch during in-flight response"
+      ]
+    },
+    {
+      "id": "equipment",
+      "status": "pending implementation",
+      "requirements": [
+        "equip all 11 earned costumes and all 3 frames through server",
+        "reject unowned item and wrong character",
+        "reject purchase of exclusive item",
+        "restore equipped on another device",
+        "public profile and room appearance ownership checked without exposing inventory",
+        "previous clients cannot erase unknown new equipment",
+        "preserve shop, XP and rank items",
+        "preview selection grants no entitlement, coins or verified floors"
+      ]
+    },
+    {
+      "id": "preservation-release",
+      "status": "pending integration candidate",
+      "requirements": [
+        "local unit, real PostgreSQL and browser tests",
+        "snapshot inventories, balances, legacy progress, XP and ranks before/after",
+        "no Multiplayer Lab changes",
+        "additive reviewed migration remains unapplied until authorized",
+        "controlled pilot before any explicit global activation",
+        "retain preview until real unlocks accepted",
+        "Android physical test after pilot publication"
+      ]
+    }
+  ]
+}
