@@ -5955,6 +5955,13 @@ button:disabled {
     gap: 6px;
 }
 
+#estadoValidacionCombateTorre {
+    margin: 0;
+    color: #e5c58b;
+    font-size: .65rem;
+    line-height: 1.15;
+}
+
 .versus-turno {
     display: flex;
     align-items: center;

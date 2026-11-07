@@ -5,8 +5,15 @@
  const ready={es:'Combate de Torre validado por el servidor. Las monedas requieren una victoria.',en:'Server-validated Tower fight. Coins require a victory.','pt-BR':'Combate da Torre validado pelo servidor. As moedas exigem uma vitória.'};
  const retry={es:'Reconectar combate',en:'Reconnect fight','pt-BR':'Reconectar combate'};
  const locked={es:'Este piso todavía está bloqueado. Ganá el piso anterior con conexión para desbloquearlo.',en:'This floor is still locked. Win the previous floor online to unlock it.','pt-BR':'Este andar ainda está bloqueado. Vença o andar anterior online para desbloqueá-lo.'};
- const practiceOnly={es:'Partida de práctica: no desbloquea pisos ni entrega monedas.',en:'Practice fight: no floor unlocks or coin rewards.','pt-BR':'Partida de treino: não desbloqueia andares nem concede moedas.'};
- const text=(key,language='es')=>key==='locked'?(locked[language]||locked.es):key==='practiceOnly'?(practiceOnly[language]||practiceOnly.es):key==='ready'?(ready[language]||ready.es):key==='retry'?(retry[language]||retry.es):(messages[language]||messages.es)[key];
+ const practiceOnly={es:'Partida de práctica: no guarda progreso verificado ni entrega monedas o premios.',en:'Practice fight: no verified progress, coins or rewards.','pt-BR':'Partida de treino: não salva progresso verificado nem concede moedas ou prêmios.'};
+ const guidance={
+  battleReady:{es:'Combate por premios',en:'Reward fight','pt-BR':'Combate por prêmios'},
+  battlePractice:{es:'Práctica · Sin premios',en:'Practice · No rewards','pt-BR':'Treino · Sem prêmios'},
+  verifiedProgress:{es:'Progreso para premios: victorias verificadas con conexión. El avance antiguo se conserva aparte; los premios nuevos requieren completar los pisos desde el primero.',en:'Reward progress: online verified wins. Historical progress is preserved separately; new rewards require completing floors from the first.', 'pt-BR':'Progresso para prêmios: vitórias verificadas online. O avanço antigo é preservado separadamente; os novos prêmios exigem completar os andares desde o primeiro.'},
+  testPractice:{es:'Modo prueba activo: este combate no entrega monedas ni premios. Desactivalo en Configuración para jugar por recompensas.',en:'Test mode is on: this fight awards no coins or rewards. Turn it off in Settings to earn rewards.','pt-BR':'Modo de teste ativo: este combate não concede moedas nem prêmios. Desative-o nas Configurações para ganhar recompensas.'},
+  previewPractice:{es:'Selector visual de trajes activo: este combate es de práctica, sin monedas ni premios. Elegí Desactivado · Usar mi traje habitual y aplicá el cambio en Configuración.',en:'Visual outfit preview is on: this is practice, with no coins or rewards. Select Off · Use my usual outfit and apply in Settings.','pt-BR':'Teste visual de trajes ativo: este combate é de treino, sem moedas nem prêmios. Selecione Desativado · Usar meu traje habitual e aplique nas Configurações.'}
+ };
+ const text=(key,language='es')=>guidance[key]?(guidance[key][language]||guidance[key].es):key==='locked'?(locked[language]||locked.es):key==='practiceOnly'?(practiceOnly[language]||practiceOnly.es):key==='ready'?(ready[language]||ready.es):key==='retry'?(retry[language]||retry.es):(messages[language]||messages.es)[key];
  function create({rpc,account,storage,online,id,onView=()=>{},onReward=()=>{},onProblem=()=>{}}){
   let run=null,current=null,pending=null,queue=Promise.resolve(),generation=0,paused=false;
   const key=owner=>'towerOnlineV1:'+owner;

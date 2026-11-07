@@ -1,0 +1,1595 @@
+{
+  "passed": true,
+  "cases": 176,
+  "rows": [
+    {
+      "outfit": "normal",
+      "victim": "explorador",
+      "winner": "explorador",
+      "before": "assets/images/personajes/versus/explorador-base.png",
+      "src": "assets/images/personajes/versus/explorador-atrapado-eclipse.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "explorador",
+      "winner": "mago",
+      "before": "assets/images/personajes/versus/explorador-base.png",
+      "src": "assets/images/personajes/versus/explorador-atrapado-eclipse.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "explorador",
+      "winner": "dragon",
+      "before": "assets/images/personajes/versus/explorador-base.png",
+      "src": "assets/images/personajes/versus/explorador-atrapado-eclipse.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "explorador",
+      "winner": "hombre_lobo",
+      "before": "assets/images/personajes/versus/explorador-base.png",
+      "src": "assets/images/personajes/versus/explorador-atrapado-eclipse.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "explorador",
+      "winner": "t_shadow",
+      "before": "assets/images/personajes/versus/explorador-base.png",
+      "src": "assets/images/personajes/versus/explorador-atrapado-eclipse.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "explorador",
+      "winner": "guardian_alba",
+      "before": "assets/images/personajes/versus/explorador-base.png",
+      "src": "assets/images/personajes/versus/explorador-atrapado-eclipse.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "explorador",
+      "winner": "azrak",
+      "before": "assets/images/personajes/versus/explorador-base.png",
+      "src": "assets/images/personajes/versus/explorador-atrapado-eclipse.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "explorador",
+      "winner": "kalamo",
+      "before": "assets/images/personajes/versus/explorador-base.png",
+      "src": "assets/images/personajes/versus/explorador-atrapado-eclipse.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "mago",
+      "winner": "explorador",
+      "before": "assets/images/personajes/versus/mago-base.png",
+      "src": "assets/images/personajes/versus/mago-impacto-v2.webp",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "mago",
+      "winner": "mago",
+      "before": "assets/images/personajes/versus/mago-base.png",
+      "src": "assets/images/personajes/versus/mago-impacto-v2.webp",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "mago",
+      "winner": "dragon",
+      "before": "assets/images/personajes/versus/mago-base.png",
+      "src": "assets/images/personajes/versus/mago-impacto-v2.webp",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "mago",
+      "winner": "hombre_lobo",
+      "before": "assets/images/personajes/versus/mago-base.png",
+      "src": "assets/images/personajes/versus/mago-impacto-v2.webp",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "mago",
+      "winner": "t_shadow",
+      "before": "assets/images/personajes/versus/mago-base.png",
+      "src": "assets/images/personajes/versus/mago-impacto-v2.webp",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "mago",
+      "winner": "guardian_alba",
+      "before": "assets/images/personajes/versus/mago-base.png",
+      "src": "assets/images/personajes/versus/mago-impacto-v2.webp",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "mago",
+      "winner": "azrak",
+      "before": "assets/images/personajes/versus/mago-base.png",
+      "src": "assets/images/personajes/versus/mago-impacto-v2.webp",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "mago",
+      "winner": "kalamo",
+      "before": "assets/images/personajes/versus/mago-base.png",
+      "src": "assets/images/personajes/versus/mago-impacto-v2.webp",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardiana",
+      "winner": "explorador",
+      "before": "assets/images/personajes/coleccion/guardiana-bosque-base.png",
+      "src": "assets/images/personajes/versus/guardiana-impacto-tronco-frontal-v1.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardiana",
+      "winner": "mago",
+      "before": "assets/images/personajes/coleccion/guardiana-bosque-base.png",
+      "src": "assets/images/personajes/versus/guardiana-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardiana",
+      "winner": "dragon",
+      "before": "assets/images/personajes/coleccion/guardiana-bosque-base.png",
+      "src": "assets/images/personajes/versus/guardiana-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardiana",
+      "winner": "hombre_lobo",
+      "before": "assets/images/personajes/coleccion/guardiana-bosque-base.png",
+      "src": "assets/images/personajes/versus/guardiana-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardiana",
+      "winner": "t_shadow",
+      "before": "assets/images/personajes/coleccion/guardiana-bosque-base.png",
+      "src": "assets/images/personajes/versus/guardiana-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardiana",
+      "winner": "guardian_alba",
+      "before": "assets/images/personajes/coleccion/guardiana-bosque-base.png",
+      "src": "assets/images/personajes/versus/guardiana-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardiana",
+      "winner": "azrak",
+      "before": "assets/images/personajes/coleccion/guardiana-bosque-base.png",
+      "src": "assets/images/personajes/versus/guardiana-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardiana",
+      "winner": "kalamo",
+      "before": "assets/images/personajes/coleccion/guardiana-bosque-base.png",
+      "src": "assets/images/personajes/versus/guardiana-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon",
+      "winner": "explorador",
+      "before": "assets/images/personajes/versus/dragon-base.png",
+      "src": "assets/images/personajes/versus/dragon-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon",
+      "winner": "mago",
+      "before": "assets/images/personajes/versus/dragon-base.png",
+      "src": "assets/images/personajes/versus/dragon-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon",
+      "winner": "dragon",
+      "before": "assets/images/personajes/versus/dragon-base.png",
+      "src": "assets/images/personajes/versus/dragon-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon",
+      "winner": "hombre_lobo",
+      "before": "assets/images/personajes/versus/dragon-base.png",
+      "src": "assets/images/personajes/versus/dragon-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon",
+      "winner": "t_shadow",
+      "before": "assets/images/personajes/versus/dragon-base.png",
+      "src": "assets/images/personajes/versus/dragon-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon",
+      "winner": "guardian_alba",
+      "before": "assets/images/personajes/versus/dragon-base.png",
+      "src": "assets/images/personajes/versus/dragon-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon",
+      "winner": "azrak",
+      "before": "assets/images/personajes/versus/dragon-base.png",
+      "src": "assets/images/personajes/versus/dragon-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon",
+      "winner": "kalamo",
+      "before": "assets/images/personajes/versus/dragon-base.png",
+      "src": "assets/images/personajes/versus/dragon-susto-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "hombre_lobo",
+      "winner": "explorador",
+      "before": "assets/images/personajes/versus/hombre-lobo-base.png",
+      "src": "assets/images/personajes/versus/hombre-lobo-impacto-v2.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "hombre_lobo",
+      "winner": "mago",
+      "before": "assets/images/personajes/versus/hombre-lobo-base.png",
+      "src": "assets/images/personajes/versus/hombre-lobo-impacto-v2.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "hombre_lobo",
+      "winner": "dragon",
+      "before": "assets/images/personajes/versus/hombre-lobo-base.png",
+      "src": "assets/images/personajes/versus/hombre-lobo-impacto-v2.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "hombre_lobo",
+      "winner": "hombre_lobo",
+      "before": "assets/images/personajes/versus/hombre-lobo-base.png",
+      "src": "assets/images/personajes/versus/hombre-lobo-impacto-v2.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "hombre_lobo",
+      "winner": "t_shadow",
+      "before": "assets/images/personajes/versus/hombre-lobo-base.png",
+      "src": "assets/images/personajes/versus/hombre-lobo-impacto-v2.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "hombre_lobo",
+      "winner": "guardian_alba",
+      "before": "assets/images/personajes/versus/hombre-lobo-base.png",
+      "src": "assets/images/personajes/versus/hombre-lobo-impacto-v2.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "hombre_lobo",
+      "winner": "azrak",
+      "before": "assets/images/personajes/versus/hombre-lobo-base.png",
+      "src": "assets/images/personajes/versus/hombre-lobo-impacto-v2.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "hombre_lobo",
+      "winner": "kalamo",
+      "before": "assets/images/personajes/versus/hombre-lobo-base.png",
+      "src": "assets/images/personajes/versus/hombre-lobo-impacto-v2.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "t_shadow",
+      "winner": "explorador",
+      "before": "assets/images/personajes/versus/t-shadow-base.png",
+      "src": "assets/images/personajes/versus/t-shadow-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "t_shadow",
+      "winner": "mago",
+      "before": "assets/images/personajes/versus/t-shadow-base.png",
+      "src": "assets/images/personajes/versus/t-shadow-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "t_shadow",
+      "winner": "dragon",
+      "before": "assets/images/personajes/versus/t-shadow-base.png",
+      "src": "assets/images/personajes/versus/t-shadow-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "t_shadow",
+      "winner": "hombre_lobo",
+      "before": "assets/images/personajes/versus/t-shadow-base.png",
+      "src": "assets/images/personajes/versus/t-shadow-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "t_shadow",
+      "winner": "t_shadow",
+      "before": "assets/images/personajes/versus/t-shadow-base.png",
+      "src": "assets/images/personajes/versus/t-shadow-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "t_shadow",
+      "winner": "guardian_alba",
+      "before": "assets/images/personajes/versus/t-shadow-base.png",
+      "src": "assets/images/personajes/versus/t-shadow-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "t_shadow",
+      "winner": "azrak",
+      "before": "assets/images/personajes/versus/t-shadow-base.png",
+      "src": "assets/images/personajes/versus/t-shadow-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "t_shadow",
+      "winner": "kalamo",
+      "before": "assets/images/personajes/versus/t-shadow-base.png",
+      "src": "assets/images/personajes/versus/t-shadow-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardian_alba",
+      "winner": "explorador",
+      "before": "assets/images/personajes/versus/guardian-alba-base.png",
+      "src": "assets/images/personajes/versus/guardian-alba-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardian_alba",
+      "winner": "mago",
+      "before": "assets/images/personajes/versus/guardian-alba-base.png",
+      "src": "assets/images/personajes/versus/guardian-alba-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardian_alba",
+      "winner": "dragon",
+      "before": "assets/images/personajes/versus/guardian-alba-base.png",
+      "src": "assets/images/personajes/versus/guardian-alba-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardian_alba",
+      "winner": "hombre_lobo",
+      "before": "assets/images/personajes/versus/guardian-alba-base.png",
+      "src": "assets/images/personajes/versus/guardian-alba-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardian_alba",
+      "winner": "t_shadow",
+      "before": "assets/images/personajes/versus/guardian-alba-base.png",
+      "src": "assets/images/personajes/versus/guardian-alba-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardian_alba",
+      "winner": "guardian_alba",
+      "before": "assets/images/personajes/versus/guardian-alba-base.png",
+      "src": "assets/images/personajes/versus/guardian-alba-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardian_alba",
+      "winner": "azrak",
+      "before": "assets/images/personajes/versus/guardian-alba-base.png",
+      "src": "assets/images/personajes/versus/guardian-alba-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "guardian_alba",
+      "winner": "kalamo",
+      "before": "assets/images/personajes/versus/guardian-alba-base.png",
+      "src": "assets/images/personajes/versus/guardian-alba-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon_hielo",
+      "winner": "explorador",
+      "before": "assets/images/personajes/versus/dragon-hielo-base.png",
+      "src": "assets/images/personajes/versus/dragon-hielo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon_hielo",
+      "winner": "mago",
+      "before": "assets/images/personajes/versus/dragon-hielo-base.png",
+      "src": "assets/images/personajes/versus/dragon-hielo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon_hielo",
+      "winner": "dragon",
+      "before": "assets/images/personajes/versus/dragon-hielo-base.png",
+      "src": "assets/images/personajes/versus/dragon-hielo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon_hielo",
+      "winner": "hombre_lobo",
+      "before": "assets/images/personajes/versus/dragon-hielo-base.png",
+      "src": "assets/images/personajes/versus/dragon-hielo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon_hielo",
+      "winner": "t_shadow",
+      "before": "assets/images/personajes/versus/dragon-hielo-base.png",
+      "src": "assets/images/personajes/versus/dragon-hielo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon_hielo",
+      "winner": "guardian_alba",
+      "before": "assets/images/personajes/versus/dragon-hielo-base.png",
+      "src": "assets/images/personajes/versus/dragon-hielo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon_hielo",
+      "winner": "azrak",
+      "before": "assets/images/personajes/versus/dragon-hielo-base.png",
+      "src": "assets/images/personajes/versus/dragon-hielo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "dragon_hielo",
+      "winner": "kalamo",
+      "before": "assets/images/personajes/versus/dragon-hielo-base.png",
+      "src": "assets/images/personajes/versus/dragon-hielo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "azrak",
+      "winner": "explorador",
+      "before": "assets/images/personajes/versus/azrak-base.png",
+      "src": "assets/images/personajes/versus/azrak-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "azrak",
+      "winner": "mago",
+      "before": "assets/images/personajes/versus/azrak-base.png",
+      "src": "assets/images/personajes/versus/azrak-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "azrak",
+      "winner": "dragon",
+      "before": "assets/images/personajes/versus/azrak-base.png",
+      "src": "assets/images/personajes/versus/azrak-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "azrak",
+      "winner": "hombre_lobo",
+      "before": "assets/images/personajes/versus/azrak-base.png",
+      "src": "assets/images/personajes/versus/azrak-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "azrak",
+      "winner": "t_shadow",
+      "before": "assets/images/personajes/versus/azrak-base.png",
+      "src": "assets/images/personajes/versus/azrak-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "azrak",
+      "winner": "guardian_alba",
+      "before": "assets/images/personajes/versus/azrak-base.png",
+      "src": "assets/images/personajes/versus/azrak-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "azrak",
+      "winner": "azrak",
+      "before": "assets/images/personajes/versus/azrak-base.png",
+      "src": "assets/images/personajes/versus/azrak-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "azrak",
+      "winner": "kalamo",
+      "before": "assets/images/personajes/versus/azrak-base.png",
+      "src": "assets/images/personajes/versus/azrak-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kalamo",
+      "winner": "explorador",
+      "before": "assets/images/personajes/versus/kalamo-base.png",
+      "src": "assets/images/personajes/versus/kalamo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kalamo",
+      "winner": "mago",
+      "before": "assets/images/personajes/versus/kalamo-base.png",
+      "src": "assets/images/personajes/versus/kalamo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kalamo",
+      "winner": "dragon",
+      "before": "assets/images/personajes/versus/kalamo-base.png",
+      "src": "assets/images/personajes/versus/kalamo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kalamo",
+      "winner": "hombre_lobo",
+      "before": "assets/images/personajes/versus/kalamo-base.png",
+      "src": "assets/images/personajes/versus/kalamo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kalamo",
+      "winner": "t_shadow",
+      "before": "assets/images/personajes/versus/kalamo-base.png",
+      "src": "assets/images/personajes/versus/kalamo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kalamo",
+      "winner": "guardian_alba",
+      "before": "assets/images/personajes/versus/kalamo-base.png",
+      "src": "assets/images/personajes/versus/kalamo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kalamo",
+      "winner": "azrak",
+      "before": "assets/images/personajes/versus/kalamo-base.png",
+      "src": "assets/images/personajes/versus/kalamo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kalamo",
+      "winner": "kalamo",
+      "before": "assets/images/personajes/versus/kalamo-base.png",
+      "src": "assets/images/personajes/versus/kalamo-impacto.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kairos",
+      "winner": "explorador",
+      "before": "assets/images/personajes/versus/kairos-combate-v1.png",
+      "src": "assets/images/personajes/versus/kairos-impacto-duelo-v1.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kairos",
+      "winner": "mago",
+      "before": "assets/images/personajes/versus/kairos-combate-v1.png",
+      "src": "assets/images/personajes/versus/kairos-impacto-duelo-v1.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kairos",
+      "winner": "dragon",
+      "before": "assets/images/personajes/versus/kairos-combate-v1.png",
+      "src": "assets/images/personajes/versus/kairos-impacto-duelo-v1.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kairos",
+      "winner": "hombre_lobo",
+      "before": "assets/images/personajes/versus/kairos-combate-v1.png",
+      "src": "assets/images/personajes/versus/kairos-impacto-duelo-v1.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kairos",
+      "winner": "t_shadow",
+      "before": "assets/images/personajes/versus/kairos-combate-v1.png",
+      "src": "assets/images/personajes/versus/kairos-impacto-duelo-v1.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kairos",
+      "winner": "guardian_alba",
+      "before": "assets/images/personajes/versus/kairos-combate-v1.png",
+      "src": "assets/images/personajes/versus/kairos-impacto-duelo-v1.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kairos",
+      "winner": "azrak",
+      "before": "assets/images/personajes/versus/kairos-combate-v1.png",
+      "src": "assets/images/personajes/versus/kairos-impacto-duelo-v1.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "normal",
+      "victim": "kairos",
+      "winner": "kalamo",
+      "before": "assets/images/personajes/versus/kairos-combate-v1.png",
+      "src": "assets/images/personajes/versus/kairos-impacto-duelo-v1.png",
+      "width": 1024,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "explorador",
+      "winner": "explorador",
+      "before": "assets/images/tower-preview/aren-campeon-base-v1.webp",
+      "src": "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "explorador",
+      "winner": "mago",
+      "before": "assets/images/tower-preview/aren-campeon-base-v1.webp",
+      "src": "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "explorador",
+      "winner": "dragon",
+      "before": "assets/images/tower-preview/aren-campeon-base-v1.webp",
+      "src": "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "explorador",
+      "winner": "hombre_lobo",
+      "before": "assets/images/tower-preview/aren-campeon-base-v1.webp",
+      "src": "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "explorador",
+      "winner": "t_shadow",
+      "before": "assets/images/tower-preview/aren-campeon-base-v1.webp",
+      "src": "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "explorador",
+      "winner": "guardian_alba",
+      "before": "assets/images/tower-preview/aren-campeon-base-v1.webp",
+      "src": "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "explorador",
+      "winner": "azrak",
+      "before": "assets/images/tower-preview/aren-campeon-base-v1.webp",
+      "src": "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "explorador",
+      "winner": "kalamo",
+      "before": "assets/images/tower-preview/aren-campeon-base-v1.webp",
+      "src": "assets/images/tower-preview/aren-campeon-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "mago",
+      "winner": "explorador",
+      "before": "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+      "src": "assets/images/tower-preview/zafir-vitral-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "mago",
+      "winner": "mago",
+      "before": "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+      "src": "assets/images/tower-preview/zafir-vitral-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "mago",
+      "winner": "dragon",
+      "before": "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+      "src": "assets/images/tower-preview/zafir-vitral-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "mago",
+      "winner": "hombre_lobo",
+      "before": "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+      "src": "assets/images/tower-preview/zafir-vitral-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "mago",
+      "winner": "t_shadow",
+      "before": "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+      "src": "assets/images/tower-preview/zafir-vitral-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "mago",
+      "winner": "guardian_alba",
+      "before": "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+      "src": "assets/images/tower-preview/zafir-vitral-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "mago",
+      "winner": "azrak",
+      "before": "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+      "src": "assets/images/tower-preview/zafir-vitral-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "mago",
+      "winner": "kalamo",
+      "before": "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+      "src": "assets/images/tower-preview/zafir-vitral-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardiana",
+      "winner": "explorador",
+      "before": "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+      "src": "assets/images/tower-preview/guardiana-orquidea-impacto-tronco-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardiana",
+      "winner": "mago",
+      "before": "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+      "src": "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardiana",
+      "winner": "dragon",
+      "before": "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+      "src": "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardiana",
+      "winner": "hombre_lobo",
+      "before": "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+      "src": "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardiana",
+      "winner": "t_shadow",
+      "before": "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+      "src": "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardiana",
+      "winner": "guardian_alba",
+      "before": "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+      "src": "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardiana",
+      "winner": "azrak",
+      "before": "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+      "src": "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardiana",
+      "winner": "kalamo",
+      "before": "assets/images/tower-preview/guardiana-orquidea-base-v1.webp",
+      "src": "assets/images/tower-preview/guardiana-orquidea-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon",
+      "winner": "explorador",
+      "before": "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+      "src": "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon",
+      "winner": "mago",
+      "before": "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+      "src": "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon",
+      "winner": "dragon",
+      "before": "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+      "src": "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon",
+      "winner": "hombre_lobo",
+      "before": "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+      "src": "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon",
+      "winner": "t_shadow",
+      "before": "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+      "src": "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon",
+      "winner": "guardian_alba",
+      "before": "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+      "src": "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon",
+      "winner": "azrak",
+      "before": "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+      "src": "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon",
+      "winner": "kalamo",
+      "before": "assets/images/tower-preview/nimbus-farero-base-v1.webp",
+      "src": "assets/images/tower-preview/nimbus-farero-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "hombre_lobo",
+      "winner": "explorador",
+      "before": "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+      "src": "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "hombre_lobo",
+      "winner": "mago",
+      "before": "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+      "src": "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "hombre_lobo",
+      "winner": "dragon",
+      "before": "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+      "src": "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "hombre_lobo",
+      "winner": "hombre_lobo",
+      "before": "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+      "src": "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "hombre_lobo",
+      "winner": "t_shadow",
+      "before": "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+      "src": "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "hombre_lobo",
+      "winner": "guardian_alba",
+      "before": "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+      "src": "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "hombre_lobo",
+      "winner": "azrak",
+      "before": "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+      "src": "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "hombre_lobo",
+      "winner": "kalamo",
+      "before": "assets/images/tower-preview/lobo-basaltico-base-v1.webp",
+      "src": "assets/images/tower-preview/lobo-basaltico-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "t_shadow",
+      "winner": "explorador",
+      "before": "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+      "src": "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "t_shadow",
+      "winner": "mago",
+      "before": "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+      "src": "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "t_shadow",
+      "winner": "dragon",
+      "before": "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+      "src": "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "t_shadow",
+      "winner": "hombre_lobo",
+      "before": "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+      "src": "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "t_shadow",
+      "winner": "t_shadow",
+      "before": "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+      "src": "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "t_shadow",
+      "winner": "guardian_alba",
+      "before": "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+      "src": "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "t_shadow",
+      "winner": "azrak",
+      "before": "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+      "src": "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "t_shadow",
+      "winner": "kalamo",
+      "before": "assets/images/tower-preview/shadow-porcelana-base-v1.webp",
+      "src": "assets/images/tower-preview/shadow-porcelana-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardian_alba",
+      "winner": "explorador",
+      "before": "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+      "src": "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardian_alba",
+      "winner": "mago",
+      "before": "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+      "src": "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardian_alba",
+      "winner": "dragon",
+      "before": "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+      "src": "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardian_alba",
+      "winner": "hombre_lobo",
+      "before": "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+      "src": "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardian_alba",
+      "winner": "t_shadow",
+      "before": "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+      "src": "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardian_alba",
+      "winner": "guardian_alba",
+      "before": "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+      "src": "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardian_alba",
+      "winner": "azrak",
+      "before": "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+      "src": "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "guardian_alba",
+      "winner": "kalamo",
+      "before": "assets/images/tower-preview/lumen-cardenal-base-v1.webp",
+      "src": "assets/images/tower-preview/lumen-cardenal-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon_hielo",
+      "winner": "explorador",
+      "before": "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+      "src": "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon_hielo",
+      "winner": "mago",
+      "before": "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+      "src": "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon_hielo",
+      "winner": "dragon",
+      "before": "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+      "src": "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon_hielo",
+      "winner": "hombre_lobo",
+      "before": "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+      "src": "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon_hielo",
+      "winner": "t_shadow",
+      "before": "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+      "src": "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon_hielo",
+      "winner": "guardian_alba",
+      "before": "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+      "src": "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon_hielo",
+      "winner": "azrak",
+      "before": "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+      "src": "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "dragon_hielo",
+      "winner": "kalamo",
+      "before": "assets/images/tower-preview/nivor-amatista-base-v1.webp",
+      "src": "assets/images/tower-preview/nivor-amatista-impacto-v2.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "azrak",
+      "winner": "explorador",
+      "before": "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+      "src": "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "azrak",
+      "winner": "mago",
+      "before": "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+      "src": "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "azrak",
+      "winner": "dragon",
+      "before": "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+      "src": "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "azrak",
+      "winner": "hombre_lobo",
+      "before": "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+      "src": "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "azrak",
+      "winner": "t_shadow",
+      "before": "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+      "src": "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "azrak",
+      "winner": "guardian_alba",
+      "before": "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+      "src": "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "azrak",
+      "winner": "azrak",
+      "before": "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+      "src": "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "azrak",
+      "winner": "kalamo",
+      "before": "assets/images/tower-preview/azrak-brasa-base-v1.webp",
+      "src": "assets/images/tower-preview/azrak-brasa-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kalamo",
+      "winner": "explorador",
+      "before": "assets/images/tower-preview/kalamo-cartografo-base-v1.webp",
+      "src": "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kalamo",
+      "winner": "mago",
+      "before": "assets/images/tower-preview/kalamo-cartografo-base-v1.webp",
+      "src": "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kalamo",
+      "winner": "dragon",
+      "before": "assets/images/tower-preview/kalamo-cartografo-base-v1.webp",
+      "src": "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kalamo",
+      "winner": "hombre_lobo",
+      "before": "assets/images/tower-preview/kalamo-cartografo-base-v1.webp",
+      "src": "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kalamo",
+      "winner": "t_shadow",
+      "before": "assets/images/tower-preview/kalamo-cartografo-base-v1.webp",
+      "src": "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kalamo",
+      "winner": "guardian_alba",
+      "before": "assets/images/tower-preview/kalamo-cartografo-base-v1.webp",
+      "src": "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kalamo",
+      "winner": "azrak",
+      "before": "assets/images/tower-preview/kalamo-cartografo-base-v1.webp",
+      "src": "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kalamo",
+      "winner": "kalamo",
+      "before": "assets/images/tower-preview/kalamo-cartografo-base-v1.webp",
+      "src": "assets/images/tower-preview/kalamo-cartografo-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kairos",
+      "winner": "explorador",
+      "before": "assets/images/tower-preview/kairos-clepsidra-base-v1.webp",
+      "src": "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kairos",
+      "winner": "mago",
+      "before": "assets/images/tower-preview/kairos-clepsidra-base-v1.webp",
+      "src": "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kairos",
+      "winner": "dragon",
+      "before": "assets/images/tower-preview/kairos-clepsidra-base-v1.webp",
+      "src": "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kairos",
+      "winner": "hombre_lobo",
+      "before": "assets/images/tower-preview/kairos-clepsidra-base-v1.webp",
+      "src": "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kairos",
+      "winner": "t_shadow",
+      "before": "assets/images/tower-preview/kairos-clepsidra-base-v1.webp",
+      "src": "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kairos",
+      "winner": "guardian_alba",
+      "before": "assets/images/tower-preview/kairos-clepsidra-base-v1.webp",
+      "src": "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kairos",
+      "winner": "azrak",
+      "before": "assets/images/tower-preview/kairos-clepsidra-base-v1.webp",
+      "src": "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    },
+    {
+      "outfit": "tower",
+      "victim": "kairos",
+      "winner": "kalamo",
+      "before": "assets/images/tower-preview/kairos-clepsidra-base-v1.webp",
+      "src": "assets/images/tower-preview/kairos-clepsidra-impacto-v1.webp",
+      "width": 683,
+      "active": true
+    }
+  ],
+  "legacyProgressPreserved": true,
+  "practiceResultExplicit": true,
+  "physicalAndroidTest": false,
+  "errors": [],
+  "failed": []
+}

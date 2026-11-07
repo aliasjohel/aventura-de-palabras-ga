@@ -1248,6 +1248,9 @@ function informarTorre(clave){
   let nota=document.getElementById('estadoValidacionTorre');
   if(!nota){nota=document.createElement('p');nota.id='estadoValidacionTorre';nota.setAttribute('role','status');estadoArcade.after(nota);}
   nota.textContent=mensajeTorre(clave);
+  let combate=document.getElementById('estadoValidacionCombateTorre');
+  if(!combate){combate=document.createElement('p');combate.id='estadoValidacionCombateTorre';combate.setAttribute('role','status');btnHabilidadVersus.after(combate);}
+  combate.textContent=mensajeTorre(['waiting','pending','confirmed'].includes(clave)?clave:torreEnCurso?'battleReady':'battlePractice');combate.hidden=!modoArcadeActivo;
   let retry=document.getElementById('btnReconectarTorre');
   if(!retry){
     retry=document.createElement('button');retry.id='btnReconectarTorre';retry.type='button';retry.className='btn-secundario';btnHabilidadVersus.after(retry);
@@ -2829,6 +2832,11 @@ async function prepararRecorridoArcade() {
   pisoActualArcade = Math.min(pisosDesbloqueadosArcade, rivalesTorreArcade.length - 1);
   ultimoResultadoArcade = "";
   abrirTorreArcade();
+  informarTorre(torreUsaProgresoServidor()?'verifiedProgress':motivoPracticaTorre());
+}
+
+function motivoPracticaTorre(){
+  return modoPruebasActivo?'testPractice':globalThis.TowerOutfitPreview?.selection()?'previewPractice':'practice';
 }
 
 function salirModoArcade() {
@@ -6702,7 +6710,7 @@ window.addEventListener('tower-outfit-preview-changed',()=>{
 function actualizarPoseCombateVersus(elemento, personaje = elemento === personajeVersusUno ? personajeJugadorVersus : personajeRivalVersus) {
   const poses = posesCombateVersus.get(elemento) || {};
   const herido = elemento.classList.contains("recibiendo-dano") || elemento.classList.contains("recibiendo-dano-magico");
-  const original = (herido && personaje === "kairos" && posesDanoPersonajeVersus[personaje]) || poses.habilidad || poses.ataque || (herido && posesDanoPersonajeVersus[personaje]) || personajesVersus[personaje]?.base;
+  const original = (herido && posesDanoPersonajeVersus[personaje]) || poses.habilidad || poses.ataque || personajesVersus[personaje]?.base;
   const src = spriteTrajeVersus(elemento,personaje,original,herido);
   if (src && !elemento.src.endsWith(src)) {
     const union=src.includes('/aren-union-')||elemento.getAttribute('src')?.includes('/aren-union-');
@@ -6788,6 +6796,10 @@ async function prepararImagenesCombate(personajes) {
 }
 
 const posesDanoPersonajeVersus = {
+  explorador: 'assets/images/personajes/versus/explorador-atrapado-eclipse.png',
+  mago: 'assets/images/personajes/versus/mago-impacto-v2.webp',
+  guardiana: 'assets/images/personajes/versus/guardiana-susto-impacto.png',
+  dragon: 'assets/images/personajes/versus/dragon-susto-impacto.png',
   kairos: srcKairosImpactoVersus,
   hombre_lobo: srcHombreLoboImpactoVersus,
   t_shadow: srcShadowImpactoVersus,
@@ -8072,6 +8084,7 @@ function agregarPalabraRecuperacionVersus(tipoJugador) {
 }
 
 function prepararDueloVersus({ comenzarRonda = true } = {}) {
+  const notaTorre=document.getElementById('estadoValidacionCombateTorre');if(notaTorre)notaTorre.hidden=!modoArcadeActivo;
   const modoPalabras = tutorialCombateVersus.activo ? "tutorial" : dueloAventuraActivo ? "adventure-duel" : modoArcadeActivo ? "tower" : "versus";
   if (contextoPalabrasCombate?.mode !== modoPalabras) iniciarContextoPalabras(modoPalabras);
   cancelarCinematicaFinalVersus();
@@ -8157,7 +8170,7 @@ async function iniciarCombateArcade() {
       if(result.locked){pisosDesbloqueadosArcade=leerProgresoArcade();pisoActualArcade=Math.min(pisosDesbloqueadosArcade,9);renderizarTorreArcade();informarTorre('locked');return;}
       torreEnCurso=Boolean(result.attempt);informarTorre(result.practice?result.reason:'ready');
       ultimoEventoDueloAventura=0;efectoDueloAventura='';letrasPendientesDueloAventura.clear();
-    }else informarTorre('practice');
+    }else informarTorre(motivoPracticaTorre());
   }finally{preparandoTorre=false;btnCombatirArcade.disabled=false;}
   iniciarContextoPalabras('tower');
   pisoCombateArcade = pisoActualArcade;
@@ -8715,6 +8728,15 @@ function obtenerReproductorFinalVersus(personajeGanador, personajeVictima) {
       earnedPaths.push(...poses.map(p=>item.assets[p]).filter(Boolean));
     }
     if(earnedPaths.length)await GameResources.ensure(earnedPaths);
+    // Decode both poses before the clock starts, including ordinary outfits.
+    // Loading the reaction only at impact could leave a standing victim visible.
+    const base=imagenTrajeFinalVersus(personajeVictima,'base',personajesVersus[personajeVictima].base);
+    const frontal=personajeGanador==='explorador'&&usaImpactoFrontalGuardianaVersus(personajeVictima);
+    const impacto=imagenTrajeFinalVersus(personajeVictima,frontal?'impacto-tronco':'impacto',frontal?srcGuardianaImpactoTroncoVersus:posesReaccionVictimaVersus[personajeVictima]);
+    try{
+      await GameResources.ensure([base,impacto]);
+      await Promise.all([base,impacto].map(src=>{const image=new Image();image.src=src;return image.decode();}));
+    }catch{ /* Missing optional artwork offline must not prevent the result. */ }
     if(personajeGanador==='hombre_lobo'){
       prepararTrajesFinalVersus('hombre_lobo');
       const images=[...cinematicaFinalVersus.querySelectorAll('.cinematica-lobo-regreso')];
@@ -8979,6 +9001,7 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
         CombatUI.text(detalleResultadoVersus, "Tu avance en la torre se conserva. Podés continuar desde donde llegaste o elegir otro rival.");
         CombatUI.text(btnRevanchaVersus, "Volver a la torre");
       }
+      if(!torreEnCurso)CombatUI.text(detalleResultadoVersus,mensajeTorre('practiceOnly'));
     } else {
       pisoActualArcade = pisoCombateArcade;
       CombatUI.text(tituloResultadoVersus, ganador === "empate"
@@ -9035,7 +9058,7 @@ function usaImpactoFrontalGuardianaVersus(personaje) {
 }
 const posesReaccionVictimaVersus = {
   explorador: "assets/images/personajes/versus/explorador-atrapado-eclipse.png",
-  mago: "assets/images/personajes/versus/mago-atrapado-trampa.png",
+  mago: "assets/images/personajes/versus/mago-impacto-v2.webp",
   guardiana: "assets/images/personajes/versus/guardiana-susto-impacto.png",
   dragon: "assets/images/personajes/versus/dragon-susto-impacto.png",
   hombre_lobo: srcHombreLoboImpactoVersus,
@@ -9091,7 +9114,7 @@ function programarReaccionVictimaFinalVersus(elemento, personaje, demora) {
   const frontal = elemento === victimaTrampaVersus && usaImpactoFrontalGuardianaVersus(clave);
   const fuente = frontal ? imagenTrajeFinalVersus(clave,'impacto-tronco',srcGuardianaImpactoTroncoVersus) : imagenTrajeFinalVersus(clave,'impacto',posesReaccionVictimaVersus[clave]);
   const secuencia = secuenciaReaccionFinalVersus;
-  const precarga = frontal || clave === 'kairos' ? new Image() : null;
+  const precarga = new Image();
   if (precarga) precarga.src = fuente;
   const lista = precarga ? precarga.decode().then(() => true, () => false) : null;
   demoVersus.temporizadorReaccionCinematica = setTimeout(async () => {

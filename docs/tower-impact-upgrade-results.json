@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "from": "v395-tower-rewards-candidate1",
+  "to": "v396-tower-impact-reactions1",
+  "downloadedFiles": [
+    "css/styles.css",
+    "js/app.js",
+    "js/resource-catalog.js",
+    "js/tower-online.js",
+    "js/tower-outfit-catalog.js"
+  ],
+  "championImagesDownloadedOnUpdate": 0,
+  "oldVersionActiveUntilActivation": true,
+  "offlineReloadPassed": true,
+  "selectedOutfitCacheFiles": [
+    "assets/images/tower-preview/zafir-vitral-base-v1.webp",
+    "assets/images/tower-preview/zafir-vitral-ataque-v1.webp",
+    "assets/images/tower-preview/zafir-vitral-impacto-v2.webp"
+  ],
+  "cachedOutfitWorksOffline": true,
+  "localBusinessAndSettingsStatePreserved": true,
+  "indexedDBPreserved": true,
+  "previewOffAfterReload": true,
+  "physicalAndroidTest": false,
+  "pageErrors": []
+}

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v395-tower-rewards-candidate1`;
+const CACHE_NAME = `${CACHE_PREFIX}v396-tower-impact-reactions1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -190,6 +190,8 @@ const RECURSOS_MODOS_LOCALES = [
   "./assets/images/puzzles/lume-camara-alterada-v1.png",
   "./assets/images/personajes/versus/bola-fuego-mago.png",
   "./assets/images/personajes/versus/mago-atrapado-trampa.png",
+  "./assets/images/personajes/versus/mago-impacto-v2.webp",
+  "./assets/images/tower-preview/zafir-vitral-impacto-v2.webp",
   "./assets/images/personajes/versus/mago-eclipse-violeta.png",
   "./assets/images/personajes/versus/tronco-trampa-selvatica.png",
   "./assets/images/personajes/versus/halcon-espiritual-guardiana.png",
@@ -1061,7 +1063,7 @@ const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
 
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
-  "./js/tower-online.js": "sha256-774f9b164f7b1bbc7818c0528664cd11d2c8b2132089825846ba6867684606cc",
+  "./js/tower-online.js": "sha256-8f68ca5bc8a1ff323649ffabf0862ec6ad83dd1e552021645f16d183c1267ceb",
   "./js/tower-rewards.js": "sha256-ba3d39d0d3001069c25c0da1dc951e0cc3b39fb3488d0db44d4011c3c4afcfc0",
   "./js/tower-rewards-ui.js": "sha256-bb1e7d66ac94d394b11228addcbecab237bd9c6214206cb44a20247db32466fd",
   "./css/tower-rewards.css": "sha256-fddeb0d94532c92b8112ca649221b77814d6c5b96edb3ce9724cb6ba6cd4376c",
@@ -1072,7 +1074,7 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/miniaturas/marco-tower_maestro-v1.webp": "sha256-6469746a1c3a706fb8ee431ef1cbc28005bb118a2969b7f95526a359983419d5",
   "./assets/images/perfil/miniaturas/marco-tower_leyenda-v1.webp": "sha256-5fb2bcf7790a28da3529a0bfe4ca87d036fdd3017a173a005c374e8c1d62aa24",
   "./assets/images/personajes/versus/hombre-lobo-victoria-humana-v1.webp": "sha256-ad0d3b96884800a80d0e40325fbf776c1415895cebe477f6b3eb1a2ff12756a1",
-  "./js/tower-outfit-catalog.js": "sha256-531ba248f53bd8b5dcdc171b21a4c8ba5dd8846941f1f0ba6c57890e2de1a3e5",
+  "./js/tower-outfit-catalog.js": "sha256-077969a393b071adcd90353a1306d5ea99ac9160a475f36008acc3132dfeee1a",
   "./assets/images/tower-preview/zafir-vitral-base-v1.webp": "sha256-6014269ca1e6008391b5d725fecd4603d960502aebebc855603fcc895e510fa8",
   "./assets/images/tower-preview/zafir-vitral-ataque-v1.webp": "sha256-0db4a539f1b050ae8d6e30524e7fa35e2b7f61448fedfaba7cab1f81af9ba786",
   "./assets/images/tower-preview/zafir-vitral-final-v1.webp": "sha256-0b4ee0fabd4de92f177262880ad5bec8c4b822e0f67c30600574c3804d2eafb6",
@@ -1210,7 +1212,7 @@ const ASSET_REVISIONS = {
   "./assets/images/ui/menu-button-ranking-v1.webp": "sha256-ab9244074004847b638ea796b9e7792176bdb9ee530b1679a1562047b01a83ab",
   "./assets/images/ui/menu-button-shop-v1.webp": "sha256-6e828e1a47cf7a4c97b635b00e4010d014f5ee5161668cd4bd35c2e19c55a1de",
   "./assets/images/ui/menu-button-settings-v1.webp": "sha256-a7dd3fd0d0105ae2032dde8f81ef3c5586b4f4648f93aa01dc7ae1c8aaa64c4f",
-  "./js/resource-catalog.js": "sha256-8bb5ca40db0698d3f2e20aab078e14eef4c6af1e099ac260190e751ab489cb31",
+  "./js/resource-catalog.js": "sha256-2d139f9635fa3617ccf43ec88e05e615ed1a839418735cf2587f3b1835063c6f",
   "./js/resource-loader.js": "sha256-ed51b00161c62f3017b9459a3aa78797cdc3da62537d9325b1d45ebcf2aadf38",
   "./js/costume-resources.js": "sha256-11448139f739560c5e2e07ac1c01f8f966bb15f042c1c83ca3495ead7a448d38",
   "./assets/images/perfil/miniaturas/azrak-base.webp": "sha256-226b633fadf0e7280ee7e712339a452c5699a603ead56f759ae5cbf1fbe30f01",
@@ -1522,7 +1524,7 @@ const ASSET_REVISIONS = {
   "./": "sha256-9558853c08dbc75d2cf37109563a9ecbdd51e2ca435ed123536c29dc69a1505c",
   "./index.html": "sha256-9558853c08dbc75d2cf37109563a9ecbdd51e2ca435ed123536c29dc69a1505c",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
-  "./css/styles.css": "sha256-feb3911f5c898bc400f4a82a999fb6b182f342a5c801944aaf52ea9bd346ca7a",
+  "./css/styles.css": "sha256-5b2139cda6279101418958a0e379c1ed2c79eb21c97c1bf92435846ad6fb1522",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
   "./js/azrak-world.js": "sha256-d503df637e79f9e229d44bdfb03831c54086f1abf163ffc0dbdef95486227e10",
   "./assets/images/cinematicas/reino-azrak/primer-shadow-lume-capturada-v1.png": "sha256-190fd4207138436bf0a6b68048a766bce2fe136bebf4051095bc84fe6b6b286c",
@@ -1621,7 +1623,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-3aab53e0aba9529487b0e914270130114c20d628e26f3e392843a1987a170435",
+  "./js/app.js": "sha256-12393089f4bd1ebed16142a6bdd21fde01c7e0006a769d24ece07f0416ffe28f",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
@@ -1955,6 +1957,8 @@ const ASSET_REVISIONS = {
   "./assets/images/puzzles/lume-camara-alterada-v1.png": "sha256-3ad58d31679f14621e23894ee3076805b2d486a9e213ab6e342209020c452dd1",
   "./assets/images/personajes/versus/bola-fuego-mago.png": "sha256-81d23d19ad10108316e09024cd4af73c1ad3bcaf8a9bc0784bec9790b6e587e7",
   "./assets/images/personajes/versus/mago-atrapado-trampa.png": "sha256-1fefc56fc06f46d4c953d400354f269784e3a73ca50ad809d78a5fddbc272e71",
+  "./assets/images/personajes/versus/mago-impacto-v2.webp": "sha256-23456907353e383ff9e7c5d6d6f2a62816d60f672576b513c07bfae514a35e26",
+  "./assets/images/tower-preview/zafir-vitral-impacto-v2.webp": "sha256-e9e4990063852d31ec3c811fd68153726fff8177ef29799ff02ac22deae4ed2a",
   "./assets/images/personajes/versus/mago-eclipse-violeta.png": "sha256-0d2bf809d4c651f403837fba04194e5e0d366b30234ec594b4bdb116c2acff30",
   "./assets/images/personajes/versus/tronco-trampa-selvatica.png": "sha256-9b0947b293405c1d86d0f8edd9397841a78f396c8373587f12b610ca8bd98810",
   "./assets/images/personajes/versus/halcon-espiritual-guardiana.png": "sha256-fb15930a58f027ec74bcd3e38a2b0face8051bc1b55767b379f302a932a555c2",
