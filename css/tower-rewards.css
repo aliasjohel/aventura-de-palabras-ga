@@ -5,3 +5,12 @@
 .tower-reward-grid article[data-owned="false"] img{filter:grayscale(.8) brightness(.7)}
 .tower-reward-grid article p{font-size:.85rem;flex:1;margin:0}.tower-reward-grid article button{width:100%;font-size:.85rem}
 .tower-reward-grid article button[hidden]{display:none}
+.tower-reward-reveal{margin:14px 0;padding:12px;border:1px solid #d4b467;border-radius:12px;background:radial-gradient(ellipse at top,#55431b66,transparent 75%),#10252b}
+.tower-reward-reveal[hidden]{display:none}
+.tower-reward-reveal h3{margin:0 0 10px;color:#ffe5a1;font-size:1.1rem}
+.tower-unlocked-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.tower-unlocked-cards article{display:grid;justify-items:center;align-content:start;gap:4px;padding:8px;border:1px solid #a18a4f80;border-radius:8px;background:#07161caa}
+.tower-unlocked-cards img{width:100%;height:112px;object-fit:contain;filter:drop-shadow(0 0 8px #f3ce6144)}
+.tower-unlocked-cards strong{font-size:.9rem;color:#fff0c6}.tower-unlocked-cards span{font-size:.78rem;color:#e3d7b8}
+.tower-reward-reveal>p{margin:10px 0 0;font-size:.8rem;line-height:1.35;color:#e3d7b8}
+@media(orientation:landscape) and (max-height:600px){.tower-reward-reveal{margin:8px 0;padding:8px}.tower-reward-reveal h3{font-size:.95rem;margin-bottom:6px}.tower-unlocked-cards article{grid-template-columns:72px 1fr;align-items:center;text-align:left;column-gap:8px;padding:5px}.tower-unlocked-cards img{grid-row:span 2;height:76px;width:72px}.tower-unlocked-cards strong,.tower-unlocked-cards span{justify-self:start}.tower-reward-reveal>p{margin-top:6px;font-size:.73rem}}

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v398-werewolf-recoil1`;
+const CACHE_NAME = `${CACHE_PREFIX}v399-menu-tower-reward-reveal1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1067,9 +1067,9 @@ const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
   "./js/tower-online.js": "sha256-8f68ca5bc8a1ff323649ffabf0862ec6ad83dd1e552021645f16d183c1267ceb",
-  "./js/tower-rewards.js": "sha256-ba3d39d0d3001069c25c0da1dc951e0cc3b39fb3488d0db44d4011c3c4afcfc0",
-  "./js/tower-rewards-ui.js": "sha256-bb1e7d66ac94d394b11228addcbecab237bd9c6214206cb44a20247db32466fd",
-  "./css/tower-rewards.css": "sha256-fddeb0d94532c92b8112ca649221b77814d6c5b96edb3ce9724cb6ba6cd4376c",
+  "./js/tower-rewards.js": "sha256-99e16d1ca8e8e9ccaefa1b49dc173d31b657c6878040880c49168bb0d8c71859",
+  "./js/tower-rewards-ui.js": "sha256-37d6da2229d28ace8c8baa1e374f52b27f45a6a4d82da5327c29e565ba9e4879",
+  "./css/tower-rewards.css": "sha256-dba3f4d5958b87fb340c2dec9e728a8ddb14146d152dfb29538696b9bce7ea1e",
   "./assets/images/perfil/marco-tower_conquistador-v1.webp": "sha256-fb09665c95467f8f10097846721e0dd1ac112be4a92161bee6a4a4487fbab5dc",
   "./assets/images/perfil/marco-tower_maestro-v1.webp": "sha256-301a18225d9210fd431cb57db35913c301de4a1771139c4ce61ac74f348e6590",
   "./assets/images/perfil/marco-tower_leyenda-v1.webp": "sha256-946a433f5204b3798640aba4ebf168bc95aaa948258024767cd0f737a8d11c08",
@@ -1207,8 +1207,8 @@ const ASSET_REVISIONS = {
   "./assets/images/tower-preview/aren-campeon-preparacion-v1.webp": "sha256-dab04457978fd2258feb286264a731286b8836f8ba0d16c89fb7d71594ac48ac",
   "./assets/images/tower-preview/aren-campeon-vidrio-v1.webp": "sha256-3fc110321c34224e8084b34548d8d7fdb6538e14dbde7d5ca8ea2cd6399b402c",
   "./assets/sounds/menu-impacto-roca-v1.wav": "sha256-265389468bc81c463150fa08ca2d60114807e87afc2966ef18636554a370395f",
-  "./css/menu-fantasy.css": "sha256-4d90c47fad898110327586c94cd6b225126516aba41c0fc7c9e06ce00721a2af",
-  "./js/menu-effects.js": "sha256-bf4bb2a4dc1e47e230d273b5b3a9118adb6d2e4a1d4e18f3bd614f834c635e75",
+  "./css/menu-fantasy.css": "sha256-83029d814e240b8a857266adf8dc3cebeabaa2727a2a9499907b21c011608867",
+  "./js/menu-effects.js": "sha256-ee40da73dfa9244ff7a09d03b475c66925bd6beb26b207f70ffc237e3275e86a",
   "./assets/images/ui/menu-logo-fantasia-v2.webp": "sha256-c18201d7164953aa58101b0c6c07bf3e7f8f32e07e2eb0128c3ffeeb1e5c513d",
   "./assets/images/ui/menu-button-adventure-v1.webp": "sha256-511977b61176cee0e2a204c756c3b798c13640f915d0e2a3dafa64191d5e9a03",
   "./assets/images/ui/menu-button-modes-v1.webp": "sha256-d1643ede7d0dd97ad7f11fe324b9b497b42d11f1c410558a7649dec95ee593de",
@@ -1524,8 +1524,8 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/miniaturas/marco-xp_infinito-v1.webp": "sha256-7df6d8d229b0b2e828e95ffba3c4a87dfe2841664a5c303dcd80e6ab51097f27",
   "./css/player-xp.css": "sha256-4c9fcdf5db7d3765f6697694dd4c6af32070347e0a378027b65ee9e90a1cde12",
   "./js/public-player-profile.js": "sha256-6664f31217b51181f745a789d507aa8ceda33313b290123de2c8499cb74f8a8b",
-  "./": "sha256-8ed2198a887c9ce563c1c8c9d87c40c5458db20d782c917d105ea3f120b69961",
-  "./index.html": "sha256-8ed2198a887c9ce563c1c8c9d87c40c5458db20d782c917d105ea3f120b69961",
+  "./": "sha256-8e8381784c476412063535b8201daf18b60a35626f29af052d4005437ee18d19",
+  "./index.html": "sha256-8e8381784c476412063535b8201daf18b60a35626f29af052d4005437ee18d19",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-5b2139cda6279101418958a0e379c1ed2c79eb21c97c1bf92435846ad6fb1522",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1613,7 +1613,7 @@ const ASSET_REVISIONS = {
   "./js/prologue-cinematic.js": "sha256-8645ed39120263f1f89818d9e1beae141579102b3e2a60c14bedce21d61820b4",
   "./assets/images/intro/conceptos/prologo-cuatro-escenas-v1.png": "sha256-2b209d5c4a3c1a14c1f6e8ce236fd4cbc9d0c8347fd842164fb3d3b623b11d7e",
   "./css/intro.css": "sha256-4a173ec8bd6ef5a6a992633d4ad33bece012b20554506c7745442cdc4eafa69f",
-  "./js/intro.js": "sha256-58e437e8265f9da32b8a0b62d9b1a083b52cdea7a4a67a712ebba314b73d4e9f",
+  "./js/intro.js": "sha256-87da1bac052a44d3ba5fbcad8540c1dc92048b79f25344e02e41bf5716e7e22e",
   "./js/supabase-loader.js": "sha256-52c182c9754dd44411a51a233d0cc4df4e9879d046f90b8af53e6cb939eac5ba",
   "./js/supabase-config.js": "sha256-305eac5a6b712731f4e372cca9f6a4f2af0610e772bd928eaa5e75fc0b427295",
   "./js/supabase-client.js": "sha256-25fedbd5cf0ce2c70266f4e9c17ece167849bbe12abde0ec59d275d497153b4e",

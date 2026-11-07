@@ -7,7 +7,7 @@
   const DURACION_REDUCIDA = 3000;
   const RETRASO_INICIO = 500;
   const DURACION_SALIDA = 720;
-  const DURACION_FONDO = 2000;
+  const DURACION_FONDO = 4800;
   const movimiento = window.matchMedia("(prefers-reduced-motion: reduce)");
   const reducirMovimiento = movimiento.matches;
   const app = document.querySelector('.app');
@@ -113,6 +113,8 @@
     if (menuMostrado) return;
     menuMostrado = true;
     clearTimeout(temporizadorFondo);
+    document.body.classList.remove('menu-camara-inicio');
+    document.body.classList.add('menu-camara-lista');
     document.body.classList.remove('menu-fondo-pendiente');
     if (!movimiento.matches) {
       botones.forEach(id => { document.getElementById(id).inert = true; });
@@ -189,6 +191,7 @@
     window.setTimeout(() => {
       intro.remove();
       window.dispatchEvent(new CustomEvent("aventura:intro-finalizada"));
+      document.body.classList.add('menu-camara-inicio');
       fondoIniciado = true;
       continuarFondo();
     }, DURACION_SALIDA);

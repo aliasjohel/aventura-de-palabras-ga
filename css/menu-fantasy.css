@@ -204,33 +204,17 @@ body.menu-entrada #pantallaMenu .estado-offline-juego { animation-delay: 5550ms;
 }
 
 /* Also pause the existing book/crystal scene when the menu or document is hidden. */
-/* Move one existing image layer, keeping the castle/moon in the mobile crop. */
-@media (max-width: 700px) and (orientation: portrait) {
-    #pantallaMenu .menu-escena-animada::before {
-        inset: 0 0 0 auto;
-        width: max(100%, 100dvh);
-        background-position: right top;
-        transform: none;
-        animation: menu-mobile-pan-x 32s ease-in-out infinite alternate;
-    }
-}
-@media (orientation: landscape) and (max-height: 600px) and (pointer: coarse) {
-    #pantallaMenu .menu-escena-animada::before {
-        inset: 0 0 auto;
-        height: max(100%, 100vw);
-        background-position: center top;
-        transform: none;
-        animation: menu-mobile-pan-y 32s ease-in-out infinite alternate;
-    }
-}
-@keyframes menu-mobile-pan-x {
-    from { transform: translate3d(0, 0, 0); }
-    to { transform: translate3d(min(10vw, 48px), 0, 0); }
-}
-@keyframes menu-mobile-pan-y {
-    from { transform: translate3d(0, 0, 0); }
-    to { transform: translate3d(0, -8vh, 0); }
-}
+/* The background, crystal and torches share image coordinates and camera motion. */
+#pantallaMenu .menu-escena-animada::before{content:none;background:none;animation:none}
+.menu-paisaje{position:absolute;z-index:0;left:0;top:0;width:var(--menu-camera-size,106vmax);height:var(--menu-camera-size,106vmax);transform:translate3d(var(--menu-start-x,-3vw),var(--menu-start-y,-3vh),0)}
+.menu-paisaje::before{content:'';position:absolute;inset:0;background:url('../assets/images/fondos/menu-inicio-aventura.png') center/cover no-repeat;filter:saturate(.94) brightness(.88)}
+#pantallaMenu .menu-paisaje .menu-cristal-flotante{left:50%;top:68%;width:clamp(68px,9%,148px);opacity:0;animation:none}
+body.menu-camara-inicio .menu-paisaje{animation:menu-camera-arrival 4.8s ease-in-out both}
+body.menu-camara-lista .menu-paisaje{animation:menu-camera-return 32s ease-in-out infinite alternate}
+body:is(.menu-camara-inicio,.menu-camara-lista) #pantallaMenu .menu-paisaje .menu-cristal-flotante{opacity:.94;animation:menu-crystal-emerge 1.8s ease-out both,menuCristalFlota 4.8s ease-in-out 1.8s infinite}
+@keyframes menu-camera-arrival{0%,37.5%{transform:translate3d(var(--menu-start-x),var(--menu-start-y),0)}100%{transform:translate3d(var(--menu-scenic-x),var(--menu-scenic-y),0)}}
+@keyframes menu-camera-return{from{transform:translate3d(var(--menu-scenic-x),var(--menu-scenic-y),0)}to{transform:translate3d(var(--menu-start-x),var(--menu-start-y),0)}}
+@keyframes menu-crystal-emerge{from{opacity:0;transform:translate(-50%,-30%) scale(.25)}to{opacity:.94;transform:translate(-50%,-100%) scale(1)}}
 
 #pantallaMenu .menu-escena-animada::before,
 #pantallaMenu .menu-escena-animada *,
@@ -247,7 +231,8 @@ body.menu-entrada #pantallaMenu .estado-offline-juego { animation-delay: 5550ms;
     #pantallaMenu .titulo.menu-logo { width: min(100%, 210px); }
 }
 @media (prefers-reduced-motion: reduce) {
-    #pantallaMenu .menu-escena-animada::before { animation: none; transform: none; }
+    body:is(.menu-camara-inicio,.menu-camara-lista) .menu-paisaje{animation:none;transform:translate3d(var(--menu-scenic-x),var(--menu-scenic-y),0)}
+    body:is(.menu-camara-inicio,.menu-camara-lista) #pantallaMenu .menu-paisaje .menu-cristal-flotante{animation:none;transform:translate(-50%,-100%)}
     .menu-logo-destello { display: none; }
     #pantallaMenu .menu-contenido > button::after { display: none; animation: none; }
     #selectorModosJuego .tarjeta-modo-torre .modo-ilustracion::after,
