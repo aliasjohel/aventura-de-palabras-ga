@@ -1,0 +1,132 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-07T02:41:38.995Z",
+  "url": "https://aliasjohel.github.io/aventura-de-palabras-ga/",
+  "commit": "0a6505839dda2fbfe3f0c2427b594422309a4b82",
+  "cache": "v395-tower-rewards-candidate1",
+  "filesVerified": 24,
+  "allPublishedBytesMatchApprovedCommit": true,
+  "visualSelectorRetained": true,
+  "hashes": [
+    {
+      "path": "index.html",
+      "sha256": "9558853c08dbc75d2cf37109563a9ecbdd51e2ca435ed123536c29dc69a1505c",
+      "bytes": 134809
+    },
+    {
+      "path": "sw.js",
+      "sha256": "13fec69f6273a6ac3c9e50bdcde4a1bc208359e24730c688c2fedfc42e51bcab",
+      "bytes": 238362
+    },
+    {
+      "path": "css/tower-rewards.css",
+      "sha256": "fddeb0d94532c92b8112ca649221b77814d6c5b96edb3ce9724cb6ba6cd4376c",
+      "bytes": 815
+    },
+    {
+      "path": "js/app.js",
+      "sha256": "3aab53e0aba9529487b0e914270130114c20d628e26f3e392843a1987a170435",
+      "bytes": 729688
+    },
+    {
+      "path": "js/avatar-rewards.js",
+      "sha256": "f27c88970ae312692ff4c1275cace575b3c80ffeaf019068a7be601f4f852ea0",
+      "bytes": 1590
+    },
+    {
+      "path": "js/game-wallet.js",
+      "sha256": "ead41f75a39c07bbf25902dead7f5db1a9d790f5cabddd81952aafd29a15d2a9",
+      "bytes": 8614
+    },
+    {
+      "path": "js/i18n-es-fallback.js",
+      "sha256": "7785aa080e9da2e465e1172503ebbc8573250ee19c74c3a40525a13a7591171c",
+      "bytes": 128806
+    },
+    {
+      "path": "js/player-avatar.js",
+      "sha256": "9216faf87684bf746bd8a1e90ef28696deb1aa1a1256d2c1a9c52e6f5a4af444",
+      "bytes": 25125
+    },
+    {
+      "path": "js/resource-catalog.js",
+      "sha256": "8bb5ca40db0698d3f2e20aab078e14eef4c6af1e099ac260190e751ab489cb31",
+      "bytes": 103408
+    },
+    {
+      "path": "js/versus-room-supabase.js",
+      "sha256": "9aabd91d3212e83c68b5b0efa8114c9a1e79bb26c305a1ffe005c6602da8694e",
+      "bytes": 42000
+    },
+    {
+      "path": "js/tower-online.js",
+      "sha256": "774f9b164f7b1bbc7818c0528664cd11d2c8b2132089825846ba6867684606cc",
+      "bytes": 10389
+    },
+    {
+      "path": "js/tower-rewards.js",
+      "sha256": "ba3d39d0d3001069c25c0da1dc951e0cc3b39fb3488d0db44d4011c3c4afcfc0",
+      "bytes": 7257
+    },
+    {
+      "path": "js/tower-rewards-ui.js",
+      "sha256": "bb1e7d66ac94d394b11228addcbecab237bd9c6214206cb44a20247db32466fd",
+      "bytes": 4953
+    },
+    {
+      "path": "js/tower-outfit-preview.js",
+      "sha256": "6ec9f5bd7598283901da68e34ccbf9db18c128829200bec0bd260229eb8f583a",
+      "bytes": 11492
+    },
+    {
+      "path": "js/tower-outfit-catalog.js",
+      "sha256": "531ba248f53bd8b5dcdc171b21a4c8ba5dd8846941f1f0ba6c57890e2de1a3e5",
+      "bytes": 24692
+    },
+    {
+      "path": "locales/es/profile.json",
+      "sha256": "9ceea6bb8b2e80a0d975023948c5e4b09536cc33a5ca10ad5b9ecff1f9a427cd",
+      "bytes": 5697
+    },
+    {
+      "path": "locales/en/profile.json",
+      "sha256": "3ac53d93a4ccc09528eb28ff748e3bcb7424fc551d7b279c07dfffbb069ccb4f",
+      "bytes": 5382
+    },
+    {
+      "path": "locales/pt-BR/profile.json",
+      "sha256": "b192e001f99ac8e38aa5a65d71041704d2f5af0749fefcd41a67793b3b7cc250",
+      "bytes": 5777
+    },
+    {
+      "path": "assets/images/perfil/marco-tower_conquistador-v1.webp",
+      "sha256": "fb09665c95467f8f10097846721e0dd1ac112be4a92161bee6a4a4487fbab5dc",
+      "bytes": 57114
+    },
+    {
+      "path": "assets/images/perfil/miniaturas/marco-tower_conquistador-v1.webp",
+      "sha256": "debc825dc1c4adace1d6eceb627b4f3ba857abffb76bc054d7cf2bb6f81dc13d",
+      "bytes": 8530
+    },
+    {
+      "path": "assets/images/perfil/marco-tower_maestro-v1.webp",
+      "sha256": "301a18225d9210fd431cb57db35913c301de4a1771139c4ce61ac74f348e6590",
+      "bytes": 65598
+    },
+    {
+      "path": "assets/images/perfil/miniaturas/marco-tower_maestro-v1.webp",
+      "sha256": "6469746a1c3a706fb8ee431ef1cbc28005bb118a2969b7f95526a359983419d5",
+      "bytes": 9888
+    },
+    {
+      "path": "assets/images/perfil/marco-tower_leyenda-v1.webp",
+      "sha256": "946a433f5204b3798640aba4ebf168bc95aaa948258024767cd0f737a8d11c08",
+      "bytes": 69734
+    },
+    {
+      "path": "assets/images/perfil/miniaturas/marco-tower_leyenda-v1.webp",
+      "sha256": "5fb2bcf7790a28da3529a0bfe4ca87d036fdd3017a173a005c374e8c1d62aa24",
+      "bytes": 9590
+    }
+  ]
+}

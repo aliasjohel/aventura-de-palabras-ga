@@ -1,0 +1,67 @@
+{
+  "checkedAt": "2026-11-07T01:55:38.438Z",
+  "project": "hlixavucxdxevbbhlxkc",
+  "projectName": "aventura-de-palabras",
+  "candidate": "0a6505839dda2fbfe3f0c2427b594422309a4b82",
+  "migrationSHA256": "3c92450855f918ad1760996107e8009cd13f2c4cc561208d1651ce65b288d49b",
+  "migrationHasNoDeleteTruncateOrDropTable": true,
+  "migrationRunsNoExistingAccountRowUpdates": true,
+  "prerequisiteFunctions": [
+    {
+      "signature": "versus_private.get_versus_room_costumes(uuid)",
+      "matches": true
+    },
+    {
+      "signature": "versus_private.public_player_profile(uuid,integer)",
+      "matches": true
+    },
+    {
+      "signature": "versus_private.tower_game(text,uuid,uuid,bigint,jsonb)",
+      "matches": true
+    }
+  ],
+  "flags": {
+    "enabled": true,
+    "global_enabled": false,
+    "payments_enabled": true,
+    "pilot_users": [
+      "e9dc89b5-1d6b-4f2b-a31b-fe3bd7673a20"
+    ],
+    "singleton": true
+  },
+  "pilotPermanentConfirmed": true,
+  "pilotAccountMatchesPreviousApproval": true,
+  "backupCaptured": true,
+  "backupPath": "E:\\Respaldos\\Aventura-Torre-recompensas-2026-11-07T01-54-54-473Z-56de8e",
+  "gameRowsComparedAcrossCapture": true,
+  "authSessionVerified": true,
+  "sqlManagementCredentialWorks": true,
+  "productionMigrationInstalled": true,
+  "published": true,
+  "backupRestoreVerified": true,
+  "restoredGameRows": 23050,
+  "restoredTables": 61,
+  "foreignKeysVerified": 66,
+  "exactMigrationRehearsedOnCurrentCopy": true,
+  "identityFunctionMatchesBaseline": true,
+  "frameConstraintsReviewed": true,
+  "securityAdvisors": {
+    "errors": 0,
+    "warnings": 24,
+    "scope": "Existing project before migration",
+    "types": [
+      "authenticated_security_definer_function_executable",
+      "auth_allow_anonymous_sign_ins",
+      "auth_leaked_password_protection"
+    ]
+  },
+  "status": "installed_and_published_single_account_pilot",
+  "migrationAttempted": true,
+  "publicationAttempted": false,
+  "lastCheckedAt": "2026-11-07T02:42:50.427Z",
+  "authVerificationMethod": "Phone sign-in confirmed by user and recent hosted Auth session metadata for approved pilot; no token extracted",
+  "publicCommit": "0a6505839dda2fbfe3f0c2427b594422309a4b82",
+  "version": "v395-tower-rewards-candidate1",
+  "globalRewardsEnabled": false,
+  "physicalAndroidGameplayTest": false
+}

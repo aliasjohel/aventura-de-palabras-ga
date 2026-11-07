@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-11-07T01:53:32.116Z",
+  "results": [
+    {
+      "name": "Auth settings",
+      "status": 200
+    },
+    {
+      "name": "Auth without user session",
+      "status": 401
+    },
+    {
+      "name": "Tower without user session",
+      "status": 401
+    }
+  ],
+  "productionWrites": 0
+}

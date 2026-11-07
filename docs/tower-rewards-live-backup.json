@@ -1,0 +1,352 @@
+{
+  "folder": "E:\\Respaldos\\Aventura-Torre-recompensas-2026-11-07T02-29-27-279Z-cdff7c",
+  "capturedAt": "2026-11-07T02:28:53.485885+00:00",
+  "project": "hlixavucxdxevbbhlxkc",
+  "readOnly": true,
+  "accounts": 54,
+  "identities": 2,
+  "wallets": {
+    "count": 22,
+    "coins": 1760
+  },
+  "tables": [
+    {
+      "schema": "private",
+      "name": "versus_word_dictionary",
+      "count": 2000
+    },
+    {
+      "schema": "public",
+      "name": "versus_challenges",
+      "count": 0
+    },
+    {
+      "schema": "public",
+      "name": "versus_friendships",
+      "count": 1
+    },
+    {
+      "schema": "public",
+      "name": "versus_invites",
+      "count": 24
+    },
+    {
+      "schema": "public",
+      "name": "versus_match_players",
+      "count": 0
+    },
+    {
+      "schema": "public",
+      "name": "versus_matches",
+      "count": 0
+    },
+    {
+      "schema": "public",
+      "name": "versus_players",
+      "count": 2
+    },
+    {
+      "schema": "public",
+      "name": "versus_profiles",
+      "count": 2
+    },
+    {
+      "schema": "public",
+      "name": "versus_rooms",
+      "count": 2
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_coin_events",
+      "count": 13
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_duel_definitions",
+      "count": 11
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_duel_words",
+      "count": 3418
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_hint_inventory",
+      "count": 1
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_hint_receipts",
+      "count": 28
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_hint_words",
+      "count": 9
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_mission_claims",
+      "count": 9
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_puzzle_definitions",
+      "count": 39
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_reward_attempts",
+      "count": 22
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_reward_pilot",
+      "count": 1
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_reward_receipts",
+      "count": 6
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_reward_rollout",
+      "count": 1
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_validation_catalog",
+      "count": 50
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_validation_receipts",
+      "count": 1852
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_validation_sessions",
+      "count": 22
+    },
+    {
+      "schema": "versus_private",
+      "name": "adventure_validation_words",
+      "count": 750
+    },
+    {
+      "schema": "versus_private",
+      "name": "aren_entitlements",
+      "count": 2
+    },
+    {
+      "schema": "versus_private",
+      "name": "character_inventory",
+      "count": 4
+    },
+    {
+      "schema": "versus_private",
+      "name": "coin_rewards",
+      "count": 19
+    },
+    {
+      "schema": "versus_private",
+      "name": "game_admin_attempts",
+      "count": 0
+    },
+    {
+      "schema": "versus_private",
+      "name": "game_admins",
+      "count": 2
+    },
+    {
+      "schema": "versus_private",
+      "name": "game_wallets",
+      "count": 22
+    },
+    {
+      "schema": "versus_private",
+      "name": "localized_dictionary",
+      "count": 3999
+    },
+    {
+      "schema": "versus_private",
+      "name": "player_appearance",
+      "count": 3
+    },
+    {
+      "schema": "versus_private",
+      "name": "player_history",
+      "count": 36
+    },
+    {
+      "schema": "versus_private",
+      "name": "profile_background_inventory",
+      "count": 5
+    },
+    {
+      "schema": "versus_private",
+      "name": "ranked_results",
+      "count": 22
+    },
+    {
+      "schema": "versus_private",
+      "name": "ranked_rooms",
+      "count": 0
+    },
+    {
+      "schema": "versus_private",
+      "name": "reviewed_word_dictionary",
+      "count": 6002
+    },
+    {
+      "schema": "versus_private",
+      "name": "search_queue",
+      "count": 0
+    },
+    {
+      "schema": "versus_private",
+      "name": "tower_action_receipts",
+      "count": 0
+    },
+    {
+      "schema": "versus_private",
+      "name": "tower_attempts",
+      "count": 0
+    },
+    {
+      "schema": "versus_private",
+      "name": "tower_category_rotation",
+      "count": 0
+    },
+    {
+      "schema": "versus_private",
+      "name": "tower_coin_receipts",
+      "count": 0
+    },
+    {
+      "schema": "versus_private",
+      "name": "tower_definitions",
+      "count": 110
+    },
+    {
+      "schema": "versus_private",
+      "name": "tower_pools",
+      "count": 3630
+    },
+    {
+      "schema": "versus_private",
+      "name": "tower_progress",
+      "count": 0
+    },
+    {
+      "schema": "versus_private",
+      "name": "tower_rollout",
+      "count": 1
+    },
+    {
+      "schema": "versus_private",
+      "name": "tower_verified_floors",
+      "count": 0
+    },
+    {
+      "schema": "versus_private",
+      "name": "tower_words",
+      "count": 792
+    },
+    {
+      "schema": "versus_private",
+      "name": "verified_adventure_completions",
+      "count": 11
+    },
+    {
+      "schema": "versus_private",
+      "name": "wallet_imports",
+      "count": 19
+    },
+    {
+      "schema": "versus_private",
+      "name": "word_bank_room_clients",
+      "count": 0
+    },
+    {
+      "schema": "versus_private",
+      "name": "word_category_rollout",
+      "count": 1
+    },
+    {
+      "schema": "versus_private",
+      "name": "xp_accounts",
+      "count": 2
+    },
+    {
+      "schema": "versus_private",
+      "name": "xp_cosmetics",
+      "count": 0
+    },
+    {
+      "schema": "versus_private",
+      "name": "xp_daily",
+      "count": 9
+    },
+    {
+      "schema": "versus_private",
+      "name": "xp_events",
+      "count": 28
+    },
+    {
+      "schema": "versus_private",
+      "name": "xp_multiplayer_moves",
+      "count": 64
+    },
+    {
+      "schema": "versus_private",
+      "name": "xp_reward_receipts",
+      "count": 0
+    },
+    {
+      "schema": "versus_private",
+      "name": "xp_rewards",
+      "count": 6
+    },
+    {
+      "schema": "versus_private",
+      "name": "xp_rollout",
+      "count": 1
+    }
+  ],
+  "functions": 164,
+  "migrations": 55,
+  "payloadSha256": "72c2f733b6a0a8d40fe8a1c0cf338a7793e2498022858e96863c25d83991f2d8",
+  "encryptedSha256": "b72f2c2acef58544365a140eb94c64f12be822b30b4fc9d0a73024b3fefddfe4",
+  "encryptedBytes": 11735174,
+  "encryption": "Windows DPAPI CurrentUser, restricted directory ACL",
+  "authScope": "Reference metadata only; passwords, tokens and sessions excluded; never restore Auth in production",
+  "restoreVerified": true,
+  "migrationSHA256": "3c92450855f918ad1760996107e8009cd13f2c4cc561208d1651ce65b288d49b",
+  "verification": {
+    "passed": true,
+    "verifiedAt": "2026-11-07T02:30:43.729Z",
+    "backupDecryptedAndHashVerified": true,
+    "restoreEngine": "PGlite memory only",
+    "restoredTables": 61,
+    "restoredRows": 23053,
+    "foreignKeysChecked": 66,
+    "accounts": 54,
+    "identities": 2,
+    "allOriginalGameRowsPreserved": true,
+    "candidateMigrationRehearsed": true,
+    "grantsDefaultOff": true,
+    "globalRewardsOff": true,
+    "rewardsEnabled": true,
+    "productionWrites": 0,
+    "scope": "Game data plus Auth references; passwords and sessions excluded; no production restoration"
+  },
+  "refreshedFrom": "E:\\Respaldos\\Aventura-Torre-recompensas-2026-11-07T01-54-54-473Z-56de8e",
+  "updatedTables": [
+    "versus_private.character_inventory",
+    "versus_private.game_wallets",
+    "versus_private.profile_background_inventory"
+  ]
+}

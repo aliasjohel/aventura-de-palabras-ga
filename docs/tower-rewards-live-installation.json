@@ -1,0 +1,27 @@
+{
+  "attempted": true,
+  "committed": true,
+  "startedAt": "2026-11-07T02:31:59.871Z",
+  "migrationVersion": "20261106221752",
+  "installerSHA256": "ee6f09117c25f5794807c84ca6ac1ebeace9b6a6f920da396e0810b9945b3324",
+  "verifiedAt": "2026-11-07T02:32:24.836Z",
+  "responseReconciled": false,
+  "checks": {
+    "catalog_count": 14,
+    "grants_count": 0,
+    "grants_enabled": false,
+    "installed": true,
+    "inventory_exists": true,
+    "pilot": {
+      "enabled": true,
+      "global_enabled": false,
+      "payments_enabled": true,
+      "pilot_users": [
+        "e9dc89b5-1d6b-4f2b-a31b-fe3bd7673a20"
+      ],
+      "singleton": true
+    }
+  },
+  "oldRowsPreservedInsideAtomicTransaction": true,
+  "unrelatedFunctionsAndExistingACLsPreservedInsideTransaction": true
+}

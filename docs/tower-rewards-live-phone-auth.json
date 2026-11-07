@@ -1,0 +1,23 @@
+{
+  "method": "Read-only hosted Auth session metadata matched to approved pilot; user confirms signed-in game on phone. No token extracted.",
+  "results": [
+    {
+      "checked_at": "2026-11-07 02:27:38.580302+00",
+      "confirmed": true,
+      "last_sign_in_at": "2026-11-07 02:23:16.497635+00",
+      "latest_session_at": "2026-11-07 02:23:16.498513+00",
+      "migration_installed": false,
+      "permanent": true,
+      "pilot": {
+        "enabled": true,
+        "global_enabled": false,
+        "payments_enabled": true,
+        "pilot_users": [
+          "e9dc89b5-1d6b-4f2b-a31b-fe3bd7673a20"
+        ],
+        "singleton": true
+      },
+      "recent_session": true
+    }
+  ]
+}

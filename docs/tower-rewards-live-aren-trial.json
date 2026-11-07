@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-07T02:36:26.633Z",
+  "method": "Hosted authoritative game engine, approved pilot account claims and legal letter actions; admin reads answer words for QA, no client result/clock override. Entire trial rolled back.",
+  "authoritativeWins": 10,
+  "coinsInsideRolledBackTrial": 520,
+  "conquerorGranted": true,
+  "costumeEquipmentVerified": true,
+  "costumeGrantedOnlyAfterFloor10": true,
+  "distinctCertifiedFloors": 10,
+  "frameEquipmentVerified": true,
+  "repeatedFloorPaidAgain": false,
+  "unionPriorityPreserved": false,
+  "playerProgressAdvanced": false,
+  "coinsActuallyAdded": 0,
+  "cosmeticsActuallyAdded": 0,
+  "xpChanged": false,
+  "allComparedFingerprintsUnchanged": true,
+  "physicalAndroidGameplayTest": false
+}

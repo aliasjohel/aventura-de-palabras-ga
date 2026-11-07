@@ -1,0 +1,24 @@
+{
+  "attempted": true,
+  "activated": true,
+  "startedAt": "2026-11-07T02:37:41.055Z",
+  "scope": "Cosmetic grants under existing single-account Tower pilot only",
+  "verifiedAt": "2026-11-07T02:38:02.180Z",
+  "responseReconciled": false,
+  "checks": {
+    "certified_floors": 0,
+    "eligible_accounts": 1,
+    "grants_enabled": true,
+    "owned_grants": 0,
+    "paid_floors": 0,
+    "pilot": {
+      "enabled": true,
+      "global_enabled": false,
+      "payments_enabled": true,
+      "pilot_users": [
+        "e9dc89b5-1d6b-4f2b-a31b-fe3bd7673a20"
+      ],
+      "singleton": true
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "pushAttempted": true,
+  "pushed": true,
+  "startedAt": "2026-11-07T02:38:53.308Z",
+  "commit": "0a6505839dda2fbfe3f0c2427b594422309a4b82",
+  "base": "f327875d4900ee344fb2006661ec0893e58d7d62",
+  "cache": "v395-tower-rewards-candidate1",
+  "globalRewardsEnabled": false,
+  "pilotAccounts": 1,
+  "remoteAfter": "0a6505839dda2fbfe3f0c2427b594422309a4b82",
+  "responseReconciled": false,
+  "checkedAt": "2026-11-07T02:38:58.937Z"
+}

@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-07T02:41:49.687Z",
+  "certified_floors": 0,
+  "cosmetic_grants_enabled": true,
+  "costumes": 11,
+  "eligible_accounts": 1,
+  "frames": 3,
+  "granted_items": 0,
+  "pilot": {
+    "enabled": true,
+    "global_enabled": false,
+    "payments_enabled": true,
+    "pilot_users": [
+      "e9dc89b5-1d6b-4f2b-a31b-fe3bd7673a20"
+    ],
+    "singleton": true
+  }
+}

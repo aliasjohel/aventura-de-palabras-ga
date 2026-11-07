@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "verifiedAt": "2026-11-07T02:30:43.729Z",
+  "backupDecryptedAndHashVerified": true,
+  "restoreEngine": "PGlite memory only",
+  "restoredTables": 61,
+  "restoredRows": 23053,
+  "foreignKeysChecked": 66,
+  "accounts": 54,
+  "identities": 2,
+  "allOriginalGameRowsPreserved": true,
+  "candidateMigrationRehearsed": true,
+  "grantsDefaultOff": true,
+  "globalRewardsOff": true,
+  "rewardsEnabled": true,
+  "productionWrites": 0,
+  "scope": "Game data plus Auth references; passwords and sessions excluded; no production restoration"
+}

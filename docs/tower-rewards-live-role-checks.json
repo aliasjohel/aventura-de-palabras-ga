@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-07T02:38:39.060Z",
+  "method": "Actual hosted PostgreSQL authenticated roles with per-account transaction-local claims; all test mutations rolled back. No JWTs minted.",
+  "accounts": 54,
+  "anonymousOrUnconfirmedDenied": 52,
+  "grantEligibleAccounts": 1,
+  "unearnedEquipmentDenied": 14,
+  "action_rows": 0,
+  "equipment_rows": 0,
+  "grant_rows": 0,
+  "helpers_inaccessible": true,
+  "private_tables_safe": true,
+  "trialWritesPersisted": false
+}

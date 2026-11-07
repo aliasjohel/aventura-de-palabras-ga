@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-11-07T02:11:30.047Z",
+  "productionWrites": 0,
+  "project": "hlixavucxdxevbbhlxkc",
+  "projectMatchesGame": true,
+  "localPort": 57806,
+  "localHTTP": 200,
+  "approvedAccountPermanent": true,
+  "emailConfirmed": true,
+  "passwordConfigured": false,
+  "identityProviders": [
+    "email"
+  ],
+  "gameLoginMethod": "signInWithOtp with shouldCreateUser:false",
+  "verifierPreviousMethod": "signInWithPassword",
+  "rootCause": "Verifier method incompatible with existing passwordless account",
+  "pilotMatchesPreviousApproval": true,
+  "globalRewardsEnabled": false,
+  "migrationInstalled": false,
+  "localPasswordFormRemoved": true,
+  "realPlayerSessionValidationStillPending": true
+}
