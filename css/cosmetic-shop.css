@@ -24,10 +24,16 @@
 #opcionesTrajesDuelo button, #opcionesTrajesAntesDuelo button { display: grid; justify-items: center; width: 145px; max-width: 42%; padding: 8px; margin: 0; border: 2px solid transparent; border-radius: 10px; background: #182b40; color: #fff0c9; }
 #opcionesTrajesDuelo button[aria-pressed=true], #opcionesTrajesAntesDuelo button[aria-pressed=true] { border-color: #f4d17a; background: #354761; }
 #opcionesTrajesDuelo img, #opcionesTrajesAntesDuelo img { width: 100%; height: 100px; object-fit: contain; }
-#elegirTrajeAntesDuelo { box-sizing: border-box; width: min(480px, 94vw); max-height: 94dvh; overflow: auto; margin: auto; padding: 18px; border: 1px solid #d6bb71; border-radius: 16px; background: #101d30; color: #fff0c9; text-align: center; }
+#elegirTrajeAntesDuelo { box-sizing: border-box; width: min(760px, 94vw); max-height: 94dvh; overflow: auto; margin: auto; padding: 18px; border: 1px solid #d6bb71; border-radius: 16px; background: #101d30; color: #fff0c9; text-align: center; }
 #elegirTrajeAntesDuelo::backdrop { background: #000b; }
 #elegirTrajeAntesDuelo h2 { margin: 0 0 8px; font-size: 22px; }
 #elegirTrajeAntesDuelo p { margin: 0 0 12px; font-size: 14px; }
+#opcionesTrajesAntesDuelo button { flex: 1 1 110px; width: auto; max-width: 170px; }
+@media (orientation: landscape) and (max-height: 600px) {
+    #elegirTrajeAntesDuelo { padding: 12px; }
+    #elegirTrajeAntesDuelo h2 { margin-bottom: 6px; font-size: 20px; }
+    #opcionesTrajesAntesDuelo img { height: 76px; }
+}
 #confirmarTrajeAntesDuelo { min-height: 44px; margin: 12px 0 0; }
 .tienda-trajes-catalogo [data-skin="zafir-celestial"] img,
 .tienda-traje-escena img.retrato-zafir { object-fit: cover; object-position: center; }

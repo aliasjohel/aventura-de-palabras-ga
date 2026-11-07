@@ -2504,7 +2504,9 @@ async function entrarAlMundoHielo() {
 
 btnSiguiente.addEventListener("click", continuarAventura);
 
+let guardandoTrajeVersus = false;
 function seleccionarPersonajeVersus(personaje) {
+  if(guardandoTrajeVersus)return;
   if (!personajesVersus[personaje] || !personajeDisponibleVersus(personaje)) return;
   personajeJugadorVersus = personaje;
   OnlineUI.text(document.getElementById('seleccionAleatoriaEstado'), '');
@@ -2526,33 +2528,28 @@ function actualizarSelectorTrajeVersus() {
   try {
     const state = CosmeticStore.read();
     const pruebaAutor = modoPruebasActivo && herramientasAutorDisponibles && (modoArcadeActivo || adaptadorSalasVersus.proveedor !== 'supabase');
-    const disponibles = CosmeticStore.catalog.filter(item => item.character === personajeJugadorVersus && (state.owned.includes(item.id) || pruebaAutor));
-    const elegido = pruebaAutor ? trajePersonajeVersus(personajeVersusUno, personajeJugadorVersus) : state.equipped[personajeJugadorVersus] || null;
+    const comprados = CosmeticStore.catalog.filter(item => item.character === personajeJugadorVersus && (state.owned.includes(item.id) || pruebaAutor));
+    const premios = pruebaAutor ? [] : (globalThis.TowerRewards?.catalog||[]).filter(item=>item.character===personajeJugadorVersus&&TowerRewards.owns(item.id)).map(item=>({...item,tower:true}));
+    const disponibles = [...comprados,...premios];
+    const elegido = pruebaAutor ? trajePersonajeVersus(personajeVersusUno, personajeJugadorVersus) : state.equipped[personajeJugadorVersus]==='aren-union'?'aren-union':globalThis.TowerRewards?.equipped(personajeJugadorVersus)||state.equipped[personajeJugadorVersus]||null;
     panel.querySelector('legend').textContent = pruebaAutor ? 'Elegí tu traje · Prueba de desarrollador' : modoArcadeActivo ? 'Elegí tu traje para la torre' : 'Elegí tu traje';
     panel.hidden = disponibles.length === 0;
     const trajes = [{id: null, name: 'Original'}, ...disponibles];
     document.getElementById('tituloElegirTraje').textContent = `Elegí el traje de ${personajesVersus[personajeJugadorVersus].nombre}`;
-    document.getElementById('detalleElegirTraje').textContent = pruebaAutor ? 'Modo Pruebas: probá ambos sin gastar monedas.' : 'Elegí el original o uno de tus trajes comprados.';
+    document.getElementById('detalleElegirTraje').textContent = guardandoTrajeVersus ? 'Guardando traje…' : pruebaAutor ? 'Modo Pruebas: probá ambos sin gastar monedas.' : 'Elegí el original o uno de tus trajes comprados o ganados en Torre.';
     for (const contenedor of [opciones, document.getElementById('opcionesTrajesAntesDuelo')]) contenedor.replaceChildren(...trajes.map(item => {
       const button = document.createElement('button');
       button.type = 'button';
-      button.disabled = btnConfirmarPersonajeVersus.disabled;
+      button.disabled = btnConfirmarPersonajeVersus.disabled || guardandoTrajeVersus || (!navigator.onLine && (item.tower || Boolean(globalThis.TowerRewards?.read().selectedCostumes[personajeJugadorVersus])));
+      button.dataset.costume = item.id || 'original';
       button.setAttribute('aria-pressed', String(elegido === item.id));
       const img = document.createElement('img');
-      img.src = item.id ? CosmeticStore.previewAsset(item.id) : personajesVersus[personajeJugadorVersus].base;
+      img.src = item.tower ? item.assets.base : item.id ? CosmeticStore.previewAsset(item.id) : personajesVersus[personajeJugadorVersus].base;
       img.alt = '';
       const nombre = document.createElement('span');
       nombre.textContent = item.name;
       button.append(img, nombre);
-      button.addEventListener('click', () => {
-        if (btnConfirmarPersonajeVersus.disabled) return;
-        try {
-          if (pruebaAutor && modoArcadeActivo) trajesPruebaArcade[personajeJugadorVersus] = item.id;
-          else if (pruebaAutor) trajesPruebaVersus.jugador[personajeJugadorVersus] = item.id === 'aren-union' ? 'union' : item.id ? 'nuevo' : 'original';
-          else CosmeticStore.equip(personajeJugadorVersus, item.id);
-          window.dispatchEvent(new Event('costume-equipped'));
-        } catch (error) { estadoPersonajePropioVersus.textContent = error.message; }
-      });
+      button.addEventListener('click',()=>{void elegirTrajeSeleccionVersus(item,pruebaAutor);});
       return button;
     }));
   } catch (error) {
@@ -2560,7 +2557,30 @@ function actualizarSelectorTrajeVersus() {
     estadoPersonajePropioVersus.textContent = error.message;
   }
 }
+async function elegirTrajeSeleccionVersus(item,pruebaAutor){
+  if(btnConfirmarPersonajeVersus.disabled||guardandoTrajeVersus)return;
+  const character=personajeJugadorVersus,owner=CosmeticStore.read().accountId;
+  const vigente=()=>{if(owner!==CosmeticStore.read().accountId||character!==personajeJugadorVersus)throw Error('La cuenta o el personaje cambió. Volvé a elegir el traje.');};
+  guardandoTrajeVersus=true;btnConfirmarPersonajeVersus.disabled=true;actualizarSelectorTrajeVersus();
+  try{
+    if(pruebaAutor&&modoArcadeActivo)trajesPruebaArcade[character]=item.id;
+    else if(pruebaAutor)trajesPruebaVersus.jugador[character]=item.id==='aren-union'?'union':item.id?'nuevo':'original';
+    else if(item.tower){
+      if(!navigator.onLine)throw Error('Conectate para confirmar el traje de Torre.');
+      if(CosmeticStore.read().equipmentDirty)await GameWallet.sync();vigente();
+      await TowerRewards.equip('costume',item.id,character);vigente();
+    }else{
+      if(globalThis.TowerRewards?.read().selectedCostumes[character])await TowerRewards.equip('costume',null,character);
+      vigente();CosmeticStore.equip(character,item.id);
+    }
+    window.dispatchEvent(new Event('costume-equipped'));
+  }catch(error){estadoPersonajePropioVersus.textContent=/TOWER_UNION_ACTIVE/.test(error.message)?'Elegí primero Original para salir de Aren Unión.':'No se pudo confirmar el traje. Volvé a intentarlo con conexión.';}
+  finally{guardandoTrajeVersus=false;if(owner===CosmeticStore.read().accountId&&character===personajeJugadorVersus)btnConfirmarPersonajeVersus.disabled=false;actualizarSelectorTrajeVersus();}
+}
 window.addEventListener('costume-equipped', actualizarSelectorTrajeVersus);
+window.addEventListener('tower-rewards-updated',()=>{actualizarSelectorTrajeVersus();refrescarTrajesVersus();});
+window.addEventListener('online',actualizarSelectorTrajeVersus);
+window.addEventListener('offline',actualizarSelectorTrajeVersus);
 function abrirTrajesAntesDuelo() {
   if (btnConfirmarPersonajeVersus.disabled || document.getElementById('selectorTrajesDuelo').hidden) return;
   const dialogo = document.getElementById('elegirTrajeAntesDuelo');
