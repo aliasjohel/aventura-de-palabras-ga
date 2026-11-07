@@ -28,6 +28,8 @@
 #elegirTrajeAntesDuelo::backdrop { background: #000b; }
 #elegirTrajeAntesDuelo h2 { margin: 0 0 8px; font-size: 22px; }
 #elegirTrajeAntesDuelo p { margin: 0 0 12px; font-size: 14px; }
+#estadoElegirTraje:empty { display: none; }
+#elegirTrajeAntesDuelo #estadoElegirTraje:not(:empty) { padding: 8px; border: 1px solid #d6bb7170; border-radius: 8px; color: #ffe4a5; background: #273a50; }
 #opcionesTrajesAntesDuelo button { flex: 1 1 110px; width: auto; max-width: 170px; }
 @media (orientation: landscape) and (max-height: 600px) {
     #elegirTrajeAntesDuelo { padding: 12px; }

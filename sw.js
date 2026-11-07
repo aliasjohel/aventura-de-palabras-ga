@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v400-tower-costume-selector1`;
+const CACHE_NAME = `${CACHE_PREFIX}v401-costume-choice-feedback1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1454,7 +1454,7 @@ const ASSET_REVISIONS = {
   "./js/profile-backgrounds.js": "sha256-3f923664b0f209eebc66ff1c5c6a9bbe525de61d15e8e014e8436a13a20942e9",
   "./js/profile-background-shop.js": "sha256-dcc7bf5076517997f7dcb3946a2e6468e3d10fc04c1d5925eca142ca496f13bb",
   "./js/cosmetic-shop.js": "sha256-d4c9c92a794f043121d76d47f4543165c38c65de0831e3d5c6907fe8bcf5f22a",
-  "./css/cosmetic-shop.css": "sha256-ab323ade1d3e2df9d090c53b20f777aa3f92d3a4dc374e64ca229a47779aca78",
+  "./css/cosmetic-shop.css": "sha256-bb3077414adb1d5fa37162bee87f51e060c0499831809814b73b978c97175140",
   "./assets/images/trajes/aren-bosque-anciano-v1.png": "sha256-f36298208c10160dd346fe35a070077d24977be1c0478b60c213d22a734866ea",
   "./assets/images/trajes/aren-bosque-ataque-v1.png": "sha256-db35d231a6c68f5d8ec57fbaed7992d6da31828d3ac931ee630f72cbae7f6aa7",
   "./assets/images/trajes/aren-bosque-base-v1.png": "sha256-9a7c4e8bdb1c1b4efe035e4e9d0a7d32a4d9cbbfa96f568f95d7f1e18e292d6a",
@@ -1524,8 +1524,8 @@ const ASSET_REVISIONS = {
   "./assets/images/perfil/miniaturas/marco-xp_infinito-v1.webp": "sha256-7df6d8d229b0b2e828e95ffba3c4a87dfe2841664a5c303dcd80e6ab51097f27",
   "./css/player-xp.css": "sha256-4c9fcdf5db7d3765f6697694dd4c6af32070347e0a378027b65ee9e90a1cde12",
   "./js/public-player-profile.js": "sha256-6664f31217b51181f745a789d507aa8ceda33313b290123de2c8499cb74f8a8b",
-  "./": "sha256-8e8381784c476412063535b8201daf18b60a35626f29af052d4005437ee18d19",
-  "./index.html": "sha256-8e8381784c476412063535b8201daf18b60a35626f29af052d4005437ee18d19",
+  "./": "sha256-5830361357353a7af4dde3f2149749e01ce10962aa5bbfe220633c2f6d1972ea",
+  "./index.html": "sha256-5830361357353a7af4dde3f2149749e01ce10962aa5bbfe220633c2f6d1972ea",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-5b2139cda6279101418958a0e379c1ed2c79eb21c97c1bf92435846ad6fb1522",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1626,7 +1626,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-e87e698bd43d271e8ba35712c9e705710de639ee268507a4e9bd5f22654ad029",
+  "./js/app.js": "sha256-ba42e89be9f9091b709881f804e871444e50fc64711dd033ad192fc3251cce1c",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",

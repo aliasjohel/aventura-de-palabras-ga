@@ -2536,11 +2536,11 @@ function actualizarSelectorTrajeVersus() {
     panel.hidden = disponibles.length === 0;
     const trajes = [{id: null, name: 'Original'}, ...disponibles];
     document.getElementById('tituloElegirTraje').textContent = `Elegí el traje de ${personajesVersus[personajeJugadorVersus].nombre}`;
-    document.getElementById('detalleElegirTraje').textContent = guardandoTrajeVersus ? 'Guardando traje…' : pruebaAutor ? 'Modo Pruebas: probá ambos sin gastar monedas.' : 'Elegí el original o uno de tus trajes comprados o ganados en Torre.';
+    document.getElementById('detalleElegirTraje').textContent = pruebaAutor ? 'Modo Pruebas: probá ambos sin gastar monedas.' : 'Elegí el original o uno de tus trajes comprados o ganados en Torre.';
     for (const contenedor of [opciones, document.getElementById('opcionesTrajesAntesDuelo')]) contenedor.replaceChildren(...trajes.map(item => {
       const button = document.createElement('button');
       button.type = 'button';
-      button.disabled = btnConfirmarPersonajeVersus.disabled || guardandoTrajeVersus || (!navigator.onLine && (item.tower || Boolean(globalThis.TowerRewards?.read().selectedCostumes[personajeJugadorVersus])));
+      button.disabled = btnConfirmarPersonajeVersus.disabled || guardandoTrajeVersus;
       button.dataset.costume = item.id || 'original';
       button.setAttribute('aria-pressed', String(elegido === item.id));
       const img = document.createElement('img');
@@ -2560,13 +2560,14 @@ function actualizarSelectorTrajeVersus() {
 async function elegirTrajeSeleccionVersus(item,pruebaAutor){
   if(btnConfirmarPersonajeVersus.disabled||guardandoTrajeVersus)return;
   const character=personajeJugadorVersus,owner=CosmeticStore.read().accountId;
+  const informar=texto=>{estadoPersonajePropioVersus.textContent=texto;document.getElementById('estadoElegirTraje').textContent=texto;};
   const vigente=()=>{if(owner!==CosmeticStore.read().accountId||character!==personajeJugadorVersus)throw Error('La cuenta o el personaje cambió. Volvé a elegir el traje.');};
   guardandoTrajeVersus=true;btnConfirmarPersonajeVersus.disabled=true;actualizarSelectorTrajeVersus();
+  informar('Guardando traje…');
   try{
     if(pruebaAutor&&modoArcadeActivo)trajesPruebaArcade[character]=item.id;
     else if(pruebaAutor)trajesPruebaVersus.jugador[character]=item.id==='aren-union'?'union':item.id?'nuevo':'original';
     else if(item.tower){
-      if(!navigator.onLine)throw Error('Conectate para confirmar el traje de Torre.');
       if(CosmeticStore.read().equipmentDirty)await GameWallet.sync();vigente();
       await TowerRewards.equip('costume',item.id,character);vigente();
     }else{
@@ -2574,7 +2575,8 @@ async function elegirTrajeSeleccionVersus(item,pruebaAutor){
       vigente();CosmeticStore.equip(character,item.id);
     }
     window.dispatchEvent(new Event('costume-equipped'));
-  }catch(error){estadoPersonajePropioVersus.textContent=/TOWER_UNION_ACTIVE/.test(error.message)?'Elegí primero Original para salir de Aren Unión.':'No se pudo confirmar el traje. Volvé a intentarlo con conexión.';}
+    informar('Traje seleccionado.');
+  }catch(error){informar(/TOWER_UNION_ACTIVE/.test(error.message)?'Elegí primero Original para salir de Aren Unión.':/cuenta|sesión/i.test(error.message)?'No se pudo confirmar tu cuenta. Abrí Mi perfil y volvé a intentarlo.':'No se pudo guardar el traje. Revisá tu conexión y volvé a intentarlo.');}
   finally{guardandoTrajeVersus=false;if(owner===CosmeticStore.read().accountId&&character===personajeJugadorVersus)btnConfirmarPersonajeVersus.disabled=false;actualizarSelectorTrajeVersus();}
 }
 window.addEventListener('costume-equipped', actualizarSelectorTrajeVersus);
@@ -2584,6 +2586,7 @@ window.addEventListener('offline',actualizarSelectorTrajeVersus);
 function abrirTrajesAntesDuelo() {
   if (btnConfirmarPersonajeVersus.disabled || document.getElementById('selectorTrajesDuelo').hidden) return;
   const dialogo = document.getElementById('elegirTrajeAntesDuelo');
+  if(!guardandoTrajeVersus)document.getElementById('estadoElegirTraje').textContent='';
   if (!dialogo.open) dialogo.showModal();
 }
 document.getElementById('confirmarTrajeAntesDuelo').addEventListener('click', () => document.getElementById('elegirTrajeAntesDuelo').close());
