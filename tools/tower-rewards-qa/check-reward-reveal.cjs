@@ -30,4 +30,3 @@ const server=http.createServer((req,res)=>{try{const p=new URL(req.url,'http://l
  }
  assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);fs.writeFileSync(path.join(out,process.argv.includes('--live')?'public-tests.json':'tests.json'),JSON.stringify({passed:true,rows,errors,failed,productionWrites:0},null,2));console.log(JSON.stringify({passed:true,cases:rows.length,allCharacters:true,milestoneFrames:true,lateConfirmation:true,noAutoEquip:true,noRepeatNotices:true}));
 }finally{await browser?.close();server.closeAllConnections();server.close();}})().catch(e=>{console.error(e.stack);process.exitCode=1;});
-
