@@ -29,6 +29,7 @@
     return result;
   }
   function asset(id,pose='base'){
+    if(id==='lobo-lunar'&&pose==='impacto')return 'assets/images/trajes/lobo-lunar-impacto-v2.webp';
     if(id==='aren-union'&&cinemaPoses.includes(pose)&&pose!=='final')return `assets/images/trajes/aren-union-${pose}-v1.png`;
     if(id==='aren-union'&&pose==='habilidad')return 'assets/images/trajes/aren-union-habilidad-v1.png';
     if(id==='aren-union'&&pose==='ataque')return 'assets/images/trajes/aren-union-ataque-rayo-v2.png';

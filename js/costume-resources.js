@@ -138,7 +138,7 @@ const families={
       "./assets/images/trajes/lobo-lunar-base-v1.png",
       "./assets/images/trajes/lobo-lunar-envejecido-v1.png",
       "./assets/images/trajes/lobo-lunar-humano-v1.png",
-      "./assets/images/trajes/lobo-lunar-impacto-v1.png",
+      "./assets/images/trajes/lobo-lunar-impacto-v2.webp",
       "./assets/images/trajes/lobo-lunar-mano-v1.png",
       "./assets/images/trajes/lobo-lunar-planta-v1.png",
       "./assets/images/trajes/lobo-lunar-salto-v1.png",
@@ -148,7 +148,7 @@ const families={
     "combat": [
       "./assets/images/trajes/lobo-lunar-base-v1.png",
       "./assets/images/trajes/lobo-lunar-ataque-v1.png",
-      "./assets/images/trajes/lobo-lunar-impacto-v1.png",
+      "./assets/images/trajes/lobo-lunar-impacto-v2.webp",
       "./assets/images/trajes/lobo-lunar-humano-v1.png",
       "./assets/images/trajes/lobo-lunar-transformacion-v1.png",
       "./assets/images/trajes/lobo-lunar-aullido-v1.png",
