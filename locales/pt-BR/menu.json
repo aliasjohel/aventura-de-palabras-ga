@@ -22,9 +22,8 @@
   "modesTitle": "Modos de jogo",
   "backLabel": "Voltar ao menu",
   "back": "← Voltar ao menu",
-  "singleOffline": "UM JOGADOR · OFFLINE",
   "tower": "Torre",
-  "towerDescription": "Escolha seu personagem, derrote cada rival e conquiste o topo.",
+  "towerDescription": "Escolha seu personagem e conquiste o topo. O treino funciona offline; os prêmios habilitados exigem sua conta e conexão.",
   "climbTower": "Subir a torre",
   "twoOnline": "DOIS JOGADORES · ONLINE",
   "multiplayer": "Multijogador",
@@ -40,5 +39,6 @@
   "rankingRow": "{position}. {alias}{you} · Pontos: {points} · Vitórias: {wins} · Partidas: {played}",
   "you": " (você)",
   "leader": "👑 Líder do ranking",
-  "rankingOffline": "Conecte-se para consultar sua posição e seus pontos. Enquanto isso, você pode explorar as medalhas."
+  "rankingOffline": "Conecte-se para consultar sua posição e seus pontos. Enquanto isso, você pode explorar as medalhas.",
+  "singleTower": "UM JOGADOR · TORRE ARCADE"
 }

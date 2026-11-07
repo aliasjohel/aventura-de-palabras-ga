@@ -204,6 +204,34 @@ body.menu-entrada #pantallaMenu .estado-offline-juego { animation-delay: 5550ms;
 }
 
 /* Also pause the existing book/crystal scene when the menu or document is hidden. */
+/* Move one existing image layer, keeping the castle/moon in the mobile crop. */
+@media (max-width: 700px) and (orientation: portrait) {
+    #pantallaMenu .menu-escena-animada::before {
+        inset: 0 0 0 auto;
+        width: max(100%, 100dvh);
+        background-position: right top;
+        transform: none;
+        animation: menu-mobile-pan-x 32s ease-in-out infinite alternate;
+    }
+}
+@media (orientation: landscape) and (max-height: 600px) and (pointer: coarse) {
+    #pantallaMenu .menu-escena-animada::before {
+        inset: 0 0 auto;
+        height: max(100%, 100vw);
+        background-position: center top;
+        transform: none;
+        animation: menu-mobile-pan-y 32s ease-in-out infinite alternate;
+    }
+}
+@keyframes menu-mobile-pan-x {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(min(10vw, 48px), 0, 0); }
+}
+@keyframes menu-mobile-pan-y {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(0, -8vh, 0); }
+}
+
 #pantallaMenu .menu-escena-animada::before,
 #pantallaMenu .menu-escena-animada *,
 #pantallaMenu .menu-escena-animada *::before,
@@ -219,6 +247,7 @@ body.menu-entrada #pantallaMenu .estado-offline-juego { animation-delay: 5550ms;
     #pantallaMenu .titulo.menu-logo { width: min(100%, 210px); }
 }
 @media (prefers-reduced-motion: reduce) {
+    #pantallaMenu .menu-escena-animada::before { animation: none; transform: none; }
     .menu-logo-destello { display: none; }
     #pantallaMenu .menu-contenido > button::after { display: none; animation: none; }
     #selectorModosJuego .tarjeta-modo-torre .modo-ilustracion::after,

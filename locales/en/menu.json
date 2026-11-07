@@ -22,9 +22,8 @@
   "modesTitle": "Game modes",
   "backLabel": "Back to menu",
   "back": "← Back to menu",
-  "singleOffline": "SINGLE PLAYER · OFFLINE",
   "tower": "Tower",
-  "towerDescription": "Choose your character, defeat every opponent, and claim the summit.",
+  "towerDescription": "Choose your character and claim the summit. Practice works offline; enabled rewards require your account and an internet connection.",
   "climbTower": "Climb the tower",
   "twoOnline": "TWO PLAYERS · ONLINE",
   "multiplayer": "Multiplayer",
@@ -40,5 +39,6 @@
   "rankingRow": "{position}. {alias}{you} · Points: {points} · Wins: {wins} · Matches: {played}",
   "you": " (you)",
   "leader": "👑 Leaderboard leader",
-  "rankingOffline": "Go online to check your position and points. You can explore the medals in the meantime."
+  "rankingOffline": "Go online to check your position and points. You can explore the medals in the meantime.",
+  "singleTower": "SINGLE PLAYER · ARCADE TOWER"
 }
