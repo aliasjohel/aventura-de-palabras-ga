@@ -1245,18 +1245,20 @@ function estadoCombateAutoritativo(){return modoArcadeActivo&&torreEnCurso?torre
 function detenerRelojTorre(){clearTimeout(relojTorre);relojTorre=null;}
 function mensajeTorre(clave){return globalThis.TowerOnline?.text(clave,I18n.language)||'';}
 function informarTorre(clave){
+  const normal=['ready','verifiedProgress','confirmed'].includes(clave);
   let nota=document.getElementById('estadoValidacionTorre');
   if(!nota){nota=document.createElement('p');nota.id='estadoValidacionTorre';nota.setAttribute('role','status');estadoArcade.after(nota);}
-  nota.textContent=mensajeTorre(clave);
+  nota.textContent=normal?'':mensajeTorre(clave);nota.hidden=normal;
   let combate=document.getElementById('estadoValidacionCombateTorre');
   if(!combate){combate=document.createElement('p');combate.id='estadoValidacionCombateTorre';combate.setAttribute('role','status');btnHabilidadVersus.after(combate);}
-  combate.textContent=mensajeTorre(['waiting','pending','confirmed'].includes(clave)?clave:torreEnCurso?'battleReady':'battlePractice');combate.hidden=!modoArcadeActivo;
+  combate.textContent=normal?'':mensajeTorre(['waiting','pending','accountWaiting'].includes(clave)?clave:torreEnCurso?'battleReady':'battlePractice');combate.hidden=!modoArcadeActivo||normal;
   let retry=document.getElementById('btnReconectarTorre');
   if(!retry){
     retry=document.createElement('button');retry.id='btnReconectarTorre';retry.type='button';retry.className='btn-secundario';btnHabilidadVersus.after(retry);
     retry.addEventListener('click',async()=>{retry.disabled=true;try{const result=await torreAutoritativa?.recover();if(result){informarTorre(result.pending?'pending':result.attempt?.detail.finished?'confirmed':'ready');continuarRelojTorre();}}finally{retry.disabled=false;}});
   }
   retry.textContent=mensajeTorre('retry');retry.hidden=clave!=='waiting'||!torreEnCurso;
+  requestAnimationFrame(()=>{if(pantallaArcade.classList.contains('activa'))pisosArcade.querySelector('.actual')?.scrollIntoView({block:'nearest',inline:'nearest'});});
 }
 function esperarConexionTorre(){detenerRelojTorre();bloquearTecladoDemoVersus();btnHabilidadVersus.disabled=true;informarTorre('waiting');if(modoArcadeActivo&&torreEnCurso)mostrarAvisoAvanceVersus(mensajeTorre('waiting'),'error');}
 function continuarRelojTorre(){
@@ -2820,6 +2822,7 @@ function renderizarTorreArcade() {
   GameUI.text(dificultadArcade,GameUI.key("adventure.controls.tiers."+(pisoActualArcade===total-1?"boss":pisoActualArcade>=5?"elite":pisoActualArcade>=2?"warrior":"apprentice")));
   GameUI.text(estadoArcade,GameUI.key(torreCompletada?"adventure.controls.towerDone":"adventure.controls.progress",{done:pisosDesbloqueadosArcade,total}));
   GameUI.text(btnCombatirArcade,GameUI.key(pisoActualArcade<pisosDesbloqueadosArcade?"adventure.controls.fightAgain":"adventure.controls.fight"));
+  requestAnimationFrame(()=>{if(pantallaArcade.classList.contains('activa'))pisosArcade.querySelector('.actual')?.scrollIntoView({block:'nearest',inline:'nearest'});});
 }
 
 function abrirTorreArcade() {
@@ -8132,7 +8135,7 @@ function agregarPalabraRecuperacionVersus(tipoJugador) {
 }
 
 function prepararDueloVersus({ comenzarRonda = true } = {}) {
-  const notaTorre=document.getElementById('estadoValidacionCombateTorre');if(notaTorre)notaTorre.hidden=!modoArcadeActivo;
+  const notaTorre=document.getElementById('estadoValidacionCombateTorre');if(notaTorre)notaTorre.hidden=!modoArcadeActivo||!notaTorre.textContent;
   const modoPalabras = tutorialCombateVersus.activo ? "tutorial" : dueloAventuraActivo ? "adventure-duel" : modoArcadeActivo ? "tower" : "versus";
   if (contextoPalabrasCombate?.mode !== modoPalabras) iniciarContextoPalabras(modoPalabras);
   cancelarCinematicaFinalVersus();

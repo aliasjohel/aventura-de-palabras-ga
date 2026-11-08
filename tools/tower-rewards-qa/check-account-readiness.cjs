@@ -24,9 +24,32 @@ const server=http.createServer((req,res)=>{try{const name=new URL(req.url,'http:
  assert.equal(await page.evaluate(()=>pantallaArcade.classList.contains('activa')),true);
  assert.equal(await page.evaluate(()=>adaptadorSalasVersus===adaptadorLocalSalasVersus),true);
  assert.equal(await page.evaluate(()=>document.querySelector('dialog[open]')),null);
+ for(const [width,height]of [[844,390],[667,375]]){
+  await page.setViewportSize({width,height});
+  for(const status of ['verifiedProgress','practice']){
+   await page.evaluate(async status=>{informarTorre(status);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));},status);
+   const layout=await page.evaluate(()=>{
+    const header=document.querySelector('.arcade-cabecera').getBoundingClientRect(),list=pisosArcade.getBoundingClientRect(),current=pisosArcade.querySelector('.actual').getBoundingClientRect(),button=btnCombatirArcade.getBoundingClientRect();
+    return {headerBottom:header.bottom,listTop:list.top,listBottom:list.bottom,currentBottom:current.bottom,buttonBottom:button.bottom,buttonRight:button.right,height:innerHeight,width:innerWidth};
+   });
+   assert(layout.headerBottom<=layout.listTop+1,JSON.stringify(layout));
+   assert(layout.currentBottom<=layout.listBottom+1,JSON.stringify(layout));
+   assert(layout.buttonBottom<=layout.height&&layout.buttonRight<=layout.width,JSON.stringify(layout));
+   assert.equal(await page.locator('#estadoValidacionTorre').isVisible(),status==='practice');
+  }
+ }
+ await page.setViewportSize({width:844,height:390});
+ await page.evaluate(()=>informarTorre('verifiedProgress'));
  await page.evaluate(async()=>{prepararDueloVersus=()=>accountTrace.push('fight');renderizarDueloAventuraAutoritativo=()=>{};iniciarEntradaDueloVersus=()=>{};await iniciarCombateArcade();});
  assert.equal(await page.evaluate(()=>torreEnCurso),true);
- assert.match(await page.locator('#estadoValidacionCombateTorre').innerText(),/Combate por premios/);
+ assert.equal(await page.locator('#estadoValidacionCombateTorre').isHidden(),true);
+ assert.equal(await page.locator('#estadoValidacionTorre').isHidden(),true);
+ await page.evaluate(()=>informarTorre('waiting'));
+ assert.equal(await page.locator('#estadoValidacionCombateTorre').isVisible(),true);
+ assert.equal(await page.locator('#btnReconectarTorre').isVisible(),true);
+ await page.evaluate(()=>informarTorre('ready'));
+ assert.equal(await page.locator('#estadoValidacionCombateTorre').isHidden(),true);
+ assert.equal(await page.locator('#btnReconectarTorre').isHidden(),true);
  assert.deepEqual(await page.evaluate(()=>accountTrace),['connect','refresh','connect','prepare','fight']);
  await page.evaluate(async()=>{mostrarPantalla(pantallaArcade);accountFailed=true;await iniciarCombateArcade();});
  assert.equal(await page.evaluate(()=>pantallaArcade.classList.contains('activa')),true);

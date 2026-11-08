@@ -3420,8 +3420,10 @@ button:disabled {
 .arcade-cabecera p { margin: 0; color: #e3b44f; font-size: clamp(.62rem, 1.1vw, .78rem); font-weight: 900; letter-spacing: .22em; }
 .arcade-cabecera h2 { margin: 4px 0 2px; font-size: clamp(1.35rem, 3vw, 2.2rem); }
 .arcade-cabecera span { color: rgba(222, 244, 248, .72); font-size: clamp(.68rem, 1.15vw, .85rem); }
+.arcade-cabecera #estadoValidacionTorre { margin:6px auto 0; max-width:72ch; font-size:.7rem; line-height:1.35; font-weight:500; letter-spacing:normal; }
 
 .arcade-contenido {
+    overflow: hidden;
     display: grid;
     grid-template-columns: minmax(420px, 1.25fr) minmax(260px, .75fr);
     gap: clamp(18px, 4vw, 48px);
@@ -3432,11 +3434,15 @@ button:disabled {
 .pisos-arcade {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    justify-content: safe center;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
     gap: 5px;
     min-height: 0;
     margin: 0;
-    padding: 0;
+    padding: 3px 18px 3px 4px;
     list-style: none;
 }
 
@@ -3470,6 +3476,9 @@ button:disabled {
 .pisos-arcade li small { color: inherit; font-size: .55rem; font-weight: 900; letter-spacing: .1em; }
 
 .rival-actual-arcade {
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
     align-self: center;
     display: grid;
     justify-items: center;
@@ -3495,12 +3504,21 @@ button:disabled {
 
 @media (orientation: landscape) and (max-height: 600px) {
     .arcade-marco { width: 100%; height: 100dvh; border-radius: 0; }
-    .arcade-contenido { padding-top: 5px; }
+    .arcade-contenido { grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr); gap:16px; padding:5px 12px 0; }
     .pisos-arcade { gap: 2px; }
     .pisos-arcade li { min-height: 38px; grid-template-columns: 28px 38px minmax(0, 1fr) auto; }
     .pisos-arcade li img { width: 38px; height: 33px; }
     .rival-actual-arcade { padding: 10px; }
     .retrato-rival-arcade { width: min(155px, 28vh); }
+}
+
+@media (orientation: landscape) and (max-height: 450px) {
+    .rival-actual-arcade { padding:8px; }
+    .retrato-rival-arcade { width:min(100px,22vh); margin:3px 0; }
+    .rival-actual-arcade h3 { font-size:1.1rem; }
+    .rival-actual-arcade > p { margin:2px 0 5px; }
+    .dificultad-arcade { margin-bottom:6px; }
+    #btnCombatirArcade { padding:8px 16px; font-size:.9rem; }
 }
 
 @media (orientation: portrait) {
