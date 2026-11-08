@@ -25,6 +25,12 @@ function harness(language='es'){
  const accepted=(id=roomId)=>({room_id:id,challenger_id:'alice',challenged_id:'bob',word_language:language,room_status:rooms.get(id)?.status});
  return {adapter,state,rooms,players,accepted,events,docEvents,intervals,timeouts,storage,channels,calls,context};
 }
+test('match likes RPC reads by default and sends only when explicitly requested',async()=>{
+ const h=harness();await h.adapter.meGustaPartida(roomId);await h.adapter.meGustaPartida(roomId,true);
+ assert.deepEqual(h.calls.filter(c=>c.name==='versus_match_like').map(c=>JSON.parse(JSON.stringify(c.args))),[
+  {p_match:roomId,p_send:false},{p_match:roomId,p_send:true}
+ ]);
+});
 for(const language of ['es','en','pt-BR'])test('missed acceptance recovers on startup with '+language+' room and another UI language',async()=>{
  const h=harness(language);h.state.social.accepted_invites=[h.accepted()];await h.adapter.inicializar();
  const received=[];h.adapter.suscribirInvitacionesAceptadas(room=>received.push(room));
@@ -33,7 +39,7 @@ for(const language of ['es','en','pt-BR'])test('missed acceptance recovers on st
 });
 test('failed room recovery retries and does not poison the last recovered room',async()=>{
  const h=harness();await h.adapter.inicializar();h.state.social.accepted_invites=[h.accepted()];h.state.failRoom=true;
- await assert.rejects(h.adapter.cargarEstadoSocial(),/offline/);h.state.failRoom=false;
+ await assert.rejects(h.adapter.cargarEstadoSocial(),/No pudimos leer la sala/);h.state.failRoom=false;
  const received=[];h.adapter.suscribirInvitacionesAceptadas(r=>received.push(r));await h.adapter.cargarEstadoSocial();assert.equal(received.length,1);
 });
 test('resume, online, polling and channel resubscribe recover without a realtime acceptance event',async()=>{

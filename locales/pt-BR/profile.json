@@ -148,5 +148,9 @@
     "onlineHelp": "Amigos e duelos online precisam de conexão.",
     "retryHelp": "Não foi possível atualizar Amigos. Verifique a conexão e toque em Tentar conectar novamente.",
     "inviteLanguage": "Palavras em {language} · Aceite para abrir a sala."
-  }
+  },
+  "sendLike": "👍 Curtir",
+  "likeSent": "👍 Curtida enviada",
+  "likeFailed": "Não foi possível confirmar a curtida. Tente novamente.",
+  "likesReceived": "👍 Curtidas recebidas: {count}"
 }

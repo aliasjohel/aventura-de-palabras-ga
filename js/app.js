@@ -6638,7 +6638,7 @@ function trajePersonajeVersus(elemento, personaje) {
   if(personaje!==activo)return null;
   // Keep the verified pair's appearance stable until the next preparation.
   const listos=trajesListosCombateOnline;
-  if(!modoArcadeActivo&&adaptadorSalasVersus.proveedor==='supabase'
+  if(listos&&!modoArcadeActivo&&adaptadorSalasVersus.proveedor==='supabase'
     &&listos?.roomId===adaptadorSalasVersus.obtenerSala()?.id
     &&listos.usuarioId===adaptadorSalasVersus.obtenerUsuarioId?.()
     &&adaptadorSalasVersus.obtenerSala()?.jugadores.some(p=>p.id===listos.rivalId&&p.id!==listos.usuarioId)){
@@ -8260,6 +8260,7 @@ async function iniciarCombateArcade() {
 btnCombatirArcade.addEventListener("click", iniciarCombateArcade);
 
 function detenerRondaVersus({ conservarTemaCalamo = false } = {}) {
+  globalThis.MatchLikes?.clear();
   detenerRelojTorre();
   const retryTorre=document.getElementById('btnReconectarTorre');if(retryTorre)retryTorre.hidden=true;
   demoVersus.recuperacionHieloTorre.reset();
@@ -9019,6 +9020,7 @@ async function mostrarResultadoRango(matchId) {
   } catch (_) { if (partidaOnlineVersus?.matchId === matchId) CombatUI.text(nodo, 'Podés consultar tus puntos en tu perfil cuando vuelva la conexión.'); }
 }
 function mostrarResultadoPartidaVersus(ganador, detalle) {
+  globalThis.MatchLikes?.clear();
   globalThis.MultiplayerXPFeedback?.clear();
   document.getElementById('resultadoMonedasVersus').hidden = true;
   ++animacionResultadoRango;
@@ -9113,6 +9115,10 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
     if (partidaOnlineVersus?.matchId) {
       void mostrarResultadoRango(partidaOnlineVersus.matchId);
       void mostrarPremioVersus(partidaOnlineVersus.matchId);
+      const matchId = partidaOnlineVersus.matchId, adapter = adaptadorSalasVersus;
+      void globalThis.MatchLikes?.show(matchId, adapter, () =>
+        adaptadorSalasVersus === adapter && partidaOnlineVersus?.matchId === matchId &&
+        !resultadoRondaVersus.classList.contains('oculto'));
     }
   }
 }

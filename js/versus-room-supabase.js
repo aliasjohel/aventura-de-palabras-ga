@@ -891,6 +891,12 @@
       return cierreEnCurso;
     }
 
+    async function meGustaPartida(matchId, send = false) {
+      const { data, error } = await cliente.rpc('versus_match_like', {p_match: matchId, p_send: send});
+      if (error) throw error;
+      return data;
+    }
+
     const adaptador = Object.freeze({
       proveedor: "supabase",
       destruir,
@@ -901,6 +907,7 @@
       obtenerRango,
       obtenerPerfilJugador,
       obtenerPerfilPublico,
+      meGustaPartida,
       guardarApariencia,
       unirseSala,
       actualizarPersonaje,

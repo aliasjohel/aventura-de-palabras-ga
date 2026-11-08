@@ -148,5 +148,9 @@
     "onlineHelp": "Friends and online duels require a connection.",
     "retryHelp": "Could not refresh Friends. Check your connection and tap Retry connection.",
     "inviteLanguage": "Words in {language} · Accept to open the room."
-  }
+  },
+  "sendLike": "👍 Like",
+  "likeSent": "👍 Like sent",
+  "likeFailed": "Could not confirm your like. You can retry.",
+  "likesReceived": "👍 Likes received: {count}"
 }

@@ -8095,6 +8095,11 @@ button:disabled {
     box-shadow: 0 3px 0 #080d12;
 }
 
+#btnMeGustaDuelo { min-height: 44px; }
+#btnMeGustaDuelo[aria-pressed="true"] { color: #f8d98b; border-color: #b88d46; }
+#estadoMeGustaDuelo { margin: 4px 0; font-size: .8rem; }
+#estadoMeGustaDuelo:empty { display: none; }
+
 @media (max-height: 500px) and (orientation: landscape) {
     .resultado-ronda-versus { padding: 8px; }
     .tarjeta-resultado-versus { width: min(100%, 640px); padding: 10px 16px; }

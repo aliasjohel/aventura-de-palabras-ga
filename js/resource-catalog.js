@@ -458,6 +458,7 @@ globalThis.GameResourceCatalog = Object.freeze([
   "./assets/images/perfil/miniaturas/marco-xp_infinito-v1.webp",
   "./css/player-xp.css",
   "./js/public-player-profile.js",
+  "./js/match-likes.js",
   "./",
   "./index.html",
   "./manifest.json",

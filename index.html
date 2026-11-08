@@ -1358,6 +1358,10 @@
                         <section id="resultadoMonedasVersus" role="status" hidden></section>
                         <button id="btnRevanchaVersus" class="oculto" type="button">Jugar revancha</button>
                         <button id="verPerfilRival" class="secundario" type="button" hidden>Ver perfil del rival</button>
+                        <div id="meGustaDuelo" hidden>
+                            <button id="btnMeGustaDuelo" class="secundario" type="button" aria-pressed="false" data-i18n="profile.sendLike">👍 Me gusta</button>
+                            <p id="estadoMeGustaDuelo" role="status"></p>
+                        </div>
                         <button id="btnMenuResultadoVersus" class="secundario" type="button" data-i18n="adventure.combat.backMenu">Volver al menú</button>
                     </div>
                 </div>
@@ -1447,7 +1451,7 @@
 
     <dialog id="rankingMenu" class="menu-dialogo ranking-dialogo" aria-labelledby="tituloRankingMenu">
         <div class="ranking-fijo"><header class="menu-dialogo-cabecera"><div><small data-i18n="menu.ranked">CLASIFICATORIO</small><h2 id="tituloRankingMenu" data-i18n="menu.leaderboardTitle">Ranking de aventureros</h2></div><button id="cerrarRankingMenu" type="button" aria-label="Cerrar ranking" data-i18n-aria-label="menu.closeLeaderboard">×</button></header>
-        <section class="ranking-resumen" aria-labelledby="tituloMiRanking"><h3 id="tituloMiRanking" data-i18n="menu.yourPlace">Tu lugar en la aventura</h3><div id="miRanking" aria-live="polite"></div></section></div>
+        <section class="ranking-resumen" aria-labelledby="tituloMiRanking"><h3 id="tituloMiRanking" data-i18n="menu.yourPlace">Tu puesto</h3><div id="miRanking" aria-live="polite"></div></section></div>
         <details><summary data-i18n="menu.medals">Conocé las medallas</summary><p class="ranking-reglas" data-i18n="menu.rankingRules">Victoria +3 · Empate +1 · Derrota −1. En Novato no perdés puntos. Clásico no modifica tu rango.</p><div id="medallasRanking" class="rangos-catalogo"></div></details>
         <div class="ranking-cabecera-lista"><h3 data-i18n="menu.overallRanking">Clasificación general</h3><button id="btnActualizarRanking" type="button" data-i18n="menu.refresh">Actualizar</button></div>
         <p class="ranking-limite" data-i18n="menu.rankingLimit">Hasta 50 jugadores. Tu puesto se muestra siempre arriba.</p><div id="listaRanking" role="list" aria-live="polite"></div>
@@ -1577,6 +1581,7 @@
             </dl>
             <div id="rangoPerfilPropio"></div>
             <p id="perfilRanking" class="perfil-ranking"></p>
+            <p id="perfilMeGusta" class="perfil-ranking"></p>
             <button id="verHistorialRivales" class="secundario" type="button" data-i18n="profile.matchesRivals">Ver mis partidas y rivales</button>
             <h4 data-i18n="profile.favorites">Personajes favoritos</h4><div id="perfilFavoritos" class="perfil-favoritos"></div>
             <p class="avatar-note" data-i18n="profile.favoritesHelp">Tus favoritos son los personajes que más usás en partidas multijugador terminadas.</p>
@@ -1594,6 +1599,7 @@
       <p id="estadoPerfilPublico" role="status" aria-live="polite"></p>
       <div id="contenidoPerfilPublico" hidden>
         <div id="rangoPerfilPublico"></div>
+        <p id="meGustaPerfilPublico" class="perfil-ranking"></p>
         <div class="perfil-publico-identidad"><span id="avatarPerfilPublico"></span><div><p id="rankingPerfilPublico" class="perfil-ranking"></p><p id="aparienciaPerfilPublico"></p></div></div>
         <dl id="estadisticasPerfilPublico" class="perfil-estadisticas"></dl>
         <h3 data-i18n="profile.trophies">Trofeos</h3><div id="trofeosPerfilPublico" class="perfil-publico-trofeos"></div>
@@ -1674,6 +1680,7 @@
     <script src="js/character-shop.js?v=20261022-v387-1"></script>
     <script src="js/profile-background-shop.js?v=20261021-v386-1"></script>
     <script src="js/public-player-profile.js?v=20261030-xplevels1"></script>
+    <script src="js/match-likes.js?v=20261108-likes1"></script>
     <script src="js/pwa.js?v=20261006-i18n-2b-1"></script>
     <script src="js/aren-union-duel.js?v=20261024-v387-security3"></script>
 </body>

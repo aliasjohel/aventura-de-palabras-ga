@@ -269,6 +269,7 @@
     GameUI.text(el("perfilId"), GameUI.key('profile.connecting'));
     GameUI.text(el("perfilEstado"), GameUI.key('profile.loadingHistory'));
     el("perfilRanking").textContent = "";
+    el('perfilMeGusta').textContent = '';
     el("rangoPerfilPropio").replaceChildren();
     el("perfilFavoritos").replaceChildren();
     el("reintentarPerfil").hidden = true;
@@ -287,6 +288,7 @@
       U.text(el("perfilEstado"), K(profile.guest?"profile.guest":"profile.linked"));
       GameUI.text(el("perfilRanking"), GameUI.key('profile.ranking', {points:profile.points||0,played:profile.ranked_played||0}));
       el("rangoPerfilPropio").replaceChildren(U.rankBadge(profile.points, true));
+      U.text(el('perfilMeGusta'), K('profile.likesReceived', {count:profile.likes || 0}));
       for (const favorite of profile.favorites || []) {
         const card = document.createElement("div");
         const name = document.createElement("strong");
