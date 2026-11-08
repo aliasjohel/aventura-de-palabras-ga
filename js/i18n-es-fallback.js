@@ -408,6 +408,8 @@ globalThis.I18nSpanishUI=Object.freeze({
   "shop.skins.aren-union.name": "Guardián de los Cinco Cristales",
   "shop.skins.aren-union.description": "Aren Unión. Acceso de administrador para probar duelos online.",
   "shop.rewardFramesHelp": "Los marcos se consiguen completando mundos de Aventura y subiendo de rango. Elegilos desde Mi perfil.",
+  "shop.characterRequired": "Primero conseguí a {hero} para comprar este traje.",
+  "shop.needCharacter": "Necesitás a {hero}",
   "characters.avatars.explorador": "Explorador",
   "characters.avatars.mago": "Mago",
   "characters.avatars.guardian-alba": "Guardián del Alba",

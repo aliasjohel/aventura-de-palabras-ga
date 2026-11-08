@@ -139,5 +139,7 @@
       "description": "Aren Unión. Acesso de administrador para testar duelos online."
     }
   },
-  "rewardFramesHelp": "Ganhe molduras ao concluir mundos da Aventura e subir de rank. Escolha em Meu perfil."
+  "rewardFramesHelp": "Ganhe molduras ao concluir mundos da Aventura e subir de rank. Escolha em Meu perfil.",
+  "characterRequired": "Desbloqueie {hero} antes de comprar este traje.",
+  "needCharacter": "Requer {hero}"
 }

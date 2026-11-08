@@ -24,6 +24,7 @@
   const close=document.createElement('button');close.type='button';close.className='cerrar-vista-traje';close.textContent='×';
   const closeLabels={es:'Cerrar vista previa',en:'Close preview','pt-BR':'Fechar prévia'};
   const price=document.createElement('p');price.className='precio-con-moneda';el('comprarTraje').before(price);
+  const requirement=document.createElement('p');requirement.id='tiendaTrajeRequisito';requirement.setAttribute('role','status');price.after(requirement);
   const previewStatus=document.createElement('p');previewStatus.setAttribute('role','status');previewStatus.setAttribute('aria-live','polite');
   preview.append(close,document.querySelector('.tienda-traje-vista'),previewStatus);document.body.append(preview);
   close.addEventListener('click',()=>preview.close());
@@ -48,9 +49,10 @@
       U.attribute(el('tiendaTrajeImagen'),'alt',K('shop.previewAlt',{hero:item.hero,outfit:outfit(item),pose:poseName(selectedPose)}));
       el('tiendaTrajeImagen').classList.toggle('retrato-zafir', item.character === 'mago' && selectedPose==='base');
       price.hidden=Boolean(item.adminOnly);U.text(price,K('shop.price',{coins:item.price}));
+      requirement.hidden=owned||item.adminOnly||store.canPurchase(item.id);U.text(requirement,requirement.hidden?'':K('shop.characterRequired',{hero:item.hero}));
       const testing=globalThis.AventuraShop?.testing();
       const buy=el('comprarTraje');buy.classList.toggle('precio-con-moneda',!item.adminOnly&&store.canPurchase(item.id)&&!testing);buy.hidden=owned;buy.disabled=busy||testing||!store.canPurchase(item.id)||state.coins<item.price;
-      U.text(buy,item.adminOnly?K('shop.adminAccess'):!store.canPurchase(item.id)?K('shop.unlockAzrak'):testing?K('shop.leaveTest'):state.coins<item.price?K('shop.missingCoins',{coins:item.price-state.coins}):K('shop.buyPrice',{coins:item.price}));
+      U.text(buy,item.adminOnly?K('shop.adminAccess'):!store.canPurchase(item.id)?K('shop.needCharacter',{hero:item.hero}):testing?K('shop.leaveTest'):state.coins<item.price?K('shop.missingCoins',{coins:item.price-state.coins}):K('shop.buyPrice',{coins:item.price}));
       const equip=el('equiparTraje');equip.hidden=!owned;equip.disabled=busy||equipped;U.text(equip,K(equipped?'shop.equippedOutfit':'shop.equip'));
       el('restaurarTraje').hidden=!state.equipped[item.character];el('restaurarTraje').disabled=busy;
       for(const button of el('tiendaTrajesCatalogo').children){const data=store.find(button.dataset.skin);button.querySelector('small').classList.toggle('precio-con-moneda',!state.owned.includes(data.id));button.setAttribute('aria-pressed',String(data.id===selected));U.text(button.querySelector('small'),state.equipped[data.character]===data.id?K('shop.equipped'):state.owned.includes(data.id)?K('shop.owned'):K('shop.price',{coins:data.price}));}
@@ -83,6 +85,7 @@
     }
   });
   window.addEventListener('wallet-updated',()=>{globalThis.AventuraShop?.sync();window.dispatchEvent(new Event('costume-equipped'));render();});
+  window.addEventListener('characters-updated',render);
   window.addEventListener('wallet-sync-pending',()=>{if(el('tiendaMenu').open)announce(K('shop.syncPending'));});
   window.addEventListener('storage',event=>{if(event.key===store.key){globalThis.AventuraShop?.sync();window.dispatchEvent(new Event('costume-equipped'));if(el('tiendaMenu').open)render();}});
   window.dispatchEvent(new Event('costume-equipped'));

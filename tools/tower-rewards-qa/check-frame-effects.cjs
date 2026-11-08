@@ -23,6 +23,12 @@ const server=http.createServer((req,res)=>{try{const name=new URL(req.url,'http:
  assert.equal(await page.locator('#avatarPreview .prestige-frame').count(),9);
  assert.equal(await page.locator('.frame-clasico .frame-prestige-sheen').count(),0);
  assert.equal(await page.locator('.frame-leyenda .frame-prestige-spark').count(),6);
+ assert.equal(await page.locator('.frame-leyenda .frame-prestige-particle').count(),9);
+ assert.equal(await page.locator('.frame-clasico .frame-prestige-particle').count(),0);
+ const particle=page.locator('.frame-leyenda .frame-prestige-particle').first();
+ assert.equal(await particle.evaluate(e=>getComputedStyle(e).animationName),'framePrestigeDrift');
+ const drift=await particle.evaluate(e=>{const a=e.getAnimations()[0];a.pause();a.currentTime=600;const before=new DOMMatrix(getComputedStyle(e).transform);a.currentTime=2600;const after=new DOMMatrix(getComputedStyle(e).transform);return{dx:after.m41-before.m41,dy:after.m42-before.m42};});assert(Math.abs(drift.dx)>5&&drift.dy<-5,JSON.stringify(drift));
+
  assert.match(await page.locator('.frame-leyenda .frame-prestige-sheen').evaluate(e=>getComputedStyle(e).maskImage),/marco-leyenda/);
  assert.equal(await page.locator('.frame-tower_leyenda .frame-prestige-sheen').evaluate(e=>getComputedStyle(e).animationName),'framePrestigeSheen');
  await page.evaluate(()=>{for(const a of document.getAnimations()){a.pause();a.currentTime=a.animationName==='framePrestigeSheen'?2700:1900;}});
@@ -30,6 +36,7 @@ const server=http.createServer((req,res)=>{try{const name=new URL(req.url,'http:
  await page.emulateMedia({reducedMotion:'reduce'});
  assert.equal(await page.locator('.frame-leyenda .frame-prestige-sheen').evaluate(e=>getComputedStyle(e).animationName),'none');
  assert.equal(await page.locator('.frame-leyenda .frame-prestige-spark').first().evaluate(e=>getComputedStyle(e).display),'none');
+ assert.equal(await page.locator('.frame-leyenda .frame-prestige-particle').first().evaluate(e=>getComputedStyle(e).display),'none');
  await page.setViewportSize({width:390,height:844});await page.evaluate(()=>{document.getElementById('avatarPreview').style.gridTemplateColumns='repeat(2,1fr)';document.getElementById('editorAvatar').style.maxHeight='calc(100dvh - 24px)';});await page.screenshot({path:path.join(root,'.local-developer/frame-effects/mobile.png')});
  assert.deepEqual(errors,[]);console.log('PASS nine prestige frames, base frame unchanged, artwork mask, tier spark count, and reduced motion');
 

@@ -127,5 +127,7 @@
       "description": "Aren Unión. Acceso de administrador para probar duelos online."
     }
   },
-  "rewardFramesHelp": "Los marcos se consiguen completando mundos de Aventura y subiendo de rango. Elegilos desde Mi perfil."
+  "rewardFramesHelp": "Los marcos se consiguen completando mundos de Aventura y subiendo de rango. Elegilos desde Mi perfil.",
+  "characterRequired": "Primero conseguí a {hero} para comprar este traje.",
+  "needCharacter": "Necesitás a {hero}"
 }

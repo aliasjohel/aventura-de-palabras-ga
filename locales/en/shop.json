@@ -139,5 +139,7 @@
       "description": "Aren Unión. Administrator access for testing online duels."
     }
   },
-  "rewardFramesHelp": "Earn frames by completing Adventure worlds and climbing the ranks. Choose them in My Profile."
+  "rewardFramesHelp": "Earn frames by completing Adventure worlds and climbing the ranks. Choose them in My Profile.",
+  "characterRequired": "Unlock {hero} before buying this outfit.",
+  "needCharacter": "Requires {hero}"
 }

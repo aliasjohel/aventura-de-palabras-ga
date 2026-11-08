@@ -184,7 +184,14 @@
       const spark=document.createElement('span');spark.className='frame-prestige-spark';spark.setAttribute('aria-hidden','true');
       spark.style.setProperty('--spark-x',points[i][0]+'%');spark.style.setProperty('--spark-y',points[i][1]+'%');spark.style.setProperty('--spark-delay',(-i*.9)+'s');badge.append(spark);
     }
-    art.addEventListener('error',()=>{sheen.remove();badge.querySelectorAll('.frame-prestige-spark').forEach(s=>s.remove());});
+    const emitters=[[10,25,-22,-28],[90,28,26,-32],[7,62,-25,-18],[93,65,28,-22],[28,8,-12,-35],[72,7,15,-38],[22,91,-20,-24],[78,93,22,-30],[48,3,-6,-42]];
+    for(let i=0;i<tier*2+3;i++){
+      const particle=document.createElement('span');particle.className='frame-prestige-particle';particle.setAttribute('aria-hidden','true');
+      const [x,y,dx,dy]=emitters[i];
+      for(const [name,value]of Object.entries({'--particle-x':x+'%','--particle-y':y+'%','--particle-dx':dx+'px','--particle-dy':dy+'px','--particle-delay':(-i*.63)+'s','--particle-duration':(3.2+i%3*.55)+'s'}))particle.style.setProperty(name,value);
+      badge.append(particle);
+    }
+    art.addEventListener('error',()=>{sheen.remove();badge.querySelectorAll('.frame-prestige-spark,.frame-prestige-particle').forEach(s=>s.remove());});
   }
   function portrait(avatar, frame, miniatura = false) {
     const badge = document.createElement("span");
