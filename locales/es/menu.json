@@ -43,5 +43,9 @@
   "singleTower": "UN JUGADOR · TORRE ARCADE",
   "pointsShort": "pts",
   "rankingLimit": "Hasta 50 jugadores. Tu puesto se muestra siempre arriba.",
-  "rankingOpenRow": "Puesto {position}, {alias}, {rank}, {points} puntos. Ver perfil."
+  "rankingOpenRow": "Puesto {position}, {alias}, {rank}, {points} puntos. Ver perfil.",
+  "walletLabel": "Monedas",
+  "walletOpen": "Saldo confirmado: {coins} monedas. Abrir tienda.",
+  "walletUnavailable": "Saldo pendiente de confirmación. Abrir tienda.",
+  "levelProfile": "Nivel {level}. Abrir mi perfil."
 }

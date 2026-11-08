@@ -43,5 +43,9 @@
   "singleTower": "SINGLE PLAYER · ARCADE TOWER",
   "pointsShort": "pts",
   "rankingLimit": "Up to 50 players. Your position is always shown above.",
-  "rankingOpenRow": "Position {position}, {alias}, {rank}, {points} points. View profile."
+  "rankingOpenRow": "Position {position}, {alias}, {rank}, {points} points. View profile.",
+  "walletLabel": "Coins",
+  "walletOpen": "Confirmed balance: {coins} coins. Open shop.",
+  "walletUnavailable": "Balance awaiting confirmation. Open shop.",
+  "levelProfile": "Level {level}. Open my profile."
 }
