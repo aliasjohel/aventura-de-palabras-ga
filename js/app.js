@@ -5717,8 +5717,26 @@ function mostrarProgresoDueloAventura(estado) {
   CombatUI.text(tituloVersus,`J1 ${estado.player.completed}/${maximoPalabrasVersus} · J2 ${estado.npc.completed}/${maximoPalabrasVersus}`);
 }
 
+function letrasCalaveraDueloAutoritativo(estado) {
+  const events=estado.events||[];
+  const wordBoundary=Math.max(0,...events.filter(e=>e.type==='word'&&e.actor==='player').map(e=>e.seq));
+  const burned=[];
+  for(let i=1;i<events.length;i++){
+    const impact=events[i],letter=events[i-1];
+    // The forced-letter impact follows the actual player letter event. NPC
+    // letters are private, and must never be guessed from the ability animation.
+    if(impact.type==='impact'&&impact.actor==='npc'&&impact.target==='player'&&impact.effect==='forced_letter'
+      &&letter.type==='letter'&&letter.actor==='player'&&letter.correct===false
+      &&letter.seq>wordBoundary&&estado.player.letters.includes(letter.letter))
+      burned.push({letter:letter.letter,seq:impact.seq});
+  }
+  return burned;
+}
+
 function renderizarDueloAventuraAutoritativo(estado) {
   if ((!dueloAventuraActivo&&!(modoArcadeActivo&&torreEnCurso)) || !estado?.player) return;
+  const previousEvent=ultimoEventoDueloAventura;
+  if(demoVersus.indiceJugador!==estado.player.index)limpiarQuemaduraTecladoVersus();
   for (const [actor, sufijo] of [['player','Jugador'],['npc','Rival']]) {
     const jugador = estado[actor];
     demoVersus['vidas'+sufijo] = jugador.lives;
@@ -5764,6 +5782,9 @@ function renderizarDueloAventuraAutoritativo(estado) {
     else if (estado.player.effect === 'time_steal') mostrarRelojKairosVersus(estado.player.effectRemaining);
     else aplicarEfectoVisualHabilidadVersus(estado.player.effect,estado.player.effectRemaining);
   }
+  const burned=letrasCalaveraDueloAutoritativo(estado);
+  tecladoVersus.querySelectorAll('button').forEach(button=>{if(burned.some(e=>e.letter===button.textContent))button.classList.add('tecla-carbonizada');});
+  for(const event of burned)if(event.seq>previousEvent)animarTeclaCalaveraIgneaVersus(event.letter,true,false);
   sincronizarTecladoDueloAventura();
   if (estado.finished && !demoVersus.partidaFinalizada) finalizarPartidaVersus(
     estado.winner === 'player' ? 'jugador' : estado.winner === 'npc' ? 'rival' : 'empate',
