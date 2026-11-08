@@ -16,6 +16,9 @@
  const visible=e=>e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden';
  function blocked(){
   return document.hidden||Boolean(document.querySelector('dialog[open]'))||
+   // Hold combat rewards through the lightning, artwork preparation and final.
+   (typeof demoVersus!=='undefined'&&demoVersus.partidaFinalizada&&
+    visible(document.getElementById('pantallaVersus'))&&!visible(document.getElementById('resultadoRondaVersus')))||
    [...document.querySelectorAll('.kairos-cinema,.cinematica-azrak,.cinematica-final-cumbres,.cinematica-final-desierto,.cinematica-desafio-guardiana,.cinematica-santuario,.cinematica-despertar-dragon,.cierre-cinematica-mundo,.cinematica-final-versus.activa')].some(visible)||
    (typeof cinematicaPortalActiva!=='undefined'&&cinematicaPortalActiva)||(typeof cinematicaSantuarioActiva!=='undefined'&&cinematicaSantuarioActiva);
  }

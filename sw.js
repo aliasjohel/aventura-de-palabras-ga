@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v401-costume-choice-feedback1`;
+const CACHE_NAME = `${CACHE_PREFIX}v402-werewolf-final-loading1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1442,7 +1442,7 @@ const ASSET_REVISIONS = {
   "./js/game-wallet.js": "sha256-ead41f75a39c07bbf25902dead7f5db1a9d790f5cabddd81952aafd29a15d2a9",
   "./js/adventure-rewards.js": "sha256-80ecf24ddb53f7095431afe7c05cc5bc0a39eae84845d561f7d5d5a3f4ab4db6",
   "./js/adventure-reward-feedback.js": "sha256-0553eaa55721dbaa57ca5a2376afd2ae108d8c84d451ce3811f69d138d2183c4",
-  "./js/adventure-xp-feedback.js": "sha256-d70f585a6924bb685569cccbbcd5d1f71a5eda2edf32fb09821b1693b2de602a",
+  "./js/adventure-xp-feedback.js": "sha256-fc28fccd1c07677f48b6c8bb611bdf40b2d03f3c1f10e50d1100b5ea8a4243ea",
   "./js/multiplayer-xp-feedback.js": "sha256-5583650f58c8d473be8f5190ea22461e67c2098165e288ac39054a20b4f5ca61",
   "./js/adventure-hints.js": "sha256-2837efbd8c3934eae089a53dcaaa0ea4497766ae464731bc756e84706696e5a4",
   "./js/adventure-gameplay-online.js": "sha256-a7b8943b54b24d7c15c4c72769ed0cadd0edf46b17dda3e869e5d1b5595e489b",
@@ -1626,7 +1626,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-ba42e89be9f9091b709881f804e871444e50fc64711dd033ad192fc3251cce1c",
+  "./js/app.js": "sha256-5f3c7b46c8491e6f1ef3dcced0fee9c73efa5f3b06a042b2dd1b45faedb8d356",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",

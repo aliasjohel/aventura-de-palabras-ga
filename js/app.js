@@ -8743,29 +8743,42 @@ function finalizarPartidaVersus(ganador, detalle, palabraPerdida = "") {
 function obtenerReproductorFinalVersus(personajeGanador, personajeVictima) {
   const play=obtenerReproductorFinalSinVistaVersus(personajeGanador,personajeVictima);
   return async()=>{
-    await globalThis.TowerOutfitPreview?.prepareFinal(personajeGanador,personajeVictima,personajeJugadorVersus);
-    const earnedPaths=[];
-    for(const [character,victim] of [[personajeGanador,false],[personajeVictima,true]]){
-      const item=globalThis.TowerRewards?.find(trajeFinalVersus(character,victim));if(!item)continue;
-      const poses=!victim?(item.finals||['final']):personajeGanador==='guardiana'?['base','impacto','planta']:personajeGanador==='azrak'?['base','impacto','mano']:personajeGanador==='kalamo'?['base','impacto','vidrio']:personajeGanador==='kairos'?['base','envejecido','anciano']:['base','impacto','impacto-tronco'];
-      earnedPaths.push(...poses.map(p=>item.assets[p]).filter(Boolean));
-    }
-    if(earnedPaths.length)await GameResources.ensure(earnedPaths);
-    // Decode both poses before the clock starts, including ordinary outfits.
-    // Loading the reaction only at impact could leave a standing victim visible.
-    const base=imagenTrajeFinalVersus(personajeVictima,'base',personajesVersus[personajeVictima].base);
-    const frontal=personajeGanador==='explorador'&&usaImpactoFrontalGuardianaVersus(personajeVictima);
-    const impacto=imagenTrajeFinalVersus(personajeVictima,frontal?'impacto-tronco':'impacto',frontal?srcGuardianaImpactoTroncoVersus:posesReaccionVictimaVersus[personajeVictima]);
+    // Every final uses the same bounded optional artwork preparation.
+    let timeout;
     try{
-      await GameResources.ensure([base,impacto]);
-      await Promise.all([base,impacto].map(src=>{const image=new Image();image.src=src;return image.decode();}));
-    }catch{ /* Missing optional artwork offline must not prevent the result. */ }
-    if(personajeGanador==='hombre_lobo'){
-      prepararTrajesFinalVersus('hombre_lobo');
-      const images=[...cinematicaFinalVersus.querySelectorAll('.cinematica-lobo-regreso')];
-      await globalThis.GameResources?.ensure(images.map(img=>img.getAttribute('src')));
-      await Promise.all(images.map(img=>img.decode()));
-    }
+      await Promise.race([
+        (async()=>{
+          await globalThis.TowerOutfitPreview?.prepareFinal(personajeGanador,personajeVictima,personajeJugadorVersus);
+          const earnedPaths=[];
+          for(const [character,victim] of [[personajeGanador,false],[personajeVictima,true]]){
+            const item=globalThis.TowerRewards?.find(trajeFinalVersus(character,victim));if(!item)continue;
+            const poses=!victim?(item.finals||['final']):personajeGanador==='guardiana'?['base','impacto','planta']:personajeGanador==='azrak'?['base','impacto','mano']:personajeGanador==='kalamo'?['base','impacto','vidrio']:personajeGanador==='kairos'?['base','envejecido','anciano']:['base','impacto','impacto-tronco'];
+            earnedPaths.push(...poses.map(p=>item.assets[p]).filter(Boolean));
+          }
+          if(earnedPaths.length)await GameResources.ensure(earnedPaths);
+          // Decode both poses before the clock starts, including ordinary outfits.
+          // Loading the reaction only at impact could leave a standing victim visible.
+          const base=imagenTrajeFinalVersus(personajeVictima,'base',personajesVersus[personajeVictima].base);
+          const frontal=personajeGanador==='explorador'&&usaImpactoFrontalGuardianaVersus(personajeVictima);
+          const impacto=imagenTrajeFinalVersus(personajeVictima,frontal?'impacto-tronco':'impacto',frontal?srcGuardianaImpactoTroncoVersus:posesReaccionVictimaVersus[personajeVictima]);
+          try{
+            await GameResources.ensure([base,impacto]);
+            await Promise.all([base,impacto].map(src=>{const image=new Image();image.src=src;return image.decode();}));
+          }catch{ /* Missing optional artwork offline must not prevent the result. */ }
+          if(personajeGanador==='hombre_lobo'){
+            prepararTrajesFinalVersus('hombre_lobo');
+            const images=[...cinematicaFinalVersus.querySelectorAll('.cinematica-lobo-regreso')];
+            // Hidden lazy images cannot start loading before the cinematic is shown.
+            // Start them now, and keep unavailable artwork from blocking the result.
+            for(const img of images)img.loading='eager';
+            await globalThis.GameResources?.ensure(images.map(img=>img.getAttribute('src')));
+            await Promise.all(images.map(img=>img.decode()));
+          }
+        })(),
+        new Promise(resolve=>{timeout=setTimeout(resolve,4000);}),
+      ]);
+    }catch{ /* Artwork failure must not prevent the cinematic or result. */ }
+    finally{clearTimeout(timeout);}
     return play();
   };
 }
