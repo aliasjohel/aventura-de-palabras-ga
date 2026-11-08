@@ -165,12 +165,27 @@
   globalThis.ProfileBackgroundsUI=Object.freeze({preview:id=>{if(!B.read().owned.includes(id)&&!globalThis.AventuraShop?.canPreviewBackgrounds?.())return;el('btnMiAvatar').click();previewTouched=true;preview=id;renderBackground();}});
   renderBackground();
   function syncProfileMotion() {
+    document.body.classList.toggle('frame-effects-paused',document.hidden);
     dialog.classList.toggle('perfil-movimiento-pausado', document.hidden || !dialog.open);
     if (dialog.open) syncBackgroundSize();
   }
   document.addEventListener('visibilitychange', syncProfileMotion);
   dialog.addEventListener('close', syncProfileMotion);
   syncProfileMotion();
+  const prestigeFrames={tower_conquistador:1,tower_maestro:2,tower_leyenda:3,platino:1,diamante:2,leyenda:3,xp_codice:2,xp_infinito:3,fuego:1};
+  function decorateFrame(badge,art,frame,miniatura){
+    const tier=prestigeFrames[frame];if(!tier)return;
+    badge.classList.add('prestige-frame');badge.dataset.frameTier=String(tier);
+    if(miniatura)return;
+    badge.style.setProperty('--frame-art',`url("${art.getAttribute('src')}")`);
+    const sheen=document.createElement('span');sheen.className='frame-prestige-sheen';sheen.setAttribute('aria-hidden','true');badge.append(sheen);
+    const points=[[18,25],[82,27],[12,65],[88,66],[50,6],[50,94]];
+    for(let i=0;i<tier+3;i++){
+      const spark=document.createElement('span');spark.className='frame-prestige-spark';spark.setAttribute('aria-hidden','true');
+      spark.style.setProperty('--spark-x',points[i][0]+'%');spark.style.setProperty('--spark-y',points[i][1]+'%');spark.style.setProperty('--spark-delay',(-i*.9)+'s');badge.append(spark);
+    }
+    art.addEventListener('error',()=>{sheen.remove();badge.querySelectorAll('.frame-prestige-spark').forEach(s=>s.remove());});
+  }
   function portrait(avatar, frame, miniatura = false) {
     const badge = document.createElement("span");
     badge.className = `player-avatar frame-${frame}`;
@@ -195,7 +210,8 @@
       art.addEventListener('load',()=>{badge.dataset.xpArt='ready';});
       art.addEventListener('error',()=>{badge.dataset.xpArt='failed';art.hidden=true;});
       art.src=miniatura?xpArt.thumbnail:xpArt.asset;badge.append(art);
-      if(!miniatura&&!xpArt.tower)for(const cls of ['xp-frame-energy','xp-frame-sparkles']){
+      decorateFrame(badge,art,frame,miniatura);
+      if(!miniatura&&!xpArt.tower&&!prestigeFrames[frame])for(const cls of ['xp-frame-energy','xp-frame-sparkles']){
         const effect=document.createElement('span');effect.className=cls;effect.setAttribute('aria-hidden','true');badge.append(effect);
       }
       return badge;
@@ -212,6 +228,7 @@
     ornament.alt = "";
     ornament.setAttribute("aria-hidden", "true");
     badge.append(ornament);
+    decorateFrame(badge,ornament,frame,miniatura);
     return badge;
   }
   function renderMenu() {

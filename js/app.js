@@ -2843,19 +2843,44 @@ function iniciarModoArcade() {
   abrirSeleccionPersonajeVersus();
 }
 
+async function confirmarCuentaTorre() {
+  if(modoPruebasActivo||globalThis.TowerOutfitPreview?.selection()||!navigator.onLine)return;
+  const local=adaptadorSalasVersus===adaptadorLocalSalasVersus;
+  try{
+    await globalThis.AventuraShop?.connect();
+    if(!CosmeticStore.read().accountId)throw Error('Tower account not ready');
+  }finally{
+    // Account loading must not switch the Tower's local opponent to online play.
+    if(local&&modoArcadeActivo&&!partidaOnlineVersus)adaptadorSalasVersus=adaptadorLocalSalasVersus;
+  }
+}
+
+let preparandoCuentaTorre=false;
 async function prepararRecorridoArcade() {
-  const owner=CosmeticStore.read().accountId,character=personajeJugadorVersus;
-  if(torreAutoritativa&&owner&&!modoPruebasActivo&&!globalThis.TowerOutfitPreview?.selection()){
-    const server=await torreAutoritativa.refresh();
-    if(!modoArcadeActivo||owner!==CosmeticStore.read().accountId||character!==personajeJugadorVersus)return;
-    progresoServidorTorre=server;
-  }else progresoServidorTorre=null;
-  rivalesTorreArcade = crearOrdenRivalesArcade();
-  pisosDesbloqueadosArcade = Math.min(leerProgresoArcade(), rivalesTorreArcade.length);
-  pisoActualArcade = Math.min(pisosDesbloqueadosArcade, rivalesTorreArcade.length - 1);
-  ultimoResultadoArcade = "";
-  abrirTorreArcade();
-  informarTorre(torreUsaProgresoServidor()?'verifiedProgress':motivoPracticaTorre());
+  if(preparandoCuentaTorre)return;
+  preparandoCuentaTorre=true;btnConfirmarPersonajeVersus.disabled=true;
+  const character=personajeJugadorVersus;
+  try{
+    if(navigator.onLine&&!modoPruebasActivo&&!globalThis.TowerOutfitPreview?.selection())
+      OnlineUI.text(estadoPersonajePropioVersus,mensajeTorre('checkingAccount'));
+    await confirmarCuentaTorre();
+    if(!modoArcadeActivo||character!==personajeJugadorVersus)return;
+    const owner=CosmeticStore.read().accountId;
+    if(torreAutoritativa&&owner&&!modoPruebasActivo&&!globalThis.TowerOutfitPreview?.selection()){
+      const server=await torreAutoritativa.refresh();
+      if(!modoArcadeActivo||owner!==CosmeticStore.read().accountId||character!==personajeJugadorVersus)return;
+      progresoServidorTorre=server;
+    }else progresoServidorTorre=null;
+    rivalesTorreArcade = crearOrdenRivalesArcade();
+    pisosDesbloqueadosArcade = Math.min(leerProgresoArcade(), rivalesTorreArcade.length);
+    pisoActualArcade = Math.min(pisosDesbloqueadosArcade, rivalesTorreArcade.length - 1);
+    ultimoResultadoArcade = "";
+    abrirTorreArcade();
+    informarTorre(torreUsaProgresoServidor()?'verifiedProgress':motivoPracticaTorre());
+  }catch{
+    if(modoArcadeActivo&&character===personajeJugadorVersus)
+      OnlineUI.text(estadoPersonajePropioVersus,mensajeTorre('accountWaiting'));
+  }finally{preparandoCuentaTorre=false;btnConfirmarPersonajeVersus.disabled=false;}
 }
 
 function motivoPracticaTorre(){
@@ -8185,10 +8210,13 @@ async function iniciarCombateArcade() {
   const character=personajeJugadorVersus,floor=pisoActualArcade;
   try{
     torreEnCurso=false;detenerRelojTorre();
+    try{await confirmarCuentaTorre();}
+    catch{informarTorre('accountWaiting');return;}
+    if(!modoArcadeActivo||character!==personajeJugadorVersus||floor!==pisoActualArcade)return;
     if(torreAutoritativa&&!modoPruebasActivo&&!globalThis.TowerOutfitPreview?.selection()&&CosmeticStore.read().accountId&&navigator.onLine){
       const result=await torreAutoritativa.prepare(character,floor+1,I18n.language,matchMedia('(prefers-reduced-motion: reduce)').matches);
       if(!modoArcadeActivo||character!==personajeJugadorVersus||floor!==pisoActualArcade)return;
-      if(result.waiting){informarTorre('waiting');return;}
+      if(result.waiting){informarTorre(result.reason||'waiting');return;}
       progresoServidorTorre=torreAutoritativa.progress()||progresoServidorTorre;
       if(result.locked){pisosDesbloqueadosArcade=leerProgresoArcade();pisoActualArcade=Math.min(pisosDesbloqueadosArcade,9);renderizarTorreArcade();informarTorre('locked');return;}
       torreEnCurso=Boolean(result.attempt);informarTorre(result.practice?result.reason:'ready');

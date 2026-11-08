@@ -7,6 +7,8 @@
  const locked={es:'Este piso todavía está bloqueado. Ganá el piso anterior con conexión para desbloquearlo.',en:'This floor is still locked. Win the previous floor online to unlock it.','pt-BR':'Este andar ainda está bloqueado. Vença o andar anterior online para desbloqueá-lo.'};
  const practiceOnly={es:'Partida de práctica: no guarda progreso verificado ni entrega monedas o premios.',en:'Practice fight: no verified progress, coins or rewards.','pt-BR':'Partida de treino: não salva progresso verificado nem concede moedas ou prêmios.'};
  const guidance={
+  checkingAccount:{es:'Confirmando tu cuenta para jugar por premios…',en:'Confirming your account to play for rewards…','pt-BR':'Confirmando sua conta para jogar por prêmios…'},
+  accountWaiting:{es:'No se pudo confirmar tu cuenta. El combate no comenzó. Reintentá con conexión; si hace falta, iniciá sesión en Mi perfil.',en:'Could not confirm your account. The fight has not started. Retry online; if needed, sign in from My profile.','pt-BR':'Não foi possível confirmar sua conta. O combate não começou. Tente novamente online; se necessário, entre em Meu perfil.'},
   battleReady:{es:'Combate por premios',en:'Reward fight','pt-BR':'Combate por prêmios'},
   battlePractice:{es:'Práctica · Sin premios',en:'Practice · No rewards','pt-BR':'Treino · Sem prêmios'},
   verifiedProgress:{es:'Progreso para premios: victorias verificadas con conexión. El avance antiguo se conserva aparte; los premios nuevos requieren completar los pisos desde el primero.',en:'Reward progress: online verified wins. Historical progress is preserved separately; new rewards require completing floors from the first.', 'pt-BR':'Progresso para prêmios: vitórias verificadas online. O avanço antigo é preservado separadamente; os novos prêmios exigem completar os andares desde o primeiro.'},
@@ -49,7 +51,7 @@
   }catch{paused=true;onProblem('waiting');return null;}});}
   async function prepare(character,floor,language,reducedMotion=false){
    await queue;stop();const owner=account();if(!owner||!online())return {practice:true,reason:'practice'};
-   let status;try{status=await rpc({p_action:'status',p_attempt:null,p_request:null,p_sequence:null,p_payload:{}});}catch{return {practice:true,reason:'practice'};}
+   let status;try{status=await rpc({p_action:'status',p_attempt:null,p_request:null,p_sequence:null,p_payload:{}});}catch{paused=true;onProblem('accountWaiting');return {waiting:true,reason:'accountWaiting'};}
    if(owner!==account()||status.userId!==owner)return {waiting:true};
    if(!status.enabled)return {practice:true,reason:'disabled'};
    acceptStatus(status,owner);

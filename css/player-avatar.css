@@ -1,4 +1,19 @@
 .player-avatar { display: inline-grid; position: relative; place-items: center; width: 68px; height: 68px; box-sizing: border-box; flex-shrink: 0; isolation: isolate; vertical-align: middle; }
+/* The existing frame alpha masks the sheen, keeping light off the portrait. */
+.player-avatar.prestige-frame { --frame-glow:#f8cc69; --frame-light:#fff3c5; --frame-cycle:7s; overflow:visible; }
+.prestige-frame.frame-platino,.prestige-frame.frame-diamante { --frame-glow:#6cddff; --frame-light:#e8fbff; }
+.prestige-frame.frame-tower_maestro,.prestige-frame.frame-xp_codice { --frame-glow:#bd94ff; --frame-light:#f2dfff; }
+.prestige-frame.frame-fuego { --frame-glow:#ff8240; --frame-light:#ffe4ad; }
+.prestige-frame[data-frame-tier="3"] { --frame-cycle:5.8s; --frame-glow:#ffbf54; --frame-light:#fff4ce; }
+.player-avatar.prestige-frame > .player-avatar-frame { filter:brightness(1.1) saturate(1.12) drop-shadow(0 2px 2px #0009) drop-shadow(0 0 3px var(--frame-glow)); }
+.frame-prestige-sheen { position:absolute; inset:0; z-index:2; pointer-events:none; opacity:.22; background:linear-gradient(115deg,transparent 37%,var(--frame-light) 47%,#fff 50%,var(--frame-glow) 53%,transparent 63%) 100% 50% / 350% 100%; mask:var(--frame-art) center / contain no-repeat; }
+.frame-prestige-spark { position:absolute; z-index:3; pointer-events:none; left:var(--spark-x); top:var(--spark-y); width:7%; height:7%; max-width:10px; max-height:10px; opacity:0; background:radial-gradient(circle,#fff 5%,var(--frame-light) 28%,var(--frame-glow) 70%); clip-path:polygon(50% 0,60% 37%,100% 50%,60% 61%,50% 100%,39% 61%,0 50%,39% 39%); transform:translate(-50%,-50%) scale(.5); }
+:is(#pantallaMenu.activa #avatarMenu,#editorAvatar[open]:not(.perfil-movimiento-pausado) #avatarPreview,#perfilPublico[open]:not(.perfil-movimiento-pausado) #avatarPerfilPublico,#editorAvatar[open] .avatar-choice:is(:hover,:focus-visible)) .frame-prestige-sheen { animation:framePrestigeSheen var(--frame-cycle) ease-in-out infinite; }
+:is(#pantallaMenu.activa #avatarMenu,#editorAvatar[open]:not(.perfil-movimiento-pausado) #avatarPreview,#perfilPublico[open]:not(.perfil-movimiento-pausado) #avatarPerfilPublico,#editorAvatar[open] .avatar-choice:is(:hover,:focus-visible)) .frame-prestige-spark { animation:framePrestigeSpark 4.8s ease-in-out var(--spark-delay) infinite; }
+.frame-effects-paused :is(.frame-prestige-sheen,.frame-prestige-spark) { animation-play-state:paused!important; }
+@keyframes framePrestigeSheen { 0%,18% { background-position:100% 50%; opacity:.12; } 42% { opacity:.6; } 67%,100% { background-position:0 50%; opacity:.12; } }
+@keyframes framePrestigeSpark { 0%,18%,75%,100% { opacity:0; transform:translate(-50%,-50%) scale(.35); } 40% { opacity:.9; transform:translate(-50%,-65%) scale(1); } 60% { opacity:.25; transform:translate(-50%,-105%) scale(.5); } }
+@media(prefers-reduced-motion:reduce) { .frame-prestige-sheen { animation:none!important; opacity:.2; } .frame-prestige-spark { display:none; animation:none!important; } }
 .player-avatar-portrait { position: absolute; inset: 13%; display: grid; place-items: center; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 50% 30%, #3c5873, #0a1424 80%); }
 .player-avatar-portrait img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.25); transform-origin: center 30%; }
 .player-avatar > .player-avatar-frame { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 1; pointer-events: none; filter: drop-shadow(0 3px 3px #0008); }

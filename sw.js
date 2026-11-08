@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v402-werewolf-final-loading1`;
+const CACHE_NAME = `${CACHE_PREFIX}v403-tower-account-frame-glow1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1066,7 +1066,7 @@ const CORE_ASSETS = RESOURCE_ASSETS.filter(path =>
 
 // BEGIN GENERATED RESOURCE MANIFEST
 const ASSET_REVISIONS = {
-  "./js/tower-online.js": "sha256-8f68ca5bc8a1ff323649ffabf0862ec6ad83dd1e552021645f16d183c1267ceb",
+  "./js/tower-online.js": "sha256-e66de273cc340e748991488c2102e97470516555dbd4d451e976e33eaac8b475",
   "./js/tower-rewards.js": "sha256-99e16d1ca8e8e9ccaefa1b49dc173d31b657c6878040880c49168bb0d8c71859",
   "./js/tower-rewards-ui.js": "sha256-37d6da2229d28ace8c8baa1e374f52b27f45a6a4d82da5327c29e565ba9e4879",
   "./css/tower-rewards.css": "sha256-dba3f4d5958b87fb340c2dec9e728a8ddb14146d152dfb29538696b9bce7ea1e",
@@ -1274,7 +1274,7 @@ const ASSET_REVISIONS = {
   "./js/word-banks-forest.js": "sha256-1f50cd3a347769733f601c529f3902f9851ba61c9013d9e13198530d49bc275b",
   "./js/word-banks-es.js": "sha256-2747407626268b62dcfbee2a7c8984c8d6da7ac7803652294b418e344099c84f",
   "./js/i18n-settings.js": "sha256-87266c5c9bbd97e9009e2d1f2fa707fd1f3249ca1d91fd1ba800ed0d1c7fe171",
-  "./js/i18n-es-fallback.js": "sha256-7785aa080e9da2e465e1172503ebbc8573250ee19c74c3a40525a13a7591171c",
+  "./js/i18n-es-fallback.js": "sha256-901b7a76a8b88c4f7770e23f215fec6b44e1507957a150011043d37fa9bf9059",
   "./js/i18n-ui.js": "sha256-177f68a93d64a93ba7201874b2020998b99a9644824025d201bb70fb0f735831",
   "./js/narrative-i18n.js": "sha256-e1930c0260e5a07b9ea429390a53b35cd03f785ad11ddbd95b5957d13c90c8b0",
   "./js/i18n-combat.js": "sha256-fdc7a05af378d2f19cd1ed2aa597cf90bb77f73857315f572ce962257187a9c6",
@@ -1510,9 +1510,9 @@ const ASSET_REVISIONS = {
   "./assets/images/stickers/shadow-desafio-v1.png": "sha256-9f43724815be78147fd76440ccd26337519d648c656ec4dc6b46cc8a224cc208",
   "./assets/images/stickers/guardiana-triste-v1.png": "sha256-c53a822f8ee02723b3862db16b8040c325763c0c242e6939f75cf487e8b36118",
   "./assets/images/stickers/lumen-guino-v1.png": "sha256-b45afbc58e0954c77eb05f2277c86ff5c13c3b97bf051a22f117f992155470dc",
-  "./css/player-avatar.css": "sha256-f73b8c718316cdc14059d1fe84c6a46706af83d41c78e6770a888906b2754cdd",
+  "./css/player-avatar.css": "sha256-c97b073a7e1b02274552e9b0d4c7b8def9d8274c5395deb00818f6d504ff48be",
   "./js/avatar-rewards.js": "sha256-f27c88970ae312692ff4c1275cace575b3c80ffeaf019068a7be601f4f852ea0",
-  "./js/player-avatar.js": "sha256-9216faf87684bf746bd8a1e90ef28696deb1aa1a1256d2c1a9c52e6f5a4af444",
+  "./js/player-avatar.js": "sha256-104f8a0b885fd58260348c3250579a523beca7a3e2591f79e8bbdbe509ead055",
   "./js/player-xp.js": "sha256-20a36385bed98c9b3df528aef85b13b3cb886ea4426f324b46d9f0548021d898",
   "./assets/images/perfil/marco-xp_tinta-v1.webp": "sha256-eb88378316b22625fd4ce666245b14c5375b0b466ec30e39df1e9e3543528b9e",
   "./assets/images/perfil/miniaturas/marco-xp_tinta-v1.webp": "sha256-986aff4a10a0d32c3bb1bc3c47d0ee40c54ba8ee3d4da52473aeed88db8425ce",
@@ -1626,7 +1626,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-5f3c7b46c8491e6f1ef3dcced0fee9c73efa5f3b06a042b2dd1b45faedb8d356",
+  "./js/app.js": "sha256-9fb1dd35519de3796fa7edd5dbd953ec42b9235953c6c893e49f6ad992bff77c",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
