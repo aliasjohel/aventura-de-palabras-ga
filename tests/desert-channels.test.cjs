@@ -8,7 +8,7 @@ function harness() {
   const ctx = vm.createContext({ pruebaEspecialBosqueActiva: 'vientos',
     tiposCanalesVientoDesierto: [], orientacionesVientosDesierto: [],
     movimientosVientosDesierto: 0, estadoPruebaBosque: {}, botonesVientosDesierto: [],
-    renderizarPuzzleVientosDesierto() {} });
+    estadoPuzzleOnline:()=>null, renderizarPuzzleVientosDesierto() {} });
   const start = app.indexOf('const ladoTableroVientoDesierto');
   const end = app.indexOf('function renderizarPuzzleVientosDesierto()', start);
   vm.runInContext(app.slice(start, end) + '\nglobalThis.ruta = caminoEnergiaVientoDesierto; globalThis.ramales = desviosVientoDesierto;', ctx);

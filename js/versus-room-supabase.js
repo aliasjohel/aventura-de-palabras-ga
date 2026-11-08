@@ -646,8 +646,11 @@
     }
 
     async function obtenerPerfilJugador() {
+      const identity = usuarioId;
       const { data, error } = await cliente.rpc("get_versus_player_profile");
+      if (!identity || identity !== usuarioId) throw errorJugador('La cuenta cambió. Volvé a intentar.');
       if (error) throw traducirError(error, "No pudimos cargar tu perfil.");
+      if (data?.id !== identity) throw errorJugador('No pudimos cargar tu perfil.');
       return { ...data, guest: !esCuentaPermanente() };
     }
 

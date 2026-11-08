@@ -30,7 +30,7 @@ assert.match(app, /intercambios: 9, duracionPaso: 380/);
 assert.match(app, /function prepararRondaCampanasCumbres\(/);
 assert.match(app, /async function mezclarCampanasCumbres\(/);
 assert.match(app, /function elegirCampanaCumbres\(/);
-assert.match(app, /campanaReliquiaCumbres = Math\.floor\(Math\.random\(\) \* 3\)/);
+assert.match(app, /campanaReliquiaCumbres = estadoPuzzleOnline\('bells'\)\?\.relic \?\? Math\.floor\(Math\.random\(\) \* 3\)/);
 assert.match(app, /completarPruebaEspecialBosque\("campanas-celestes"\)/);
 assert.match(app, /const rondasSellosAeralis = Object\.freeze/);
 for (const palabra of ["AIRE", "NUBE", "LIBRE"]) assert.match(app, new RegExp(`palabra: "${palabra}"`));

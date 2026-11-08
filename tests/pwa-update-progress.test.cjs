@@ -23,9 +23,11 @@ assert.match(worker, /REVISIONES_ACTUALES/);
 assert.match(worker, /reutilizados/);
 assert.doesNotMatch(worker, /cache\.addAll/);
 
-const sonidos = fs.readdirSync(path.join(root, "assets", "sounds"));
+// Archived source WAVs need not be shipped. Check the runtime audio catalogue.
+const sonidos = [...worker.matchAll(/"\.\/assets\/sounds\/([^"?]+)"/g)].map(m=>m[1]);
+assert(sonidos.length > 20);
 sonidos.forEach((archivo) => {
-  assert.match(worker, new RegExp(`assets/sounds/${archivo.replace(".", "\\.")}`));
+  assert(fs.existsSync(path.join(root, 'assets/sounds', archivo)));
 });
 
 console.log("pwa-update-progress: comprobaciones correctas");

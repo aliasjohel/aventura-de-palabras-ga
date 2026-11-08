@@ -77,4 +77,5 @@ test('profile display metadata distinguishes a default name from an actual alias
  let profile={id:'existing-id',alias:null,coins:321};const context={aliasSalaVersus:{value:''},asegurarConexionSalasVersus:async()=>({obtenerPerfilJugador:async()=>profile})};vm.runInNewContext(source.slice(from,to),context);
  const display=await context.PlayerProfile.cargar();assert.equal(display.alias,'Aventurero');assert.equal(display.aliasIsFallback,true);assert.deepEqual(profile,{id:'existing-id',alias:null,coins:321});
  profile={...profile,alias:'Aventurero'};const named=await context.PlayerProfile.cargar();assert.equal(named.aliasIsFallback,false);assert.equal(named.alias,'Aventurero');
+ profile={...profile,alias:null};context.aliasSalaVersus.value='Nombre de otra cuenta';const differentAccount=await context.PlayerProfile.cargar();assert.equal(differentAccount.aliasIsFallback,true);assert.equal(differentAccount.alias,'Aventurero');
 });

@@ -42,10 +42,11 @@ assert.match(manejadorFetch, /event\.respondWith\(responderRecursoEstatico\(even
 assert.doesNotMatch(manejadorFetch, /request\.destination/);
 assert.doesNotMatch(manejadorFetch, /responderDesdeRed\(request\)/);
 
-assert.match(app, /const claveRecompensasMonedasPendientes/);
-assert.match(app, /function otorgarMonedas\(cantidad, origen\)/);
-assert.match(app, /AventuraMonedasOffline = Object\.freeze/);
-assert.match(app, /confirmarSincronizadas: confirmarRecompensasMonedasSincronizadas/);
+// Offline play must not restore the removed client-authorized coin queue.
+const wallet = fs.readFileSync(path.join(root, 'js/game-wallet.js'), 'utf8');
+assert.doesNotMatch(app, /const claveRecompensasMonedasPendientes/);
+assert.match(wallet, /sync_game_wallet_v3/);
+assert.match(wallet, /p_missions:\s*\[\]/);
 assert.doesNotMatch(app, /monedas \+= (?:10|30)/);
 
-console.log("offline-local-modes: carga diferida, caché local y monedas pendientes verificadas");
+console.log("offline-local-modes: caché local y separación de recompensas verificadas");

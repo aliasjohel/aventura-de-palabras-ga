@@ -2219,7 +2219,7 @@ globalThis.PlayerProfile = Object.freeze({
     if (!adapter.obtenerPerfilJugador) throw new Error("Sin conexión");
     const profile = await adapter.obtenerPerfilJugador();
     // Presentation-only metadata; an actual alias named "Aventurero" remains literal.
-    return { ...profile, aliasIsFallback: !profile.alias && !aliasSalaVersus.value.trim(), alias: profile.alias || aliasSalaVersus.value.trim() || "Aventurero" };
+    return { ...profile, aliasIsFallback: !profile.alias, alias: profile.alias || "Aventurero" };
   },
   cargarPublico: async (id = null, offset = 0) => {
     const adapter = await asegurarConexionSalasVersus();

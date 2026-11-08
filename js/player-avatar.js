@@ -265,7 +265,8 @@
   let profileRequest = 0;
   async function loadProfile() {
     const request = ++profileRequest;
-    GameUI.text(el("perfilNombre"), GameUI.key('profile.adventurer'));
+    // A pending lookup is not evidence that the player has no alias.
+    GameUI.text(el("perfilNombre"), GameUI.key('profile.connecting'));
     GameUI.text(el("perfilId"), GameUI.key('profile.connecting'));
     GameUI.text(el("perfilEstado"), GameUI.key('profile.loadingHistory'));
     el("perfilRanking").textContent = "";

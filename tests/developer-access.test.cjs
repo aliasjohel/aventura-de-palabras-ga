@@ -1,43 +1,16 @@
-const test = require('node:test');
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const vm = require('node:vm');
-const crypto = require('node:crypto');
-const token = 'test-author-token';
-const hash = crypto.createHash('sha256').update(token).digest('hex');
-const source = fs.readFileSync(require('node:path').join(__dirname, '../js/developer-access.js'), 'utf8')
-  .replace(/const expectedHash = '[a-f0-9]+';/, `const expectedHash = '${hash}';`);
-async function boot({hostname='game.test', fragment='', saved=null, storageFails=false}={}) {
-  const data = new Map(saved ? [['aventuraAccesoDesarrolladorV1',saved]] : []);
-  const context = {URL, URLSearchParams, TextEncoder, Event, dispatchEvent:()=>{}, crypto:crypto.webcrypto,
-    location:{hostname, protocol:'https:', pathname:'/game/', search:'', hash:fragment},
-    localStorage:{getItem:key=>data.get(key),setItem:(key,value)=>{if(storageFails)throw Error('unavailable');data.set(key,value);}},
-    history:{replaceState:(_state,_title,url)=>context.cleanedURL=url}};
-  vm.runInNewContext(source,context);
-  await context.AventuraDeveloper.ready;
-  return {enabled:context.AventuraDeveloper.enabled, api:context.AventuraDeveloper, data, cleanedURL:context.cleanedURL};
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('fs'),vm=require('vm');
+const source=fs.readFileSync(require('path').join(__dirname,'../js/developer-access.js'),'utf8');
+async function boot({hostname='game.test',protocol='https:',fragment='',saved='old-author-token',authorBuild=false,storageFails=false}={}){
+ const data=new Map([['aventuraAccesoDesarrolladorV1',saved]]);
+ const c={URLSearchParams,location:{hostname,protocol,pathname:'/game/',search:'',hash:fragment},history:{replaceState:(_s,_t,url)=>c.url=url},localStorage:{removeItem:k=>{if(storageFails)throw Error('unavailable');data.delete(k);}}};
+ vm.runInNewContext(authorBuild?source.replace('const localAuthorBuild = false','const localAuthorBuild = true'):source,c);await c.AventuraDeveloper.ready;return{api:c.AventuraDeveloper,data,url:c.url};
 }
-test('public players and invalid activation links cannot enable author tools',async()=>{
-  assert.equal((await boot()).enabled,false);
-  assert.equal((await boot({fragment:'#desarrollador=invalid'})).enabled,false);
-  assert.equal((await boot({saved:'invalid'})).enabled,false);
+test('public artifact rejects author access from URL, saved tokens and localhost',async()=>{
+ for(const hostname of ['game.test','localhost','127.0.0.1','[::1]']){const r=await boot({hostname,fragment:'#desarrollador=old-author-token&other=keep'});assert.equal(r.api.enabled,false);assert.equal(r.data.has('aventuraAccesoDesarrolladorV1'),false);assert.equal(r.url,'/game/#other=keep');assert.equal(r.api.activate,undefined);}
 });
-test('author link activates the device, persists access and clears only its secret fragment',async()=>{
-  const result=await boot({fragment:'#desarrollador='+token+'&other=keep'});
-  assert.equal(result.enabled,true);
-  assert.equal(result.data.get('aventuraAccesoDesarrolladorV1'),token);
-  assert.equal(result.cleanedURL,'/game/#other=keep');
-  assert.equal((await boot({saved:token})).enabled,true);
+test('only an explicit author build served over loopback HTTP can enable tools',async()=>{
+ for(const hostname of ['localhost','127.0.0.1','[::1]'])assert.equal((await boot({hostname,protocol:'http:',authorBuild:true})).api.enabled,true);
+ assert.equal((await boot({authorBuild:true})).api.enabled,false);assert.equal((await boot({hostname:'localhost',protocol:'file:',authorBuild:true})).api.enabled,false);
 });
-test('local development works without activation and storage failure still permits this author session',async()=>{
-  assert.equal((await boot({hostname:'localhost'})).enabled,true);
-  assert.equal((await boot({fragment:'#desarrollador='+token,storageFails:true})).enabled,true);
-});
-test('in-app activation accepts a valid credential, rejects invalid input and persists across launch',async()=>{
-  const result = await boot();
-  await assert.rejects(result.api.activate('wrong'), /Código incorrecto/);
-  assert.equal(result.api.enabled, false);
-  assert.equal((await result.api.activate('  '+token+'  ')).persisted, true);
-  assert.equal(result.api.enabled, true);
-  assert.equal((await boot({saved:result.data.get('aventuraAccesoDesarrolladorV1')})).enabled, true);
-});
+test('storage failure never enables public developer access',async()=>{assert.equal((await boot({storageFails:true,fragment:'#desarrollador=anything'})).api.enabled,false);});

@@ -1,12 +1,32 @@
-const test=require('node:test'),assert=require('node:assert/strict');
-const {create,key}=require('../js/cosmetic-store.js');
-function fixture(entries=[]){const map=new Map(entries),storage={getItem:k=>map.get(k)||null,setItem:(k,v)=>map.set(k,v)};return {map,storage,store:create(storage)};}
-test('legacy local wallet, pending rewards, import and inactive accounts scale exactly once',()=>{
-const old={coins:230,owned:['aren-bosque'],equipped:{explorador:'aren-bosque'},accountId:'a',revision:7,pending:[{id:'event',amount:30,origin:'aventura:guardiana:duelo'}],legacy:{deviceId:'device',coins:200,owned:[],equipped:{}}};
-const f=fixture([[key,JSON.stringify(old)],[key+':account:b',JSON.stringify({...old,coins:80,accountId:'b'})]]);
-assert.equal(f.store.read().coins,2300);assert.equal(f.store.read().pending[0].amount,300);assert.equal(f.store.read().pending[0].id,'event');assert.equal(f.store.read().legacy.coins,2000);assert.equal(f.store.read().revision,7);assert.equal(create(f.storage).read().coins,2300);assert.deepEqual(f.store.read().owned,['aren-bosque']);f.store.beginAccount('b');assert.equal(f.store.read().coins,800);f.store.beginAccount('a');assert.equal(f.store.read().coins,2300);
+'use strict';
+// Security v3 supersedes local currency scaling/import. Never resurrect client grants.
+const test=require('node:test'),assert=require('node:assert/strict'),{create,key}=require('../js/cosmetic-store.js');
+function fixture(entries=[]){const map=new Map(entries),storage={getItem:k=>map.get(k)||null,setItem:(k,v)=>map.set(k,v)};return{map,storage,store:create(storage)};}
+const receipt=(id,coins,revision=1)=>({userId:id,currencyVersion:2,securityVersion:3,coins,revision,owned:['aren-bosque'],equipped:{explorador:'aren-bosque'},missionClaims:['aventura:0:0:mision']});
+test('historical currency and pending grants remain archived, never multiplied or imported',()=>{
+ const raw=JSON.stringify({accountId:'a',coins:230,owned:['aren-bosque'],pending:[{id:'old',amount:30}],revision:7}),f=fixture([[key,raw],['progresoAventuraGA','{"monedas":200}']]);
+ assert.equal(f.store.read().coins,0);assert.equal(f.map.get(key),raw);
+ f.store.beginAccount('a');assert.equal(f.store.read().securityReady,false);assert.equal(f.store.read().coins,0);
+ assert.equal(JSON.parse(f.map.get(key+':pre-security-v3:a')).wallet,raw);assert.equal(f.store.read().requests.length,0);
 });
-test('new installs and progress-only legacy balances have correct version',()=>{const f=fixture([['progresoAventuraGA',JSON.stringify({monedas:200})]]);assert.equal(f.store.read().coins,2000);assert.equal(f.store.read().currencyVersion,2);assert.equal(f.store.beginAccount('a').legacy.coins,2000);assert.equal(f.store.read().legacy.currencyVersion,2);assert.equal(fixture().store.read().coins,0);});
-test('campaign maximum is 3750; replay and restart do not repay; claims persist and are account-scoped',()=>{const f=fixture();let total=0;for(let w=0;w<5;w++)for(let m=0;m<10;m++){total+=f.store.claimAdventure(w,m);assert.equal(f.store.claimAdventure(w,m),0);}assert.equal(total,3750);assert.equal(f.store.read().coins,3750);assert.equal(create(f.storage).claimAdventure(0,0),0);f.store.beginAccount('a');assert.equal(f.store.claimAdventure(0,0),0);assert.equal(f.store.read().legacy.missionClaims.length,50);f.store.beginAccount('b');assert.equal(f.store.claimAdventure(0,0),50);assert.equal(f.store.read().pending[0].amount,50);});
-test('authoritative version 2 replaces migrated cache without multiplying again and keeps pending missions',()=>{const f=fixture([[key,JSON.stringify({coins:200,owned:[],equipped:{},accountId:'a',revision:2,pending:[]})]]);assert.equal(f.store.read().coins,2000);f.store.claimAdventure(0,0);const e=f.store.read().pending[0];f.store.applyAccount({currencyVersion:2,userId:'a',coins:2000,owned:[],equipped:{},revision:3,acknowledged:[],missionClaims:[]});assert.equal(f.store.read().coins,2050);assert.equal(f.store.claimAdventure(0,0),0);f.store.applyAccount({currencyVersion:2,userId:'a',coins:2050,owned:[],equipped:{},revision:4,acknowledged:[e.id],missionClaims:['aventura:0:0:mision']});assert.equal(f.store.read().coins,2050);assert.equal(f.store.read().pending.length,0);assert.throws(()=>f.store.applyAccount({userId:'a',coins:200,owned:[],equipped:{},revision:5}),/Actualizá/);});
-test('previously completed missions are preserved when migrating a progressed account',()=>{const f=fixture([['progresoAventuraGA',JSON.stringify({monedas:0,escenarioActual:1,misionActual:2})]]);assert.equal(f.store.claimAdventure(0,0),0);assert.equal(f.store.claimAdventure(1,1),0);assert.equal(f.store.claimAdventure(1,2),50);});
+test('new and historical-progress-only installs require a verified wallet',()=>{
+ for(const entries of [[],[['progresoAventuraGA','{"monedas":200}']]]){const f=fixture(entries);assert.equal(f.store.read().coins,0);f.store.beginAccount('a');assert.equal(f.store.read().coins,0);assert.equal(f.store.read().securityReady,false);}
+});
+test('local campaign claims and generic credits cannot create money, including replay/restart',()=>{
+ const f=fixture();f.store.beginAccount('a');
+ for(let world=0;world<5;world++)for(let mission=0;mission<10;mission++)assert.throws(()=>f.store.claimAdventure(world,mission),/intento online/);
+ assert.throws(()=>f.store.earn(100),/desactivados/);assert.equal(f.store.read().coins,0);
+ assert.throws(()=>create(f.storage).claimAdventure(0,0),/intento online/);
+});
+test('authoritative balances persist across restarts without scaling or duplicate receipts',()=>{
+ const f=fixture();f.store.beginAccount('a');const r=receipt('a',2050,3);f.store.applyAccount(r);f.store.applyAccount(r);
+ assert.equal(create(f.storage).read().coins,2050);assert.equal(f.store.read().missionClaims.length,1);assert.equal(f.store.read().securityReady,true);
+ f.store.applyAccount(receipt('a',1,2));assert.equal(f.store.read().coins,2050);
+ assert.throws(()=>f.store.applyAccount({...r,coins:-1,revision:4}),/inválida/);assert.equal(f.store.read().coins,2050);
+ assert.throws(()=>f.store.applyAccount({...r,securityVersion:2}),/Actualizá/);
+});
+test('switching accounts isolates balances and ignores replies for the previous account',()=>{
+ const f=fixture();f.store.beginAccount('a');f.store.applyAccount(receipt('a',2050));f.store.beginAccount('b');assert.equal(f.store.read().coins,0);
+ f.store.applyAccount(receipt('a',9999,2));assert.equal(f.store.read().coins,0);f.store.applyAccount(receipt('b',500));
+ f.store.beginAccount('a');assert.equal(f.store.read().coins,2050);f.store.beginAccount('b');assert.equal(f.store.read().coins,500);
+});

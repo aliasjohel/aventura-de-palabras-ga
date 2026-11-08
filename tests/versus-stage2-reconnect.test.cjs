@@ -23,13 +23,25 @@ function harness(language='es'){
   setInterval:(fn,ms)=>{intervals.set(++timer,{fn,ms});return timer;},clearInterval:id=>intervals.delete(id),setTimeout:(fn)=>{timeouts.set(++timer,fn);return timer;},clearTimeout:id=>timeouts.delete(id)};
  vm.runInNewContext(source,context);const adapter=context.VersusRoomSupabase.crearAdaptador(client);
  const accepted=(id=roomId)=>({room_id:id,challenger_id:'alice',challenged_id:'bob',word_language:language,room_status:rooms.get(id)?.status});
- return {adapter,state,rooms,players,accepted,events,docEvents,intervals,timeouts,storage,channels,calls,context};
+ return {adapter,client,state,rooms,players,accepted,events,docEvents,intervals,timeouts,storage,channels,calls,context};
 }
 test('match likes RPC reads by default and sends only when explicitly requested',async()=>{
  const h=harness();await h.adapter.meGustaPartida(roomId);await h.adapter.meGustaPartida(roomId,true);
  assert.deepEqual(h.calls.filter(c=>c.name==='versus_match_like').map(c=>JSON.parse(JSON.stringify(c.args))),[
   {p_match:roomId,p_send:false},{p_match:roomId,p_send:true}
  ]);
+});
+test('own profile rejects a reply from the previous account or a mismatched identity',async()=>{
+ const h=harness();await h.adapter.inicializar();
+ let reply;h.client.rpc=()=>new Promise(resolve=>reply=resolve);
+ const pending=h.adapter.obtenerPerfilJugador();
+ h.state.user='bob';h.state.authChange('SIGNED_IN',{user:{id:'bob',is_anonymous:false}});
+ reply({data:{id:'alice',alias:'Alice'}});
+ await assert.rejects(pending,/La cuenta cambió/);
+ h.client.rpc=async()=>({data:{id:'alice',alias:'Alice'}});
+ await assert.rejects(h.adapter.obtenerPerfilJugador(),/No pudimos cargar tu perfil/);
+ h.client.rpc=async()=>({data:{id:'bob',alias:'Bob'}});
+ assert.equal((await h.adapter.obtenerPerfilJugador()).alias,'Bob');
 });
 for(const language of ['es','en','pt-BR'])test('missed acceptance recovers on startup with '+language+' room and another UI language',async()=>{
  const h=harness(language);h.state.social.accepted_invites=[h.accepted()];await h.adapter.inicializar();

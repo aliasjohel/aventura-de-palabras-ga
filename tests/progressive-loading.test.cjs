@@ -4,7 +4,9 @@ test('progressive catalogue preserves every v368 resource while the core stays b
  vm.runInNewContext(fs.readFileSync('sw.js','utf8')+'\nglobalThis.assets=RESOURCE_ASSETS;globalThis.core=CORE_ASSETS;',current);
  vm.runInNewContext(cp.execFileSync('git',['show','d3d0bf1:sw.js'],{encoding:'utf8'})+'\nglobalThis.assets=CORE_ASSETS;',old);
  for(const path of old.assets)assert(current.assets.includes(path),path);
- assert(current.core.length<150);assert(current.core.reduce((sum,p)=>sum+fs.statSync(p==='./'?'index.html':p).size,0)<15e6);
+ assert.equal(new Set(current.core).size,current.core.length);
+ assert(!current.core.some(p=>p.startsWith('./assets/images/tower-preview/')),'Optional outfit artwork must stay outside installation');
+ assert(current.core.reduce((sum,p)=>sum+fs.statSync(p==='./'?'index.html':p).size,0)<15e6);
  assert.equal(cp.execFileSync('git',['diff','--name-only','HEAD','--','assets','supabase','js/word-banks-es.js','js/word-banks-versus.js','js/word-banks-versus-expanded.js','tools/cache-legacy-v347.json'],{encoding:'utf8'}).trim(),'');
 });
 function loader(){const scripts=[],timers=[];const context={navigator:{onLine:true},document:{createElement:()=>({dataset:{},events:{},addEventListener(type,fn){this.events[type]=fn;},remove(){this.removed=true;}}),head:{appendChild:s=>scripts.push(s)}},setTimeout:fn=>(timers.push(fn),timers.length),clearTimeout(){}};vm.runInNewContext(fs.readFileSync('js/supabase-loader.js','utf8'),context);return {context,scripts,timers};}

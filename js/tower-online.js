@@ -18,6 +18,7 @@
  const text=(key,language='es')=>guidance[key]?(guidance[key][language]||guidance[key].es):key==='locked'?(locked[language]||locked.es):key==='practiceOnly'?(practiceOnly[language]||practiceOnly.es):key==='ready'?(ready[language]||ready.es):key==='retry'?(retry[language]||retry.es):(messages[language]||messages.es)[key];
  function create({rpc,account,storage,online,id,onView=()=>{},onReward=()=>{},onProblem=()=>{}}){
   let run=null,current=null,pending=null,queue=Promise.resolve(),generation=0,paused=false;
+  let confirmedSettlement=null,settlementInFlight=null;
   const key=owner=>'towerOnlineV1:'+owner;
   const progressKey=owner=>'towerProgressV1:'+owner;
   function progress(){const owner=account();if(!owner)return null;try{const p=JSON.parse(storage.getItem(progressKey(owner))||'null');return p?.userId===owner&&p.managed===true&&p.completed&&typeof p.completed==='object'?p:null;}catch{return null;}}
@@ -27,17 +28,25 @@
   function save(){if(run)storage.setItem(key(run.owner),JSON.stringify({owner:run.owner,attemptId:run.attemptId,selection:run.selection,pending}));}
   function load(owner){try{const s=JSON.parse(storage.getItem(key(owner))||'null');return s?.owner===owner?s:null;}catch{return null;}}
   const active=()=>Boolean(run&&run.owner===account());
-  function stop(){generation++;run=null;current=null;pending=null;paused=false;}
+  function stop(){generation++;run=null;current=null;pending=null;paused=false;confirmedSettlement=null;settlementInFlight=null;}
   function forget(){if(run)storage.removeItem(key(run.owner));stop();}
   function apply(response,render=true){if(!response||response.userId!==run?.owner||run.owner!==account())throw Error('Tower account changed');if(response.attempt){current=response.attempt;run.attemptId=current.id;acceptAttempt(current);}if(render&&current)onView(current,response);return response;}
-  async function request(args,render=true){const owner=run?.owner,token=generation;pending=args;save();const response=await rpc(args);if(token!==generation||owner!==account()||owner!==run?.owner)return null;apply(response,render);pending=null;paused=false;save();return response;}
+  function confirmed(response){const r=response?.receipt;return Boolean(current&&response?.pending===false&&r?.confirmed===true&&typeof r.id==='string'&&r.userId===run?.owner&&r.character===current.character&&r.floor===current.floor&&r.amount===(current.floor<=4?30:current.floor<=9?50:150));}
+  async function request(args,render=true){const owner=run?.owner,token=generation;pending=args;save();const response=await rpc(args);if(token!==generation||owner!==account()||owner!==run?.owner)return null;apply(response,render);pending=null;paused=false;if(args.p_action==='settle'&&args.p_attempt===current?.id&&confirmed(response))confirmedSettlement={owner,attemptId:current.id,response};save();return response;}
   function serialize(task){const token=generation;const job=queue.then(()=>token===generation?task():null);queue=job.catch(()=>{});return job;}
-  async function settle(render=true){if(!active()||current?.status!=='won')return null;const response=await request({p_action:'settle',p_attempt:current.id,p_request:id(),p_sequence:null,p_payload:{}},false);if(!response)return null;
-   const receipt=response.receipt;const seenKey='towerCoinSeenV1:'+run.owner;let seen=[];try{seen=JSON.parse(storage.getItem(seenKey)||'[]');if(!Array.isArray(seen))seen=[];}catch{}
+  function presentReceipt(response){const receipt=response.receipt;const seenKey='towerCoinSeenV1:'+run.owner;let seen=[];try{seen=JSON.parse(storage.getItem(seenKey)||'[]');if(!Array.isArray(seen))seen=[];}catch{}
    if(receipt?.confirmed===true&&receipt.userId===run.owner&&Number.isInteger(receipt.amount)&&[30,50,150].includes(receipt.amount)&&!seen.includes(receipt.id)&&(response.newlyCredited||receipt.attemptId===current.id)){
     onReward(receipt);try{storage.setItem(seenKey,JSON.stringify([...seen,receipt.id].slice(-256)));}catch{}
    }
+  }
+  function settle(render=true){if(!active()||current?.status!=='won')return Promise.resolve(null);
+   if(confirmedSettlement?.owner===run.owner&&confirmedSettlement.attemptId===current.id){const response={...confirmedSettlement.response,attempt:current,newlyCredited:false};presentReceipt(response);if(render)onView(current,response);return Promise.resolve(response);}
+   if(settlementInFlight?.owner===run.owner&&settlementInFlight.attemptId===current.id)return settlementInFlight.promise;
+   const flight={owner:run.owner,attemptId:current.id};settlementInFlight=flight;
+   flight.promise=(async()=>{const response=await request({p_action:'settle',p_attempt:current.id,p_request:id(),p_sequence:null,p_payload:{}},false);if(!response)return null;
+   presentReceipt(response);
    if(render)onView(current,response);return response;
+   })().finally(()=>{if(settlementInFlight===flight)settlementInFlight=null;});return flight.promise;
   }
   function send(action,payload={}){return serialize(async()=>{
    if(!active()||!online()||pending){paused=true;onProblem('waiting');return null;}

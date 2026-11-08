@@ -27,14 +27,28 @@ async function registrarAplicacionInstalable() {
   let workerEnEspera = null;
   let avisoPendiente = false;
   let recargandoPorActualizacion = false;
+  let recargaPendiente = false;
   let progresoInstalacion = null;
   let errorInstalacion = false;
   let registroPwa = null;
   let busquedaEnCurso = null;
+  const recargarSiSeguro = () => {
+    if (!recargaPendiente || !menuPrincipalPwa.classList.contains('activa')) return false;
+    recargaPendiente = false;
+    try { sessionStorage.setItem('actualizacionPwaAplicada', 'si'); } catch (_) {}
+    window.location.reload();
+    return true;
+  };
+  const workersObservados = new WeakSet();
+  const sincronizarWorkerEnEspera = () => {
+    const waiting = registroPwa?.waiting;
+    if (waiting?.state === 'installed') mostrarActualizacionDisponible(waiting);
+    return Boolean(waiting?.state === 'installed');
+  };
   const buscarActualizacion = () => {
     if (!registroPwa) return Promise.resolve();
     busquedaEnCurso ||= registroPwa.update().catch(() => mostrarErrorDescarga())
-      .finally(() => { busquedaEnCurso = null; });
+      .finally(() => { busquedaEnCurso = null; sincronizarWorkerEnEspera(); });
     return busquedaEnCurso;
   };
 
@@ -131,7 +145,7 @@ async function registrarAplicacionInstalable() {
   };
 
   const presentarAvisoActualizacion = () => {
-    if (!workerEnEspera) return;
+    if (!workerEnEspera || recargandoPorActualizacion) return;
     btnActualizar.disabled = false;
     btnPosponer.disabled = false;
     GameUI.text(btnActualizar, GameUI.key('common.pwa.updateNow'));
@@ -151,7 +165,7 @@ async function registrarAplicacionInstalable() {
   };
 
   const mostrarActualizacionDisponible = (worker) => {
-    if (!navigator.serviceWorker.controller || !worker) return;
+    if (!navigator.serviceWorker.controller || worker?.state !== 'installed') return;
     workerEnEspera = worker;
     if (!menuPrincipalPwa.classList.contains("activa")) {
       avisoPendiente = true;
@@ -161,7 +175,8 @@ async function registrarAplicacionInstalable() {
   };
 
   const observarInstalacion = (worker) => {
-    if (!worker) return;
+    if (!worker || workersObservados.has(worker)) return;
+    workersObservados.add(worker);
     if (worker.state === "installed") {
       mostrarActualizacionDisponible(worker);
       return;
@@ -183,6 +198,13 @@ async function registrarAplicacionInstalable() {
 
     const registro = await navigator.serviceWorker.getRegistration();
     if (![registro?.installing, registro?.waiting, registro?.active].includes(event.source)) return;
+    // A queued completion/progress message can arrive AFTER statechange=installed.
+    // Waiting is authoritative: never hide its ready button with stale progress.
+    if (registro?.waiting?.state === 'installed' && navigator.serviceWorker.controller) {
+      mostrarActualizacionDisponible(registro.waiting);
+      return;
+    }
+    if (workerEnEspera?.state === 'installed') return;
 
     if (mensaje.estado === "error") {
       mostrarErrorDescarga();
@@ -197,18 +219,21 @@ async function registrarAplicacionInstalable() {
   });
 
   btnActualizar.addEventListener("click", async () => {
+    sincronizarWorkerEnEspera();
     if (errorInstalacion && !workerEnEspera) {
       btnActualizar.disabled = true;
       try { await buscarActualizacion(); }
       finally { btnActualizar.disabled = false; }
       return;
     }
-    if (!workerEnEspera || recargandoPorActualizacion) return;
+    // Recheck the safe screen at click time: a duel may have started meanwhile.
+    if (!menuPrincipalPwa.classList.contains('activa') || !workerEnEspera || recargandoPorActualizacion) return;
     recargandoPorActualizacion = true;
     btnActualizar.disabled = true;
     btnPosponer.disabled = true;
     GameUI.text(btnActualizar, GameUI.key('common.pwa.updating'));
-    workerEnEspera.postMessage({ type: "SKIP_WAITING" });
+    try { workerEnEspera.postMessage({ type: "SKIP_WAITING" }); }
+    catch (_) { recargandoPorActualizacion = false; mostrarErrorDescarga(); }
   });
 
   btnPosponer.addEventListener("click", () => {
@@ -217,6 +242,7 @@ async function registrarAplicacionInstalable() {
   });
 
   new MutationObserver(() => {
+    if (recargarSiSeguro()) return;
     if (!menuPrincipalPwa.classList.contains("activa")) {
       if (!avisoActualizacion.hidden) avisoPendiente = true;
       avisoActualizacion.hidden = true;
@@ -232,8 +258,10 @@ async function registrarAplicacionInstalable() {
   navigator.serviceWorker.addEventListener("controllerchange", () => {
     mostrarModosLocalesDisponibles();
     if (!recargandoPorActualizacion) return;
-    sessionStorage.setItem("actualizacionPwaAplicada", "si");
-    window.location.reload();
+    // Activation affects other tabs too. Only reload this tab after consent,
+    // and defer it if the player has left the safe menu in the meantime.
+    recargaPendiente = true;
+    recargarSiSeguro();
   });
 
   if (sessionStorage.getItem("actualizacionPwaAplicada") === "si") {
@@ -261,13 +289,16 @@ async function registrarAplicacionInstalable() {
       mostrarModosLocalesDisponibles();
       void solicitarConservacionPaqueteLocal();
     }).catch(() => {});
-    mostrarActualizacionDisponible(registro.waiting);
-    observarInstalacion(registro.installing);
     registro.addEventListener("updatefound", () => {
       observarInstalacion(registro.installing);
     });
+    // Subscribe before taking the snapshot so a fast installation is not missed.
+    observarInstalacion(registro.installing);
+    sincronizarWorkerEnEspera();
     void buscarActualizacion();
     window.addEventListener('online', () => { void buscarActualizacion(); });
+    window.addEventListener('focus', () => { sincronizarWorkerEnEspera(); });
+    window.addEventListener('pageshow', () => { sincronizarWorkerEnEspera(); });
 
     window.setInterval(() => {
       void buscarActualizacion();
