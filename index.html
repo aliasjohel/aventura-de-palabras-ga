@@ -1446,12 +1446,11 @@
         aria-label="Saltar secuencia narrativa">Saltar</button>
 
     <dialog id="rankingMenu" class="menu-dialogo ranking-dialogo" aria-labelledby="tituloRankingMenu">
-        <header class="menu-dialogo-cabecera"><div><small data-i18n="menu.ranked">CLASIFICATORIO</small><h2 id="tituloRankingMenu" data-i18n="menu.leaderboardTitle">Ranking de aventureros</h2></div><button id="cerrarRankingMenu" type="button" aria-label="Cerrar ranking" data-i18n-aria-label="menu.closeLeaderboard">×</button></header>
-        <section class="ranking-resumen" aria-labelledby="tituloMiRanking"><h3 id="tituloMiRanking" data-i18n="menu.yourPlace">Tu lugar en la aventura</h3><div id="miRanking" aria-live="polite"></div></section>
-        <p class="ranking-reglas" data-i18n="menu.rankingRules">Victoria +3 · Empate +1 · Derrota −1. En Novato no perdés puntos. Clásico no modifica tu rango.</p>
-        <details><summary data-i18n="menu.medals">Conocé las medallas</summary><div id="medallasRanking" class="rangos-catalogo"></div></details>
+        <div class="ranking-fijo"><header class="menu-dialogo-cabecera"><div><small data-i18n="menu.ranked">CLASIFICATORIO</small><h2 id="tituloRankingMenu" data-i18n="menu.leaderboardTitle">Ranking de aventureros</h2></div><button id="cerrarRankingMenu" type="button" aria-label="Cerrar ranking" data-i18n-aria-label="menu.closeLeaderboard">×</button></header>
+        <section class="ranking-resumen" aria-labelledby="tituloMiRanking"><h3 id="tituloMiRanking" data-i18n="menu.yourPlace">Tu lugar en la aventura</h3><div id="miRanking" aria-live="polite"></div></section></div>
+        <details><summary data-i18n="menu.medals">Conocé las medallas</summary><p class="ranking-reglas" data-i18n="menu.rankingRules">Victoria +3 · Empate +1 · Derrota −1. En Novato no perdés puntos. Clásico no modifica tu rango.</p><div id="medallasRanking" class="rangos-catalogo"></div></details>
         <div class="ranking-cabecera-lista"><h3 data-i18n="menu.overallRanking">Clasificación general</h3><button id="btnActualizarRanking" type="button" data-i18n="menu.refresh">Actualizar</button></div>
-        <div id="listaRanking" aria-live="polite"></div>
+        <p class="ranking-limite" data-i18n="menu.rankingLimit">Hasta 50 jugadores. Tu puesto se muestra siempre arriba.</p><div id="listaRanking" role="list" aria-live="polite"></div>
     </dialog>
     <dialog id="selectorModosJuego" class="menu-dialogo" aria-labelledby="tituloModosJuego">
         <header class="menu-dialogo-cabecera"><div><small data-i18n="menu.chooseChallenge">ELEGÍ TU DESAFÍO</small><h2 id="tituloModosJuego" data-i18n="menu.modesTitle">Modos de juego</h2></div><button id="cerrarModosJuego" type="button" aria-label="Volver al menú" data-i18n-aria-label="menu.backLabel">×</button></header>

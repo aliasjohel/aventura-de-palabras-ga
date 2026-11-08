@@ -2235,55 +2235,44 @@ globalThis.PlayerProfile = Object.freeze({
   imagenPersonaje: (key) => personajesVersus[key]?.base || personajesVersus.explorador.base,
 });
 
-async function cargarRankingPublico() {
-  const lista = document.getElementById("listaRanking");
-  const boton = document.getElementById("btnActualizarRanking");
-  if (boton.disabled) return;
-  boton.disabled = true;
-  GameUI.text(lista, GameUI.key('menu.loadingRanking'));
-  const propio = document.getElementById("miRanking");
-  GameUI.text(propio, GameUI.key('menu.loadingPosition'));
-  try {
-    await asegurarConexionSalasVersus();
-    if (!adaptadorSalasVersus.obtenerRanking) throw new Error("Conectate a internet para ver el ranking.");
-    const filas = await adaptadorSalasVersus.obtenerRanking();
-    const miFila = filas.find(fila => fila.me);
-    propio.replaceChildren();
-    const puesto = document.createElement("p");
-    puesto.className = "ranking-puesto";
-    GameUI.text(puesto,miFila?GameUI.key('menu.position', {position:miFila.position,points:miFila.points}):GameUI.key('menu.noPosition'));
-    propio.append(puesto, GameUI.rankBadge(miFila?.points || 0, true));
-    if (!miFila) {
-      const ayuda = document.createElement("p");
-      GameUI.text(ayuda, GameUI.key('menu.firstRanked'));
-      propio.append(ayuda);
-    }
-    lista.replaceChildren();
-    if (!filas.length) GameUI.text(lista, GameUI.key('menu.noRanking'));
-    for (const fila of filas) {
-      const item = document.createElement("p");
-      item.classList.toggle("ranking-propio", fila.me);
-      GameUI.text(item, GameUI.key('menu.rankingRow', {position:fila.position,alias:VersusRoom.aliasVisible(fila.alias),you:fila.me?GameUI.key("menu.you"):"",points:fila.points,wins:fila.wins,played:fila.played}));
-      if (Number(fila.position) === 1) {
-        const corona=document.createElement('span');corona.className='corona-lider';GameUI.text(corona, GameUI.key('menu.leader'));item.prepend(corona);
-      }
-      if (fila.user_id) {
-        const ver = document.createElement("button");
-        ver.type = "button"; ver.className = "enlace-perfil-jugador";
-        GameUI.text(ver, GameUI.key('profile.view'));
-        GameUI.attribute(ver,"aria-label",GameUI.key('profile.viewAlias', {alias:VersusRoom.aliasVisible(fila.alias)}));
-        ver.addEventListener("click", () => PublicPlayerProfile.abrir(fila.user_id));
-        item.append(ver);
-      }
-      item.append(GameUI.rankBadge(fila.points));
-      lista.appendChild(item);
-    }
-  } catch (error) {
-    GameUI.text(lista,GameUI.error(error,'errors.rankingOnline'));
-    GameUI.text(propio, GameUI.key('menu.rankingOffline'));
-  }
-  finally { boton.disabled = false; }
+function crearFilaRanking(fila) {
+  const row=document.createElement('button');row.type='button';row.className='ranking-fila';row.classList.toggle('ranking-propio',Boolean(fila.me));
+  const alias=VersusRoom.aliasVisible(fila.alias),division=VersusRanks.division(fila.points);
+  const rank=GameUI.key('profile.rankDivision',{rank:GameUI.key('profile.ranks.'+division.rank.key+'.name'),division:division.number?' '+division.number:''});
+  GameUI.attribute(row,'aria-label',GameUI.key('menu.rankingOpenRow',{position:fila.position,alias,points:fila.points,rank}));
+  const position=document.createElement('span');position.className='ranking-puesto';position.textContent='#'+fila.position;if(Number(fila.position)===1)position.dataset.leader='true';
+  const medal=document.createElement('img');medal.className='ranking-insignia';medal.src='assets/images/rangos/'+division.rank.key+'-v2.png';medal.alt='';medal.loading='lazy';medal.decoding='async';medal.width=28;medal.height=32;
+  const identity=document.createElement('span');identity.className='ranking-identidad';
+  const name=document.createElement('strong');
+  // Player aliases are data, including names that happen to match translation keys.
+  name.textContent=alias;
+  const level=document.createElement('small');GameUI.text(level,rank);identity.append(name,level);
+  const points=document.createElement('span');points.className='ranking-puntos';const amount=document.createElement('strong');amount.textContent=String(fila.points);const unit=document.createElement('small');GameUI.text(unit,GameUI.key('menu.pointsShort'));points.append(amount,unit);
+  const arrow=document.createElement('span');arrow.className='ranking-flecha';arrow.textContent='›';arrow.setAttribute('aria-hidden','true');
+  row.append(position,medal,identity,points,arrow);row.disabled=!fila.user_id;
+  if(fila.user_id)row.addEventListener('click',()=>PublicPlayerProfile.abrir(fila.user_id));
+  return row;
 }
+
+async function cargarRankingPublico() {
+  const lista=document.getElementById('listaRanking'),boton=document.getElementById('btnActualizarRanking'),propio=document.getElementById('miRanking');
+  if(boton.disabled)return;boton.disabled=true;
+  GameUI.text(lista,GameUI.key('menu.loadingRanking'));GameUI.text(propio,GameUI.key('menu.loadingPosition'));
+  try{
+    await asegurarConexionSalasVersus();
+    if(!adaptadorSalasVersus.obtenerRanking)throw Error('Conectate a internet para ver el ranking.');
+    const filas=await adaptadorSalasVersus.obtenerRanking(),me=filas.find(f=>f.me);
+    propio.replaceChildren();
+    if(me)propio.append(crearFilaRanking(me));
+    else{const message=document.createElement('p');GameUI.text(message,GameUI.key('menu.firstRanked'));propio.append(message);}
+    lista.replaceChildren();
+    const visible=filas.filter(f=>f.listed!==false).slice(0,50);
+    if(!visible.length)GameUI.text(lista,GameUI.key('menu.noRanking'));
+    for(const fila of visible){const item=document.createElement('div');item.setAttribute('role','listitem');item.append(crearFilaRanking(fila));lista.append(item);}
+  }catch(error){GameUI.text(lista,GameUI.error(error,'errors.rankingOnline'));GameUI.text(propio,GameUI.key('menu.rankingOffline'));}
+  finally{boton.disabled=false;}
+}
+
 document.getElementById("btnActualizarRanking").addEventListener("click", cargarRankingPublico);
 const rankingMenu = document.getElementById("rankingMenu");
 function abrirRankingMenu() {

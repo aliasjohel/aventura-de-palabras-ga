@@ -15,3 +15,28 @@
 #resultadoRangoVersus .puntos-animados{font-variant-numeric:tabular-nums;font-size:22px;color:#ffe1a0}
 @media(max-width:380px){.ranking-resumen{padding:12px}.ranking-resumen .rango-escudo{width:80px;height:90px}}
 #pantallaMenu #btnRankingMenu{border-color:#dbb966aa;background:linear-gradient(160deg,#795829aa,#302519bb);color:#fff2c7}
+/* Compact leaderboard: public details live in the profile, not in each row. */
+.ranking-dialogo .ranking-fijo { position:sticky; top:-1px; z-index:3; background:#101c2b; padding:4px 0 10px; }
+.ranking-fijo .menu-dialogo-cabecera { margin-bottom:8px; }
+.ranking-dialogo .ranking-resumen { margin:0; padding:8px 10px; border-radius:10px; background:#283022; }
+.ranking-dialogo .ranking-resumen h3 { margin:0 0 3px; font-size:11px; color:#d7c495; }
+.ranking-dialogo #miRanking>p { margin:6px 0; font-size:12px; }
+.ranking-dialogo #listaRanking { display:grid; gap:2px; max-height:none; overflow:visible; }
+.ranking-dialogo .ranking-fila { display:grid; grid-template-columns:minmax(34px,max-content) 28px minmax(0,1fr) auto 12px; align-items:center; gap:9px; width:100%; min-height:54px; margin:0; padding:7px 10px; border:1px solid transparent; border-radius:7px; background:#152335; color:#e7edf4; text-align:left; font:inherit; letter-spacing:normal; text-transform:none; cursor:pointer; }
+.ranking-dialogo .ranking-fila:hover { background:#20344a; border-color:#b9cce744; }
+.ranking-dialogo .ranking-fila:focus-visible { outline:2px solid #ffe19b; outline-offset:1px; }
+.ranking-dialogo .ranking-fila:disabled { opacity:1; cursor:default; }
+.ranking-fila .ranking-puesto { margin:0; font-size:13px; font-weight:700; color:#c0cede; font-variant-numeric:tabular-nums; }
+.ranking-fila .ranking-puesto[data-leader="true"] { color:#ffda83; }
+.ranking-fila .ranking-insignia { width:28px; height:32px; object-fit:contain; }
+.ranking-fila .ranking-identidad { min-width:0; }
+.ranking-identidad strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; font-weight:600; }
+.ranking-identidad small { display:block; margin-top:2px; font-size:10px; color:#a6bad0; }
+.ranking-puntos { min-width:36px; text-align:right; font-variant-numeric:tabular-nums; }
+.ranking-puntos strong { display:block; font-size:14px; color:#f5da9c; }.ranking-puntos small { display:block; font-size:9px; color:#a6bad0; }
+.ranking-flecha { color:#9bb2ca; font-size:20px; }
+.ranking-dialogo .ranking-fila.ranking-propio { border-color:#dcb96b77; background:#51412655; }
+.ranking-dialogo #miRanking .ranking-fila { padding:3px 0; min-height:46px; border:0; background:transparent; }
+.ranking-dialogo #miRanking .ranking-puesto { color:#ffe0a0; font-size:18px; }
+.ranking-dialogo .ranking-cabecera-lista { margin-top:12px; }.ranking-limite { margin:0 0 8px; font-size:11px; line-height:1.4; color:#a6bad0; }
+@media(max-width:380px) { .ranking-dialogo .ranking-fila { gap:6px; padding:6px; grid-template-columns:minmax(30px,max-content) 24px minmax(0,1fr) auto 10px; }.ranking-fila .ranking-insignia { width:24px; height:28px; } }

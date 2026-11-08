@@ -13,7 +13,7 @@
   "ranked": "RANKED",
   "leaderboardTitle": "Adventurer leaderboard",
   "closeLeaderboard": "Close leaderboard",
-  "yourPlace": "Your place in the adventure",
+  "yourPlace": "Your position",
   "rankingRules": "Win +3 · Draw +1 · Loss −1. Rookies do not lose points. Classic matches do not affect your rank.",
   "medals": "Explore the medals",
   "overallRanking": "Overall standings",
@@ -40,5 +40,8 @@
   "you": " (you)",
   "leader": "👑 Leaderboard leader",
   "rankingOffline": "Go online to check your position and points. You can explore the medals in the meantime.",
-  "singleTower": "SINGLE PLAYER · ARCADE TOWER"
+  "singleTower": "SINGLE PLAYER · ARCADE TOWER",
+  "pointsShort": "pts",
+  "rankingLimit": "Up to 50 players. Your position is always shown above.",
+  "rankingOpenRow": "Position {position}, {alias}, {rank}, {points} points. View profile."
 }
