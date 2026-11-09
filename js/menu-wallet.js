@@ -20,8 +20,9 @@
             balance.classList.remove('menu-saldo-aumenta');void balance.offsetWidth;balance.classList.add('menu-saldo-aumenta');
         }
         const xp=valid?globalThis.PlayerXP?.read():null;
-        level.hidden=!(xp?.userId===wallet?.accountId&&Number.isInteger(xp?.level)&&xp.level>=1);
-        if(!level.hidden){levelValue.textContent=PlayerXP.text('level',{n:xp.level});GameUI.attribute(level,'aria-label',GameUI.key('menu.levelProfile',{level:xp.level}));}
+        const validLevel=xp?.userId===wallet?.accountId&&Number.isInteger(xp?.level)&&xp.level>=1;
+        GameUI.text(levelValue,GameUI.key('menu.levelShort',{level:validLevel?xp.level:'—'}));
+        GameUI.attribute(level,'aria-label',GameUI.key(validLevel?'menu.levelProfile':'menu.levelUnavailable',{level:validLevel?xp.level:'—'}));
     }
     balance.addEventListener('click',()=>document.getElementById('btnTienda').click());
     level.addEventListener('click',()=>document.getElementById('btnMiAvatar').click());

@@ -1,4 +1,4 @@
-/* Local presentation proposal. No new artwork or background changes. */
+/* Main menu account snapshots. Existing artwork and background are preserved. */
 body #pantallaMenu.activa { justify-content: flex-start; }
 #pantallaMenu .menu-recursos {
     position: relative; z-index: 9; flex: 0 0 auto; align-self: stretch;
@@ -35,15 +35,20 @@ body:is(.intro-pendiente,.menu-fondo-pendiente) #pantallaMenu .menu-recursos { o
 .menu-saldo.menu-saldo-aumenta { animation: menu-saldo-recibido 650ms ease-out; }
 @keyframes menu-saldo-recibido { 25% { border-color: #ffe8a1; box-shadow: inset 0 1px #fff3bb55,0 0 16px #e8bd6159; transform: translateY(-1px); } 100% { transform: none; } }
 @media (max-width: 400px) {
-    #pantallaMenu .menu-recursos { gap: 7px; padding-left: max(12px,env(safe-area-inset-left)); padding-right: max(12px,env(safe-area-inset-right)); }
-    #pantallaMenu .menu-recursos #btnMiAvatar { gap: 5px; padding-right: 7px; font-size: 11px; }
-    #pantallaMenu .menu-saldo { min-width: 100px; padding-inline: 11px; gap: 7px; }
-    #pantallaMenu .menu-nivel { padding-inline: 7px; gap: 3px; font-size: 11px; }
+    #pantallaMenu .menu-recursos { gap: 5px; padding-left: max(12px,env(safe-area-inset-left)); padding-right: max(12px,env(safe-area-inset-right)); }
+    #pantallaMenu .menu-recursos #btnMiAvatar { gap: 4px; padding-right: 5px; font-size: 10px; }
+    #pantallaMenu .menu-recursos #avatarMenu .player-avatar { width: 28px; height: 28px; }
+    #pantallaMenu #btnMiAvatar > span:last-child > span[aria-hidden] { display: none; }
+    #pantallaMenu .menu-saldo { min-width: 88px; padding-inline: 8px; gap: 5px; }
+    #pantallaMenu .menu-moneda { flex-basis: 22px; width: 22px; height: 22px; font-size: 13px; }
+    #menuSaldoValor { font-size: 14px; }
+    #pantallaMenu .menu-nivel { padding-inline: 7px; gap: 3px; font-size: 12px; }
+    #pantallaMenu .menu-nivel > span:first-child { display: none; }
 }
-@media (max-width: 359px) {
+@media (max-width: 309px) {
     #pantallaMenu .menu-recursos #btnMiAvatar > span:last-child { display: none; }
     #pantallaMenu .menu-recursos #btnMiAvatar { padding: 4px; }
-    #pantallaMenu .menu-nivel { display: none; }
+    #pantallaMenu .menu-nivel { padding-inline: 4px; font-size: 11px; }
 }
 @media (max-height: 430px) {
     #pantallaMenu .menu-recursos { min-height: 62px; padding-block: max(6px,env(safe-area-inset-top)) 6px; }

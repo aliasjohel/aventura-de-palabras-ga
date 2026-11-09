@@ -188,6 +188,8 @@ globalThis.I18nSpanishUI=Object.freeze({
   "menu.walletOpen": "Saldo confirmado: {coins} monedas. Abrir tienda.",
   "menu.walletUnavailable": "Saldo pendiente de confirmación. Abrir tienda.",
   "menu.levelProfile": "Nivel {level}. Abrir mi perfil.",
+  "menu.levelShort": "Nv. {level}",
+  "menu.levelUnavailable": "Nivel pendiente de confirmación. Abrir mi perfil.",
   "profile.identity": "Identidad del jugador",
   "profile.player": "JUGADOR",
   "profile.adventurer": "Aventurero",

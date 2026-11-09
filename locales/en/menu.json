@@ -47,5 +47,7 @@
   "walletLabel": "Coins",
   "walletOpen": "Confirmed balance: {coins} coins. Open shop.",
   "walletUnavailable": "Balance awaiting confirmation. Open shop.",
-  "levelProfile": "Level {level}. Open my profile."
+  "levelProfile": "Level {level}. Open my profile.",
+  "levelShort": "Lv. {level}",
+  "levelUnavailable": "Level awaiting confirmation. Open my profile."
 }

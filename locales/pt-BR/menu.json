@@ -47,5 +47,7 @@
   "walletLabel": "Moedas",
   "walletOpen": "Saldo confirmado: {coins} moedas. Abrir loja.",
   "walletUnavailable": "Saldo aguardando confirmação. Abrir loja.",
-  "levelProfile": "Nível {level}. Abrir meu perfil."
+  "levelProfile": "Nível {level}. Abrir meu perfil.",
+  "levelShort": "Nv. {level}",
+  "levelUnavailable": "Nível aguardando confirmação. Abrir meu perfil."
 }
