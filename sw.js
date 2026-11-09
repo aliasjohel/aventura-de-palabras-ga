@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v419-adventure-music1`;
+const CACHE_NAME = `${CACHE_PREFIX}v420-quiet-adventure1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1459,7 +1459,7 @@ const ASSET_REVISIONS = {
   "./js/cosmetic-store.js": "sha256-84da6693912c22d309b7d3deb70691d744fead9869e22503cf1d65c5b4854a56",
   "./js/game-wallet.js": "sha256-ead41f75a39c07bbf25902dead7f5db1a9d790f5cabddd81952aafd29a15d2a9",
   "./js/adventure-rewards.js": "sha256-80ecf24ddb53f7095431afe7c05cc5bc0a39eae84845d561f7d5d5a3f4ab4db6",
-  "./js/adventure-reward-feedback.js": "sha256-0553eaa55721dbaa57ca5a2376afd2ae108d8c84d451ce3811f69d138d2183c4",
+  "./js/adventure-reward-feedback.js": "sha256-fd6b1015bdbe65242fb7627361acf46ea216e54646e4d71186c02f3fb9d12b61",
   "./js/adventure-xp-feedback.js": "sha256-fc28fccd1c07677f48b6c8bb611bdf40b2d03f3c1f10e50d1100b5ea8a4243ea",
   "./js/multiplayer-xp-feedback.js": "sha256-5583650f58c8d473be8f5190ea22461e67c2098165e288ac39054a20b4f5ca61",
   "./js/adventure-hints.js": "sha256-2837efbd8c3934eae089a53dcaaa0ea4497766ae464731bc756e84706696e5a4",

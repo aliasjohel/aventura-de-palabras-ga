@@ -8,7 +8,12 @@
   let note=document.getElementById('estadoRecompensaMision');if(!note){note=document.createElement('p');note.id='estadoRecompensaMision';note.className='estado-recompensa-mision';note.setAttribute('role','status');detail.after(note);}
   const status=AdventureRewards.status(escenarioActual,misionActual);
   note.dataset.rewardStatus=status;
-  note.textContent=text(status==='claimed'?'done':status==='processing'?'verify':status==='unavailable'?'off':!navigator.onLine||status==='replay_required'?'offline':'online');
+  // Normal play needs no payment instructions or server-status narration.
+  // Keep actionable warnings and the separate confirmed-reward notification.
+  const warning=status==='unavailable'?'off'
+   :!['claimed','processing'].includes(status)&&(!navigator.onLine||status==='replay_required')?'offline':null;
+  note.hidden=!warning;
+  note.textContent=warning?text(warning):'';
  }
  function show(receipt){
   if(globalThis.AdventureXPFeedback){AdventureXPFeedback.coin(receipt);return;}
