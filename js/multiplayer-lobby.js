@@ -28,12 +28,19 @@
    open(input);
   });
  }
- document.getElementById('btnModosJuego').addEventListener('click',()=>{
-  if(selector.open){pausarMusicaMenu();CharacterMusic.sync();}
- });
- selector.addEventListener('close',()=>{
+ // Dialogs reopen through map navigation or Escape without a card click.
+ // Observe settled state so close/open pairs never resume the menu score.
+ const menu=document.getElementById('pantallaMenu');
+ const map=document.getElementById('mapaAventura');
+ function syncMusic(){
+  if(document.hidden || !menu.classList.contains('activa') || selector.open || map.open)pausarMusicaMenu();
+  else reproducirMusicaMenu();
   CharacterMusic.sync();
-  if(document.getElementById('pantallaMenu').classList.contains('activa')&&!document.hidden)reproducirMusicaMenu();
- });
+ }
+ const musicObserver=new MutationObserver(syncMusic);
+ for(const dialog of [selector,map])musicObserver.observe(dialog,{attributes:true,attributeFilter:['open']});
+ musicObserver.observe(menu,{attributes:true,attributeFilter:['class']});
+ document.addEventListener('visibilitychange',syncMusic);
+ window.addEventListener('pageshow',syncMusic);
  globalThis.MultiplayerLobby=Object.freeze({syncAlias});
 })();

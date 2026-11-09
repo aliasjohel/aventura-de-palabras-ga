@@ -10789,7 +10789,12 @@ function reproducirMusicaPrologo() {
 }
 
 function reproducirMusicaMenu() {
-  if (document.getElementById('selectorModosJuego')?.open) return;
+  if (document.hidden || !pantallaMenu.classList.contains('activa')
+    || document.getElementById('selectorModosJuego')?.open
+    || document.getElementById('mapaAventura')?.open) {
+    pausarMusicaMenu();
+    return;
+  }
   if (!musicaMenu.paused) return;
 
   musicaMenu.play().catch((error) => {
@@ -17710,7 +17715,8 @@ CharacterMusic.configure(() => ({
   opponent: personajeRivalVersus,
   lobby: !modalTutorialVersus.classList.contains('oculto') ? null
     : pantallaSalaVersus.classList.contains('activa') && !inicioSalaVersus.classList.contains('oculto') ? 'multiplayer'
-    : pantallaMenu.classList.contains('activa') && selectorModosJuego.open ? 'adventure' : null,
+    : pantallaMenu.classList.contains('activa')
+      && (selectorModosJuego.open || document.getElementById('mapaAventura').open) ? 'adventure' : null,
   duel: pantallaVersus.classList.contains("activa")
     && resultadoRondaVersus.classList.contains("oculto")
     && !tutorialCombateVersus.activo,

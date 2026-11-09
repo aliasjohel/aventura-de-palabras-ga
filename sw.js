@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v418-lobby-actions-music1`;
+const CACHE_NAME = `${CACHE_PREFIX}v419-adventure-music1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1225,7 +1225,7 @@ const ASSET_REVISIONS = {
   "./assets/images/ui/adventure-card-v1.webp": "sha256-e6e667cdd21c70783c35b9f77c585d68c9992c20cac97ad0a88afb6cb9f65696",
   "./assets/images/ui/multiplayer-classic-card-v1.webp": "sha256-9f23c484eea382fd97bd833465f080a61ea52b6566e84792fb12dc99cd8e433b",
   "./assets/images/ui/multiplayer-ranked-card-v1.webp": "sha256-5e00b9a3fea32f18a0e5e076db56396cde362a02d32086fd7786a402c115d066",
-  "./js/multiplayer-lobby.js": "sha256-4bf168a5204a87a038118fb8e9a13df15d9dfb062279d1272d299372ff80b8d1",
+  "./js/multiplayer-lobby.js": "sha256-dba0c3ffb7bf2cfc26a67daba0efa85a438e64212fe28658acd021b6b42d14a9",
   "./assets/sounds/lobby-multiplayer-epic-march-v1.mp3": "sha256-51fbc3957c38a12d1dce66d1256b56de424a3d56378d5ccb1359b80eb2afc404",
   "./assets/sounds/lobby-adventure-old-tower-inn-v1.mp3": "sha256-1fe3fce05b50aefac33b9cb0b3e994f4cfb96d56d28ed139043910ffeacdbf50",
   "./assets/licenses/lobby-music.txt": "sha256-2e5f747bbd0b7c136b3714621911d9fd3051be56725898cdd12d337d4c611619",
@@ -1646,7 +1646,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-9063d1a9401537e47c6fe17303091298d1379abb815536f3f8e902f5ba1339d6",
+  "./js/app.js": "sha256-8beb0f95df0adb2c6bab4837b5376935d378e4be9bca6494b20d18bbaaa96490",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
