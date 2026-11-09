@@ -5686,8 +5686,11 @@ function sincronizarTecladoDueloAventura() {
   const bloqueado = (modoArcadeActivo&&torreEnCurso&&(!torreAutoritativa.active()||torreAutoritativa.paused()||!navigator.onLine)) || !estado.started || estado.finished || jugador.finished
     || ['roots','black_hole','key_bounce','ice_screen','key_theft','time_steal','forced_miss'].includes(jugador.effect);
   tecladoVersus.querySelectorAll('button').forEach(boton => {
-    boton.disabled = bloqueado || jugador.letters.includes(boton.textContent)
-      || letrasPendientesDueloAventura.has(jugador.index + ':' + boton.textContent);
+    const usada = jugador.letters.includes(boton.textContent);
+    const pendiente = letrasPendientesDueloAventura.has(jugador.index + ':' + boton.textContent);
+    boton.disabled = bloqueado || usada || pendiente;
+    boton.dataset.entradaDuelo = usada ? 'confirmada' : pendiente ? 'pendiente' : '';
+    boton.setAttribute('aria-busy', pendiente ? 'true' : 'false');
   });
 }
 
@@ -7227,7 +7230,7 @@ async function jugarLetraVersus(letra, boton) {
     const word = AdventureOnline.view().detail.player.index;
     const clave = word + ':' + letra;
     letrasPendientesDueloAventura.add(clave);
-    boton.disabled = true;
+    sincronizarTecladoDueloAventura();
     try { await autoridadDueloAventura.send({op:'letter',letter:letra,word}); }
     finally { letrasPendientesDueloAventura.delete(clave); if(autoridadDueloAventura.active())sincronizarTecladoDueloAventura(); }
     return;
@@ -13493,6 +13496,14 @@ async function presentarDesafioMagoDesierto() {
   const mensaje = document.createElement("div");
   const titulo = document.createElement("strong");
   const texto = document.createElement("p");
+  const continuar = document.createElement("button");
+  const focoAnterior = document.activeElement;
+  const lecturaTerminada = new Promise(resolve => {
+    continuar.addEventListener('click', () => {
+      continuar.disabled = true;
+      resolve();
+    }, { once: true });
+  });
 
   capa.className = "encuentro-mago-desierto desafio-mago-desierto";
   capa.setAttribute("aria-live", "polite");
@@ -13503,18 +13514,25 @@ async function presentarDesafioMagoDesierto() {
   titulo.textContent = "La prueba final del desierto";
   texto.textContent =
     "Liberaste al Devoradunas, pero el cristal exige un guardián preparado. Venceme en un duelo de palabras y te ayudaré a llevarlo al siguiente mundo.";
-  mensaje.append(titulo, texto);
+  continuar.type = 'button';
+  continuar.className = 'continuar-desafio-mago';
+  GameUI.text(continuar, GameUI.key('adventure.narrative.extra37'));
+  mensaje.append(titulo, texto, continuar);
   capa.append(mago, mensaje);
   contenedorEscenario.appendChild(capa);
 
   try {
     requestAnimationFrame(() => capa.classList.add("visible"));
-    await esperarMovimiento(prefiereReducirMovimiento.matches ? 450 : 2800);
+    continuar.focus();
+    // Reading is controlled by the player, independently of animation settings.
+    await lecturaTerminada;
     capa.classList.add("saliendo");
     await esperarMovimiento(prefiereReducirMovimiento.matches ? 120 : 650);
   } finally {
+    const devolverFoco = document.activeElement === continuar;
     capa.remove();
     tema.close();
+    if (devolverFoco && focoAnterior?.isConnected) focoAnterior.focus();
   }
 }
 
