@@ -3,12 +3,12 @@ body #pantallaMenu.activa { justify-content: flex-start; }
 #pantallaMenu .menu-recursos {
     position: relative; z-index: 9; flex: 0 0 auto; align-self: stretch;
     display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
-    align-items: center; gap: 12px; min-height: 96px;
+    align-items: center; gap: 12px; min-height: 76px;
     padding: max(12px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));
 }
 #pantallaMenu .menu-recursos .menu-perfil { order: 0; width: auto; min-width: 0; justify-self: start; align-items: center; gap: 8px; }
-#pantallaMenu .menu-recursos #btnMiAvatar { min-height: 62px; gap: 7px; padding: 5px 10px 5px 5px; background: #061923e8; }
-#pantallaMenu .menu-recursos #avatarMenu .player-avatar { width: 40px; height: 40px; }
+#pantallaMenu .menu-recursos #btnMiAvatar { min-height: 58px; gap: 7px; padding: 5px 10px 5px 5px; background: #061923e8; }
+#pantallaMenu .menu-recursos #avatarMenu .player-avatar { width: 46px; height: 46px; }
 #pantallaMenu .menu-recursos button { transition: border-color .2s, background-color .2s; }
 #pantallaMenu .menu-recursos button:focus-visible { outline: 2px solid #ffe7a2; outline-offset: 4px; }
 #pantallaMenu .menu-saldo {
@@ -24,39 +24,39 @@ body #pantallaMenu.activa { justify-content: flex-start; }
 #menuSaldoValor { font: bold clamp(15px,3.8vw,21px)/1.1 Georgia,serif; font-variant-numeric: tabular-nums; white-space: nowrap; }
 #pantallaMenu .menu-saldo:hover { border-color: #ffe3a1; background-color: #26382c; }
 #pantallaMenu .menu-perfil-identidad { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 0 0 auto; }
-#pantallaMenu .menu-perfil-texto { white-space: nowrap; }
+#pantallaMenu .menu-perfil-texto { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; white-space: nowrap; }
 #pantallaMenu .menu-nivel { display: inline-flex; align-items: center; justify-content: center; padding: 2px 5px; border: 1px solid #af916b8a; border-radius: 7px; color: #ffe1a1; background: #132329; font: bold 10px/1.1 Georgia,serif; white-space: nowrap; }
 body #pantallaMenu .menu-recursos + .menu-contenido {
     flex: 0 1 auto; margin-top: auto; margin-bottom: auto;
-    max-height: calc(100dvh - 112px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    max-height: calc(100dvh - 124px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
     overflow-y: auto; overscroll-behavior: contain;
 }
 body:is(.intro-pendiente,.menu-fondo-pendiente) #pantallaMenu .menu-recursos { opacity: 0; visibility: hidden; pointer-events: none; }
 .menu-saldo.menu-saldo-aumenta { animation: menu-saldo-recibido 650ms ease-out; }
 @keyframes menu-saldo-recibido { 25% { border-color: #ffe8a1; box-shadow: inset 0 1px #fff3bb55,0 0 16px #e8bd6159; transform: translateY(-1px); } 100% { transform: none; } }
+/* Safe insets are consumed once here, including standalone Android. */
+body:has(#pantallaMenu.activa) > .app { padding: 0; }
+body #pantallaMenu.activa { height: 100dvh; min-height: 0; }
+#pantallaMenu .menu-actualizaciones { position: relative; z-index: 6; flex: 0 0 auto; align-self: center; min-height: 44px; margin: 4px auto 0; padding: 10px 14px; }
 @media (max-width: 700px) {
-    #pantallaMenu .menu-recursos #btnMiAvatar { gap: 5px; padding: 4px; font-size: 12px; }
-    #pantallaMenu .menu-recursos #avatarMenu .player-avatar { width: 36px; height: 36px; }
-    #pantallaMenu #btnMiAvatar > span:last-child > span[aria-hidden] { display: none; }
-}
-@media (max-width: 400px) {
-    #pantallaMenu .menu-recursos { gap: 5px; padding-left: max(12px,env(safe-area-inset-left)); padding-right: max(12px,env(safe-area-inset-right)); }
-    #pantallaMenu .menu-saldo { min-width: 88px; padding-inline: 8px; gap: 5px; }
+    body #pantallaMenu.activa { padding: max(6px,var(--menu-safe-top,env(safe-area-inset-top))) max(8px,var(--menu-safe-right,env(safe-area-inset-right))) max(6px,var(--menu-safe-bottom,env(safe-area-inset-bottom))) max(8px,var(--menu-safe-left,env(safe-area-inset-left))); }
+    #pantallaMenu .menu-recursos { display: flex; justify-content: flex-start; gap: clamp(8px,3vw,16px); min-height: 64px; padding: 0 0 6px; }
+    #pantallaMenu .menu-recursos #btnMiAvatar { flex-direction: row; gap: 6px; padding: 5px 7px; font-size: 13px; border-radius: 20px; }
+    #pantallaMenu .menu-recursos #avatarMenu .player-avatar { width: 44px; height: 44px; }
+    #pantallaMenu .menu-nivel { font-size: 10px; padding: 2px 5px; }
+    #pantallaMenu .menu-saldo { align-self: center; min-width: 88px; padding-inline: 8px; gap: 5px; }
     #pantallaMenu .menu-moneda { flex-basis: 22px; width: 22px; height: 22px; font-size: 13px; }
     #menuSaldoValor { font-size: 14px; }
+    body #pantallaMenu .menu-recursos + .menu-contenido { flex: 0 1 auto; min-height: 0; max-height: none; margin: 0 auto; width: min(100%,410px); padding: 12px; gap: 7px; overflow-y: auto; }
+    #pantallaMenu .menu-contenido .studio { margin: 0; font-size: 17px; }
+    #pantallaMenu .menu-contenido .subtitulo { margin: 0; font-size: 15px; }
+    #pantallaMenu .menu-contenido .estado-offline-juego { margin: 0; padding: 7px 10px; font-size: 11px; }
+    #pantallaMenu .menu-actualizaciones { min-height: 44px; font-size: 11px; }
 }
-@media (max-width: 459px) {
-    #pantallaMenu .menu-recursos { min-height: 108px; }
-    #pantallaMenu .menu-recursos #btnMiAvatar { flex-direction: column; gap: 4px; font-size: 12px; border-radius: 18px; padding: 5px; }
-    body #pantallaMenu .menu-recursos + .menu-contenido { max-height: calc(100dvh - 124px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
-}
-@media (max-width: 309px) {
-    #pantallaMenu .menu-nivel { font-size: 9px; padding-inline: 3px; }
-    #pantallaMenu .menu-recursos #btnMiAvatar { font-size: 11px; }
-}
-@media (max-height: 430px) {
-    #pantallaMenu .menu-recursos { min-height: 82px; padding-block: max(6px,env(safe-area-inset-top)) 6px; }
-    body #pantallaMenu .menu-recursos + .menu-contenido { max-height: calc(100dvh - 94px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
+@media (max-width: 700px) and (max-height: 760px) {
+    body #pantallaMenu .menu-recursos + .menu-contenido { gap: 5px; padding: 8px 10px; }
+    #pantallaMenu .titulo.menu-logo { width: min(100%,240px); }
+    #pantallaMenu .menu-contenido > :is(#btnJugar,#btnModosJuego,#btnRankingMenu,#btnTienda,#btnConfiguracion) { min-height: 50px; padding: 10px 26px; font-size: 17px; }
 }
 @media (orientation: landscape) and (max-height: 430px) {
     body #pantallaMenu .menu-recursos + .menu-contenido {

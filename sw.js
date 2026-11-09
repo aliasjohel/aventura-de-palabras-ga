@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v412-profile-level1`;
+const CACHE_NAME = `${CACHE_PREFIX}v413-mobile-header1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1211,7 +1211,7 @@ const ASSET_REVISIONS = {
   "./assets/images/tower-preview/aren-campeon-vidrio-v1.webp": "sha256-3fc110321c34224e8084b34548d8d7fdb6538e14dbde7d5ca8ea2cd6399b402c",
   "./assets/sounds/menu-impacto-roca-v1.wav": "sha256-265389468bc81c463150fa08ca2d60114807e87afc2966ef18636554a370395f",
   "./css/menu-fantasy.css": "sha256-83029d814e240b8a857266adf8dc3cebeabaa2727a2a9499907b21c011608867",
-  "./css/menu-wallet.css": "sha256-5d5f46b7ad89556d20ae7b58c4892de73cc6744899f6e48fe60a8638a731af85",
+  "./css/menu-wallet.css": "sha256-36ea3430835b2bfd39eef6a4d3cbe777873af6d6b160cc6d7f6d3b7f528dc396",
   "./js/menu-effects.js": "sha256-ee40da73dfa9244ff7a09d03b475c66925bd6beb26b207f70ffc237e3275e86a",
   "./assets/images/ui/menu-logo-fantasia-v2.webp": "sha256-c18201d7164953aa58101b0c6c07bf3e7f8f32e07e2eb0128c3ffeeb1e5c513d",
   "./assets/images/ui/menu-button-adventure-v1.webp": "sha256-511977b61176cee0e2a204c756c3b798c13640f915d0e2a3dafa64191d5e9a03",
@@ -1529,9 +1529,9 @@ const ASSET_REVISIONS = {
   "./css/player-xp.css": "sha256-4c9fcdf5db7d3765f6697694dd4c6af32070347e0a378027b65ee9e90a1cde12",
   "./js/public-player-profile.js": "sha256-f90642343b1e76a63d0598540d814781bfb9b06ce0b03c3e43b03ce64b290df3",
   "./js/match-likes.js": "sha256-a96befb24dac2e802f4e9318221e02488ef938400d8eead0b7278f8b160744d5",
-  "./js/menu-wallet.js": "sha256-6d6f8a94141ffc6fc137ad70ef050b2f3550eb41659b61c91557aac250e57237",
-  "./": "sha256-a893f907aec2be6b39cc1337c092652bb1b55f3eae01dd1aca9b99ec60f7b583",
-  "./index.html": "sha256-a893f907aec2be6b39cc1337c092652bb1b55f3eae01dd1aca9b99ec60f7b583",
+  "./js/menu-wallet.js": "sha256-b6dfeea9d16dd67d4181b8c768c0b990a38332659d21bf17515aae2105745f9c",
+  "./": "sha256-2d502b78a0fd9e3c8bd534e029810a00280077a80882670fe0e682dbd2f94f4e",
+  "./index.html": "sha256-2d502b78a0fd9e3c8bd534e029810a00280077a80882670fe0e682dbd2f94f4e",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-da945cb0c3657bc19eea4c3eba4bb1f92785384493fd56d429c5bba84f4491c5",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",

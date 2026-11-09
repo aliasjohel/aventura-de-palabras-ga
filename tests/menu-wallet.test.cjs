@@ -40,3 +40,25 @@ test('real GameWallet and CosmeticStore pipeline: sync, reward snapshot, purchas
  await store.purchase('aren-bosque');assert.equal(f.elements.menuSaldoValor.textContent,new Intl.NumberFormat('es').format(2500));assert.ok(calls.some(c=>c.name==='purchase_game_costume'));
  wallet.connect(null,null);assert.equal(f.elements.menuSaldoValor.textContent,'—');assert.equal(f.elements.menuNivel.hidden,false);assert.equal(f.elements.menuNivelValor.textContent,'Nv. —');
 });
+
+test('cold menu restores matching persisted session and delayed server XP without opening shop',async()=>{
+ const f=fixture();let finishSession,reads=0,connects=0;
+ f.context.AventuraOnline={cargarSupabase:async()=>{}};
+ f.context.AventuraSupabase={obtenerCliente:()=>({auth:{getSession:()=>{reads++;return new Promise(resolve=>finishSession=resolve);}}})};
+ f.context.AventuraShop={testing:()=>false,connect:async()=>{connects++;f.xp({userId:'cached-account',level:4});f.emit('player-xp-updated');}};
+ f.wallet({accountId:'cached-account',securityReady:true,coins:1790});f.emit('wallet-updated');f.emit('wallet-local-changed');f.emit('wallet-updated');
+ await new Promise(setImmediate);assert.equal(reads,1);assert.equal(connects,0);assert.equal(f.elements.menuNivelValor.textContent,'Nv. —');
+ finishSession({data:{session:{user:{id:'cached-account'}}}});await new Promise(setImmediate);
+ assert.equal(connects,1);assert.equal(f.elements.menuNivelValor.textContent,'Nv. 4');assert.equal(f.elements.btnTienda.clicks,undefined);assert.equal(f.elements.btnMiAvatar.clicks,undefined);
+});
+test('level bootstrap never connects absent/mismatched sessions or after logout',async()=>{
+ for(const session of [null,{user:{id:'other'}}]){
+ const f=fixture();let connects=0;f.context.AventuraOnline={cargarSupabase:async()=>{}};f.context.AventuraSupabase={obtenerCliente:()=>({auth:{getSession:async()=>({data:{session}})}})};f.context.AventuraShop={testing:()=>false,connect:async()=>connects++};
+ f.wallet({accountId:'cached-account',securityReady:true,coins:1790});f.emit('wallet-updated');await new Promise(setImmediate);f.emit('wallet-updated');await new Promise(setImmediate);assert.equal(connects,0);assert.equal(f.elements.menuNivelValor.textContent,'Nv. —');}
+ const f=fixture();let finishSession,connects=0;f.context.AventuraOnline={cargarSupabase:async()=>{}};f.context.AventuraSupabase={obtenerCliente:()=>({auth:{getSession:()=>new Promise(resolve=>finishSession=resolve)}})};f.context.AventuraShop={testing:()=>false,connect:async()=>connects++};f.wallet({accountId:'cached-account',securityReady:true,coins:1790});f.emit('wallet-updated');await new Promise(setImmediate);f.emit('wallet-session-ended');finishSession({data:{session:{user:{id:'cached-account'}}}});await new Promise(setImmediate);assert.equal(connects,0);assert.equal(f.elements.menuNivelValor.textContent,'Nv. —');
+});
+
+test('header level sync stays offline/test-safe and retries existing XP read after partial wallet failure',async()=>{
+ const f=fixture();let sessions=0,connects=0,xpSyncs=0;f.context.navigator={onLine:false};f.context.AventuraOnline={cargarSupabase:async()=>{}};f.context.AventuraSupabase={obtenerCliente:()=>({auth:{getSession:async()=>{sessions++;return {data:{session:{user:{id:'cached-account'}}}};}}})};f.context.AventuraShop.connect=async()=>{connects++;throw Error('characters sync failed');};f.context.PlayerXP.sync=async()=>{xpSyncs++;f.xp({userId:'cached-account',level:4});f.emit('player-xp-updated');};f.wallet({accountId:'cached-account',securityReady:true,coins:1790});f.emit('wallet-updated');await new Promise(setImmediate);assert.equal(sessions,0);
+ f.context.navigator.onLine=true;f.testing(true);f.emit('wallet-updated');await new Promise(setImmediate);assert.equal(sessions,0);f.testing(false);f.emit('wallet-updated');await new Promise(setImmediate);assert.equal(connects,1);assert.equal(xpSyncs,1);assert.equal(f.elements.menuNivelValor.textContent,'Nv. 4');f.emit('focus');await new Promise(setImmediate);assert.equal(connects,1);
+});
