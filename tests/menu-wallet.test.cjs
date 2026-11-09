@@ -22,7 +22,7 @@ test('reduced motion; test mode; matching XP; navigation and large balances',()=
  f.wallet({accountId:'qa',securityReady:true,coins:1234567});f.emit('wallet-updated');assert.equal(e.menuSaldo.classList.contains('menu-saldo-aumenta'),false);assert.ok(e.menuSaldoValor.textContent.length<10);assert.equal(e.menuSaldo['aria-label'].args.coins,new Intl.NumberFormat('es').format(1234567));
  f.xp({userId:'other',level:12});f.emit('player-xp-updated');assert.equal(e.menuNivel.hidden,false);assert.equal(e.menuNivelValor.textContent,'Nv. —');
  f.xp({userId:'qa',level:12});f.emit('player-xp-updated');assert.equal(e.menuNivel.hidden,false);assert.equal(e.menuNivelValor.textContent,'Nv. 12');
- e.menuSaldo.click();e.menuNivel.click();assert.equal(e.btnTienda.clicks,1);assert.equal(e.btnMiAvatar.clicks,1);
+ e.menuSaldo.click();e.btnMiAvatar.click();assert.equal(e.btnTienda.clicks,1);assert.equal(e.btnMiAvatar.clicks,1);
  f.testing(true);e.modoPruebas.change();assert.equal(e.menuSaldoValor.textContent,'—');assert.equal(e.menuNivel.hidden,false);assert.equal(e.menuNivelValor.textContent,'Nv. —');
 });
 

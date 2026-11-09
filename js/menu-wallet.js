@@ -25,7 +25,6 @@
         GameUI.attribute(level,'aria-label',GameUI.key(validLevel?'menu.levelProfile':'menu.levelUnavailable',{level:validLevel?xp.level:'—'}));
     }
     balance.addEventListener('click',()=>document.getElementById('btnTienda').click());
-    level.addEventListener('click',()=>document.getElementById('btnMiAvatar').click());
     balance.addEventListener('animationend',()=>balance.classList.remove('menu-saldo-aumenta'));
     window.addEventListener('wallet-updated',()=>{sessionEnded=false;render();});
     window.addEventListener('wallet-local-changed',render);
