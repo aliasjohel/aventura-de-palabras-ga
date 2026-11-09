@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v413-mobile-header1`;
+const CACHE_NAME = `${CACHE_PREFIX}v414-match-likes1`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1632,7 +1632,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-fad15686b3f3c3c4bcd5dd9a7e82a257e2477e4ea943424d202ef73b58b76e2c",
+  "./js/app.js": "sha256-26d0a3caccfc08298b58382622d5aa5877161ab771ae177575b95ecfb4170af3",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",

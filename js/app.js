@@ -9116,9 +9116,10 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
       void mostrarResultadoRango(partidaOnlineVersus.matchId);
       void mostrarPremioVersus(partidaOnlineVersus.matchId);
       const matchId = partidaOnlineVersus.matchId, adapter = adaptadorSalasVersus;
+      resultadoRondaVersus.dataset.likeMatchId = matchId;
       void globalThis.MatchLikes?.show(matchId, adapter, () =>
-        adaptadorSalasVersus === adapter && partidaOnlineVersus?.matchId === matchId &&
-        !resultadoRondaVersus.classList.contains('oculto'));
+        adaptadorSalasVersus === adapter && resultadoRondaVersus.dataset.likeMatchId === matchId &&
+        pantallaVersus.classList.contains('activa') && !resultadoRondaVersus.classList.contains('oculto'));
     }
   }
 }
