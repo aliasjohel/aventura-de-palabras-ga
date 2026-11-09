@@ -41,7 +41,7 @@ const cierreOnline = app.slice(
   app.indexOf("function finalizarPartidaOnline"),
   app.indexOf("function actualizarPartidaOnline"),
 );
-assert.match(cierreOnline, /reproducirCierrePartidaVersus\(ganador, detalle, palabraPerdida\)/);
+assert.match(cierreOnline, /reproducirCierrePartidaVersus\(ganador, detalle, palabraPerdida(?:,|\))/);
 assert.doesNotMatch(cierreOnline, /mostrarResultadoPartidaVersus\(ganador, detalle\)/);
 
 for (const ataque of ["bumeran", "raices", "rugido-dragon", "zarpazo-feral", "corte-sombrio", "corte-solar"]) {

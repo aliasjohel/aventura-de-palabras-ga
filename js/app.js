@@ -2052,7 +2052,9 @@ function finalizarPartidaOnline(partida) {
     ? eventoPrevio.word || ""
     : "";
   const palabraPerdida = ganador === "rival" ? palabraEvento : "";
-  reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida);
+  reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida, {
+    matchId: partida.matchId, adapter: adaptadorSalasVersus, user: adaptadorSalasVersus.obtenerUsuarioId?.(),
+  });
 }
 
 function actualizarPartidaOnline(partida) {
@@ -8931,7 +8933,7 @@ function mostrarAnuncioFinVersus(palabraPerdida = "", anticipacion = false, gana
   });
 }
 
-async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = "") {
+async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = "", likeResult = null) {
   if (tutorialCombateVersus.activo) {
     await mostrarVictoriaTutorialVersus();
     return;
@@ -8948,7 +8950,7 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
   }
 
   if (ganador === "empate") {
-    mostrarResultadoPartidaVersus(ganador, detalle);
+    mostrarResultadoPartidaVersus(ganador, detalle, likeResult);
     return;
   }
 
@@ -8967,7 +8969,7 @@ async function reproducirCierrePartidaVersus(ganador, detalle, palabraPerdida = 
   );
   await reproducirFinal();
   await mostrarAnuncioFinVersus(palabraPerdida);
-  mostrarResultadoPartidaVersus(ganador, detalle);
+  mostrarResultadoPartidaVersus(ganador, detalle, likeResult);
 }
 
 let animacionResultadoRango = 0;
@@ -9019,7 +9021,7 @@ async function mostrarResultadoRango(matchId) {
     render(inicio);
   } catch (_) { if (partidaOnlineVersus?.matchId === matchId) CombatUI.text(nodo, 'Podés consultar tus puntos en tu perfil cuando vuelva la conexión.'); }
 }
-function mostrarResultadoPartidaVersus(ganador, detalle) {
+function mostrarResultadoPartidaVersus(ganador, detalle, likeResult = null) {
   globalThis.MatchLikes?.clear();
   globalThis.MultiplayerXPFeedback?.clear();
   document.getElementById('resultadoMonedasVersus').hidden = true;
@@ -9115,7 +9117,12 @@ function mostrarResultadoPartidaVersus(ganador, detalle) {
     if (partidaOnlineVersus?.matchId) {
       void mostrarResultadoRango(partidaOnlineVersus.matchId);
       void mostrarPremioVersus(partidaOnlineVersus.matchId);
-      const matchId = partidaOnlineVersus.matchId, adapter = adaptadorSalasVersus;
+    }
+    // Keep only like presentation context across room cleanup, including the final cinematic.
+    const receipt = likeResult || {matchId: partidaOnlineVersus?.matchId, adapter: adaptadorSalasVersus, user: adaptadorSalasVersus.obtenerUsuarioId?.()};
+    if (receipt.matchId && receipt.adapter === adaptadorSalasVersus && receipt.user === adaptadorSalasVersus.obtenerUsuarioId?.()
+      && (!partidaOnlineVersus || partidaOnlineVersus.matchId === receipt.matchId)) {
+      const matchId = receipt.matchId, adapter = receipt.adapter;
       resultadoRondaVersus.dataset.likeMatchId = matchId;
       void globalThis.MatchLikes?.show(matchId, adapter, () =>
         adaptadorSalasVersus === adapter && resultadoRondaVersus.dataset.likeMatchId === matchId &&

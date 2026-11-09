@@ -2,7 +2,7 @@
 
 Base publicada comprobada: v413-mobile-header1, 3ec120a0dd542fcac756582cb39931b384d42d5f. Propuesta original revisada: 8feff4240752c0595254a90673767f5bb37cc1d7. Se prepara esta entrega sobre v413; no se restaura el árbol antiguo ni se copian sus archivos de juego.
 
-Migración específica: **20261109014503_retain_post_cleanup_match_likes.sql**. Versión PWA: **v414-match-likes1**.
+Migración específica: **20261109014503_retain_post_cleanup_match_likes.sql**. Versión PWA: **v414-match-likes2**.
 
 ## Causa y corrección
 
@@ -10,7 +10,7 @@ El helper alojado conservaba la definición original y requería que la partida 
 
 La comprobación de finalización y la selección del rival usan una sola instantánea SQL: una eliminación concurrente de la sala no separa ambas decisiones. Un duelo activo no se vuelve elegible por tener filas históricas. Un historial incompleto o heredado sin fecha se rechaza; no se repara ni se inventa una partida.
 
-También se corrigió un segundo fallo: el cliente descartaba partidaOnlineVersus al recibir la eliminación de la sala y el botón dejaba de considerar actual un resultado que seguía visible. Ahora el contexto de Me gusta se vincula al resultado mostrado, al adaptador y a la cuenta, mientras esa pantalla siga activa. No se conserva la partida como autoridad del juego, no se repiten resultados ni se liquidan premios.
+También se corrigió un segundo fallo: el cliente descartaba partidaOnlineVersus al recibir la eliminación de la sala y el botón dejaba de considerar actual un resultado que seguía visible. Ahora el contexto de Me gusta se captura al recibir la finalización y se transporta a través del cierre visual hasta el resultado, vinculado al adaptador y a la cuenta. Cubre limpieza durante la cinemática y después de mostrar el resultado, mientras esa pantalla siga activa. No se conserva la partida como autoridad del juego, no se repiten resultados ni se liquidan premios.
 
 ## Seguridad y compatibilidad
 
@@ -26,13 +26,14 @@ La revisión alojada encontró 36 filas de historial y 0 votos. El índice de hi
 
 ## Archivos de esta entrega
 
-- js/app.js: solo el contexto de vigencia del botón dentro de mostrarResultadoPartidaVersus.
+- js/app.js: captura y traslado del contexto de Me gusta desde finalizarPartidaOnline, a través de reproducirCierrePartidaVersus, hasta mostrarResultadoPartidaVersus. Los tiempos, animaciones, reglas y llamadas de premios se conservan.
 - sw.js: versión PWA y hash generado de app.js.
 - supabase/migrations/20261109014503_retain_post_cleanup_match_likes.sql: sustitución protegida de un helper, sin reescritura de datos ni GRANT/REVOKE.
 - tools/tower-rewards-qa/check-match-like-retention.cjs y check-match-like-retention-browser.cjs: PostgreSQL aislado, permisos, concurrencia y dos navegadores.
+- tests/versus-ui.test.cjs: mantiene la comprobación del cierre y palabra perdida, permitiendo el contexto auxiliar del botón.
 - Este informe.
 
-Se mantienen intactos el menú aprobado, sus estilos, PlayerXP, monedero, ranking, Torre, anuncios, assets y los demás archivos pendientes. El SQL y las páginas publicadas se verifican contra el commit de esta entrega.
+Se mantienen intactos el menú aprobado, sus estilos, PlayerXP, monedero, ranking, Torre, anuncios, assets y los demás archivos pendientes. El SQL y las páginas publicadas se verifican contra los commits de esta entrega. La migración se instaló desde 21027c5; la revisión 2 del cliente añade cobertura de limpieza durante la cinemática y no instala otra migración.
 
 ## Pruebas realizadas
 
@@ -40,7 +41,7 @@ Se mantienen intactos el menú aprobado, sus estilos, PlayerXP, monedero, rankin
 - PostgreSQL aislado: sala/partida todavía existente, limpieza antes del primer voto, rechazo con partida activa, historial incompleto/de tres jugadores/sin fecha, tercero ajeno, identidad nula, parámetros inválidos, destinatario arbitrario y escritura directa no autorizada.
 - Solicitudes simultáneas del mismo remitente, reintentos y 12 carreras entre limpieza y voto. Un recibo por remitente y duelo.
 - Votos recíprocos independientes, conteos de ambos perfiles y persistencia de recibos creados antes de migrar. La reversión del helper conserva los recibos; la eliminación de cuenta respeta las cascadas ya existentes.
-- Navegador real + PostgreSQL local: trigger real que crea el historial al terminar, eliminación de sala con cascada de tablas temporales antes de votar, notificación al cliente que elimina su partida temporal, voto voluntario, respuesta perdida y reintento sin duplicación, voto recíproco y consulta del recibo tras reconstruir la vista al recargar. Ninguna solicitud de esas pruebas alcanza Supabase alojado.
+- Navegador real + PostgreSQL local: trigger real que crea el historial al terminar, eliminación de sala con cascada de tablas temporales durante el cierre visual y después de mostrar el resultado, antes de votar, notificación al cliente que elimina su partida temporal, voto voluntario, respuesta perdida y reintento sin duplicación, voto recíproco y consulta del recibo tras reconstruir la vista al recargar. Ninguna solicitud de esas pruebas alcanza Supabase alojado.
 - Control de interfaz existente: clic explícito, estado enviado, traducciones, móvil, respuestas atrasadas/cambio de cuenta, exclusión de duelos locales/Torre y contador de perfiles.
 - Manifiesto de 915 recursos generado y comprobado; pruebas de actualización incremental, aislamiento activo/en espera, conservación de datos y medios offline; transición completa v413 → v414.
 
@@ -52,7 +53,7 @@ La instalación usa una transacción exclusiva de esta migración, con límites 
 
 El respaldo de votos e historial está cifrado con DPAPI y permisos locales restringidos; su descifrado fue comprobado. También se guardan la definición original del helper, metadatos/ACL, los dos archivos de ejecución de v413 y las huellas de seguridad. Evidencia privada: .local-developer/releases/v414-match-likes/.
 
-La reversión del servidor restaura solo el helper original si todavía coincide con la huella de esta entrega; mantiene los votos creados antes y después. Debe registrarse como una nueva migración de reversión, sin borrar el historial de instalación. La reversión del cliente es un nuevo commit que revierta solo este cambio y use un identificador PWA superior libre, regenerando el manifiesto. Nunca restaurar saldos antiguos, borrar almacenamiento/cachés útiles ni forzar main hacia atrás.
+La reversión del servidor restaura solo el helper original si todavía coincide con la huella de esta entrega; mantiene los votos creados antes y después. Debe registrarse como una nueva migración de reversión, sin borrar el historial de instalación. La reversión del cliente es un nuevo commit que revierta solo los commits de esta entrega y use un identificador PWA superior libre, regenerando el manifiesto. Nunca restaurar saldos antiguos, borrar almacenamiento/cachés útiles ni forzar main hacia atrás.
 
 La verificación alojada posterior consulta únicamente estado con p_send=false en una transacción de solo lectura y compara los datos, permisos y funciones con el respaldo. No se crean cuentas, partidas, votos ni premios artificiales en producción. El resultado definitivo de instalación, asesor y publicación queda registrado en installation-result.json, metadata-after.json y publication-result.json dentro de la evidencia privada.
 
