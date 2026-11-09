@@ -1,4 +1,27 @@
 .modos-online{display:grid;grid-template-columns:1fr 1fr;gap:10px;border:0;padding:0;margin:16px 0}.modos-online legend{font-weight:700;margin-bottom:10px}.modo-online{display:flex;gap:8px;align-items:flex-start;padding:14px 10px;border:1px solid #6e8ab2;border-radius:14px;background:#122039;color:#ecf3ff;cursor:pointer;text-align:left;min-width:0}.modo-online:has(input:checked){border-color:#ffd875;box-shadow:0 0 0 2px #ffd87555;background:#28304a}.modo-online:has(input:disabled){cursor:wait;opacity:.7}.modo-online input{accent-color:#ffd875;margin:4px 0;flex:0 0 auto}.modo-online strong,.modo-online small{display:block}.modo-online small{font-size:.78rem;line-height:1.35;margin-top:5px}.rango-jugador{display:inline-flex;align-items:center;gap:12px;text-align:left;max-width:100%;vertical-align:middle}.rango-jugador>img{width:64px;height:72px;object-fit:contain;flex-shrink:0}.rango-jugador>span{min-width:0}.rango-jugador strong,.rango-jugador small{display:block}.rango-jugador strong{font-size:1.15rem;color:#ffe1a0}.rango-jugador small{font-size:.8rem;line-height:1.4}.rango-jugador progress{display:block;width:100%;max-width:220px;height:9px;accent-color:#e4b94f;margin-top:7px}#rangoSalaVersus{margin:12px 0}#listaRanking .rango-jugador{display:flex;margin-top:6px}#listaRanking .rango-jugador>img{width:36px;height:42px}#listaRanking .rango-jugador strong{font-size:.9rem}.rangos-catalogo{display:grid;grid-template-columns:1fr;gap:9px;padding:10px 0}.rangos-catalogo .rango-jugador>img{width:44px;height:50px}#resultadoRangoVersus{margin:12px auto;padding:12px;border:1px solid #e4b94f88;border-radius:14px;background:#111d32;color:#f2f5ff;max-width:360px}#resultadoRangoVersus[hidden]{display:none}#resultadoRangoVersus p{margin:4px 0 9px}.ascenso-rango{animation:celebrar-rango 1.1s ease-out}@keyframes celebrar-rango{0%{transform:scale(.92);box-shadow:0 0 0 #ffd87500}55%{transform:scale(1.025);box-shadow:0 0 35px #ffd87566}100%{transform:scale(1)}}@media(prefers-reduced-motion:reduce){.ascenso-rango{animation:none}}@media(max-width:360px){.modos-online{gap:6px}.modo-online{padding:10px 7px;gap:5px}.modo-online strong{font-size:.88rem}.rango-jugador{gap:8px}}
+/* Illustrated native radio choices: selection, events and game modes stay unchanged. */
+.modos-online .modo-online.tarjeta-modo {
+ position: relative; isolation: isolate; overflow: hidden; align-items: flex-end;
+ min-height: clamp(154px, 29vh, 210px); padding: 12px; gap: 8px;
+ border-radius: 15px; text-shadow: 0 2px 7px #000;
+ box-shadow: 0 8px 20px #0005; transition: border-color .2s, box-shadow .2s;
+}
+.modos-online .modo-online .modo-ilustracion { background-position: center 34%; pointer-events: none; }
+.modos-online .modo-online-clasico .modo-ilustracion { background-image: url('../assets/images/ui/multiplayer-classic-card-v1.webp'); }
+.modos-online .modo-online-clasificatorio .modo-ilustracion { background-image: url('../assets/images/ui/multiplayer-ranked-card-v1.webp'); }
+.modos-online .modo-online::after { background: linear-gradient(180deg,#07101b00 15%,#07101b25 38%,#07101bdb 70%,#07101bf5); pointer-events: none; }
+.modos-online .modo-online input { position: relative; z-index: 1; margin: 0 0 4px; width: 18px; height: 18px; }
+.modos-online .modo-online-textos { min-width: 0; }
+.modos-online .modo-online strong { color: #fff0c8; font: 700 clamp(17px,2.4vw,24px)/1.1 Georgia,serif; overflow-wrap: anywhere; }
+.modos-online .modo-online small { color: #e0e7ef; font-size: 12px; line-height: 1.35; }
+.modos-online .modo-online:has(input:checked) { border-color: #ffd875; box-shadow: 0 0 0 2px #ffd87555,0 8px 20px #0005; }
+.modos-online .modo-online:focus-within { outline: 3px solid #b1f5f0; outline-offset: 2px; }
+@media (orientation: landscape) and (max-height: 360px) {
+ .modos-online .modo-online.tarjeta-modo { min-height: 138px; padding: 10px; }
+ .modos-online .modo-online strong { font-size: 18px; }
+ .modos-online .modo-online small { font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) { .modos-online .modo-online.tarjeta-modo { transition: none; } }
 .rango-jugador .rango-escudo{position:relative;display:block;width:72px;height:80px;flex:0 0 auto}
 .rango-escudo img{width:100%;height:100%;object-fit:contain}
 .rango-escudo .rango-numero{position:absolute;bottom:0;left:50%;transform:translateX(-50%);padding:1px 7px;border:1px solid #e5c77c;border-radius:5px;background:#101929;color:#ffe7a0;font:700 13px Georgia,serif;text-shadow:0 1px 2px #000}
