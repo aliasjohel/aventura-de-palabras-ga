@@ -70,7 +70,7 @@
   let fondoIniciado = false;
   let menuMostrado = false;
   const botonesSonados = new Set();
-  const botones = ['btnJugar', 'btnModosJuego', 'btnRankingMenu', 'btnTienda', 'btnConfiguracion'];
+  const botones = ['btnVersus', 'btnModosJuego', 'btnRankingMenu', 'btnTienda', 'btnConfiguracion'];
   const capaPolvo = document.createElement('div');
   capaPolvo.className = 'menu-impact-layer';
   capaPolvo.setAttribute('aria-hidden', 'true');

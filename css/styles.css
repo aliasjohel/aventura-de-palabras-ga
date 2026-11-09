@@ -3254,7 +3254,7 @@ button:disabled {
     color: rgba(255, 255, 255, 0.52);
 }
 
-#btnJugar {
+#btnVersus {
     /* Llamado principal del menu */
     background: #27ae60;
     color: white;
@@ -14624,7 +14624,7 @@ button:disabled {
     -webkit-backdrop-filter: blur(1.5px) saturate(1.16);
 }
 
-#pantallaMenu #btnJugar {
+#pantallaMenu #btnVersus {
     border-color: rgba(137, 225, 104, 0.72);
     background: linear-gradient(180deg, rgba(24, 151, 83, 0.44), rgba(6, 72, 52, 0.2));
     box-shadow:

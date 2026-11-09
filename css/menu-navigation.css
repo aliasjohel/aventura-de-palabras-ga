@@ -5,6 +5,9 @@
 #pantallaMenu #btnMiAvatar { width: auto; margin: 0; padding: 4px 10px 4px 4px; gap: 8px; border: 1px solid #dbbd7855; border-radius: 40px; background: #071b24b3; color: #ffedc7; font-size: 12px; box-shadow: none; }
 #pantallaMenu #avatarMenu .player-avatar { width: 42px; height: 42px; }
 #pantallaMenu #btnModosJuego { border-color: #d7b571aa; background: linear-gradient(160deg,#80602288,#2d25184d); }
+@media (max-width: 360px) {
+ #pantallaMenu .menu-recursos + .menu-contenido > #btnModosJuego { font-size: 16px; padding-inline: 18px; white-space: nowrap; }
+}
 #pantallaMenu #btnTienda { border-color: #bda0ef88; background: linear-gradient(160deg,#51406c77,#21152f55); display: flex; align-items: center; justify-content: center; gap: 12px; }
 #btnTienda small { font: 10px/1.2 system-ui,sans-serif; padding: 4px 6px; border: 1px solid #cab2f44d; border-radius: 5px; color: #dfcffa; }
 .menu-dialogo { margin: auto; width: min(820px,calc(100vw - 28px)); max-height: calc(100dvh - 28px); padding: 24px; overflow-y: auto; border: 1px solid #aa905f; border-radius: 22px; background: radial-gradient(ellipse at 0 0,#25415866,transparent 65%),#0b1420; color: #f8edd8; box-shadow: 0 25px 100px #000c; }
@@ -17,6 +20,17 @@
 .menu-dialogo .tarjeta-modo { position: relative; isolation: isolate; display: flex; flex-direction: column; align-items: stretch; justify-content: flex-end; min-height: 360px; width: 100%; margin: 0; padding: 0; overflow: hidden; border: 1px solid #b9905988; border-radius: 15px; color: #fff7e5; background: #151423; text-align: left; box-shadow: 0 12px 25px #0004; text-shadow: 0 2px 8px #000; transition: border-color .2s,transform .2s; }
 .menu-dialogo .tarjeta-modo:hover { transform: translateY(-3px); border-color: #f9d98c; }
 .tarjeta-modo .modo-ilustracion { position: absolute; inset: 0; z-index: -2; background: url('../assets/images/fondos/reino-azrak/torre-centinela-v1.png') 65% center/cover; }
+.tarjeta-modo-aventura .modo-ilustracion { background-image: url('../assets/images/ui/adventure-card-v1.webp'); background-position: center 35%; }
+.tarjeta-modo-aventura .modo-etiqueta { color: #ffe5a1; }
+#inicioSalaVersus > .modos-online { margin-top: 0; }
+#inicioSalaVersus .modos-guia { width: 100%; margin: 12px 0; min-height: 44px; font-size: 14px; }
+#selectorModosJuego .menu-dialogo-cabecera { position: sticky; top: -24px; z-index: 3; padding-block: 8px; background: #0b1420; }
+@media (max-width: 540px) {
+ #selectorModosJuego .menu-dialogo-cabecera { top: -17px; }
+}
+@media (max-width: 360px) {
+ #inicioSalaVersus > .modos-online { grid-template-columns: 1fr; }
+}
 .tarjeta-modo::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg,#0b10201f 15%,#0b102066 40%,#0b1020ed 72%,#0b1020 100%); }
 .modo-etiqueta { position: absolute; top: 16px; left: 16px; padding: 7px 9px; border: 1px solid #d4b57866; border-radius: 5px; background: #060c16bd; color: #edcd8e; font: 700 9px/1.3 system-ui,sans-serif; letter-spacing: .1em; }
 .modo-textos { display: flex; flex-direction: column; padding: 22px; gap: 11px; }

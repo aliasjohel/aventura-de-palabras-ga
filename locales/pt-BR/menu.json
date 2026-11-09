@@ -49,5 +49,14 @@
   "walletUnavailable": "Saldo aguardando confirmação. Abrir loja.",
   "levelProfile": "Nível {level}. Abrir meu perfil.",
   "levelShort": "Nv. {level}",
-  "levelUnavailable": "Nível aguardando confirmação. Abrir meu perfil."
+  "levelUnavailable": "Nível aguardando confirmação. Abrir meu perfil.",
+  "playMultiplayer": "⚔️ Multijogador",
+  "adventureTower": "🗺️ Aventura e Torre",
+  "adventureTowerTitle": "Aventura e Torre",
+  "classicDuel": "Duelo Clássico",
+  "rankedDuel": "Duelo Ranqueado",
+  "singleAdventure": "UM JOGADOR · AVENTURA",
+  "adventureTitle": "Aventura",
+  "adventureDescription": "Acompanhe Aren, descubra os cinco mundos e reúna os cristais.",
+  "enterAdventure": "Explorar os mundos"
 }

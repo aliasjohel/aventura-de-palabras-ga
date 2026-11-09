@@ -21,7 +21,7 @@ body.menu-entrada #pantallaMenu .menu-contenido > button {
         menu-button-settle 200ms ease-out calc(var(--piece-delay) + var(--piece-duration)) forwards;
     animation-play-state: var(--menu-motion), var(--menu-motion);
 }
-body.menu-entrada #pantallaMenu #btnJugar { --piece-delay: 400ms; }
+body.menu-entrada #pantallaMenu #btnVersus { --piece-delay: 400ms; }
 body.menu-entrada #pantallaMenu #btnModosJuego { --piece-delay: 1500ms; }
 body.menu-entrada #pantallaMenu #btnRankingMenu { --piece-delay: 2600ms; --piece-duration: 750ms; }
 body.menu-entrada #pantallaMenu #btnTienda { --piece-delay: 3650ms; --piece-duration: 700ms; }
@@ -156,13 +156,13 @@ body.menu-entrada #pantallaMenu .estado-offline-juego { animation-delay: 5550ms;
 /* Five individually compressed scenic strips, with live translated button labels above them. */
 #pantallaMenu .menu-contenido { width: min(430px, calc(100vw - 48px)); }
 #pantallaMenu .titulo.menu-logo { width: min(100%, 360px); }
-#pantallaMenu #btnJugar {
-    --menu-button-art: url('../assets/images/ui/menu-button-adventure-v1.webp');
-    --menu-button-edge: #c4de76; --menu-button-glow: #a2dc6340;
-}
-#pantallaMenu #btnModosJuego {
+#pantallaMenu #btnVersus {
     --menu-button-art: url('../assets/images/ui/menu-button-modes-v1.webp');
     --menu-button-edge: #eac379; --menu-button-glow: #e8ae4b33;
+}
+#pantallaMenu #btnModosJuego {
+    --menu-button-art: url('../assets/images/ui/menu-button-adventure-v1.webp');
+    --menu-button-edge: #c4de76; --menu-button-glow: #a2dc6340;
 }
 #pantallaMenu #btnRankingMenu {
     --menu-button-art: url('../assets/images/ui/menu-button-ranking-v1.webp');
@@ -176,7 +176,7 @@ body.menu-entrada #pantallaMenu .estado-offline-juego { animation-delay: 5550ms;
     --menu-button-art: url('../assets/images/ui/menu-button-settings-v1.webp');
     --menu-button-edge: #79c9d1; --menu-button-glow: #6bc6d133;
 }
-#pantallaMenu .menu-contenido > :is(#btnJugar, #btnModosJuego, #btnRankingMenu, #btnTienda, #btnConfiguracion) {
+#pantallaMenu .menu-contenido > :is(#btnVersus, #btnModosJuego, #btnRankingMenu, #btnTienda, #btnConfiguracion) {
     display: block; flex-shrink: 0; width: min(100%, 360px); min-height: 60px;
     padding: 14px 30px; margin: 0; border: 1px solid var(--menu-button-edge); border-radius: 13px;
     background-color: #08161d;
@@ -223,7 +223,7 @@ body:is(.menu-camara-inicio,.menu-camara-lista) #pantallaMenu .menu-paisaje .men
 
 @media (max-height: 650px) {
     #pantallaMenu .titulo.menu-logo { width: min(100%, 250px); }
-    #pantallaMenu .menu-contenido > :is(#btnJugar, #btnModosJuego, #btnRankingMenu, #btnTienda, #btnConfiguracion) {
+    #pantallaMenu .menu-contenido > :is(#btnVersus, #btnModosJuego, #btnRankingMenu, #btnTienda, #btnConfiguracion) {
         min-height: 44px; padding-block: 9px; font-size: 17px;
     }
 }
@@ -238,5 +238,5 @@ body:is(.menu-camara-inicio,.menu-camara-lista) #pantallaMenu .menu-paisaje .men
     #selectorModosJuego .tarjeta-modo-torre .modo-ilustracion::after,
     #selectorModosJuego .tarjeta-modo-torre::before,
     #selectorModosJuego .tarjeta-modo-versus .modo-ilustracion b::before { animation: none; }
-    #pantallaMenu .menu-contenido > :is(#btnJugar, #btnModosJuego, #btnRankingMenu, #btnTienda, #btnConfiguracion) { transition: none; }
+    #pantallaMenu .menu-contenido > :is(#btnVersus, #btnModosJuego, #btnRankingMenu, #btnTienda, #btnConfiguracion) { transition: none; }
 }

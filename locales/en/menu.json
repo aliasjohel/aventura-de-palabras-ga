@@ -49,5 +49,14 @@
   "walletUnavailable": "Balance awaiting confirmation. Open shop.",
   "levelProfile": "Level {level}. Open my profile.",
   "levelShort": "Lv. {level}",
-  "levelUnavailable": "Level awaiting confirmation. Open my profile."
+  "levelUnavailable": "Level awaiting confirmation. Open my profile.",
+  "playMultiplayer": "⚔️ Multiplayer",
+  "adventureTower": "🗺️ Adventure & Tower",
+  "adventureTowerTitle": "Adventure & Tower",
+  "classicDuel": "Classic Duel",
+  "rankedDuel": "Ranked Duel",
+  "singleAdventure": "SINGLE PLAYER · ADVENTURE",
+  "adventureTitle": "Adventure",
+  "adventureDescription": "Join Aren, explore the five worlds and gather the crystals.",
+  "enterAdventure": "Explore the worlds"
 }

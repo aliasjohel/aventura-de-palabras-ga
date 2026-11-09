@@ -3092,7 +3092,8 @@ function cerrarTutorialVersus({ recordar = false } = {}) {
   accionPosteriorTutorialVersus = null;
   if (respaldo) mostrarPantalla(respaldo.pantalla || pantallaMenu);
   if (continuar) continuar();
-  else document.getElementById("btnModosJuego").focus();
+  else if (pantallaSalaVersus.classList.contains('activa')) btnTutorialVersus.focus();
+  else btnVersus.focus();
 }
 function jugarLetraTutorialVersus(letra, boton) {
   if (tutorialCombateVersus.explicando || boton.disabled || tutorialCombateVersus.ocupado || tutorialCombateVersus.completado || letra !== tutorialCombateVersus.letras[0]) return;
@@ -3178,16 +3179,12 @@ document.getElementById("tiendaIrPerfil").addEventListener("click", () => {
   tiendaMenu.close();
   document.getElementById("btnMiAvatar").click();
 });
-for (const boton of [btnVersus, btnArcade, btnTutorialVersus]) {
+for (const boton of [btnJugar, btnArcade]) {
   boton.addEventListener("click", () => selectorModosJuego.close());
 }
 
 btnVersus.addEventListener("click", () => {
   modoArcadeActivo = false;
-  if (!modoPruebasActivo && !tutorialVersusYaVisto()) {
-    abrirTutorialVersus({ mostrarBienvenida: true, alCerrar: entrarAlModoVersus });
-    return;
-  }
   entrarAlModoVersus();
 });
 
@@ -12361,14 +12358,10 @@ function actualizarMenuPrincipal() {
   const progresoGuardado = localStorage.getItem("progresoAventuraGA");
 
   if (!progresoGuardado) {
-    GameUI.text(btnJugar, GameUI.key('menu.adventure'));
-
     btnNuevaAventura.classList.add("oculto");
 
     return;
   }
-
-  GameUI.text(btnJugar, GameUI.key('menu.adventure'));
 
   btnNuevaAventura.classList.remove("oculto");
 }
@@ -17671,7 +17664,15 @@ function finalizarRepeticionAventura() {
   actualizarDisponibilidadPersonajesVersus();
 }
 
-document.getElementById("cerrarMapaAventura").addEventListener("click", () => document.getElementById("mapaAventura").close());
+function volverDesdeMapaAventura() {
+  document.getElementById("mapaAventura").close();
+  if (!selectorModosJuego.open) selectorModosJuego.showModal();
+}
+document.getElementById("cerrarMapaAventura").addEventListener("click", volverDesdeMapaAventura);
+document.getElementById("mapaAventura").addEventListener("cancel", evento => {
+  evento.preventDefault();
+  volverDesdeMapaAventura();
+});
 document.getElementById("continuarMapaAventura").addEventListener("click", () => {
   const datos = obtenerProgresoMapa();
   if (AventuraMapa.iniciando) return;

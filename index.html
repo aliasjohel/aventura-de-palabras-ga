@@ -108,8 +108,8 @@
                 </h1>
                 <p class="subtitulo" data-i18n="menu.subtitle">Explorá mundos resolviendo palabras</p>
 
-                <button id="btnJugar" data-i18n="menu.adventure" type="button" aria-haspopup="dialog" aria-controls="mapaAventura">🗺️ Aventura</button>
-                <button id="btnModosJuego" data-i18n="menu.modes" type="button" aria-haspopup="dialog">⚔️ Modos de juego</button>
+                <button id="btnVersus" data-i18n="menu.playMultiplayer" type="button" aria-controls="pantallaSalaVersus">⚔️ Multijugador</button>
+                <button id="btnModosJuego" data-i18n="menu.adventureTower" type="button" aria-haspopup="dialog" aria-controls="selectorModosJuego">🗺️ Aventura y Torre</button>
                 <button id="btnRankingMenu" data-i18n="menu.ranking" type="button" aria-haspopup="dialog" aria-controls="rankingMenu">🏆 Ranking</button>
                 <button id="btnTienda" data-i18n="menu.shop" type="button" aria-haspopup="dialog">✦ Tienda</button>
                 <button id="btnConfiguracion" data-i18n="menu.configuration" type="button">Configuración</button>
@@ -492,6 +492,10 @@
 
                 <p id="idiomaSalaOnline" role="status"></p>
                 <div id="inicioSalaVersus" class="inicio-sala-versus">
+                    <fieldset class="modos-online"><legend data-i18n="multiplayer.legacy.s28">Modo de juego</legend>
+                      <label class="modo-online"><input type="radio" name="modoOnline" value="classic" checked><span><strong data-i18n="menu.classicDuel">Duelo Clásico</strong><small data-i18n="multiplayer.legacy.s30">Jugá por diversión, sin cambiar tus puntos.</small></span></label>
+                      <label class="modo-online"><input type="radio" name="modoOnline" value="ranked"><span><strong data-i18n="menu.rankedDuel">Duelo Clasificatorio</strong><small data-i18n="multiplayer.legacy.s32">Rivales de nivel cercano. Ganá puntos y subí de rango.</small></span></label>
+                    </fieldset>
                     <button id="btnAmigosSala" type="button" data-i18n="profile.friends.open">Amigos y desafíos</button>
 
                     <label class="campo-sala-versus campo-alias-versus" for="aliasSalaVersus">
@@ -503,10 +507,6 @@
                     <section class="opcion-sala-versus" aria-label="Partidas públicas" data-i18n-aria-label="multiplayer.legacy.s25">
                         <h3 data-i18n="multiplayer.legacy.s26">Buscar partida</h3>
                         <p data-i18n="multiplayer.legacy.s27">Elegí cómo querés jugar. Después preparan el duelo en la sala.</p>
-                        <fieldset class="modos-online"><legend data-i18n="multiplayer.legacy.s28">Modo de juego</legend>
-                          <label class="modo-online"><input type="radio" name="modoOnline" value="classic" checked><span><strong data-i18n="multiplayer.legacy.s29">Clásico</strong><small data-i18n="multiplayer.legacy.s30">Jugá por diversión, sin cambiar tus puntos.</small></span></label>
-                          <label class="modo-online"><input type="radio" name="modoOnline" value="ranked"><span><strong data-i18n="multiplayer.legacy.s31">Clasificatorio</strong><small data-i18n="multiplayer.legacy.s32">Rivales de nivel cercano. Ganá puntos y subí de rango.</small></span></label>
-                        </fieldset>
                         <div id="rangoSalaVersus" aria-live="polite"></div>
                         <p id="reglasModoOnline" data-i18n="multiplayer.legacy.s33">Las victorias y los personajes usados se guardan en tu historial.</p>
                         <details><summary data-i18n="multiplayer.legacy.s34">Rangos y títulos</summary><div id="catalogoRangos" class="rangos-catalogo"></div></details>
@@ -515,6 +515,7 @@
                         <p id="estadoBusqueda" role="status" aria-live="polite"></p>
                         <button id="btnRankingSala" type="button" aria-haspopup="dialog" aria-controls="rankingMenu" data-i18n="multiplayer.legacy.s37">🏆 Ver ranking</button>
                     </section>
+                    <button id="btnTutorialVersus" class="modos-guia" type="button"><span data-i18n="menu.versusGuide">❔ Cómo jugar modo versus</span> <span aria-hidden="true">→</span></button>
                     <details class="salas-manuales-versus">
                         <summary data-i18n="multiplayer.legacy.s38">Clásico con código de sala</summary>
                         <div class="acciones-sala-versus">
@@ -1464,20 +1465,19 @@
         <p class="ranking-limite" data-i18n="menu.rankingLimit">Hasta 50 jugadores. Tu puesto se muestra siempre arriba.</p><div id="listaRanking" role="list" aria-live="polite"></div>
     </dialog>
     <dialog id="selectorModosJuego" class="menu-dialogo" aria-labelledby="tituloModosJuego">
-        <header class="menu-dialogo-cabecera"><div><small data-i18n="menu.chooseChallenge">ELEGÍ TU DESAFÍO</small><h2 id="tituloModosJuego" data-i18n="menu.modesTitle">Modos de juego</h2></div><button id="cerrarModosJuego" type="button" aria-label="Volver al menú" data-i18n-aria-label="menu.backLabel">×</button></header>
+        <header class="menu-dialogo-cabecera"><div><small data-i18n="menu.chooseChallenge">ELEGÍ TU DESAFÍO</small><h2 id="tituloModosJuego" data-i18n="menu.adventureTowerTitle">Aventura y Torre</h2></div><button id="cerrarModosJuego" type="button" aria-label="Volver al menú" data-i18n-aria-label="menu.backLabel">×</button></header>
         <div class="tarjetas-modos">
+            <button id="btnJugar" class="tarjeta-modo tarjeta-modo-aventura" type="button" aria-haspopup="dialog" aria-controls="mapaAventura">
+                <span class="modo-ilustracion" aria-hidden="true"></span>
+                <span class="modo-etiqueta" data-i18n="menu.singleAdventure">UN JUGADOR · AVENTURA</span>
+                <span class="modo-textos"><strong data-i18n="menu.adventureTitle">Aventura</strong><span data-i18n="menu.adventureDescription">Acompañá a Aren, descubrí los cinco mundos y reuní los cristales.</span><span class="modo-entrar"><span data-i18n="menu.enterAdventure">Explorar los mundos</span> <b aria-hidden="true">→</b></span></span>
+            </button>
             <button id="btnArcade" class="tarjeta-modo tarjeta-modo-torre" type="button">
                 <span class="modo-ilustracion" aria-hidden="true"></span>
                 <span class="modo-etiqueta" data-i18n="menu.singleTower">UN JUGADOR · TORRE ARCADE</span>
                 <span class="modo-textos"><strong data-i18n="menu.tower">Torre</strong><span data-i18n="menu.towerDescription">Elegí tu personaje y conquistá la cima. Podés practicar sin conexión; los premios habilitados requieren tu cuenta y conexión.</span><span class="modo-entrar"><span data-i18n="menu.climbTower">Subir a la torre</span> <b aria-hidden="true">→</b></span></span>
             </button>
-            <button id="btnVersus" class="tarjeta-modo tarjeta-modo-versus" type="button">
-                <span class="modo-ilustracion" aria-hidden="true"><img loading="lazy" decoding="async" class="modo-heroe" src="assets/images/personajes/versus/explorador-base.png" alt=""><img loading="lazy" decoding="async" class="modo-rival" src="assets/images/personajes/versus/t-shadow-base.png" alt=""><b>VS</b></span>
-                <span class="modo-etiqueta" data-i18n="menu.twoOnline">DOS JUGADORES · ONLINE</span>
-                <span class="modo-textos"><strong data-i18n="menu.multiplayer">Multijugador</strong><span data-i18n="menu.multiplayerDescription">Desafiá a tus amigos o encontrá un rival para tu próximo duelo.</span><span class="modo-entrar"><span data-i18n="menu.enterArena">Entrar a la arena</span> <b aria-hidden="true">→</b></span></span>
-            </button>
         </div>
-        <button id="btnTutorialVersus" class="modos-guia" type="button"><span data-i18n="menu.versusGuide">❔ Cómo jugar modo versus</span> <span aria-hidden="true">→</span></button>
     </dialog>
     <dialog id="elegirTrajeAntesDuelo" aria-labelledby="tituloElegirTraje" aria-describedby="detalleElegirTraje">
         <h2 id="tituloElegirTraje" data-i18n="multiplayer.legacy.extra10">Elegí tu traje</h2>
