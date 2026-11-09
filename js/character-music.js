@@ -14,11 +14,17 @@
     kalamo: 'assets/sounds/azrak-batalla-final-musiclfiles.mp3',
     kairos: 'assets/sounds/character-kairos.mp3',
   });
+  const lobbyTracks = Object.freeze({
+    multiplayer: 'assets/sounds/lobby-multiplayer-epic-march-v1.mp3',
+    adventure: 'assets/sounds/lobby-adventure-old-tower-inn-v1.mp3',
+  });
   const players = new Map(), pending = new Set(), blocked = new Set();
   let readState, scene = null, active = null, unlocked = false, away = false, muted = false;
   try { muted = localStorage.getItem('aventura-character-music-muted') === 'true'; } catch {}
   function audioFor(character) {
-    const src = tracks[character];
+    return audioForSource(tracks[character]);
+  }
+  function audioForSource(src) {
     if (!src) return null;
     if (!players.has(src)) {
       const audio = GameAudio.create(src, 'music');
@@ -31,12 +37,13 @@
     const state = readState?.();
     if (!state || muted || away || document.hidden || !unlocked) return null;
     if (scene && state.sceneAllowed) return scene.paused ? null : {character: scene.character, volume: .30};
-    return state.duel ? {character: state.opponent, volume: .22} : null;
+    if (state.duel) return {character: state.opponent, volume: .22};
+    return lobbyTracks[state.lobby] ? {src: lobbyTracks[state.lobby], volume: .26} : null;
   }
   function pauseAll() { players.forEach(audio => audio.pause()); }
   function sync() {
     const next = target();
-    const audio = next && audioFor(next.character);
+    const audio = next && audioForSource(next.src || tracks[next.character]);
     players.forEach(player => { if (player !== audio) player.pause(); });
     active = audio;
     if (!audio) return;
@@ -45,8 +52,8 @@
     pending.add(audio);
     audio.play().then(() => {
       const latest = target();
-      if (active !== audio || players.get(tracks[latest?.character]) !== audio) audio.pause();
-    }).catch(() => { blocked.add(audio); }).finally(() => { pending.delete(audio); });
+      if (active !== audio || players.get(latest?.src || tracks[latest?.character]) !== audio) audio.pause();
+    }).catch(error => { if (error.name !== 'AbortError') blocked.add(audio); }).finally(() => { pending.delete(audio); });
   }
   function startScene(character) {
     const token = {character, paused: false};
@@ -87,7 +94,7 @@
   document.getElementById('btnMusicaDuelo')?.addEventListener('click', () => { unlocked = true; blocked.clear(); setMuted(!muted); });
   setInterval(sync, 250);
   globalThis.CharacterMusic = Object.freeze({
-    tracks, audioFor, startScene, withScene, setMuted, sync,
+    tracks, lobbyTracks, audioFor, startScene, withScene, setMuted, sync,
     ownsScene: () => Boolean(scene),
     configure(reader) { readState = reader; globalThis.I18n?.subscribe(updateButton); updateButton(); sync(); },
   });

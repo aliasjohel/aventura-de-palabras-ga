@@ -179,6 +179,7 @@
                         <summary>Créditos musicales / Music credits</summary>
                         <p>“Goliath” by Scott Buckley — released under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. <a href="https://www.scottbuckley.com.au" target="_blank" rel="noopener">www.scottbuckley.com.au</a>. Audio normalizado y convertido a MP3 para el juego.</p>
                         <a href="assets/licenses/character-music.txt" target="_blank" rel="noopener">Autores y licencias de los temas de personajes</a>
+                        <a href="assets/licenses/lobby-music.txt" target="_blank" rel="noopener" data-i18n="common.lobbyMusicCredits">Autores y licencias de las músicas de selección</a>
                     </details>
                 </div>
             </div>
@@ -493,29 +494,31 @@
                 <p id="idiomaSalaOnline" role="status"></p>
                 <div id="inicioSalaVersus" class="inicio-sala-versus">
                     <fieldset class="modos-online"><legend data-i18n="multiplayer.legacy.s28">Modo de juego</legend>
-                      <label class="modo-online tarjeta-modo modo-online-clasico"><input type="radio" name="modoOnline" value="classic" checked><span class="modo-ilustracion" aria-hidden="true"></span><span class="modo-online-textos"><strong data-i18n="menu.classicDuel">Clásico</strong><small data-i18n="multiplayer.legacy.s30">Jugá por diversión, sin cambiar tus puntos.</small></span></label>
-                      <label class="modo-online tarjeta-modo modo-online-clasificatorio"><input type="radio" name="modoOnline" value="ranked"><span class="modo-ilustracion" aria-hidden="true"></span><span class="modo-online-textos"><strong data-i18n="menu.rankedDuel">Clasificatorio</strong><small data-i18n="multiplayer.legacy.s32">Rivales de nivel cercano. Ganá puntos y subí de rango.</small></span></label>
+                      <div class="modo-online-opcion"><label class="modo-online tarjeta-modo modo-online-clasico"><input type="radio" name="modoOnline" value="classic" checked aria-controls="accionesModalidadOnline"><span class="modo-ilustracion" aria-hidden="true"></span><span class="modo-online-textos"><strong data-i18n="menu.classicDuel">Clásico</strong><small data-i18n="multiplayer.legacy.s30">Jugá por diversión, sin cambiar tus puntos.</small></span></label></div>
+                      <div class="modo-online-opcion"><label class="modo-online tarjeta-modo modo-online-clasificatorio"><input type="radio" name="modoOnline" value="ranked" aria-controls="accionesModalidadOnline"><span class="modo-ilustracion" aria-hidden="true"></span><span class="modo-online-textos"><strong data-i18n="menu.rankedDuel">Clasificatorio</strong><small data-i18n="multiplayer.legacy.s32">Rivales de nivel cercano. Ganá puntos y subí de rango.</small></span></label></div>
                     </fieldset>
-                    <button id="btnAmigosSala" type="button" data-i18n="profile.friends.open">Amigos y desafíos</button>
+                    <div class="lobby-enlaces">
+                      <button id="btnAmigosSala" type="button" data-i18n="profile.friends.open">Amigos y desafíos</button>
+                      <button id="btnRankingSala" type="button" aria-haspopup="dialog" aria-controls="rankingMenu" data-i18n="multiplayer.legacy.s37">🏆 Ver ranking</button>
+                      <button id="btnTutorialVersus" class="modos-guia" type="button"><span data-i18n="menu.versusGuide">❔ Cómo jugar modo versus</span> <span aria-hidden="true">→</span></button>
+                    </div>
 
-                    <label class="campo-sala-versus campo-alias-versus" for="aliasSalaVersus">
+                    <label class="campo-sala-versus campo-alias-versus lobby-alias" for="aliasSalaVersus" hidden>
                         <span data-i18n="multiplayer.legacy.s24">Tu nombre</span>
                         <input id="aliasSalaVersus" type="text" minlength="2" maxlength="16" autocomplete="nickname"
                             placeholder="Ej: Gabi" data-i18n-placeholder="multiplayer.legacy.s15">
                     </label>
 
-                    <section class="opcion-sala-versus" aria-label="Partidas públicas" data-i18n-aria-label="multiplayer.legacy.s25">
-                        <h3 data-i18n="multiplayer.legacy.s26">Buscar partida</h3>
-                        <p data-i18n="multiplayer.legacy.s27">Elegí cómo querés jugar. Después preparan el duelo en la sala.</p>
+                    <div class="lobby-resumen-perfil" hidden>
                         <div id="rangoSalaVersus" aria-live="polite"></div>
                         <p id="reglasModoOnline" data-i18n="multiplayer.legacy.s33">Las victorias y los personajes usados se guardan en tu historial.</p>
                         <details><summary data-i18n="multiplayer.legacy.s34">Rangos y títulos</summary><div id="catalogoRangos" class="rangos-catalogo"></div></details>
+                    </div>
+                    <section id="accionesModalidadOnline" class="acciones-modalidad-online" aria-label="Partidas públicas" data-i18n-aria-label="multiplayer.legacy.s25" hidden>
                         <button id="btnBuscarPartida" type="button" data-i18n="multiplayer.legacy.s35">Buscar rival</button>
                         <button id="btnCancelarBusqueda" type="button" class="oculto" data-i18n="multiplayer.legacy.s36">Cancelar búsqueda</button>
                         <p id="estadoBusqueda" role="status" aria-live="polite"></p>
-                        <button id="btnRankingSala" type="button" aria-haspopup="dialog" aria-controls="rankingMenu" data-i18n="multiplayer.legacy.s37">🏆 Ver ranking</button>
                     </section>
-                    <button id="btnTutorialVersus" class="modos-guia" type="button"><span data-i18n="menu.versusGuide">❔ Cómo jugar modo versus</span> <span aria-hidden="true">→</span></button>
                     <details class="salas-manuales-versus">
                         <summary data-i18n="multiplayer.legacy.s38">Clásico con código de sala</summary>
                         <div class="acciones-sala-versus">
@@ -1681,6 +1684,7 @@
     <script src="js/tower-online.js?v=20261106-towerrewards1"></script>
     <script src="js/tower-outfit-preview.js?v=20261103-toweraccess1"></script>
     <script src="js/app.js?v=20261106-towerrewards1"></script>
+    <script src="js/multiplayer-lobby.js?v=20261109-lobby1"></script>
     <script src="js/lessons-i18n.js?v=20261016-3f-1"></script>
     <script src="js/cosmetic-shop.js?v=20261022-v387-1"></script>
     <script src="js/tower-rewards-ui.js?v=20261106-towerrewards1"></script>

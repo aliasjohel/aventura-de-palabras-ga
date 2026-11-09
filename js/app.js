@@ -1491,6 +1491,7 @@ function actualizarPanelAmigosVersus(
     return;
   }
   aliasSalaVersus.value = estado.profile.alias;
+  globalThis.MultiplayerLobby?.syncAlias();
   codigoAmigoVersus.textContent = estado.profile.friend_code;
   solicitudesAmigosVersus.replaceChildren();
   const enviadas = document.getElementById("solicitudesEnviadasAmigos");
@@ -2180,6 +2181,8 @@ async function consultarBusquedaPublica() {
 async function cancelarBusquedaPublica() {
   if (!busquedaPublicaActiva && !peticionBusqueda) return;
   mostrarBusquedaActiva(false);
+  // Keep the selected mode stable until the in-flight cancellation completes.
+  for (const input of document.querySelectorAll('input[name="modoOnline"]')) input.disabled = true;
   btnBuscarPartida.disabled = true;
   btnCrearSalaVersus.disabled = true;
   btnUnirseSalaVersus.disabled = true;
@@ -10786,6 +10789,7 @@ function reproducirMusicaPrologo() {
 }
 
 function reproducirMusicaMenu() {
+  if (document.getElementById('selectorModosJuego')?.open) return;
   if (!musicaMenu.paused) return;
 
   musicaMenu.play().catch((error) => {
@@ -17704,6 +17708,9 @@ for (const campo of [aliasSalaVersus, aliasPerfilVersus]) {
 
 CharacterMusic.configure(() => ({
   opponent: personajeRivalVersus,
+  lobby: !modalTutorialVersus.classList.contains('oculto') ? null
+    : pantallaSalaVersus.classList.contains('activa') && !inicioSalaVersus.classList.contains('oculto') ? 'multiplayer'
+    : pantallaMenu.classList.contains('activa') && selectorModosJuego.open ? 'adventure' : null,
   duel: pantallaVersus.classList.contains("activa")
     && resultadoRondaVersus.classList.contains("oculto")
     && !tutorialCombateVersus.activo,

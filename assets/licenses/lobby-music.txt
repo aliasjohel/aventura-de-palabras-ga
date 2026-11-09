@@ -1,0 +1,27 @@
+AVENTURA DE PALABRAS — SELECTION SCREEN MUSIC
+Source pages and files checked 2026-11-09.
+
+MULTIPLAYER SELECTION
+Epic March Loop — Eldritch Grim
+https://opengameart.org/content/epic-march-loop
+Original file: the_march_of_devils_dome_loop.wav
+https://opengameart.org/sites/default/files/the_march_of_devils_dome_loop.wav
+Published game file: lobby-multiplayer-epic-march-v1.mp3
+
+ADVENTURE AND TOWER SELECTION
+Medieval: The Old Tower Inn — RandomMind
+https://opengameart.org/content/medieval-the-old-tower-inn
+Original file: Loop_The_Old_Tower_Inn.wav
+https://opengameart.org/sites/default/files/Loop_The_Old_Tower_Inn.wav
+Published game file: lobby-adventure-old-tower-inn-v1.mp3
+
+Both works are offered by their uploaders under CC0 1.0 Universal:
+https://creativecommons.org/publicdomain/zero/1.0/
+CC0 permits copying, adaptation and distribution, including commercial use.
+Attribution is not required under CC0; the authors are credited here voluntarily.
+No endorsement by the authors is implied. Source declarations are retained in
+the project's private release records, together with original file SHA-256 hashes.
+
+Changes: normalized loudness (-20 LUFS target, -2 dBTP ceiling), resampled to
+44.1 kHz stereo and converted to 112 kbps MP3. Compositions are unmodified.
+Only the supplied loop versions are used. No existing game music was replaced.

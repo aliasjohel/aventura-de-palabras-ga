@@ -1,0 +1,39 @@
+/* Presentation only: open the existing search controls below the chosen card. */
+(() => {
+ 'use strict';
+ const panel=document.getElementById('accionesModalidadOnline');
+ const alias=document.getElementById('aliasSalaVersus'),aliasField=alias.closest('label');
+ const inputs=[...document.querySelectorAll('input[name="modoOnline"]')];
+ const selector=document.getElementById('selectorModosJuego');
+ const manual=document.querySelector('.salas-manuales-versus');
+ function hasAlias(){return alias.value.trim().length>=2&&alias.validity.valid;}
+ function syncAlias(){aliasField.hidden=hasAlias()||(panel.hidden&&!manual.open);}
+ function open(input){
+  if(input.disabled)return;
+  const option=input.closest('.modo-online-opcion');
+  panel.hidden=false;option.append(aliasField,panel);
+  inputs.forEach(other=>other.closest('.modo-online-opcion').classList.toggle('opcion-abierta',other===input));
+  syncAlias();
+ }
+ manual.addEventListener('toggle',()=>{
+  if(manual.open&&!hasAlias())manual.insertBefore(aliasField,manual.querySelector('.acciones-sala-versus'));
+  else if(!panel.hidden)panel.parentElement.insertBefore(aliasField,panel);
+  syncAlias();
+ });
+ for(const input of inputs){
+  input.addEventListener('change',()=>open(input));
+  input.closest('label').addEventListener('click',()=>{
+   if(input.disabled)return;
+   if(!input.checked){input.checked=true;input.dispatchEvent(new Event('change',{bubbles:true}));}
+   open(input);
+  });
+ }
+ document.getElementById('btnModosJuego').addEventListener('click',()=>{
+  if(selector.open){pausarMusicaMenu();CharacterMusic.sync();}
+ });
+ selector.addEventListener('close',()=>{
+  CharacterMusic.sync();
+  if(document.getElementById('pantallaMenu').classList.contains('activa')&&!document.hidden)reproducirMusicaMenu();
+ });
+ globalThis.MultiplayerLobby=Object.freeze({syncAlias});
+})();

@@ -139,6 +139,7 @@ globalThis.I18nSpanishUI=Object.freeze({
   "common.duelPreparation.topics.naturaleza": "🌿 Naturaleza",
   "common.duelPreparation.topics.nombres": "🔤 Nombres",
   "common.duelPreparation.topics.invertebrados": "🐞 Insectos y otros invertebrados",
+  "common.lobbyMusicCredits": "Autores y licencias de las músicas de selección",
   "menu.title": "Aventura de Palabras",
   "menu.subtitle": "Explorá mundos resolviendo palabras",
   "menu.adventure": "🗺️ Aventura",
