@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v042-pwa-sync-recovery`;
+const CACHE_NAME = `${CACHE_PREFIX}v043-pwa-sync-recovery`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1461,7 +1461,7 @@ const ASSET_REVISIONS = {
   "./assets/images/trajes/kalamo-astral-formacion-2-v1.png": "sha256-b35efaea8dc91d775ee7cbcd284bda3d04909448d30d1f568dc70096183eaf7d",
   "./assets/images/trajes/kalamo-astral-formacion-3-v1.png": "sha256-da6a89b7d249089e452488ea43540f2fa34388f35521b9e174838a8c57eff1b3",
   "./js/cosmetic-store.js": "sha256-deec001f23908ccf78dee9ce8918f4b138069d2cd7d593eef53244ed023261b8",
-  "./js/game-wallet.js": "sha256-15077c670741f7a2c40954cb4f651c88aa193878d0899f3e28931d64e1ae0fb5",
+  "./js/game-wallet.js": "sha256-9f2bcb1435fbffb8fee15efcf72f7ee7cb846f7381ec689ced076356f83c3220",
   "./js/adventure-rewards.js": "sha256-dcc5124db718690bae29752b419d83e2eb8a639476a5093f5412b456c66235e7",
   "./js/adventure-reward-feedback.js": "sha256-fd6b1015bdbe65242fb7627361acf46ea216e54646e4d71186c02f3fb9d12b61",
   "./js/adventure-xp-feedback.js": "sha256-fc28fccd1c07677f48b6c8bb611bdf40b2d03f3c1f10e50d1100b5ea8a4243ea",
@@ -1640,12 +1640,12 @@ const ASSET_REVISIONS = {
   "./js/intro.js": "sha256-275b86598cf9772595a2b3f905f5cf9704758f054b1354c09cdacef017a9c9ac",
   "./js/supabase-loader.js": "sha256-643b337516766baa58672b44ee7288728faee86a9ba3bcc43eacbe05403e5c34",
   "./js/supabase-config.js": "sha256-305eac5a6b712731f4e372cca9f6a4f2af0610e772bd928eaa5e75fc0b427295",
-  "./js/supabase-client.js": "sha256-e9f84ddc6348c1668c2f2671c51c9c79d001c420717c0d4570046152bd879864",
+  "./js/supabase-client.js": "sha256-6c178f585cc21a8beaf784488cff3d97917b2d9a0e8033f36c85db9a75bb2979",
   "./js/word-gameplay.js": "sha256-ed28310b7afcba7a3ce8391e8a26d23ec39ae19f710b99016de494c3dffe4913",
   "./js/versus-engine.js": "sha256-544297ccc805d3448fd1563053f6ebaba45483eef69e2d65ce045eb78282a9b4",
   "./js/arcade-rules.js": "sha256-688fe36bc763fe065665dfd305b6ea99efaf9aea2667a863f61b5cc257e521f6",
   "./js/versus-room.js": "sha256-bcd7d15b293d34bd9b73cae19909b52492c7defbd8629952d99b3b004b56be0f",
-  "./js/versus-room-supabase.js": "sha256-a88b7874121ff7611f2c1cc4806e04b6ec78391a315e48b30c474554f1710ef0",
+  "./js/versus-room-supabase.js": "sha256-e3b6bf8c63c41ef77d7ac4744000016be04cf4f81fc0a4d71bd88e756d3b7cfb",
   "./js/puzzle-lessons.js": "sha256-c3269cb6042e311b9768722585ca236fc2696bc3918bd5cd80675ac0bf7dbaf5",
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
@@ -2002,11 +2002,11 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/coleccion/guardiana-bosque-ataque-raices.png": "sha256-4c303dae4cb53b3e0682d78dd172c58ee18b4c3bd05fc4f6b4046cb2939c2802",
   "./assets/images/personajes/coleccion/guardiana-bosque-victoria.png": "sha256-b25653f99fd7f9d6b5e6a7c6eb54edba6effbb7cfb28c5e54d295fb789500d35",
   "./assets/images/elementos/estela-escarcha-nivor.png": "sha256-6228167b96bd62744abee437c61cf7b6fa44cecb8eecb2f2268f8f4e0e6197ca",
-  "./js/adventure-sync-v2.js": "sha256-54d8f0cf924a0295b6b66d84e678fb1ee934110f959e5c69285ab8bc4a7fa139",
+  "./js/adventure-sync-v2.js": "sha256-e8420231732306aa6add58882210a2913977e7bee324fbde799b7119f84a2daa",
   "./js/adventure-account-v2.js": "sha256-1be03fb544155a3acdbb88c182b6a7c3d829a21c3e3400da15b2301dc44407dc",
   "./js/account-sync-v3.js": "sha256-49d7c91bec92c8db56f084f58fc2f95f1f85be82feff22237951c9038b274264",
   "./js/account-runtime-v3.js": "sha256-fd0b353a8568f4cacce75964b6b3e2df96cb0358a9ac8b10167902dfb120ce35",
-  "./pilot-config.js": "sha256-ac020640245bf595c7c5e97ed9fcc8519d5eac045be3b52c4578b66347746a46",
+  "./pilot-config.js": "sha256-e69b44861988d814593d065e36b9165bf85c690ea3ae3b4e02f8de951a095896",
   "./pilot-gate.js": "sha256-f88ab9d35324530cd975ec39b572aad4e03f15b55f71ed4466cda8a459c23a3e",
   "./css/sync-menu-layout.css": "sha256-8b5639da9724641e2d006400a0c2c3850cbfd9c643e09b4f9f92332f622c765f"
 };

@@ -1,6 +1,18 @@
 (function iniciarClienteSupabase(raiz) {
   'use strict';
   let cliente=null;
+  async function fetchAcotado(input,options={}){
+    if(raiz.navigator?.onLine===false)throw new TypeError('Sin conexión; la sesión local se conserva.');
+    const controller=new AbortController(),upstream=options.signal||input?.signal;
+    const abort=()=>controller.abort();if(upstream?.aborted)abort();else upstream?.addEventListener('abort',abort,{once:true});
+    const timer=setTimeout(abort,20000);
+    try{
+      const response=await raiz.fetch(input,{...options,signal:controller.signal});
+      const bytes=await response.arrayBuffer(),headers=new Headers(response.headers);
+      headers.delete('content-encoding');headers.delete('content-length');
+      return new Response([204,205,304].includes(response.status)?null:bytes,{status:response.status,statusText:response.statusText,headers});
+    }finally{clearTimeout(timer);upstream?.removeEventListener('abort',abort);}
+  }
   function configuracionDisponible(){const c=raiz.AVENTURA_SUPABASE_CONFIG;return Boolean(c?.url?.startsWith('https://')&&c?.publishableKey?.startsWith('sb_publishable_'));}
   // Same key as Supabase's existing default: preserve v0.2 sessions and PKCE data.
   function claveSesion(){return 'sb-'+new URL(raiz.AVENTURA_SUPABASE_CONFIG.url).hostname.split('.')[0]+'-auth-token';}
@@ -17,7 +29,7 @@
     if(cliente)return cliente;if(!configuracionDisponible()||typeof raiz.supabase?.createClient!=='function')return null;
     const {url,publishableKey}=raiz.AVENTURA_SUPABASE_CONFIG;
     cliente=raiz.supabase.createClient(url,publishableKey,{
-      global:{fetch:(...args)=>raiz.navigator?.onLine===false?Promise.reject(new TypeError('Sin conexión; la sesión local se conserva.')):raiz.fetch(...args)},
+      global:{fetch:fetchAcotado},
       auth:{persistSession:true,autoRefreshToken:raiz.navigator?.onLine!==false,storageKey:claveSesion(),
         detectSessionInUrl: true,
       },

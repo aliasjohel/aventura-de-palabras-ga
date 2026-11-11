@@ -11,7 +11,9 @@
     function enqueue(operation){
       const id=userId,generation=connectionGeneration;
       const run=()=>{check(id);if(generation!==connectionGeneration)throw Error('La sesión cambió. Volvé a intentar.');return operation(id);};
-      const next=queue.then(()=>root.navigator?.locks?root.navigator.locks.request('aventura-wallet',run):run());
+      // Server revisions and receipts fence this client's serialized queue.
+      // A frozen legacy tab must not hold the authoritative runtime hostage.
+      const next=queue.then(()=>root.AccountRuntimeV3?.installed?run():root.navigator?.locks?root.navigator.locks.request('aventura-wallet',run):run());
       queue=next.catch(()=>{});return next;
     }
     async function rpc(id,name,args){

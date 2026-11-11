@@ -82,7 +82,14 @@
   let verifiedOwner=false;
   async function session(){const local=await client.auth.getSession(),s=local.data?.session;if(local.error||s?.user?.id!==owner||!s?.access_token)throw new SyncError('identity');if(!verifiedOwner){const verified=await client.auth.getUser();if(verified.error||verified.data?.user?.id!==owner)throw new SyncError('identity');verifiedOwner=true;}return s.access_token;}
   if(!/^https:\/\/[a-z0-9.-]+(?::\d+)?\/?$/i.test(url))throw new SyncError('configuration');
-  return {user:async()=>{await session();return owner;},rpc:async(name,args)=>{if(!['adventure_state_v2','adventure_command_v2','adventure_history_v2','account_state_v3','account_command_v3'].includes(name)&&!(name==='adventure_reward_attempt'&&args.p_action==='status'))throw new SyncError('configuration');const token=await session();const response=await fetcher(url.replace(/\/$/,'')+'/rest/v1/rpc/'+name,{method:'POST',headers:{apikey:publishableKey,Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(args),credentials:'omit',cache:'no-store',redirect:'error'});const value=await response.json();if(!response.ok)throw {code:value.code,message:/(?:PLAYER_(?:STATE_CONFLICT|WRITER_CHANGED|TAKEOVER_REQUIRED)|ACCOUNT_[A-Z_]+)/.exec(value.message||'')?.[0]||'Request failed'};return value;}};
+  return {user:async()=>{await session();return owner;},rpc:async(name,args)=>{
+   if(!['adventure_state_v2','adventure_command_v2','adventure_history_v2','account_state_v3','account_command_v3'].includes(name)&&!(name==='adventure_reward_attempt'&&args.p_action==='status'))throw new SyncError('configuration');
+   const token=await session(),controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
+   try{
+    const response=await fetcher(url.replace(/\/$/,'')+'/rest/v1/rpc/'+name,{method:'POST',headers:{apikey:publishableKey,Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(args),credentials:'omit',cache:'no-store',redirect:'error',signal:controller.signal});
+    const value=await response.json();if(!response.ok)throw {code:value.code,message:/(?:PLAYER_(?:STATE_CONFLICT|WRITER_CHANGED|TAKEOVER_REQUIRED)|ACCOUNT_[A-Z_]+)/.exec(value.message||'')?.[0]||'Request failed'};return value;
+   }finally{clearTimeout(timer);}
+  }};
  }
  return {create,validate,transport,writerIdentity,SyncError,messages};
 });
