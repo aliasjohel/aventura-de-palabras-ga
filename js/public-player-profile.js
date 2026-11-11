@@ -107,6 +107,7 @@
   for (const id of ["verPerfilRival","avatarDueloRival"]) el(id).addEventListener("click",()=>{ const user=el(id).dataset.userId; if(user) void abrir(user); });
   // Local appearance remains usable offline; retry sharing it when connectivity returns.
   async function shareAppearance(status) {
+    if(globalThis.AccountRuntimeV3?.installed)return;
     try { await PlayerProfile.guardarApariencia(); if (status) U.text(status,K("profile.appearanceShared")); }
     catch (_) { if (status) U.text(status,K("profile.appearanceLocal")); }
   }

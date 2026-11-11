@@ -11,11 +11,11 @@
   function saveNotices(){if(noticeOwner)try{storage?.setItem(noticeKey(noticeOwner),JSON.stringify(notices));}catch{/* A visual notice cannot affect ownership. */}}
   const empty=()=>({userId:account(),owned:[],equipped:{},selectedCostumes:{},frame:null,revision:0,completedCharacters:[],grantsEnabled:false});
   const read=()=>{const owner=account();if(owner&&state?.userId!==owner&&rememberedOwner!==owner){rememberedOwner=owner;try{const cached=JSON.parse(storage?.getItem(cacheKey(owner))||'null');if(cached)apply(cached,{cached:true,quiet:true});}catch{/* Invalid cache never grants server ownership. */}}return state?.userId===owner?{...structuredClone(state),confirmed:!fromCache}:empty();};
-  function apply(value,{cached=false,quiet=false}={}){if(!value||value.userId!==account()||!Array.isArray(value.owned)||!Number.isSafeInteger(value.revision)||value.revision<0)return false;
+  function apply(value,{cached=false,quiet=false,authoritative=false}={}){if(!value||value.userId!==account()||!Array.isArray(value.owned)||!Number.isSafeInteger(value.revision)||value.revision<0)return false;
    if(!cached)read();
-   if(!fromCache&&!cached&&state?.userId===value.userId&&value.revision<state.revision)return false;
+   if(!authoritative&&!fromCache&&!cached&&state?.userId===value.userId&&value.revision<state.revision)return false;
    const before=state?.userId===value.userId?state.owned:null;
-   const allowed=new Set([...catalog.map(c=>c.id),...frames.map(f=>f.id)]),owned=[...new Set([...(!fromCache&&!cached&&state?.userId===value.userId?state.owned:[]),...value.owned.filter(i=>allowed.has(i))])],equipped={};
+   const allowed=new Set([...catalog.map(c=>c.id),...frames.map(f=>f.id)]),owned=[...new Set([...(!authoritative&&!fromCache&&!cached&&state?.userId===value.userId?state.owned:[]),...value.owned.filter(i=>allowed.has(i))])],equipped={};
    for(const c of catalog)if(value.equipped?.[c.character]===c.id&&owned.includes(c.id))equipped[c.character]=c.id;
    const selectedCostumes={};for(const c of catalog)if((value.selectedCostumes||value.equipped)?.[c.character]===c.id&&owned.includes(c.id))selectedCostumes[c.character]=c.id;
    state={userId:value.userId,owned,equipped,selectedCostumes,frame:frames.some(f=>f.id===value.frame)&&owned.includes(value.frame)?value.frame:null,revision:value.revision,completedCharacters:(Array.isArray(value.completedCharacters)?value.completedCharacters:[]).filter(c=>catalog.some(i=>i.character===c)),grantsEnabled:value.grantsEnabled===true};fromCache=cached;rememberedOwner=value.userId;
@@ -30,14 +30,16 @@
   async function call(owner,args){if(owner!==account())throw Error('Tower account changed');const result=await rpc(args);if(owner!==account()||result?.userId!==owner)throw Error('Tower account changed');return result;}
   async function send(owner,args){if(owner!==account())throw Error('Tower account changed');storage?.setItem(pendingKey(owner),JSON.stringify(args));try{const result=await call(owner,args);storage?.removeItem(pendingKey(owner));return result;}catch(error){if(/TOWER_EQUIPMENT_STALE|TOWER_UNION_ACTIVE|not owned|Wrong costume|Invalid .*parameters|Request ID reused/.test(error.message))storage?.removeItem(pendingKey(owner));throw error;}}
   const statusArgs=()=>({p_action:'status',p_item:null,p_character:null,p_request:null,p_revision:null});
-  const refresh=()=>operation(async owner=>{const raw=storage?.getItem(pendingKey(owner));if(raw){const pending=JSON.parse(raw);await send(owner,pending);}return call(owner,{...statusArgs(),p_action:'sync',p_request:id()});});
-  const equip=(kind,item=null,character=null)=>operation(async owner=>{
+  const refreshLegacy=()=>operation(async owner=>{const raw=storage?.getItem(pendingKey(owner));if(raw){const pending=JSON.parse(raw);await send(owner,pending);}return call(owner,{...statusArgs(),p_action:'sync',p_request:id()});});
+  const equipLegacy=(kind,item=null,character=null)=>operation(async owner=>{
    const raw=storage?.getItem(pendingKey(owner));if(raw)apply(await send(owner,JSON.parse(raw)));
    apply(await call(owner,statusArgs()));const snapshot=read();
    if(item&&!snapshot.owned.includes(item))throw Error('Tower item not owned');
    return send(owner,{p_action:kind==='frame'?'equip_frame':'equip_costume',p_item:item,p_character:kind==='frame'?null:character,p_request:id(),p_revision:snapshot.revision});
   });
-  const owns=item=>read().owned.includes(item),equipped=character=>read().equipped[character]||null;
+  const refresh=()=>globalThis.AccountRuntimeV3?.installed?globalThis.AccountRuntimeV3.refresh().then(s=>s.towerCosmetics):refreshLegacy();
+ const equip=(...args)=>globalThis.AccountRuntimeV3?.installed?globalThis.AccountRuntimeV3.towerEquip(...args):equipLegacy(...args);
+ const owns=item=>read().owned.includes(item),equipped=character=>read().equipped[character]||null;
   const find=item=>catalog.find(c=>c.id===item);
   const asset=(item,pose='base')=>find(item)?.assets[pose]||null;
   function source(item,original,herido=false){const c=find(item);if(!c)return null;if(herido)return c.assets.impacto;

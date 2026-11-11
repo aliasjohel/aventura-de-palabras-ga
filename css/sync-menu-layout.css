@@ -1,0 +1,25 @@
+/* Keep recovery controls in Settings, outside the illustrated menu's flex flow. */
+body #pantallaMenu .menu-recursos + .menu-contenido {
+    flex-shrink: 0;
+    max-height: none;
+    overflow: visible;
+}
+body #pantallaMenu.activa {
+    height: auto;
+    min-height: 100dvh;
+}
+
+/* Very short screens use normal page scrolling, preserving button/art sizes. */
+#modalConfiguracion :is(#accountSyncState, #adventureAccountState) {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #dbbd7855;
+}
+#modalConfiguracion :is(#accountSyncState, #adventureAccountState) h3 {
+    margin: 0 0 8px;
+    font-size: 1rem;
+}
+#modalConfiguracion :is(#accountSyncState, #adventureAccountState) button {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}

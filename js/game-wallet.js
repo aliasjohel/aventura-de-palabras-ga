@@ -17,7 +17,7 @@
     async function rpc(id,name,args){
       check(id);
       const generation=connectionGeneration;
-      const {data,error}=await client.rpc(name,args);
+      const {data,error}=root.AccountRuntimeV3?.handles(name,args)?{data:await root.AccountRuntimeV3.route(name,args),error:null}:root.AdventureAccountV2?.handles(name)?{data:await root.AdventureAccountV2.route(name,args),error:null}:await client.rpc(name,args);
       check(id);if(generation!==connectionGeneration)throw Error('La sesión cambió. Volvé a intentar.');
       if(error)throw Error(error.message||'No pudimos sincronizar las monedas. Reintentá con conexión.');
       if(data?.activationError)throw Error(data.activationError);
@@ -25,6 +25,7 @@
       return data;
     }
     async function syncXP(id){
+ if(root.AccountRuntimeV3?.installed){const s=await root.AccountRuntimeV3.wait();root.PlayerXP?.apply(s.xp,true);return {userId:id,xp:s.xp,appearance:s.appearance};}
       if(!root.PlayerXP)return null;
       try{const result=await rpc(id,'player_xp',{p_action:'sync'});root.PlayerXP.apply(result.xp);if(result.appearance?.frame?.startsWith('xp_'))root.PlayerAvatar?.aplicarXP(result.appearance);return result;}catch{return null;}
     }
@@ -37,6 +38,7 @@
       }catch{return null;} // Presentation failure never changes mission settlement.
     }
     const xp=(action='sync',reward=null,frame=null,title=null)=>enqueue(async id=>{
+ if(root.AccountRuntimeV3?.installed&&['sync','equip'].includes(action))return root.AccountRuntimeV3.route('player_xp',{p_action:action,p_frame:frame,p_title:title});
       let result;
       if(action==='equip'&&frame&&root.TowerRewards?.read().frame){
         const current=await rpc(id,'tower_cosmetics',{p_action:'status',p_item:null,p_character:null,p_request:null,p_revision:null});
@@ -49,6 +51,7 @@
       return result;
     });
     async function syncNow(id,matchId=null){
+ if(root.AccountRuntimeV3?.installed&&!matchId){const snapshot=await root.AccountRuntimeV3.refresh();return snapshot.wallet;}
       let result;
       {
         check(id);const state=store.read();
@@ -84,24 +87,26 @@
 
     const setArenTrial=enabled=>adminAction('set_aren_trial_access',{p_enabled:Boolean(enabled)});
     const backgrounds=(action,id)=>enqueue(async account=>{
+ if(root.AccountRuntimeV3?.installed&&['sync','equip'].includes(action)){if(root.AventuraShop?.testing())throw Error(root.ProfileBackgrounds?.text('testing')||'Volvé del modo de prueba para comprar o equipar.');const r=await root.AccountRuntimeV3.route('profile_backgrounds',{p_action:action,p_background:id});return r.backgrounds;}
       if(root.AventuraShop?.testing())throw Error(root.ProfileBackgrounds?.text('testing')||'Volvé del modo de prueba para comprar o equipar.');
       await syncNow(account);
       const result=await rpc(account,'profile_backgrounds',{p_action:action,p_background:id,p_legacy_worlds:0});
       if(result.backgrounds?.userId!==account)throw Error('No pudimos verificar tus fondos.');
-      store.applyAccount(result);notify();return result.backgrounds;
+      store.applyAccount(result);notify();if(action==='purchase'&&root.AccountRuntimeV3?.installed)await root.AccountRuntimeV3.refresh().catch(()=>{});return result.backgrounds;
     });
     const characters=(action,id)=>enqueue(async account=>{
       if(root.AventuraShop?.testing())throw Error('Volvé del modo de prueba para comprar.');
       await syncNow(account);
       const result=await rpc(account,'game_characters',{p_action:action,p_character:id});
       if(result.characters?.userId!==account)throw Error('No pudimos verificar tus personajes.');
-      store.applyAccount(result);notify();return result.characters;
+      store.applyAccount(result);notify();if(action==='purchase'&&root.AccountRuntimeV3?.installed)await root.AccountRuntimeV3.refresh().catch(()=>{});return result.characters;
     });
     const rewardAttempt=args=>enqueue(async id=>{
       const previous=root.PlayerXP?.read?.();
       const result=await rpc(id,'adventure_reward_attempt',args);
       store.applyAccount(result);notify();
       if(['finish','status'].includes(args.p_action))await adventureXP(id,args.p_attempt,previous);
+      if(args.p_action==='finish'&&root.AccountRuntimeV3?.installed)await root.AccountRuntimeV3.refresh().catch(()=>{});
       return result;
     });
       const gameAction=args=>enqueue(async id=>{
@@ -112,14 +117,16 @@
           store.applyAccount(result);notify();
         }
         if(result.game?.complete&&!await adventureXP(id,args.p_attempt,previous))await syncXP(id);
+        if(result.game?.complete&&root.AccountRuntimeV3?.installed)await root.AccountRuntimeV3.refresh().catch(()=>{});
         return result;
       });
     const adventureHelp=args=>enqueue(id=>rpc(id,'adventure_word_help',args));
     const cosmetics=args=>enqueue(id=>rpc(id,'tower_cosmetics',args));
     const tower=args=>enqueue(async id=>{
-      const result=await rpc(id,'tower_game',args);
+      const result=await rpc(id,'tower_game_sync_v4',args);
       if(result.wallet){const before=store.read();store.applyAccount({...before,userId:id,securityVersion:3,currencyVersion:2,coins:result.wallet.coins,revision:result.wallet.revision});notify();}
       if(result.towerCosmetics)root.TowerRewards?.apply(result.towerCosmetics);
+      if(root.AccountRuntimeV3?.installed&&(result.wallet||result.towerCosmetics))await root.AccountRuntimeV3.refresh().catch(()=>{});
       return result;
     });
     function schedule(){
@@ -131,14 +138,15 @@
     }
     function connect(nextClient,id){
       if(client!==nextClient||userId!==(id||null))connectionGeneration++;
-      client=nextClient;userId=id||null;
+      client=nextClient;userId=id||null;void root.AccountRuntimeV3?.connect(nextClient,userId);void root.AdventureAccountV2?.connect(nextClient,userId);
       store.setPurchaseHandler(null);
       if(!userId){notify();root.dispatchEvent?.(new Event('wallet-session-ended'));return;}
       store.beginAccount(userId);notify();
       store.setPurchaseHandler(skin=>enqueue(async account=>{
         await syncNow(account);
+        if(root.AccountRuntimeV3?.installed)await rpc(account,'sync_game_wallet_v3',{p_missions:[],p_equipped:null,p_match_id:null});
         const result=await rpc(account,'purchase_game_costume',{p_skin:skin});
-        store.applyAccount(result);notify();return store.read();
+        store.applyAccount(result);notify();if(root.AccountRuntimeV3?.installed)await root.AccountRuntimeV3.refresh().catch(()=>{});return store.read();
       }));
       schedule();
     }

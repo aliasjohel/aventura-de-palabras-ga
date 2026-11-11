@@ -99,6 +99,7 @@
   }
   el("silenciarMensajesVersus").addEventListener("click", () => {
     silenciado = !silenciado;
+    if(globalThis.AccountRuntimeV3?.installed)void AccountRuntimeV3.preferences({messagesMuted:silenciado}).catch(()=>{});
     try { localStorage.setItem("aventuraMensajesSilenciados", String(silenciado)); } catch (_) { /* Still mute for this session. */ }
     if (silenciado) el("mensajeDueloRival").hidden = true;
     actualizarSilencio();
@@ -146,5 +147,5 @@
     actualizarBotones();
   }
   actualizarSilencio();
-  globalThis.VersusIdentity = Object.freeze({ actualizar });
+  globalThis.VersusIdentity = Object.freeze({ actualizar,setAccountMuted:value=>{silenciado=value===true;actualizarSilencio();if(silenciado)el('mensajeDueloRival').hidden=true;} });
 })();

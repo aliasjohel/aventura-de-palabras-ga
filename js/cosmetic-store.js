@@ -103,14 +103,14 @@
       return save({currencyVersion,securityVersion:3,securityReady:false,accountId:id,coins:0,owned:[],equipped:{},revision:-1,
         requests:!previous.accountId?previous.requests:[],missionClaims:[],equipmentVersion:0,equipmentDirty:false});
     }
-    function applyAccount(result,sentEquipmentVersion){
+    function applyAccount(result,sentEquipmentVersion,authoritative=false){
       if(result?.securityVersion!==3||result.currencyVersion!==currencyVersion)throw Error('Actualizá el juego y el servidor del monedero.');
       const state=read();
       if(state.accountId!==result.userId)return state;
       if(!Number.isSafeInteger(result.coins)||result.coins<0||!Number.isSafeInteger(result.revision)||result.revision<0||!Array.isArray(result.owned)||!Array.isArray(result.missionClaims))throw Error('Respuesta de monedero inválida.');
-      if(result.revision<state.revision)return state;
+      if(!authoritative&&result.revision<state.revision)return state;
       const owned=[...new Set(result.owned.filter(id=>find(id)&&(!find(id).adminOnly||result.adminUnion===true)))];
-      const dirty=state.equipmentDirty&&state.equipmentVersion!==sentEquipmentVersion;
+      const dirty=!authoritative&&state.equipmentDirty&&state.equipmentVersion!==sentEquipmentVersion;
       const equipped=normalizeSkins(dirty?state.equipped:result.equipped);
       for(const char of Object.keys(equipped))if(!owned.includes(equipped[char]))delete equipped[char];
       const claims=[...new Set(result.missionClaims.filter(e=>/^aventura:[0-4]:[0-9]:mision$/.test(e)))];
@@ -134,6 +134,7 @@
       return purchaseHandler(id);
     }
     function equip(character,id){
+ if(globalThis.AccountRuntimeV3?.installed&&read().accountId)return globalThis.AccountRuntimeV3.equipSkin(character,id);
       const state=read();
       if(id){const item=find(id);if(!item||item.character!==character||!state.owned.includes(id))throw Error('Primero conseguí este traje.');state.equipped[character]=id;}
       else delete state.equipped[character];

@@ -1,0 +1,62 @@
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.AdventureAccountV2=api.create(root);})(globalThis,()=>{
+ 'use strict';
+ function project(state){if(!state)return null;const a=state.adventure,c=a.checkpoint;
+  return {...a.narrative,escenarioActual:c.world,misionActual:c.mission,desafiosCompletados:c.phase+(c.phaseDone?1:0),desafioActual:c.phase+1,
+   maximoEscenarioDesbloqueado:Math.max(c.world,0,...a.completedMissions.map(f=>f.world)),historialPalabrasAventura:{},historialPalabrasPorIdioma:{},versionHistorialPalabras:1,currencyVersion:2};
+ }
+ function create(root){let repo=null,owner=null,boundClient=null,localPractice=false,ready=Promise.resolve(),lastState=null,generation=0,connecting=false;const api=root.AdventureSyncV2;
+  function state(){return repo?.read().state||null;}
+  function render(){if(!root.document)return;const r=repo?.read();let box=root.document.getElementById('adventureAccountState');if(!box){box=root.document.createElement('aside');box.id='adventureAccountState';box.setAttribute('aria-label','Guardado de Aventura');box.innerHTML='<h3>Guardado de Aventura</h3><p role="status" aria-live="polite"></p><button type="button" data-sync="retry">Recuperar progreso</button><button type="button" data-sync="archive" hidden>Respaldar avance local sin verificar</button><button type="button" data-sync="legacy">Revisar guardado anterior de este navegador</button><button type="button" data-sync="scene" hidden>Continuar relato confirmado</button>';(root.document.querySelector('#modalConfiguracion .panel-configuracion')||root.document.body).append(box);box.addEventListener('click',e=>{const action=e.target.dataset.sync;if(action)void invoke(action).catch(()=>{});});}
+   for(const [key,label] of [['adopt','Recuperar un intento anterior confirmado'],['history','Consultar historial local respaldado']])if(!box.querySelector('[data-sync='+key+']')){const button=root.document.createElement('button');button.type='button';button.dataset.sync=key;button.textContent=label;box.append(button);}
+   box.querySelector('[data-sync=adopt]').hidden=!state()?.adventure.legacyAttempts?.length;box.querySelector('[data-sync=history]').hidden=!state()?.adventure.archives.length;
+   const local=repo?.localHistory();box.querySelector('[role=status]').textContent=r?(!root.navigator.onLine?api.messages.offline:localPractice?'Avance local sin verificar. Tu checkpoint confirmado se conserva.':r.message)+(local&&!local.backedUp?' · Avance local pendiente de respaldo':'') : api.messages.signed_out;
+   box.querySelector('[data-sync=archive]').hidden=!local||local.backedUp;const pending=nextScene();box.querySelector('[data-sync=scene]').hidden=!pending;
+   const game=root.document.getElementById('pantallaJuego');if(game){let notice=root.document.getElementById('adventureSaveNotice');if(!notice){notice=root.document.createElement('p');notice.id='adventureSaveNotice';notice.setAttribute('role','status');notice.setAttribute('aria-live','polite');game.prepend(notice);}notice.textContent=box.querySelector('[role=status]').textContent;}
+  }
+  function nextScene(){const s=state();return s?.adventure.completedMissions.filter(f=>f.mission===9).map(f=>'world:'+f.world+':ending').find(id=>!s.adventure.seenScenes.includes(id));}
+  async function invoke(action){try{if(action==='retry'){await wait();await repo.reconcile();}
+   if(action==='archive'){await takeControl();await repo.archiveLocal(root.confirm('¿Respaldar este avance local como historial sin verificar? No concede premios ni reemplaza tu progreso confirmado.'));}
+   if(action==='legacy'){await wait();const raw=root.localStorage.getItem('progresoAventuraGA');if(!raw){root.alert('Este navegador no tiene un guardado anterior de Aventura.');return;}const preview=repo.previewLegacy(raw);if(root.confirm('Este guardado puede pertenecer a otra cuenta. ¿Confirmás que es tuyo y querés conservarlo sólo como historial sin verificar, sin monedas ni premios?')){await takeControl();await repo.archiveLegacy(preview,true);}}
+   if(action==='scene'){await takeControl();const scene=nextScene();if(scene&&root.confirm('Este mundo ya tiene una finalización confirmada. Tu personaje y tu progreso están guardados. ¿Continuar la historia desde el siguiente checkpoint?'))await repo.command('scene',{sceneId:scene});}
+   if(action==='adopt'){await takeControl();const previous=state().adventure.legacyAttempts?.[0];if(previous&&root.confirm('El servidor conserva un intento anterior: mundo '+(previous.world+1)+', misión '+(previous.mission+1)+'. ¿Continuar desde sus fases confirmadas? Se guardará una copia del checkpoint actual.')){await repo.command('adopt_attempt',{attemptId:previous.attemptId,confirmed:true});root.dispatchEvent(new Event('adventure-account-ready'));}}
+   if(action==='history'){await wait();const entry=state().adventure.archives.at(-1);if(entry){const archived=await repo.history(entry.transferId);root.alert('Historial conservado sin verificar: mundo '+((Number(archived.history.world)||0)+1)+', misión '+((Number(archived.history.mission)||0)+1)+'. No reemplaza tu partida confirmada ni concede premios.');}}
+  }finally{render();}}
+  function connect(client,id){if((repo||connecting)&&owner===id&&boundClient===client)return ready;const ticket=++generation;repo?.close();repo=null;owner=id||null;boundClient=client;localPractice=false;lastState=null;connecting=false;root.dispatchEvent?.(new Event('adventure-account-cleared'));
+   if(!owner){render();ready=Promise.resolve();return ready;}
+   connecting=true;const uid=owner;ready=(async()=>{
+   const writer=await api.writerIdentity(root,uid);if(ticket!==generation)return;
+   const cfg=root.AVENTURA_SUPABASE_CONFIG||{},transport=root.AVENTURA_SYNC_LOCAL_LAB?.transport?root.AVENTURA_SYNC_LOCAL_LAB.transport(client,owner):api.transport({client,url:cfg.url,publishableKey:cfg.publishableKey,owner});
+   const next=api.create({owner,writer,storage:root.localStorage,transport,online:()=>root.navigator.onLine,onChange:()=>{if(repo!==next)return;lastState=next.read().state;render();root.dispatchEvent?.(new Event('adventure-state-updated'));}});repo=next;
+   await next.load();if(ticket!==generation)return;render();root.dispatchEvent?.(new Event('adventure-account-ready'));
+   })().catch(()=>{if(ticket===generation)render();}).finally(()=>{if(ticket===generation)connecting=false;});return ready;
+  }
+  async function wait(){if(!repo&&!connecting){await root.AventuraShop?.connect();}await ready;if(!repo?.read().state||root.navigator.onLine&&!repo.read().confirmed)throw new api.SyncError('unavailable');return state();}
+  async function refresh(){await ready;const current=repo;if(!current)throw new api.SyncError('unavailable');if(root.navigator.onLine)await current.reconcile();if(repo!==current)throw new api.SyncError('identity');render();root.dispatchEvent?.(new Event('adventure-account-recovered'));return state();}
+  async function takeControl(){const s=await wait();if(!s.adventure.enabled)throw new api.SyncError('unavailable');if(s.adventure.writerId!==repo.writer){const takeover=!!s.adventure.writerId;if(takeover&&!root.confirm('La aventura está asignada a otro cliente o una sesión anterior. ¿Querés continuar acá? Ese cliente conservará sus datos y deberá recuperar el estado antes de avanzar.'))throw new api.SyncError('takeover');await repo.command('claim',{takeover});}return state();}
+  async function prepare(){try{await wait();if(root.navigator.onLine){await repo.reconcile();if(localPractice&&!root.confirm('Hay avance local sin verificar. Se conservará como copia pendiente. ¿Continuar desde el último checkpoint confirmado en tu cuenta?'))return false;await takeControl();localPractice=false;if(state().adventure.active?.mode==='replay'&&!root.AventuraMapa?.repeticion)await repo.command('end_replay');}else localPractice=true;root.dispatchEvent?.(new Event('adventure-account-ready'));return true;}catch{render();return false;}}
+  function localStory(){const s=state();if(!s)return null;let value=project(s);const offline=repo.localHistory();if(!root.navigator.onLine&&offline?.owner===owner){const h=offline.history;if(Number.isInteger(h.world)&&h.world>=0&&h.world<5&&Number.isInteger(h.mission)&&h.mission>=0&&h.mission<10)value={...value,...h.narrative,escenarioActual:h.world,misionActual:h.mission,desafiosCompletados:h.phase||0};}return JSON.stringify(value);}
+  function capture(p){if(!repo||root.AventuraMapa?.repeticion)return;if(localPractice||!root.navigator.onLine||repo.read().status==='pending'){localPractice=true;repo.recordLocal({world:p.escenarioActual,mission:p.misionActual,phase:p.desafiosCompletados,narrative:Object.fromEntries(['portalAbierto','mundoDosCompletado','mundoTresCompletado','mundoCuatroCompletado','estadoFinalAzrak','estadoPruebaKairos','estadoEncuentroCalamo','estadoPrimerEncuentroShadow'].map(k=>[k,p[k]])),wordHistory:p.historialPalabrasPorIdioma||{},recordedAt:new Date().toISOString()});}render();}
+  async function route(name,args){await wait();if(localPractice&&args.p_action!=='status')throw new api.SyncError('offline');let r;if(name==='adventure_game_action')r=await repo.command('action',{attemptId:args.p_attempt,sequence:args.p_sequence,action:args.p_action,payload:args.p_payload},args.p_request);
+   if(name==='adventure_word_help')r=await repo.command('help',{action:args.p_action,payload:args.p_payload},args.p_request);
+   if(name==='adventure_reward_attempt'){
+    if(args.p_action==='status'){const cfg=root.AVENTURA_SUPABASE_CONFIG;const transport=root.AVENTURA_SYNC_LOCAL_LAB?.transport?root.AVENTURA_SYNC_LOCAL_LAB.transport(null,owner):api.transport({client:root.AventuraSupabase.obtenerCliente(),url:cfg.url,publishableKey:cfg.publishableKey,owner});return transport.rpc('adventure_reward_attempt',args);}
+    if(args.p_action==='begin'){await takeControl();const s=state(),c=s.adventure.checkpoint,replay=!!root.AventuraMapa?.repeticion;
+     if(!replay&&s.adventure.active?.mode==='replay')await repo.command('end_replay');
+     const continuing=!replay&&c.world===args.p_world&&c.mission===args.p_mission&&c.status==='objective_active';
+     const selectedLanguage=root.I18n?.language||root.document.documentElement.lang||'es',language=/^pt/i.test(selectedLanguage)?'pt-BR':/^en/i.test(selectedLanguage)?'en':'es';
+     r=await repo.command(continuing?'resume':'start',continuing?{}:{world:args.p_world,mission:args.p_mission,language,replay,reducedMotion:root.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false},args.p_request||root.crypto.randomUUID());
+     r.attempt={...r.attempt,world:args.p_world,mission:args.p_mission,gameplayVersion:'sql-actions-v1',resumeGame:r.game};
+    }else if(args.p_action==='finish'||args.p_action==='interrupt'){
+     if(state().adventure.active?.attemptId!==args.p_attempt)return {userId:owner,attempt:{id:args.p_attempt,status:'retry_required'}};
+     r=await repo.command(args.p_action,{attemptId:args.p_attempt});
+    }
+   }return r;
+  }
+  function mapStatus(w,m){const a=state()?.adventure;if(!a)return 'bloqueada';if(a.completedMissions.some(f=>f.world===w&&f.mission===m))return 'completada';return a.checkpoint.world===w&&a.checkpoint.mission===m?'actual':'bloqueada';}
+  function worldAllowed(w){const a=state()?.adventure;return !!a&&(w===0||w===a.checkpoint.world||a.completedMissions.some(f=>f.world===w||f.world===w-1&&f.mission===9));}
+  root.addEventListener?.('online',()=>{if(repo)void refresh().catch(()=>{}).finally(render);});root.addEventListener?.('offline',render);
+  root.addEventListener?.('DOMContentLoaded',()=>{render();root.document.addEventListener('click',e=>{if(!e.target.closest('#btnNuevaAventura'))return;e.preventDefault();e.stopImmediatePropagation();void(async()=>{if(!root.confirm('¿Comenzar otro recorrido? Se conservarán tus logros, personajes, premios y el checkpoint del recorrido anterior.'))return;await takeControl();await repo.command('new_campaign',{confirmed:true});localPractice=false;root.dispatchEvent(new Event('adventure-account-ready'));root.mostrarPrologo?.();})().catch(()=>{});},true);});
+  return {installed:true,connect,wait,refresh,prepare,route,handles:n=>['adventure_game_action','adventure_reward_attempt','adventure_word_help'].includes(n),story:localStory,capture,state,owns:character=>repo?.owns(character)||false,mapStatus,worldAllowed,read:()=>repo?.read()||{status:'signed_out'},project};
+ }
+ return {create,project};
+});

@@ -22,10 +22,10 @@ function create({storage,account,request}){
     const id=account();if(!id)return empty(null);
     try{return normalize(JSON.parse(storage.getItem(key(id))),id);}catch{return empty(id);}
   }
-  function apply(value,id){
+  function apply(value,id,authoritative=false){
     if(account()!==id||value?.userId!==id)throw Error('La cuenta cambió. Volvé a intentar.');
     const next=normalize(value,id),previous=read();
-    if(next.revision<previous.revision)return previous;
+    if(!authoritative&&next.revision<previous.revision)return previous;
     storage.setItem(key(id),JSON.stringify(next));root.dispatchEvent?.(new Event('profile-backgrounds-updated'));return next;
   }
   function operation(action,id){
@@ -52,7 +52,7 @@ function create({storage,account,request}){
     if(!ids.has(id)||!read().owned.includes(id))return Promise.reject(Error('Primero conseguí este fondo.'));
     return operation('equip',id);
   }
-  return Object.freeze({read,preview,purchase,equip,sync:()=>operation('sync',null)});
+  return Object.freeze({read,apply,preview,purchase,equip,sync:()=>operation('sync',null)});
 }
 const words={
  es:{title:'Fondos de perfil',free:'Gratis',coins:'{n} monedas',world:'Completá el mundo {n}',rank:'Alcanzá Diamante',owned:'En tu colección',equipped:'Equipado',preview:'Probar',buy:'Comprar por {n} monedas',equip:'Usar este fondo',hint:'Mirá los fondos en la tienda. Compralos o desbloquealos para probarlos y usarlos.',locked:'Vista previa · {requirement}',success:'¡Fondo equipado!',purchased:'¡Fondo comprado! Ya podés usarlo.',connect:'Conectate para sincronizar tus fondos.',failed:'No pudimos guardar el cambio. Reintentá con conexión.',testing:'Volvé del modo de prueba para comprar o equipar.',balance:'Saldo: {n} monedas'},

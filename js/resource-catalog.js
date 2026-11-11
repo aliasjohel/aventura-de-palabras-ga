@@ -921,7 +921,14 @@ globalThis.GameResourceCatalog = Object.freeze([
   "./assets/images/personajes/versus/explorador-atrapado-eclipse.png",
   "./assets/images/personajes/coleccion/guardiana-bosque-ataque-raices.png",
   "./assets/images/personajes/coleccion/guardiana-bosque-victoria.png",
-  "./assets/images/elementos/estela-escarcha-nivor.png"
+  "./assets/images/elementos/estela-escarcha-nivor.png",
+  "./js/adventure-sync-v2.js",
+  "./js/adventure-account-v2.js",
+  "./js/account-sync-v3.js",
+  "./js/account-runtime-v3.js",
+  "./pilot-config.js",
+  "./pilot-gate.js",
+  "./css/sync-menu-layout.css"
 ]);
 globalThis.GameResourceSizes = Object.freeze({
   "./assets/images/perfil/marco-tower_conquistador-v1.webp": 57114,
@@ -1106,7 +1113,7 @@ globalThis.GameResourceSizes = Object.freeze({
   "./assets/images/perfil/marco-leyenda-v1.webp": 48358,
   "./assets/images/perfil/miniaturas/marco-leyenda-v1.webp": 6692,
   "./assets/images/perfil/miniaturas/t-shadow-base.webp": 3470,
-  "./assets/licenses/character-music.txt": 2163,
+  "./assets/licenses/character-music.txt": 2106,
   "./assets/sounds/character-aren.mp3": 975838,
   "./assets/sounds/character-zafir.mp3": 1105666,
   "./assets/sounds/character-guardiana.mp3": 1008015,
@@ -1349,8 +1356,8 @@ globalThis.GameResourceSizes = Object.freeze({
   "./assets/sounds/victoria-mundo5.mp3": 4190458,
   "./assets/sounds/azrak-es-vencido.mp3": 5883648,
   "./assets/images/personajes/explorador-brazo-arena-v1.png": 1387804,
-  "./assets/licenses/world-music.txt": 1390,
-  "./assets/licenses/defeat-sound.txt": 317,
+  "./assets/licenses/world-music.txt": 1358,
+  "./assets/licenses/defeat-sound.txt": 312,
   "./assets/sounds/defeat-crystal-chime.wav": 101474,
   "./assets/sounds/world-forest-sunset-plains.mp3": 4616517,
   "./assets/sounds/world-desert-meditation.mp3": 1736900,

@@ -34,8 +34,8 @@
   async function prepare(attempt,world,mission,phase,language,reducedMotion=false){
    await queue;
    if(attempt?.gameplayVersion==='sql-actions-v1'&&run?.attemptId!==attempt.attemptId){
-    clear();run={...attempt};current=null;
-    if(!await action('open',reducedMotion?{language,reducedMotion:true}:{language})){clear();return null;}
+    clear();run={...attempt};current=attempt.resumeGame||null;
+    if(!current&&!await action('open',reducedMotion?{language,reducedMotion:true}:{language})){clear();return null;}
     timer=interval(()=>{if(!online()||run?.owner!==account()){clear();return;}void action('heartbeat');},20000);
    }
    if(!run||run.world!==world||run.mission!==mission||run.owner!==account()||!online()){clear();return null;}

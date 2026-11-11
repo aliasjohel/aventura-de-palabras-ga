@@ -43,6 +43,7 @@
       } catch (_) {
         throw errorJugador("Habilitá el almacenamiento del navegador para conservar tu jugador online.");
       }
+      if(raiz.AVENTURA_PILOT_CONFIG)throw errorJugador("Esta candidata requiere tu cuenta verificada; no crea invitados.");
       const ingreso = await cliente.auth.signInAnonymously();
       if (ingreso.error) throw traducirError(ingreso.error, "No pudimos iniciar la sesión anónima.");
       return ingreso.data?.session;
@@ -641,6 +642,7 @@
     }
 
     async function guardarApariencia(identidad) {
+      if(raiz.AccountRuntimeV3?.installed){await raiz.AccountRuntimeV3.wait();return;}
       const { error } = await cliente.rpc("save_versus_appearance", { p_avatar: identidad.avatar, p_frame: identidad.frame });
       if (error) throw traducirError(error, "No pudimos compartir tu apariencia. Volvé a intentarlo.");
     }
@@ -797,7 +799,7 @@
     }
 
     async function ejecutarRpcSocial(nombre, parametros, respaldo) {
-      const { data, error } = await cliente.rpc(nombre, parametros);
+      const { data, error } = nombre==='upsert_versus_profile'&&raiz.AccountRuntimeV3?.installed?{data:await raiz.AccountRuntimeV3.route(nombre,parametros),error:null}:await cliente.rpc(nombre, parametros);
       if (error) throw traducirError(error, respaldo);
       await cargarEstadoSocial();
       return data;

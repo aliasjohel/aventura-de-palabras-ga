@@ -22,7 +22,7 @@
   const key=owner=>'towerOnlineV1:'+owner;
   const progressKey=owner=>'towerProgressV1:'+owner;
   function progress(){const owner=account();if(!owner)return null;try{const p=JSON.parse(storage.getItem(progressKey(owner))||'null');return p?.userId===owner&&p.managed===true&&p.completed&&typeof p.completed==='object'?p:null;}catch{return null;}}
-  function acceptStatus(response,owner){if(owner!==account()||response?.userId!==owner)throw Error('Tower account changed');if(!response.enabled)return null;const completed={};for(const p of response.progress||[])if(typeof p.character==='string'&&Number.isInteger(p.completed)&&p.completed>=0&&p.completed<=10)completed[p.character]=p.completed;const value={userId:owner,managed:true,completed};storage.setItem(progressKey(owner),JSON.stringify(value));return value;}
+  function acceptStatus(response,owner){if(owner!==account()||response?.userId!==owner)throw Error('Tower account changed');const completed={};for(const p of response.progress||[])if(typeof p.character==='string'&&Number.isInteger(p.completed)&&p.completed>=0&&p.completed<=10)completed[p.character]=p.completed;const value={userId:owner,managed:true,completed};storage.setItem(progressKey(owner),JSON.stringify(value));return value;}
   async function refresh(){const owner=account();if(!owner)return null;if(!online())return progress();try{return acceptStatus(await rpc({p_action:'status',p_attempt:null,p_request:null,p_sequence:null,p_payload:{}}),owner);}catch{return progress();}}
   function acceptAttempt(attempt){if(!Number.isInteger(attempt?.completedFloors)||attempt.completedFloors<0||attempt.completedFloors>10)return;const before=progress()||{userId:run.owner,managed:true,completed:{}};before.completed[attempt.character]=Math.max(before.completed[attempt.character]||0,attempt.completedFloors);storage.setItem(progressKey(run.owner),JSON.stringify(before));}
   function save(){if(run)storage.setItem(key(run.owner),JSON.stringify({owner:run.owner,attemptId:run.attemptId,selection:run.selection,pending}));}
@@ -30,7 +30,7 @@
   const active=()=>Boolean(run&&run.owner===account());
   function stop(){generation++;run=null;current=null;pending=null;paused=false;confirmedSettlement=null;settlementInFlight=null;}
   function forget(){if(run)storage.removeItem(key(run.owner));stop();}
-  function apply(response,render=true){if(!response||response.userId!==run?.owner||run.owner!==account())throw Error('Tower account changed');if(response.attempt){current=response.attempt;run.attemptId=current.id;acceptAttempt(current);}if(render&&current)onView(current,response);return response;}
+  function apply(response,render=true){if(!response||response.userId!==run?.owner||run.owner!==account())throw Error('Tower account changed');if(response.attempt&&(!current||current.id!==response.attempt.id||response.attempt.sequence>=current.sequence)){current=response.attempt;run.attemptId=current.id;acceptAttempt(current);}if(render&&current)onView(current,response);return response;}
   function confirmed(response){const r=response?.receipt;return Boolean(current&&response?.pending===false&&r?.confirmed===true&&typeof r.id==='string'&&r.userId===run?.owner&&r.character===current.character&&r.floor===current.floor&&r.amount===(current.floor<=4?30:current.floor<=9?50:150));}
   async function request(args,render=true){const owner=run?.owner,token=generation;pending=args;save();const response=await rpc(args);if(token!==generation||owner!==account()||owner!==run?.owner)return null;apply(response,render);pending=null;paused=false;if(args.p_action==='settle'&&args.p_attempt===current?.id&&confirmed(response))confirmedSettlement={owner,attemptId:current.id,response};save();return response;}
   function serialize(task){const token=generation;const job=queue.then(()=>token===generation?task():null);queue=job.catch(()=>{});return job;}
@@ -62,8 +62,8 @@
    await queue;stop();const owner=account();if(!owner||!online())return {practice:true,reason:'practice'};
    let status;try{status=await rpc({p_action:'status',p_attempt:null,p_request:null,p_sequence:null,p_payload:{}});}catch{paused=true;onProblem('accountWaiting');return {waiting:true,reason:'accountWaiting'};}
    if(owner!==account()||status.userId!==owner)return {waiting:true};
-   if(!status.enabled)return {practice:true,reason:'disabled'};
    acceptStatus(status,owner);
+   if(!status.enabled)return {practice:true,reason:'disabled'};
    const stored=load(owner);run={owner,attemptId:stored?.pending?stored.attemptId:(status.activeAttempt?.id||stored?.attemptId||null),selection:{character,floor,language,reducedMotion}};pending=stored?.pending||null;
    try{
     if(pending){if(!await request(pending,false))return {waiting:true};}
@@ -79,7 +79,7 @@
     if(run.attemptId){await request({p_action:'resume',p_attempt:run.attemptId,p_request:id(),p_sequence:null,p_payload:{}},false);
      if(current.status==='won')await settle(false);
      if(['prepared','playing'].includes(current.status)&&current.character===character&&current.floor===floor&&current.language===language)return {attempt:current,resumed:true};
-     if(['prepared','playing'].includes(current.status))await request({p_action:'abandon',p_attempt:current.id,p_request:id(),p_sequence:current.sequence,p_payload:{}},false);
+     if(['prepared','playing'].includes(current.status))return {recoveryRequired:true,attempt:current};
     }
     current=null;run.attemptId=null;
     const response=await request({p_action:'begin',p_attempt:null,p_request:id(),p_sequence:null,p_payload:{character,floor,language,reducedMotion}},false);return response?{attempt:current}:{waiting:true};

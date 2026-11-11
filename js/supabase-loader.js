@@ -10,11 +10,6 @@
 
   function cargarSupabase() {
     if (clienteDisponible()) return Promise.resolve(raiz.supabase);
-    if (!raiz.navigator?.onLine) {
-      return Promise.reject(new Error(
-        "El multijugador necesita conexión a internet. Podés jugar sin conexión al contenido ya descargado.",
-      ));
-    }
     if (promesaCarga) return promesaCarga;
 
     promesaCarga = new Promise((resolve, reject) => {

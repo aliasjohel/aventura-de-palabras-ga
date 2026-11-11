@@ -50,7 +50,7 @@
      if(a.id)try{await rpc({p_action:'interrupt',p_attempt:a.id});}catch{}
      return;
     }
-    if(a.status==='running'){active={owner,world,mission,attemptId:a.id,status:'running',interrupted:false,gameplayVersion:a.gameplayVersion};save(owner,world,mission,active);return active;}
+    if(a.status==='running'){active={owner,world,mission,attemptId:a.id,status:'running',interrupted:false,gameplayVersion:a.gameplayVersion,resumeGame:a.resumeGame};save(owner,world,mission,active);return active;}
     else save(owner,world,mission,{attemptId:a.id,status:a.status});
    }catch{if(token===generation){if(owner)save(owner,world,mission,{status:'unavailable'});else changed();}} // Story remains playable if rewards are unavailable.
   }

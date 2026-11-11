@@ -13,9 +13,11 @@
   const rewardKey='aventuraMarcosDesbloqueadosV1';
   const unlocked=new Set(['clasico']);
   function readRewards(){
+ if(globalThis.AccountRuntimeV3?.installed){unlocked.clear();for(const id of AccountRuntimeV3.frames())unlocked.add(id);return;}
     try { const ids=JSON.parse(localStorage.getItem(rewardKey));if(Array.isArray(ids))ids.forEach(id=>{if(!id.startsWith('xp_')&&!id.startsWith('tower_')&&frames.some(([known])=>known===id))unlocked.add(id);}); }catch(_){}
   }
   function updateRewards(progress,points=0){
+ if(globalThis.AccountRuntimeV3?.installed){readRewards();renderPreview();return [];}
     readRewards();
     if(!progress){try{progress=JSON.parse(localStorage.getItem('progresoAventuraGA'))||{};}catch(_){progress={};}}
     const added=AvatarRewards.earned(progress,points).filter(id=>!frameOwned(id));
@@ -25,7 +27,7 @@
     return added;
   }
   readRewards();
-  const frameOwned=id=>id.startsWith('tower_')?Boolean(globalThis.TowerRewards?.owns(id)):id.startsWith('xp_')?Boolean(globalThis.PlayerXP?.ownedFrame(id)):unlocked.has(id);
+  const frameOwned=id=>globalThis.AccountRuntimeV3?.installed?AccountRuntimeV3.ownsFrame(id):id.startsWith('tower_')?Boolean(globalThis.TowerRewards?.owns(id)):id.startsWith('xp_')?Boolean(globalThis.PlayerXP?.ownedFrame(id)):unlocked.has(id);
   const defaults = { avatar: "explorador", frame: "clasico" };
   function normalize(value) {
     return {
@@ -237,10 +239,12 @@
   // Shared by the room adapter and multiplayer UI. Only catalog IDs reach the DOM.
   globalThis.PlayerAvatar = Object.freeze({
     desbloquear:updateRewards,
+    applyAccount:(value,rights)=>{saved=normalize(value);draft={...saved};unlocked.clear();rights.forEach(id=>unlocked.add(id));renderMenu();renderPreview();},
+    clearAccount:()=>{saved={...defaults};draft={...saved};unlocked.clear();unlocked.add('clasico');renderMenu();renderPreview();},
     aplicarXP: value=>{if(globalThis.TowerRewards?.read().frame||!value?.frame?.startsWith('xp_')||!frameOwned(value.frame))return; saved=normalize(value);draft={...saved};try{localStorage.setItem(key,JSON.stringify(saved));}catch{} renderMenu();renderPreview();},
     nombreMarco:id=>U.resolve(K('profile.frames.'+id)),
     obtener: () => {
-      try { const value=JSON.parse(localStorage.getItem(key)),tower=globalThis.TowerRewards?.read().frame;return normalizeOwn({...value,frame:tower||(value?.frame?.startsWith('tower_')?'clasico':value?.frame)}); }
+      try { const value=globalThis.AccountRuntimeV3?.installed?saved:JSON.parse(localStorage.getItem(key)),tower=globalThis.TowerRewards?.read().frame;return normalizeOwn({...value,frame:tower||(value?.frame?.startsWith('tower_')?'clasico':value?.frame)}); }
       catch (_) { return { ...saved }; }
     },
     normalizar: normalize,
@@ -352,6 +356,7 @@
   el("guardarAvatar").addEventListener("click", async () => {
     if(!frameOwned(draft.frame))return;
     const desired={...draft};
+    if(globalThis.AccountRuntimeV3?.installed){const owner=CosmeticStore.read().accountId;try{await AccountRuntimeV3.saveAppearance(desired);if(owner===CosmeticStore.read().accountId)dialog.close();}catch{GameUI.text(el('estadoAvatar'),AccountRuntimeV3.read()?.message||'No se pudo confirmar el cambio.');}return;}
     const button=el('guardarAvatar');if(button.disabled)return;button.disabled=true;
     try{if(draft.frame.startsWith('tower_')||globalThis.TowerRewards?.read().frame)await TowerRewards.equip('frame',draft.frame.startsWith('tower_')?draft.frame:null);}
     catch(error){U.text(el('estadoAvatar'),K('profile.rewards.towerSaveFailed'));button.disabled=false;return;}

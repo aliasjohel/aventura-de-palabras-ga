@@ -54,9 +54,9 @@
   const status=node('p',notice);status.setAttribute('role','status');own.append(status);
   try{const old=JSON.parse(localStorage.getItem('aventuraXPHistoricoV1'));if(Number.isSafeInteger(old?.xp)&&old.xp>=0)own.append(node('small',text('legacy',{n:old.xp})));}catch{}
  }
- function apply(xp){
+ function apply(xp,authoritative=false){
   if(!xp||xp.userId!==account()||!Number.isSafeInteger(xp.total)||!Number.isInteger(xp.level))return false;
-  if(state?.userId===xp.userId&&state.revision>xp.revision)return false;
+  if(!authoritative&&state?.userId===xp.userId&&state.revision>xp.revision)return false;
   state=xp;render();root.dispatchEvent(new Event('player-xp-updated'));return true;
  }
  async function act(action,reward=null,frame=null,title=null){

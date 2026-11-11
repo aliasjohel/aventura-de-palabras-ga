@@ -829,7 +829,7 @@ function finalizarContextoPalabras() {
 function iniciarContextoPalabras(mode, online = false) {
   const vistaAventura = globalThis.AdventureOnline?.view();
   const idiomaMision = ['adventure','adventure-duel'].includes(mode) && vistaAventura && !vistaAventura.complete
-    && AdventureOnline.handles(escenarioActual,misionActual,vistaAventura.kind) ? vistaAventura.language : null;
+    && AdventureOnline.handles(escenarioActual,misionActual,vistaAventura.kind) ? vistaAventura.language : (["adventure","adventure-duel"].includes(mode)?globalThis.AdventureAccountV2?.state()?.adventure.checkpoint.language||null:null);
   // Keep a lock across word/puzzle/duel context changes within the same authoritative mission.
   const conservarIdiomaMision = idiomaMision ? I18n.lockLanguage() : null;
   finalizarContextoPalabras();
@@ -1310,6 +1310,7 @@ let cancelarSuscripcionSalasVersus = adaptadorSalasVersus.suscribir(
 );
 
 async function asegurarConexionSalasVersus() {
+  if(!navigator.onLine)throw new Error("El multijugador necesita conexión a internet. Tu aventura descargada se conserva.");
   if (adaptadorSalasVersus.proveedor === "supabase") return adaptadorSalasVersus;
   if (promesaConexionSalasVersus) return promesaConexionSalasVersus;
 
@@ -2567,8 +2568,8 @@ async function elegirTrajeSeleccionVersus(item,pruebaAutor){
       if(CosmeticStore.read().equipmentDirty)await GameWallet.sync();vigente();
       await TowerRewards.equip('costume',item.id,character);vigente();
     }else{
-      if(globalThis.TowerRewards?.read().selectedCostumes[character])await TowerRewards.equip('costume',null,character);
-      vigente();CosmeticStore.equip(character,item.id);
+      if(!globalThis.AccountRuntimeV3?.installed&&globalThis.TowerRewards?.read().selectedCostumes[character])await TowerRewards.equip('costume',null,character);
+      vigente();await CosmeticStore.equip(character,item.id);
     }
     window.dispatchEvent(new Event('costume-equipped'));
     informar('Traje seleccionado.');
@@ -2588,6 +2589,7 @@ function abrirTrajesAntesDuelo() {
 document.getElementById('confirmarTrajeAntesDuelo').addEventListener('click', () => document.getElementById('elegirTrajeAntesDuelo').close());
 
 function cargarPersonajesDesbloqueados() {
+ if(globalThis.AdventureAccountV2?.installed)return;
   try {
     const personajes = JSON.parse(
       localStorage.getItem(clavePersonajesDesbloqueados) || "[]",
@@ -2613,6 +2615,7 @@ function personajeEnPruebaTorre(personaje) {
 }
 
 function personajeDisponibleVersus(personaje) {
+ if(globalThis.AdventureAccountV2?.installed&&["guardiana","mago","dragon","dragon_hielo","azrak"].includes(personaje))return AdventureAccountV2.owns(personaje);
   if (modoPruebasActivo) return true;
   if (personajeEnPruebaTorre(personaje)) return true;
   if (globalThis.CharacterStore?.catalog.some(item=>item.id===personaje)) return CharacterStore.owns(personaje);
@@ -2625,6 +2628,7 @@ function personajeDisponibleVersus(personaje) {
 }
 
 function guardarPersonajeDesbloqueado(personaje) {
+ if(globalThis.AdventureAccountV2?.installed)return;
   if (modoPruebasActivo || globalThis.AventuraMapa?.repeticion) return;
   try {
     const personajes = JSON.parse(
@@ -3327,6 +3331,7 @@ tarjetasPersonajesVersus.forEach((tarjeta) => {
 });
 
 btnConfirmarPersonajeVersus.addEventListener("click", async () => {
+  if(globalThis.AccountRuntimeV3?.installed&&AccountRuntimeV3.read()?.confirmed&&AccountRuntimeV3.state()?.enabled&&!modoPruebasActivo){try{await AccountRuntimeV3.wait();if(AccountRuntimeV3.state().preferences.selectedCharacter!==personajeJugadorVersus)await AccountRuntimeV3.preferences({selectedCharacter:personajeJugadorVersus});}catch{estadoPersonajePropioVersus.textContent=AccountRuntimeV3.read()?.message||'No se pudo confirmar la selección.';return;}}
   if (!personajeDisponibleVersus(personajeJugadorVersus)) return;
   reproducirSonidoComenzarAventura();
   if (modoArcadeActivo) {
@@ -3762,13 +3767,14 @@ btnContinuarHistoria.addEventListener("click", async () => {
 btnJugar.addEventListener("click", abrirMapaAventura);
 
 async function continuarDesdeMapa() {
+ if(!await AdventureAccountV2.prepare())return;
   document.getElementById("mapaAventura").close();
   if (modoPruebasActivo) actualizarModoPruebas(false);
   cargarProgreso();
   reproducirSonidoComenzarAventura();
   solicitarOrientacion("portrait");
 
-  if (!localStorage.getItem("progresoAventuraGA")) {
+  if (!leerProgresoAventuraV2()) {
     reiniciarEstadoAventura();
     mostrarPrologo();
     return;
@@ -8234,6 +8240,7 @@ async function iniciarCombateArcade() {
     if(torreAutoritativa&&!modoPruebasActivo&&!globalThis.TowerOutfitPreview?.selection()&&CosmeticStore.read().accountId&&navigator.onLine){
       const result=await torreAutoritativa.prepare(character,floor+1,I18n.language,matchMedia('(prefers-reduced-motion: reduce)').matches);
       if(!modoArcadeActivo||character!==personajeJugadorVersus||floor!==pisoActualArcade)return;
+      if(result.recoveryRequired){const a=result.attempt;if(confirm('Hay un combate guardado con '+(personajesVersus[a.character]?.nombre||a.character)+', piso '+a.floor+'. ¿Querés recuperar esa selección para continuarlo?')){personajeJugadorVersus=a.character;if(I18n.language!==a.language)await I18n.setPreference(a.language);rivalesTorreArcade=crearOrdenRivalesArcade();pisosDesbloqueadosArcade=leerProgresoArcade();pisoActualArcade=a.floor-1;renderizarTorreArcade();estadoArcade.textContent='Combate recuperado. Tocá Combatir para continuar; el reloj del servidor conserva sus reglas.';}return;}
       if(result.waiting){informarTorre(result.reason||'waiting');return;}
       progresoServidorTorre=torreAutoritativa.progress()||progresoServidorTorre;
       if(result.locked){pisosDesbloqueadosArcade=leerProgresoArcade();pisoActualArcade=Math.min(pisosDesbloqueadosArcade,9);renderizarTorreArcade();informarTorre('locked');return;}
@@ -10260,7 +10267,7 @@ function prepararMisionElegida(mundoSeleccionado, misionSeleccionada) {
 }
 
 function restaurarPartidaTrasPruebas() {
-  const progresoGuardado = localStorage.getItem("progresoAventuraGA");
+  const progresoGuardado = leerProgresoAventuraV2();
 
   if (progresoGuardado) {
     cargarProgreso();
@@ -11919,12 +11926,12 @@ async function iniciarMisionAventura({ presentarMision = false, reiniciarIntento
   iniciarContextoPalabras("adventure");
   const slotAyuda=[escenarioActual,misionActual,desafiosCompletados,contextoPalabrasCombate.language,Boolean(globalThis.AventuraMapa?.repeticion)].join(':');
   let guardadaAyuda=null;
-  if(!modoPruebasActivo){try{guardadaAyuda=globalThis.AdventureHints?.restore(slotAyuda);if(guardadaAyuda?.finished)guardadaAyuda=null;}catch{}}
+  if(!modoPruebasActivo&&!globalThis.AdventureAccountV2?.installed){try{guardadaAyuda=globalThis.AdventureHints?.restore(slotAyuda);if(guardadaAyuda?.finished)guardadaAyuda=null;}catch{}}
   const ayudaOnlineVigente=guardadaAyuda&&!guardadaAyuda.localOnly&&guardadaAyuda.attemptId===globalThis.AdventureOnline?.view()?.attemptId
     &&globalThis.AdventureOnline?.handles(escenarioActual,misionActual,'word');
   if(guardadaAyuda&&!ayudaOnlineVigente){globalThis.AdventureOnline?.clear();try{globalThis.AdventureHints?.localOnly();}catch{globalThis.AdventureHints?.disable();}}
   let intentoOnline;
-  if(!guardadaAyuda&&!modoPruebasActivo&&desafiosCompletados===0)intentoOnline=await AdventureRewards.begin(escenarioActual,misionActual).catch(()=>{});
+  if(!guardadaAyuda&&!modoPruebasActivo&&(desafiosCompletados===0||globalThis.AdventureAccountV2?.installed&&!globalThis.AdventureOnline?.view()))intentoOnline=await AdventureRewards.begin(escenarioActual,misionActual).catch(()=>{});
   if(modoPruebasActivo)globalThis.AdventureOnline?.clear();
   const desafioOnline=(!guardadaAyuda||ayudaOnlineVigente)&&!modoPruebasActivo?await globalThis.AdventureOnline?.prepare(intentoOnline,escenarioActual,misionActual,desafiosCompletados,contextoPalabrasCombate.language,prefiereReducirMovimiento.matches):null;
   ocultarMensajeDesafioSuperado();
@@ -12249,6 +12256,7 @@ function guardarProgreso() {
     maximoEscenarioDesbloqueado,
   };
 
+  if(globalThis.AdventureAccountV2?.installed){AdventureAccountV2.capture(progreso);actualizarMenuPrincipal();return;}
   localStorage.setItem("progresoAventuraGA", JSON.stringify(progreso));
   globalThis.PlayerAvatar?.desbloquear(progreso);
 
@@ -12256,9 +12264,10 @@ function guardarProgreso() {
 }
 
 function cargarProgreso() {
+  if(globalThis.AdventureAccountV2?.installed){aplicarProgresoCuentaV2();return;}
   historialPalabrasAventura = {};
   historialPalabrasPorIdioma = {};
-  const progresoGuardado = localStorage.getItem("progresoAventuraGA");
+  const progresoGuardado = leerProgresoAventuraV2();
 
   if (!progresoGuardado) {
     maximoEscenarioDesbloqueado = 0;
@@ -12364,7 +12373,7 @@ function cargarProgreso() {
 }
 
 function actualizarMenuPrincipal() {
-  const progresoGuardado = localStorage.getItem("progresoAventuraGA");
+  const progresoGuardado = leerProgresoAventuraV2();
 
   if (!progresoGuardado) {
     btnNuevaAventura.classList.add("oculto");
@@ -17506,7 +17515,7 @@ function precargarRecursosCinematicaSantuario() {
 // Mapa de aventura. Las repeticiones nunca escriben sobre la partida principal.
 function obtenerProgresoMapa() {
   let progreso = {};
-  try { progreso = JSON.parse(localStorage.getItem("progresoAventuraGA") || "{}") || {}; } catch { /* Partida nueva. */ }
+  try { progreso = JSON.parse(leerProgresoAventuraV2() || "{}") || {}; } catch { /* Partida nueva. */ }
   const mundo = Math.min(aventura.length - 1, Math.max(0, Number(progreso.escenarioActual) || 0));
   const mision = Math.min(obtenerCantidadMisiones(mundo) - 1, Math.max(0, Number(progreso.misionActual) || 0));
   return { progreso, mundo, mision, ultimo: Math.min(aventura.length - 1,
@@ -17514,6 +17523,7 @@ function obtenerProgresoMapa() {
 }
 
 function estadoMisionMapa(mundo, mision, datos = obtenerProgresoMapa()) {
+ if(globalThis.AdventureAccountV2?.installed)return AdventureAccountV2.mapStatus(mundo,mision);
   if (mundo > datos.ultimo) return "bloqueada";
   const finales = [false, datos.progreso.mundoDosCompletado, datos.progreso.mundoTresCompletado,
     datos.progreso.mundoCuatroCompletado, datos.progreso.estadoFinalAzrak === "completo"];
@@ -17522,10 +17532,11 @@ function estadoMisionMapa(mundo, mision, datos = obtenerProgresoMapa()) {
   return mundo === datos.mundo && mision === datos.mision ? "actual" : "bloqueada";
 }
 
-function abrirMapaAventura() {
+async function abrirMapaAventura() {
+ try{await AdventureAccountV2.wait();}catch{return;}cargarProgreso();
   const mapa = document.getElementById("mapaAventura");
   const datos = obtenerProgresoMapa();
-  const guardado = Boolean(localStorage.getItem("progresoAventuraGA"));
+  const guardado = Boolean(leerProgresoAventuraV2());
   const terminado = datos.progreso.estadoFinalAzrak === "completo";
   const continuar = document.getElementById("continuarMapaAventura");
   continuar.textContent = terminado ? "Aventura completada · Elegí una misión" : guardado ? "▶ Continuar aventura" : "✦ Comenzar aventura";
@@ -17543,7 +17554,7 @@ function abrirMapaAventura() {
     boton.type = "button";
     boton.className = `mapa-mundo mapa-mundo-${indice}`;
     boton.dataset.mundo = indice;
-    boton.disabled = indice > datos.ultimo;
+    boton.disabled = !AdventureAccountV2.worldAllowed(indice);
     boton.setAttribute("aria-controls", "misionesMapaAventura");
     const numero = document.createElement("span");
     numero.className = "mapa-numero";
@@ -17739,3 +17750,31 @@ function actualizarEstadosRecompensaMapa(){
 }
 window.addEventListener('adventure-rewards-updated',actualizarEstadosRecompensaMapa);
 window.addEventListener('wallet-updated',actualizarEstadosRecompensaMapa);
+
+
+function leerProgresoAventuraV2(){return globalThis.AdventureAccountV2?.installed?AdventureAccountV2.story():localStorage.getItem("progresoAventuraGA");}
+function aplicarProgresoCuentaV2(){
+ const p=JSON.parse(AdventureAccountV2.story()||'null')||{};
+ escenarioActual=p.escenarioActual??0;misionActual=p.misionActual??0;desafiosCompletados=p.desafiosCompletados??0;desafioActual=desafiosCompletados+1;
+ historialPalabrasAventura=p.historialPalabrasAventura||{};historialPalabrasPorIdioma=p.historialPalabrasPorIdioma||{};
+ cristalesObtenidos=p.cristalesObtenidos??0;muralSantuarioCompletado=p.muralSantuarioCompletado===true;portalAbierto=p.portalAbierto===true;
+ mundoDosCompletado=p.mundoDosCompletado===true;mundoTresCompletado=p.mundoTresCompletado===true;mundoCuatroCompletado=p.mundoCuatroCompletado===true;
+ estadoFinalAzrak=p.estadoFinalAzrak||'shadow';primerDueloNivorCompletado=p.primerDueloNivorCompletado===true;estadoPrimerEncuentroShadow=p.estadoPrimerEncuentroShadow||'pendiente';
+ estadoPruebaKairos=p.estadoPruebaKairos||'pendiente';estadoEncuentroCalamo=p.estadoEncuentroCalamo||'pendiente';hombreLoboDescubierto=p.hombreLoboDescubierto===true;maximoEscenarioDesbloqueado=p.maximoEscenarioDesbloqueado??0;
+ guardianaDesbloqueada=AdventureAccountV2.owns('guardiana');magoDesbloqueado=AdventureAccountV2.owns('mago');dragonDesbloqueado=AdventureAccountV2.owns('dragon');nivorDesbloqueado=AdventureAccountV2.owns('dragon_hielo');azrakDesbloqueado=AdventureAccountV2.owns('azrak');
+ monedas=saldoTiendaOMonedas(0);actualizarJugador();actualizarMenuPrincipal();actualizarDisponibilidadPersonajesVersus();
+}
+window.addEventListener('adventure-account-ready',()=>{globalThis.AdventureOnline?.clear();aplicarProgresoCuentaV2();});
+window.addEventListener('adventure-account-cleared',()=>{globalThis.AdventureOnline?.clear();aplicarProgresoCuentaV2();});
+window.addEventListener('adventure-state-updated',()=>{actualizarDisponibilidadPersonajesVersus();actualizarEstadosRecompensaMapa();});
+// Reconciliation is distinct from per-letter updates: applying a checkpoint
+// during combat would reset transient gameplay. Refresh only an idle view.
+window.addEventListener('adventure-account-recovered',()=>{
+ if(!pantallaMenu.classList.contains('activa'))return;
+ aplicarProgresoCuentaV2();
+ if(document.getElementById('mapaAventura')?.open)void abrirMapaAventura();
+});
+
+
+window.addEventListener('account-state-updated',event=>{const s=AccountRuntimeV3.state();if(!s)return;progresoServidorTorre={userId:s.userId,managed:true,completed:Object.fromEntries(s.tower.progress.map(p=>[p.character,p.completed]))};if(!partidaOnlineIniciada&&!torreEnCurso&&!dueloAventuraActivo&&pantallaSeleccionPersonajeVersus.classList.contains('oculto')){const ch=s.preferences.selectedCharacter;if(ch&&personajesVersus[ch]&&personajeDisponibleVersus(ch))personajeJugadorVersus=ch;} });
+window.addEventListener('account-state-cleared',()=>{progresoServidorTorre=null;personajeJugadorVersus='explorador';torreAutoritativa?.stop();});
