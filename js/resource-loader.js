@@ -226,7 +226,6 @@
         // Include the world's combat poses and finishers before the first mission.
         || (p.includes('/personajes/') && castTokens.some(token => p.includes(token)))
         || (p.includes('/personajes/versus/') && !Object.values(fighterTokens).flat().some(token => p.includes(token)))))
-      || (index === 4 && p.includes('/trajes/aren-union-'))
       || (index === 0 && p.includes('/intro/'))
       || (p.includes('/sounds/character-') && castTokens.some(token => p.includes(token)))
       || (index === 0 && /mural-dragon1|comienza-mundo-2/.test(p))

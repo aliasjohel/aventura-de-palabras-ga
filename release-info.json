@@ -1,10 +1,9 @@
 {
-  "version": "0.4.7",
+  "version": "0.4.8",
   "platform": "pwa",
-  "androidVersionCode": 10,
+  "androidVersionCode": 11,
   "changes": [
-    "tower-ability-opponent-preview",
-    "guardiana-original-impact-recovery"
+    "aren-union-lossless-webp"
   ],
   "databaseMigrations": 0
 }

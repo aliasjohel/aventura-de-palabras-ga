@@ -3,7 +3,7 @@
   function prepararCapaUnion(actor){
   const arena=actor.parentElement;
   const layer=document.createElement('div');layer.className='aren-union-duelo-capa';layer.hidden=true;layer.setAttribute('aria-hidden','true');
-  const cape=new Image();cape.loading='lazy';cape.decoding='async';cape.src='assets/images/trajes/aren-union-capa-v1.png';layer.append(cape);
+  const cape=new Image();cape.loading='lazy';cape.decoding='async';cape.src='assets/images/trajes/aren-union-capa-v1.webp';layer.append(cape);
   const gems=Array.from({length:5},(_,i)=>{
     const gem=new Image();gem.loading='lazy';gem.decoding='async';gem.src='assets/images/elements/cristal-sabiduria-esmeralda.png';
     gem.className='aren-union-cristal-entrada';gem.hidden=true;gem.alt='';gem.setAttribute('aria-hidden','true');
@@ -14,7 +14,7 @@
   let follow=null;
   function update(){
     const active=actor.getAttribute('src')?.includes('/aren-union-')&&!arena.classList.contains('oculto');
-    const capeIncluded=/aren-union-(disparo-v2|ataque-rayo-v2|habilidad-v1|ataque-v1|concepto-v1|impacto-(?:v[12]|duelo-v1))\.png$/.test(actor.getAttribute('src')||'');
+    const capeIncluded=/aren-union-(disparo-v2|ataque-rayo-v2|habilidad-v1|ataque-v1|concepto-v1|impacto-(?:v[12]|duelo-v1))\.(?:png|webp)$/.test(actor.getAttribute('src')||'');
     layer.hidden=!active||capeIncluded||actor.hasAttribute('data-cambiando-pose');if(!active){gems.forEach(gem=>gem.hidden=true);entranceStart=null;if(follow!==null)cancelAnimationFrame(follow);follow=null;return;}
     const style=getComputedStyle(actor),w=actor.offsetWidth,h=actor.offsetHeight;
     const ratio=(actor.naturalWidth||1152)/(actor.naturalHeight||1536);

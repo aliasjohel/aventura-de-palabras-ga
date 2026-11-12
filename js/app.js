@@ -6702,7 +6702,7 @@ function spriteTrajeVersus(elemento, personaje, src, herido=false) {
   const earned=globalThis.TowerRewards?.source(traje,src,herido);
   if(earned)return earned;
   // The trunk cinematic keeps its frontal pose; combat faces the opponent.
-  if (traje === 'aren-union' && herido) return 'assets/images/trajes/aren-union-impacto-duelo-v1.png';
+  if (traje === 'aren-union' && herido) return 'assets/images/trajes/aren-union-impacto-duelo-v1.webp';
   const posesCriaturas = {
     [srcAzrakAtaqueVersus]:'ataque',
     [srcKalamoAtaqueVersus]:'ataque',
@@ -7415,7 +7415,7 @@ function reproducirRayoUnionVersus(lado) {
   establecerPoseCombateVersus(actor,'ataque',srcExploradorLanzaBumeran);
   actor.classList.add('rayo-union-atacando');
   const arco=new Image();arco.className='rayo-basico-union '+(jugador?'':'desde-rival');
-  arco.src='assets/images/trajes/aren-union-rayo-v2.png';arco.alt='';arco.setAttribute('aria-hidden','true');actor.parentElement.append(arco);
+  arco.src='assets/images/trajes/aren-union-rayo-v2.webp';arco.alt='';arco.setAttribute('aria-hidden','true');actor.parentElement.append(arco);
   function alinearRayo(){
     if(!arco.isConnected)return;
     const arena=actor.parentElement.getBoundingClientRect(),a=actor.getBoundingClientRect(),b=rival.getBoundingClientRect();

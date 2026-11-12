@@ -30,18 +30,18 @@
   }
   function asset(id,pose='base'){
     if(id==='lobo-lunar'&&pose==='impacto')return 'assets/images/trajes/lobo-lunar-impacto-v2.webp';
-    if(id==='aren-union'&&cinemaPoses.includes(pose)&&pose!=='final')return `assets/images/trajes/aren-union-${pose}-v1.png`;
-    if(id==='aren-union'&&pose==='habilidad')return 'assets/images/trajes/aren-union-habilidad-v1.png';
-    if(id==='aren-union'&&pose==='ataque')return 'assets/images/trajes/aren-union-ataque-rayo-v2.png';
-    if(id==='aren-union'&&pose==='impacto')return 'assets/images/trajes/aren-union-impacto-v2.png';
-    if(id==='aren-union')return `assets/images/trajes/aren-union-${['invocacion','victoria','capa'].includes(pose)?pose:pose==='final'?'victoria':'base'}-v1.png`;
+    if(id==='aren-union'&&cinemaPoses.includes(pose)&&pose!=='final')return `assets/images/trajes/aren-union-${pose}-v1.webp`;
+    if(id==='aren-union'&&pose==='habilidad')return 'assets/images/trajes/aren-union-habilidad-v1.webp';
+    if(id==='aren-union'&&pose==='ataque')return 'assets/images/trajes/aren-union-ataque-rayo-v2.webp';
+    if(id==='aren-union'&&pose==='impacto')return 'assets/images/trajes/aren-union-impacto-v2.webp';
+    if(id==='aren-union')return `assets/images/trajes/aren-union-${['invocacion','victoria','capa'].includes(pose)?pose:pose==='final'?'victoria':'base'}-v1.webp`;
     const item=find(id);if(!item)return null;
     if(id==='kairos-real'&&pose==='final')pose='ataque';
     if(id==='lobo-lunar'&&pose==='final')pose='salto';
     return `assets/images/trajes/${id}-${item.poses.includes(pose)||cinemaPoses.includes(pose)?pose:'base'}-v1.png`;
   }
   function previewAsset(id,pose='base'){
-    return id==='aren-union'&&pose==='base'?'assets/images/trajes/aren-union-concepto-v1.png':asset(id,pose);
+    return id==='aren-union'&&pose==='base'?'assets/images/trajes/aren-union-concepto-v1.webp':asset(id,pose);
   }
   function create(storage,ownsCharacter=character=>character==='explorador'||globalThis.CharacterStore?.owns(character)===true){
     let purchaseHandler=null;
