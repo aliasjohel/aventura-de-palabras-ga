@@ -1,10 +1,9 @@
 {
-  "version": "0.4.3",
+  "version": "0.4.4",
   "platform": "pwa",
-  "androidVersionCode": 7,
+  "androidVersionCode": 8,
   "changes": [
-    "persistent-native-writer",
-    "late-adventure-hydration"
+    "account-startup-circular-wait"
   ],
   "databaseMigrations": 0
 }

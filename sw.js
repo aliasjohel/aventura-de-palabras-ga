@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v043-pwa-sync-recovery`;
+const CACHE_NAME = `${CACHE_PREFIX}v044-pwa-sync-recovery`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -2005,8 +2005,8 @@ const ASSET_REVISIONS = {
   "./js/adventure-sync-v2.js": "sha256-e8420231732306aa6add58882210a2913977e7bee324fbde799b7119f84a2daa",
   "./js/adventure-account-v2.js": "sha256-1be03fb544155a3acdbb88c182b6a7c3d829a21c3e3400da15b2301dc44407dc",
   "./js/account-sync-v3.js": "sha256-49d7c91bec92c8db56f084f58fc2f95f1f85be82feff22237951c9038b274264",
-  "./js/account-runtime-v3.js": "sha256-fd0b353a8568f4cacce75964b6b3e2df96cb0358a9ac8b10167902dfb120ce35",
-  "./pilot-config.js": "sha256-e69b44861988d814593d065e36b9165bf85c690ea3ae3b4e02f8de951a095896",
+  "./js/account-runtime-v3.js": "sha256-eda464012afc1ade6d970be82d5e1583a80bc3bcb0349463409d0cd39616dfcf",
+  "./pilot-config.js": "sha256-10205b054f2b7dfff8ac23fb5236574b4c8e5ffc883a30965dddf9cfef6ecdaf",
   "./pilot-gate.js": "sha256-f88ab9d35324530cd975ec39b572aad4e03f15b55f71ed4466cda8a459c23a3e",
   "./css/sync-menu-layout.css": "sha256-8b5639da9724641e2d006400a0c2c3850cbfd9c643e09b4f9f92332f622c765f"
 };

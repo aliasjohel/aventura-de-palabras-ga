@@ -28,8 +28,11 @@
   await next.load();if(ticket!==generation)return null;hydrate();return state();
   })().catch(()=>{if(ticket===generation)render();return null;}).finally(()=>{if(ticket===generation)connecting=false;});return ready;
  }
- async function wait(){if(!repo)await root.AventuraShop?.connect();await ready;if(!state()||!repo.read().confirmed)throw new root.AccountSyncV3.AccountError('unavailable');return state();}
- async function refresh(){if(!repo)await root.AventuraShop?.connect();await ready;if(!repo)throw new root.AccountSyncV3.AccountError('unavailable');if(navigator.onLine)await repo.reconcile();hydrate();return state();}
+ // The online adapter calls wait() for appearance immediately after wallet.connect().
+ // Identity recovery is asynchronous: repo may still be null while connect is active.
+ // Re-entering Shop.connect here waits on the adapter that is awaiting us.
+ async function wait(){if(!repo&&!connecting)await root.AventuraShop?.connect();await ready;if(!state()||!repo.read().confirmed)throw new root.AccountSyncV3.AccountError('unavailable');return state();}
+ async function refresh(){if(!repo&&!connecting)await root.AventuraShop?.connect();await ready;if(!repo)throw new root.AccountSyncV3.AccountError('unavailable');if(navigator.onLine)await repo.reconcile();hydrate();return state();}
  async function command(action,payload){await wait();const result=await repo.command(action,payload);hydrate();return result;}
  function getFrames(){return repo?.read().confirmed||!navigator.onLine?state()?.frames||[]:[];}
  async function equipSkin(character,skin){await command('wallet_equip',{character,skin});return root.CosmeticStore.read();}
