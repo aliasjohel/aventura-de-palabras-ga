@@ -5769,9 +5769,19 @@ function renderizarDueloAventuraAutoritativo(estado) {
       const player=evento.actor==='player';
       mostrarRevelacionPalabraVersus(player?revelacionPalabraVersusUno:revelacionPalabraVersusDos,evento.reveal,estado[evento.actor].theme,player?'temporizadorRevelacionJugador':'temporizadorRevelacionRival');
     }
-    if (evento.type === 'ability') reproducirAnimacionHabilidadVersus(
-      evento.actor === 'player' ? (estado.playerCharacter||'explorador') : estado.character,
-      {desdeRival:evento.actor === 'npc', alImpactar:()=>{}});
+    if (evento.type === 'ability') {
+      const propio = evento.actor === 'player';
+      const personaje = propio ? (estado.playerCharacter || 'explorador') : estado.character;
+      const descargaUnion = propio && personaje === 'explorador' && usaUnionVersus();
+      reproducirAnimacionHabilidadVersus(personaje, {
+        desdeRival: !propio,
+        pista: propio ? estado.player.hint || '' : '',
+        // Present the confirmed ability without applying its gameplay effect again.
+        alImpactar: () => {
+          if (propio) mostrarVistaImpactoRivalVersus(personaje, evento.letter || '', descargaUnion);
+        },
+      });
+    }
     if (evento.type === 'letter' && evento.actor === 'npc') reproducirPulsacionTeclaVersus('rival');
   }
   const firma = estado.player.effect + ':' + estado.player.effect_until;

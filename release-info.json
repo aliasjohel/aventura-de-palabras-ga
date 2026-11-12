@@ -1,8 +1,9 @@
 {
-  "version": "0.4.6",
+  "version": "0.4.7",
   "platform": "pwa",
-  "androidVersionCode": 9,
+  "androidVersionCode": 10,
   "changes": [
+    "tower-ability-opponent-preview",
     "guardiana-original-impact-recovery"
   ],
   "databaseMigrations": 0
