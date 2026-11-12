@@ -6688,7 +6688,7 @@ function spriteTrajeVersus(elemento, personaje, src, herido=false) {
     if(visual)return visual;
   }
   const traje=trajePersonajeVersus(elemento,personaje);
-  if(!traje)return herido&&personaje==='guardiana'?srcGuardianaImpactoTroncoVersus:src;
+  if(!traje)return src;
   const earned=globalThis.TowerRewards?.source(traje,src,herido);
   if(earned)return earned;
   // The trunk cinematic keeps its frontal pose; combat faces the opponent.
@@ -6873,7 +6873,8 @@ async function prepararImagenesCombate(personajes) {
 const posesDanoPersonajeVersus = {
   explorador: 'assets/images/personajes/versus/explorador-atrapado-eclipse.png',
   mago: 'assets/images/personajes/versus/mago-impacto-v2.webp',
-  guardiana: 'assets/images/personajes/versus/guardiana-susto-impacto.png',
+  // The observer must recognize the same combat sprite when damage ends.
+  guardiana: 'assets/images/personajes/versus/guardiana-impacto-tronco-frontal-v1.png',
   dragon: 'assets/images/personajes/versus/dragon-susto-impacto.png',
   kairos: srcKairosImpactoVersus,
   hombre_lobo: srcHombreLoboImpactoVersus,

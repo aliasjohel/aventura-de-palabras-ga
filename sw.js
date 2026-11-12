@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v045-pwa-sync-recovery`;
+const CACHE_NAME = `${CACHE_PREFIX}v046-pwa-guardiana-recovery`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1650,7 +1650,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-b33853e65a7c670d77d051ff7057c3d4070e338fea7da3963ce5e5e50a618243",
+  "./js/app.js": "sha256-cfcd187c7a3fb9a2ddb944f75cce4a08afb6369bce4cc0888ea55fe2c8e81ac9",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
@@ -2006,7 +2006,7 @@ const ASSET_REVISIONS = {
   "./js/adventure-account-v2.js": "sha256-1be03fb544155a3acdbb88c182b6a7c3d829a21c3e3400da15b2301dc44407dc",
   "./js/account-sync-v3.js": "sha256-49d7c91bec92c8db56f084f58fc2f95f1f85be82feff22237951c9038b274264",
   "./js/account-runtime-v3.js": "sha256-eda464012afc1ade6d970be82d5e1583a80bc3bcb0349463409d0cd39616dfcf",
-  "./pilot-config.js": "sha256-36d089ef16ae6940c00ae9f2d721744ef7f2cf4d929974416e22645da9f4286e",
+  "./pilot-config.js": "sha256-db1876f5e7f5b8b219dddfd9fe8edbb28de2bf7fdabaa5738d444f36450b2b05",
   "./pilot-gate.js": "sha256-f88ab9d35324530cd975ec39b572aad4e03f15b55f71ed4466cda8a459c23a3e",
   "./css/sync-menu-layout.css": "sha256-8b5639da9724641e2d006400a0c2c3850cbfd9c643e09b4f9f92332f622c765f"
 };

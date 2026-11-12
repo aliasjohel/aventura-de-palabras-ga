@@ -1,9 +1,9 @@
 {
-  "version": "0.4.5",
+  "version": "0.4.6",
   "platform": "pwa",
   "androidVersionCode": 9,
   "changes": [
-    "tower-attack-audio-original-impact"
+    "guardiana-original-impact-recovery"
   ],
   "databaseMigrations": 0
 }
