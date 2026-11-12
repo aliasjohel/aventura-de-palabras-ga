@@ -1,9 +1,11 @@
 {
-  "version": "0.4.8",
+  "version": "0.4.9",
   "platform": "pwa",
-  "androidVersionCode": 11,
+  "androidVersionCode": 12,
   "changes": [
-    "aren-union-lossless-webp"
+    "aren-union-premium-preview",
+    "play-billing-test-only-disabled",
+    "restore-server-verified-purchase"
   ],
   "databaseMigrations": 0
 }

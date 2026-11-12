@@ -395,6 +395,7 @@ globalThis.GameResourceCatalog = Object.freeze([
   "./js/character-shop.js",
   "./js/profile-backgrounds.js",
   "./js/profile-background-shop.js",
+  "./js/aren-premium.js",
   "./js/cosmetic-shop.js",
   "./css/cosmetic-shop.css",
   "./assets/images/trajes/aren-bosque-anciano-v1.png",

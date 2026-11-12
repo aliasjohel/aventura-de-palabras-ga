@@ -17,7 +17,7 @@
     Object.freeze({id:'nivor-boreal',character:'dragon_hielo',hero:'Nivor',name:'Soberano Boreal',price:1500,description:'Armadura de zafiro, filigranas de plata y una gema de aurora sobre el hielo.',poses:['base','ataque','impacto','vuelo','descenso-alto','descenso-bajo','frontal']}),
     Object.freeze({id:'azrak-eclipse',character:'azrak',hero:'Azrak',name:'Señor del Eclipse',price:1500,description:'Armadura de obsidiana, filos de plata y una espada de fuego violeta.',poses:['base','ataque','impacto','invocacion','susto']}),
     Object.freeze({id:'kalamo-astral',character:'kalamo',hero:'Kálamo',name:'Escriba Astral',price:1500,description:'Pergaminos azul noche, constelaciones de plata y tinta estelar.',poses:['base','ataque','habilidad','impacto','alcanza','extrae','prepara','lanza','golpea','formacion-1','formacion-2','formacion-3']}),
-    Object.freeze({id:'aren-union',character:'explorador',hero:'Aren',name:'Guardián de los Cinco Cristales',price:null,adminOnly:true,description:'Aren Unión. Acceso de administrador para probar duelos online.',poses:['base','ataque','habilidad','impacto','invocacion','victoria']}),
+    Object.freeze({id:'aren-union',character:'explorador',hero:'Aren',name:'Guardián de los Cinco Cristales',price:null,adminOnly:true,premium:true,productId:'aren_union_permanent',description:'Aren Unión. Compra única permanente, disponible desde el principio. Próximamente en Google Play.',poses:['base','ataque','habilidad','impacto','invocacion','victoria']}),
   ]);
   const find=id=>catalog.find(item=>item.id===id);
   const cinemaPoses=Object.freeze(['planta','mano','vidrio','envejecido','anciano','final']);

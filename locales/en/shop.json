@@ -136,10 +136,22 @@
     },
     "aren-union": {
       "name": "Guardian of the Five Crystals",
-      "description": "Aren Unión. Administrator access for testing online duels."
+      "description": "Aren Union, Guardian of the Five Crystals. One permanent purchase, available from the start without completing the five worlds. Coming soon on Google Play."
     }
   },
   "rewardFramesHelp": "Earn frames by completing Adventure worlds and climbing the ranks. Choose them in My Profile.",
   "characterRequired": "Unlock {hero} before buying this outfit.",
-  "needCharacter": "Requires {hero}"
+  "needCharacter": "Requires {hero}",
+  "premium": {
+    "badge": "✦ Premium character",
+    "tentativePrice": "US$1.99 · tentative price",
+    "restore": "Restore purchase",
+    "comingSoon": "Coming soon on Google Play",
+    "buyTest": "Test purchase · Google Play",
+    "verified": "Verified purchase restored to your account.",
+    "pending": "Purchase pending. The character will unlock after confirmation.",
+    "not_found": "No verified purchase was found for this game account.",
+    "revoked": "The purchase was cancelled or refunded.",
+    "cancelled": "Purchase cancelled. No content was unlocked."
+  }
 }

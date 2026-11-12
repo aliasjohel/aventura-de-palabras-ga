@@ -136,10 +136,22 @@
     },
     "aren-union": {
       "name": "Guardião dos Cinco Cristais",
-      "description": "Aren Unión. Acesso de administrador para testar duelos online."
+      "description": "Aren União, Guardião dos Cinco Cristais. Compra única permanente, disponível desde o início, sem completar os cinco mundos. Em breve no Google Play."
     }
   },
   "rewardFramesHelp": "Ganhe molduras ao concluir mundos da Aventura e subir de rank. Escolha em Meu perfil.",
   "characterRequired": "Desbloqueie {hero} antes de comprar este traje.",
-  "needCharacter": "Requer {hero}"
+  "needCharacter": "Requer {hero}",
+  "premium": {
+    "badge": "✦ Personagem premium",
+    "tentativePrice": "US$1,99 · preço provisório",
+    "restore": "Restaurar compra",
+    "comingSoon": "Em breve no Google Play",
+    "buyTest": "Compra de teste · Google Play",
+    "verified": "Compra verificada e recuperada na sua conta.",
+    "pending": "Compra pendente. O personagem será liberado após a confirmação.",
+    "not_found": "Nenhuma compra verificada foi encontrada para esta conta do jogo.",
+    "revoked": "A compra foi cancelada ou reembolsada.",
+    "cancelled": "Compra cancelada. Nenhum conteúdo foi liberado."
+  }
 }

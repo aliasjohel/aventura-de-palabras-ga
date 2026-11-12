@@ -1,0 +1,8 @@
+project_id = "aventura-premium-test"
+
+[functions.aren-play-billing]
+verify_jwt = true
+
+# Pub/Sub authenticates with a Google-signed OIDC JWT, verified in the function.
+[functions.aren-play-rtdn]
+verify_jwt = false

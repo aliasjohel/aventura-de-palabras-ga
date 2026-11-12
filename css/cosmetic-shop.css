@@ -80,3 +80,16 @@
 .tienda-traje-dialogo .tienda-traje-escena img{height: min(58dvh,520px)}
 @media(max-width:600px){.tienda-traje-dialogo{padding:10px}.tienda-traje-dialogo .tienda-traje-vista{grid-template-columns:1fr}.tienda-traje-dialogo .tienda-traje-escena{min-height:0}.tienda-traje-dialogo .tienda-traje-escena img{height:38dvh}}
 @media(orientation:landscape) and (max-height:500px){.tienda-traje-dialogo .tienda-traje-escena{min-height:0}.tienda-traje-dialogo .tienda-traje-escena img{height:60dvh}.tienda-traje-dialogo .tienda-traje-vista{padding:10px}}
+.traje-premium{border:2px solid #f2cb6c!important;background:radial-gradient(ellipse at 50% 15%,#80532d88,transparent 70%),linear-gradient(150deg,#2d2636,#151b29)!important;box-shadow:inset 0 0 22px #e9bb4a22,0 0 16px #e9bb4a22}
+.traje-premium small{color:#ffe09a;font-weight:800}.tienda-premium{border-color:#f2cb6c!important;background:radial-gradient(ellipse at 50% 20%,#67502655,transparent 65%),#121a25!important}.tienda-premium #tiendaTrajeImagen{filter:drop-shadow(0 0 15px #edc86166)}.tienda-premium #restaurarCompraUnion{margin-top:8px}
+.tienda-premium [data-i18n="shop.newLook"]{display:none}
+@media(orientation:landscape) and (max-height:500px){
+ .tienda-traje-dialogo.tienda-premium{padding:8px}
+ .tienda-premium .cerrar-vista-traje{position:absolute;right:5px;top:5px;z-index:4;width:44px;height:44px;padding:0;margin:0}
+ .tienda-premium .tienda-traje-vista{gap:12px;padding:8px}
+ .tienda-premium .tienda-traje-escena img{height:78dvh;max-height:310px}
+ .tienda-premium .tienda-traje-ficha{padding-right:34px}
+ .tienda-premium .tienda-traje-ficha h3{font-size:22px;margin:4px 0}
+ .tienda-premium .tienda-traje-ficha p{font-size:12px;line-height:1.35;margin:5px 0}
+ .tienda-premium .tienda-traje-ficha>button{margin:4px 0;padding:8px;min-height:44px;font-size:13px}
+}
