@@ -18058,3 +18058,18 @@ button:disabled {
 .recompensa-xp.xp-level-up{border-color:#ffe49a;box-shadow:0 0 28px #d8a84f66,0 12px 40px #0008}.xp-level-up .xp-celebration-heading{color:#fff2bc;text-shadow:0 0 12px #f6c960;animation:xpLevelShine .75s ease-out}
 @keyframes xpReceiptIn{from{opacity:0;translate:0 10px;scale:.96}to{opacity:1;translate:0 0;scale:1}}@keyframes xpLevelShine{50%{scale:1.08}}
 @media(prefers-reduced-motion:reduce){.recompensa-confirmada.recompensa-xp,.xp-level-up .xp-celebration-heading{animation:none}.xp-celebration-fill{will-change:auto}}
+
+/* Original Guardiana uses the existing frontal impact, drawn facing left.
+   Scope to that sprite so earned, shop and preview outfits keep their poses. */
+.versus-personaje-uno.personaje-guardiana.impacto-combate-activo:where([src*="guardiana-impacto-tronco-frontal-v1.png"]) {
+  transform:scaleX(-1);
+  animation:danoJugadorMagoInvertidoVersus 330ms ease-out both;
+}
+.versus-personaje-dos.personaje-guardiana.impacto-combate-activo:where([src*="guardiana-impacto-tronco-frontal-v1.png"]) {
+  transform:none;
+  animation:danoMagoVersus 350ms ease-out both;
+}
+@media (prefers-reduced-motion:reduce) {
+  .versus-personaje-uno.personaje-guardiana.impacto-combate-activo:where([src*="guardiana-impacto-tronco-frontal-v1.png"]),
+  .versus-personaje-dos.personaje-guardiana.impacto-combate-activo:where([src*="guardiana-impacto-tronco-frontal-v1.png"]) {animation:none;}
+}

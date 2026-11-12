@@ -5758,8 +5758,11 @@ function renderizarDueloAventuraAutoritativo(estado) {
   for (const evento of estado.events || []) {
     if (evento.seq <= ultimoEventoDueloAventura) continue;
     ultimoEventoDueloAventura = evento.seq;
-    if (evento.type === 'word' && evento.correct) {
-      if (evento.actor === 'player') reproducirAtaqueJugadorVersus();
+    if (evento.type === 'word') {
+      // Word failure damages its own actor; success damages the opponent.
+      // These callbacks only present the server result, never apply damage.
+      const atacaJugador = evento.correct ? evento.actor === 'player' : evento.actor === 'npc';
+      if (atacaJugador) reproducirAtaqueJugadorVersus();
       else reproducirAtaqueRivalVersus();
     }
     if(modoArcadeActivo&&torreEnCurso&&evento.type==='word'&&!evento.correct&&evento.reveal){
@@ -6685,7 +6688,7 @@ function spriteTrajeVersus(elemento, personaje, src, herido=false) {
     if(visual)return visual;
   }
   const traje=trajePersonajeVersus(elemento,personaje);
-  if(!traje)return src;
+  if(!traje)return herido&&personaje==='guardiana'?srcGuardianaImpactoTroncoVersus:src;
   const earned=globalThis.TowerRewards?.source(traje,src,herido);
   if(earned)return earned;
   // The trunk cinematic keeps its frontal pose; combat faces the opponent.
@@ -7229,7 +7232,12 @@ async function jugarLetraVersus(letra, boton) {
   if (modoArcadeActivo&&torreEnCurso) {
     if(boton.disabled||demoVersus.partidaFinalizada)return;
     const word=torreAutoritativa.view()?.detail.player.index;
-    boton.disabled=true;await torreAutoritativa.send('letter',{letter:letra,word});return;
+    const previousSeq=torreAutoritativa.view()?.detail.events?.at(-1)?.seq||0;
+    boton.disabled=true;
+    const result=await torreAutoritativa.send('letter',{letter:letra,word});
+    const event=result?.attempt?.detail.events?.findLast(e=>e.seq>previousSeq&&e.type==='letter'&&e.actor==='player'&&e.letter===letra);
+    if(event)reproducirSonidoVersus(event.correct?'acertar':'error',event.correct?0.5:0.48);
+    return;
   }
   if (autoridadDueloAventura?.active()) {
     if (boton.disabled || demoVersus.partidaFinalizada) return;
