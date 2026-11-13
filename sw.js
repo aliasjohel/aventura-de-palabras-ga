@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v049-pwa-premium-preview`;
+const CACHE_NAME = `${CACHE_PREFIX}v0410-pwa-access-preparation`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1461,8 +1461,8 @@ const ASSET_REVISIONS = {
   "./assets/images/trajes/kalamo-astral-formacion-1-v1.png": "sha256-8ae02c156f09f518dd32b7ef59ba16d50d937970d3befa5b4425a142c50c552f",
   "./assets/images/trajes/kalamo-astral-formacion-2-v1.png": "sha256-b35efaea8dc91d775ee7cbcd284bda3d04909448d30d1f568dc70096183eaf7d",
   "./assets/images/trajes/kalamo-astral-formacion-3-v1.png": "sha256-da6a89b7d249089e452488ea43540f2fa34388f35521b9e174838a8c57eff1b3",
-  "./js/cosmetic-store.js": "sha256-0236d9b14acb69d442bd20cb0706b94f4a4802d67475bc8f5b8cb50b0b9a69b4",
-  "./js/game-wallet.js": "sha256-9f2bcb1435fbffb8fee15efcf72f7ee7cb846f7381ec689ced076356f83c3220",
+  "./js/cosmetic-store.js": "sha256-1b89baa1e61976729b9b7d021c288b09657884354c8b9772a41bfc7d27719512",
+  "./js/game-wallet.js": "sha256-2addf5652eefd4884bfa9106b174a2ef41786ef4fe10a98562a35e074d726e69",
   "./js/adventure-rewards.js": "sha256-dcc5124db718690bae29752b419d83e2eb8a639476a5093f5412b456c66235e7",
   "./js/adventure-reward-feedback.js": "sha256-fd6b1015bdbe65242fb7627361acf46ea216e54646e4d71186c02f3fb9d12b61",
   "./js/adventure-xp-feedback.js": "sha256-fc28fccd1c07677f48b6c8bb611bdf40b2d03f3c1f10e50d1100b5ea8a4243ea",
@@ -1550,8 +1550,8 @@ const ASSET_REVISIONS = {
   "./js/public-player-profile.js": "sha256-7d5baa433d26631235dbe3fff4a3d4a01b79935b6a02b7350eb3e371233fdaf9",
   "./js/match-likes.js": "sha256-a96befb24dac2e802f4e9318221e02488ef938400d8eead0b7278f8b160744d5",
   "./js/menu-wallet.js": "sha256-b6dfeea9d16dd67d4181b8c768c0b990a38332659d21bf17515aae2105745f9c",
-  "./": "sha256-3b6ebe9a79e5067bd73e31dd5d4a66aafb5812afb570e4f2ee67bc76512aea7a",
-  "./index.html": "sha256-3b6ebe9a79e5067bd73e31dd5d4a66aafb5812afb570e4f2ee67bc76512aea7a",
+  "./": "sha256-376f571c42afad3e94c02312e1c1b5b59f477c380fb45639e1243aca72a74883",
+  "./index.html": "sha256-376f571c42afad3e94c02312e1c1b5b59f477c380fb45639e1243aca72a74883",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-d0b27ddc4866ab5f6b4b5a27c55ec572ccddcadbc672543a49c0abe1b8d99fae",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1647,12 +1647,12 @@ const ASSET_REVISIONS = {
   "./js/versus-engine.js": "sha256-544297ccc805d3448fd1563053f6ebaba45483eef69e2d65ce045eb78282a9b4",
   "./js/arcade-rules.js": "sha256-688fe36bc763fe065665dfd305b6ea99efaf9aea2667a863f61b5cc257e521f6",
   "./js/versus-room.js": "sha256-bcd7d15b293d34bd9b73cae19909b52492c7defbd8629952d99b3b004b56be0f",
-  "./js/versus-room-supabase.js": "sha256-e3b6bf8c63c41ef77d7ac4744000016be04cf4f81fc0a4d71bd88e756d3b7cfb",
+  "./js/versus-room-supabase.js": "sha256-f5d185f33d066c89a6c250946742ff387c7c2e9a05e05fd2574b755bc4a46c36",
   "./js/puzzle-lessons.js": "sha256-c3269cb6042e311b9768722585ca236fc2696bc3918bd5cd80675ac0bf7dbaf5",
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-6c65ce2e8cb751778697f99b82845ee6633925ab3b1e3bde1ffb0e45102545ad",
+  "./js/app.js": "sha256-35c110de7740ff2de77cb4c29355d6a8b6474594d75953ca8c01411ebd434193",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
@@ -2008,7 +2008,7 @@ const ASSET_REVISIONS = {
   "./js/adventure-account-v2.js": "sha256-1be03fb544155a3acdbb88c182b6a7c3d829a21c3e3400da15b2301dc44407dc",
   "./js/account-sync-v3.js": "sha256-49d7c91bec92c8db56f084f58fc2f95f1f85be82feff22237951c9038b274264",
   "./js/account-runtime-v3.js": "sha256-eda464012afc1ade6d970be82d5e1583a80bc3bcb0349463409d0cd39616dfcf",
-  "./pilot-config.js": "sha256-6da0018e71451c3fb07e712634029cd0b50c64bbb07855dcc9894a491a5b59cd",
+  "./pilot-config.js": "sha256-0ef468ad980c68be99c66eb6719b5f466eda11c0ee77824c2262cfd08b3e346e",
   "./pilot-gate.js": "sha256-f88ab9d35324530cd975ec39b572aad4e03f15b55f71ed4466cda8a459c23a3e",
   "./css/sync-menu-layout.css": "sha256-8b5639da9724641e2d006400a0c2c3850cbfd9c643e09b4f9f92332f622c765f"
 };

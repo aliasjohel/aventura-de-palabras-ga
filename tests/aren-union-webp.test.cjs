@@ -9,8 +9,8 @@ test('21 WebP assets are progressive-only; PNG masters remain identical to the p
  for(const n of ['ataque-v1','guardianes-v2','impacto-v1'])assert(!family.files.some(p=>p.endsWith('aren-union-'+n+'.webp')));
  for(const file of unionFiles){assert(file.endsWith('.webp'));assert(c.a.resources.includes(file));assert(!c.a.core.includes(file));const master=file.slice(2).replace(/\.webp$/,'.png');assert(!c.a.resources.includes('./'+master));assert(fs.readFileSync(path.join(root,master)).equals(cp.execFileSync('git',['show','9404dcf:'+master],{cwd:root,maxBuffer:8e6})));}
 });
-test('combat implementation is byte-identical after normalizing the two resource URL changes',()=>{
- assert.equal(read('js/app.js').replace(/(assets\/images\/trajes\/aren-union-[a-z0-9-]+)\.webp/g,'$1.png'),old('js/app.js').replace(/\r\n/g,'\n'));
+test('combat presentation and finishers remain byte-identical after resource URL normalization',()=>{
+ const combat=s=>s.slice(s.indexOf('function pruebasTrajesActivas()'));assert.equal(combat(read('js/app.js')).replace(/(assets\/images\/trajes\/aren-union-[a-z0-9-]+)\.webp/g,'$1.png'),combat(old('js/app.js').replace(/\r\n/g,'\n')));
  const current=read('js/aren-union-preview.js').replaceAll('.webp','.png').replaceAll('(?:png|webp)','png');assert.equal(current,old('js/aren-union-preview.js').replace(/\r\n/g,'\n'));
 });
 test('all original outfit pose selectors preserve the same logical paths; only Union changes extension',()=>{

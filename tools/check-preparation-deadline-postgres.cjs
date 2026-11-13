@@ -1,0 +1,35 @@
+'use strict';
+const fs=require('fs'),path=require('path'),assert=require('assert/strict');
+(async()=>{const runtime=await require('E:/Proyectos/Aventura-de-Palabras-i18n-stage2b/.local-developer/aren-champion-release/tools/postgres-qa/runtime.cjs').create(),db=await runtime.connect();let checks=0;try{
+ await db.query(`create role anon;create role authenticated;create schema auth;create schema private;create schema versus_private;
+ create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
+ create table public.versus_rooms(id uuid primary key,status text,word_language text default 'es',word_bank_version text default 'reviewed-v2');
+ create table public.versus_players(room_id uuid,user_id uuid,slot int,theme_key text,preparation_ready boolean default false);
+ create table public.versus_challenges(room_id uuid,owner_id uuid,target_id uuid,theme_key text,words text[],updated_at timestamptz,primary key(room_id,owner_id));
+ create table versus_private.reviewed_word_dictionary(word_language text,theme_key text,word text,word_key text);
+ create table private.versus_word_dictionary(theme_key text,word text,word_key text);
+ create function public.is_versus_room_member(uuid) returns boolean language sql security definer as $$select exists(select 1 from public.versus_players where room_id=$1 and user_id=auth.uid())$$;
+ create function public.versus_letter_key(text) returns text language sql immutable as $$select translate(upper($1),'ÁÉÍÓÚÜ','AEIOUU')$$;
+ create function private.assert_versus_available(uuid[],uuid) returns void language plpgsql as $$begin end$$;
+ grant usage on schema auth,versus_private to authenticated;`);
+ await db.query(fs.readFileSync(path.join(__dirname,'../supabase/migrations/20261113220314_versus_preparation_deadline.sql'),'utf8'));
+ const a='10000000-0000-4000-8000-000000000001',b='10000000-0000-4000-8000-000000000002',outsider='10000000-0000-4000-8000-000000000003',room='20000000-0000-4000-8000-000000000001';
+ await db.query('insert into auth.users values($1),($2),($3)',[a,b,outsider]);
+ for(const lang of ['es','en','pt-BR'])for(const word of ['GATO','PERRO','PUMA','LOBO','LEON','TIGRE','OSO'])await db.query("insert into versus_private.reviewed_word_dictionary values($1,'animales',$2,$2)",[lang,word]);
+ for(const word of ['GATO','PERRO','PUMA','LOBO','LEON','TIGRE','OSO'])await db.query("insert into private.versus_word_dictionary values('animales',$1,$1)",[word]);
+ await db.query("insert into public.versus_rooms(id,status) values($1,'complete')",[room]);await db.query('insert into public.versus_players(room_id,user_id,slot) values($1,$2,1),($1,$3,2)',[room,a,b]);
+ await db.query("update public.versus_rooms set status='preparing' where id=$1",[room]);const deadline=(await db.query('select preparation_deadline_at,extract(epoch from preparation_deadline_at-now()) seconds from public.versus_rooms')).rows[0];assert(Number(deadline.seconds)>89&&Number(deadline.seconds)<=90);checks++;
+ const as=async(user,sql,args)=>{await db.query('begin');try{await db.query('set local role authenticated');await db.query("select set_config('request.jwt.claim.sub',$1,true)",[user]);const r=await db.query(sql,args);await db.query('commit');return r;}catch(e){await db.query('rollback');throw e;}};
+ const tick=(user,theme=null,words=null)=>as(user,'select public.versus_preparation_tick($1,$2,$3) result',[room,theme,words]);
+ await assert.rejects(tick(outsider),/No perteneces/);checks++;
+ await tick(a,'animales',['GATO','GATO','INVALIDA','','']);await tick(b);assert.equal((await db.query('select count(*)::int n from public.versus_challenges')).rows[0].n,0);checks++;
+ await db.query("update public.versus_rooms set status='complete' where id=$1",[room]);await db.query("update public.versus_rooms set status='preparing' where id=$1",[room]);assert.equal((await db.query('select preparation_deadline_at from public.versus_rooms')).rows[0].preparation_deadline_at.toISOString(),deadline.preparation_deadline_at.toISOString());checks++;
+ await db.query("update public.versus_rooms set preparation_deadline_at=now()-interval '1 second' where id=$1",[room]);const expired=await tick(b);assert.equal(expired.rows[0].result.status,'playing');checks++;
+ const challenges=(await db.query('select * from public.versus_challenges order by owner_id')).rows;assert.equal(challenges.length,2);for(const c of challenges){assert.equal(c.words.length,5);assert.equal(new Set(c.words).size,5);assert(c.words.every(w=>['GATO','PERRO','PUMA','LOBO','LEON','TIGRE','OSO'].includes(w)));checks+=3;}assert(challenges.find(c=>c.owner_id===a).words.includes('GATO'));checks++;
+ const saved=JSON.stringify(challenges);await tick(a);await as(a,'select public.set_versus_challenge($1,$2,$3)',[room,'animales',['GATO','PERRO','PUMA','LOBO','LEON']]);assert.equal(JSON.stringify((await db.query('select * from public.versus_challenges order by owner_id')).rows),saved);checks++;
+ await db.query("update public.versus_rooms set status='finished' where id=$1",[room]);await db.query('delete from public.versus_challenges');await db.query('update public.versus_players set preparation_ready=false');await db.query("update public.versus_rooms set status='preparing' where id=$1",[room]);assert.equal((await db.query('select count(*)::int n from versus_private.versus_preparation_drafts')).rows[0].n,0);checks++;
+ await as(a,'select public.set_versus_challenge($1,$2,$3)',[room,'animales',['GATO','PERRO','PUMA','LOBO','LEON']]);const first=JSON.stringify((await db.query('select * from public.versus_challenges where owner_id=$1',[a])).rows);
+ await db.query("update public.versus_rooms set preparation_deadline_at=now()-interval '1 second'");await tick(a);assert.equal(JSON.stringify((await db.query('select * from public.versus_challenges where owner_id=$1',[a])).rows),first);checks++;
+ for(const lang of ['en','pt-BR']){await db.query("update public.versus_rooms set status='finished',word_language=$1",[lang]);await db.query('delete from public.versus_challenges');await db.query('update public.versus_players set preparation_ready=false');await db.query("update public.versus_rooms set status='preparing'");await db.query("update public.versus_rooms set preparation_deadline_at=now()-interval '1 second'");assert.equal((await tick(a)).rows[0].result.status,'playing');checks++;}
+ console.log(JSON.stringify({passed:true,checks,realPostgres:true,productionConnections:0,seconds:90,preservesValidDrafts:true,peerCanCompleteAbsentPlayer:true,reloadCannotReset:true}));
+ }finally{await runtime.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

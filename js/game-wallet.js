@@ -84,7 +84,11 @@
     const adminAction=(name,args)=>enqueue(async id=>{
       await syncNow(id);
       const result=await rpc(id,name,args);
-      store.applyAccount(result);notify();return store.read();
+      store.applyAccount(result);notify();
+      // Persist the confirmed authorization in the account snapshot as well.
+      // Otherwise an offline reload can rehydrate the pre-toggle premium state.
+      if(root.AccountRuntimeV3?.installed)await root.AccountRuntimeV3.refresh();
+      return store.read();
     });
 
     const setArenTrial=enabled=>adminAction('set_aren_trial_access',{p_enabled:Boolean(enabled)});

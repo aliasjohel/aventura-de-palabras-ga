@@ -430,6 +430,8 @@
 
     async function cargarSala(roomId) {
       const versionCarga = versionCanalSala;
+      const {data:preparation,error:preparationError}=await cliente.rpc('versus_preparation_tick',{p_room_id:roomId});
+      if(preparationError)throw traducirError(preparationError,'No pudimos verificar el tiempo de preparación.');
       const [{ data: sala, error: errorSala }, { data: jugadores, error: errorJugadores }] = await Promise.all([
         cliente.from("versus_rooms").select("id, code, status, host_id, created_at, updated_at, queue_mode, word_language, word_bank_version").eq("id", roomId).maybeSingle(),
         cliente.from("versus_players").select("id, user_id, alias, slot, ready, character_key, theme_key, preparation_ready, rematch_ready, joined_at, avatar_key, frame_key, quick_message_key, quick_message_at").eq("room_id", roomId).order("slot"),
@@ -473,6 +475,8 @@
         versionPalabras: sala.word_bank_version || "legacy-v1",
         modo: sala.queue_mode,
         estado: sala.status,
+        preparacionHasta: preparation.deadlineAt,
+        preparacionHoraServidor: preparation.serverNow,
         creadaEn: sala.created_at,
         actualizadaEn: sala.updated_at,
         jugadores: jugadores.map((jugador) => ({
@@ -706,6 +710,15 @@
       return salaActual;
     }
 
+    async function guardarBorradorPreparacion({tematica,palabras}={}) {
+      if(!salaActual||salaActual.estado!=='preparing')return;
+      const roomId=salaActual.id;
+      const {data,error}=await cliente.rpc('versus_preparation_tick',{p_room_id:roomId,p_theme_key:tematica||null,p_words:palabras||null});
+      if(error)throw traducirError(error,'No pudimos verificar el tiempo de preparación.');
+      if(data.status!=='preparing'&&salaActual?.id===roomId)await recargarSala();
+      return data;
+    }
+
     async function cancelarDesafio() {
       if (!salaActual?.id) return salaActual;
       const { data, error } = await cliente.rpc("cancel_versus_challenge", {
@@ -923,6 +936,7 @@
       unirseSala,
       actualizarPersonaje,
       guardarDesafio,
+      guardarBorradorPreparacion,
       cancelarDesafio,
       pedirRevancha,
       cargarPartida,

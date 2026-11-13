@@ -1788,6 +1788,7 @@ function actualizarPreparacionRemota(sala) {
   const propioListo = Boolean(jugadorPropio?.preparacionLista);
   const rivalListo = Boolean(jugadorRival?.preparacionLista);
   const nombreTemaRival = nombresTematicasVersus[jugadorRival?.tematica];
+  actualizarRelojPreparacionVersus(sala);
 
   estadoPreparacionRivalVersus.className = `estado-preparacion-rival-versus${rivalListo ? " listo" : ""}`;
   OnlineUI.text(estadoPreparacionRivalVersus, rivalListo
@@ -1808,6 +1809,31 @@ function actualizarPreparacionRemota(sala) {
   OnlineUI.text(textoEsperaRivalVersus, rivalListo
     ? "Preparando el combate en línea…"
     : `Esperando a ${jugadorRival?.alias || "tu rival"}…`);
+}
+
+let intervaloPreparacionVersus=null,borradorPreparacionVersus=null,relojPreparacionSala=null,comprobandoFinPreparacion=false;
+function guardarBorradorPreparacionVersus(){
+  clearTimeout(borradorPreparacionVersus);
+  borradorPreparacionVersus=setTimeout(()=>{
+    if(adaptadorSalasVersus.proveedor!=='supabase'||!pantallaPreparacionVersus.classList.contains('activa'))return;
+    void adaptadorSalasVersus.guardarBorradorPreparacion?.({tematica:tematicaVersus.value,palabras:inputsPalabrasVersus.map(input=>input.value)}).catch(()=>{});
+  },300);
+}
+function actualizarRelojPreparacionVersus(sala){
+  const display=document.querySelector('.tiempo-preparacion-versus strong');
+  if(!display)return;
+  if(!sala?.preparacionHasta||sala.estado!=='preparing')return;
+  relojPreparacionSala={id:sala.id,hasta:Date.parse(sala.preparacionHasta),desfase:Date.parse(sala.preparacionHoraServidor)-Date.now()};
+  if(intervaloPreparacionVersus)clearInterval(intervaloPreparacionVersus);
+  const tick=()=>{
+    if(adaptadorSalasVersus.proveedor!=='supabase'||adaptadorSalasVersus.obtenerSala()?.id!==relojPreparacionSala.id||adaptadorSalasVersus.obtenerSala()?.estado!=='preparing'){
+      clearInterval(intervaloPreparacionVersus);intervaloPreparacionVersus=null;return;
+    }
+    const seconds=Math.max(0,Math.ceil((relojPreparacionSala.hasta-Date.now()-relojPreparacionSala.desfase)/1000));
+    display.textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');
+    if(!seconds&&!comprobandoFinPreparacion){comprobandoFinPreparacion=true;void adaptadorSalasVersus.guardarBorradorPreparacion?.().catch(()=>{}).finally(()=>{comprobandoFinPreparacion=false;});}
+  };
+  intervaloPreparacionVersus=setInterval(tick,250);tick();
 }
 
 function obtenerNombreTemaVersus(tema) {
@@ -3524,6 +3550,7 @@ inputsPalabrasVersus.forEach((input) => {
     input.value = motorDePalabras().reglas.clean(input.value, maximoLetrasPalabraVersus);
     habilitarFijadoresPalabrasVersus();
     validarPreparacionVersus(true);
+    guardarBorradorPreparacionVersus();
   });
 });
 
@@ -3538,6 +3565,7 @@ btnsFijarPalabrasVersus.forEach((boton, indice) => {
 tematicaVersus.addEventListener("change", () => {
   btnsFijarPalabrasVersus.forEach((boton, indice) => fijarPalabraVersus(indice, false));
   validarPreparacionVersus(true);
+  guardarBorradorPreparacionVersus();
 });
 
 function completarPalabrasAleatoriasVersus() {

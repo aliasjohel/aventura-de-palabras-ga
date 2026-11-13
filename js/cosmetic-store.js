@@ -45,6 +45,16 @@
   }
   function create(storage,ownsCharacter=character=>character==='explorador'||globalThis.CharacterStore?.owns(character)===true){
     let purchaseHandler=null;
+    const accessKey=id=>key+':aren-access:'+id;
+    function unionAccess(id,revision,allowed,confirm=false){
+      if(!id)return false;
+      let known;try{known=JSON.parse(storage.getItem(accessKey(id)));}catch{throw Error('No pudimos verificar el permiso de Aren Unión.');}
+      if(known&&(!Number.isSafeInteger(known.revision)||typeof known.allowed!=='boolean'))throw Error('Permiso de Aren Unión inválido.');
+      if(confirm&&Number.isSafeInteger(revision)&&(!known||revision>known.revision||revision===known.revision&&!allowed)){
+        known={revision,allowed:allowed===true};storage.setItem(accessKey(id),JSON.stringify(known));
+      }
+      return allowed===true&&(!known||known.allowed&&revision>=known.revision);
+    }
     const changed=()=>globalThis.dispatchEvent?.(new Event('wallet-local-changed'));
     const missionKey=(world,mission)=>'aventura:'+world+':'+mission+':mision';
     const validMission=e=>e&&Number.isInteger(e.world)&&e.world>=0&&e.world<5&&Number.isInteger(e.mission)&&e.mission>=0&&e.mission<10;
@@ -60,7 +70,8 @@
         // Display-only legacy state. Never import or rewrite a historic payload while reading.
         value={coins:0,owned:[],equipped:{}};
       }
-      const owned=[...new Set((Array.isArray(value.owned)?value.owned:[]).filter(id=>find(id)&&(!find(id).adminOnly||(value.accountId&&value.adminUnion===true))))];
+      const adminUnion=unionAccess(value.accountId,value.revision,value.adminUnion);
+      const owned=[...new Set((Array.isArray(value.owned)?value.owned:[]).filter(id=>find(id)&&(!find(id).adminOnly||adminUnion)))];
       const equipped=normalizeSkins(value.equipped);
       for(const char of Object.keys(equipped))if(!owned.includes(equipped[char]))delete equipped[char];
       return {currencyVersion,securityVersion:value.securityVersion,securityReady:value.securityVersion===3&&value.securityReady===true,
@@ -68,7 +79,7 @@
         missionClaims:(Array.isArray(value.missionClaims)?value.missionClaims:[]).filter(e=>/^aventura:[0-4]:[0-9]:mision$/.test(e)),
         accountId:typeof value.accountId==='string'?value.accountId:null,revision:Number.isSafeInteger(value.revision)?value.revision:-1,
         equipmentVersion:integer(value.equipmentVersion),equipmentDirty:value.equipmentDirty===true,
-        world5Complete:value.world5Complete===true,admin:false,arenTrial:value.arenTrial===true,adminUnion:value.adminUnion===true};
+        world5Complete:value.world5Complete===true,admin:false,arenTrial:value.arenTrial===true,adminUnion};
     }
     function archiveLegacy(raw){
       if(!raw)return;
@@ -109,14 +120,15 @@
       if(state.accountId!==result.userId)return state;
       if(!Number.isSafeInteger(result.coins)||result.coins<0||!Number.isSafeInteger(result.revision)||result.revision<0||!Array.isArray(result.owned)||!Array.isArray(result.missionClaims))throw Error('Respuesta de monedero inválida.');
       if(!authoritative&&result.revision<state.revision)return state;
-      const owned=[...new Set(result.owned.filter(id=>find(id)&&(!find(id).adminOnly||result.adminUnion===true)))];
+      const adminUnion=unionAccess(result.userId,result.revision,result.adminUnion,true);
+      const owned=[...new Set(result.owned.filter(id=>find(id)&&(!find(id).adminOnly||adminUnion)))];
       const dirty=!authoritative&&state.equipmentDirty&&state.equipmentVersion!==sentEquipmentVersion;
       const equipped=normalizeSkins(dirty?state.equipped:result.equipped);
       for(const char of Object.keys(equipped))if(!owned.includes(equipped[char]))delete equipped[char];
       const claims=[...new Set(result.missionClaims.filter(e=>/^aventura:[0-4]:[0-9]:mision$/.test(e)))];
       const pending=state.requests.filter(e=>!claims.includes(missionKey(e.world,e.mission)));
       return save({...state,securityVersion:3,securityReady:true,coins:result.coins,owned,equipped,requests:pending,missionClaims:claims,
-        revision:result.revision,equipmentDirty:dirty,world5Complete:result.world5Complete===true,admin:false,arenTrial:result.arenTrial===true,adminUnion:result.adminUnion===true});
+        revision:result.revision,equipmentDirty:dirty,world5Complete:result.world5Complete===true,admin:false,arenTrial:result.arenTrial===true,adminUnion});
     }
     function claimAdventure(){throw Error('La recompensa requiere completar un intento online.');}
     function canPurchase(id){

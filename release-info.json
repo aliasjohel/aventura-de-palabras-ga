@@ -1,11 +1,12 @@
 {
-  "version": "0.4.9",
+  "version": "0.4.10",
   "platform": "pwa",
-  "androidVersionCode": 12,
+  "androidVersionCode": 13,
   "changes": [
-    "aren-union-premium-preview",
-    "play-billing-test-only-disabled",
-    "restore-server-verified-purchase"
+    "aren-union-trial-revocation",
+    "premium-offline-revocation-confirmation",
+    "versus-preparation-90-seconds",
+    "billing-disabled"
   ],
-  "databaseMigrations": 0
+  "databaseMigrations": 2
 }
