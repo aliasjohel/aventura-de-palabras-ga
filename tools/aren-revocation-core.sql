@@ -35,10 +35,12 @@ create or replace function versus_private.aren_union_access_changed()
 returns trigger language plpgsql security definer set search_path='' as $$
 declare uid_ uuid:=case when TG_OP='DELETE' then old.user_id else new.user_id end;
 begin
+ -- Auth cascades already remove this account's projections; do not recreate them.
+ if not exists(select 1 from auth.users where id=uid_) then return null;end if;
  perform versus_private.refresh_aren_union_access(uid_);
  insert into player_state_private.account_versions(user_id,revision) values(uid_,1)
  on conflict(user_id) do update set revision=player_state_private.account_versions.revision+1;
- if TG_OP='UPDATE' and old.user_id is distinct from new.user_id then
+ if TG_OP='UPDATE' and old.user_id is distinct from new.user_id and exists(select 1 from auth.users where id=old.user_id) then
   perform versus_private.refresh_aren_union_access(old.user_id);
   insert into player_state_private.account_versions(user_id,revision) values(old.user_id,1)
   on conflict(user_id) do update set revision=player_state_private.account_versions.revision+1;
