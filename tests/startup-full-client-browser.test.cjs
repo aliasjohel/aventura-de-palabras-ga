@@ -1,0 +1,19 @@
+'use strict';
+const {test}=require('node:test'),assert=require('assert/strict'),fs=require('fs'),path=require('path'),http=require('http');
+const {chromium}=require('C:/Users/User/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const fallback=path.resolve(__dirname,'..'),root=process.env.STARTUP_PACKAGE||fallback;
+test('full released client stays silent and inert while blocked, then exposes its menu on retry',{timeout:90000},async()=>{
+ let browser;const errors=[];
+ const setup=`globalThis.startupProbe={failed:true,calls:[],uid:'10000000-0000-4000-8000-000000000001'};
+ const startupSession=()=>({data:{session:{user:{id:startupProbe.uid,is_anonymous:false}}}});
+ const startupClient={auth:{getSession:async()=>startupSession(),getUser:async()=>({data:{user:{id:startupProbe.uid,is_anonymous:false,email_confirmed_at:'confirmed'}}}),onAuthStateChange:()=>({})},rpc:async name=>{startupProbe.calls.push(name);return startupProbe.failed?{error:{code:'25006',status:405}}:{data:{schemaVersion:3,userId:startupProbe.uid,enabled:true,adventureState:{userId:startupProbe.uid,adventure:{enabled:true}}}};}};
+ globalThis.AventuraOnline={...AventuraOnline,cargarSupabase:async()=>{}};globalThis.AventuraSupabase={...AventuraSupabase,obtenerCliente:()=>startupClient};
+ const startupRuntime=old=>({...old,installed:true,connect:async()=>{},refresh:async()=>{},read:()=>({confirmed:true}),state:()=>({userId:startupProbe.uid})});
+ globalThis.AccountRuntimeV3=startupRuntime(AccountRuntimeV3);globalThis.AdventureAccountV2=startupRuntime(AdventureAccountV2);globalThis.GameWallet={...GameWallet,connect:()=>{}};`;
+ const server=http.createServer((req,res)=>{try{const rel=new URL(req.url,'http://local').pathname.slice(1)||'index.html';if(rel.split('/').includes('..'))throw Error();let file=path.join(root,rel);if(!fs.existsSync(file))file=path.join(fallback,rel);let bytes=fs.readFileSync(file);if(rel==='pilot-gate.js')bytes=Buffer.from(setup+'\n'+bytes);res.setHeader('Content-Type',({'.js':'text/javascript','.css':'text/css','.html':'text/html','.json':'application/json','.webp':'image/webp','.png':'image/png'})[path.extname(rel)]||'application/octet-stream');res.end(bytes);}catch{res.writeHead(404).end();}});
+ try{await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;browser=await chromium.launch({channel:'msedge',headless:true});const c=await browser.newContext({viewport:{width:393,height:852},reducedMotion:'reduce',serviceWorkers:'block'});await c.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());const p=await c.newPage();p.on('pageerror',e=>errors.push(e.message));await p.goto(origin);await p.waitForFunction(()=>document.querySelector('#pilotAdmission p')?.textContent.includes('No pudimos consultar'));
+ assert.equal(await p.evaluate(()=>document.querySelector('.app').inert),true);assert.equal(await p.evaluate(()=>{globalThis.audioProbe=GameAudio.create('probe.mp3','music');audioProbe.volume=.8;return Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'volume').get.call(audioProbe);}),0);
+ await p.evaluate(()=>startupProbe.failed=false);await p.getByRole('button',{name:'Comprobar sincronización'}).click();await p.waitForFunction(()=>AVENTURA_SYNC_ADMISSION.confirmed);await p.waitForFunction(()=>!document.querySelector('.app').inert,{},{timeout:15000});assert.equal(await p.locator('#pilotAdmission').count(),0);assert(await p.locator('#pantallaMenu').isVisible());assert((await p.evaluate(()=>startupProbe.calls)).every(n=>n==='account_state_v3'));
+ const out=process.env.STARTUP_QA_OUTPUT;if(out){fs.mkdirSync(out,{recursive:true});await p.screenshot({path:path.join(out,'menu-after-retry.png')});}assert.deepEqual(errors,[]);await c.close();
+ }finally{await browser?.close();server.closeAllConnections();await new Promise(r=>server.close(r));}
+});

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v0410-pwa-access-preparation`;
+const CACHE_NAME = `${CACHE_PREFIX}v0411-pwa-startup-recovery`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1224,7 +1224,7 @@ const ASSET_REVISIONS = {
   "./assets/sounds/menu-impacto-roca-v1.wav": "sha256-265389468bc81c463150fa08ca2d60114807e87afc2966ef18636554a370395f",
   "./css/menu-fantasy.css": "sha256-906415b2875cfe222ff3ca512d6be3df62b03be7f230593ab4c6fd87394ed3ea",
   "./css/menu-wallet.css": "sha256-e59c9276b41e75af30468dc15ab8f3f25d045eb93f3015b829b0a7b5b723f06b",
-  "./js/menu-effects.js": "sha256-ee40da73dfa9244ff7a09d03b475c66925bd6beb26b207f70ffc237e3275e86a",
+  "./js/menu-effects.js": "sha256-856c44cc0d3e9b48c22471bd62995367011f6b8a8e1c3d096189513bb00ebdbc",
   "./assets/images/ui/menu-logo-fantasia-v2.webp": "sha256-c18201d7164953aa58101b0c6c07bf3e7f8f32e07e2eb0128c3ffeeb1e5c513d",
   "./assets/images/ui/menu-button-adventure-v1.webp": "sha256-511977b61176cee0e2a204c756c3b798c13640f915d0e2a3dafa64191d5e9a03",
   "./assets/images/ui/adventure-card-v1.webp": "sha256-e6e667cdd21c70783c35b9f77c585d68c9992c20cac97ad0a88afb6cb9f65696",
@@ -1550,8 +1550,8 @@ const ASSET_REVISIONS = {
   "./js/public-player-profile.js": "sha256-7d5baa433d26631235dbe3fff4a3d4a01b79935b6a02b7350eb3e371233fdaf9",
   "./js/match-likes.js": "sha256-a96befb24dac2e802f4e9318221e02488ef938400d8eead0b7278f8b160744d5",
   "./js/menu-wallet.js": "sha256-b6dfeea9d16dd67d4181b8c768c0b990a38332659d21bf17515aae2105745f9c",
-  "./": "sha256-376f571c42afad3e94c02312e1c1b5b59f477c380fb45639e1243aca72a74883",
-  "./index.html": "sha256-376f571c42afad3e94c02312e1c1b5b59f477c380fb45639e1243aca72a74883",
+  "./": "sha256-d85077f3e9167d6be9e76827e9bf6832dc48ff3f636ae3a45308fac024777ece",
+  "./index.html": "sha256-d85077f3e9167d6be9e76827e9bf6832dc48ff3f636ae3a45308fac024777ece",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-d0b27ddc4866ab5f6b4b5a27c55ec572ccddcadbc672543a49c0abe1b8d99fae",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -1622,7 +1622,7 @@ const ASSET_REVISIONS = {
   "./css/forest-root-trap.css": "sha256-0ae41c5356bb805e0672bb9cf9f66415b1cb1180c285353f191de5cce2373ca1",
   "./js/forest-root-trap.js": "sha256-a71fecacd5cfe6f7f2226c438540d9184fff458b3519db7cb77f2595faeeb085",
   "./js/forest-wildlife.js": "sha256-5d28c31f49a3d6b7638816e62118a2db4036c5d0bfbe5debe9004fdfe145b29b",
-  "./js/audio-settings.js": "sha256-4a564e3fa39564ba49e1a7a4640fcf9ff401a19cbeacf7a5ce00d3bccf521d0f",
+  "./js/audio-settings.js": "sha256-c29cd6046ce39222974f1c504a79a9a7efe25f58393eea5738cf5787f08048ed",
   "./js/world-music.js": "sha256-ee4d3e985d49e5e54c3df71395356788f42014ee9a6f67b4522385f8da0be382",
   "./assets/licenses/world-music.txt": "sha256-1ccd8393364615f0a6bfbf6279b2c7335d931515035fe3240bf7d5d8367f7d6b",
   "./assets/licenses/defeat-sound.txt": "sha256-c682efccd14ce23e0a114a59d1c3231055537ef5d803c6416b3412e65796f390",
@@ -1639,7 +1639,7 @@ const ASSET_REVISIONS = {
   "./js/prologue-cinematic.js": "sha256-8645ed39120263f1f89818d9e1beae141579102b3e2a60c14bedce21d61820b4",
   "./assets/images/intro/conceptos/prologo-cuatro-escenas-v1.png": "sha256-2b209d5c4a3c1a14c1f6e8ce236fd4cbc9d0c8347fd842164fb3d3b623b11d7e",
   "./css/intro.css": "sha256-4a173ec8bd6ef5a6a992633d4ad33bece012b20554506c7745442cdc4eafa69f",
-  "./js/intro.js": "sha256-275b86598cf9772595a2b3f905f5cf9704758f054b1354c09cdacef017a9c9ac",
+  "./js/intro.js": "sha256-9427da5d894c4833f2616c5cb3a4b98042e319809ad56f03388f8d81256e0bd9",
   "./js/supabase-loader.js": "sha256-643b337516766baa58672b44ee7288728faee86a9ba3bcc43eacbe05403e5c34",
   "./js/supabase-config.js": "sha256-305eac5a6b712731f4e372cca9f6a4f2af0610e772bd928eaa5e75fc0b427295",
   "./js/supabase-client.js": "sha256-6c178f585cc21a8beaf784488cff3d97917b2d9a0e8033f36c85db9a75bb2979",
@@ -2008,8 +2008,8 @@ const ASSET_REVISIONS = {
   "./js/adventure-account-v2.js": "sha256-1be03fb544155a3acdbb88c182b6a7c3d829a21c3e3400da15b2301dc44407dc",
   "./js/account-sync-v3.js": "sha256-49d7c91bec92c8db56f084f58fc2f95f1f85be82feff22237951c9038b274264",
   "./js/account-runtime-v3.js": "sha256-eda464012afc1ade6d970be82d5e1583a80bc3bcb0349463409d0cd39616dfcf",
-  "./pilot-config.js": "sha256-0ef468ad980c68be99c66eb6719b5f466eda11c0ee77824c2262cfd08b3e346e",
-  "./pilot-gate.js": "sha256-f88ab9d35324530cd975ec39b572aad4e03f15b55f71ed4466cda8a459c23a3e",
+  "./pilot-config.js": "sha256-f6d33824321e1c68bd95c15b7f0c84def287067f3ccc8af8f0311b6f2910426a",
+  "./pilot-gate.js": "sha256-d04f0cb5813f50e607bd19440a68139d3e19451d70c235a402df44d9e9ef4bb6",
   "./css/sync-menu-layout.css": "sha256-8b5639da9724641e2d006400a0c2c3850cbfd9c643e09b4f9f92332f622c765f"
 };
 const LEGACY_RESOURCE_REVISIONS = {

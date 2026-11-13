@@ -5,7 +5,7 @@
  try { const saved=JSON.parse(localStorage.getItem(key)); for(const g in defaults) if(typeof saved?.[g]==='number'&&Number.isFinite(saved[g])) values[g]=Math.max(0,Math.min(100,saved[g])); } catch {}
  const media=new Set(), buses=new Set(), contexts=new WeakMap();
  let preview = null;
- const factor=g=>values[g]/100;
+ const factor=g=>values[g]/100*(globalThis.AVENTURA_PILOT_CONFIG&&!globalThis.AVENTURA_SYNC_ADMISSION?.owner?0:1);
  function apply(){for(const refs of [media,buses]) for(const ref of refs){const item=ref.deref();if(item)item.apply();else refs.delete(ref);}}
  function create(src,group='effects'){
   const audio=new Audio(src);audio.preload="none";let proto=audio,desc;while(proto&&!desc){desc=Object.getOwnPropertyDescriptor(proto,'volume');proto=Object.getPrototypeOf(proto);}let base=audio.volume;
@@ -27,5 +27,6 @@
  new MutationObserver(()=>{if(document.getElementById('modalConfiguracion').classList.contains('oculto'))stop();}).observe(document.getElementById('modalConfiguracion'),{attributes:true,attributeFilter:['class']});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
  window.addEventListener('storage',e=>{if(e.key!==key)return;try{const next=JSON.parse(e.newValue);for(const g in defaults)values[g]=typeof next?.[g]==='number'&&Number.isFinite(next[g])?Math.max(0,Math.min(100,next[g])):defaults[g];apply();render();}catch{}});
+ window.addEventListener('pilot-admission-changed',apply);
  globalThis.GameAudio=Object.freeze({create,output,set,get:g=>values[g]});render();
 })();

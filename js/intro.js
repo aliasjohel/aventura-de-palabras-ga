@@ -120,7 +120,7 @@
       botones.forEach(id => { document.getElementById(id).inert = true; });
       document.body.classList.add('menu-entrada');
     }
-    app.inert = false;
+    app.inert = Boolean(globalThis.AVENTURA_PILOT_CONFIG&&!globalThis.AVENTURA_SYNC_ADMISSION?.owner);
     if (!movimiento.matches) temporizadorEntrada = setTimeout(completarEntrada, 6300);
   }
   function continuarFondo() {

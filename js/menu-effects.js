@@ -19,6 +19,7 @@
     new ResizeObserver(frameScene).observe(scene);frameScene();
     function update() {
         const visible = !suspended && !document.hidden && !motion.matches
+            && !document.getElementById('pilotAdmission')
             && menu.classList.contains('activa') && !document.body.classList.contains('intro-pendiente');
         menu.dataset.menuEffects = visible && !document.querySelector('dialog[open]') ? 'running' : 'paused';
         modes.dataset.menuEffects = visible && modes.open ? 'running' : 'paused';
@@ -41,5 +42,6 @@
     motion.addEventListener('change', update);
     window.addEventListener('pagehide', () => { suspended = true; update(); });
     window.addEventListener('pageshow', () => { suspended = false; update(); });
+    window.addEventListener('pilot-admission-changed', update);
     update();
 })();

@@ -1,1 +1,1 @@
-globalThis.AVENTURA_PILOT_CONFIG={"scope":"verified-accounts","candidateVersion":13,"releaseVersion":"0.4.10","project":"hlixavucxdxevbbhlxkc","publicPwa":"https://aliasjohel.github.io/aventura-de-palabras-ga/"};
+globalThis.AVENTURA_PILOT_CONFIG={"scope":"verified-accounts","candidateVersion":14,"releaseVersion":"0.4.11","project":"hlixavucxdxevbbhlxkc","publicPwa":"https://aliasjohel.github.io/aventura-de-palabras-ga/"};

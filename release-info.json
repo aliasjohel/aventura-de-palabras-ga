@@ -1,12 +1,12 @@
 {
-  "version": "0.4.10",
+  "version": "0.4.11",
   "platform": "pwa",
-  "androidVersionCode": 13,
+  "androidVersionCode": 14,
   "changes": [
-    "aren-union-trial-revocation",
-    "premium-offline-revocation-confirmation",
-    "versus-preparation-90-seconds",
-    "billing-disabled"
+    "readonly-account-startup",
+    "admission-retry-recovery",
+    "silent-blocked-startup",
+    "preserve-session-cache-and-premium-denials"
   ],
-  "databaseMigrations": 2
+  "databaseMigrations": 1
 }
