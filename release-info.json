@@ -1,12 +1,11 @@
 {
-  "version": "0.4.11",
+  "version": "0.4.12",
   "platform": "pwa",
-  "androidVersionCode": 14,
+  "androidVersionCode": 15,
   "changes": [
-    "readonly-account-startup",
-    "admission-retry-recovery",
-    "silent-blocked-startup",
-    "preserve-session-cache-and-premium-denials"
+    "compact-character-shop",
+    "localized-real-character-abilities",
+    "premium-checkout-disabled"
   ],
-  "databaseMigrations": 1
+  "databaseMigrations": 0
 }

@@ -70,7 +70,36 @@
 @media(max-width:360px) { .tienda-fondos-catalogo { grid-template-columns:1fr; } }
 .tienda-fondo-miniatura { height:96px; margin:-4px -4px 10px; overflow:hidden; border-radius:8px; background-position:center; background-size:cover; position:relative; } .tienda-fondo-miniatura img { position:absolute; right:4px; bottom:0; height:95%; max-width:65%; object-fit:contain; }
 .tienda-fondo-candado { position:absolute; inset:0; display:grid; place-items:center; font-size:25px; background:#08101c40; text-shadow:0 2px 6px #000; }
-.tienda-personajes{margin:20px 0;padding-bottom:20px;border-bottom:1px solid #c5a4ef55}.tienda-personajes article{min-width:0;padding:12px;border:1px solid #ad9ac444;border-radius:12px;background:#141d2d}.tienda-personajes img{width:100%;height:140px;object-fit:contain}.tienda-personajes h4{margin:8px 0}.tienda-personajes p{font-size:13px;color:#c6bdd2}.tienda-personajes button{font-size:12px;min-height:44px;line-height:1.4}
+.tienda-personajes{margin:20px 0;padding-bottom:20px;border-bottom:1px solid #c5a4ef55}
+.tienda-personajes>h3{margin:0 0 6px}.tienda-personajes>p{font-size:13px;line-height:1.5;color:#c6bdd2;margin:0 0 14px}
+.tienda-personajes-catalogo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:stretch}
+.tienda-personajes-catalogo .personaje-tienda-tarjeta{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;min-width:0;margin:0;padding:12px 8px;border:1px solid #7894a755;border-radius:12px;background:linear-gradient(155deg,#273749aa,#101a27);box-shadow:none;color:#f7e7bf;text-align:center;line-height:1.35;white-space:normal}
+.personaje-tienda-tarjeta img{width:100%;height:120px;object-fit:contain;filter:drop-shadow(0 6px 9px #0006)}
+.personaje-tienda-tarjeta strong{font:700 15px/1.3 system-ui,sans-serif}.personaje-tienda-habilidad{font-size:13px;color:#c5d4e8;line-height:1.4}
+.personaje-tienda-estado{margin-top:auto;padding-top:3px;font-size:12px;color:#efd697;line-height:1.4}
+.personaje-tienda-tarjeta :is(strong,span,small){max-width:100%;min-width:0;overflow-wrap:anywhere}
+.personaje-tienda-tarjeta:focus-visible{outline:3px solid #b1f5f0;outline-offset:3px}
+.tienda-personajes-catalogo .personaje-tienda-premium{border-color:#d6b462;background:radial-gradient(ellipse at 50% 10%,#88633155,transparent 70%),linear-gradient(155deg,#302b39,#101a27)}
+.personaje-tienda-insignia{position:absolute;top:6px;right:6px;font:700 9px/1.3 system-ui,sans-serif;padding:3px 5px;border:1px solid #d4b26066;border-radius:5px;background:#171d29e8;color:#ffe3a1;letter-spacing:.04em}
+.personaje-detalle{box-sizing:border-box;width:min(640px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:18px;color:#f7e7bf}
+.personaje-detalle .menu-dialogo-cabecera{margin:0 0 16px;align-items:flex-start}.personaje-detalle h2{overflow-wrap:anywhere}
+.personaje-detalle-cuerpo{display:grid;grid-template-columns:minmax(80px,.8fr) minmax(0,1.2fr);gap:14px;align-items:center}
+.personaje-detalle-hero{min-width:0}.personaje-detalle-hero img{width:100%;height:min(28dvh,230px);object-fit:contain;filter:drop-shadow(0 8px 12px #0008)}
+.personaje-detalle-habilidad{min-width:0}.personaje-detalle-habilidad>small{font:700 10px/1.5 system-ui,sans-serif;letter-spacing:.08em;color:#c7b181;text-transform:uppercase}
+.personaje-detalle-habilidad h3{font:700 22px/1.25 Georgia,serif;color:#ffe2a2;margin:5px 0 10px;overflow-wrap:anywhere}
+.personaje-detalle-habilidad p,.personaje-detalle-premium{font:14px/1.55 system-ui,sans-serif;color:#d3d6e1;margin:8px 0;overflow-wrap:anywhere}
+.personaje-detalle-tecnicas{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0}
+.personaje-detalle-tecnicas>div{padding:12px;border:1px solid #7894a733;border-radius:10px;background:#172435}
+.personaje-detalle-tecnicas dt{font:700 10px/1.5 system-ui,sans-serif;color:#b7c4d4;text-transform:uppercase;letter-spacing:.06em}
+.personaje-detalle-tecnicas dd{font:700 14px/1.45 Georgia,serif;margin:5px 0 0;color:#f2dab1;overflow-wrap:anywhere}
+.personaje-detalle-tecnicas>div:first-child[hidden]+div{grid-column:1/-1}
+.personaje-detalle-premium{grid-column:1/-1;padding:12px;border:1px solid #d6b46266;border-radius:10px;background:#b68a2510}
+.personaje-detalle footer{margin-top:16px;padding-top:12px;border-top:1px solid #7894a744;text-align:center}
+.personaje-detalle footer>button{width:100%;min-height:46px;margin:8px 0 0;white-space:normal;font-size:14px;line-height:1.4}
+.personaje-detalle footer>p{font-size:13px;line-height:1.5;margin:0;color:#efd697}.personaje-detalle [data-character-notice]:empty{display:none}.personaje-detalle [data-character-notice]{padding-top:10px}
+@media(max-width:600px){.tienda-personajes-catalogo{gap:7px}.tienda-personajes-catalogo .personaje-tienda-tarjeta{padding:10px 6px;gap:6px}.personaje-tienda-tarjeta img{height:92px}.personaje-tienda-tarjeta strong{font-size:13px}.personaje-tienda-habilidad{font-size:12px}.personaje-tienda-estado{font-size:12px}.personaje-detalle{padding:15px}.personaje-detalle-cuerpo{grid-template-columns:minmax(80px,.75fr) minmax(0,1.25fr);gap:12px}.personaje-detalle-habilidad h3{font-size:20px}}
+@media(max-width:359px){.tienda-personajes-catalogo{grid-template-columns:repeat(2,minmax(0,1fr))}.personaje-tienda-tarjeta img{height:100px}}
+@media(orientation:landscape) and (max-height:500px){.personaje-detalle{padding:14px}.personaje-detalle-hero img{height:180px}.personaje-detalle-cuerpo{grid-template-columns:minmax(100px,.7fr) minmax(0,1.3fr)}.personaje-detalle footer{margin-top:12px}}
 
 .precio-con-moneda::before{content:"";display:inline-block;width:1em;height:1em;vertical-align:-.12em;margin-inline-end:.4em;border-radius:50%;border:1px solid #a96b12;background:radial-gradient(ellipse at 35% 30%,#fff5a4,#efbd43 55%,#bd791b);box-shadow:inset 0 0 0 2px #ffdf72,inset 0 0 0 3px #c58a28}
 .tienda-traje-dialogo{width:min(900px,96vw);max-height:94dvh;padding:16px;color:#f7e7bf;background:#101a27;border:1px solid #c4ad71;border-radius:18px;overflow:auto}

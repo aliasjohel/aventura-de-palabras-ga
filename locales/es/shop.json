@@ -141,5 +141,56 @@
     "not_found": "No se encontró una compra verificada para esta cuenta del juego.",
     "revoked": "La compra fue cancelada o reembolsada.",
     "cancelled": "Compra cancelada. No se habilitó contenido."
+  },
+  "characters": {
+    "title": "Personajes",
+    "hint": "Personajes para Versus y Torre. Tocá una ficha para ver sus habilidades.",
+    "details": "Ficha de personaje",
+    "mainAbility": "Habilidad principal",
+    "attack": "Ataque",
+    "finisher": "Remate",
+    "close": "Cerrar ficha del personaje",
+    "owned": "En tu colección",
+    "buy": "Comprar · {coins} monedas",
+    "unlocked": "¡Personaje desbloqueado!",
+    "syncRequired": "Conectate para sincronizar tus personajes.",
+    "leaveTest": "Volvé del modo de prueba para comprar.",
+    "premium": "Premium",
+    "premiumMoney": "Personaje premium · Dinero real",
+    "comingSoon": "Próximamente",
+    "trialAccess": "Acceso de prueba",
+    "accessGranted": "Acceso habilitado",
+    "premiumHelp": "Compra única con dinero real. Los cobros permanecen desactivados; no se compra con monedas del juego.",
+    "unionHint": "Señala una letra de la palabra actual.",
+    "entries": {
+      "hombre_lobo": {
+        "name": "Hombre Lobo",
+        "attack": "Zarpazo Feral",
+        "finisher": "Cacería de Luna Llena"
+      },
+      "kairos": {
+        "name": "Kairós",
+        "attack": "Aguja fugaz",
+        "finisher": "Siglos en un Segundo"
+      },
+      "kalamo": {
+        "name": "Kálamo",
+        "attack": "Latigazo de tinta",
+        "finisher": "Libro de las Palabras Perdidas"
+      },
+      "guardian_alba": {
+        "name": "Lume",
+        "attack": "Corte solar",
+        "finisher": "Juicio del Amanecer"
+      },
+      "t_shadow": {
+        "name": "Shadow",
+        "attack": "Corte sombrío",
+        "finisher": "Legión Umbría"
+      },
+      "aren-union": {
+        "name": "Aren Unión"
+      }
+    }
   }
 }

@@ -153,5 +153,56 @@
     "not_found": "No verified purchase was found for this game account.",
     "revoked": "The purchase was cancelled or refunded.",
     "cancelled": "Purchase cancelled. No content was unlocked."
+  },
+  "characters": {
+    "title": "Characters",
+    "hint": "Characters for Versus and Tower. Tap a card to view their abilities.",
+    "details": "Character details",
+    "mainAbility": "Main ability",
+    "attack": "Attack",
+    "finisher": "Finisher",
+    "close": "Close character details",
+    "owned": "Owned",
+    "buy": "Buy · {coins} coins",
+    "unlocked": "Character unlocked!",
+    "syncRequired": "Connect to sync your characters.",
+    "leaveTest": "Leave test mode to purchase.",
+    "premium": "Premium",
+    "premiumMoney": "Premium character · Real money",
+    "comingSoon": "Coming soon",
+    "trialAccess": "Test access",
+    "accessGranted": "Access enabled",
+    "premiumHelp": "One-time purchase with real money. Payments remain disabled; this character cannot be bought with in-game coins.",
+    "unionHint": "Points out a letter in the current word.",
+    "entries": {
+      "hombre_lobo": {
+        "name": "Werewolf",
+        "attack": "Feral Slash",
+        "finisher": "Full Moon Hunt"
+      },
+      "kairos": {
+        "name": "Kairós",
+        "attack": "Fleeting Needle",
+        "finisher": "Centuries in a Second"
+      },
+      "kalamo": {
+        "name": "Kálamo",
+        "attack": "Ink Lash",
+        "finisher": "Book of Lost Words"
+      },
+      "guardian_alba": {
+        "name": "Lume",
+        "attack": "Solar Slash",
+        "finisher": "Judgment of Dawn"
+      },
+      "t_shadow": {
+        "name": "Shadow",
+        "attack": "Shadow Slash",
+        "finisher": "Umbral Legion"
+      },
+      "aren-union": {
+        "name": "Aren Union"
+      }
+    }
   }
 }

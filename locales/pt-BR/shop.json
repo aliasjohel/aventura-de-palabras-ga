@@ -153,5 +153,56 @@
     "not_found": "Nenhuma compra verificada foi encontrada para esta conta do jogo.",
     "revoked": "A compra foi cancelada ou reembolsada.",
     "cancelled": "Compra cancelada. Nenhum conteúdo foi liberado."
+  },
+  "characters": {
+    "title": "Personagens",
+    "hint": "Personagens para Versus e Torre. Toque em uma ficha para ver suas habilidades.",
+    "details": "Ficha do personagem",
+    "mainAbility": "Habilidade principal",
+    "attack": "Ataque",
+    "finisher": "Finalização",
+    "close": "Fechar ficha do personagem",
+    "owned": "Na sua coleção",
+    "buy": "Comprar · {coins} moedas",
+    "unlocked": "Personagem desbloqueado!",
+    "syncRequired": "Conecte-se para sincronizar seus personagens.",
+    "leaveTest": "Saia do modo de teste para comprar.",
+    "premium": "Premium",
+    "premiumMoney": "Personagem premium · Dinheiro real",
+    "comingSoon": "Em breve",
+    "trialAccess": "Acesso de teste",
+    "accessGranted": "Acesso habilitado",
+    "premiumHelp": "Compra única com dinheiro real. As cobranças continuam desativadas; este personagem não pode ser comprado com moedas do jogo.",
+    "unionHint": "Indica uma letra da palavra atual.",
+    "entries": {
+      "hombre_lobo": {
+        "name": "Lobisomem",
+        "attack": "Golpe Feral",
+        "finisher": "Caçada da Lua Cheia"
+      },
+      "kairos": {
+        "name": "Kairós",
+        "attack": "Agulha fugaz",
+        "finisher": "Séculos em um Segundo"
+      },
+      "kalamo": {
+        "name": "Kálamo",
+        "attack": "Chicote de tinta",
+        "finisher": "Livro das Palavras Perdidas"
+      },
+      "guardian_alba": {
+        "name": "Lume",
+        "attack": "Corte solar",
+        "finisher": "Julgamento do Amanhecer"
+      },
+      "t_shadow": {
+        "name": "Shadow",
+        "attack": "Corte sombrio",
+        "finisher": "Legião Umbria"
+      },
+      "aren-union": {
+        "name": "Aren União"
+      }
+    }
   }
 }
