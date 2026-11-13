@@ -22,7 +22,7 @@ for(const item of catalog){
  const img=document.createElement('img');img.alt='';img.loading='lazy';img.decoding='async';
  const badge=document.createElement('small');badge.className='personaje-tienda-insignia';badge.hidden=!item.premium;
  const heading=document.createElement('strong'),skill=document.createElement('span'),cost=document.createElement('small');skill.className='personaje-tienda-habilidad';cost.className='personaje-tienda-estado';
- card.append(badge,img,heading,skill,cost);card.classList.toggle('personaje-tienda-premium',Boolean(item.premium));card.addEventListener('click',()=>{selected=item;opener=card;renderPanel();panel.showModal();});list.append(card);cards.set(item.id,{card,img,badge,heading,skill,cost});
+ card.append(badge,img,heading,skill,cost);card.classList.toggle('personaje-tienda-premium',Boolean(item.premium));card.addEventListener('click',()=>{selected=item;opener=card;renderPanel();panel.showModal();panel.scrollTop=0;part('.personaje-detalle-cuerpo').scrollTop=0;part('.personaje-detalle-cuerpo').scrollLeft=0;});list.append(card);cards.set(item.id,{card,img,badge,heading,skill,cost});
 }
 function renderPanel(){
  if(!selected)return;const item=selected,owned=owns(item),attack=part('[data-character-attack]'),final=part('[data-character-final]');

@@ -99,7 +99,13 @@
 .personaje-detalle footer>p{font-size:13px;line-height:1.5;margin:0;color:#efd697}.personaje-detalle [data-character-notice]:empty{display:none}.personaje-detalle [data-character-notice]{padding-top:10px}
 @media(max-width:600px){.tienda-personajes-catalogo{gap:7px}.tienda-personajes-catalogo .personaje-tienda-tarjeta{padding:10px 6px;gap:6px}.personaje-tienda-tarjeta img{height:92px}.personaje-tienda-tarjeta strong{font-size:13px}.personaje-tienda-habilidad{font-size:12px}.personaje-tienda-estado{font-size:12px}.personaje-detalle{padding:15px}.personaje-detalle-cuerpo{grid-template-columns:minmax(80px,.75fr) minmax(0,1.25fr);gap:12px}.personaje-detalle-habilidad h3{font-size:20px}}
 @media(max-width:359px){.tienda-personajes-catalogo{grid-template-columns:repeat(2,minmax(0,1fr))}.personaje-tienda-tarjeta img{height:100px}}
-@media(orientation:landscape) and (max-height:500px){.personaje-detalle{padding:14px}.personaje-detalle-hero img{height:180px}.personaje-detalle-cuerpo{grid-template-columns:minmax(100px,.7fr) minmax(0,1.3fr)}.personaje-detalle footer{margin-top:12px}}
+@media(orientation:landscape) and (max-height:500px){
+ .personaje-detalle[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto;height:calc(100dvh - 24px);padding:14px;overflow:hidden}
+ .personaje-detalle .menu-dialogo-cabecera{margin-bottom:8px}.personaje-detalle .menu-dialogo-cabecera h2{font-size:22px;margin:4px 0 0}
+ .personaje-detalle-hero img{height:110px}.personaje-detalle-cuerpo{grid-template-columns:minmax(100px,.7fr) minmax(0,1.3fr);overflow-y:auto;min-height:0;align-items:start;padding-right:5px}
+ .personaje-detalle-habilidad h3{font-size:20px}.personaje-detalle-tecnicas>div{padding:9px}.personaje-detalle-tecnicas dd{font-size:13px}
+ .personaje-detalle footer{margin-top:8px;padding-top:8px}.personaje-detalle footer>button{margin-top:6px;min-height:44px}
+}
 
 .precio-con-moneda::before{content:"";display:inline-block;width:1em;height:1em;vertical-align:-.12em;margin-inline-end:.4em;border-radius:50%;border:1px solid #a96b12;background:radial-gradient(ellipse at 35% 30%,#fff5a4,#efbd43 55%,#bd791b);box-shadow:inset 0 0 0 2px #ffdf72,inset 0 0 0 3px #c58a28}
 .tienda-traje-dialogo{width:min(900px,96vw);max-height:94dvh;padding:16px;color:#f7e7bf;background:#101a27;border:1px solid #c4ad71;border-radius:18px;overflow:auto}
