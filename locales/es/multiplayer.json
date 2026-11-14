@@ -1,4 +1,22 @@
 {
+  "preparationGuide": {
+    "progress": "{step} / {total}",
+    "practice": "Esta práctica no envía palabras ni consume tiempo de una partida. Podés repetirla desde Cómo jugar en Multijugador.",
+    "close": "Cerrar guía", "topic": "Temática", "chooseTopic": "Elegí una temática", "word": "Palabra {number}",
+    "invalid": "Usá palabras distintas, de 3 a 12 letras, reconocidas en el diccionario de esta temática.",
+    "pin": "Fijar palabra {number}", "unpin": "Dejar de fijar palabra {number}",
+    "pinned": "Palabra fijada: se conserva al completar otra vez.", "unpinned": "Palabra liberada: se puede reemplazar al completar otra vez.",
+    "filled": "Palabras completadas. Podés editarlas o fijarlas.", "practiceClock": "Tiempo de ejemplo · práctica sin reloj",
+    "previous": "Anterior", "next": "Siguiente", "enter": "Terminar práctica", "combat": "Practicar combate", "later": "Omitir guía",
+    "busy": "Terminá o salí de la partida o búsqueda antes de abrir la práctica.",
+    "steps": {
+      "s0": {"title": "Primero, elegí la temática", "copy": "Elegí la temática de las cinco palabras que tu oponente tendrá que adivinar. Probá seleccionarla acá antes de seguir."},
+      "s1": {"title": "Escribí cinco palabras", "copy": "Cada recuadro contiene una palabra para tu rival. Podés escribirlas vos: deben ser distintas, tener de 3 a 12 letras y estar reconocidas en el diccionario de la temática elegida."},
+      "s2": {"title": "Dejá que el juego complete", "copy": "Si preferís, usá el botón para elegir palabras por vos. El juego completa las cinco casillas con palabras de la temática. Podés volver a tocarlo para probar otras o editar las que propone."},
+      "s3": {"title": "Conservá tus favoritas", "copy": "Tocá la chincheta junto a una palabra válida para fijarla. Al volver a elegir palabras automáticamente, las fijadas no cambian. Tocá de nuevo la chincheta para liberarlas. Cambiar la temática también libera las palabras."},
+      "s4": {"title": "Tenés 90 segundos", "copy": "En una partida online tenés 90 segundos para preparar y enviar las palabras. Al vencer, se conservan las palabras válidas, se completan las que falten y se envían automáticamente. Acá el reloj es solo un ejemplo: tu oponente no está esperando."}
+    }
+  },
   "legacy": {
     "s0": "DUELO ENTRE JUGADORES",
     "s1": "Sala multijugador",

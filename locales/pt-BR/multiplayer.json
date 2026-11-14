@@ -1,4 +1,22 @@
 {
+  "preparationGuide": {
+    "progress": "{step} / {total}",
+    "practice": "Esta prática não envia palavras nem consome o tempo de uma partida. Você pode repeti-la em Como jogar no Multijogador.",
+    "close": "Fechar guia", "topic": "Tema", "chooseTopic": "Escolha um tema", "word": "Palavra {number}",
+    "invalid": "Use palavras diferentes, de 3 a 12 letras, reconhecidas no dicionário deste tema.",
+    "pin": "Fixar palavra {number}", "unpin": "Soltar palavra {number}",
+    "pinned": "Palavra fixada: será mantida ao preencher novamente.", "unpinned": "Palavra solta: poderá ser substituída ao preencher novamente.",
+    "filled": "Palavras preenchidas. Você pode editá-las ou fixá-las.", "practiceClock": "Tempo de exemplo · prática sem relógio",
+    "previous": "Anterior", "next": "Próximo", "enter": "Concluir prática", "combat": "Praticar combate", "later": "Pular guia",
+    "busy": "Termine ou saia da partida ou busca antes de abrir a prática.",
+    "steps": {
+      "s0": {"title": "Primeiro, escolha o tema", "copy": "Escolha o tema das cinco palavras que seu oponente terá que adivinhar. Experimente selecionar um aqui antes de continuar."},
+      "s1": {"title": "Escreva cinco palavras", "copy": "Cada campo contém uma palavra para seu rival. Você pode escrevê-las: devem ser diferentes, ter de 3 a 12 letras e ser reconhecidas no dicionário do tema escolhido."},
+      "s2": {"title": "Deixe o jogo preencher", "copy": "Se preferir, use o botão para escolher palavras por você. O jogo preenche os cinco campos com palavras do tema. Toque novamente para experimentar outras ou edite as sugestões."},
+      "s3": {"title": "Mantenha suas favoritas", "copy": "Toque no alfinete ao lado de uma palavra válida para fixá-la. Ao escolher palavras automaticamente de novo, as fixadas não mudam. Toque novamente no alfinete para soltá-las. Mudar o tema também solta as palavras."},
+      "s4": {"title": "Você tem 90 segundos", "copy": "Em uma partida online você tem 90 segundos para preparar e enviar as palavras. Quando o tempo acaba, as palavras válidas são mantidas, as que faltam são preenchidas e o envio é automático. Aqui o relógio é só um exemplo: nenhum oponente está esperando."}
+    }
+  },
   "legacy": {
     "s0": "DUELO ENTRE JOGADORES",
     "s1": "Sala multijogador",

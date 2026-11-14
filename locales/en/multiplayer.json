@@ -1,4 +1,22 @@
 {
+  "preparationGuide": {
+    "progress": "{step} / {total}",
+    "practice": "This practice sends no words and uses no match time. Open it again from How to play in Multiplayer.",
+    "close": "Close guide", "topic": "Topic", "chooseTopic": "Choose a topic", "word": "Word {number}",
+    "invalid": "Use different words of 3–12 letters recognized in this topic’s dictionary.",
+    "pin": "Pin word {number}", "unpin": "Unpin word {number}",
+    "pinned": "Word pinned: it stays when you fill again.", "unpinned": "Word unpinned: filling again may replace it.",
+    "filled": "Words filled. You can edit or pin them.", "practiceClock": "Example time · untimed practice",
+    "previous": "Previous", "next": "Next", "enter": "Finish practice", "combat": "Practice combat", "later": "Skip guide",
+    "busy": "Finish or leave your match or search before opening practice.",
+    "steps": {
+      "s0": {"title": "First, choose a topic", "copy": "Choose the topic of the five words your opponent will have to guess. Try selecting one here before continuing."},
+      "s1": {"title": "Write five words", "copy": "Each box holds one word for your opponent. You can write your own: use different words of 3–12 letters recognized in the selected topic’s dictionary."},
+      "s2": {"title": "Let the game fill the words", "copy": "If you prefer, use the button to choose words for you. The game fills the five boxes with words from your topic. Tap again to try others, or edit the suggestions."},
+      "s3": {"title": "Keep your favorites", "copy": "Tap the pin beside a valid word to keep it. Pinned words stay when you choose words automatically again. Tap the pin again to release them. Changing the topic also releases words."},
+      "s4": {"title": "You have 90 seconds", "copy": "In an online match you have 90 seconds to prepare and send your words. When time runs out, valid words are kept, missing words are filled and they are sent automatically. This clock is just an example: no opponent is waiting."}
+    }
+  },
   "legacy": {
     "s0": "PLAYER DUEL",
     "s1": "Multiplayer room",

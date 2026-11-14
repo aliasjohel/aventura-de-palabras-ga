@@ -2273,7 +2273,7 @@ function crearFilaRanking(fila) {
   const rank=GameUI.key('profile.rankDivision',{rank:GameUI.key('profile.ranks.'+division.rank.key+'.name'),division:division.number?' '+division.number:''});
   GameUI.attribute(row,'aria-label',GameUI.key('menu.rankingOpenRow',{position:fila.position,alias,points:fila.points,rank}));
   const position=document.createElement('span');position.className='ranking-puesto';position.textContent='#'+fila.position;if(Number(fila.position)===1)position.dataset.leader='true';
-  const medal=document.createElement('img');medal.className='ranking-insignia';medal.src='assets/images/rangos/'+division.rank.key+'-v2.png';medal.alt='';medal.loading='lazy';medal.decoding='async';medal.width=28;medal.height=32;
+  const medal=document.createElement('img');medal.className='ranking-insignia';medal.src='assets/images/rangos/'+division.rank.key+'-v3.webp';medal.alt='';medal.loading='lazy';medal.decoding='async';medal.width=28;medal.height=32;
   const identity=document.createElement('span');identity.className='ranking-identidad';
   const name=document.createElement('strong');
   // Player aliases are data, including names that happen to match translation keys.
@@ -3199,6 +3199,7 @@ function entrarAlModoVersus() {
     iniciarPruebaVersusLocal();
     return;
   }
+  if (globalThis.VersusPreparationGuide?.offer(() => abrirSalaVersus())) return;
   abrirSalaVersus();
 }
 
