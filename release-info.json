@@ -1,10 +1,10 @@
 {
-  "version": "0.4.13",
+  "version": "0.4.14",
   "platform": "pwa",
-  "androidVersionCode": 15,
+  "androidVersionCode": 17,
   "changes": [
-    "lightweight-rank-insignia",
-    "multiplayer-word-preparation-guide",
+    "nimbus-first-meeting-dialogue",
+    "zafir-rescue-introductions",
     "premium-checkout-disabled"
   ],
   "databaseMigrations": 0

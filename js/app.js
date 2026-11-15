@@ -3725,6 +3725,7 @@ btnContinuarHistoria.addEventListener("click", async () => {
       }
       await ejecutarLlegadaBosqueInicial();
       activarEmergenciaDevoradunas();
+      await presentarConversacionNimbus();
       return;
     }
 
@@ -3771,6 +3772,7 @@ btnContinuarHistoria.addEventListener("click", async () => {
 
     await esperarFadeEscenarioEntrada();
     await ejecutarLlegadaBosqueInicial();
+    await presentarConversacionNimbus();
   } finally {
     contenedorEscenario.classList.remove(
       "cambiando-escena",
@@ -11516,6 +11518,86 @@ async function liberarMaguitoDeTrampaEspejismo() {
   if (!trampa.isConnected) return;
   trampa.classList.add("liberada");
   await esperarPruebaBosque(prefiereReducirMovimiento.matches ? 100 : 650);
+  if (!trampa.isConnected) return;
+  await mostrarDialogoEnEscenario('zafir', [
+    { nombre: 'Zafir', texto: 'zafirThanks' },
+    { nombre: 'Aren', texto: 'arenWelcome' },
+    { nombre: 'Zafir', texto: 'zafirIntroduction' },
+  ]);
+}
+
+async function presentarConversacionNimbus() {
+  if (escenarioActual !== 2 || misionActual !== 2 || desafiosCompletados !== 0) return;
+  await mostrarDialogoEnEscenario('nimbus', [
+    { nombre: 'Nimbus', texto: 'nimbusWarning' },
+    { nombre: 'Aren', texto: 'arenPromise' },
+    { nombre: 'Nimbus', texto: 'nimbusDoubt' },
+  ]);
+}
+
+async function mostrarDialogoEnEscenario(encuentro, lineas) {
+  const dialogo = document.createElement('dialog');
+  dialogo.className = `dialogo-personajes dialogo-personajes-${encuentro}`;
+  const burbuja = document.createElement('div');
+  burbuja.className = 'burbuja-personaje';
+  const nombre = document.createElement('strong');
+  const texto = document.createElement('p');
+  const continuar = document.createElement('button');
+  continuar.type = 'button';
+  const progreso = document.createElement('small');
+  const pie = document.createElement('div');
+  pie.className = 'burbuja-personaje-pie';
+  pie.append(progreso, continuar);
+  burbuja.append(nombre, texto, pie);
+  dialogo.append(burbuja);
+  dialogo.setAttribute('aria-labelledby', 'dialogo-personaje-nombre');
+  dialogo.setAttribute('aria-describedby', 'dialogo-personaje-texto');
+  nombre.id = 'dialogo-personaje-nombre';
+  texto.id = 'dialogo-personaje-texto';
+  texto.setAttribute('aria-live', 'polite');
+  contenedorEscenario.appendChild(dialogo);
+  const focoAnterior = document.activeElement;
+  let indice = 0;
+  const colocar = () => {
+    const rect = contenedorEscenario.getBoundingClientRect();
+    dialogo.style.left = `${rect.left}px`;
+    dialogo.style.top = `${rect.top}px`;
+    dialogo.style.width = `${rect.width}px`;
+    dialogo.style.height = `${rect.height}px`;
+  };
+  const mostrarLinea = () => {
+    const linea = lineas[indice];
+    dialogo.dataset.hablante = linea.nombre === 'Aren' ? 'aren' : encuentro;
+    nombre.textContent = linea.nombre;
+    GameUI.text(texto, GameUI.key(`adventure.sceneDialogue.${linea.texto}`));
+    GameUI.text(continuar, GameUI.key(`adventure.sceneDialogue.${indice === lineas.length - 1 ? 'finish' : 'continue'}`));
+    progreso.textContent = `${indice + 1} / ${lineas.length}`;
+  };
+  const terminada = new Promise(resolve => {
+    continuar.addEventListener('click', () => {
+      if (indice === lineas.length - 1) resolve();
+      else { indice += 1; mostrarLinea(); }
+    });
+    dialogo.addEventListener('cancel', evento => { evento.preventDefault(); resolve(); });
+  });
+  const tamano = new ResizeObserver(colocar);
+  try {
+    colocar();
+    mostrarLinea();
+    dialogo.showModal();
+    continuar.focus({ preventScroll: true });
+    tamano.observe(contenedorEscenario);
+    window.addEventListener('resize', colocar);
+    window.addEventListener('scroll', colocar, true);
+    await terminada;
+  } finally {
+    tamano.disconnect();
+    window.removeEventListener('resize', colocar);
+    window.removeEventListener('scroll', colocar, true);
+    dialogo.close();
+    dialogo.remove();
+    if (focoAnterior?.isConnected) focoAnterior.focus({ preventScroll: true });
+  }
 }
 
 function detenerAmbientePuente() {

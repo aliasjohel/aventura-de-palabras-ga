@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v0413-pwa-rank-insignia`;
+const CACHE_NAME = `${CACHE_PREFIX}v0414-pwa-scene-dialogue`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1299,7 +1299,7 @@ const ASSET_REVISIONS = {
   "./js/word-banks-forest.js": "sha256-1f50cd3a347769733f601c529f3902f9851ba61c9013d9e13198530d49bc275b",
   "./js/word-banks-es.js": "sha256-2747407626268b62dcfbee2a7c8984c8d6da7ac7803652294b418e344099c84f",
   "./js/i18n-settings.js": "sha256-87266c5c9bbd97e9009e2d1f2fa707fd1f3249ca1d91fd1ba800ed0d1c7fe171",
-  "./js/i18n-es-fallback.js": "sha256-5c651a40696c17398b497226a972e20329fb7f35e3b99b8b25a8806303d5faef",
+  "./js/i18n-es-fallback.js": "sha256-91bc289125123febda7c2d4673b5cb0a93a8fc78b1ea40b83d4270344e949aac",
   "./js/i18n-ui.js": "sha256-177f68a93d64a93ba7201874b2020998b99a9644824025d201bb70fb0f735831",
   "./js/narrative-i18n.js": "sha256-e1930c0260e5a07b9ea429390a53b35cd03f785ad11ddbd95b5957d13c90c8b0",
   "./js/i18n-combat.js": "sha256-fdc7a05af378d2f19cd1ed2aa597cf90bb77f73857315f572ce962257187a9c6",
@@ -1310,7 +1310,7 @@ const ASSET_REVISIONS = {
   "./locales/en/profile.json": "sha256-b1258d887a39e99bb95b57c36d07dc5c1e20034bdcd01f584c81797e981446ca",
   "./locales/en/shop.json": "sha256-f2560f106cd77116bf9a8a6359f7bf4f1a2ccce902402d488a066051b3bac8ed",
   "./locales/en/characters.json": "sha256-2bc16ca38afc9da61326d17d5f49928ba7636ee537d42b41f36b14836f553a6f",
-  "./locales/en/adventure.json": "sha256-f6b32d9f98982c33942315fb0788c91bec6b5787114a9e96ec75284ed18f1d58",
+  "./locales/en/adventure.json": "sha256-435b52be82a7690e3b3cc4de6cf8534d46497b4b3380c9b22bff2c8968a86e93",
   "./locales/en/puzzles.json": "sha256-ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
   "./locales/en/cinematics.json": "sha256-ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
   "./locales/en/multiplayer.json": "sha256-98fa53d3787775ebaef4660c7563e0d07973a4b56172a999b9e132ea2bbce690",
@@ -1321,7 +1321,7 @@ const ASSET_REVISIONS = {
   "./locales/pt-BR/profile.json": "sha256-2b8f65539dabc8d5dd3797ec54f26d18136bcae610eda1aede987f5f6669fb5d",
   "./locales/pt-BR/shop.json": "sha256-9042d2944b2f219cb760dd2c49417c8797a3d762b47a49bed81cabbfd49b9c02",
   "./locales/pt-BR/characters.json": "sha256-cb0dbf17f22cc229fd9b06076780fc06174fa909db79a33a2f35e933e250d2f4",
-  "./locales/pt-BR/adventure.json": "sha256-5cbc68adc80e19f49f484e1f63e8469d1a6f204b4e941286773faf22a06fe3c4",
+  "./locales/pt-BR/adventure.json": "sha256-4af9a744c922f780d716e4c8e6a646d0e5985e170b1accd177301d11fe1c1162",
   "./locales/pt-BR/puzzles.json": "sha256-ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
   "./locales/pt-BR/cinematics.json": "sha256-ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
   "./locales/pt-BR/multiplayer.json": "sha256-fc3ebf2cfc4168af6bd1ebe78cb01d848a941973678cbe481357c47f24657f18",
@@ -1334,7 +1334,7 @@ const ASSET_REVISIONS = {
   "./locales/es/profile.json": "sha256-2c45fa41ffe247b9c5a9baa841f0ae9fa56b78564725090be8cf895d5b3f60a2",
   "./locales/es/shop.json": "sha256-9e6e388612da50cc77cc04b7e3c37bcf7db823fda8a35fbe8d1b224120bfaf75",
   "./locales/es/characters.json": "sha256-a26fcb8ec4e0722a17fdfd7e9bd65e3f0787fb6235931f2727acc2d18b4ca486",
-  "./locales/es/adventure.json": "sha256-6457ac9c4ebed642ef5add9c1fba2d201b1937518fc1c164b52c2f7efc253017",
+  "./locales/es/adventure.json": "sha256-ac99f5f0e8daab99bbf220fada4fde1db867c5d91c1dacef4947ccbc66116ce3",
   "./locales/es/puzzles.json": "sha256-ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
   "./locales/es/cinematics.json": "sha256-ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
   "./locales/es/multiplayer.json": "sha256-073f2f58839394e3a5f1be34c9f0129ab197d0e889f8e9c77ce37a158b55013b",
@@ -1555,7 +1555,7 @@ const ASSET_REVISIONS = {
   "./": "sha256-6c20b9ebbb40fcf6788f27b435e39753c13f2377ed1d880b859793fb2e94be20",
   "./index.html": "sha256-6c20b9ebbb40fcf6788f27b435e39753c13f2377ed1d880b859793fb2e94be20",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
-  "./css/styles.css": "sha256-d0b27ddc4866ab5f6b4b5a27c55ec572ccddcadbc672543a49c0abe1b8d99fae",
+  "./css/styles.css": "sha256-52837392788c26b11e8c6622391833dcd47be8df95dcf7d6a53d3e9696a722d8",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
   "./js/azrak-world.js": "sha256-d503df637e79f9e229d44bdfb03831c54086f1abf163ffc0dbdef95486227e10",
   "./assets/images/cinematicas/reino-azrak/primer-shadow-lume-capturada-v1.png": "sha256-190fd4207138436bf0a6b68048a766bce2fe136bebf4051095bc84fe6b6b286c",
@@ -1654,7 +1654,7 @@ const ASSET_REVISIONS = {
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
   "./js/adventure-puzzles.js": "sha256-0172daaa9b58276982a9e2c7a1732e8f85a23be3e37f2872d7b5f73cbb939a5f",
-  "./js/app.js": "sha256-e16c32a945f70ecae4bd88c54bbb0ca643547b93c3e8aaa30123c2a14fa4a933",
+  "./js/app.js": "sha256-764f708fcd149b85f7cdc8b5bccefb1088d595ba91844e1aa62d5f13368cc148",
   "./js/kairos-forest.js": "sha256-33d3e0c440834480046b45d1afe09855b14abdaa86bad36d4eb808e93d947e51",
   "./css/kairos-forest.css": "sha256-68643318666681d395edf4b99fcdca635640f68308d4f9658adf5c3e0f6b9269",
   "./assets/images/cinematicas/bosque-kairos/aparicion-v1.png": "sha256-219bb71f292b52e1ecd60f82bd70559d157331945d1c7ff1c23552cfb212da7d",
@@ -2010,7 +2010,7 @@ const ASSET_REVISIONS = {
   "./js/adventure-account-v2.js": "sha256-1be03fb544155a3acdbb88c182b6a7c3d829a21c3e3400da15b2301dc44407dc",
   "./js/account-sync-v3.js": "sha256-49d7c91bec92c8db56f084f58fc2f95f1f85be82feff22237951c9038b274264",
   "./js/account-runtime-v3.js": "sha256-eda464012afc1ade6d970be82d5e1583a80bc3bcb0349463409d0cd39616dfcf",
-  "./pilot-config.js": "sha256-1c2615ff24f6fd53733c96c6d74897a22a4c05ed65b68dfab31f8af8d7463572",
+  "./pilot-config.js": "sha256-470cebe10f78cdd52672a0aa4d9ac19d5e129f59079cedf38b49f91b67b2ed67",
   "./pilot-gate.js": "sha256-d04f0cb5813f50e607bd19440a68139d3e19451d70c235a402df44d9e9ef4bb6",
   "./css/sync-menu-layout.css": "sha256-8b5639da9724641e2d006400a0c2c3850cbfd9c643e09b4f9f92332f622c765f"
 };

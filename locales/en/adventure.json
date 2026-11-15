@@ -990,5 +990,15 @@
     "refill": "Refill to 3 hints in {minutes} min",
     "checkRefill": "Connect to check your refill.",
     "confirmRefill": "Confirming your refill with the server…"
+  },
+  "sceneDialogue": {
+    "nimbusWarning": "Stop! Are you here to steal my family’s crystal?",
+    "arenPromise": "I’m Aren. I’m not here to steal. I want to help.",
+    "nimbusDoubt": "So you say… First, prove I can trust you!",
+    "zafirThanks": "Thank you for freeing me! What’s your name?",
+    "arenWelcome": "I’m Aren. And you?",
+    "continue": "Continue",
+    "finish": "Continue the adventure",
+    "zafirIntroduction": "My name is Zafir. You can count on me on this journey."
   }
 }

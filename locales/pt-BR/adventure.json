@@ -990,5 +990,15 @@
     "refill": "Recarga para 3 dicas em {minutes} min",
     "checkRefill": "Conecte-se para consultar a recarga.",
     "confirmRefill": "Confirmando a recarga com o servidor…"
+  },
+  "sceneDialogue": {
+    "nimbusWarning": "Alto! Você veio roubar o cristal da minha família?",
+    "arenPromise": "Sou Aren. Não vim roubar. Quero ajudar.",
+    "nimbusDoubt": "É o que você diz… Primeiro, prove que posso confiar em você!",
+    "zafirThanks": "Obrigado por me libertar! Como você se chama?",
+    "arenWelcome": "Sou Aren. E você?",
+    "continue": "Continuar",
+    "finish": "Seguir a aventura",
+    "zafirIntroduction": "Meu nome é Zafir. Conte comigo nesta jornada."
   }
 }

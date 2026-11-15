@@ -2234,6 +2234,72 @@ body {
     filter: drop-shadow(0 10px 10px rgba(3, 24, 61, .45));
 }
 
+.dialogo-personajes {
+    position: fixed;
+    box-sizing: border-box;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: visible;
+    background: transparent;
+    color: #243849;
+}
+.dialogo-personajes::backdrop { background: rgba(5, 14, 28, .2); }
+.burbuja-personaje {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    box-sizing: border-box;
+    width: min(76%, 350px);
+    padding: clamp(9px, 2vw, 17px);
+    border: 2px solid #8fc5dc;
+    border-radius: 18px;
+    background: #fff9eefa;
+    box-shadow: 0 5px 18px #10233755;
+    text-align: left;
+    font: 14px/1.4 system-ui, sans-serif;
+}
+.burbuja-personaje::after {
+    content: '';
+    position: absolute;
+    right: 16%;
+    bottom: -12px;
+    width: 18px;
+    height: 18px;
+    border-right: 2px solid #8fc5dc;
+    border-bottom: 2px solid #8fc5dc;
+    background: #fff9ee;
+    transform: skewY(-20deg) rotate(45deg);
+}
+.burbuja-personaje strong { color: #235877; font-size: 1em; }
+.burbuja-personaje p { margin: 5px 0 8px; font-size: 1em; line-height: 1.4; color: #243849; }
+.burbuja-personaje-pie { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.burbuja-personaje small { color: #546476; font-size: 11px; }
+.burbuja-personaje button {
+    width: auto;
+    min-height: 36px;
+    margin: 0;
+    padding: 6px 12px;
+    border: 0;
+    border-radius: 9px;
+    background: #235877;
+    color: #fff;
+    font: 700 12px/1.2 system-ui, sans-serif;
+    box-shadow: none;
+}
+.burbuja-personaje button:focus-visible { outline: 3px solid #b27326; outline-offset: 3px; }
+.dialogo-personajes-zafir .burbuja-personaje { right: 25%; width: min(70%, 350px); border-color: #b9a0d9; }
+.dialogo-personajes-zafir .burbuja-personaje::after { right: 42%; border-color: #b9a0d9; }
+.dialogo-personajes[data-hablante="aren"] .burbuja-personaje { left: 5%; right: auto; }
+.dialogo-personajes[data-hablante="aren"] .burbuja-personaje::after { left: 16%; right: auto; }
+@media (max-width: 600px) {
+    .burbuja-personaje { font-size: 12px; top: 3%; }
+    .dialogo-personajes-zafir .burbuja-personaje { right: 8%; }
+    .dialogo-personajes-zafir[data-hablante="zafir"] .burbuja-personaje::after { right: 16%; }
+}
+
 .nimbus-cumbres {
     right: 7%;
     bottom: 1%;
