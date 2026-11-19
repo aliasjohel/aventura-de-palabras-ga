@@ -85,6 +85,14 @@
  }
  function start(){void check();}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
- for(const event of ['online','offline','focus','storage'])window.addEventListener(event,()=>recheck());
+ for(const event of ['online','offline','focus'])window.addEventListener(event,()=>recheck());
+ // Snapshots written by another tab are not an identity change. Rechecking on
+ // every snapshot creates a feedback loop because confirmedAt changes per read.
+ window.addEventListener('storage',event=>{
+  if(event.key===null||event.key==='sb-'+cfg.project+'-auth-token'){
+   if(document.hidden){generation++;show('Tu sesión cambió. La verificaremos al volver al juego.');}
+   else recheck();
+  }
+ });
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')recheck();});
 })();

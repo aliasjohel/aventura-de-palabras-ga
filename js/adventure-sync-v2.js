@@ -46,8 +46,8 @@
   }state=next;try{storage.setItem(cacheKey,JSON.stringify(next));}catch{}return true;}
   async function check(gen){if(!alive||gen!==generation)throw new SyncError('identity');if(await transport.user()!==owner||!alive||gen!==generation)throw new SyncError('identity');}
   async function pull(){const gen=generation;await check(gen);const next=await transport.rpc('adventure_state_v2',{});if(!alive||gen!==generation)return null;apply(next);confirmed=true;return state;}
-  function classify(error){if(error instanceof SyncError)return error.code;if(error?.code==='40001'||/PLAYER_WRITER_CHANGED/.test(error?.message||''))return 'conflict';if(/PLAYER_TAKEOVER_REQUIRED/.test(error?.message||''))return 'takeover';return 'unavailable';}
-  function definitive(error){return error instanceof SyncError||['22023','22P02','42501','28000','40001','55000','P0001'].includes(error?.code);}
+  function classify(error){if(error instanceof SyncError)return error.code;if(['40001','PT409'].includes(error?.code)||/PLAYER_WRITER_CHANGED/.test(error?.message||''))return 'conflict';if(/PLAYER_TAKEOVER_REQUIRED/.test(error?.message||''))return 'takeover';return 'unavailable';}
+  function definitive(error){return error instanceof SyncError||['22023','22P02','42501','28000','40001','PT409','55000','P0001'].includes(error?.code);}
   async function transmit(entry){const gen=generation;await check(gen);let received=false;try{
    const reply=await transport.rpc('adventure_command_v2',entry.args);received=true;if(!alive||gen!==generation)return null;
    if(reply?.userId!==owner||reply.requestId!==entry.args.p_request)throw new SyncError('identity');

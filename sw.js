@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v0415-pwa-guest-start`;
+const CACHE_NAME = `${CACHE_PREFIX}v0416-pwa-performance`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1552,8 +1552,8 @@ const ASSET_REVISIONS = {
   "./js/public-player-profile.js": "sha256-7d5baa433d26631235dbe3fff4a3d4a01b79935b6a02b7350eb3e371233fdaf9",
   "./js/match-likes.js": "sha256-a96befb24dac2e802f4e9318221e02488ef938400d8eead0b7278f8b160744d5",
   "./js/menu-wallet.js": "sha256-b6dfeea9d16dd67d4181b8c768c0b990a38332659d21bf17515aae2105745f9c",
-  "./": "sha256-6c20b9ebbb40fcf6788f27b435e39753c13f2377ed1d880b859793fb2e94be20",
-  "./index.html": "sha256-6c20b9ebbb40fcf6788f27b435e39753c13f2377ed1d880b859793fb2e94be20",
+  "./": "sha256-246a56aac76f104fe47182000d3f0446bd48f9955d2c56bad93c82c13de9708d",
+  "./index.html": "sha256-246a56aac76f104fe47182000d3f0446bd48f9955d2c56bad93c82c13de9708d",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
   "./css/styles.css": "sha256-6bd3dc71fef7f79f1240f5f6d7e506ea75e403d3736c63c63a6e1edd3915b82d",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
@@ -2006,12 +2006,12 @@ const ASSET_REVISIONS = {
   "./assets/images/personajes/coleccion/guardiana-bosque-ataque-raices.png": "sha256-4c303dae4cb53b3e0682d78dd172c58ee18b4c3bd05fc4f6b4046cb2939c2802",
   "./assets/images/personajes/coleccion/guardiana-bosque-victoria.png": "sha256-b25653f99fd7f9d6b5e6a7c6eb54edba6effbb7cfb28c5e54d295fb789500d35",
   "./assets/images/elementos/estela-escarcha-nivor.png": "sha256-6228167b96bd62744abee437c61cf7b6fa44cecb8eecb2f2268f8f4e0e6197ca",
-  "./js/adventure-sync-v2.js": "sha256-e8420231732306aa6add58882210a2913977e7bee324fbde799b7119f84a2daa",
-  "./js/adventure-account-v2.js": "sha256-1be03fb544155a3acdbb88c182b6a7c3d829a21c3e3400da15b2301dc44407dc",
-  "./js/account-sync-v3.js": "sha256-49d7c91bec92c8db56f084f58fc2f95f1f85be82feff22237951c9038b274264",
-  "./js/account-runtime-v3.js": "sha256-eda464012afc1ade6d970be82d5e1583a80bc3bcb0349463409d0cd39616dfcf",
-  "./pilot-config.js": "sha256-fc60e00784ce84849d88a041119b50923ba4ec276dd32b18698c3afb429b4a6a",
-  "./pilot-gate.js": "sha256-0e0a6723ae82e59605a818f7748e79d4b0c11670595e011c26cc4979e4d22199",
+  "./js/adventure-sync-v2.js": "sha256-ade3c37610b5a0114affd41b7c45ec296d5434ad854820d120f9fee485dfa48b",
+  "./js/adventure-account-v2.js": "sha256-15766d19de585b254bea0d7cfbe1da5aabd615db95599664f12d89c631055248",
+  "./js/account-sync-v3.js": "sha256-3ff23e31ec34627c0731e6f0f3fd6b79623eac78af43aa00f020326ede485b86",
+  "./js/account-runtime-v3.js": "sha256-f5af40c0df88594d73d4afcd256afbd8af9ace968185a313e24bccf4baec7a74",
+  "./pilot-config.js": "sha256-362e9069d63a600f9c03fef87492dc53d8bc09c83d4f3a4ec578da45cad74631",
+  "./pilot-gate.js": "sha256-66751a94507637a65dbaa6079349c1d9518acaf58fdf9dcf2564e2f5cafb2d2d",
   "./css/sync-menu-layout.css": "sha256-8b5639da9724641e2d006400a0c2c3850cbfd9c643e09b4f9f92332f622c765f"
 };
 const LEGACY_RESOURCE_REVISIONS = {

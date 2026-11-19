@@ -36,8 +36,8 @@
     // gameplay rewards and profile even when its equipment revision is equal.
     if(value.state.revision<=previous)await pull();else emit();return clone(value.result);
    }catch(e){if(!alive||token!==generation)return null;
-    if(/^(22023|42501|28000|40001|40P01|55000|57014|23514|23503|23505|P0001)$/.test(e.code||'')){
-     storage.removeItem(journalKey);await pull().catch(()=>{});status=e.code==='40001'?'conflict':'unavailable';emit();throw new AccountError(status);
+    if(/^(22023|42501|28000|40001|PT409|40P01|55000|57014|23514|23503|23505|P0001)$/.test(e.code||'')){
+     storage.removeItem(journalKey);await pull().catch(()=>{});status=['40001','PT409'].includes(e.code)?'conflict':'unavailable';emit();throw new AccountError(status);
     }
     status='pending';emit();throw new AccountError('pending');
    }}

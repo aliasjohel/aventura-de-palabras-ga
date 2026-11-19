@@ -1,12 +1,13 @@
 {
-  "version": "0.4.15",
+  "version": "0.4.16",
   "platform": "pwa",
-  "androidVersionCode": 18,
+  "androidVersionCode": 19,
   "changes": [
+    "nonretryable-account-conflicts",
+    "bounded-cross-tab-synchronization",
+    "shared-in-flight-refresh",
     "persistent-guest-first-start",
-    "guest-network-recovery",
-    "zafir-rescue-height",
     "premium-checkout-disabled"
   ],
-  "databaseMigrations": 0
+  "databaseMigrations": 1
 }
