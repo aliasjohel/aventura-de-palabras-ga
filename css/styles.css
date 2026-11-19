@@ -13834,7 +13834,7 @@ button:disabled {
 @keyframes descenderMaguitoLiberado {
     0%, 34% { opacity: .92; transform: translateY(0) scale(.98); filter: saturate(.9) hue-rotate(12deg); }
     52% { opacity: 1; transform: translateY(-12%) scale(1.08); filter: brightness(1.65) saturate(1.2); }
-    100% { opacity: 1; transform: translateY(24%) scale(1.04); filter: drop-shadow(0 6px 5px rgba(35, 14, 2, .55)); }
+    100% { opacity: 1; transform: translateY(var(--descenso-maguito-liberado, 15%)) scale(1.04); filter: drop-shadow(0 6px 5px rgba(35, 14, 2, .55)); }
 }
 
 @keyframes correrMaguitoDesierto {
@@ -16671,6 +16671,8 @@ button:disabled {
         height: 82%;
     }
     .escenario.escenario-desierto[data-mision-desierto="5"] .maguito-espejismo {
+        /* The larger mobile sprite needs a shorter descent to meet Aren's feet. */
+        --descenso-maguito-liberado: 10%;
         right: 3%;
         bottom: 8%;
         width: 94%;
@@ -16699,7 +16701,7 @@ button:disabled {
     .arena-emergencia-devoradunas { display: none; }
     .trampa-espejismo-maguito.liberada .maguito-espejismo {
         opacity: 1;
-        transform: translateY(24%) scale(1.04);
+        transform: translateY(var(--descenso-maguito-liberado, 15%)) scale(1.04);
         filter: drop-shadow(0 6px 5px rgba(35, 14, 2, .55));
     }
 }

@@ -1,10 +1,11 @@
 {
-  "version": "0.4.14",
+  "version": "0.4.15",
   "platform": "pwa",
-  "androidVersionCode": 17,
+  "androidVersionCode": 18,
   "changes": [
-    "nimbus-first-meeting-dialogue",
-    "zafir-rescue-introductions",
+    "persistent-guest-first-start",
+    "guest-network-recovery",
+    "zafir-rescue-height",
     "premium-checkout-disabled"
   ],
   "databaseMigrations": 0

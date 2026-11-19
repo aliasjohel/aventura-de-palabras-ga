@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aventura-palabras-runtime-";
-const CACHE_NAME = `${CACHE_PREFIX}v0414-pwa-scene-dialogue`;
+const CACHE_NAME = `${CACHE_PREFIX}v0415-pwa-guest-start`;
 const LEGACY_CACHE_NAMES = new Set([
   `${CACHE_PREFIX}v227`,
   `${CACHE_PREFIX}v226`,
@@ -1555,7 +1555,7 @@ const ASSET_REVISIONS = {
   "./": "sha256-6c20b9ebbb40fcf6788f27b435e39753c13f2377ed1d880b859793fb2e94be20",
   "./index.html": "sha256-6c20b9ebbb40fcf6788f27b435e39753c13f2377ed1d880b859793fb2e94be20",
   "./manifest.json": "sha256-ae9d76f88e38f99edcc93e0ac012b0340c8443f8fbdb71cbc36990f02688d758",
-  "./css/styles.css": "sha256-52837392788c26b11e8c6622391833dcd47be8df95dcf7d6a53d3e9696a722d8",
+  "./css/styles.css": "sha256-6bd3dc71fef7f79f1240f5f6d7e506ea75e403d3736c63c63a6e1edd3915b82d",
   "./css/azrak-world.css": "sha256-97ad7046dc7eafa9e8caaee3e00b1cb27e6b6314b99642d49e6ffda4fa8fcfe2",
   "./js/azrak-world.js": "sha256-d503df637e79f9e229d44bdfb03831c54086f1abf163ffc0dbdef95486227e10",
   "./assets/images/cinematicas/reino-azrak/primer-shadow-lume-capturada-v1.png": "sha256-190fd4207138436bf0a6b68048a766bce2fe136bebf4051095bc84fe6b6b286c",
@@ -1644,12 +1644,12 @@ const ASSET_REVISIONS = {
   "./js/intro.js": "sha256-9427da5d894c4833f2616c5cb3a4b98042e319809ad56f03388f8d81256e0bd9",
   "./js/supabase-loader.js": "sha256-643b337516766baa58672b44ee7288728faee86a9ba3bcc43eacbe05403e5c34",
   "./js/supabase-config.js": "sha256-305eac5a6b712731f4e372cca9f6a4f2af0610e772bd928eaa5e75fc0b427295",
-  "./js/supabase-client.js": "sha256-6c178f585cc21a8beaf784488cff3d97917b2d9a0e8033f36c85db9a75bb2979",
+  "./js/supabase-client.js": "sha256-7848f3d8f24ca3ab1b16549038c10585d192e27521e747ad13f3216005d93b56",
   "./js/word-gameplay.js": "sha256-ed28310b7afcba7a3ce8391e8a26d23ec39ae19f710b99016de494c3dffe4913",
   "./js/versus-engine.js": "sha256-544297ccc805d3448fd1563053f6ebaba45483eef69e2d65ce045eb78282a9b4",
   "./js/arcade-rules.js": "sha256-688fe36bc763fe065665dfd305b6ea99efaf9aea2667a863f61b5cc257e521f6",
   "./js/versus-room.js": "sha256-bcd7d15b293d34bd9b73cae19909b52492c7defbd8629952d99b3b004b56be0f",
-  "./js/versus-room-supabase.js": "sha256-f5d185f33d066c89a6c250946742ff387c7c2e9a05e05fd2574b755bc4a46c36",
+  "./js/versus-room-supabase.js": "sha256-1e3a4cbbadce25676bf00620ad57e39c11dbe3acce4ac0f2fa8b8f8b272093e1",
   "./js/puzzle-lessons.js": "sha256-c3269cb6042e311b9768722585ca236fc2696bc3918bd5cd80675ac0bf7dbaf5",
   "./js/lessons-i18n.js": "sha256-1bb946ab742bf6ef2f929751ba8c9f953446148148f81917c980d399cce33904",
   "./js/multiplayer-i18n.js": "sha256-b4bbf6b3e88b3146b4165702492d4d2104557d3930cd4ee1f9610a170fc6d169",
@@ -2010,8 +2010,8 @@ const ASSET_REVISIONS = {
   "./js/adventure-account-v2.js": "sha256-1be03fb544155a3acdbb88c182b6a7c3d829a21c3e3400da15b2301dc44407dc",
   "./js/account-sync-v3.js": "sha256-49d7c91bec92c8db56f084f58fc2f95f1f85be82feff22237951c9038b274264",
   "./js/account-runtime-v3.js": "sha256-eda464012afc1ade6d970be82d5e1583a80bc3bcb0349463409d0cd39616dfcf",
-  "./pilot-config.js": "sha256-470cebe10f78cdd52672a0aa4d9ac19d5e129f59079cedf38b49f91b67b2ed67",
-  "./pilot-gate.js": "sha256-d04f0cb5813f50e607bd19440a68139d3e19451d70c235a402df44d9e9ef4bb6",
+  "./pilot-config.js": "sha256-fc60e00784ce84849d88a041119b50923ba4ec276dd32b18698c3afb429b4a6a",
+  "./pilot-gate.js": "sha256-0e0a6723ae82e59605a818f7748e79d4b0c11670595e011c26cc4979e4d22199",
   "./css/sync-menu-layout.css": "sha256-8b5639da9724641e2d006400a0c2c3850cbfd9c643e09b4f9f92332f622c765f"
 };
 const LEGACY_RESOURCE_REVISIONS = {

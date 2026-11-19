@@ -1,4 +1,4 @@
-/* Admission for prepared sync clients. Never creates users or starts a session. */
+/* Owner-verified admission. Guest bootstrap shares the adapter's persistent session lock. */
 (() => {
  'use strict';
  const cfg=globalThis.AVENTURA_PILOT_CONFIG,general=cfg?.scope==='verified-accounts';
@@ -43,11 +43,20 @@
   try{
    await deadline(globalThis.AventuraOnline.cargarSupabase());if(!current())return;client=globalThis.AventuraSupabase.obtenerCliente();
    if(navigator.onLine&&!subscription&&client.auth.onAuthStateChange)subscription=client.auth.onAuthStateChange(()=>recheck());
+   const saved=globalThis.AventuraSupabase.tieneSesionGuardada?.();
    const local=!navigator.onLine&&globalThis.AventuraSupabase.leerSesionLocal?globalThis.AventuraSupabase.leerSesionLocal():await deadline(client.auth.getSession());if(!current())return;
-   const session=local.data?.session,uid=session?.user?.id;
-   if(local.error||!uid){show('Ingresá con tu cuenta habitual. Esta candidata no crea cuentas nuevas.');return;}
+   let session=local.data?.session;
+   if(local.error){diagnose('session',local.error);show('No pudimos recuperar tu sesión. Reconectá y reintentá sin borrar datos.');return;}
+   if(!session?.user?.id&&general&&cfg.allowGuests){
+    if(saved){show('No pudimos recuperar tu jugador guardado. Reconectá y reintentá sin borrar datos.');return;}
+    if(!navigator.onLine){show('Para tu primer ingreso como invitado necesitás conexión a internet. Conectate y tocá «Comprobar sincronización»; no necesitás correo.');return;}
+    show('Creando tu jugador invitado. No necesitás correo; esperá un momento…');node.querySelector('button').disabled=true;
+    session=await deadline(globalThis.VersusRoomSupabase.recuperarSesion(client),25000);if(!current())return;
+   }
+   const uid=session?.user?.id;
+   if(!uid){show('Ingresá con tu cuenta habitual. Esta candidata no crea cuentas nuevas.');return;}
    if(!general&&uid!==cfg.uuid){show('Esta candidata está limitada a la cuenta autorizada del piloto.');return;}
-   if(general&&session.user.is_anonymous===true){remember(uid,false);show('Para recuperar tu progreso entre dispositivos, ingresá con tu cuenta verificada. No se crea un invitado nuevo.');return;}
+   if(general&&!cfg.allowGuests&&session.user.is_anonymous===true){remember(uid,false);show('Para recuperar tu progreso entre dispositivos, ingresá con tu cuenta verificada. No se crea un invitado nuevo.');return;}
    if(!navigator.onLine){
     if(!cached(uid)){show('Conectate una vez para verificar esta cuenta y su sincronización antes de usar su copia offline.');return;}
     const recovered=await deadline(recuperarCopias(uid),20000);if(!current())return;
@@ -56,7 +65,9 @@
    }
    const verified=await deadline(client.auth.getUser());if(!current())return;const user=verified.data?.user;
    if(verified.error){diagnose('identity',verified.error);if([401,403].includes(verified.error.status))remember(uid,false);show('No pudimos verificar la conexión con tu cuenta. Tus datos se conservan; volvé a comprobar la sincronización.');return;}
-   if(user?.id!==uid||(general&&(user.is_anonymous===true||!(user.email_confirmed_at||user.phone_confirmed_at||user.confirmed_at)))){remember(uid,false);show('No pudimos verificar esta cuenta. Volvé a ingresar con tu cuenta habitual.');return;}
+   const guest=cfg.allowGuests&&user?.is_anonymous===true;
+   if(user?.id!==uid||(general&&!guest&&(user.is_anonymous===true||!(user.email_confirmed_at||user.phone_confirmed_at||user.confirmed_at)))){remember(uid,false);show('No pudimos verificar esta cuenta. Volvé a ingresar con tu cuenta habitual.');return;}
+   if(guest)globalThis.AventuraSupabase.recordarInvitado?.(user);
    const result=await deadline(client.rpc('account_state_v3'));if(!current())return;
    const latest=await deadline(client.auth.getSession());if(!current())return;
    if(latest.error){diagnose('session',latest.error);show('No pudimos volver a consultar tu sesión. Reconectá y comprobá la sincronización; tus datos se conservan.');return;}

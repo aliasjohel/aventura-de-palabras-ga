@@ -16,6 +16,8 @@
   function configuracionDisponible(){const c=raiz.AVENTURA_SUPABASE_CONFIG;return Boolean(c?.url?.startsWith('https://')&&c?.publishableKey?.startsWith('sb_publishable_'));}
   // Same key as Supabase's existing default: preserve v0.2 sessions and PKCE data.
   function claveSesion(){return 'sb-'+new URL(raiz.AVENTURA_SUPABASE_CONFIG.url).hostname.split('.')[0]+'-auth-token';}
+  function tieneSesionGuardada(){try{return raiz.localStorage.getItem(claveSesion())!==null||raiz.localStorage.getItem(claveSesion()+':guest-owner')!==null;}catch{return true;}}
+  function recordarInvitado(user){if(user?.is_anonymous===true&&user.id)raiz.localStorage.setItem(claveSesion()+':guest-owner',user.id);}
   function leerSesionLocal(){
     if(raiz.navigator?.onLine!==false)return {data:{session:null},error:null};
     try{const s=JSON.parse(raiz.localStorage.getItem(claveSesion())||'null');
@@ -40,5 +42,5 @@
   raiz.addEventListener('offline',actualizarRenovacion);
   raiz.addEventListener('online',actualizarRenovacion);
   raiz.document?.addEventListener('visibilitychange',actualizarRenovacion);
-  raiz.AventuraSupabase=Object.freeze({configuracionDisponible,obtenerCliente,leerSesionLocal});
+  raiz.AventuraSupabase=Object.freeze({configuracionDisponible,obtenerCliente,leerSesionLocal,tieneSesionGuardada,recordarInvitado});
 })(globalThis);

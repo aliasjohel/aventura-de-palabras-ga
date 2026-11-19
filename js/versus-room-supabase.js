@@ -16,6 +16,7 @@
   function recuperarSesion(cliente) {
     if (sesionesEnCurso.has(cliente)) return sesionesEnCurso.get(cliente);
     const recuperar = async () => {
+      const guardada = raiz.AventuraSupabase?.tieneSesionGuardada?.();
       // Read again INSIDE the browser lock: another tab may just have saved its session.
       const { data, error } = await cliente.auth.getSession();
       if (error) throw traducirError(error, "No pudimos recuperar la sesión.");
@@ -32,6 +33,7 @@
         if (renovacion.error) throw traducirError(renovacion.error, "La sesión guardada venció. Volvé a entrar con tu correo.");
         return renovacion.data?.session || sesion;
       }
+      if (guardada) throw errorJugador('No pudimos recuperar tu jugador guardado. Reconectá y reintentá sin borrar datos.');
       // Supabase can fall back to memory if storage is unavailable. Do not create
       // disposable identities on each launch when we cannot remember the first one.
       const clave = "aventura-auth-storage-check";
@@ -49,14 +51,15 @@
       } catch (_) {
         throw errorJugador("Habilitá el almacenamiento del navegador para conservar tu jugador online.");
       }
-      if(raiz.AVENTURA_PILOT_CONFIG)throw errorJugador("Esta candidata requiere tu cuenta verificada; no crea invitados.");
+      if(raiz.AVENTURA_PILOT_CONFIG&&!raiz.AVENTURA_PILOT_CONFIG.allowGuests)throw errorJugador("Esta candidata requiere tu cuenta verificada; no crea invitados.");
       const ingreso = await cliente.auth.signInAnonymously();
       if (ingreso.error) throw traducirError(ingreso.error, "No pudimos iniciar la sesión anónima.");
+      raiz.AventuraSupabase?.recordarInvitado?.(ingreso.data?.session?.user);
       return ingreso.data?.session;
     };
     // Separate from Supabase's own token lock, avoiding nested acquisition of that lock.
     const nombre = "aventura-auth-bootstrap:" + (cliente.supabaseUrl || raiz.AVENTURA_SUPABASE_CONFIG?.url || "default");
-    const promesa = Promise.resolve().then(() => !raiz.AccountRuntimeV3?.installed && raiz.navigator?.locks?.request
+    const promesa = Promise.resolve().then(() => raiz.navigator?.locks?.request
       ? raiz.navigator.locks.request(nombre, { mode: "exclusive" }, recuperar)
       : recuperar()).finally(() => sesionesEnCurso.delete(cliente));
     sesionesEnCurso.set(cliente, promesa);
@@ -973,5 +976,5 @@
     return adaptador;
   }
 
-  raiz.VersusRoomSupabase = Object.freeze({ crearAdaptador });
+  raiz.VersusRoomSupabase = Object.freeze({ crearAdaptador, recuperarSesion });
 })(globalThis);
